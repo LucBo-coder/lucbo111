@@ -29,10 +29,8 @@ jobs:
 
       - run: npm run build
 
-      # Enables Pages (Source: GitHub Actions) on first run, no manual setup needed.
+      # Pages site must be enabled once in repo Settings → Pages → Source: GitHub Actions
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
