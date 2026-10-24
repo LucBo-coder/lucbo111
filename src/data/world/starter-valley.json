@@ -1,0 +1,1459 @@
+{
+ "id": "starter-valley",
+ "name": "Thung Lũng Khởi Nguyên",
+ "width": 160,
+ "height": 128,
+ "chunk": 16,
+ "spawn": {
+  "x": 81,
+  "y": 107
+ },
+ "areas": [
+  {
+   "id": "grove",
+   "name": "Khu Rừng Thiêng",
+   "rect": [
+    36,
+    16,
+    52,
+    32
+   ],
+   "habitat": "forest",
+   "level": [
+    7,
+    10
+   ]
+  },
+  {
+   "id": "ruins",
+   "name": "Tàn Tích Cổ",
+   "rect": [
+    4,
+    18,
+    26,
+    50
+   ],
+   "habitat": "ruins",
+   "level": [
+    9,
+    13
+   ]
+  },
+  {
+   "id": "farm",
+   "name": "Nông Trại Bác Tư",
+   "rect": [
+    40,
+    96,
+    60,
+    114
+   ],
+   "habitat": "farm",
+   "level": [
+    4,
+    7
+   ]
+  },
+  {
+   "id": "village",
+   "name": "Làng Khởi Nguyên",
+   "rect": [
+    62,
+    82,
+    102,
+    116
+   ],
+   "habitat": "village",
+   "level": [
+    3,
+    5
+   ]
+  },
+  {
+   "id": "lake",
+   "name": "Hồ Pha Lê",
+   "rect": [
+    104,
+    50,
+    152,
+    92
+   ],
+   "habitat": "lake",
+   "level": [
+    6,
+    9
+   ]
+  },
+  {
+   "id": "rocky",
+   "name": "Đồi Đá Xám",
+   "rect": [
+    112,
+    4,
+    157,
+    49
+   ],
+   "habitat": "rocky",
+   "level": [
+    8,
+    12
+   ]
+  },
+  {
+   "id": "forest",
+   "name": "Rìa Rừng Ngọc",
+   "rect": [
+    28,
+    4,
+    112,
+    48
+   ],
+   "habitat": "forest",
+   "level": [
+    5,
+    9
+   ]
+  },
+  {
+   "id": "meadow",
+   "name": "Đồng Cỏ Gió",
+   "rect": [
+    14,
+    48,
+    104,
+    90
+   ],
+   "habitat": "meadow",
+   "level": [
+    3,
+    6
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     81,
+     112
+    ],
+    [
+     81,
+     84
+    ],
+    [
+     81,
+     62
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     81,
+     64
+    ],
+    [
+     58,
+     64
+    ],
+    [
+     42,
+     66
+    ],
+    [
+     24,
+     46
+    ],
+    [
+     15,
+     37
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     81,
+     62
+    ],
+    [
+     84,
+     42
+    ],
+    [
+     90,
+     27
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     86,
+     100
+    ],
+    [
+     107,
+     100
+    ],
+    [
+     108,
+     86
+    ],
+    [
+     106,
+     60
+    ],
+    [
+     108,
+     46
+    ],
+    [
+     124,
+     33
+    ],
+    [
+     136,
+     26
+    ],
+    [
+     139,
+     18
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     74,
+     104
+    ],
+    [
+     60,
+     104
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     84,
+     40
+    ],
+    [
+     60,
+     18
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  70,
+  96,
+  92,
+  108
+ ],
+ "lake": {
+  "cx": 128,
+  "cy": 70,
+  "rx": 15,
+  "ry": 11
+ },
+ "buildings": [
+  {
+   "id": "lab",
+   "name": "Phòng thí nghiệm",
+   "x": 68,
+   "y": 86,
+   "w": 7,
+   "h": 4,
+   "roof": "grey",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "home",
+   "name": "Nhà của bạn",
+   "x": 84,
+   "y": 87,
+   "w": 5,
+   "h": 4,
+   "roof": "red",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "mart",
+   "name": "Cửa hàng",
+   "x": 90,
+   "y": 97,
+   "w": 5,
+   "h": 4,
+   "roof": "red",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "elder-hut",
+   "name": "Nhà cụ Ba",
+   "x": 18,
+   "y": 42,
+   "w": 4,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 1
+  }
+ ],
+ "fences": [
+  [
+   42,
+   98,
+   58,
+   98
+  ],
+  [
+   42,
+   112,
+   58,
+   112
+  ],
+  [
+   42,
+   98,
+   42,
+   112
+  ],
+  [
+   58,
+   98,
+   58,
+   102
+  ],
+  [
+   58,
+   106,
+   58,
+   112
+  ]
+ ],
+ "props": [
+  {
+   "kind": "well",
+   "x": 80,
+   "y": 100
+  },
+  {
+   "kind": "beehive",
+   "x": 45,
+   "y": 100
+  },
+  {
+   "kind": "beehive",
+   "x": 47,
+   "y": 100
+  },
+  {
+   "kind": "haystack",
+   "x": 55,
+   "y": 110
+  },
+  {
+   "kind": "log",
+   "x": 64,
+   "y": 70
+  },
+  {
+   "kind": "target",
+   "x": 62,
+   "y": 61
+  },
+  {
+   "kind": "bucket",
+   "x": 82,
+   "y": 101
+  }
+ ],
+ "signs": [
+  {
+   "x": 78,
+   "y": 104,
+   "text": [
+    "LÀNG KHỞI NGUYÊN",
+    "Nơi mọi chuyến phiêu lưu bắt đầu."
+   ]
+  },
+  {
+   "x": 79,
+   "y": 66,
+   "text": [
+    "↑ Rìa Rừng Ngọc   ← Đồng Cỏ Gió",
+    "→ Hồ Pha Lê & Đồi Đá Xám"
+   ]
+  },
+  {
+   "x": 135,
+   "y": 24,
+   "text": [
+    "HANG ĐÁ CỔ",
+    "Nguy hiểm! Chỉ dành cho huấn luyện viên có kinh nghiệm."
+   ]
+  },
+  {
+   "x": 12,
+   "y": 31,
+   "text": [
+    "Phiến đá khắc cổ:",
+    "\"Mặt trời mọc ở ĐÔNG, lặn ở TÂY, rồi chìm xuống PHƯƠNG NAM.\""
+   ]
+  },
+  {
+   "x": 46,
+   "y": 66,
+   "text": [
+    "Đồng Cỏ Gió",
+    "Pokémon hoang dã thường ẩn trong bụi cỏ cao."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "prof",
+   "name": "Giáo sư Tùng",
+   "sprite": "wizard",
+   "x": 71,
+   "y": 91,
+   "lines": [
+    "Thung lũng này đầy những Pokémon thú vị!",
+    "Hãy nhớ: Pokémon của cháu tự chiến đấu, cháu chỉ cần chỉ huy và di chuyển."
+   ]
+  },
+  {
+   "id": "farmer",
+   "name": "Bác nông dân Tư",
+   "sprite": "farmer",
+   "x": 61,
+   "y": 103,
+   "lines": [
+    "Mùa này lũ Rattata phá vườn dữ quá..."
+   ]
+  },
+  {
+   "id": "collector",
+   "name": "Bé Na",
+   "sprite": "girl",
+   "x": 97,
+   "y": 104,
+   "lines": [
+    "Em mơ ước có một bộ sưu tập Pokémon thật lớn!"
+   ]
+  },
+  {
+   "id": "ranger",
+   "name": "Kiểm lâm Hà",
+   "sprite": "ranger",
+   "x": 86,
+   "y": 38,
+   "lines": [
+    "Rừng Ngọc rất đẹp nhưng cũng rất dễ lạc. Cẩn thận nhé!"
+   ]
+  },
+  {
+   "id": "elder",
+   "name": "Cụ Ba",
+   "sprite": "elder",
+   "x": 20,
+   "y": 47,
+   "lines": [
+    "Tàn tích này có từ thời xa xưa, trước cả khi làng được dựng lên."
+   ]
+  },
+  {
+   "id": "nurse",
+   "name": "Chị Mai",
+   "sprite": "villager",
+   "x": 87,
+   "y": 104,
+   "lines": [
+    "Trạm dịch chuyển cũng hồi phục toàn bộ HP cho đội của em đấy!"
+   ]
+  },
+  {
+   "id": "shopkeeper",
+   "name": "Chú Lâm (Cửa hàng)",
+   "sprite": "bald",
+   "x": 93,
+   "y": 102,
+   "lines": [
+    "Cần gì cứ hỏi chú nhé!"
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "youngster",
+   "name": "Bé Bảo",
+   "sprite": "youngster",
+   "x": 60,
+   "y": 66,
+   "team": [
+    [
+     "rattata",
+     5
+    ],
+    [
+     "pidgey",
+     6
+    ]
+   ],
+   "challenge": [
+    "Này! Anh/chị là huấn luyện viên đúng không? Đấu với em một trận!"
+   ],
+   "win": [
+    "Oa... đội của anh/chị mạnh thật! Em phải luyện tập thêm."
+   ],
+   "lose": [
+    "Hehe, em thắng rồi! Về hồi phục rồi đấu lại nhé."
+   ],
+   "rewards": {
+    "items": {
+     "pokeball": 3,
+     "potion": 1
+    },
+    "exp": 120
+   }
+  }
+ ],
+ "rescue": {
+  "id": "trapped-pikachu",
+  "x": 96,
+  "y": 21,
+  "species": "pikachu",
+  "level": 7,
+  "guards": [
+   [
+    "rattata",
+    6
+   ],
+   [
+    "rattata",
+    6
+   ],
+   [
+    "rattata",
+    7
+   ]
+  ]
+ },
+ "chests": [
+  {
+   "id": "chest-meadow",
+   "x": 30,
+   "y": 56,
+   "items": {
+    "pokeball": 3,
+    "oranberry": 2,
+    "charcoal": 1
+   }
+  },
+  {
+   "id": "chest-lake",
+   "x": 147,
+   "y": 85,
+   "items": {
+    "potion": 2,
+    "greatball": 1,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-forest",
+   "x": 58,
+   "y": 13,
+   "items": {
+    "oranberry": 3,
+    "greatball": 2,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-rocky",
+   "x": 153,
+   "y": 41,
+   "items": {
+    "superpotion": 1,
+    "ultraball": 1,
+    "pidgeotite": 1
+   }
+  },
+  {
+   "id": "chest-ruins",
+   "x": 13,
+   "y": 23,
+   "items": {
+    "ultraball": 2,
+    "superpotion": 2,
+    "leaf-stone": 1,
+    "thunder-stone": 1
+   },
+   "requiresFlag": "puzzle:rune-ruins"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-village",
+   "name": "Làng Khởi Nguyên",
+   "x": 84,
+   "y": 105
+  },
+  {
+   "id": "wp-meadow",
+   "name": "Đồng Cỏ Gió",
+   "x": 44,
+   "y": 70
+  },
+  {
+   "id": "wp-lake",
+   "name": "Bờ Hồ Pha Lê",
+   "x": 104,
+   "y": 72
+  },
+  {
+   "id": "wp-cave",
+   "name": "Cửa Hang Đá Cổ",
+   "x": 132,
+   "y": 27
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "rune-ruins",
+   "plates": [
+    [
+     16,
+     29
+    ],
+    [
+     10,
+     29
+    ],
+    [
+     13,
+     34
+    ]
+   ],
+   "labels": [
+    "ĐÔNG",
+    "TÂY",
+    "NAM"
+   ],
+   "order": [
+    0,
+    1,
+    2
+   ]
+  }
+ ],
+ "dungeons": [
+  {
+   "id": "ancient-cave",
+   "name": "Hang Đá Cổ",
+   "x": 139,
+   "y": 16
+  }
+ ],
+ "pillars": [
+  [
+   7,
+   22
+  ],
+  [
+   22,
+   22
+  ],
+  [
+   7,
+   44
+  ],
+  [
+   22,
+   44
+  ],
+  [
+   9,
+   36
+  ],
+  [
+   20,
+   36
+  ]
+ ],
+ "spawns": {
+  "meadow-grass": [
+   {
+    "species": "pidgey",
+    "weight": 6,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "rattata",
+    "weight": 4,
+    "temperament": "neutral",
+    "time": "any"
+   },
+   {
+    "species": "caterpie",
+    "weight": 3,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "rattata",
+    "weight": 4,
+    "temperament": "aggressive",
+    "time": "night"
+   },
+   {
+    "species": "perropello",
+    "weight": 1,
+    "temperament": "neutral",
+    "time": "day"
+   },
+   {
+    "species": "pidgeotto",
+    "weight": 1,
+    "temperament": "timid",
+    "time": "day"
+   }
+  ],
+  "meadow": [
+   {
+    "species": "pidgey",
+    "weight": 3,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "rattata",
+    "weight": 2,
+    "temperament": "neutral",
+    "time": "any"
+   }
+  ],
+  "farm": [
+   {
+    "species": "rattata",
+    "weight": 8,
+    "temperament": "aggressive",
+    "time": "any"
+   },
+   {
+    "species": "diglett",
+    "weight": 2,
+    "temperament": "timid",
+    "time": "any"
+   },
+   {
+    "species": "raticate",
+    "weight": 1,
+    "temperament": "aggressive",
+    "time": "night"
+   }
+  ],
+  "forest-grass": [
+   {
+    "species": "caterpie",
+    "weight": 5,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "oddish",
+    "weight": 4,
+    "temperament": "neutral",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "pikachu",
+    "weight": 1,
+    "temperament": "timid",
+    "time": "any",
+    "weather": {
+     "rain": 3
+    }
+   },
+   {
+    "species": "zubat",
+    "weight": 4,
+    "temperament": "aggressive",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "paras",
+    "weight": 3,
+    "temperament": "neutral",
+    "time": "any"
+   }
+  ],
+  "forest": [
+   {
+    "species": "caterpie",
+    "weight": 3,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "pidgey",
+    "weight": 2,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "zubat",
+    "weight": 2,
+    "temperament": "aggressive",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "hoothoot",
+    "weight": 4,
+    "temperament": "timid",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "canight",
+    "weight": 1,
+    "temperament": "timid",
+    "time": "night",
+    "nocturnal": true
+   }
+  ],
+  "lake": [
+   {
+    "species": "oddish",
+    "weight": 4,
+    "temperament": "neutral",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "pidgey",
+    "weight": 2,
+    "temperament": "timid",
+    "time": "day"
+   },
+   {
+    "species": "pikachu",
+    "weight": 1,
+    "temperament": "timid",
+    "time": "any",
+    "weather": {
+     "rain": 3
+    }
+   },
+   {
+    "species": "gulpin",
+    "weight": 3,
+    "temperament": "neutral",
+    "time": "any"
+   }
+  ],
+  "rocky": [
+   {
+    "species": "geodude",
+    "weight": 6,
+    "temperament": "neutral",
+    "time": "any"
+   },
+   {
+    "species": "magnemite",
+    "weight": 2,
+    "temperament": "neutral",
+    "time": "any",
+    "weather": {
+     "rain": 2
+    }
+   },
+   {
+    "species": "zubat",
+    "weight": 3,
+    "temperament": "aggressive",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "diglett",
+    "weight": 4,
+    "temperament": "neutral",
+    "time": "any"
+   },
+   {
+    "species": "graveler",
+    "weight": 1,
+    "temperament": "neutral",
+    "time": "any"
+   }
+  ],
+  "ruins": [
+   {
+    "species": "zubat",
+    "weight": 3,
+    "temperament": "aggressive",
+    "time": "any"
+   },
+   {
+    "species": "geodude",
+    "weight": 2,
+    "temperament": "neutral",
+    "time": "any"
+   },
+   {
+    "species": "paras",
+    "weight": 2,
+    "temperament": "neutral",
+    "time": "any"
+   },
+   {
+    "species": "canight",
+    "weight": 1,
+    "temperament": "aggressive",
+    "time": "night",
+    "nocturnal": true
+   },
+   {
+    "species": "golbat",
+    "weight": 1,
+    "temperament": "aggressive",
+    "time": "night",
+    "nocturnal": true
+   }
+  ]
+ },
+ "worldBoss": {
+  "id": "mega-venusaur",
+  "name": "Khu Rừng Thiêng",
+  "x": 44,
+  "y": 24,
+  "level": 24,
+  "respawn": 600,
+  "arena": 330
+ },
+ "legendaries": [
+  {
+   "id": "articuno",
+   "name": "Băng Đài Hồ Pha Lê",
+   "x": 144,
+   "y": 57,
+   "level": 38,
+   "respawn": 900,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 3.93,
+   "hint": "Một luồng khí lạnh buốt tỏa ra từ vòng đá... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur)."
+  },
+  {
+   "id": "zapdos",
+   "name": "Đỉnh Sấm Đồi Đá",
+   "x": 120,
+   "y": 32,
+   "level": 38,
+   "respawn": 900,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 2.36,
+   "hint": "Tia sét lóe lên quanh vòng đá rồi tắt ngấm... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur)."
+  },
+  {
+   "id": "moltres",
+   "name": "Đền Lửa Tàn Tích",
+   "x": 11,
+   "y": 35,
+   "level": 38,
+   "respawn": 900,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 0,
+   "hint": "Tro nóng vẫn còn âm ỉ giữa vòng đá... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur)."
+  },
+  {
+   "id": "mewtwo",
+   "name": "Vết Nứt Tâm Linh",
+   "x": 62,
+   "y": 39,
+   "level": 46,
+   "respawn": 1200,
+   "arena": 330,
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "gap": 1.57,
+   "hint": "Một áp lực tâm linh khổng lồ đẩy bạn lùi lại... Chỉ người được cả ba Thần Điểu công nhận mới vào được."
+  },
+  {
+   "id": "mew",
+   "name": "Đồi Hoa Huyền Bí",
+   "x": 84,
+   "y": 61,
+   "level": 42,
+   "respawn": 1200,
+   "arena": 330,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 4.71,
+   "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo."
+  },
+  {
+   "id": "lugia",
+   "name": "Đền Biển Sâu",
+   "x": 110,
+   "y": 56,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "gap": 1.57,
+   "hint": "Mặt hồ lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+   "condition": {
+    "weather": [
+     "rain",
+     "heavyRain",
+     "thunderstorm"
+    ]
+   }
+  },
+  {
+   "id": "ho-oh",
+   "name": "Tháp Chuông Cầu Vồng",
+   "x": 73,
+   "y": 10,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:raikou",
+    "boss:entei",
+    "boss:suicune"
+   ],
+   "gap": 1.57,
+   "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
+   "condition": {
+    "time": "day"
+   }
+  },
+  {
+   "id": "celebi",
+   "name": "Khu Rừng Thiêng lúc bình minh",
+   "x": 44,
+   "y": 24,
+   "level": 30,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 1.57,
+   "hint": "",
+   "ring": false,
+   "gift": true,
+   "condition": {
+    "time": "dawn"
+   }
+  },
+  {
+   "id": "regirock",
+   "name": "Lăng Đá Đỏ",
+   "x": 151,
+   "y": 10,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 1.57,
+   "hint": "Những ký tự cổ khắc trên đá... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {}
+  },
+  {
+   "id": "regice",
+   "name": "Lăng Băng Ẩn",
+   "x": 35,
+   "y": 42,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 1.57,
+   "hint": "Lớp băng mỏng phủ vòng đá... có lẽ Regice chỉ thức dậy trong bão tuyết.",
+   "condition": {
+    "weather": [
+     "blizzard"
+    ]
+   }
+  },
+  {
+   "id": "registeel",
+   "name": "Lăng Thép",
+   "x": 126,
+   "y": 43,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 1.57,
+   "hint": "Một khối thép lạnh ngắt nằm im... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {}
+  },
+  {
+   "id": "regigigas",
+   "name": "Đền Khổng Lồ",
+   "x": 20,
+   "y": 68,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:regirock",
+    "boss:regice",
+    "boss:registeel"
+   ],
+   "gap": 1.57,
+   "hint": "Bức tượng khổng lồ không nhúc nhích... nó đang chờ ba người khổng lồ.",
+   "condition": {}
+  },
+  {
+   "id": "kyogre",
+   "name": "Đền Đáy Hồ",
+   "x": 113,
+   "y": 84,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 1.57,
+   "hint": "Nước hồ dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi mưa lớn.",
+   "condition": {
+    "weather": [
+     "heavyRain",
+     "rain",
+     "thunderstorm"
+    ]
+   }
+  },
+  {
+   "id": "groudon",
+   "name": "Đền Dung Nham",
+   "x": 118,
+   "y": 10,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 1.57,
+   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt.",
+   "condition": {
+    "weather": [
+     "heatwave",
+     "clear"
+    ]
+   }
+  },
+  {
+   "id": "rayquaza",
+   "name": "Trụ Trời",
+   "x": 151,
+   "y": 25,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:kyogre",
+    "boss:groudon"
+   ],
+   "gap": 1.57,
+   "hint": "Gió trên đỉnh trụ gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
+   "condition": {}
+  },
+  {
+   "id": "jirachi",
+   "name": "Đồi Ước Nguyện",
+   "x": 72,
+   "y": 74,
+   "level": 35,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mew"
+   ],
+   "gap": 1.57,
+   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
+   "gift": true,
+   "condition": {
+    "time": "night",
+    "weather": [
+     "clear"
+    ],
+    "friendship": 180
+   }
+  },
+  {
+   "id": "deoxys",
+   "name": "Hố Thiên Thạch",
+   "x": 93,
+   "y": 79,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:rayquaza"
+   ],
+   "gap": 1.57,
+   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
+   "condition": {
+    "time": "night"
+   }
+  },
+  {
+   "id": "uxie",
+   "name": "Hồ Trí Tuệ",
+   "x": 101,
+   "y": 38,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 1.57,
+   "hint": "Mặt nước phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+   "condition": {}
+  },
+  {
+   "id": "azelf",
+   "name": "Hồ Dũng Khí",
+   "x": 55,
+   "y": 81,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 1.57,
+   "hint": "Gió thổi mạnh quanh vòng đá... Azelf chờ người đã đối mặt với Mewtwo.",
+   "condition": {}
+  },
+  {
+   "id": "dialga",
+   "name": "Cột Thời Gian",
+   "x": 85,
+   "y": 26,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "gap": 1.57,
+   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
+   "condition": {}
+  },
+  {
+   "id": "palkia",
+   "name": "Cột Không Gian",
+   "x": 98,
+   "y": 10,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "gap": 1.57,
+   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
+   "condition": {}
+  },
+  {
+   "id": "giratina",
+   "name": "Cổng Thế Giới Đảo Ngược",
+   "x": 35,
+   "y": 82,
+   "level": 58,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:dialga",
+    "boss:palkia"
+   ],
+   "gap": 1.57,
+   "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi thời gian và không gian bị khuấy động.",
+   "condition": {
+    "time": "night"
+   }
+  },
+  {
+   "id": "heatran",
+   "name": "Miệng Núi Lửa Ngầm",
+   "x": 138,
+   "y": 39,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:groudon"
+   ],
+   "gap": 1.57,
+   "hint": "Hơi nóng phả ra từ khe đá... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
+   "condition": {
+    "weather": [
+     "heatwave",
+     "clear"
+    ]
+   }
+  },
+  {
+   "id": "darkrai",
+   "name": "Đảo Ác Mộng",
+   "x": 50,
+   "y": 55,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:cresselia"
+   ],
+   "gap": 1.57,
+   "hint": "Bạn bỗng thấy buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
+   "condition": {
+    "time": "night"
+   }
+  },
+  {
+   "id": "shaymin",
+   "name": "Vườn Hoa Gracidea",
+   "x": 69,
+   "y": 54,
+   "level": 30,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:celebi"
+   ],
+   "gap": 1.57,
+   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
+   "gift": true,
+   "condition": {
+    "time": "day",
+    "friendship": 200
+   }
+  }
+ ],
+ "portals": [
+  {
+   "id": "portal-frozen",
+   "name": "Cổng Núi Tuyết",
+   "x": 140,
+   "y": 7,
+   "to": "frozen-mountains",
+   "toX": 52,
+   "toY": 88,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Cổng băng giá đóng kín... Hãy đánh bại Thần Rừng (Mega Venusaur) trước. Khuyến nghị Lv35+."
+  },
+  {
+   "id": "portal-volcano",
+   "name": "Cổng Núi Lửa",
+   "x": 6,
+   "y": 17,
+   "to": "volcanic-lands",
+   "toX": 52,
+   "toY": 88,
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "hint": "Hơi nóng phả ra từ cổng đá... Chỉ người được ba Thần Điểu công nhận mới qua được. Khuyến nghị Lv45+."
+  },
+  {
+   "id": "portal-sanctuary",
+   "name": "Cổng Thánh Địa",
+   "x": 80,
+   "y": 118,
+   "to": "legendary-sanctuary",
+   "toX": 48,
+   "toY": 72,
+   "requires": [
+    "boss:rayquaza"
+   ],
+   "hint": "Ánh sáng thần thánh chặn lối... Rayquaza phải công nhận bạn trước. Khuyến nghị Lv70+."
+  },
+  {
+   "id": "portal-swamp",
+   "name": "Cổng Đầm Lầy",
+   "x": 16,
+   "y": 104,
+   "to": "misty-swamp",
+   "toX": 52,
+   "toY": 88,
+   "requires": [
+    "region:emerald-forest"
+   ],
+   "hint": "Sương mù dày đặc che kín cổng... Hãy giải quyết bí ẩn Hang Đá Cổ trước. Khuyến nghị Lv22+."
+  },
+  {
+   "id": "portal-coast",
+   "name": "Cổng Bờ Biển",
+   "x": 150,
+   "y": 104,
+   "to": "coral-coast",
+   "toX": 14,
+   "toY": 48,
+   "requires": [
+    "region:coral-coast"
+   ],
+   "hint": "Tiếng sóng vọng lại sau cổng... Hãy giúp Bà Thầy Mo ở Đầm Lầy trước. Khuyến nghị Lv28+."
+  }
+ ]
+}

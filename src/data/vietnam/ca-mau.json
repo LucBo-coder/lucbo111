@@ -1,0 +1,562 @@
+{
+ "id": "ca-mau",
+ "name": "Cà Mau",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": {
+  "x": 72,
+  "y": 94
+ },
+ "areas": [
+  {
+   "id": "cm-town",
+   "name": "Thị trấn Đất Mũi",
+   "rect": [
+    56,
+    80,
+    92,
+    102
+   ],
+   "habitat": "village",
+   "level": [
+    1,
+    1
+   ]
+  },
+  {
+   "id": "cm-cape",
+   "name": "Mũi Cà Mau",
+   "rect": [
+    0,
+    80,
+    127,
+    111
+   ],
+   "habitat": "coast",
+   "level": [
+    2,
+    5
+   ]
+  },
+  {
+   "id": "cm-mangrove",
+   "name": "Rừng Ngập Mặn Đất Mũi",
+   "rect": [
+    0,
+    44,
+    127,
+    79
+   ],
+   "habitat": "mangrove",
+   "level": [
+    3,
+    7
+   ]
+  },
+  {
+   "id": "cm-uminh",
+   "name": "Rừng Tràm U Minh Hạ",
+   "rect": [
+    0,
+    0,
+    127,
+    43
+   ],
+   "habitat": "forest",
+   "level": [
+    5,
+    10
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     72,
+     96
+    ],
+    [
+     72,
+     72
+    ],
+    [
+     64,
+     52
+    ],
+    [
+     60,
+     30
+    ],
+    [
+     62,
+     8
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     64,
+     92
+    ],
+    [
+     46,
+     96
+    ],
+    [
+     36,
+     90
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     60,
+     30
+    ],
+    [
+     40,
+     20
+    ],
+    [
+     30,
+     20
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  64,
+  88,
+  80,
+  98
+ ],
+ "lake": {
+  "cx": 0,
+  "cy": 112,
+  "rx": 50,
+  "ry": 26
+ },
+ "buildings": [
+  {
+   "id": "cm-center",
+   "name": "Trung tâm Pokémon",
+   "x": 60,
+   "y": 82,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "cm-mart",
+   "name": "Cửa hàng",
+   "x": 75,
+   "y": 82,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "cm-lab",
+   "name": "Trạm Nghiên cứu Đất Mũi",
+   "x": 82,
+   "y": 90,
+   "w": 6,
+   "h": 4,
+   "roof": "grey",
+   "wall": "stone",
+   "door": 2
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "bucket",
+   "x": 41,
+   "y": 88
+  },
+  {
+   "kind": "log",
+   "x": 58,
+   "y": 34
+  }
+ ],
+ "signs": [
+  {
+   "x": 70,
+   "y": 99,
+   "text": [
+    "THỊ TRẤN ĐẤT MŨI — CÀ MAU",
+    "Khởi đầu hành trình Việt Nam Odyssey. Lối lên phía bắc: Rừng Ngập Mặn → U Minh Hạ."
+   ]
+  },
+  {
+   "x": 38,
+   "y": 91,
+   "text": [
+    "MŨI CÀ MAU",
+    "Điểm cực Nam trên đất liền của Việt Nam. Rừng ngập mặn ở đây giữ phù sa, giúp đất mũi tiếp tục bồi ra biển."
+   ]
+  },
+  {
+   "x": 62,
+   "y": 46,
+   "text": [
+    "RỪNG U MINH HẠ",
+    "Rừng tràm trên đất than bùn. Cẩn thận lửa — than bùn rất dễ cháy."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "vn-prof",
+   "name": "Giáo sư Mai",
+   "sprite": "elder",
+   "x": 85,
+   "y": 95,
+   "lines": [
+    "Hệ sinh thái rừng ngập mặn ở đây là ngôi nhà của rất nhiều Pokémon nước và côn trùng."
+   ]
+  },
+  {
+   "id": "shopkeeper",
+   "name": "Cô bán hàng Thảo",
+   "sprite": "villager",
+   "x": 77,
+   "y": 87,
+   "lines": [
+    "Mua gì cứ nói cô nhé!"
+   ]
+  },
+  {
+   "id": "cm-board",
+   "name": "Bảng nhiệm vụ Đất Mũi",
+   "sprite": "board",
+   "x": 69,
+   "y": 90,
+   "lines": [
+    "Bảng nhiệm vụ: chưa có yêu cầu mới. Hãy quay lại sau."
+   ]
+  },
+  {
+   "id": "cm-guide",
+   "name": "Hướng dẫn viên Hạnh",
+   "sprite": "girl",
+   "x": 40,
+   "y": 92,
+   "lines": [
+    "Đây là Mũi Cà Mau — điểm cực Nam trên đất liền của Việt Nam.",
+    "Rừng ngập mặn giữ phù sa lại, nên mũi đất cứ bồi dần ra biển qua từng năm.",
+    "(Trong game, đây là nơi bắt đầu hành trình — các Pokémon và sự kiện là giả tưởng.)"
+   ]
+  },
+  {
+   "id": "cm-fisher",
+   "name": "Ngư dân Tư Sáu",
+   "sprite": "farmer",
+   "x": 46,
+   "y": 98,
+   "lines": [
+    "Ghe ra cửa biển mỗi sáng sớm. Dạo này Krabby với Corphish bò lên bãi nhiều lắm."
+   ]
+  },
+  {
+   "id": "cm-ranger",
+   "name": "Kiểm lâm Nam",
+   "sprite": "ranger",
+   "x": 64,
+   "y": 40,
+   "lines": [
+    "Rừng tràm U Minh Hạ mọc trên đất than bùn. Mùa khô phải canh lửa từng ngày."
+   ]
+  },
+  {
+   "id": "cm-elder",
+   "name": "Ông Ba kể chuyện",
+   "sprite": "bald",
+   "x": 56,
+   "y": 26,
+   "lines": [
+    "Đêm nào trời không trăng, sâu trong rừng lại có một đốm sáng xanh..."
+   ]
+  },
+  {
+   "id": "cm-light",
+   "name": "Đốm sáng kỳ lạ",
+   "sprite": "light",
+   "x": 22,
+   "y": 14,
+   "lines": [
+    "Một khối sáng trong suốt đang ngân nga... Khi bạn bước lại gần, nó chớp nháy rồi mờ dần.",
+    "Có thứ gì đó rất cổ xưa đang ngủ ở nơi khác — xa hơn về phía bắc."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "cm-youngster",
+   "name": "Bé Tí bắt bọ",
+   "sprite": "youngster",
+   "x": 74,
+   "y": 70,
+   "team": [
+    [
+     "wurmple",
+     4
+    ],
+    [
+     "surskit",
+     5
+    ]
+   ],
+   "challenge": [
+    "Anh/chị mới tới Đất Mũi hả? Đấu thử với em đi!"
+   ],
+   "win": [
+    "Thua rồi... để em đi bắt thêm bọ."
+   ],
+   "lose": [
+    "Hehe, bọ rừng ngập mặn mạnh lắm đó!"
+   ],
+   "rewards": {
+    "items": {
+     "pokeball": 3,
+     "potion": 1
+    },
+    "exp": 120
+   }
+  },
+  {
+   "id": "cm-fisherman",
+   "name": "Ngư dân Hai Lúa",
+   "sprite": "farmer",
+   "x": 46,
+   "y": 62,
+   "team": [
+    [
+     "poliwag",
+     6
+    ],
+    [
+     "corphish",
+     7
+    ],
+    [
+     "wooper",
+     8
+    ]
+   ],
+   "challenge": [
+    "Câu cá chán rồi, đấu Pokémon một trận cho vui!"
+   ],
+   "win": [
+    "Hay! Cầm lấy mồi câu... à không, phần thưởng nè."
+   ],
+   "lose": [
+    "Về luyện thêm đi nhóc!"
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 2,
+     "potion": 2
+    },
+    "exp": 220
+   }
+  },
+  {
+   "id": "cm-forest-trainer",
+   "name": "Kiểm lâm tập sự Vy",
+   "sprite": "ranger",
+   "x": 44,
+   "y": 22,
+   "team": [
+    [
+     "shroomish",
+     9
+    ],
+    [
+     "slakoth",
+     9
+    ],
+    [
+     "seedot",
+     10
+    ]
+   ],
+   "challenge": [
+    "Muốn vào sâu U Minh thì phải qua được em!"
+   ],
+   "win": [
+    "Anh/chị đủ sức vào sâu trong rừng rồi."
+   ],
+   "lose": [
+    "Chưa đủ đâu — rừng sâu nguy hiểm lắm."
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 1,
+     "greatball": 3
+    },
+    "exp": 320
+   }
+  }
+ ],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [
+  {
+   "id": "chest-cm-cape",
+   "x": 30,
+   "y": 86,
+   "items": {
+    "potion": 3,
+    "pokeball": 3
+   }
+  },
+  {
+   "id": "chest-cm-mangrove",
+   "x": 104,
+   "y": 60,
+   "items": {
+    "mystic-water": 1,
+    "greatball": 2
+   }
+  },
+  {
+   "id": "chest-cm-uminh",
+   "x": 110,
+   "y": 10,
+   "items": {
+    "miracle-seed": 1,
+    "superpotion": 1
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-ca-mau-center",
+   "name": "Trung tâm Pokémon Đất Mũi",
+   "x": 63,
+   "y": 88
+  },
+  {
+   "id": "wp-cm-uminh",
+   "name": "Trạm kiểm lâm U Minh",
+   "x": 66,
+   "y": 36
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [
+  [
+   36,
+   88
+  ]
+ ],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "seviper",
+  "name": "Seviper — Chúa Rừng U Minh",
+  "x": 28,
+  "y": 30,
+  "level": 12,
+  "respawn": 600,
+  "arena": 300,
+  "requires": [
+   "beat:cm-forest-trainer"
+  ],
+  "hint": "Bụi tràm rung động dữ dội... Hãy vượt qua thử thách của Kiểm lâm tập sự Vy trước khi vào sâu.",
+  "rewards": {
+   "first": {
+    "poison-barb": 1,
+    "superpotion": 2,
+    "greatball": 5
+   },
+   "repeat": {
+    "superpotion": 1,
+    "greatball": 2
+   },
+   "money": 1500,
+   "flag": "badge:ca-mau",
+   "message": "Nhận Huy hiệu Rừng Tràm (Cà Mau)! Cổng phía bắc tới An Giang đã mở."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-cm-ag",
+   "name": "Đường lên An Giang",
+   "x": 62,
+   "y": 5,
+   "to": "an-giang",
+   "toX": 86,
+   "toY": 104,
+   "requires": [
+    "badge:ca-mau"
+   ],
+   "hint": "Đường lên An Giang bị chặn... Hãy đánh bại Chúa Rừng U Minh và nhận Huy hiệu Rừng Tràm."
+  }
+ ],
+ "rivers": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     102,
+     0
+    ],
+    [
+     98,
+     28
+    ],
+    [
+     86,
+     50
+    ],
+    [
+     92,
+     78
+    ],
+    [
+     110,
+     100
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     14,
+     40
+    ],
+    [
+     36,
+     52
+    ],
+    [
+     56,
+     60
+    ]
+   ]
+  }
+ ]
+}

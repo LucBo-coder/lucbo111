@@ -1,0 +1,487 @@
+[
+ {
+  "id": "charcoal",
+  "name": "Charcoal",
+  "kind": "held",
+  "price": 600,
+  "color": "#404040",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "fire",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Lửa +20% sát thương."
+ },
+ {
+  "id": "mystic-water",
+  "name": "Mystic Water",
+  "kind": "held",
+  "price": 600,
+  "color": "#4090ff",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "water",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Nước +20% sát thương."
+ },
+ {
+  "id": "miracle-seed",
+  "name": "Miracle Seed",
+  "kind": "held",
+  "price": 600,
+  "color": "#60c050",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "grass",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Cỏ +20% sát thương."
+ },
+ {
+  "id": "magnet",
+  "name": "Magnet",
+  "kind": "held",
+  "price": 600,
+  "color": "#e04040",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "electric",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Điện +20% sát thương."
+ },
+ {
+  "id": "sharp-beak",
+  "name": "Sharp Beak",
+  "kind": "held",
+  "price": 600,
+  "color": "#c0d8ff",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "flying",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Bay +20% sát thương."
+ },
+ {
+  "id": "silver-powder",
+  "name": "Silver Powder",
+  "kind": "held",
+  "price": 600,
+  "color": "#d0d0e0",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "bug",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Bọ +20% sát thương."
+ },
+ {
+  "id": "poison-barb",
+  "name": "Poison Barb",
+  "kind": "held",
+  "price": 600,
+  "color": "#a040c0",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "poison",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Độc +20% sát thương."
+ },
+ {
+  "id": "soft-sand",
+  "name": "Soft Sand",
+  "kind": "held",
+  "price": 600,
+  "color": "#d0b060",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "ground",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Đất +20% sát thương."
+ },
+ {
+  "id": "hard-stone",
+  "name": "Hard Stone",
+  "kind": "held",
+  "price": 600,
+  "color": "#9a8060",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "rock",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Đá +20% sát thương."
+ },
+ {
+  "id": "black-glasses",
+  "name": "Black Glasses",
+  "kind": "held",
+  "price": 600,
+  "color": "#302030",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "dark",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Bóng tối +20% sát thương."
+ },
+ {
+  "id": "muscle-band",
+  "name": "Muscle Band",
+  "kind": "held",
+  "price": 900,
+  "color": "#e0a040",
+  "effect": {
+   "type": "categoryBoost",
+   "category": "physical",
+   "mult": 1.1
+  },
+  "desc": "Đòn vật lý +10% sát thương."
+ },
+ {
+  "id": "wise-glasses",
+  "name": "Wise Glasses",
+  "kind": "held",
+  "price": 900,
+  "color": "#4060c0",
+  "effect": {
+   "type": "categoryBoost",
+   "category": "special",
+   "mult": 1.1
+  },
+  "desc": "Đòn đặc biệt +10% sát thương."
+ },
+ {
+  "id": "expert-belt",
+  "name": "Expert Belt",
+  "kind": "held",
+  "price": 1500,
+  "color": "#303030",
+  "effect": {
+   "type": "superEffective",
+   "mult": 1.2
+  },
+  "desc": "Đòn siêu hiệu quả +20% sát thương."
+ },
+ {
+  "id": "scope-lens",
+  "name": "Scope Lens",
+  "kind": "held",
+  "price": 1200,
+  "color": "#60e0ff",
+  "effect": {
+   "type": "crit",
+   "value": 0.1
+  },
+  "desc": "+10% tỉ lệ chí mạng."
+ },
+ {
+  "id": "quick-claw",
+  "name": "Quick Claw",
+  "kind": "held",
+  "price": 1200,
+  "color": "#f0e060",
+  "effect": {
+   "type": "cdr",
+   "value": 0.12
+  },
+  "desc": "Giảm 12% thời gian hồi chiêu."
+ },
+ {
+  "id": "leftovers",
+  "name": "Leftovers",
+  "kind": "held",
+  "price": 2000,
+  "color": "#a0e080",
+  "effect": {
+   "type": "regen",
+   "value": 0.012
+  },
+  "desc": "Hồi 1.2% HP tối đa mỗi giây."
+ },
+ {
+  "id": "shell-bell",
+  "name": "Shell Bell",
+  "kind": "held",
+  "price": 1500,
+  "color": "#f8c0d0",
+  "effect": {
+   "type": "drain",
+   "value": 0.12
+  },
+  "desc": "Hồi 12% lượng sát thương gây ra."
+ },
+ {
+  "id": "focus-band",
+  "name": "Focus Band",
+  "kind": "held",
+  "price": 1500,
+  "color": "#e04040",
+  "effect": {
+   "type": "focus",
+   "value": 0.2
+  },
+  "desc": "20% trụ lại với 1 HP trước đòn chí tử."
+ },
+ {
+  "id": "thunder-stone",
+  "name": "Thunder Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#f8d030",
+  "desc": "Đá tiến hóa: Pikachu → Raichu."
+ },
+ {
+  "id": "leaf-stone",
+  "name": "Leaf Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#58b048",
+  "desc": "Đá tiến hóa: Gloom → Vileplume."
+ },
+ {
+  "id": "charizardite-x",
+  "name": "Charizardite X",
+  "kind": "megaStone",
+  "price": 0,
+  "color": "#3070e0",
+  "megaFor": "charizard",
+  "form": "charizard-mega-x",
+  "desc": "Charizard cầm đá này có thể Mega Tiến Hóa thành Mega Charizard X."
+ },
+ {
+  "id": "charizardite-y",
+  "name": "Charizardite Y",
+  "kind": "megaStone",
+  "price": 9000,
+  "color": "#f07030",
+  "megaFor": "charizard",
+  "form": "charizard-mega-y",
+  "desc": "Charizard cầm đá này có thể Mega Tiến Hóa thành Mega Charizard Y."
+ },
+ {
+  "id": "blastoisinite",
+  "name": "Blastoisinite",
+  "kind": "megaStone",
+  "price": 0,
+  "color": "#4090ff",
+  "megaFor": "blastoise",
+  "form": "blastoise-mega",
+  "desc": "Blastoise cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "venusaurite",
+  "name": "Venusaurite",
+  "kind": "megaStone",
+  "price": 0,
+  "color": "#60c050",
+  "megaFor": "venusaur",
+  "form": "venusaur-mega",
+  "desc": "Venusaur cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "pidgeotite",
+  "name": "Pidgeotite",
+  "kind": "megaStone",
+  "price": 0,
+  "color": "#d0a060",
+  "megaFor": "pidgeot",
+  "form": "pidgeot-mega",
+  "desc": "Pidgeot cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "key-stone",
+  "name": "Vòng Mega (Key Stone)",
+  "kind": "key",
+  "price": 0,
+  "color": "#ff60c0",
+  "desc": "Cộng hưởng với Mega Stone. Cần có để Mega Tiến Hóa (phím G)."
+ },
+ {
+  "id": "fire-stone",
+  "name": "Fire Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#f08030",
+  "desc": "Đá tiến hóa: Vulpix, Growlithe, Eevee (Flareon)."
+ },
+ {
+  "id": "water-stone",
+  "name": "Water Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#4090ff",
+  "desc": "Đá tiến hóa: Poliwhirl, Shellder, Staryu, Eevee (Vaporeon)."
+ },
+ {
+  "id": "moon-stone",
+  "name": "Moon Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#a0a0c0",
+  "desc": "Đá tiến hóa: Nidorina, Nidorino, Clefairy, Jigglypuff."
+ },
+ {
+  "id": "linking-cord",
+  "name": "Linking Cord (Dây Liên Kết)",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#c08040",
+  "desc": "Thay cho trao đổi: Kadabra, Machoke, Graveler, Haunter (và Onix, Scyther, Poliwhirl, Slowpoke, Seadra khi cầm vật phẩm phù hợp)."
+ },
+ {
+  "id": "beedrillite",
+  "name": "Beedrillite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "beedrill",
+  "form": "beedrill-mega",
+  "desc": "Beedrill cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "alakazite",
+  "name": "Alakazite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "alakazam",
+  "form": "alakazam-mega",
+  "desc": "Alakazam cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "slowbronite",
+  "name": "Slowbronite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "slowbro",
+  "form": "slowbro-mega",
+  "desc": "Slowbro cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "gengarite",
+  "name": "Gengarite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "gengar",
+  "form": "gengar-mega",
+  "desc": "Gengar cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "kangaskhanite",
+  "name": "Kangaskhanite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "kangaskhan",
+  "form": "kangaskhan-mega",
+  "desc": "Kangaskhan cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "pinsirite",
+  "name": "Pinsirite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "pinsir",
+  "form": "pinsir-mega",
+  "desc": "Pinsir cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "gyaradosite",
+  "name": "Gyaradosite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "gyarados",
+  "form": "gyarados-mega",
+  "desc": "Gyarados cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "aerodactylite",
+  "name": "Aerodactylite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "aerodactyl",
+  "form": "aerodactyl-mega",
+  "desc": "Aerodactyl cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "mewtwonite-x",
+  "name": "Mewtwonite X",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "mewtwo",
+  "form": "mewtwo-mega-x",
+  "desc": "Mewtwo cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "mewtwonite-y",
+  "name": "Mewtwonite Y",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#ff80c0",
+  "megaFor": "mewtwo",
+  "form": "mewtwo-mega-y",
+  "desc": "Mewtwo cầm đá này có thể Mega Tiến Hóa."
+ },
+ {
+  "id": "metal-coat",
+  "name": "Metal Coat",
+  "kind": "held",
+  "price": 2000,
+  "color": "#a0a8b8",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "steel",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Thép +20%. Onix/Scyther cầm khi dùng Linking Cord sẽ tiến hóa (Steelix/Scizor)."
+ },
+ {
+  "id": "kings-rock",
+  "name": "King's Rock",
+  "kind": "held",
+  "price": 2000,
+  "color": "#e0c040",
+  "effect": {
+   "type": "flinch",
+   "value": 0.1
+  },
+  "desc": "10% làm mục tiêu khựng (Flinch). Poliwhirl/Slowpoke cầm khi dùng Linking Cord: Politoed/Slowking."
+ },
+ {
+  "id": "dragon-scale",
+  "name": "Dragon Scale",
+  "kind": "held",
+  "price": 2000,
+  "color": "#6080e0",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "dragon",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Rồng +20%. Seadra cầm khi dùng Linking Cord sẽ tiến hóa thành Kingdra."
+ },
+ {
+  "id": "never-melt-ice",
+  "name": "Never-Melt Ice",
+  "kind": "held",
+  "price": 1500,
+  "color": "#a8e0ff",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "ice",
+   "mult": 1.2
+  },
+  "desc": "Kỹ năng hệ Băng +20%."
+ }
+]

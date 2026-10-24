@@ -1,0 +1,5 @@
+[
+  { "id": "rattata", "name": "Rattata", "types": ["normal"], "behavior": "melee", "baseStats": { "hp": 30, "atk": 56, "def": 35, "spa": 25, "spd": 35, "spe": 72 }, "moveSpeed": 88, "radius": 13, "contactPower": 30, "skills": [], "exp": 1, "sprite": "rattata", "unlockAt": 0, "weight": 10 },
+  { "id": "magnemite", "name": "Magnemite", "types": ["electric", "steel"], "behavior": "ranged", "baseStats": { "hp": 25, "atk": 35, "def": 70, "spa": 95, "spd": 55, "spe": 45 }, "moveSpeed": 70, "radius": 13, "contactPower": 20, "skills": ["thunder_shock"], "exp": 2, "sprite": "magnemite", "unlockAt": 50, "weight": 4 },
+  { "id": "geodude", "name": "Geodude", "types": ["rock", "ground"], "behavior": "tank", "baseStats": { "hp": 40, "atk": 80, "def": 100, "spa": 30, "spd": 30, "spe": 20 }, "moveSpeed": 52, "radius": 17, "contactPower": 50, "skills": [], "exp": 3, "sprite": "geodude", "unlockAt": 140, "weight": 3 }
+]

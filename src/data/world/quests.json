@@ -1,0 +1,1171 @@
+[
+ {
+  "id": "q-main-1",
+  "kind": "main",
+  "title": "Bước chân đầu tiên",
+  "giver": "prof",
+  "autoStart": true,
+  "description": "Gặp Giáo sư Tùng, nhận Pokémon đầu tiên và thu phục một Pokémon hoang dã.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "prof",
+    "count": 1,
+    "text": "Nói chuyện với Giáo sư Tùng",
+    "marker": {
+     "x": 71,
+     "y": 91
+    }
+   },
+   {
+    "type": "capture",
+    "target": "*",
+    "count": 1,
+    "text": "Thu phục 1 Pokémon hoang dã (bụi cỏ cao)",
+    "marker": {
+     "x": 44,
+     "y": 66
+    }
+   },
+   {
+    "type": "talk",
+    "target": "prof",
+    "count": 1,
+    "text": "Báo cáo với Giáo sư Tùng",
+    "marker": {
+     "x": 71,
+     "y": 91
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "pokeball": 5,
+    "potion": 2
+   },
+   "worldExp": 120,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "A, cháu đến rồi! Ta là Giáo sư Tùng.",
+    "Thung lũng này là nơi tuyệt vời để bắt đầu hành trình."
+   ],
+   "progress": [
+    "Bụi cỏ cao ở Đồng Cỏ Gió có rất nhiều Pokémon. Làm yếu chúng rồi ném Poké Ball (phím F)!"
+   ],
+   "complete": [
+    "Tuyệt vời! Cháu đã thu phục Pokémon đầu tiên.",
+    "Đây là chút quà để chuyến đi thuận lợi hơn."
+   ]
+  }
+ },
+ {
+  "id": "q-main-2",
+  "kind": "exploration",
+  "title": "Khám phá thung lũng",
+  "giver": "prof",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Khám phá các vùng của Thung Lũng Khởi Nguyên và kích hoạt trạm dịch chuyển ở cửa hang.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "forest",
+    "count": 1,
+    "text": "Khám phá Rìa Rừng Ngọc",
+    "marker": {
+     "x": 84,
+     "y": 40
+    }
+   },
+   {
+    "type": "explore",
+    "target": "lake",
+    "count": 1,
+    "text": "Khám phá Hồ Pha Lê",
+    "marker": {
+     "x": 108,
+     "y": 70
+    }
+   },
+   {
+    "type": "activate",
+    "target": "wp-cave",
+    "count": 1,
+    "text": "Kích hoạt trạm dịch chuyển Cửa Hang",
+    "marker": {
+     "x": 132,
+     "y": 27
+    }
+   },
+   {
+    "type": "talk",
+    "target": "prof",
+    "count": 1,
+    "text": "Quay về gặp Giáo sư",
+    "marker": {
+     "x": 71,
+     "y": 91
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 250,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Một huấn luyện viên giỏi phải hiểu vùng đất mình sống.",
+    "Hãy đi khắp thung lũng, rồi kích hoạt trạm dịch chuyển gần Hang Đá Cổ."
+   ],
+   "progress": [
+    "Trạm dịch chuyển là những cột pha lê xanh. Đứng gần và nhấn E để kích hoạt."
+   ],
+   "complete": [
+    "Cháu đã đi xa hơn ta tưởng! Nhận lấy mấy quả Great Ball này."
+   ]
+  }
+ },
+ {
+  "id": "q-main-3",
+  "kind": "boss",
+  "title": "Bí ẩn Hang Đá Cổ",
+  "giver": "prof",
+  "requires": [
+   "q-main-2"
+  ],
+  "description": "Một tiếng gầm vang ra từ Hang Đá Cổ. Hãy vào hang và tìm hiểu nguyên nhân.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "onix",
+    "count": 1,
+    "text": "Đánh bại Onix trong Hang Đá Cổ",
+    "marker": {
+     "x": 139,
+     "y": 17
+    }
+   },
+   {
+    "type": "dungeon",
+    "target": "ancient-cave",
+    "count": 1,
+    "text": "Mở rương và rời Hang Đá Cổ",
+    "marker": {
+     "x": 139,
+     "y": 17
+    }
+   },
+   {
+    "type": "talk",
+    "target": "prof",
+    "count": 1,
+    "text": "Kể lại cho Giáo sư",
+    "marker": {
+     "x": 71,
+     "y": 91
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "ultraball": 1
+   },
+   "worldExp": 500,
+   "reputation": 30,
+   "flags": [
+    "region:emerald-forest"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Dân làng nghe thấy tiếng gầm từ Hang Đá Cổ...",
+    "Ta nghi có một Pokémon rất lớn đang làm loạn. Cháu điều tra giúp ta nhé?"
+   ],
+   "progress": [
+    "Trong hang có bẫy đá rơi. Hãy để ý các vòng đỏ cảnh báo!"
+   ],
+   "complete": [
+    "Một con Onix khổng lồ ư?! Cháu thật dũng cảm.",
+    "Con đường tới Rừng Ngọc Lục Bảo giờ đã an toàn. Hành trình mới đang chờ cháu!"
+   ]
+  }
+ },
+ {
+  "id": "q-side-farm",
+  "kind": "side",
+  "title": "Rattata phá vườn",
+  "giver": "farmer",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Giúp bác Tư đuổi lũ Rattata đang phá nông trại.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "rattata",
+    "count": 5,
+    "text": "Đánh bại Rattata (0/5)",
+    "marker": {
+     "x": 50,
+     "y": 105
+    }
+   },
+   {
+    "type": "talk",
+    "target": "farmer",
+    "count": 1,
+    "text": "Báo cho bác Tư",
+    "marker": {
+     "x": 61,
+     "y": 103
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "potion": 3,
+    "oranberry": 3
+   },
+   "worldExp": 100,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Cháu ơi, giúp bác với! Lũ Rattata cứ đêm đến là phá nát vườn rau.",
+    "Đánh bại 5 con giúp bác nhé."
+   ],
+   "progress": [
+    "Chúng hay quanh quẩn trong hàng rào nông trại."
+   ],
+   "complete": [
+    "Cảm ơn cháu nhiều lắm! Cầm mấy quả Oran Berry này mà dùng."
+   ]
+  }
+ },
+ {
+  "id": "q-capture",
+  "kind": "capture",
+  "title": "Nhà sưu tầm nhỏ",
+  "giver": "collector",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Bé Na muốn được xem Pidgey và Caterpie.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "pidgey",
+    "count": 1,
+    "text": "Thu phục Pidgey",
+    "marker": {
+     "x": 40,
+     "y": 62
+    }
+   },
+   {
+    "type": "capture",
+    "target": "caterpie",
+    "count": 1,
+    "text": "Thu phục Caterpie",
+    "marker": {
+     "x": 60,
+     "y": 30
+    }
+   },
+   {
+    "type": "talk",
+    "target": "collector",
+    "count": 1,
+    "text": "Khoe với Bé Na",
+    "marker": {
+     "x": 93,
+     "y": 102
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 2
+   },
+   "worldExp": 120,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "Anh/chị ơi! Em muốn xem tận mắt Pidgey và Caterpie.",
+    "Anh/chị bắt giúp em được không?"
+   ],
+   "progress": [
+    "Pidgey thích cỏ ban ngày, còn Caterpie ở gần bìa rừng!"
+   ],
+   "complete": [
+    "Oa, dễ thương quá! Đây, em tặng Great Ball nè."
+   ]
+  }
+ },
+ {
+  "id": "q-trainer",
+  "kind": "trainer",
+  "title": "Thách đấu Bé Bảo",
+  "giver": "youngster",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Bé Bảo ở Đồng Cỏ Gió muốn đấu với bạn.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "youngster",
+    "count": 1,
+    "text": "Đánh bại Bé Bảo",
+    "marker": {
+     "x": 60,
+     "y": 66
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 150,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Đấu với em đi!"
+   ],
+   "complete": [
+    "Anh/chị giỏi quá!"
+   ]
+  }
+ },
+ {
+  "id": "q-rescue",
+  "kind": "side",
+  "title": "Pikachu mắc kẹt",
+  "giver": "ranger",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Một Pikachu bị kẹt giữa đá trong Rừng Ngọc và bị lũ Rattata vây quanh.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "trapped-pikachu",
+    "count": 1,
+    "text": "Giải cứu Pikachu trong rừng",
+    "marker": {
+     "x": 96,
+     "y": 21
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Hà",
+    "marker": {
+     "x": 86,
+     "y": 38
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 200,
+   "reputation": 20,
+   "pokemon": {
+    "species": "pikachu",
+    "level": 7
+   }
+  },
+  "dialogue": {
+   "offer": [
+    "Tôi nghe thấy tiếng kêu của một Pikachu ở sâu trong rừng.",
+    "Nó bị kẹt và bị Rattata vây. Bạn giúp nó được không?"
+   ],
+   "progress": [
+    "Đánh bại lũ Rattata rồi tiến lại gần Pikachu và nhấn E."
+   ],
+   "complete": [
+    "Pikachu có vẻ rất quý bạn. Nó muốn đi cùng bạn đấy!"
+   ]
+  }
+ },
+ {
+  "id": "q-ruins",
+  "kind": "exploration",
+  "title": "Kho báu tàn tích",
+  "giver": "elder",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Cụ Ba kể về kho báu bị phong ấn trong Tàn Tích Cổ.",
+  "objectives": [
+   {
+    "type": "puzzle",
+    "target": "rune-ruins",
+    "count": 1,
+    "text": "Giải câu đố phiến đá (đọc bia đá)",
+    "marker": {
+     "x": 13,
+     "y": 31
+    }
+   },
+   {
+    "type": "collect",
+    "target": "chest-ruins",
+    "count": 1,
+    "text": "Mở rương bị phong ấn",
+    "marker": {
+     "x": 13,
+     "y": 23
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 250,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Truyền thuyết kể rằng ba phiến đá phải được đánh thức theo đường đi của mặt trời.",
+    "Đọc kỹ bia đá rồi bước lên từng phiến theo đúng thứ tự."
+   ],
+   "progress": [
+    "Mặt trời mọc ở đâu, lặn ở đâu nhỉ...?"
+   ],
+   "complete": [
+    "Cháu thật thông minh! Kho báu ấy giờ là của cháu."
+   ]
+  }
+ },
+ {
+  "id": "q-dungeon-hard",
+  "kind": "dungeon",
+  "title": "Thử thách Hang Đá Cổ",
+  "giver": "prof",
+  "requires": [
+   "q-main-3"
+  ],
+  "description": "Chinh phục Hang Đá Cổ ở độ khó Khó.",
+  "objectives": [
+   {
+    "type": "dungeon",
+    "target": "ancient-cave:hard",
+    "count": 1,
+    "text": "Hoàn thành Hang Đá Cổ (Khó)",
+    "marker": {
+     "x": 139,
+     "y": 17
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 5,
+    "superpotion": 2
+   },
+   "worldExp": 400,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Nếu cháu muốn thử sức, hãy vào lại hang ở độ khó Khó."
+   ],
+   "complete": [
+    "Phi thường! Cháu là huấn luyện viên giỏi nhất làng."
+   ]
+  }
+ },
+ {
+  "id": "q-main-4",
+  "kind": "boss",
+  "title": "Thần Rừng thức giấc",
+  "giver": "prof",
+  "requires": [
+   "q-main-3"
+  ],
+  "description": "Một Venusaur khổng lồ đã Mega Tiến Hóa đang canh giữ Khu Rừng Thiêng. Hãy chứng tỏ sức mạnh của mình.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "mega-venusaur",
+    "count": 1,
+    "text": "Đánh bại Mega Venusaur ở Khu Rừng Thiêng",
+    "marker": {
+     "x": 44,
+     "y": 24
+    }
+   },
+   {
+    "type": "talk",
+    "target": "prof",
+    "count": 1,
+    "text": "Báo cáo với Giáo sư",
+    "marker": {
+     "x": 71,
+     "y": 91
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 3
+   },
+   "worldExp": 700,
+   "reputation": 40,
+   "flags": [
+    "region:crystal-lake"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Đêm qua, cả khu rừng rung chuyển. Người ta thấy một Venusaur phát ra ánh sáng cầu vồng...",
+    "Đó là Mega Tiến Hóa! Nếu cháu đánh bại nó, có lẽ cháu sẽ hiểu được sức mạnh ấy."
+   ],
+   "progress": [
+    "Khi Venusaur gọi Ánh Dương, hãy trốn vào những vùng bóng râm màu xanh!"
+   ],
+   "complete": [
+    "Cháu đã nhận được Vòng Mega và Venusaurite ư? Thật đáng kinh ngạc!",
+    "Cho Pokémon cầm Mega Stone phù hợp rồi nhấn G trong trận đấu để Mega Tiến Hóa."
+   ]
+  }
+ },
+ {
+  "id": "q-evolve",
+  "kind": "side",
+  "title": "Bước ngoặt trưởng thành",
+  "giver": "prof",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Giúp một Pokémon của bạn tiến hóa (lên đủ cấp hoặc dùng đá tiến hóa).",
+  "objectives": [
+   {
+    "type": "evolve",
+    "target": "*",
+    "count": 1,
+    "text": "Cho 1 Pokémon tiến hóa"
+   }
+  ],
+  "rewards": {
+   "items": {
+    "quick-claw": 1
+   },
+   "worldExp": 150,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "Pokémon sẽ tiến hóa khi đủ mạnh — hoặc khi gặp một viên đá đặc biệt.",
+    "Hãy cho ta thấy điều đó!"
+   ],
+   "complete": [
+    "Tuyệt vời! Đây là Quick Claw — một món trang bị hữu ích."
+   ]
+  }
+ },
+ {
+  "id": "q-legend-articuno",
+  "kind": "boss",
+  "title": "Truyền thuyết Thần Điểu — Articuno",
+  "requires": [
+   "q-main-4"
+  ],
+  "autoStart": true,
+  "description": "Sương giá phủ kín bờ đông Hồ Pha Lê. Thần Điểu băng giá đang chờ ở Băng Đài.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "articuno",
+    "count": 1,
+    "text": "Đánh bại Articuno",
+    "marker": {
+     "x": 144,
+     "y": 57
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 300,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Người già trong làng kể rằng ba Thần Điểu canh giữ thung lũng này.",
+    "Articuno ngự ở Băng Đài phía đông Hồ Pha Lê."
+   ],
+   "progress": [
+    "Khi Articuno gọi Bão Tuyết, hãy đứng vào ba vòng an toàn!"
+   ],
+   "complete": [
+    "Articuno đã công nhận cháu!"
+   ]
+  }
+ },
+ {
+  "id": "q-legend-zapdos",
+  "kind": "boss",
+  "title": "Truyền thuyết Thần Điểu — Zapdos",
+  "requires": [
+   "q-main-4"
+  ],
+  "autoStart": true,
+  "description": "Sấm sét không ngớt trên Đồi Đá Xám. Zapdos đậu trên Đỉnh Sấm.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "zapdos",
+    "count": 1,
+    "text": "Đánh bại Zapdos",
+    "marker": {
+     "x": 120,
+     "y": 32
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 300,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Zapdos ngự trên Đỉnh Sấm giữa Đồi Đá Xám."
+   ],
+   "progress": [
+    "Lôi Vũ đánh vào chỗ cháu đứng — luôn di chuyển!"
+   ],
+   "complete": [
+    "Zapdos đã công nhận cháu!"
+   ]
+  }
+ },
+ {
+  "id": "q-legend-moltres",
+  "kind": "boss",
+  "title": "Truyền thuyết Thần Điểu — Moltres",
+  "requires": [
+   "q-main-4"
+  ],
+  "autoStart": true,
+  "description": "Tro nóng bay lên từ Tàn Tích Cổ. Moltres canh giữ Đền Lửa.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "moltres",
+    "count": 1,
+    "text": "Đánh bại Moltres",
+    "marker": {
+     "x": 11,
+     "y": 35
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 300,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Moltres ngự ở Đền Lửa trong Tàn Tích Cổ phía tây."
+   ],
+   "progress": [
+    "Vòng Lửa bắn ra theo các nan hoa — đứng vào khe giữa các tia!"
+   ],
+   "complete": [
+    "Moltres đã công nhận cháu!"
+   ]
+  }
+ },
+ {
+  "id": "q-legend-mewtwo",
+  "kind": "boss",
+  "title": "Vết Nứt Tâm Linh — Mewtwo",
+  "requires": [
+   "q-legend-articuno",
+   "q-legend-zapdos",
+   "q-legend-moltres"
+  ],
+  "autoStart": true,
+  "description": "Cả ba Thần Điểu đã công nhận bạn. Một áp lực tâm linh khổng lồ phát ra từ Rìa Rừng Ngọc.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "mewtwo",
+    "count": 1,
+    "text": "Đánh bại Mewtwo",
+    "marker": {
+     "x": 62,
+     "y": 39
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 500,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Một Pokémon nhân tạo mạnh nhất từng tồn tại đang ẩn trong Vết Nứt Tâm Linh..."
+   ],
+   "progress": [
+    "Mewtwo dịch chuyển liên tục và đổi chiêu cuối mỗi lần — đừng đứng yên!"
+   ],
+   "complete": [
+    "Mewtwo đã công nhận cháu!"
+   ]
+  }
+ },
+ {
+  "id": "q-legend-mew",
+  "kind": "boss",
+  "title": "Đồi Hoa Huyền Bí — Mew",
+  "requires": [
+   "q-legend-mewtwo"
+  ],
+  "autoStart": true,
+  "description": "Có tiếng cười khúc khích trên Đồi Hoa phía nam Đồng Cỏ Gió.",
+  "objectives": [
+   {
+    "type": "boss",
+    "target": "mew",
+    "count": 1,
+    "text": "Đánh bại Mew",
+    "marker": {
+     "x": 84,
+     "y": 61
+    }
+   }
+  ],
+  "rewards": {
+   "worldExp": 500,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Người ta nói tổ tiên của mọi Pokémon vẫn còn chơi đùa đâu đó trong thung lũng."
+   ],
+   "progress": [
+    "Mew dùng chiêu của mọi Pokémon — hãy quan sát vùng báo trước!"
+   ],
+   "complete": [
+    "Mew đã gia nhập đội của cháu!"
+   ]
+  }
+ },
+ {
+  "id": "q-swamp-intro",
+  "kind": "main",
+  "title": "Vùng đất phía tây",
+  "giver": "prof",
+  "requires": [
+   "q-main-3"
+  ],
+  "description": "Giáo sư Tùng muốn cháu điều tra màn sương độc tràn ra từ Đầm Lầy Sương Mù.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "swamp-edge",
+    "count": 1,
+    "text": "Đến Đầm Lầy Sương Mù (cổng phía tây nam)",
+    "marker": {
+     "x": 16,
+     "y": 104
+    }
+   },
+   {
+    "type": "talk",
+    "target": "swamp-witch",
+    "count": 1,
+    "text": "Gặp Bà Thầy Mo Sương",
+    "marker": {
+     "x": 84,
+     "y": 24
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 300,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Sương độc đang tràn sang thung lũng từ phía tây nam.",
+    "Cổng Đầm Lầy đã mở — cháu hãy đến đó gặp Bà Thầy Mo."
+   ],
+   "progress": [
+    "Bà Thầy Mo sống trong hốc cây phía đông bắc đầm lầy."
+   ],
+   "complete": [
+    "Bà Thầy Mo đã chờ cháu."
+   ]
+  }
+ },
+ {
+  "id": "q-swamp-main",
+  "kind": "main",
+  "title": "Màn sương độc",
+  "giver": "swamp-witch",
+  "requires": [
+   "q-swamp-intro"
+  ],
+  "description": "Bà Thầy Mo tin rằng lũ Grimer và Koffing sinh sôi quá mức đã làm sương hóa độc.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "grimer",
+    "count": 4,
+    "text": "Đánh bại Grimer (0/4)",
+    "marker": {
+     "x": 22,
+     "y": 36
+    }
+   },
+   {
+    "type": "defeat",
+    "target": "koffing",
+    "count": 3,
+    "text": "Đánh bại Koffing (0/3)",
+    "marker": {
+     "x": 30,
+     "y": 50
+    }
+   },
+   {
+    "type": "capture",
+    "target": "wooper",
+    "count": 1,
+    "text": "Thu phục Wooper — nó lọc sạch bùn",
+    "marker": {
+     "x": 40,
+     "y": 70
+    }
+   },
+   {
+    "type": "talk",
+    "target": "swamp-witch",
+    "count": 1,
+    "text": "Báo cho Bà Thầy Mo",
+    "marker": {
+     "x": 84,
+     "y": 24
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 3,
+    "poison-barb": 1
+   },
+   "worldExp": 700,
+   "reputation": 30,
+   "flags": [
+    "region:coral-coast"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Ta là người canh giữ đầm này đã sáu mươi năm.",
+    "Lũ Grimer và Koffing sinh sôi quá nhiều, sương độc ngày càng dày.",
+    "Cháu dọn bớt chúng, và mang về cho ta một Wooper — nó lọc sạch bùn."
+   ],
+   "progress": [
+    "Grimer ở gần hồ, Koffing bay quanh lối ván."
+   ],
+   "complete": [
+    "Sương đã nhạt bớt rồi. Cảm ơn cháu.",
+    "Nghe nói cổng Bờ Biển phía đông thung lũng cũng vừa mở — gió biển sẽ thổi tan nốt sương."
+   ]
+  }
+ },
+ {
+  "id": "q-swamp-fisher",
+  "kind": "side",
+  "title": "Cá đầm nhiễm độc",
+  "giver": "swamp-fisher",
+  "requires": [
+   "q-swamp-intro"
+  ],
+  "description": "Ngư dân Lâm muốn biết loài cá nào còn sống được trong đầm.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "barboach",
+    "count": 1,
+    "text": "Thu phục Barboach",
+    "marker": {
+     "x": 26,
+     "y": 30
+    }
+   },
+   {
+    "type": "capture",
+    "target": "tentacool",
+    "count": 1,
+    "text": "Thu phục Tentacool",
+    "marker": {
+     "x": 18,
+     "y": 24
+    }
+   },
+   {
+    "type": "talk",
+    "target": "swamp-fisher",
+    "count": 1,
+    "text": "Cho Ngư dân Lâm xem",
+    "marker": {
+     "x": 71,
+     "y": 82
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "mystic-water": 1,
+    "greatball": 4
+   },
+   "worldExp": 350,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Từ hồi sương độc, chẳng câu được con cá nào ra hồn.",
+    "Cháu bắt thử Barboach với Tentacool xem chúng có khỏe không?"
+   ],
+   "progress": [
+    "Chúng sống trong hồ phía tây bắc."
+   ],
+   "complete": [
+    "Chúng vẫn khỏe! Đầm còn hy vọng."
+   ]
+  }
+ },
+ {
+  "id": "q-swamp-trainers",
+  "kind": "trainer",
+  "title": "Cao thủ đầm lầy",
+  "giver": "swamp-scout",
+  "requires": [
+   "q-swamp-intro"
+  ],
+  "description": "Kiểm lâm Diệp thách cháu đánh bại hai huấn luyện viên mạnh nhất đầm lầy.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "poison-tamer",
+    "count": 1,
+    "text": "Đánh bại Thuần Độc Sư Lan",
+    "marker": {
+     "x": 34,
+     "y": 46
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "swamp-bugcatcher",
+    "count": 1,
+    "text": "Đánh bại Bắt Bọ Vũ",
+    "marker": {
+     "x": 92,
+     "y": 44
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "expert-belt": 1
+   },
+   "worldExp": 500,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Hai người đó tự xưng là chúa tể đầm lầy. Cháu dạy cho họ một bài học nhé?"
+   ],
+   "complete": [
+    "Tuyệt vời! Cầm lấy chiếc đai này."
+   ]
+  }
+ },
+ {
+  "id": "q-coast-main",
+  "kind": "main",
+  "title": "Ngọn hải đăng tắt",
+  "giver": "lighthouse-keeper",
+  "requires": [
+   "q-swamp-main"
+  ],
+  "autoStart": false,
+  "description": "Đèn hải đăng chập chờn vì Pokémon hệ Điện dưới biển hút hết điện.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "chinchou",
+    "count": 3,
+    "text": "Đuổi Chinchou (0/3)",
+    "marker": {
+     "x": 76,
+     "y": 60
+    }
+   },
+   {
+    "type": "capture",
+    "target": "lanturn",
+    "count": 1,
+    "text": "Thu phục Lanturn để thắp đèn",
+    "marker": {
+     "x": 80,
+     "y": 40
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lighthouse-keeper",
+    "count": 1,
+    "text": "Mang Lanturn về hải đăng",
+    "marker": {
+     "x": 54,
+     "y": 82
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "magnet": 1,
+    "ultraball": 3
+   },
+   "worldExp": 900,
+   "reputation": 35
+  },
+  "dialogue": {
+   "offer": [
+    "Đèn cứ chập chờn mãi... Lũ Chinchou dưới rạn hút hết điện.",
+    "Cháu đuổi chúng đi, và nếu được, mang về một Lanturn — ánh sáng của nó đủ thắp đèn cả đêm."
+   ],
+   "progress": [
+    "Chinchou sống ở Rạn San Hô phía đông."
+   ],
+   "complete": [
+    "Đèn sáng rồi! Tàu thuyền lại về được bến."
+   ]
+  }
+ },
+ {
+  "id": "q-coast-diver",
+  "kind": "capture",
+  "title": "Báu vật rạn san hô",
+  "giver": "diver",
+  "requires": [
+   "q-swamp-main"
+  ],
+  "description": "Thợ lặn Hải muốn chụp ảnh Corsola và Staryu.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "corsola",
+    "count": 1,
+    "text": "Thu phục Corsola",
+    "marker": {
+     "x": 78,
+     "y": 80
+    }
+   },
+   {
+    "type": "capture",
+    "target": "staryu",
+    "count": 1,
+    "text": "Thu phục Staryu",
+    "marker": {
+     "x": 40,
+     "y": 12
+    }
+   },
+   {
+    "type": "talk",
+    "target": "diver",
+    "count": 1,
+    "text": "Cho Thợ lặn Hải xem",
+    "marker": {
+     "x": 58,
+     "y": 22
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "water-stone": 1,
+    "ultraball": 2
+   },
+   "worldExp": 450,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Tôi đang làm cuốn sách ảnh về rạn san hô.",
+    "Bạn bắt giúp tôi Corsola và Staryu được không?"
+   ],
+   "progress": [
+    "Corsola sống quanh rạn, Staryu ở bãi cát."
+   ],
+   "complete": [
+    "Đẹp quá! Cảm ơn bạn nhiều."
+   ]
+  }
+ },
+ {
+  "id": "q-coast-trainers",
+  "kind": "trainer",
+  "title": "Vua biển cả",
+  "giver": "diver",
+  "requires": [
+   "q-coast-diver"
+  ],
+  "description": "Đánh bại Vận động viên bơi Thu và Thủy thủ Bền.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "swimmer",
+    "count": 1,
+    "text": "Đánh bại Vận động viên bơi Thu",
+    "marker": {
+     "x": 46,
+     "y": 26
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "sailor",
+    "count": 1,
+    "text": "Đánh bại Thủy thủ Bền",
+    "marker": {
+     "x": 40,
+     "y": 70
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "scope-lens": 1
+   },
+   "worldExp": 700,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Ai thắng được cả hai người đó sẽ được gọi là Vua biển cả!"
+   ],
+   "complete": [
+    "Vua biển cả đây rồi!"
+   ]
+  }
+ }
+]

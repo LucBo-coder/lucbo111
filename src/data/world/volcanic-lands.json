@@ -1,0 +1,236 @@
+{
+ "id": "volcanic-lands",
+ "name": "Vùng Đất Núi Lửa",
+ "width": 112,
+ "height": 96,
+ "chunk": 16,
+ "theme": "volcanic",
+ "spawn": {
+  "x": 56,
+  "y": 88
+ },
+ "areas": [
+  {
+   "id": "ash-plains",
+   "name": "Đồng Tro",
+   "rect": [
+    0,
+    56,
+    111,
+    95
+   ],
+   "habitat": "volcano",
+   "level": [
+    42,
+    50
+   ]
+  },
+  {
+   "id": "lava-fields",
+   "name": "Cánh Đồng Dung Nham",
+   "rect": [
+    0,
+    0,
+    55,
+    55
+   ],
+   "habitat": "volcano",
+   "level": [
+    46,
+    54
+   ]
+  },
+  {
+   "id": "crater",
+   "name": "Miệng Núi Lửa",
+   "rect": [
+    56,
+    0,
+    111,
+    55
+   ],
+   "habitat": "volcano",
+   "level": [
+    50,
+    58
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     56,
+     92
+    ],
+    [
+     56,
+     66
+    ],
+    [
+     30,
+     46
+    ],
+    [
+     22,
+     24
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     56,
+     66
+    ],
+    [
+     66,
+     44
+    ],
+    [
+     60,
+     26
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  51,
+  84,
+  61,
+  91
+ ],
+ "lake": {
+  "cx": 82,
+  "cy": 22,
+  "rx": 13,
+  "ry": 9
+ },
+ "buildings": [
+  {
+   "id": "outpost",
+   "name": "Trạm Quan Sát",
+   "x": 62,
+   "y": 80,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  }
+ ],
+ "fences": [],
+ "props": [],
+ "signs": [
+  {
+   "x": 53,
+   "y": 89,
+   "text": [
+    "VÙNG ĐẤT NÚI LỬA",
+    "Khuyến nghị Lv50 · Đừng đến gần dung nham."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "geologist",
+   "name": "Nhà địa chất Hỏa Sơn",
+   "sprite": "bald",
+   "x": 50,
+   "y": 84,
+   "lines": [
+    "Cẩn thận dung nham! Không ai đi qua được đâu.",
+    "Pokémon Lửa và Đá sống ở đây, Lv42–58. Miệng núi lửa có Pokémon mạnh nhất."
+   ]
+  }
+ ],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [
+  {
+   "id": "chest-crater",
+   "x": 100,
+   "y": 44,
+   "items": {
+    "fire-stone": 1,
+    "ultraball": 3
+   }
+  },
+  {
+   "id": "chest-lava",
+   "x": 16,
+   "y": 14,
+   "items": {
+    "charcoal": 1,
+    "superpotion": 3
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-volcano-outpost",
+   "name": "Trạm Núi Lửa",
+   "x": 58,
+   "y": 86
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [
+  {
+   "id": "magma-cave",
+   "name": "Lò Dung Nham",
+   "x": 42,
+   "y": 88
+  }
+ ],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "portals": [
+  {
+   "id": "portal-volcano-valley",
+   "name": "Cổng về Thung Lũng",
+   "x": 50,
+   "y": 90,
+   "to": "starter-valley",
+   "toX": 7,
+   "toY": 20
+  }
+ ],
+ "rivers": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     70,
+     30
+    ],
+    [
+     56,
+     50
+    ],
+    [
+     40,
+     62
+    ],
+    [
+     20,
+     66
+    ],
+    [
+     0,
+     68
+    ]
+   ]
+  }
+ ]
+}

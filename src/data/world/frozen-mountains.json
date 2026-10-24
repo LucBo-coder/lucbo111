@@ -1,0 +1,239 @@
+{
+ "id": "frozen-mountains",
+ "name": "Núi Tuyết Vĩnh Hằng",
+ "width": 112,
+ "height": 96,
+ "chunk": 16,
+ "theme": "frozen",
+ "spawn": {
+  "x": 56,
+  "y": 88
+ },
+ "areas": [
+  {
+   "id": "frozen-foot",
+   "name": "Chân Núi Tuyết",
+   "rect": [
+    0,
+    56,
+    111,
+    95
+   ],
+   "habitat": "snow",
+   "level": [
+    32,
+    40
+   ]
+  },
+  {
+   "id": "frozen-lake",
+   "name": "Hồ Băng Lam",
+   "rect": [
+    0,
+    0,
+    55,
+    55
+   ],
+   "habitat": "snow",
+   "level": [
+    36,
+    43
+   ]
+  },
+  {
+   "id": "frozen-summit",
+   "name": "Đỉnh Bão Tuyết",
+   "rect": [
+    56,
+    0,
+    111,
+    55
+   ],
+   "habitat": "snow",
+   "level": [
+    38,
+    45
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     56,
+     92
+    ],
+    [
+     56,
+     70
+    ],
+    [
+     40,
+     58
+    ],
+    [
+     30,
+     40
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     56,
+     70
+    ],
+    [
+     72,
+     54
+    ],
+    [
+     86,
+     30
+    ],
+    [
+     92,
+     14
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  51,
+  84,
+  61,
+  91
+ ],
+ "lake": {
+  "cx": 24,
+  "cy": 24,
+  "rx": 11,
+  "ry": 8
+ },
+ "buildings": [
+  {
+   "id": "lodge",
+   "name": "Nhà Nghỉ Leo Núi",
+   "x": 62,
+   "y": 80,
+   "w": 6,
+   "h": 4,
+   "roof": "grey",
+   "wall": "stone",
+   "door": 2
+  }
+ ],
+ "fences": [],
+ "props": [],
+ "signs": [
+  {
+   "x": 53,
+   "y": 89,
+   "text": [
+    "NÚI TUYẾT VĨNH HẰNG",
+    "Khuyến nghị Lv40 · Đỉnh Bão Tuyết rất nguy hiểm."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "climber",
+   "name": "Người leo núi Tùng Lâm",
+   "sprite": "ranger",
+   "x": 50,
+   "y": 84,
+   "lines": [
+    "Chào mừng đến Núi Tuyết! Pokémon ở đây mạnh hơn hẳn thung lũng (Lv32–45).",
+    "Pokémon hệ Băng sống ở khắp nơi trên núi — đỉnh núi là nguy hiểm nhất."
+   ]
+  }
+ ],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [
+  {
+   "id": "chest-frozen-summit",
+   "x": 95,
+   "y": 10,
+   "items": {
+    "ultraball": 3,
+    "water-stone": 1
+   }
+  },
+  {
+   "id": "chest-frozen-lake",
+   "x": 40,
+   "y": 40,
+   "items": {
+    "never-melt-ice": 1
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-frozen-camp",
+   "name": "Trại Núi Tuyết",
+   "x": 58,
+   "y": 86
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [
+  {
+   "id": "ice-cave",
+   "name": "Hang Băng Vĩnh Cửu",
+   "x": 70,
+   "y": 88
+  }
+ ],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "portals": [
+  {
+   "id": "portal-frozen-valley",
+   "name": "Cổng về Thung Lũng",
+   "x": 50,
+   "y": 90,
+   "to": "starter-valley",
+   "toX": 140,
+   "toY": 10
+  }
+ ],
+ "rivers": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     34,
+     30
+    ],
+    [
+     46,
+     48
+    ],
+    [
+     62,
+     62
+    ],
+    [
+     86,
+     70
+    ],
+    [
+     110,
+     72
+    ]
+   ]
+  }
+ ]
+}

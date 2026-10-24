@@ -1,0 +1,351 @@
+{
+ "id": "coral-coast",
+ "name": "Bờ Biển San Hô",
+ "width": 112,
+ "height": 96,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": {
+  "x": 36,
+  "y": 40
+ },
+ "areas": [
+  {
+   "id": "coast-beach",
+   "name": "Bãi Cát Vàng",
+   "rect": [
+    0,
+    0,
+    63,
+    59
+   ],
+   "habitat": "coast",
+   "level": [
+    26,
+    31
+   ]
+  },
+  {
+   "id": "coast-cliffs",
+   "name": "Vách Đá Hải Âu",
+   "rect": [
+    0,
+    60,
+    63,
+    95
+   ],
+   "habitat": "rocky",
+   "level": [
+    30,
+    35
+   ]
+  },
+  {
+   "id": "coral-reef",
+   "name": "Rạn San Hô",
+   "rect": [
+    64,
+    0,
+    111,
+    95
+   ],
+   "habitat": "coast",
+   "level": [
+    32,
+    38
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     12,
+     48
+    ],
+    [
+     36,
+     40
+    ],
+    [
+     50,
+     30
+    ],
+    [
+     60,
+     20
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     36,
+     40
+    ],
+    [
+     44,
+     66
+    ],
+    [
+     56,
+     80
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  30,
+  36,
+  42,
+  44
+ ],
+ "lake": {
+  "cx": 104,
+  "cy": 48,
+  "rx": 34,
+  "ry": 58
+ },
+ "buildings": [
+  {
+   "id": "lighthouse",
+   "name": "Ngọn Hải Đăng",
+   "x": 52,
+   "y": 76,
+   "w": 4,
+   "h": 5,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1
+  },
+  {
+   "id": "seafood-shop",
+   "name": "Quán Hải Sản",
+   "x": 22,
+   "y": 36,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "wood",
+   "door": 2
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "bucket",
+   "x": 29,
+   "y": 40
+  },
+  {
+   "kind": "haystack",
+   "x": 20,
+   "y": 41
+  }
+ ],
+ "signs": [
+  {
+   "x": 33,
+   "y": 38,
+   "text": [
+    "BỜ BIỂN SAN HÔ",
+    "Khuyến nghị Lv30 · Rạn San Hô phía đông có Pokémon mạnh nhất."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "diver",
+   "name": "Thợ lặn Hải",
+   "sprite": "viking",
+   "x": 58,
+   "y": 22,
+   "lines": [
+    "Rạn san hô ngoài kia đẹp lắm, nhưng Tentacruel thì không thân thiện đâu."
+   ]
+  },
+  {
+   "id": "shopkeeper",
+   "name": "Chủ quán Bà Sáu",
+   "sprite": "villager",
+   "x": 25,
+   "y": 41,
+   "lines": [
+    "Ghé quán bà mua đồ nhé!"
+   ]
+  },
+  {
+   "id": "lighthouse-keeper",
+   "name": "Ông giữ hải đăng",
+   "sprite": "bald",
+   "x": 54,
+   "y": 82,
+   "lines": [
+    "Đêm nào ta cũng thắp đèn cho tàu thuyền.",
+    "Mấy tảng đá quanh vách là nơi Onix và Graveler ẩn mình."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "swimmer",
+   "name": "Vận động viên bơi Thu",
+   "sprite": "girl",
+   "x": 46,
+   "y": 26,
+   "team": [
+    [
+     "staryu",
+     28
+    ],
+    [
+     "golduck",
+     29
+    ],
+    [
+     "floatzel",
+     30
+    ]
+   ],
+   "challenge": [
+    "Bơi xong một vòng vịnh rồi — giờ là đấu Pokémon!"
+   ],
+   "win": [
+    "Phù... anh/chị bơi... à không, đấu giỏi quá!"
+   ],
+   "lose": [
+    "Sóng biển đứng về phía em!"
+   ],
+   "rewards": {
+    "items": {
+     "mystic-water": 1,
+     "ultraball": 2
+    },
+    "exp": 1100
+   }
+  },
+  {
+   "id": "sailor",
+   "name": "Thủy thủ Bền",
+   "sprite": "knight",
+   "x": 40,
+   "y": 70,
+   "team": [
+    [
+     "machoke",
+     30
+    ],
+    [
+     "crawdaunt",
+     31
+    ],
+    [
+     "kingler",
+     32
+    ]
+   ],
+   "challenge": [
+    "Ta đã đi khắp bảy biển! Thử sức với ta xem!"
+   ],
+   "win": [
+    "Ha! Lâu lắm mới gặp đối thủ xứng tầm."
+   ],
+   "lose": [
+    "Còn non lắm, thủy thủ trẻ!"
+   ],
+   "rewards": {
+    "items": {
+     "muscle-band": 1,
+     "superpotion": 3
+    },
+    "exp": 1300
+   }
+  }
+ ],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [
+  {
+   "id": "chest-coast-reef",
+   "x": 74,
+   "y": 90,
+   "items": {
+    "water-stone": 1,
+    "ultraball": 3
+   }
+  },
+  {
+   "id": "chest-coast-cliff",
+   "x": 8,
+   "y": 88,
+   "items": {
+    "hard-stone": 1,
+    "superpotion": 2
+   }
+  },
+  {
+   "id": "chest-coast-beach",
+   "x": 6,
+   "y": 8,
+   "items": {
+    "kings-rock": 1,
+    "greatball": 4
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-coast-camp",
+   "name": "Trạm Bờ Biển",
+   "x": 38,
+   "y": 42
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "portals": [
+  {
+   "id": "portal-coast-valley",
+   "name": "Cổng về Thung Lũng",
+   "x": 10,
+   "y": 46,
+   "to": "starter-valley",
+   "toX": 147,
+   "toY": 104
+  }
+ ],
+ "rivers": [
+  {
+   "w": 2,
+   "pts": [
+    [
+     30,
+     2
+    ],
+    [
+     36,
+     14
+    ],
+    [
+     46,
+     30
+    ],
+    [
+     58,
+     40
+    ]
+   ]
+  }
+ ]
+}

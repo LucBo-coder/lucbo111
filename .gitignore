@@ -1,0 +1,10 @@
+node_modules
+dist
+test-results
+playwright-report
+
+# Personal-use official sprite pack (never commit or distribute)
+public/assets/official/
+
+# Personal-use PMD (SpriteCollab, CC BY-NC 4.0) animation pack (never commit or distribute)
+public/assets/pmd/

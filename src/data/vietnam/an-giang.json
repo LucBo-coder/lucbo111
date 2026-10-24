@@ -1,0 +1,667 @@
+{
+ "id": "an-giang",
+ "name": "An Giang",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": {
+  "x": 86,
+  "y": 104
+ },
+ "areas": [
+  {
+   "id": "ag-town",
+   "name": "Thị trấn Bảy Núi",
+   "rect": [
+    66,
+    82,
+    100,
+    100
+   ],
+   "habitat": "village",
+   "level": [
+    8,
+    8
+   ]
+  },
+  {
+   "id": "ag-phu-quoc",
+   "name": "Đảo Phú Quốc",
+   "rect": [
+    2,
+    50,
+    32,
+    100
+   ],
+   "habitat": "coast",
+   "level": [
+    10,
+    16
+   ]
+  },
+  {
+   "id": "ag-temple",
+   "name": "Đền Cổ Thất Sơn",
+   "rect": [
+    48,
+    2,
+    82,
+    20
+   ],
+   "habitat": "ruins",
+   "level": [
+    14,
+    18
+   ]
+  },
+  {
+   "id": "ag-that-son",
+   "name": "Bảy Núi (Thất Sơn)",
+   "rect": [
+    44,
+    21,
+    88,
+    55
+   ],
+   "habitat": "rocky",
+   "level": [
+    12,
+    16
+   ]
+  },
+  {
+   "id": "ag-nui-sam",
+   "name": "Núi Sam",
+   "rect": [
+    89,
+    0,
+    127,
+    55
+   ],
+   "habitat": "rocky",
+   "level": [
+    11,
+    15
+   ]
+  },
+  {
+   "id": "ag-tra-su",
+   "name": "Rừng Tràm Trà Sư",
+   "rect": [
+    44,
+    56,
+    96,
+    111
+   ],
+   "habitat": "forest",
+   "level": [
+    8,
+    12
+   ]
+  },
+  {
+   "id": "ag-wetland",
+   "name": "Đồng Nước Nổi",
+   "rect": [
+    97,
+    56,
+    127,
+    111
+   ],
+   "habitat": "lake",
+   "level": [
+    9,
+    13
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     86,
+     108
+    ],
+    [
+     84,
+     90
+    ],
+    [
+     80,
+     70
+    ],
+    [
+     70,
+     50
+    ],
+    [
+     64,
+     24
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     84,
+     90
+    ],
+    [
+     100,
+     70
+    ],
+    [
+     108,
+     40
+    ],
+    [
+     110,
+     20
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     74,
+     76
+    ],
+    [
+     56,
+     80
+    ],
+    [
+     48,
+     80
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  76,
+  86,
+  92,
+  96
+ ],
+ "lake": {
+  "cx": 0,
+  "cy": 64,
+  "rx": 42,
+  "ry": 72
+ },
+ "islands": [
+  {
+   "cx": 16,
+   "cy": 76,
+   "rx": 12,
+   "ry": 20
+  }
+ ],
+ "buildings": [
+  {
+   "id": "ag-center",
+   "name": "Trung tâm Pokémon",
+   "x": 70,
+   "y": 84,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "ag-mart",
+   "name": "Cửa hàng",
+   "x": 92,
+   "y": 84,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "ag-camp",
+   "name": "Lều nhóm khảo sát",
+   "x": 62,
+   "y": 40,
+   "w": 4,
+   "h": 3,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 1
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "bucket",
+   "x": 66,
+   "y": 43
+  }
+ ],
+ "signs": [
+  {
+   "x": 84,
+   "y": 99,
+   "text": [
+    "THỊ TRẤN BẢY NÚI — AN GIANG",
+    "Phía bắc: Bảy Núi & Núi Sam · Phía nam: Rừng Tràm Trà Sư · Phía tây: bến phà ra đảo."
+   ]
+  },
+  {
+   "x": 104,
+   "y": 38,
+   "text": [
+    "NÚI SAM",
+    "Dưới chân núi là Miếu Bà Chúa Xứ, nơi diễn ra lễ hội dân gian lớn của vùng. (Đền cổ trong game là địa điểm giả tưởng.)"
+   ]
+  },
+  {
+   "x": 62,
+   "y": 70,
+   "text": [
+    "RỪNG TRÀM TRÀ SƯ",
+    "Rừng tràm ngập nước — mùa nước nổi (khoảng tháng 9–11) mặt rừng phủ đầy bèo."
+   ]
+  },
+  {
+   "x": 48,
+   "y": 84,
+   "text": [
+    "BẾN PHÀ",
+    "Phà ra Đảo Phú Quốc — hòn đảo lớn nhất Việt Nam."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "ag-guide",
+   "name": "Hướng dẫn viên Khánh",
+   "sprite": "girl",
+   "x": 82,
+   "y": 94,
+   "lines": [
+    "Chào mừng tới An Giang! Vùng Bảy Núi (Thất Sơn) là dãy núi giữa đồng bằng.",
+    "Đền Cổ Thất Sơn trong game là địa điểm giả tưởng — không phải di tích thật."
+   ]
+  },
+  {
+   "id": "shopkeeper",
+   "name": "Chú bán hàng Lộc",
+   "sprite": "villager",
+   "x": 94,
+   "y": 89,
+   "lines": [
+    "Đồ leo núi, bóng, thuốc — có đủ!"
+   ]
+  },
+  {
+   "id": "ag-board",
+   "name": "Bảng nhiệm vụ Bảy Núi",
+   "sprite": "board",
+   "x": 78,
+   "y": 92,
+   "lines": [
+    "Bảng nhiệm vụ: chưa có yêu cầu mới."
+   ]
+  },
+  {
+   "id": "ag-researcher",
+   "name": "Trưởng nhóm khảo sát Vy",
+   "sprite": "wizard",
+   "x": 64,
+   "y": 45,
+   "lines": [
+    "Nhóm tôi khảo sát hệ sinh thái Bảy Núi... và một đền cổ chưa ai ghi chép."
+   ]
+  },
+  {
+   "id": "ag-boatman",
+   "name": "Bác lái đò Năm",
+   "sprite": "farmer",
+   "x": 104,
+   "y": 90,
+   "lines": [
+    "Mùa nước nổi, cá linh về đầy đồng. Pokémon nước cũng kéo về theo."
+   ]
+  },
+  {
+   "id": "ag-islander",
+   "name": "Cô Sương ở Phú Quốc",
+   "sprite": "girl",
+   "x": 18,
+   "y": 66,
+   "lines": [
+    "Biển Phú Quốc trong lắm, Pokémon biển ở đây hiền hơn trong đất liền."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "ag-climber",
+   "name": "Người leo núi Đức",
+   "sprite": "viking",
+   "x": 100,
+   "y": 26,
+   "team": [
+    [
+     "geodude",
+     12
+    ],
+    [
+     "machop",
+     13
+    ],
+    [
+     "makuhita",
+     13
+    ]
+   ],
+   "challenge": [
+    "Leo Núi Sam xong thì phải đấu một trận cho đã!"
+   ],
+   "win": [
+    "Sức bền của anh/chị đáng nể đấy."
+   ],
+   "lose": [
+    "Còn phải leo nhiều nữa!"
+   ],
+   "rewards": {
+    "items": {
+     "hard-stone": 1,
+     "greatball": 3
+    },
+    "exp": 500
+   }
+  },
+  {
+   "id": "ag-boater",
+   "name": "Bạn chèo xuồng Mai",
+   "sprite": "girl",
+   "x": 70,
+   "y": 66,
+   "team": [
+    [
+     "lotad",
+     11
+    ],
+    [
+     "buizel",
+     12
+    ],
+    [
+     "wooper",
+     12
+    ]
+   ],
+   "challenge": [
+    "Xuồng của em đi khắp Trà Sư rồi. Đấu không?"
+   ],
+   "win": [
+    "Ôi, chìm xuồng rồi!"
+   ],
+   "lose": [
+    "Nước nổi đứng về phía em!"
+   ],
+   "rewards": {
+    "items": {
+     "mystic-water": 1,
+     "potion": 3
+    },
+    "exp": 460
+   }
+  },
+  {
+   "id": "ag-diver",
+   "name": "Thợ lặn Hải Đăng",
+   "sprite": "knight",
+   "x": 14,
+   "y": 84,
+   "team": [
+    [
+     "staryu",
+     14
+    ],
+    [
+     "corsola",
+     15
+    ],
+    [
+     "wingull",
+     14
+    ]
+   ],
+   "challenge": [
+    "Ra tận đảo rồi thì phải thử sức với Pokémon biển!"
+   ],
+   "win": [
+    "Đúng là cao thủ từ đất liền."
+   ],
+   "lose": [
+    "Biển đảo khó lắm nha!"
+   ],
+   "rewards": {
+    "items": {
+     "kings-rock": 1,
+     "ultraball": 1
+    },
+    "exp": 600
+   }
+  }
+ ],
+ "rescue": {
+  "id": "ag-survey-smeargle",
+  "x": 74,
+  "y": 30,
+  "species": "smeargle",
+  "level": 14,
+  "guards": [
+   [
+    "geodude",
+    13
+   ],
+   [
+    "geodude",
+    13
+   ],
+   [
+    "baltoy",
+    14
+   ]
+  ],
+  "quest": "vn-ag-rescue",
+  "reporter": "Trưởng nhóm khảo sát Vy"
+ },
+ "chests": [
+  {
+   "id": "chest-ag-temple",
+   "x": 64,
+   "y": 6,
+   "items": {
+    "ultraball": 2,
+    "wise-glasses": 1
+   },
+   "requiresFlag": "puzzle:ag-temple-seal"
+  },
+  {
+   "id": "chest-ag-island",
+   "x": 14,
+   "y": 88,
+   "items": {
+    "water-stone": 1,
+    "greatball": 3
+   }
+  },
+  {
+   "id": "chest-ag-sam",
+   "x": 120,
+   "y": 8,
+   "items": {
+    "moon-stone": 1,
+    "superpotion": 2
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-an-giang-center",
+   "name": "Trung tâm Pokémon Bảy Núi",
+   "x": 73,
+   "y": 90
+  },
+  {
+   "id": "wp-ag-camp",
+   "name": "Trạm khảo sát",
+   "x": 66,
+   "y": 46
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "ag-temple-seal",
+   "plates": [
+    [
+     56,
+     16
+    ],
+    [
+     64,
+     18
+    ],
+    [
+     72,
+     16
+    ]
+   ],
+   "labels": [
+    "NÚI",
+    "NƯỚC",
+    "RỪNG"
+   ],
+   "order": [
+    1,
+    2,
+    0
+   ],
+   "chest": "chest-ag-temple"
+  }
+ ],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "claydol",
+  "name": "Claydol — Hộ Vệ Đền Cổ",
+  "x": 64,
+  "y": 11,
+  "level": 20,
+  "respawn": 600,
+  "arena": 280,
+  "requires": [
+   "puzzle:ag-temple-seal"
+  ],
+  "hint": "Cửa đền khắc ba chữ NÚI · NƯỚC · RỪNG... Bước lên phiến đá theo đúng thứ tự để mở phong ấn.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "soft-sand": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 2500,
+   "flag": "badge:an-giang",
+   "message": "Nhận Huy hiệu Bảy Núi (An Giang)! Tuyến tới Cần Thơ sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-ag-cm",
+   "name": "Đường về Cà Mau",
+   "x": 92,
+   "y": 108,
+   "to": "ca-mau",
+   "toX": 62,
+   "toY": 9
+  },
+  {
+   "id": "ag-ferry-out",
+   "name": "Bến phà ra đảo",
+   "x": 46,
+   "y": 82,
+   "to": "an-giang",
+   "toX": 22,
+   "toY": 70
+  },
+  {
+   "id": "ag-ferry-back",
+   "name": "Bến phà về đất liền",
+   "x": 24,
+   "y": 66,
+   "to": "an-giang",
+   "toX": 50,
+   "toY": 84
+  },
+  {
+   "id": "portal-ag-ct",
+   "name": "Đường tới Cần Thơ",
+   "x": 124,
+   "y": 100,
+   "to": "an-giang",
+   "toX": 120,
+   "toY": 100,
+   "requires": [
+    "vn:can-tho-open"
+   ],
+   "hint": "Đường tới Cần Thơ đang được xây dựng (chưa có trong phiên bản này)."
+  }
+ ],
+ "rivers": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     127,
+     62
+    ],
+    [
+     104,
+     64
+    ],
+    [
+     96,
+     74
+    ],
+    [
+     100,
+     111
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     44,
+     64
+    ],
+    [
+     60,
+     62
+    ],
+    [
+     72,
+     58
+    ]
+   ]
+  }
+ ]
+}

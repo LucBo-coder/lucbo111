@@ -1,0 +1,1647 @@
+[
+ {
+  "id": "raikou",
+  "name": "Raikou",
+  "types": [
+   "electric"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 85,
+   "def": 75,
+   "spa": 115,
+   "spd": 100,
+   "spe": 115
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "zap_cannon",
+   "thunder"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "magnemite",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "raikou",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "zap_cannon",
+   "volley": "thunder",
+   "nova": "thunder",
+   "field": "thunder_wave",
+   "fieldStatus": {
+    "kind": "paralysis",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.5
+   },
+   "ultimate": "zap_cannon",
+   "ultimateName": "Zap Cannon tối thượng",
+   "ultimateStyle": "storm",
+   "flying": false,
+   "blink": false,
+   "power": 0.43
+  }
+ },
+ {
+  "id": "entei",
+  "name": "Entei",
+  "types": [
+   "fire"
+  ],
+  "baseStats": {
+   "hp": 115,
+   "atk": 115,
+   "def": 85,
+   "spa": 90,
+   "spd": 75,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 37,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "fire_blast",
+   "eruption"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "charmander",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "entei",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "fire_blast",
+   "volley": "eruption",
+   "nova": "eruption",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "burn",
+    "chance": 0.15,
+    "duration": 2,
+    "magnitude": 0.03
+   },
+   "ultimate": "eruption",
+   "ultimateName": "Eruption tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": false,
+   "blink": false,
+   "power": 0.43
+  }
+ },
+ {
+  "id": "suicune",
+  "name": "Suicune",
+  "types": [
+   "water"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 75,
+   "def": 115,
+   "spa": 90,
+   "spd": 115,
+   "spe": 85
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 37,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "hydro_pump",
+   "water_spout"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "squirtle",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "suicune",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "hydro_pump",
+   "volley": "water_spout",
+   "nova": "water_spout",
+   "field": "water_spout",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.4
+   },
+   "ultimate": "water_spout",
+   "ultimateName": "Water Spout tối thượng",
+   "ultimateStyle": "safe",
+   "flying": false,
+   "blink": false,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "lugia",
+  "name": "Lugia",
+  "types": [
+   "psychic",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 106,
+   "atk": 90,
+   "def": 130,
+   "spa": 90,
+   "spd": 154,
+   "spe": 110
+  },
+  "hpMult": 60,
+  "moveSpeed": 95,
+  "radius": 44,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "aeroblast",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "lugia",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "aeroblast",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Aeroblast tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.49
+  }
+ },
+ {
+  "id": "ho-oh",
+  "name": "Ho-Oh",
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 106,
+   "atk": 130,
+   "def": 90,
+   "spa": 110,
+   "spd": 154,
+   "spe": 90
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 43,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "sacred_fire",
+   "eruption"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "charmander",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "ho-oh",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "sacred_fire",
+   "volley": "eruption",
+   "nova": "eruption",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "burn",
+    "chance": 0.15,
+    "duration": 2,
+    "magnitude": 0.03
+   },
+   "ultimate": "eruption",
+   "ultimateName": "Sacred Fire tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": true,
+   "blink": false,
+   "power": 0.34
+  }
+ },
+ {
+  "id": "celebi",
+  "name": "Celebi",
+  "types": [
+   "psychic",
+   "grass"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 100,
+   "spa": 100,
+   "spd": 100,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 32,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psycho_boost",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "celebi",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psycho_boost",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Psycho Boost tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "regirock",
+  "name": "Regirock",
+  "types": [
+   "rock"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 100,
+   "def": 200,
+   "spa": 50,
+   "spd": 100,
+   "spe": 50
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "power_gem",
+   "head_smash"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "geodude",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "regirock",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "power_gem",
+   "volley": "power_gem",
+   "nova": "head_smash",
+   "field": "rock_tomb",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 1,
+    "duration": 1,
+    "magnitude": 0.45
+   },
+   "ultimate": "head_smash",
+   "ultimateName": "Head Smash tối thượng",
+   "ultimateStyle": "storm",
+   "flying": false,
+   "blink": false,
+   "power": 0.47
+  }
+ },
+ {
+  "id": "regice",
+  "name": "Regice",
+  "types": [
+   "ice"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 50,
+   "def": 100,
+   "spa": 100,
+   "spd": 200,
+   "spe": 50
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "sheer_cold",
+   "aurora_beam",
+   "ice_punch"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "swinub",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "regice",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "sheer_cold",
+   "volley": "aurora_beam",
+   "nova": "ice_punch",
+   "field": "ice_punch",
+   "fieldStatus": {
+    "kind": "freeze",
+    "chance": 0.5,
+    "duration": 1.5,
+    "magnitude": 0
+   },
+   "ultimate": "sheer_cold",
+   "ultimateName": "Sheer Cold tối thượng",
+   "ultimateStyle": "safe",
+   "flying": false,
+   "blink": false,
+   "power": 0.47
+  }
+ },
+ {
+  "id": "registeel",
+  "name": "Registeel",
+  "types": [
+   "steel"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 75,
+   "def": 150,
+   "spa": 75,
+   "spd": 150,
+   "spe": 50
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "doom_desire",
+   "flash_cannon",
+   "iron_tail"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "skarmory",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "registeel",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "doom_desire",
+   "volley": "flash_cannon",
+   "nova": "iron_tail",
+   "field": "metal_sound",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.2
+   },
+   "ultimate": "doom_desire",
+   "ultimateName": "Doom Desire tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": false,
+   "blink": false,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "latias",
+  "name": "Latias",
+  "types": [
+   "dragon",
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 80,
+   "def": 90,
+   "spa": 110,
+   "spd": 130,
+   "spe": 110
+  },
+  "hpMult": 70,
+  "moveSpeed": 95,
+  "radius": 35,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "mist_ball",
+   "dragon_pulse",
+   "outrage"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "dratini",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "latias",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "mist_ball",
+   "volley": "dragon_pulse",
+   "nova": "outrage",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "roar_of_time",
+   "ultimateName": "Mist Ball tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": true,
+   "blink": true,
+   "power": 0.4
+  }
+ },
+ {
+  "id": "latios",
+  "name": "Latios",
+  "types": [
+   "dragon",
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 90,
+   "def": 80,
+   "spa": 130,
+   "spd": 110,
+   "spe": 110
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 37,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "luster_purge",
+   "dragon_pulse",
+   "outrage"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "dratini",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "latios",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "luster_purge",
+   "volley": "dragon_pulse",
+   "nova": "outrage",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "roar_of_time",
+   "ultimateName": "Luster Purge tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": true,
+   "blink": true,
+   "power": 0.34
+  }
+ },
+ {
+  "id": "kyogre",
+  "name": "Kyogre",
+  "types": [
+   "water"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 90,
+   "spa": 150,
+   "spd": 140,
+   "spe": 90
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 44,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "water_spout"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "squirtle",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "kyogre",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "water_spout",
+   "volley": "water_spout",
+   "nova": "water_spout",
+   "field": "water_spout",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.4
+   },
+   "ultimate": "water_spout",
+   "ultimateName": "Water Spout tối thượng",
+   "ultimateStyle": "safe",
+   "flying": false,
+   "blink": false,
+   "power": 0.26
+  }
+ },
+ {
+  "id": "groudon",
+  "name": "Groudon",
+  "types": [
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 150,
+   "def": 140,
+   "spa": 100,
+   "spd": 90,
+   "spe": 90
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 42,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "eruption",
+   "earthquake",
+   "fissure"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "sandshrew",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "groudon",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "eruption",
+   "volley": "earthquake",
+   "nova": "fissure",
+   "field": "sand_attack",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.25
+   },
+   "ultimate": "fissure",
+   "ultimateName": "Eruption tối thượng",
+   "ultimateStyle": "safe",
+   "flying": false,
+   "blink": false,
+   "power": 0.26
+  }
+ },
+ {
+  "id": "rayquaza",
+  "name": "Rayquaza",
+  "types": [
+   "dragon",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 105,
+   "atk": 150,
+   "def": 90,
+   "spa": 150,
+   "spd": 90,
+   "spe": 95
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 44,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "outrage",
+   "dragon_pulse"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "dratini",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "rayquaza",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "outrage",
+   "volley": "dragon_pulse",
+   "nova": "outrage",
+   "field": "feather_dance",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.2
+   },
+   "ultimate": "roar_of_time",
+   "ultimateName": "Outrage tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": true,
+   "blink": false,
+   "power": 0.24
+  }
+ },
+ {
+  "id": "jirachi",
+  "name": "Jirachi",
+  "types": [
+   "steel",
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 100,
+   "spa": 100,
+   "spd": 100,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "doom_desire",
+   "flash_cannon",
+   "iron_tail"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "skarmory",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "jirachi",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "doom_desire",
+   "volley": "flash_cannon",
+   "nova": "iron_tail",
+   "field": "metal_sound",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.2
+   },
+   "ultimate": "doom_desire",
+   "ultimateName": "Doom Desire tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "deoxys",
+  "name": "Deoxys",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 50,
+   "atk": 150,
+   "def": 50,
+   "spa": 150,
+   "spd": 50,
+   "spe": 150
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psycho_cut",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "deoxys",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psycho_cut",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Psycho Cut tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.24
+  }
+ },
+ {
+  "id": "uxie",
+  "name": "Uxie",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 75,
+   "atk": 75,
+   "def": 130,
+   "spa": 75,
+   "spd": 130,
+   "spe": 95
+  },
+  "hpMult": 70,
+  "moveSpeed": 95,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psycho_boost",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "uxie",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psycho_boost",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Psycho Boost tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "mesprit",
+  "name": "Mesprit",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 105,
+   "def": 105,
+   "spa": 105,
+   "spd": 105,
+   "spe": 80
+  },
+  "hpMult": 70,
+  "moveSpeed": 95,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psycho_boost",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "mesprit",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psycho_boost",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Psycho Boost tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.42
+  }
+ },
+ {
+  "id": "azelf",
+  "name": "Azelf",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 75,
+   "atk": 125,
+   "def": 70,
+   "spa": 125,
+   "spd": 70,
+   "spe": 115
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psycho_boost",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "azelf",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psycho_boost",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Psycho Boost tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.35
+  }
+ },
+ {
+  "id": "dialga",
+  "name": "Dialga",
+  "types": [
+   "steel",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 120,
+   "def": 120,
+   "spa": 150,
+   "spd": 100,
+   "spe": 90
+  },
+  "hpMult": 120,
+  "moveSpeed": 70,
+  "radius": 44,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "roar_of_time",
+   "flash_cannon",
+   "iron_tail"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "skarmory",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "dialga",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "roar_of_time",
+   "volley": "flash_cannon",
+   "nova": "iron_tail",
+   "field": "metal_sound",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.2
+   },
+   "ultimate": "doom_desire",
+   "ultimateName": "Roar of Time tối thượng",
+   "ultimateStyle": "timestop",
+   "flying": false,
+   "blink": false,
+   "power": 0.24
+  }
+ },
+ {
+  "id": "palkia",
+  "name": "Palkia",
+  "types": [
+   "water",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 120,
+   "def": 100,
+   "spa": 150,
+   "spd": 120,
+   "spe": 100
+  },
+  "hpMult": 120,
+  "moveSpeed": 70,
+  "radius": 44,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "spacial_rend",
+   "water_spout"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "squirtle",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "palkia",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "spacial_rend",
+   "volley": "water_spout",
+   "nova": "water_spout",
+   "field": "water_spout",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.4
+   },
+   "ultimate": "water_spout",
+   "ultimateName": "Spacial Rend tối thượng",
+   "ultimateStyle": "rift",
+   "flying": false,
+   "blink": true,
+   "power": 0.24
+  }
+ },
+ {
+  "id": "heatran",
+  "name": "Heatran",
+  "types": [
+   "fire",
+   "steel"
+  ],
+  "baseStats": {
+   "hp": 91,
+   "atk": 90,
+   "def": 106,
+   "spa": 130,
+   "spd": 106,
+   "spe": 77
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "magma_storm",
+   "eruption"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "charmander",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "heatran",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "magma_storm",
+   "volley": "eruption",
+   "nova": "eruption",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "burn",
+    "chance": 0.15,
+    "duration": 2,
+    "magnitude": 0.03
+   },
+   "ultimate": "eruption",
+   "ultimateName": "Magma Storm tối thượng",
+   "ultimateStyle": "spokes",
+   "flying": false,
+   "blink": false,
+   "power": 0.3
+  }
+ },
+ {
+  "id": "regigigas",
+  "name": "Regigigas",
+  "types": [
+   "normal"
+  ],
+  "baseStats": {
+   "hp": 110,
+   "atk": 160,
+   "def": 110,
+   "spa": 80,
+   "spd": 110,
+   "spe": 100
+  },
+  "hpMult": 120,
+  "moveSpeed": 70,
+  "radius": 42,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "superpower",
+   "self_destruct"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "pidgey",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "regigigas",
+  "ai": "legendary",
+  "scale": 5,
+  "survivor": false,
+  "legend": {
+   "beam": "superpower",
+   "volley": "self_destruct",
+   "nova": "self_destruct",
+   "field": "supersonic",
+   "fieldStatus": {
+    "kind": "confusion",
+    "chance": 1,
+    "duration": 3,
+    "magnitude": 0
+   },
+   "ultimate": "self_destruct",
+   "ultimateName": "Superpower tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": false,
+   "blink": false,
+   "power": 0.24
+  }
+ },
+ {
+  "id": "giratina",
+  "name": "Giratina",
+  "types": [
+   "ghost",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 150,
+   "atk": 100,
+   "def": 120,
+   "spa": 100,
+   "spd": 120,
+   "spe": 90
+  },
+  "hpMult": 120,
+  "moveSpeed": 70,
+  "radius": 44,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "shadow_force",
+   "shadow_ball"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "gastly",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "giratina",
+  "ai": "legendary",
+  "scale": 5,
+  "survivor": false,
+  "legend": {
+   "beam": "shadow_force",
+   "volley": "shadow_ball",
+   "nova": "shadow_force",
+   "field": "confuse_ray",
+   "fieldStatus": {
+    "kind": "confusion",
+    "duration": 3,
+    "magnitude": 0,
+    "chance": 1
+   },
+   "ultimate": "shadow_force",
+   "ultimateName": "Shadow Force tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": false,
+   "blink": true,
+   "power": 0.34
+  }
+ },
+ {
+  "id": "cresselia",
+  "name": "Cresselia",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 120,
+   "atk": 70,
+   "def": 110,
+   "spa": 75,
+   "spd": 120,
+   "spe": 85
+  },
+  "hpMult": 50,
+  "moveSpeed": 95,
+  "radius": 35,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psycho_boost",
+   "extrasensory",
+   "zen_headbutt"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "abra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "cresselia",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psycho_boost",
+   "volley": "extrasensory",
+   "nova": "zen_headbutt",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "sleep",
+    "chance": 1,
+    "duration": 2.5,
+    "magnitude": 0
+   },
+   "ultimate": "psycho_boost",
+   "ultimateName": "Psycho Boost tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": true,
+   "blink": true,
+   "power": 0.4
+  }
+ },
+ {
+  "id": "phione",
+  "name": "Phione",
+  "types": [
+   "water"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 80,
+   "def": 80,
+   "spa": 80,
+   "spd": 80,
+   "spe": 80
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "hydro_pump",
+   "water_spout"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "squirtle",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "phione",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "hydro_pump",
+   "volley": "water_spout",
+   "nova": "water_spout",
+   "field": "water_spout",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.4
+   },
+   "ultimate": "water_spout",
+   "ultimateName": "Water Spout tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": false,
+   "blink": true,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "manaphy",
+  "name": "Manaphy",
+  "types": [
+   "water"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 100,
+   "spa": 100,
+   "spd": 100,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "hydro_pump",
+   "water_spout"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "squirtle",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "manaphy",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "hydro_pump",
+   "volley": "water_spout",
+   "nova": "water_spout",
+   "field": "water_spout",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.4
+   },
+   "ultimate": "water_spout",
+   "ultimateName": "Water Spout tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": false,
+   "blink": true,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "darkrai",
+  "name": "Darkrai",
+  "types": [
+   "dark"
+  ],
+  "baseStats": {
+   "hp": 70,
+   "atk": 90,
+   "def": 90,
+   "spa": 135,
+   "spd": 90,
+   "spe": 125
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 35,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "dark_pulse",
+   "crunch"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "murkrow",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "darkrai",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "dark_pulse",
+   "volley": "dark_pulse",
+   "nova": "crunch",
+   "field": "fake_tears",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 1,
+    "duration": 4,
+    "magnitude": 0.2
+   },
+   "ultimate": "dark_pulse",
+   "ultimateName": "Dark Pulse tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": false,
+   "blink": true,
+   "power": 0.28
+  }
+ },
+ {
+  "id": "shaymin",
+  "name": "Shaymin",
+  "types": [
+   "grass"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 100,
+   "spa": 100,
+   "spd": 100,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 31,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "leaf_storm",
+   "petal_blizzard",
+   "wood_hammer"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "bulbasaur",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "shaymin",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "leaf_storm",
+   "volley": "petal_blizzard",
+   "nova": "wood_hammer",
+   "field": "leech_seed",
+   "fieldStatus": {
+    "kind": "leech",
+    "chance": 1,
+    "duration": 5,
+    "magnitude": 0.04
+   },
+   "ultimate": "leaf_storm",
+   "ultimateName": "Leaf Storm tối thượng",
+   "ultimateStyle": "mixed",
+   "flying": false,
+   "blink": true,
+   "power": 0.5
+  }
+ },
+ {
+  "id": "arceus",
+  "name": "Arceus",
+  "types": [
+   "normal"
+  ],
+  "baseStats": {
+   "hp": 120,
+   "atk": 120,
+   "def": 120,
+   "spa": 120,
+   "spd": 120,
+   "spe": 120
+  },
+  "hpMult": 150,
+  "moveSpeed": 70,
+  "radius": 41,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "hyper_beam",
+   "self_destruct"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "pidgey",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "đang dồn toàn bộ sức mạnh!",
+  "exp": 140,
+  "sprite": "arceus",
+  "ai": "legendary",
+  "scale": 5,
+  "survivor": false,
+  "legend": {
+   "beam": "hyper_beam",
+   "volley": "self_destruct",
+   "nova": "self_destruct",
+   "field": "supersonic",
+   "fieldStatus": {
+    "kind": "confusion",
+    "chance": 1,
+    "duration": 3,
+    "magnitude": 0
+   },
+   "ultimate": "self_destruct",
+   "ultimateName": "Hyper Beam tối thượng",
+   "ultimateStyle": "judgment",
+   "flying": false,
+   "blink": true,
+   "power": 0.25
+  }
+ }
+]

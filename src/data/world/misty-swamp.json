@@ -1,0 +1,369 @@
+{
+ "id": "misty-swamp",
+ "name": "Đầm Lầy Sương Mù",
+ "width": 112,
+ "height": 96,
+ "chunk": 16,
+ "theme": "swamp",
+ "spawn": {
+  "x": 56,
+  "y": 88
+ },
+ "areas": [
+  {
+   "id": "swamp-edge",
+   "name": "Bìa Đầm Lầy",
+   "rect": [
+    0,
+    56,
+    111,
+    95
+   ],
+   "habitat": "swamp",
+   "level": [
+    22,
+    27
+   ]
+  },
+  {
+   "id": "swamp-heart",
+   "name": "Lòng Đầm Độc",
+   "rect": [
+    0,
+    0,
+    55,
+    55
+   ],
+   "habitat": "swamp",
+   "level": [
+    25,
+    30
+   ]
+  },
+  {
+   "id": "witch-hollow",
+   "name": "Hốc Cây Thầy Mo",
+   "rect": [
+    56,
+    0,
+    111,
+    55
+   ],
+   "habitat": "swamp",
+   "level": [
+    27,
+    32
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 2,
+   "pts": [
+    [
+     56,
+     92
+    ],
+    [
+     56,
+     70
+    ],
+    [
+     44,
+     58
+    ],
+    [
+     30,
+     42
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     56,
+     70
+    ],
+    [
+     70,
+     56
+    ],
+    [
+     82,
+     34
+    ],
+    [
+     84,
+     24
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     56,
+     80
+    ],
+    [
+     70,
+     80
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  51,
+  84,
+  61,
+  91
+ ],
+ "lake": {
+  "cx": 22,
+  "cy": 22,
+  "rx": 10,
+  "ry": 7
+ },
+ "buildings": [
+  {
+   "id": "witch-hut",
+   "name": "Chòi Thầy Mo",
+   "x": 82,
+   "y": 18,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "fisher-hut",
+   "name": "Lều Ngư Dân",
+   "x": 70,
+   "y": 76,
+   "w": 5,
+   "h": 4,
+   "roof": "red",
+   "wall": "wood",
+   "door": 1
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "bucket",
+   "x": 76,
+   "y": 81
+  },
+  {
+   "kind": "log",
+   "x": 66,
+   "y": 82
+  }
+ ],
+ "signs": [
+  {
+   "x": 53,
+   "y": 89,
+   "text": [
+    "ĐẦM LẦY SƯƠNG MÙ",
+    "Khuyến nghị Lv25 · Vũng bùn tím gây độc — Pokémon hệ Độc / Thép không sợ."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "swamp-witch",
+   "name": "Bà Thầy Mo Sương",
+   "sprite": "elder",
+   "x": 84,
+   "y": 24,
+   "lines": [
+    "Sương mù ở đây chưa bao giờ tan...",
+    "Ban đêm, Gastly và Misdreavus ra khỏi hốc cây đấy."
+   ]
+  },
+  {
+   "id": "swamp-fisher",
+   "name": "Ngư dân Lâm",
+   "sprite": "farmer",
+   "x": 71,
+   "y": 82,
+   "lines": [
+    "Cá dưới đầm này nhiễm độc hết rồi, toàn Grimer bò lên bờ."
+   ]
+  },
+  {
+   "id": "swamp-scout",
+   "name": "Kiểm lâm Diệp",
+   "sprite": "ranger",
+   "x": 50,
+   "y": 84,
+   "lines": [
+    "Chào mừng đến Đầm Lầy Sương Mù! Đi trên lối ván gỗ để tránh vũng độc.",
+    "Pokémon ở đây Lv22–32 — vừa sức sau Hang Đá Cổ."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "poison-tamer",
+   "name": "Thuần Độc Sư Lan",
+   "sprite": "wizard",
+   "x": 34,
+   "y": 46,
+   "team": [
+    [
+     "grimer",
+     24
+    ],
+    [
+     "koffing",
+     25
+    ],
+    [
+     "arbok",
+     27
+    ]
+   ],
+   "challenge": [
+    "Độc tố là vẻ đẹp tinh khiết nhất của tự nhiên. Ngươi chịu nổi không?"
+   ],
+   "win": [
+    "Hừ... đội của ngươi miễn nhiễm với độc của ta sao?"
+   ],
+   "lose": [
+    "Độc ngấm rồi đấy. Về giải độc đi."
+   ],
+   "rewards": {
+    "items": {
+     "poison-barb": 1,
+     "superpotion": 2
+    },
+    "exp": 900
+   }
+  },
+  {
+   "id": "swamp-bugcatcher",
+   "name": "Bắt Bọ Vũ",
+   "sprite": "youngster",
+   "x": 92,
+   "y": 44,
+   "team": [
+    [
+     "venonat",
+     23
+    ],
+    [
+     "ariados",
+     25
+    ],
+    [
+     "yanma",
+     26
+    ]
+   ],
+   "challenge": [
+    "Đầm lầy là thiên đường của bọ! Xem bộ sưu tập của em nè!"
+   ],
+   "win": [
+    "Ơ... bọ của em bị bắt bài rồi."
+   ],
+   "lose": [
+    "Bọ đầm lầy là mạnh nhất!"
+   ],
+   "rewards": {
+    "items": {
+     "silver-powder": 1,
+     "greatball": 4
+    },
+    "exp": 850
+   }
+  }
+ ],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [
+  {
+   "id": "chest-swamp-heart",
+   "x": 12,
+   "y": 40,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-swamp-hollow",
+   "x": 100,
+   "y": 8,
+   "items": {
+    "moon-stone": 1,
+    "superpotion": 2
+   }
+  },
+  {
+   "id": "chest-swamp-edge",
+   "x": 10,
+   "y": 76,
+   "items": {
+    "greatball": 5,
+    "oranberry": 3
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-swamp-camp",
+   "name": "Trạm Đầm Lầy",
+   "x": 58,
+   "y": 86
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "portals": [
+  {
+   "id": "portal-swamp-valley",
+   "name": "Cổng về Thung Lũng",
+   "x": 50,
+   "y": 90,
+   "to": "starter-valley",
+   "toX": 20,
+   "toY": 104
+  }
+ ],
+ "rivers": [
+  {
+   "w": 2,
+   "pts": [
+    [
+     30,
+     30
+    ],
+    [
+     40,
+     44
+    ],
+    [
+     24,
+     60
+    ],
+    [
+     10,
+     70
+    ]
+   ]
+  }
+ ]
+}

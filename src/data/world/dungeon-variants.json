@@ -1,0 +1,381 @@
+[
+ {
+  "id": "ice-cave",
+  "name": "Hang Băng Vĩnh Cửu",
+  "layout": "ancient-cave",
+  "region": "frozen-mountains",
+  "kind": "elemental",
+  "tint": 2767450,
+  "hazardType": "ice",
+  "hazardStatus": {
+   "kind": "slow",
+   "chance": 0.6,
+   "duration": 2,
+   "magnitude": 0.4
+  },
+  "intro": [
+   "Hơi lạnh buốt xương tỏa ra từ vách băng...",
+   "Băng rơi từ trần hang — tránh các vòng cảnh báo."
+  ],
+  "boss": {
+   "id": "mamoswine",
+   "levelOffset": 3
+  },
+  "waves": [
+   [
+    [
+     "snorunt",
+     2
+    ],
+    [
+     "swinub",
+     2
+    ]
+   ],
+   [
+    [
+     "sneasel",
+     2
+    ],
+    [
+     "piloswine",
+     1
+    ]
+   ],
+   [
+    [
+     "glalie",
+     1
+    ],
+    [
+     "sneasel",
+     2
+    ],
+    [
+     "piloswine",
+     1
+    ]
+   ]
+  ],
+  "difficulties": {
+   "normal": {
+    "label": "Thường",
+    "level": 30,
+    "hpMult": 2.4,
+    "elites": 1,
+    "hazardEvery": 1.6,
+    "bossHp": 0.5,
+    "requires": null,
+    "rewards": {
+     "items": {
+      "ultraball": 2,
+      "superpotion": 2
+     },
+     "exp": 1400,
+     "worldExp": 600,
+     "reputation": 15
+    },
+    "firstClear": {
+     "never-melt-ice": 1
+    }
+   },
+   "hard": {
+    "label": "Khó",
+    "level": 38,
+    "hpMult": 3.0,
+    "elites": 2,
+    "hazardEvery": 1.2,
+    "bossHp": 0.75,
+    "requires": "normal",
+    "rewards": {
+     "items": {
+      "ultraball": 3,
+      "superpotion": 3
+     },
+     "exp": 2400,
+     "worldExp": 900,
+     "reputation": 25
+    },
+    "firstClear": {
+     "expert-belt": 1
+    }
+   },
+   "expert": {
+    "label": "Chuyên gia",
+    "level": 46,
+    "hpMult": 3.6,
+    "elites": 4,
+    "hazardEvery": 0.85,
+    "bossHp": 1.0,
+    "requires": "hard",
+    "rewards": {
+     "items": {
+      "ultraball": 5,
+      "superpotion": 4
+     },
+     "exp": 3800,
+     "worldExp": 1400,
+     "reputation": 45
+    },
+    "firstClear": {
+     "focus-band": 1
+    }
+   }
+  },
+  "floor": "icyBlue"
+ },
+ {
+  "id": "magma-cave",
+  "name": "Lò Dung Nham",
+  "layout": "ancient-cave",
+  "region": "volcanic-lands",
+  "kind": "elemental",
+  "tint": 5906448,
+  "hazardType": "fire",
+  "hazardStatus": {
+   "kind": "burn",
+   "chance": 0.35,
+   "duration": 3,
+   "magnitude": 0.04
+  },
+  "intro": [
+   "Dung nham sôi sục dưới chân...",
+   "Đá nóng chảy rơi xuống — đừng đứng yên trong vòng đỏ."
+  ],
+  "boss": {
+   "id": "magmortar",
+   "levelOffset": 3
+  },
+  "waves": [
+   [
+    [
+     "slugma",
+     2
+    ],
+    [
+     "numel",
+     2
+    ]
+   ],
+   [
+    [
+     "magmar",
+     1
+    ],
+    [
+     "camerupt",
+     1
+    ],
+    [
+     "slugma",
+     2
+    ]
+   ],
+   [
+    [
+     "magcargo",
+     2
+    ],
+    [
+     "magmar",
+     1
+    ],
+    [
+     "houndoom",
+     1
+    ]
+   ]
+  ],
+  "difficulties": {
+   "normal": {
+    "label": "Thường",
+    "level": 36,
+    "hpMult": 2.4,
+    "elites": 1,
+    "hazardEvery": 1.6,
+    "bossHp": 0.5,
+    "requires": null,
+    "rewards": {
+     "items": {
+      "ultraball": 2,
+      "superpotion": 2
+     },
+     "exp": 1800,
+     "worldExp": 700,
+     "reputation": 15
+    },
+    "firstClear": {
+     "charcoal": 1
+    }
+   },
+   "hard": {
+    "label": "Khó",
+    "level": 44,
+    "hpMult": 3.0,
+    "elites": 2,
+    "hazardEvery": 1.2,
+    "bossHp": 0.75,
+    "requires": "normal",
+    "rewards": {
+     "items": {
+      "ultraball": 3,
+      "superpotion": 3
+     },
+     "exp": 3000,
+     "worldExp": 1000,
+     "reputation": 25
+    },
+    "firstClear": {
+     "shell-bell": 1
+    }
+   },
+   "expert": {
+    "label": "Chuyên gia",
+    "level": 52,
+    "hpMult": 3.6,
+    "elites": 4,
+    "hazardEvery": 0.85,
+    "bossHp": 1.0,
+    "requires": "hard",
+    "rewards": {
+     "items": {
+      "ultraball": 5,
+      "superpotion": 4
+     },
+     "exp": 4600,
+     "worldExp": 1600,
+     "reputation": 45
+    },
+    "firstClear": {
+     "charizardite-y": 1
+    }
+   }
+  }
+ },
+ {
+  "id": "trial-tower",
+  "name": "Tháp Thử Thách",
+  "layout": "ancient-cave",
+  "region": "legendary-sanctuary",
+  "kind": "challenge",
+  "tint": 3811930,
+  "hazardType": "rock",
+  "intro": [
+   "Thử thách tính giờ: hạ 3 đợt, vượt hành lang, giải phong ấn và đánh bại Tyranitar trước khi hết giờ.",
+   "Hết giờ là bị đưa ra ngoài, không có phần thưởng."
+  ],
+  "boss": {
+   "id": "tyranitar",
+   "levelOffset": 4
+  },
+  "waves": [
+   [
+    [
+     "lucario",
+     1
+    ],
+    [
+     "gallade",
+     1
+    ],
+    [
+     "machamp",
+     1
+    ]
+   ],
+   [
+    [
+     "garchomp",
+     1
+    ],
+    [
+     "metagross",
+     1
+    ]
+   ],
+   [
+    [
+     "salamence",
+     1
+    ],
+    [
+     "gengar",
+     1
+    ],
+    [
+     "weavile",
+     1
+    ]
+   ]
+  ],
+  "difficulties": {
+   "normal": {
+    "label": "Thường",
+    "level": 50,
+    "hpMult": 2.6,
+    "elites": 1,
+    "hazardEvery": 1.4,
+    "bossHp": 0.6,
+    "requires": null,
+    "rewards": {
+     "items": {
+      "ultraball": 4,
+      "superpotion": 4
+     },
+     "exp": 4000,
+     "worldExp": 1500,
+     "reputation": 30
+    },
+    "firstClear": {
+     "scope-lens": 1
+    },
+    "timeLimit": 300
+   },
+   "hard": {
+    "label": "Khó",
+    "level": 60,
+    "hpMult": 3.2,
+    "elites": 2,
+    "hazardEvery": 1.0,
+    "bossHp": 0.85,
+    "requires": "normal",
+    "rewards": {
+     "items": {
+      "ultraball": 6,
+      "superpotion": 5
+     },
+     "exp": 6500,
+     "worldExp": 2200,
+     "reputation": 50
+    },
+    "firstClear": {
+     "muscle-band": 1
+    },
+    "timeLimit": 270
+   },
+   "expert": {
+    "label": "Chuyên gia",
+    "level": 70,
+    "hpMult": 3.8,
+    "elites": 4,
+    "hazardEvery": 0.75,
+    "bossHp": 1.0,
+    "requires": "hard",
+    "rewards": {
+     "items": {
+      "ultraball": 8,
+      "superpotion": 6
+     },
+     "exp": 9000,
+     "worldExp": 3200,
+     "reputation": 80
+    },
+    "firstClear": {
+     "kings-rock": 1
+    },
+    "timeLimit": 240
+   }
+  },
+  "floor": "icyGray"
+ }
+]

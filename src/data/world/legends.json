@@ -1,0 +1,554 @@
+[
+ {
+  "id": "articuno",
+  "kind": "shrine",
+  "lore": "Thần Điểu băng giá, mỗi lần vỗ cánh là tuyết rơi.",
+  "requires": [
+   "boss:mega-venusaur"
+  ]
+ },
+ {
+  "id": "zapdos",
+  "kind": "shrine",
+  "lore": "Thần Điểu sấm sét, chỉ xuất hiện giữa những cơn giông.",
+  "requires": [
+   "boss:mega-venusaur"
+  ]
+ },
+ {
+  "id": "moltres",
+  "kind": "shrine",
+  "lore": "Thần Điểu lửa, mang mùa xuân đến khi bay qua.",
+  "requires": [
+   "boss:mega-venusaur"
+  ]
+ },
+ {
+  "id": "mewtwo",
+  "kind": "shrine",
+  "lore": "Pokémon nhân tạo mạnh nhất, được tạo ra từ gen của Mew.",
+  "requires": [
+   "boss:articuno",
+   "boss:zapdos",
+   "boss:moltres"
+  ]
+ },
+ {
+  "id": "mew",
+  "kind": "shrine",
+  "lore": "Tổ tiên của mọi Pokémon, biết mọi chiêu thức.",
+  "requires": [
+   "boss:mewtwo"
+  ]
+ },
+ {
+  "id": "raikou",
+  "kind": "roaming",
+  "name": "Raikou lang thang",
+  "regions": [
+   "starter-valley",
+   "farm",
+   "rocky-highlands"
+  ],
+  "level": 40,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "weather": [
+   "thunderstorm",
+   "rain"
+  ],
+  "lore": "Thú huyền thoại mang sấm sét — xuất hiện khi trời giông."
+ },
+ {
+  "id": "entei",
+  "kind": "roaming",
+  "name": "Entei lang thang",
+  "regions": [
+   "rocky-highlands",
+   "ancient-ruins",
+   "emerald-forest"
+  ],
+  "level": 40,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "weather": [
+   "heatwave",
+   "clear"
+  ],
+  "lore": "Thú huyền thoại sinh ra từ núi lửa — mỗi tiếng gầm là một ngọn núi phun trào."
+ },
+ {
+  "id": "suicune",
+  "kind": "roaming",
+  "name": "Suicune bên hồ",
+  "regions": [
+   "crystal-lake"
+  ],
+  "level": 40,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "weather": [
+   "rain",
+   "heavyRain",
+   "clear"
+  ],
+  "lore": "Thú huyền thoại thanh tẩy nước — chỉ quanh quẩn ở Hồ Pha Lê."
+ },
+ {
+  "id": "lugia",
+  "kind": "shrine",
+  "name": "Đền Biển Sâu",
+  "level": 45,
+  "requires": [
+   "boss:articuno",
+   "boss:zapdos",
+   "boss:moltres"
+  ],
+  "weather": [
+   "rain",
+   "heavyRain",
+   "thunderstorm"
+  ],
+  "lore": "Hộ thần của biển cả và ba Thần Điểu — chỉ trồi lên khi trời mưa bão.",
+  "hint": "Mặt hồ lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+  "site": {
+   "x": 110,
+   "y": 56
+  }
+ },
+ {
+  "id": "ho-oh",
+  "kind": "shrine",
+  "name": "Tháp Chuông Cầu Vồng",
+  "level": 45,
+  "requires": [
+   "boss:raikou",
+   "boss:entei",
+   "boss:suicune"
+  ],
+  "time": "day",
+  "lore": "Phượng hoàng cầu vồng đã hồi sinh ba thú huyền thoại.",
+  "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
+  "site": {
+   "x": 73,
+   "y": 10
+  }
+ },
+ {
+  "id": "celebi",
+  "kind": "gift",
+  "ring": false,
+  "name": "Khu Rừng Thiêng lúc bình minh",
+  "level": 30,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "time": "dawn",
+  "lore": "Linh hồn khu rừng du hành qua thời gian, xuất hiện lúc bình minh ở rừng thiêng.",
+  "hint": "",
+  "site": {
+   "x": 44,
+   "y": 24
+  }
+ },
+ {
+  "id": "regirock",
+  "kind": "shrine",
+  "name": "Lăng Đá Đỏ",
+  "level": 42,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "lore": "Người khổng lồ đá bị phong ấn từ thời cổ đại.",
+  "hint": "Những ký tự cổ khắc trên đá... cần sức mạnh đã đánh bại Thần Rừng.",
+  "site": {
+   "x": 151,
+   "y": 10
+  }
+ },
+ {
+  "id": "regice",
+  "kind": "shrine",
+  "name": "Lăng Băng Ẩn",
+  "level": 42,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "weather": [
+   "blizzard"
+  ],
+  "lore": "Người khổng lồ băng ngủ say — chỉ thức dậy trong bão tuyết.",
+  "hint": "Lớp băng mỏng phủ vòng đá... có lẽ Regice chỉ thức dậy trong bão tuyết.",
+  "site": {
+   "x": 35,
+   "y": 42
+  }
+ },
+ {
+  "id": "registeel",
+  "kind": "shrine",
+  "name": "Lăng Thép",
+  "level": 42,
+  "requires": [
+   "boss:mega-venusaur"
+  ],
+  "lore": "Người khổng lồ thép cứng hơn mọi kim loại.",
+  "hint": "Một khối thép lạnh ngắt nằm im... cần sức mạnh đã đánh bại Thần Rừng.",
+  "site": {
+   "x": 126,
+   "y": 43
+  }
+ },
+ {
+  "id": "regigigas",
+  "kind": "shrine",
+  "name": "Đền Khổng Lồ",
+  "level": 52,
+  "requires": [
+   "boss:regirock",
+   "boss:regice",
+   "boss:registeel"
+  ],
+  "lore": "Vị thần đã kéo các lục địa — chủ nhân của ba người khổng lồ.",
+  "hint": "Bức tượng khổng lồ không nhúc nhích... nó đang chờ ba người khổng lồ.",
+  "site": {
+   "x": 20,
+   "y": 68
+  }
+ },
+ {
+  "id": "latias",
+  "kind": "roaming",
+  "name": "Latias lang thang",
+  "regions": [
+   "crystal-lake",
+   "starter-valley",
+   "farm"
+  ],
+  "level": 45,
+  "requires": [
+   "boss:lugia"
+  ],
+  "lore": "Pokémon Rồng nhạy cảm, có thể tàng hình bằng lông vũ."
+ },
+ {
+  "id": "latios",
+  "kind": "roaming",
+  "name": "Latios lang thang",
+  "regions": [
+   "crystal-lake",
+   "emerald-forest",
+   "rocky-highlands"
+  ],
+  "level": 45,
+  "requires": [
+   "boss:lugia"
+  ],
+  "lore": "Pokémon Rồng thông minh, bay nhanh hơn máy bay phản lực."
+ },
+ {
+  "id": "kyogre",
+  "kind": "shrine",
+  "name": "Đền Đáy Hồ",
+  "level": 50,
+  "requires": [
+   "boss:lugia",
+   "boss:ho-oh"
+  ],
+  "weather": [
+   "heavyRain",
+   "rain",
+   "thunderstorm"
+  ],
+  "lore": "Chúa tể đại dương, gọi mưa bão mở rộng biển cả.",
+  "hint": "Nước hồ dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi mưa lớn.",
+  "site": {
+   "x": 113,
+   "y": 84
+  }
+ },
+ {
+  "id": "groudon",
+  "kind": "shrine",
+  "name": "Đền Dung Nham",
+  "level": 50,
+  "requires": [
+   "boss:lugia",
+   "boss:ho-oh"
+  ],
+  "weather": [
+   "heatwave",
+   "clear"
+  ],
+  "lore": "Chúa tể đất liền, tạo ra lục địa bằng dung nham.",
+  "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt.",
+  "site": {
+   "x": 118,
+   "y": 10
+  }
+ },
+ {
+  "id": "rayquaza",
+  "kind": "shrine",
+  "name": "Trụ Trời",
+  "level": 55,
+  "requires": [
+   "boss:kyogre",
+   "boss:groudon"
+  ],
+  "lore": "Rồng trời đã chấm dứt cuộc chiến giữa Kyogre và Groudon.",
+  "hint": "Gió trên đỉnh trụ gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
+  "site": {
+   "x": 151,
+   "y": 25
+  }
+ },
+ {
+  "id": "jirachi",
+  "kind": "gift",
+  "name": "Đồi Ước Nguyện",
+  "level": 35,
+  "requires": [
+   "boss:mew"
+  ],
+  "time": "night",
+  "weather": [
+   "clear"
+  ],
+  "friendship": 180,
+  "lore": "Pokémon ước nguyện thức dậy một tuần mỗi nghìn năm — chỉ trước người có trái tim gắn bó.",
+  "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
+  "site": {
+   "x": 72,
+   "y": 74
+  }
+ },
+ {
+  "id": "deoxys",
+  "kind": "shrine",
+  "name": "Hố Thiên Thạch",
+  "level": 55,
+  "requires": [
+   "boss:rayquaza"
+  ],
+  "time": "night",
+  "lore": "Virus ngoài vũ trụ đột biến sau khi bị tia laser chiếu vào.",
+  "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
+  "site": {
+   "x": 93,
+   "y": 79
+  }
+ },
+ {
+  "id": "uxie",
+  "kind": "shrine",
+  "name": "Hồ Trí Tuệ",
+  "level": 45,
+  "requires": [
+   "boss:mewtwo"
+  ],
+  "lore": "Hộ thần tri thức — nhìn vào mắt nó sẽ mất trí nhớ.",
+  "hint": "Mặt nước phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+  "site": {
+   "x": 101,
+   "y": 38
+  }
+ },
+ {
+  "id": "mesprit",
+  "kind": "roaming",
+  "name": "Mesprit lang thang",
+  "regions": [
+   "crystal-lake",
+   "starter-valley",
+   "emerald-forest",
+   "farm"
+  ],
+  "level": 45,
+  "requires": [
+   "boss:mewtwo"
+  ],
+  "lore": "Hộ thần cảm xúc — bay khắp nơi, không ở yên một chỗ."
+ },
+ {
+  "id": "azelf",
+  "kind": "shrine",
+  "name": "Hồ Dũng Khí",
+  "level": 45,
+  "requires": [
+   "boss:mewtwo"
+  ],
+  "lore": "Hộ thần ý chí, giữ cân bằng thế giới.",
+  "hint": "Gió thổi mạnh quanh vòng đá... Azelf chờ người đã đối mặt với Mewtwo.",
+  "site": {
+   "x": 55,
+   "y": 81
+  }
+ },
+ {
+  "id": "dialga",
+  "kind": "shrine",
+  "name": "Cột Thời Gian",
+  "level": 55,
+  "requires": [
+   "boss:uxie",
+   "boss:mesprit",
+   "boss:azelf"
+  ],
+  "lore": "Thần thời gian — tim nó đập là thời gian trôi.",
+  "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
+  "site": {
+   "x": 85,
+   "y": 26
+  }
+ },
+ {
+  "id": "palkia",
+  "kind": "shrine",
+  "name": "Cột Không Gian",
+  "level": 55,
+  "requires": [
+   "boss:uxie",
+   "boss:mesprit",
+   "boss:azelf"
+  ],
+  "lore": "Thần không gian — mỗi hơi thở là một không gian mới.",
+  "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
+  "site": {
+   "x": 98,
+   "y": 10
+  }
+ },
+ {
+  "id": "giratina",
+  "kind": "shrine",
+  "name": "Cổng Thế Giới Đảo Ngược",
+  "level": 58,
+  "requires": [
+   "boss:dialga",
+   "boss:palkia"
+  ],
+  "time": "night",
+  "lore": "Bị đày vào Thế Giới Đảo Ngược vì sự hung bạo — chỉ lộ diện trong bóng tối.",
+  "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi thời gian và không gian bị khuấy động.",
+  "site": {
+   "x": 35,
+   "y": 82
+  }
+ },
+ {
+  "id": "heatran",
+  "kind": "shrine",
+  "name": "Miệng Núi Lửa Ngầm",
+  "level": 50,
+  "requires": [
+   "boss:groudon"
+  ],
+  "weather": [
+   "heatwave",
+   "clear"
+  ],
+  "lore": "Sống trong hang núi lửa, máu nó là dung nham sôi.",
+  "hint": "Hơi nóng phả ra từ khe đá... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
+  "site": {
+   "x": 138,
+   "y": 39
+  }
+ },
+ {
+  "id": "cresselia",
+  "kind": "roaming",
+  "name": "Cresselia dưới trăng",
+  "regions": [
+   "starter-valley",
+   "crystal-lake",
+   "emerald-forest"
+  ],
+  "level": 48,
+  "requires": [
+   "boss:mew"
+  ],
+  "time": "night",
+  "lore": "Hiện thân của trăng lưỡi liềm, mang giấc mơ đẹp — chỉ bay vào ban đêm."
+ },
+ {
+  "id": "darkrai",
+  "kind": "shrine",
+  "name": "Đảo Ác Mộng",
+  "level": 52,
+  "requires": [
+   "boss:cresselia"
+  ],
+  "time": "night",
+  "lore": "Gieo ác mộng cho người ngủ gần nó; chỉ Cresselia mới xua tan được.",
+  "hint": "Bạn bỗng thấy buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
+  "site": {
+   "x": 50,
+   "y": 55
+  }
+ },
+ {
+  "id": "shaymin",
+  "kind": "gift",
+  "name": "Vườn Hoa Gracidea",
+  "level": 30,
+  "requires": [
+   "boss:celebi"
+  ],
+  "time": "day",
+  "friendship": 200,
+  "lore": "Pokémon nhím hoa làm nở hoa khắp nơi — chỉ đến bên người có Pokémon thật gắn bó.",
+  "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
+  "site": {
+   "x": 69,
+   "y": 54
+  }
+ },
+ {
+  "id": "manaphy",
+  "kind": "egg",
+  "level": 1,
+  "requires": [
+   "boss:kyogre"
+  ],
+  "hatch": 600,
+  "lore": "Hoàng tử biển cả, nở từ quả trứng Kyogre trao lại."
+ },
+ {
+  "id": "phione",
+  "kind": "egg",
+  "level": 1,
+  "requires": [
+   "boss:manaphy"
+  ],
+  "hatch": 300,
+  "needs": [
+   "manaphy",
+   "ditto"
+  ],
+  "lore": "Sinh ra khi Manaphy và Ditto được gửi ở Nông Trại."
+ },
+ {
+  "id": "arceus",
+  "kind": "shrine",
+  "name": "Đài Khởi Nguyên (Thánh Địa)",
+  "level": 80,
+  "requires": [
+   "boss:dialga",
+   "boss:palkia",
+   "boss:giratina",
+   "boss:mewtwo",
+   "boss:rayquaza"
+  ],
+  "lore": "Đấng tạo hóa — tương truyền đã tạo ra cả vũ trụ từ quả trứng hỗn mang.",
+  "hint": "Một bậc thang ánh sáng mờ ảo... chỉ người đã thấy thời gian, không gian, phản vật chất, rồng trời và Mewtwo mới được bước lên.",
+  "site": {
+   "x": 48,
+   "y": 22,
+   "region": "legendary-sanctuary"
+  }
+ }
+]

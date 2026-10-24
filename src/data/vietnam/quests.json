@@ -1,0 +1,772 @@
+[
+ {
+  "id": "vn-cm-1",
+  "kind": "main",
+  "title": "Khởi hành từ Đất Mũi",
+  "giver": "vn-prof",
+  "description": "Gặp Giáo sư Mai ở Trạm Nghiên cứu Đất Mũi, nhận Pokémon đầu tiên và thu phục một Pokémon hoang dã.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "vn-prof",
+    "count": 1,
+    "text": "Gặp Giáo sư Mai",
+    "marker": {
+     "x": 85,
+     "y": 95,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "capture",
+    "target": "*",
+    "count": 1,
+    "text": "Thu phục 1 Pokémon hoang dã (bãi biển hoặc rừng ngập mặn)",
+    "marker": {
+     "x": 60,
+     "y": 70,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vn-prof",
+    "count": 1,
+    "text": "Báo cáo Giáo sư Mai",
+    "marker": {
+     "x": 85,
+     "y": 95,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "pokeball": 5,
+    "potion": 3
+   },
+   "worldExp": 120,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "Chào cháu! Chào mừng tới Đất Mũi — nơi hành trình Việt Nam Odyssey bắt đầu.",
+    "Rừng ngập mặn ở đây là nhà của rất nhiều Pokémon. Ta cần một nhà huấn luyện giúp ta ghi chép hệ sinh thái."
+   ],
+   "complete": [
+    "Tốt lắm! Cháu đã sẵn sàng khám phá rồi. Hãy đi về phía bắc, qua rừng ngập mặn tới U Minh Hạ."
+   ],
+   "progress": [
+    "Bắt một Pokémon hoang dã rồi quay lại nhé."
+   ]
+  },
+  "autoStart": true,
+  "starter": [
+   "treecko",
+   "torchic",
+   "mudkip"
+  ]
+ },
+ {
+  "id": "vn-cm-2",
+  "kind": "main",
+  "title": "Vào rừng U Minh",
+  "giver": "vn-prof",
+  "description": "Băng qua rừng ngập mặn, tới trạm kiểm lâm U Minh Hạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "cm-mangrove",
+    "count": 1,
+    "text": "Đi qua Rừng Ngập Mặn Đất Mũi",
+    "marker": {
+     "x": 70,
+     "y": 62,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "cm-uminh",
+    "count": 1,
+    "text": "Tới Rừng Tràm U Minh Hạ",
+    "marker": {
+     "x": 62,
+     "y": 40,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "activate",
+    "target": "wp-cm-uminh",
+    "count": 1,
+    "text": "Kích hoạt Trạm kiểm lâm U Minh",
+    "marker": {
+     "x": 66,
+     "y": 36,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-ranger",
+    "count": 1,
+    "text": "Gặp Kiểm lâm Nam",
+    "marker": {
+     "x": 64,
+     "y": 40,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 250,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Kiểm lâm Nam ở U Minh Hạ báo Pokémon trong rừng đang rất bất an. Cháu tới đó giúp ông ấy nhé."
+   ],
+   "complete": [
+    "Cháu tới rồi! Lũ Pokémon rừng tràm hoảng loạn mấy hôm nay..."
+   ]
+  },
+  "requires": [
+   "vn-cm-1"
+  ]
+ },
+ {
+  "id": "vn-cm-3",
+  "kind": "main",
+  "title": "Chúa Rừng U Minh",
+  "giver": "cm-ranger",
+  "description": "Một Seviper khổng lồ chiếm sâu trong rừng tràm. Hãy đánh bại nó để mang bình yên trở lại.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "cm-forest-trainer",
+    "count": 1,
+    "text": "Vượt qua Kiểm lâm tập sự Vy",
+    "marker": {
+     "x": 44,
+     "y": 22,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "seviper",
+    "count": 1,
+    "text": "Đánh bại Seviper — Chúa Rừng U Minh",
+    "marker": {
+     "x": 28,
+     "y": 30,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vn-prof",
+    "count": 1,
+    "text": "Báo tin cho Giáo sư Mai",
+    "marker": {
+     "x": 85,
+     "y": 95,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 600,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Có một Seviper rất lớn làm tổ ở phía tây bắc rừng tràm. Nọc độc của nó làm Pokémon khác bỏ chạy.",
+    "Vượt qua thử thách của Vy trước, rồi hãy vào sâu đánh bại nó."
+   ],
+   "complete": [
+    "Cháu làm được rồi! Với Huy hiệu Rừng Tràm, đường lên An Giang đã mở."
+   ],
+   "progress": [
+    "Seviper ở phía tây bắc rừng tràm. Mang theo thuốc giải độc nhé!"
+   ]
+  },
+  "requires": [
+   "vn-cm-2"
+  ]
+ },
+ {
+  "id": "vn-cm-light",
+  "kind": "exploration",
+  "title": "Bí ẩn ánh sáng giữa rừng",
+  "giver": "cm-elder",
+  "description": "Ông Ba kể về một đốm sáng xanh xuất hiện sâu trong rừng U Minh.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "cm-light",
+    "count": 1,
+    "text": "Tìm đốm sáng kỳ lạ (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 14,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-elder",
+    "count": 1,
+    "text": "Kể lại cho Ông Ba",
+    "marker": {
+     "x": 56,
+     "y": 26,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "moon-stone": 1
+   },
+   "worldExp": 300,
+   "reputation": 15,
+   "flags": [
+    "vn:mystery-light"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cháu có tin không? Đêm không trăng, sâu trong rừng có một đốm sáng xanh. Ta già rồi, không đi nổi nữa..."
+   ],
+   "complete": [
+    "Nó chỉ cho cháu về phía bắc à? Vậy là truyền thuyết còn dài lắm..."
+   ]
+  },
+  "requires": [
+   "vn-cm-2"
+  ]
+ },
+ {
+  "id": "vn-cm-board-1",
+  "kind": "side",
+  "title": "Bảng: Cua bò lên bãi",
+  "giver": "cm-board",
+  "description": "Ngư dân nhờ đuổi bớt Krabby và Corphish đang phá lưới.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "krabby",
+    "count": 3,
+    "text": "Đánh bại Krabby (0/3)",
+    "marker": {
+     "x": 40,
+     "y": 96,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "defeat",
+    "target": "corphish",
+    "count": 2,
+    "text": "Đánh bại Corphish (0/2)",
+    "marker": {
+     "x": 52,
+     "y": 100,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-fisher",
+    "count": 1,
+    "text": "Báo cho Ngư dân Tư Sáu",
+    "marker": {
+     "x": 46,
+     "y": 98,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "potion": 3,
+    "oranberry": 3
+   },
+   "worldExp": 150,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng nhiệm vụ] Cần người đuổi Krabby và Corphish phá lưới ở bãi biển. Liên hệ Ngư dân Tư Sáu."
+   ],
+   "complete": [
+    "Lưới yên rồi! Cảm ơn nhiều nha."
+   ]
+  },
+  "requires": [
+   "vn-cm-1"
+  ]
+ },
+ {
+  "id": "vn-cm-board-2",
+  "kind": "capture",
+  "title": "Bảng: Ghi chép rừng ngập mặn",
+  "giver": "cm-board",
+  "description": "Giáo sư Mai cần mẫu ghi chép Wooper và Lotad.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "wooper",
+    "count": 1,
+    "text": "Thu phục Wooper",
+    "marker": {
+     "x": 70,
+     "y": 60,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "capture",
+    "target": "lotad",
+    "count": 1,
+    "text": "Thu phục Lotad",
+    "marker": {
+     "x": 50,
+     "y": 66,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vn-prof",
+    "count": 1,
+    "text": "Nộp cho Giáo sư Mai",
+    "marker": {
+     "x": 85,
+     "y": 95,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 200,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng nhiệm vụ] Trạm Nghiên cứu cần ghi chép Wooper và Lotad trong rừng ngập mặn."
+   ],
+   "complete": [
+    "Mẫu ghi chép tuyệt vời!"
+   ]
+  },
+  "requires": [
+   "vn-cm-1"
+  ]
+ },
+ {
+  "id": "vn-cm-cape",
+  "kind": "exploration",
+  "title": "Điểm cực Nam",
+  "giver": "cm-guide",
+  "description": "Đến Mũi Cà Mau và nghe hướng dẫn viên kể về mũi đất.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "cm-cape",
+    "count": 1,
+    "text": "Đi ra Mũi Cà Mau",
+    "marker": {
+     "x": 38,
+     "y": 90,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "cm-youngster",
+    "count": 1,
+    "text": "Đánh bại Bé Tí bắt bọ",
+    "marker": {
+     "x": 74,
+     "y": 70,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 1
+   },
+   "worldExp": 150,
+   "reputation": 10,
+   "flags": [
+    "landmark:mui-ca-mau"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Bạn đã tới Mũi Cà Mau chưa? Đi ra mũi đất rồi quay lại nhé — tiện đường thì đấu với Bé Tí ở lối lên rừng."
+   ],
+   "complete": [
+    "Vậy là bạn đã đứng ở điểm cực Nam của đất liền Việt Nam rồi!"
+   ]
+  },
+  "requires": [
+   "vn-cm-1"
+  ]
+ },
+ {
+  "id": "vn-ag-1",
+  "kind": "main",
+  "title": "Bảy Núi giữa đồng bằng",
+  "giver": "ag-guide",
+  "description": "Đến An Giang, gặp nhóm khảo sát ở vùng Bảy Núi.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-an-giang-center",
+    "count": 1,
+    "text": "Kích hoạt Trung tâm Pokémon Bảy Núi",
+    "marker": {
+     "x": 73,
+     "y": 90,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ag-that-son",
+    "count": 1,
+    "text": "Tới vùng Bảy Núi",
+    "marker": {
+     "x": 66,
+     "y": 46,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-researcher",
+    "count": 1,
+    "text": "Gặp Trưởng nhóm khảo sát Vy",
+    "marker": {
+     "x": 64,
+     "y": 45,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 300,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Bạn từ Cà Mau lên à? Nhóm khảo sát ở Bảy Núi đang cần người giúp — họ cắm trại ở phía bắc."
+   ],
+   "complete": [
+    "Ôi may quá, có người tới rồi!"
+   ]
+  },
+  "autoStart": true
+ },
+ {
+  "id": "vn-ag-rescue",
+  "kind": "side",
+  "title": "Giải cứu nhóm khảo sát",
+  "giver": "ag-researcher",
+  "description": "Smeargle của nhóm khảo sát bị đàn Geodude vây trên sườn núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ag-survey-smeargle",
+    "count": 1,
+    "text": "Giải cứu Smeargle (phía đông bắc trại)",
+    "marker": {
+     "x": 74,
+     "y": 30,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-researcher",
+    "count": 1,
+    "text": "Báo cho Trưởng nhóm Vy",
+    "marker": {
+     "x": 64,
+     "y": 45,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 3
+   },
+   "worldExp": 400,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Smeargle — họa sĩ của nhóm — đi chép phù văn trên vách đá thì bị Geodude vây. Bạn cứu nó giúp tôi!"
+   ],
+   "complete": [
+    "Smeargle về rồi! Nó đã chép được ba chữ trên cửa đền: NÚI, NƯỚC, RỪNG... nhưng thứ tự thì sao nhỉ?"
+   ]
+  },
+  "requires": [
+   "vn-ag-1"
+  ]
+ },
+ {
+  "id": "vn-ag-temple",
+  "kind": "main",
+  "title": "Đền Cổ Thất Sơn",
+  "giver": "ag-researcher",
+  "description": "Mở phong ấn đền cổ (giả tưởng) trên đỉnh Bảy Núi và đối mặt Hộ Vệ Đền.",
+  "objectives": [
+   {
+    "type": "puzzle",
+    "target": "ag-temple-seal",
+    "count": 1,
+    "text": "Bước lên 3 phiến đá theo thứ tự: NƯỚC → RỪNG → NÚI",
+    "marker": {
+     "x": 64,
+     "y": 16,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "claydol",
+    "count": 1,
+    "text": "Đánh bại Claydol — Hộ Vệ Đền Cổ",
+    "marker": {
+     "x": 64,
+     "y": 11,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-researcher",
+    "count": 1,
+    "text": "Kể lại cho Trưởng nhóm Vy",
+    "marker": {
+     "x": 64,
+     "y": 45,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 900,
+   "reputation": 40
+  },
+  "dialogue": {
+   "offer": [
+    "Smeargle chép thêm được một câu: \"Nước nuôi rừng, rừng giữ núi\". Có lẽ đó là thứ tự mở cửa đền!",
+    "Đền ở phía bắc trại, trên đỉnh núi."
+   ],
+   "complete": [
+    "Phong ấn đã mở và Hộ Vệ đã chịu thua... Những ký hiệu này nhắc tới các cổ vật khác ở phía bắc. Hành trình còn dài!"
+   ]
+  },
+  "requires": [
+   "vn-ag-rescue"
+  ]
+ },
+ {
+  "id": "vn-ag-board-1",
+  "kind": "side",
+  "title": "Bảng: Mùa nước nổi",
+  "giver": "ag-board",
+  "description": "Bác lái đò muốn biết Pokémon nào theo nước lũ về đồng.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "buizel",
+    "count": 1,
+    "text": "Thu phục Buizel",
+    "marker": {
+     "x": 108,
+     "y": 80,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "capture",
+    "target": "barboach",
+    "count": 1,
+    "text": "Thu phục Barboach",
+    "marker": {
+     "x": 112,
+     "y": 96,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-boatman",
+    "count": 1,
+    "text": "Kể cho Bác lái đò Năm",
+    "marker": {
+     "x": 104,
+     "y": 90,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "mystic-water": 1,
+    "greatball": 3
+   },
+   "worldExp": 300,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng nhiệm vụ] Bác lái đò Năm cần người ghi lại Pokémon về theo mùa nước nổi."
+   ],
+   "complete": [
+    "Đúng là cá về, Pokémon cũng về theo!"
+   ]
+  },
+  "requires": [
+   "vn-ag-1"
+  ]
+ },
+ {
+  "id": "vn-ag-board-2",
+  "kind": "trainer",
+  "title": "Bảng: Cao thủ Bảy Núi",
+  "giver": "ag-board",
+  "description": "Đánh bại ba huấn luyện viên mạnh nhất An Giang.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ag-climber",
+    "count": 1,
+    "text": "Đánh bại Người leo núi Đức",
+    "marker": {
+     "x": 100,
+     "y": 26,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ag-boater",
+    "count": 1,
+    "text": "Đánh bại Bạn chèo xuồng Mai",
+    "marker": {
+     "x": 70,
+     "y": 66,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ag-diver",
+    "count": 1,
+    "text": "Đánh bại Thợ lặn Hải Đăng (đảo)",
+    "marker": {
+     "x": 14,
+     "y": 84,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "expert-belt": 1
+   },
+   "worldExp": 600,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng nhiệm vụ] Ai đánh bại cả ba cao thủ — trên núi, giữa rừng tràm và ngoài đảo — sẽ được thưởng."
+   ],
+   "complete": [
+    "Cao thủ An Giang là đây!"
+   ]
+  },
+  "requires": [
+   "vn-ag-1"
+  ]
+ },
+ {
+  "id": "vn-ag-island",
+  "kind": "exploration",
+  "title": "Ra đảo Phú Quốc",
+  "giver": "ag-guide",
+  "description": "Đi phà ra đảo lớn nhất Việt Nam.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ag-phu-quoc",
+    "count": 1,
+    "text": "Đi phà ra Đảo Phú Quốc",
+    "marker": {
+     "x": 46,
+     "y": 82,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-islander",
+    "count": 1,
+    "text": "Gặp Cô Sương trên đảo",
+    "marker": {
+     "x": 18,
+     "y": 66,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "water-stone": 1
+   },
+   "worldExp": 250,
+   "reputation": 10,
+   "flags": [
+    "landmark:phu-quoc"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Bến phà ở phía tây thị trấn đó. Ra đảo chơi đi, biển đẹp lắm!"
+   ],
+   "complete": [
+    "Chào mừng ra đảo!"
+   ]
+  },
+  "requires": [
+   "vn-ag-1"
+  ]
+ }
+]

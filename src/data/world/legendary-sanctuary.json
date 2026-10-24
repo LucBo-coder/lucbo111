@@ -1,0 +1,184 @@
+{
+ "id": "legendary-sanctuary",
+ "name": "Thánh Địa Huyền Thoại",
+ "width": 96,
+ "height": 80,
+ "chunk": 16,
+ "theme": "sanctuary",
+ "spawn": {
+  "x": 48,
+  "y": 72
+ },
+ "areas": [
+  {
+   "id": "sanctuary-court",
+   "name": "Sân Thánh Địa",
+   "rect": [
+    0,
+    0,
+    95,
+    79
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    65,
+    85
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     48,
+     76
+    ],
+    [
+     48,
+     40
+    ],
+    [
+     48,
+     26
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     48,
+     50
+    ],
+    [
+     22,
+     42
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     48,
+     50
+    ],
+    [
+     76,
+     42
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  43,
+  68,
+  53,
+  75
+ ],
+ "lake": {
+  "cx": 22,
+  "cy": 30,
+  "rx": 7,
+  "ry": 5
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [
+  {
+   "x": 52,
+   "y": 73,
+   "text": [
+    "THÁNH ĐỊA HUYỀN THOẠI",
+    "Khuyến nghị Lv75 · Vùng cuối của thế giới."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "oracle",
+   "name": "Nhà tiên tri",
+   "sprite": "wizard",
+   "x": 44,
+   "y": 70,
+   "lines": [
+    "Nơi đây chỉ dành cho người đã thấy thời gian, không gian và thế giới đảo ngược.",
+    "Pokémon ở Thánh Địa mạnh nhất thế gian (Lv65–85). Đấng Khởi Nguyên chờ ở đài phía bắc."
+   ]
+  }
+ ],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [
+  {
+   "id": "chest-sanctuary",
+   "x": 80,
+   "y": 20,
+   "items": {
+    "ultraball": 5,
+    "moon-stone": 1,
+    "dragon-scale": 1
+   }
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-sanctuary-gate",
+   "name": "Cổng Thánh Địa",
+   "x": 50,
+   "y": 70
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [
+  {
+   "id": "trial-tower",
+   "name": "Tháp Thử Thách",
+   "x": 60,
+   "y": 72
+  }
+ ],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "arceus",
+   "name": "Đài Khởi Nguyên",
+   "x": 48,
+   "y": 22,
+   "level": 80,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:dialga",
+    "boss:palkia",
+    "boss:giratina",
+    "boss:mewtwo",
+    "boss:rayquaza"
+   ],
+   "gap": 1.57,
+   "hint": "Một bậc thang ánh sáng mờ ảo... chỉ người đã thấy thời gian, không gian, phản vật chất, rồng trời và Mewtwo mới được bước lên.",
+   "condition": {}
+  }
+ ],
+ "portals": [
+  {
+   "id": "portal-sanctuary-valley",
+   "name": "Cổng về Thung Lũng",
+   "x": 46,
+   "y": 76,
+   "to": "starter-valley",
+   "toX": 80,
+   "toY": 116
+  }
+ ]
+}

@@ -1,0 +1,68 @@
+{
+ "canight": {
+  "id": 9001,
+  "name": "canight",
+  "displayName": "Canight",
+  "genus": "Fakemon Mèo Đêm",
+  "types": [
+   "dark"
+  ],
+  "baseStats": {
+   "hp": 50,
+   "atk": 72,
+   "def": 45,
+   "spa": 70,
+   "spd": 50,
+   "spe": 90
+  },
+  "abilities": [
+   {
+    "name": "night-veil",
+    "hidden": false
+   }
+  ],
+  "heightDm": 5,
+  "weightHg": 80,
+  "baseExperience": 70,
+  "captureRate": 120,
+  "baseHappiness": 70,
+  "growthRate": "medium",
+  "habitat": "ruins",
+  "flavorText": "Fakemon của IcyEthics. Lặng lẽ săn mồi trong bóng tối của những tàn tích cổ, đôi mắt vàng phát sáng khi trăng lên.",
+  "evolutions": [],
+  "levelUpMoves": []
+ },
+ "perropello": {
+  "id": 9002,
+  "name": "perropello",
+  "displayName": "Perropello",
+  "genus": "Fakemon Chó Gai",
+  "types": [
+   "normal"
+  ],
+  "baseStats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 62,
+   "spa": 40,
+   "spd": 55,
+   "spe": 68
+  },
+  "abilities": [
+   {
+    "name": "guts",
+    "hidden": false
+   }
+  ],
+  "heightDm": 7,
+  "weightHg": 210,
+  "baseExperience": 75,
+  "captureRate": 120,
+  "baseHappiness": 70,
+  "growthRate": "medium",
+  "habitat": "grassland",
+  "flavorText": "Fakemon của IcyEthics. Bộ lông dựng gai khi giận dữ; trung thành tuyệt đối với người đã chiến thắng nó.",
+  "evolutions": [],
+  "levelUpMoves": []
+ }
+}

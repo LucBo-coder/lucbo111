@@ -1,0 +1,479 @@
+{
+  "version": 7,
+  "updated": "2026-10-24",
+  "pixelStandard": {
+    "tileSize": 16,
+    "creatureSize": 16,
+    "worldScale": 3,
+    "outline": "1px dark (#1a1420 creatures, Kenney native outline for environment)",
+    "filtering": "nearest-neighbour only (pixelArt: true, roundPixels: true)"
+  },
+  "assets": [
+    {
+      "id": "kenney-tiny-town",
+      "path": "public/assets/kenney/tiny-town/tilemap_packed.png",
+      "type": "spritesheet",
+      "frame": {
+        "width": 16,
+        "height": 16,
+        "columns": 12,
+        "rows": 11
+      },
+      "source": "https://kenney.nl/assets/tiny-town",
+      "download": "https://kenney.nl/media/pages/assets/tiny-town/a415fbeb49-1735736916/kenney_tiny-town.zip",
+      "author": "Kenney (www.kenney.nl)",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/kenney/tiny-town/License.txt",
+      "attributionRequired": false,
+      "attribution": "Tiny Town by Kenney (CC0)",
+      "cost": "free",
+      "sha256": "3a54d99ecde790d4fdea207a3644cf130fc56fa838f1beb1507c185a95b8e902",
+      "usedFor": [
+        "open-world ground tiles",
+        "paths",
+        "trees",
+        "fences",
+        "houses",
+        "signs",
+        "well",
+        "props"
+      ],
+      "verified": "URL 200, license read from bundled License.txt, 192x176 indexed PNG, 16px grid",
+      "status": "integrated"
+    },
+    {
+      "id": "kenney-tiny-dungeon",
+      "path": "public/assets/kenney/tiny-dungeon/tilemap_packed.png",
+      "type": "spritesheet",
+      "frame": {
+        "width": 16,
+        "height": 16,
+        "columns": 12,
+        "rows": 11
+      },
+      "source": "https://kenney.nl/assets/tiny-dungeon",
+      "download": "https://kenney.nl/media/pages/assets/tiny-dungeon/f8422efb44-1674742415/kenney_tiny-dungeon.zip",
+      "author": "Kenney (www.kenney.nl)",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/kenney/tiny-dungeon/License.txt",
+      "attributionRequired": false,
+      "attribution": "Tiny Dungeon by Kenney (CC0)",
+      "cost": "free",
+      "sha256": "d24e60a41e4ac7a745c0304dfde121143688557f40215f23221c29cfe683825f",
+      "usedFor": [
+        "dungeon floor/walls/doors",
+        "chests",
+        "NPC characters",
+        "potion icons",
+        "pressure plates"
+      ],
+      "verified": "URL 200, license read from bundled License.txt, 192x176 indexed PNG, 16px grid",
+      "status": "integrated"
+    },
+    {
+      "id": "icyethics-pokemonassets",
+      "path": "public/assets/icyethics/",
+      "type": "images",
+      "files": [
+        "public/assets/icyethics/pokemon-shiny/canight.png",
+        "public/assets/icyethics/pokemon-shiny/diglett.png",
+        "public/assets/icyethics/pokemon-shiny/gulpin.png",
+        "public/assets/icyethics/pokemon-shiny/hoothoot.png",
+        "public/assets/icyethics/pokemon-shiny/paras.png",
+        "public/assets/icyethics/pokemon-shiny/perropello.png",
+        "public/assets/icyethics/pokemon/canight.png",
+        "public/assets/icyethics/pokemon/diglett.png",
+        "public/assets/icyethics/pokemon/gulpin.png",
+        "public/assets/icyethics/pokemon/hoothoot.png",
+        "public/assets/icyethics/pokemon/paras.png",
+        "public/assets/icyethics/pokemon/perropello.png",
+        "public/assets/icyethics/trainers/hilda.png",
+        "public/assets/icyethics/trainers/mycologist.png",
+        "public/assets/icyethics/trainers/youngster_f.png",
+        "public/assets/icyethics/trainers/youngster_m.png"
+      ],
+      "source": "https://github.com/icyethics/PokemonAssets",
+      "author": "IcyEthics",
+      "license": "Custom (README): free for non-commercial projects; any derived project must also be free to use and adapt by others; credit IcyEthics",
+      "licenseFile": "public/assets/icyethics/README-IcyEthics.md",
+      "attributionRequired": true,
+      "attribution": "Pokémon-style sprites & trainer art by IcyEthics (github.com/icyethics/PokemonAssets)",
+      "cost": "free",
+      "obligations": [
+        "project stays non-commercial",
+        "project stays free to use and adapt",
+        "credit shown in-game (Menu -> Ghi công) and in README"
+      ],
+      "usedFor": [
+        "Diglett, Gulpin, Hoothoot, Paras (fan redesigns), fakemon Canight & Perropello: field sprites + animation atlases",
+        "Dugtrio = composite of 3 converted Digletts",
+        "dialogue portraits: Mycologist, Youngster M/F, Hilda",
+        "cave floor tiles (grey stone, lavender ice) for the new dungeons: public/assets/icyethics/tiles/*.png, cut from Tilesets/padded_caveTiles.png and sampled 2:1 back to their 16 px pixel art (scripts/prepare-icy-tiles.py)"
+      ],
+      "pipeline": "loaded at boot, trimmed, collapsed to 1x, pixel-art-aware 2x downscale (outline-preserving) and palette-gridded (src/render/spriteRegistry.ts) so they share the x3 pixel density; then fed to the same derived-frame animation system",
+      "notIntegrated": [
+        "back sprites, footprints, overworld walk sheets (32x48 frames: density mismatch with the 16px field)",
+        "region tilesets padded_*.png (32 px RPG-Maker style autotiles: Mycor Town, Bog of Yore, mountain) — only flat cave floors are used",
+        "UI objects"
+      ],
+      "verified": "repo metadata via GitHub API, README read, all PNG sizes checked",
+      "status": "integrated"
+    },
+    {
+      "id": "procedural-creatures",
+      "path": "src/render/pixelArt.ts",
+      "type": "generated",
+      "source": "original (this project)",
+      "license": "project-owned",
+      "usedFor": [
+        "11 base Pokémon + 17 evolutions + 5 Mega forms (original fan pixel art, 16-24px grids)",
+        "Magneton = composite of 3 Magnemite",
+        "trainer",
+        "Onix boss",
+        "projectiles, icons, gems, item icons"
+      ],
+      "animation": "derived frames generated at boot by src/render/animation.ts: idle(2) walk(4) attack(2) cast(2) hit(1) faint(3). These are procedural transforms of one base drawing, NOT hand-drawn frame animation.",
+      "status": "integrated"
+    },
+    {
+      "id": "procedural-environment-extras",
+      "path": "src/render/tileset.ts",
+      "type": "generated",
+      "source": "original (this project)",
+      "license": "project-owned",
+      "usedFor": [
+        "water (2-frame animation) + 16 shore variants (Tiny Town has no water)",
+        "tall grass (2-frame sway)",
+        "sand",
+        "rocky ground",
+        "boulders",
+        "waypoint crystal",
+        "rune plates",
+        "cave entrance"
+      ],
+      "status": "integrated"
+    },
+    {
+      "id": "procedural-sfx",
+      "path": "src/systems/audio.ts",
+      "type": "generated",
+      "source": "original (WebAudio synthesis)",
+      "license": "project-owned",
+      "status": "integrated"
+    },
+    {
+      "id": "vt323-font",
+      "path": "https://fonts.googleapis.com/css2?family=VT323",
+      "type": "webfont",
+      "source": "https://fonts.google.com/specimen/VT323",
+      "author": "Peter Hull",
+      "license": "OFL-1.1",
+      "usedFor": [
+        "all UI text (has Vietnamese glyphs)"
+      ],
+      "fallback": "monospace when offline",
+      "status": "integrated (CDN)"
+    },
+    {
+      "id": "official-sprites-personal",
+      "path": "public/assets/official/",
+      "type": "spritesheet-set",
+      "source": "https://github.com/PokeAPI/sprites (pokemon, shiny, items) · https://play.pokemonshowdown.com/sprites/trainers (trainers)",
+      "author": "The Pokémon Company (artwork); Pokémon Showdown (trainer sprite hosting)",
+      "license": "Copyright The Pokémon Company — personal use only, NOT redistributed",
+      "usedFor": [
+        "field icons (on demand)",
+        "UI front + shiny fronts 96x96",
+        "item icons 30x30 (bag, thrown ball)",
+        "trainer sprites 80x80 (NPC field sprites, dialogue portraits, ambush trainers)"
+      ],
+      "fallback": "original procedural/placeholder pixel art (default)",
+      "status": "optional, downloaded locally by scripts/fetch-official-sprites.mjs, git-ignored, off by default",
+      "count": "508 icons, 508 front, 508 shiny, 55 items, 24 trainers"
+    },
+    {
+      "id": "placeholder-creatures",
+      "path": "src/render/spriteRegistry.ts#placeholderGrid",
+      "type": "procedural",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "usedFor": [
+        "Gen 1 species without hand-drawn art"
+      ],
+      "fallback": "-",
+      "status": "integrated"
+    },
+    {
+      "id": "type-icons",
+      "path": "src/render/icons.ts#TYPE_GLYPH",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "11x11 (glyph 7x7)",
+      "frames": 1,
+      "fps": 0,
+      "count": 18,
+      "usedFor": [
+        "type badges",
+        "Pokémon details",
+        "skill rows"
+      ],
+      "fallback": "text badge",
+      "status": "integrated"
+    },
+    {
+      "id": "status-icons",
+      "path": "src/render/icons.ts#STATUS_ICON",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "9x9",
+      "frames": 1,
+      "fps": 0,
+      "count": 14,
+      "usedFor": [
+        "status above units",
+        "skill icon status chip"
+      ],
+      "fallback": "tint",
+      "status": "integrated"
+    },
+    {
+      "id": "skill-icons",
+      "path": "src/render/icons.ts#drawSkillIcon",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "16x16 (bespoke art 12x12)",
+      "frames": 1,
+      "fps": 0,
+      "count": 227,
+      "bespoke": 24,
+      "usedFor": [
+        "Pokémon details",
+        "Survivor skill cards",
+        "evolution summary"
+      ],
+      "fallback": "composed kind×type icon (always available)",
+      "status": "integrated",
+      "note": "24 hand-drawn; the rest composed from kind glyph + type palette + category frame + power/status/multi-hit marks"
+    },
+    {
+      "id": "item-icons",
+      "path": "src/render/icons.ts#ITEM_ART",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "10x10",
+      "frames": 1,
+      "fps": 0,
+      "usedFor": [
+        "Bag"
+      ],
+      "fallback": "tinted item_<kind>",
+      "status": "integrated"
+    },
+    {
+      "id": "type-projectiles",
+      "path": "src/render/icons.ts#PROJ",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "10x10",
+      "frames": 1,
+      "fps": 0,
+      "count": 18,
+      "usedFor": [
+        "projectile sprites per type"
+      ],
+      "fallback": "p_<vfx> dot sprite",
+      "status": "integrated"
+    },
+    {
+      "id": "type-impacts",
+      "path": "src/render/vfx.ts#impact",
+      "type": "procedural-vfx",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "frames": "particles",
+      "fps": 60,
+      "count": 18,
+      "usedFor": [
+        "hit feedback per type"
+      ],
+      "fallback": "neutral star burst",
+      "status": "integrated"
+    },
+    {
+      "id": "shiny-palette-fallback",
+      "path": "src/render/lazyCreatures.ts#shinyPalette",
+      "type": "procedural-palette",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "usedFor": [
+        "shiny Pokémon (hue-rotated palette per species, outlines kept)"
+      ],
+      "fallback": "-",
+      "status": "integrated",
+      "note": "No licensed shiny sprites are bundled; official shiny art is not used."
+    },
+    {
+      "id": "creature-placeholders-dex493",
+      "path": "src/render/spriteRegistry.ts#placeholderGrid",
+      "type": "procedural",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "count": 470,
+      "usedFor": [
+        "species without hand-drawn art (built lazily on first use)"
+      ],
+      "fallback": "-",
+      "status": "integrated"
+    },
+    {
+      "id": "region-tiles-0.7",
+      "path": "src/render/tileset.ts",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "16x16",
+      "frames": "1 (snow-deep, lava: 2)",
+      "fps": 2,
+      "usedFor": [
+        "snow, deep snow, ice, ash, volcanic rock, lava, sanctuary stone, snow pine, dead tree, crystal, region portal, bridge"
+      ],
+      "fallback": "-",
+      "status": "integrated"
+    },
+    {
+      "id": "special-ball-icons",
+      "path": "src/render/icons.ts#ITEM_ART",
+      "type": "procedural-pixel",
+      "source": "original",
+      "author": "project",
+      "license": "project",
+      "pixelDimensions": "10x10",
+      "frames": 1,
+      "fps": 0,
+      "count": 5,
+      "usedFor": [
+        "Net / Dusk / Quick / Timer / Luxury Ball"
+      ],
+      "fallback": "-",
+      "status": "integrated"
+    },
+    {
+      "id": "boss-ui-rayquaza",
+      "path": "public/assets/ui/boss/",
+      "type": "images",
+      "source": "rayquaza_boss_ui_separated.zip — supplied by the user for this project (origin/author not stated)",
+      "author": "unknown (user-supplied)",
+      "license": "not stated — supplied by the project owner for this personal project",
+      "attributionRequired": false,
+      "attribution": "Boss UI (Rayquaza UI pack) — do chủ dự án cung cấp",
+      "cost": "free",
+      "obligations": [
+        "do not redistribute until the origin/licence of the pack is known"
+      ],
+      "usedFor": [
+        "boss HUD frames, HP fills, badges, phase indicator / change panel, skill & small warning panels, status icons, party slot frame"
+      ],
+      "pipeline": "scripts/prepare-boss-ui.py: static HP bar erased from the HUD frames, sheets cut into single icons, stray edge fragments dropped, blue/purple fills re-hued from the HUD green fill; manifest.json lists sizes + bar rect",
+      "notIntegrated": [
+        "command_menu.png (baked labels with a typo, turn-based menu)",
+        "dialogue_panel, choice_buttons, skill_slots, element icons except ice/electric (exported, unused)"
+      ],
+      "status": "integrated"
+    },
+    {
+      "id": "pmd-spritecollab-personal",
+      "path": "public/assets/pmd/ (git-ignored)",
+      "type": "animation sheets",
+      "source": "https://github.com/JPTER78/pokesurvivor (assets/pokemon) — sprites of https://github.com/PMDCollab/SpriteCollab; frame data: SpriteCollab AnimData.xml",
+      "author": "SpriteCollab artists (public/assets/pmd/CREDITS.md)",
+      "license": "CC BY-NC 4.0 (non-commercial, attribution); Pokémon © Nintendo / Creatures / GAME FREAK / The Pokémon Company",
+      "attributionRequired": true,
+      "attribution": "Hoạt ảnh Pokémon: PMDCollab SpriteCollab (CC BY-NC 4.0) — danh sách họa sĩ trong game (Ghi công)",
+      "obligations": [
+        "non-commercial only",
+        "credit the artists (in-game button + CREDITS.md)",
+        "personal pack: not committed, not distributed"
+      ],
+      "usedFor": [
+        "field animations of 966 species: Walk / Idle / Attack / Shoot / Charge / Hurt / Faint × 8 directions + shiny"
+      ],
+      "pipeline": "scripts/import-pmd-sprites.py (images only; the repository code, PolyForm Noncommercial, is not used)",
+      "status": "integrated (optional)"
+    }
+  ],
+  "data": [
+    {
+      "id": "pokeapi-cache",
+      "path": "src/data/pokeapi/pokeapi-cache.json",
+      "source": "https://pokeapi.co/api/v2",
+      "license": "PokéAPI data is free to use under its Fair Use Policy; Pokémon names/data © Nintendo / Game Freak / The Pokémon Company",
+      "contents": [
+        "37 species: id, types, base stats, abilities, capture rate, growth rate, evolution chain, FRLG learnset, flavor text",
+        "5 Mega forms: types, stats, abilities",
+        "66 moves",
+        "26 items: name, cost, category, short effect",
+        "3 growth-rate tables"
+      ],
+      "refresh": "node scripts/sync-pokeapi.mjs (build time, sequential requests, retry + timeout); runtime PokemonDataProvider only refetches a single species on explicit user action",
+      "status": "integrated"
+    }
+  ],
+  "rejected": [
+    {
+      "id": "pokeapi-sprites",
+      "source": "https://github.com/PokeAPI/sprites",
+      "reason": "LICENCE.txt: 'All image contents within are Copyright The Pokémon Company.' The repository's CC0 covers the repo, not the artwork rights. Not bundled, not hotlinked.",
+      "findings": "front/back/shiny PNG 96x96 for all species; BW animated GIFs exist only for #1-#649 (#650 returns 404); 'showdown' GIFs for most species",
+      "status": "rejected for bundling (copyright); optional personal-use local download since 0.4.0"
+    },
+    {
+      "id": "pokemon-showdown-sprites",
+      "source": "https://play.pokemonshowdown.com/sprites/",
+      "reason": "Official/derived Pokémon artwork, same copyright issue. Showdown CODE is MIT, but only data structure was referenced, no code copied.",
+      "status": "rejected (copyright)"
+    },
+    {
+      "id": "kenney-particle-pack",
+      "source": "https://kenney.nl/assets/particle-pack",
+      "reason": "CC0 and allowed, but high-resolution smooth PNG particles clash with the 16px pixel style. Procedural pixel particles used instead.",
+      "status": "rejected (style mismatch)"
+    }
+  ],
+  "candidates": [
+    {
+      "source": "https://opengameart.org/ (search: 16x16 water/cave/snow tilesets)",
+      "note": "Licenses vary per asset (CC0/CC-BY/CC-BY-SA/GPL). Must be checked per file before use; none integrated yet."
+    },
+    {
+      "source": "https://itch.io/game-assets/free/tag-16x16",
+      "note": "Per-pack licenses; many forbid redistribution in open repos. None integrated yet."
+    },
+    {
+      "source": "https://kenney.nl/assets/tiny-ski (snow) / pixel-platformer",
+      "note": "CC0 — candidates for Frozen Mountains region."
+    }
+  ],
+  "missing": [
+    "Hand-drawn multi-frame creature animation",
+    "Sprites for Swalot, Noctowl, Parasect (their evolutions are blocked in-game with an explicit message)",
+    "Golem/Steelix/Crobat/Magnezone (trade/friendship/location evolutions not supported)",
+    "Music tracks",
+    "Hand-drawn per-move VFX for every move (current: per kind × type + 24 bespoke icons)",
+    "Hand-drawn multi-frame Pokémon animation"
+  ]
+}

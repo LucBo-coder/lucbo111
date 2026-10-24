@@ -1,0 +1,17 @@
+{
+  "rarityWeights": { "common": 62, "rare": 26, "epic": 10, "legendary": 2 },
+  "rarityScale": { "common": 1, "rare": 1.6, "epic": 2.4, "legendary": 3.5 },
+  "maxSkillLevel": 5,
+  "maxParty": 6,
+  "stats": [
+    { "id": "dmg", "stat": "dmgMult", "base": 0.08, "cap": 0.8, "percent": true, "icon": "sword", "name": "Sức Mạnh", "desc": "Toàn đội +{v} sát thương" },
+    { "id": "cdr", "stat": "cdr", "base": 0.05, "cap": 0.4, "percent": true, "icon": "clock", "name": "Hồi Chiêu", "desc": "Giảm {v} thời gian hồi chiêu" },
+    { "id": "hp", "stat": "hpMult", "base": 0.1, "cap": 1.0, "percent": true, "icon": "heart", "name": "Sinh Lực", "desc": "Toàn đội +{v} HP tối đa" },
+    { "id": "area", "stat": "areaMult", "base": 0.1, "cap": 0.6, "percent": true, "icon": "ring", "name": "Phạm Vi", "desc": "+{v} phạm vi kỹ năng diện rộng" },
+    { "id": "crit", "stat": "critBonus", "base": 0.04, "cap": 0.4, "percent": true, "icon": "star", "name": "Chí Mạng", "desc": "+{v} tỉ lệ chí mạng" },
+    { "id": "speed", "stat": "trainerSpeed", "base": 0.06, "cap": 0.4, "percent": true, "icon": "boot", "name": "Tốc Chạy", "desc": "Huấn luyện viên +{v} tốc độ" },
+    { "id": "magnet", "stat": "magnet", "base": 0.2, "cap": 1.5, "percent": true, "icon": "magnet", "name": "Nam Châm", "desc": "+{v} bán kính hút EXP" },
+    { "id": "energy", "stat": "energyRegen", "base": 0.1, "cap": 0.8, "percent": true, "icon": "bolt", "name": "Năng Lượng", "desc": "+{v} tốc độ hồi năng lượng" },
+    { "id": "proj", "stat": "extraProjectiles", "base": 1, "cap": 2, "percent": false, "minRarity": "epic", "icon": "multi", "name": "Đa Phóng", "desc": "+{v} đạn cho kỹ năng phóng" }
+  ]
+}

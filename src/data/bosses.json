@@ -1,0 +1,614 @@
+[
+ {
+  "id": "onix",
+  "name": "Onix",
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 35,
+   "atk": 45,
+   "def": 160,
+   "spa": 30,
+   "spd": 45,
+   "spe": 70
+  },
+  "hpMult": 120,
+  "moveSpeed": 85,
+  "radius": 34,
+  "contactPower": 45,
+  "segments": 6,
+  "skills": [
+   "rock_throw",
+   "earthquake",
+   "body_slam",
+   "rock_tomb"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "geodude",
+   "count": 5
+  },
+  "exp": 60,
+  "sprite": "onix",
+  "ai": "onix",
+  "scale": 5.5,
+  "survivor": true
+ },
+ {
+  "id": "mega-venusaur",
+  "name": "Mega Venusaur Thần Rừng",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 100,
+   "def": 123,
+   "spa": 122,
+   "spd": 120,
+   "spe": 80
+  },
+  "hpMult": 60,
+  "moveSpeed": 60,
+  "radius": 40,
+  "contactPower": 60,
+  "segments": 0,
+  "skills": [
+   "solar_beam",
+   "petal_blizzard",
+   "sleep_powder",
+   "vine_whip"
+  ],
+  "phase2Threshold": 0.6,
+  "phase2Summon": {
+   "enemy": "oddish",
+   "count": 4
+  },
+  "phase3Threshold": 0.3,
+  "phase3Banner": "Ánh Dương thiêu đốt khu rừng!",
+  "exp": 400,
+  "sprite": "venusaur-mega",
+  "ai": "venusaur",
+  "scale": 4.5,
+  "survivor": false
+ },
+ {
+  "id": "articuno",
+  "name": "Articuno Thần Băng",
+  "types": [
+   "ice",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 85,
+   "def": 100,
+   "spa": 95,
+   "spd": 125,
+   "spe": 85
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "ice_beam",
+   "blizzard",
+   "gust"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "seel",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Bão Tuyết Vĩnh Cửu sắp tới!",
+  "exp": 120,
+  "sprite": "articuno",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "ice_beam",
+   "volley": "blizzard",
+   "nova": "icy_wind",
+   "field": "powder_snow",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.6,
+    "duration": 2,
+    "magnitude": 0.4
+   },
+   "ultimate": "blizzard",
+   "ultimateName": "Bão Tuyết Vĩnh Cửu",
+   "ultimateStyle": "safe",
+   "flying": true,
+   "power": 0.45
+  }
+ },
+ {
+  "id": "zapdos",
+  "name": "Zapdos Thần Sấm",
+  "types": [
+   "electric",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 90,
+   "def": 85,
+   "spa": 125,
+   "spd": 90,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "thunderbolt",
+   "thunder",
+   "drill_peck"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "voltorb",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Lôi Vũ Ngàn Tia sắp tới!",
+  "exp": 120,
+  "sprite": "zapdos",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "zap_cannon",
+   "volley": "thunder",
+   "nova": "thunder_shock",
+   "field": "thunder_wave",
+   "fieldStatus": {
+    "kind": "stun",
+    "chance": 0.3,
+    "duration": 1,
+    "magnitude": 0
+   },
+   "ultimate": "thunder",
+   "ultimateName": "Lôi Vũ Ngàn Tia",
+   "ultimateStyle": "storm",
+   "flying": true,
+   "power": 0.45
+  }
+ },
+ {
+  "id": "moltres",
+  "name": "Moltres Thần Lửa",
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 100,
+   "def": 90,
+   "spa": 125,
+   "spd": 85,
+   "spe": 90
+  },
+  "hpMult": 100,
+  "moveSpeed": 95,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "flamethrower",
+   "heat_wave",
+   "wing_attack"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "ponyta",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Vòng Lửa Thiên Đường sắp tới!",
+  "exp": 120,
+  "sprite": "moltres",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "flamethrower",
+   "volley": "fire_blast",
+   "nova": "heat_wave",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "burn",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.03
+   },
+   "ultimate": "heat_wave",
+   "ultimateName": "Vòng Lửa Thiên Đường",
+   "ultimateStyle": "spokes",
+   "flying": true,
+   "power": 0.45
+  }
+ },
+ {
+  "id": "mewtwo",
+  "name": "Mewtwo",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 106,
+   "atk": 110,
+   "def": 90,
+   "spa": 154,
+   "spd": 90,
+   "spe": 130
+  },
+  "hpMult": 120,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psychic",
+   "future_sight",
+   "swift"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "kadabra",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Psystrike sắp tới!",
+  "exp": 120,
+  "sprite": "mewtwo",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psychic",
+   "volley": "future_sight",
+   "nova": "confusion",
+   "field": "kinesis",
+   "fieldStatus": {
+    "kind": "defDown",
+    "chance": 0.6,
+    "duration": 4,
+    "magnitude": 0.3
+   },
+   "ultimate": "psychic",
+   "ultimateName": "Psystrike",
+   "ultimateStyle": "mixed",
+   "blink": true,
+   "power": 0.25
+  }
+ },
+ {
+  "id": "mew",
+  "name": "Mew Huyền Bí",
+  "types": [
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 100,
+   "spa": 100,
+   "spd": 100,
+   "spe": 100
+  },
+  "hpMult": 100,
+  "moveSpeed": 70,
+  "radius": 36,
+  "contactPower": 55,
+  "segments": 0,
+  "skills": [
+   "psychic",
+   "ancient_power",
+   "pound"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "ditto",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Biến Ảo Nguyên Thủy sắp tới!",
+  "exp": 120,
+  "sprite": "mew",
+  "ai": "legendary",
+  "scale": 4.5,
+  "survivor": false,
+  "legend": {
+   "beam": "psybeam",
+   "volley": "ancient_power",
+   "nova": "psychic",
+   "field": "hypnosis",
+   "fieldStatus": {
+    "kind": "stun",
+    "chance": 0.3,
+    "duration": 1.2,
+    "magnitude": 0
+   },
+   "ultimate": "psychic",
+   "ultimateName": "Biến Ảo Nguyên Thủy",
+   "ultimateStyle": "mixed",
+   "blink": true,
+   "power": 0.4
+  }
+ },
+ {
+  "id": "mamoswine",
+  "name": "Mamoswine Kỷ Băng Hà",
+  "types": [
+   "ice",
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 110,
+   "atk": 130,
+   "def": 80,
+   "spa": 70,
+   "spd": 60,
+   "spe": 80
+  },
+  "hpMult": 60,
+  "moveSpeed": 80,
+  "radius": 34,
+  "contactPower": 50,
+  "segments": 0,
+  "skills": [
+   "ice_beam",
+   "ice_shard"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "swinub",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Băng giá phủ kín hang!",
+  "exp": 160,
+  "sprite": "mamoswine",
+  "ai": "legendary",
+  "scale": 4.0,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "ice_beam",
+   "volley": "ice_shard",
+   "nova": "earthquake",
+   "field": "powder_snow",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.6,
+    "duration": 2,
+    "magnitude": 0.4
+   },
+   "ultimate": "blizzard",
+   "ultimateName": "Kỷ Băng Hà",
+   "ultimateStyle": "safe",
+   "power": 0.42
+  }
+ },
+ {
+  "id": "magmortar",
+  "name": "Magmortar Lò Lửa",
+  "types": [
+   "fire"
+  ],
+  "baseStats": {
+   "hp": 75,
+   "atk": 95,
+   "def": 67,
+   "spa": 125,
+   "spd": 95,
+   "spe": 83
+  },
+  "hpMult": 60,
+  "moveSpeed": 80,
+  "radius": 34,
+  "contactPower": 50,
+  "segments": 0,
+  "skills": [
+   "flamethrower",
+   "fire_blast"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "slugma",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Lò lửa bùng nổ!",
+  "exp": 160,
+  "sprite": "magmortar",
+  "ai": "legendary",
+  "scale": 4.0,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "flamethrower",
+   "volley": "fire_blast",
+   "nova": "lava_plume",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "burn",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.04
+   },
+   "ultimate": "heat_wave",
+   "ultimateName": "Bão Dung Nham",
+   "ultimateStyle": "storm",
+   "power": 0.4
+  }
+ },
+ {
+  "id": "tyranitar",
+  "name": "Tyranitar Bạo Chúa",
+  "types": [
+   "rock",
+   "dark"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 134,
+   "def": 110,
+   "spa": 95,
+   "spd": 100,
+   "spe": 61
+  },
+  "hpMult": 60,
+  "moveSpeed": 80,
+  "radius": 34,
+  "contactPower": 50,
+  "segments": 0,
+  "skills": [
+   "dark_pulse",
+   "rock_slide"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "larvitar",
+   "count": 3
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Tyranitar gầm lên — mặt đất rung chuyển!",
+  "exp": 160,
+  "sprite": "tyranitar",
+  "ai": "legendary",
+  "scale": 4.0,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "dark_pulse",
+   "volley": "rock_slide",
+   "nova": "earthquake",
+   "field": "stone_edge",
+   "ultimate": "stone_edge",
+   "ultimateName": "Thạch Lũy Bạo Chúa",
+   "ultimateStyle": "spokes",
+   "power": 0.38
+  }
+ },
+ {
+  "id": "seviper",
+  "name": "Seviper Chúa Rừng U Minh",
+  "types": [
+   "poison"
+  ],
+  "baseStats": {
+   "hp": 73,
+   "atk": 100,
+   "def": 60,
+   "spa": 100,
+   "spd": 60,
+   "spe": 65
+  },
+  "hpMult": 16,
+  "moveSpeed": 80,
+  "radius": 30,
+  "contactPower": 35,
+  "segments": 0,
+  "skills": [
+   "poison_tail",
+   "sludge"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "ekans",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Seviper rít lên — nọc độc tràn khắp rừng tràm!",
+  "exp": 90,
+  "sprite": "seviper",
+  "ai": "legendary",
+  "scale": 3.6,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "poison_tail",
+   "volley": "sludge",
+   "nova": "poison_fang",
+   "field": "toxic",
+   "fieldStatus": {
+    "kind": "poison",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.03
+   },
+   "ultimate": "sludge_bomb",
+   "ultimateName": "Mưa Độc U Minh",
+   "ultimateStyle": "storm",
+   "power": 0.32
+  }
+ },
+ {
+  "id": "claydol",
+  "name": "Claydol Hộ Vệ Đền Cổ",
+  "types": [
+   "ground",
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 60,
+   "atk": 70,
+   "def": 105,
+   "spa": 70,
+   "spd": 120,
+   "spe": 75
+  },
+  "hpMult": 18,
+  "moveSpeed": 80,
+  "radius": 30,
+  "contactPower": 35,
+  "segments": 0,
+  "skills": [
+   "psybeam",
+   "ancient_power"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "baltoy",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Các phù văn trong đền bừng sáng!",
+  "exp": 90,
+  "sprite": "claydol",
+  "ai": "legendary",
+  "scale": 3.6,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "psybeam",
+   "volley": "ancient_power",
+   "nova": "earth_power",
+   "field": "mud_shot",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.6,
+    "duration": 2,
+    "magnitude": 0.35
+   },
+   "ultimate": "earth_power",
+   "ultimateName": "Phong Ấn Bảy Núi",
+   "ultimateStyle": "spokes",
+   "power": 0.3,
+   "blink": true
+  }
+ }
+]

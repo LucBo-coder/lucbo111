@@ -1,0 +1,1875 @@
+[
+ {
+  "id": "charmander",
+  "name": "Charmander",
+  "types": [
+   "fire"
+  ],
+  "rarity": "rare",
+  "role": "mage",
+  "baseStats": {
+   "hp": 39,
+   "atk": 52,
+   "def": 43,
+   "spa": 60,
+   "spd": 50,
+   "spe": 65
+  },
+  "moveSpeed": 205,
+  "attackRange": 260,
+  "critRate": 0.06,
+  "radius": 15,
+  "skills": [
+   "ember",
+   "flame_burst",
+   "fire_spin",
+   "scratch"
+  ],
+  "passive": {
+   "id": "blaze",
+   "name": "Blaze",
+   "description": "Kỹ năng hệ Lửa +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "fire",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "charmander",
+  "animation": {
+   "walk": "bob",
+   "cast": "flash"
+  },
+  "vfx": {
+   "hit": "ember",
+   "aura": "fire"
+  }
+ },
+ {
+  "id": "squirtle",
+  "name": "Squirtle",
+  "types": [
+   "water"
+  ],
+  "rarity": "rare",
+  "role": "tank",
+  "baseStats": {
+   "hp": 44,
+   "atk": 48,
+   "def": 65,
+   "spa": 50,
+   "spd": 64,
+   "spe": 43
+  },
+  "moveSpeed": 195,
+  "attackRange": 56,
+  "critRate": 0.04,
+  "radius": 16,
+  "skills": [
+   "tackle",
+   "water_gun",
+   "withdraw",
+   "bubble"
+  ],
+  "passive": {
+   "id": "torrent",
+   "name": "Torrent",
+   "description": "Kỹ năng hệ Nước +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "water",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "squirtle",
+  "animation": {
+   "walk": "bob",
+   "cast": "flash"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  }
+ },
+ {
+  "id": "bulbasaur",
+  "name": "Bulbasaur",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "rare",
+  "role": "support",
+  "baseStats": {
+   "hp": 45,
+   "atk": 49,
+   "def": 49,
+   "spa": 65,
+   "spd": 65,
+   "spe": 45
+  },
+  "moveSpeed": 195,
+  "attackRange": 240,
+  "critRate": 0.05,
+  "radius": 16,
+  "skills": [
+   "vine_whip",
+   "razor_leaf",
+   "synthesis",
+   "leech_seed"
+  ],
+  "passive": {
+   "id": "overgrow",
+   "name": "Overgrow",
+   "description": "Kỹ năng hệ Cỏ +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "grass",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "bulbasaur",
+  "animation": {
+   "walk": "bob",
+   "cast": "flash"
+  },
+  "vfx": {
+   "hit": "leaf",
+   "aura": "grass"
+  }
+ },
+ {
+  "id": "pikachu",
+  "name": "Pikachu",
+  "types": [
+   "electric"
+  ],
+  "rarity": "epic",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 35,
+   "atk": 55,
+   "def": 40,
+   "spa": 50,
+   "spd": 50,
+   "spe": 90
+  },
+  "moveSpeed": 215,
+  "attackRange": 250,
+  "critRate": 0.07,
+  "radius": 14,
+  "skills": [
+   "thunder_shock",
+   "spark",
+   "thunder_wave",
+   "thunderbolt"
+  ],
+  "passive": {
+   "id": "static",
+   "name": "Static",
+   "description": "Kẻ địch đánh cận chiến vào Pikachu có 30% bị tê liệt (chậm 40%).",
+   "kind": "contactStatus",
+   "status": {
+    "kind": "slow",
+    "chance": 0.3,
+    "duration": 2,
+    "magnitude": 0.4
+   }
+  },
+  "evolution": null,
+  "sprite": "pikachu",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "electric",
+   "aura": "electric"
+  }
+ },
+ {
+  "id": "pidgey",
+  "name": "Pidgey",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "rarity": "common",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 40,
+   "atk": 45,
+   "def": 40,
+   "spa": 35,
+   "spd": 35,
+   "spe": 56
+  },
+  "moveSpeed": 225,
+  "attackRange": 60,
+  "critRate": 0.06,
+  "radius": 14,
+  "skills": [
+   "gust",
+   "quick_attack",
+   "wing_attack",
+   "sand_attack"
+  ],
+  "passive": {
+   "id": "keen-eye",
+   "name": "Keen Eye",
+   "description": "+10% tỉ lệ chí mạng.",
+   "kind": "critBonus",
+   "value": 0.1
+  },
+  "evolution": null,
+  "sprite": "pidgey",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  }
+ },
+ {
+  "id": "caterpie",
+  "name": "Caterpie",
+  "types": [
+   "bug"
+  ],
+  "rarity": "common",
+  "role": "support",
+  "baseStats": {
+   "hp": 45,
+   "atk": 30,
+   "def": 35,
+   "spa": 20,
+   "spd": 20,
+   "spe": 45
+  },
+  "moveSpeed": 170,
+  "attackRange": 220,
+  "critRate": 0.04,
+  "radius": 13,
+  "skills": [
+   "tackle",
+   "string_shot",
+   "bug_bite",
+   "harden"
+  ],
+  "passive": {
+   "id": "shield-dust",
+   "name": "Shield Dust",
+   "description": "Miễn nhiễm mọi hiệu ứng trạng thái từ kẻ địch.",
+   "kind": "statusImmune",
+   "immune": [
+    "burn",
+    "poison",
+    "slow",
+    "stun",
+    "defDown",
+    "leech"
+   ]
+  },
+  "evolution": null,
+  "sprite": "caterpie",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "bug",
+   "aura": "bug"
+  }
+ },
+ {
+  "id": "oddish",
+  "name": "Oddish",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "common",
+  "role": "mage",
+  "baseStats": {
+   "hp": 45,
+   "atk": 50,
+   "def": 55,
+   "spa": 75,
+   "spd": 65,
+   "spe": 30
+  },
+  "moveSpeed": 180,
+  "attackRange": 240,
+  "critRate": 0.05,
+  "radius": 14,
+  "skills": [
+   "absorb",
+   "acid",
+   "poison_powder",
+   "stun_spore"
+  ],
+  "passive": {
+   "id": "chlorophyll",
+   "name": "Chlorophyll",
+   "description": "+20% tốc độ di chuyển.",
+   "kind": "moveSpeed",
+   "value": 0.2
+  },
+  "evolution": null,
+  "sprite": "oddish",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  }
+ },
+ {
+  "id": "zubat",
+  "name": "Zubat",
+  "types": [
+   "poison",
+   "flying"
+  ],
+  "rarity": "common",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 40,
+   "atk": 45,
+   "def": 35,
+   "spa": 30,
+   "spd": 40,
+   "spe": 55
+  },
+  "moveSpeed": 230,
+  "attackRange": 56,
+  "critRate": 0.06,
+  "radius": 14,
+  "skills": [
+   "leech_life",
+   "bite",
+   "wing_attack",
+   "supersonic"
+  ],
+  "passive": {
+   "id": "inner-focus",
+   "name": "Inner Focus",
+   "description": "Không bị choáng.",
+   "kind": "statusImmune",
+   "immune": [
+    "stun"
+   ]
+  },
+  "evolution": null,
+  "sprite": "zubat",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "poison",
+   "aura": "poison"
+  }
+ },
+ {
+  "id": "rattata",
+  "name": "Rattata",
+  "types": [
+   "normal"
+  ],
+  "rarity": "common",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 30,
+   "atk": 56,
+   "def": 35,
+   "spa": 25,
+   "spd": 35,
+   "spe": 72
+  },
+  "moveSpeed": 210,
+  "attackRange": 56,
+  "critRate": 0.06,
+  "radius": 13,
+  "skills": [
+   "tackle",
+   "quick_attack",
+   "bite",
+   "hyper_fang"
+  ],
+  "passive": {
+   "id": "guts",
+   "name": "Guts",
+   "description": "+50% sát thương khi đang bị hiệu ứng trạng thái.",
+   "kind": "guts",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "rattata",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  }
+ },
+ {
+  "id": "geodude",
+  "name": "Geodude",
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "rarity": "common",
+  "role": "tank",
+  "baseStats": {
+   "hp": 40,
+   "atk": 80,
+   "def": 100,
+   "spa": 30,
+   "spd": 30,
+   "spe": 20
+  },
+  "moveSpeed": 170,
+  "attackRange": 56,
+  "critRate": 0.04,
+  "radius": 16,
+  "skills": [
+   "tackle",
+   "rock_throw",
+   "defense_curl",
+   "rock_tomb"
+  ],
+  "passive": {
+   "id": "sturdy",
+   "name": "Sturdy",
+   "description": "Chịu được đòn chí tử với 1 HP (hồi 30 giây).",
+   "kind": "sturdy",
+   "value": 30
+  },
+  "evolution": null,
+  "sprite": "geodude",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "rock",
+   "aura": "rock"
+  }
+ },
+ {
+  "id": "magnemite",
+  "name": "Magnemite",
+  "types": [
+   "electric",
+   "steel"
+  ],
+  "rarity": "rare",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 25,
+   "atk": 35,
+   "def": 70,
+   "spa": 95,
+   "spd": 55,
+   "spe": 45
+  },
+  "moveSpeed": 185,
+  "attackRange": 240,
+  "critRate": 0.05,
+  "radius": 13,
+  "skills": [
+   "thunder_shock",
+   "spark",
+   "thunder_wave",
+   "supersonic"
+  ],
+  "passive": {
+   "id": "sturdy",
+   "name": "Sturdy",
+   "description": "Chịu được đòn chí tử với 1 HP (hồi 30 giây).",
+   "kind": "sturdy",
+   "value": 30
+  },
+  "evolution": null,
+  "sprite": "magnemite",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "electric",
+   "aura": "electric"
+  }
+ },
+ {
+  "id": "ivysaur",
+  "name": "Ivysaur",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "rare",
+  "role": "support",
+  "baseStats": {
+   "hp": 60,
+   "atk": 62,
+   "def": 63,
+   "spa": 80,
+   "spd": 80,
+   "spe": 60
+  },
+  "moveSpeed": 195,
+  "attackRange": 250,
+  "critRate": 0.05,
+  "radius": 17,
+  "skills": [
+   "razor_leaf",
+   "vine_whip",
+   "synthesis",
+   "sleep_powder"
+  ],
+  "passive": {
+   "id": "overgrow",
+   "name": "Overgrow",
+   "description": "Kỹ năng hệ Cỏ +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "grass",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "ivysaur",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  }
+ },
+ {
+  "id": "venusaur",
+  "name": "Venusaur",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "epic",
+  "role": "support",
+  "baseStats": {
+   "hp": 80,
+   "atk": 82,
+   "def": 83,
+   "spa": 100,
+   "spd": 100,
+   "spe": 80
+  },
+  "moveSpeed": 190,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "solar_beam",
+   "petal_blizzard",
+   "synthesis",
+   "sludge_bomb"
+  ],
+  "passive": {
+   "id": "overgrow",
+   "name": "Overgrow",
+   "description": "Kỹ năng hệ Cỏ +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "grass",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "venusaur",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  }
+ },
+ {
+  "id": "venusaur-mega",
+  "name": "Mega Venusaur",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "legendary",
+  "role": "support",
+  "baseStats": {
+   "hp": 80,
+   "atk": 100,
+   "def": 123,
+   "spa": 122,
+   "spd": 120,
+   "spe": 80
+  },
+  "moveSpeed": 190,
+  "attackRange": 270,
+  "critRate": 0.06,
+  "radius": 23,
+  "skills": [
+   "solar_beam",
+   "petal_blizzard",
+   "synthesis",
+   "sludge_bomb"
+  ],
+  "passive": {
+   "id": "thick-fat",
+   "name": "Thick Fat",
+   "description": "Giảm 50% sát thương hệ Lửa và Băng nhận vào.",
+   "kind": "typeResist",
+   "types": [
+    "fire",
+    "ice"
+   ],
+   "mult": 0.5
+  },
+  "evolution": null,
+  "sprite": "venusaur-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  },
+  "mega": {
+   "base": "venusaur",
+   "stone": "venusaurite"
+  }
+ },
+ {
+  "id": "charmeleon",
+  "name": "Charmeleon",
+  "types": [
+   "fire"
+  ],
+  "rarity": "rare",
+  "role": "mage",
+  "baseStats": {
+   "hp": 58,
+   "atk": 64,
+   "def": 58,
+   "spa": 80,
+   "spd": 65,
+   "spe": 80
+  },
+  "moveSpeed": 210,
+  "attackRange": 270,
+  "critRate": 0.07,
+  "radius": 16,
+  "skills": [
+   "ember",
+   "flame_burst",
+   "fire_spin",
+   "slash"
+  ],
+  "passive": {
+   "id": "blaze",
+   "name": "Blaze",
+   "description": "Kỹ năng hệ Lửa +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "fire",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "charmeleon",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fire",
+   "aura": "fire"
+  }
+ },
+ {
+  "id": "charizard",
+  "name": "Charizard",
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "rarity": "epic",
+  "role": "mage",
+  "baseStats": {
+   "hp": 78,
+   "atk": 84,
+   "def": 78,
+   "spa": 109,
+   "spd": 85,
+   "spe": 100
+  },
+  "moveSpeed": 225,
+  "attackRange": 290,
+  "critRate": 0.08,
+  "radius": 21,
+  "skills": [
+   "flamethrower",
+   "air_slash",
+   "fire_spin",
+   "dragon_claw"
+  ],
+  "passive": {
+   "id": "blaze",
+   "name": "Blaze",
+   "description": "Kỹ năng hệ Lửa +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "fire",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "charizard",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fire",
+   "aura": "fire"
+  }
+ },
+ {
+  "id": "charizard-mega-x",
+  "name": "Mega Charizard X",
+  "types": [
+   "fire",
+   "dragon"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 78,
+   "atk": 130,
+   "def": 111,
+   "spa": 130,
+   "spd": 85,
+   "spe": 100
+  },
+  "moveSpeed": 235,
+  "attackRange": 70,
+  "critRate": 0.1,
+  "radius": 23,
+  "skills": [
+   "dragon_claw",
+   "flamethrower",
+   "slash",
+   "fire_spin"
+  ],
+  "passive": {
+   "id": "tough-claws",
+   "name": "Tough Claws",
+   "description": "Đòn cận chiến và lao +30% sát thương.",
+   "kind": "meleeBoost",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "charizard-mega-x",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fire",
+   "aura": "fire"
+  },
+  "mega": {
+   "base": "charizard",
+   "stone": "charizardite-x"
+  }
+ },
+ {
+  "id": "charizard-mega-y",
+  "name": "Mega Charizard Y",
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "rarity": "legendary",
+  "role": "mage",
+  "baseStats": {
+   "hp": 78,
+   "atk": 104,
+   "def": 78,
+   "spa": 159,
+   "spd": 115,
+   "spe": 100
+  },
+  "moveSpeed": 230,
+  "attackRange": 300,
+  "critRate": 0.08,
+  "radius": 23,
+  "skills": [
+   "flamethrower",
+   "heat_wave",
+   "air_slash",
+   "solar_beam"
+  ],
+  "passive": {
+   "id": "drought",
+   "name": "Drought",
+   "description": "Nắng gắt: kỹ năng hệ Lửa luôn +50% sát thương.",
+   "kind": "typeBoost",
+   "type": "fire",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "charizard-mega-y",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fire",
+   "aura": "fire"
+  },
+  "mega": {
+   "base": "charizard",
+   "stone": "charizardite-y"
+  }
+ },
+ {
+  "id": "wartortle",
+  "name": "Wartortle",
+  "types": [
+   "water"
+  ],
+  "rarity": "rare",
+  "role": "tank",
+  "baseStats": {
+   "hp": 59,
+   "atk": 63,
+   "def": 80,
+   "spa": 65,
+   "spd": 80,
+   "spe": 58
+  },
+  "moveSpeed": 195,
+  "attackRange": 56,
+  "critRate": 0.05,
+  "radius": 17,
+  "skills": [
+   "tackle",
+   "water_gun",
+   "withdraw",
+   "bite"
+  ],
+  "passive": {
+   "id": "torrent",
+   "name": "Torrent",
+   "description": "Kỹ năng hệ Nước +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "water",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "wartortle",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  }
+ },
+ {
+  "id": "blastoise",
+  "name": "Blastoise",
+  "types": [
+   "water"
+  ],
+  "rarity": "epic",
+  "role": "tank",
+  "baseStats": {
+   "hp": 79,
+   "atk": 83,
+   "def": 100,
+   "spa": 85,
+   "spd": 105,
+   "spe": 78
+  },
+  "moveSpeed": 185,
+  "attackRange": 60,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "aqua_tail",
+   "hydro_pump",
+   "withdraw",
+   "bubble"
+  ],
+  "passive": {
+   "id": "torrent",
+   "name": "Torrent",
+   "description": "Kỹ năng hệ Nước +50% sát thương khi HP dưới 33%.",
+   "kind": "pinch",
+   "type": "water",
+   "mult": 1.5,
+   "threshold": 0.33
+  },
+  "evolution": null,
+  "sprite": "blastoise",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  }
+ },
+ {
+  "id": "blastoise-mega",
+  "name": "Mega Blastoise",
+  "types": [
+   "water"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 79,
+   "atk": 103,
+   "def": 120,
+   "spa": 135,
+   "spd": 115,
+   "spe": 78
+  },
+  "moveSpeed": 185,
+  "attackRange": 300,
+  "critRate": 0.06,
+  "radius": 23,
+  "skills": [
+   "hydro_pump",
+   "dark_pulse",
+   "flash_cannon",
+   "withdraw"
+  ],
+  "passive": {
+   "id": "mega-launcher",
+   "name": "Mega Launcher",
+   "description": "Đạn và tia +50% sát thương.",
+   "kind": "projectileBoost",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "blastoise-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  },
+  "mega": {
+   "base": "blastoise",
+   "stone": "blastoisinite"
+  }
+ },
+ {
+  "id": "raichu",
+  "name": "Raichu",
+  "types": [
+   "electric"
+  ],
+  "rarity": "epic",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 60,
+   "atk": 90,
+   "def": 55,
+   "spa": 90,
+   "spd": 80,
+   "spe": 110
+  },
+  "moveSpeed": 225,
+  "attackRange": 260,
+  "critRate": 0.08,
+  "radius": 16,
+  "skills": [
+   "thunderbolt",
+   "thunder",
+   "spark",
+   "thunder_wave"
+  ],
+  "passive": {
+   "id": "static",
+   "name": "Static",
+   "description": "Kẻ địch đánh cận chiến có 30% bị tê liệt (chậm 40%).",
+   "kind": "contactStatus",
+   "status": {
+    "kind": "slow",
+    "chance": 0.3,
+    "duration": 2,
+    "magnitude": 0.4
+   }
+  },
+  "evolution": null,
+  "sprite": "raichu",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "electric",
+   "aura": "electric"
+  }
+ },
+ {
+  "id": "pidgeotto",
+  "name": "Pidgeotto",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "rarity": "rare",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 63,
+   "atk": 60,
+   "def": 55,
+   "spa": 50,
+   "spd": 50,
+   "spe": 71
+  },
+  "moveSpeed": 230,
+  "attackRange": 60,
+  "critRate": 0.07,
+  "radius": 16,
+  "skills": [
+   "gust",
+   "quick_attack",
+   "wing_attack",
+   "sand_attack"
+  ],
+  "passive": {
+   "id": "keen-eye",
+   "name": "Keen Eye",
+   "description": "+10% tỉ lệ chí mạng.",
+   "kind": "critBonus",
+   "value": 0.1
+  },
+  "evolution": null,
+  "sprite": "pidgeotto",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  }
+ },
+ {
+  "id": "pidgeot",
+  "name": "Pidgeot",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "rarity": "epic",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 83,
+   "atk": 80,
+   "def": 75,
+   "spa": 70,
+   "spd": 70,
+   "spe": 101
+  },
+  "moveSpeed": 245,
+  "attackRange": 64,
+  "critRate": 0.08,
+  "radius": 20,
+  "skills": [
+   "air_slash",
+   "quick_attack",
+   "wing_attack",
+   "hurricane"
+  ],
+  "passive": {
+   "id": "keen-eye",
+   "name": "Keen Eye",
+   "description": "+10% tỉ lệ chí mạng.",
+   "kind": "critBonus",
+   "value": 0.1
+  },
+  "evolution": null,
+  "sprite": "pidgeot",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  }
+ },
+ {
+  "id": "pidgeot-mega",
+  "name": "Mega Pidgeot",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 83,
+   "atk": 80,
+   "def": 80,
+   "spa": 135,
+   "spd": 80,
+   "spe": 121
+  },
+  "moveSpeed": 250,
+  "attackRange": 300,
+  "critRate": 0.1,
+  "radius": 22,
+  "skills": [
+   "hurricane",
+   "air_slash",
+   "quick_attack",
+   "wing_attack"
+  ],
+  "passive": {
+   "id": "no-guard",
+   "name": "No Guard",
+   "description": "Mọi đòn đều trúng — trong combat thời gian thực: +15% chí mạng.",
+   "kind": "critBonus",
+   "value": 0.15
+  },
+  "evolution": null,
+  "sprite": "pidgeot-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  },
+  "mega": {
+   "base": "pidgeot",
+   "stone": "pidgeotite"
+  }
+ },
+ {
+  "id": "metapod",
+  "name": "Metapod",
+  "types": [
+   "bug"
+  ],
+  "rarity": "common",
+  "role": "tank",
+  "baseStats": {
+   "hp": 50,
+   "atk": 20,
+   "def": 55,
+   "spa": 25,
+   "spd": 25,
+   "spe": 30
+  },
+  "moveSpeed": 120,
+  "attackRange": 56,
+  "critRate": 0.03,
+  "radius": 14,
+  "skills": [
+   "tackle",
+   "harden",
+   "string_shot",
+   "bug_bite"
+  ],
+  "passive": {
+   "id": "shed-skin",
+   "name": "Shed Skin",
+   "description": "Miễn nhiễm bỏng, độc và làm chậm.",
+   "kind": "statusImmune",
+   "immune": [
+    "burn",
+    "poison",
+    "slow",
+    "leech"
+   ]
+  },
+  "evolution": null,
+  "sprite": "metapod",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "bug",
+   "aura": "bug"
+  }
+ },
+ {
+  "id": "butterfree",
+  "name": "Butterfree",
+  "types": [
+   "bug",
+   "flying"
+  ],
+  "rarity": "rare",
+  "role": "mage",
+  "baseStats": {
+   "hp": 60,
+   "atk": 45,
+   "def": 50,
+   "spa": 90,
+   "spd": 80,
+   "spe": 70
+  },
+  "moveSpeed": 220,
+  "attackRange": 270,
+  "critRate": 0.07,
+  "radius": 18,
+  "skills": [
+   "confusion",
+   "psybeam",
+   "sleep_powder",
+   "gust"
+  ],
+  "passive": {
+   "id": "compound-eyes",
+   "name": "Compound Eyes",
+   "description": "+10% tỉ lệ chí mạng (thay cho tăng độ chính xác).",
+   "kind": "critBonus",
+   "value": 0.1
+  },
+  "evolution": null,
+  "sprite": "butterfree",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "bug",
+   "aura": "bug"
+  }
+ },
+ {
+  "id": "gloom",
+  "name": "Gloom",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "common",
+  "role": "mage",
+  "baseStats": {
+   "hp": 60,
+   "atk": 65,
+   "def": 70,
+   "spa": 85,
+   "spd": 75,
+   "spe": 40
+  },
+  "moveSpeed": 175,
+  "attackRange": 250,
+  "critRate": 0.05,
+  "radius": 15,
+  "skills": [
+   "mega_drain",
+   "acid",
+   "poison_powder",
+   "sleep_powder"
+  ],
+  "passive": {
+   "id": "chlorophyll",
+   "name": "Chlorophyll",
+   "description": "+20% tốc độ di chuyển.",
+   "kind": "moveSpeed",
+   "value": 0.2
+  },
+  "evolution": null,
+  "sprite": "gloom",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  }
+ },
+ {
+  "id": "vileplume",
+  "name": "Vileplume",
+  "types": [
+   "grass",
+   "poison"
+  ],
+  "rarity": "rare",
+  "role": "mage",
+  "baseStats": {
+   "hp": 75,
+   "atk": 80,
+   "def": 85,
+   "spa": 110,
+   "spd": 90,
+   "spe": 50
+  },
+  "moveSpeed": 175,
+  "attackRange": 270,
+  "critRate": 0.06,
+  "radius": 18,
+  "skills": [
+   "petal_blizzard",
+   "mega_drain",
+   "sludge_bomb",
+   "stun_spore"
+  ],
+  "passive": {
+   "id": "chlorophyll",
+   "name": "Chlorophyll",
+   "description": "+20% tốc độ di chuyển.",
+   "kind": "moveSpeed",
+   "value": 0.2
+  },
+  "evolution": null,
+  "sprite": "vileplume",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  }
+ },
+ {
+  "id": "golbat",
+  "name": "Golbat",
+  "types": [
+   "poison",
+   "flying"
+  ],
+  "rarity": "rare",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 75,
+   "atk": 80,
+   "def": 70,
+   "spa": 65,
+   "spd": 75,
+   "spe": 90
+  },
+  "moveSpeed": 245,
+  "attackRange": 60,
+  "critRate": 0.07,
+  "radius": 18,
+  "skills": [
+   "leech_life",
+   "crunch",
+   "wing_attack",
+   "supersonic"
+  ],
+  "passive": {
+   "id": "inner-focus",
+   "name": "Inner Focus",
+   "description": "Không bị choáng.",
+   "kind": "statusImmune",
+   "immune": [
+    "stun"
+   ]
+  },
+  "evolution": null,
+  "sprite": "golbat",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "poison",
+   "aura": "poison"
+  }
+ },
+ {
+  "id": "raticate",
+  "name": "Raticate",
+  "types": [
+   "normal"
+  ],
+  "rarity": "rare",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 55,
+   "atk": 81,
+   "def": 60,
+   "spa": 50,
+   "spd": 70,
+   "spe": 97
+  },
+  "moveSpeed": 220,
+  "attackRange": 58,
+  "critRate": 0.07,
+  "radius": 16,
+  "skills": [
+   "quick_attack",
+   "crunch",
+   "hyper_fang",
+   "super_fang"
+  ],
+  "passive": {
+   "id": "guts",
+   "name": "Guts",
+   "description": "+50% sát thương khi đang bị hiệu ứng trạng thái.",
+   "kind": "guts",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "raticate",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  }
+ },
+ {
+  "id": "graveler",
+  "name": "Graveler",
+  "types": [
+   "rock",
+   "ground"
+  ],
+  "rarity": "rare",
+  "role": "tank",
+  "baseStats": {
+   "hp": 55,
+   "atk": 95,
+   "def": 115,
+   "spa": 45,
+   "spd": 45,
+   "spe": 35
+  },
+  "moveSpeed": 165,
+  "attackRange": 58,
+  "critRate": 0.04,
+  "radius": 18,
+  "skills": [
+   "tackle",
+   "rock_slide",
+   "defense_curl",
+   "rock_tomb"
+  ],
+  "passive": {
+   "id": "sturdy",
+   "name": "Sturdy",
+   "description": "Chịu được đòn chí tử với 1 HP (hồi 30 giây).",
+   "kind": "sturdy",
+   "value": 30
+  },
+  "evolution": null,
+  "sprite": "graveler",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "rock",
+   "aura": "rock"
+  }
+ },
+ {
+  "id": "magneton",
+  "name": "Magneton",
+  "types": [
+   "electric",
+   "steel"
+  ],
+  "rarity": "rare",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 50,
+   "atk": 60,
+   "def": 95,
+   "spa": 120,
+   "spd": 70,
+   "spe": 70
+  },
+  "moveSpeed": 190,
+  "attackRange": 270,
+  "critRate": 0.06,
+  "radius": 18,
+  "skills": [
+   "thunderbolt",
+   "flash_cannon",
+   "thunder_wave",
+   "tri_attack"
+  ],
+  "passive": {
+   "id": "sturdy",
+   "name": "Sturdy",
+   "description": "Chịu được đòn chí tử với 1 HP (hồi 30 giây).",
+   "kind": "sturdy",
+   "value": 30
+  },
+  "evolution": null,
+  "sprite": "magneton",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "electric",
+   "aura": "electric"
+  }
+ },
+ {
+  "id": "diglett",
+  "name": "Diglett",
+  "types": [
+   "ground"
+  ],
+  "rarity": "common",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 10,
+   "atk": 55,
+   "def": 25,
+   "spa": 35,
+   "spd": 45,
+   "spe": 95
+  },
+  "moveSpeed": 215,
+  "attackRange": 58,
+  "critRate": 0.06,
+  "radius": 13,
+  "skills": [
+   "mud_slap",
+   "dig",
+   "scratch",
+   "sand_attack"
+  ],
+  "passive": {
+   "id": "sand-veil",
+   "name": "Sand Veil",
+   "description": "+15% tốc độ di chuyển (luồn dưới đất).",
+   "kind": "moveSpeed",
+   "value": 0.15
+  },
+  "evolution": null,
+  "sprite": "diglett",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "ground",
+   "aura": "ground"
+  },
+  "art": "icyethics"
+ },
+ {
+  "id": "dugtrio",
+  "name": "Dugtrio",
+  "types": [
+   "ground"
+  ],
+  "rarity": "rare",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 35,
+   "atk": 100,
+   "def": 50,
+   "spa": 50,
+   "spd": 70,
+   "spe": 120
+  },
+  "moveSpeed": 240,
+  "attackRange": 60,
+  "critRate": 0.08,
+  "radius": 18,
+  "skills": [
+   "mud_slap",
+   "dig",
+   "slash",
+   "magnitude"
+  ],
+  "passive": {
+   "id": "sand-veil",
+   "name": "Sand Veil",
+   "description": "+15% tốc độ di chuyển (luồn dưới đất).",
+   "kind": "moveSpeed",
+   "value": 0.15
+  },
+  "evolution": null,
+  "sprite": "dugtrio",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "ground",
+   "aura": "ground"
+  },
+  "art": "icyethics"
+ },
+ {
+  "id": "gulpin",
+  "name": "Gulpin",
+  "types": [
+   "poison"
+  ],
+  "rarity": "common",
+  "role": "tank",
+  "baseStats": {
+   "hp": 70,
+   "atk": 43,
+   "def": 53,
+   "spa": 43,
+   "spd": 53,
+   "spe": 40
+  },
+  "moveSpeed": 170,
+  "attackRange": 56,
+  "critRate": 0.04,
+  "radius": 15,
+  "skills": [
+   "sludge",
+   "tackle",
+   "harden",
+   "poison_powder"
+  ],
+  "passive": {
+   "id": "liquid-ooze",
+   "name": "Liquid Ooze",
+   "description": "Kẻ địch đánh cận chiến có 30% bị nhiễm độc.",
+   "kind": "contactStatus",
+   "status": {
+    "kind": "poison",
+    "chance": 0.3,
+    "duration": 3,
+    "magnitude": 0.03
+   }
+  },
+  "evolution": null,
+  "sprite": "gulpin",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "poison",
+   "aura": "poison"
+  },
+  "art": "icyethics"
+ },
+ {
+  "id": "hoothoot",
+  "name": "Hoothoot",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "rarity": "common",
+  "role": "support",
+  "baseStats": {
+   "hp": 60,
+   "atk": 30,
+   "def": 30,
+   "spa": 36,
+   "spd": 56,
+   "spe": 50
+  },
+  "moveSpeed": 205,
+  "attackRange": 250,
+  "critRate": 0.05,
+  "radius": 15,
+  "skills": [
+   "peck",
+   "hypnosis",
+   "confusion",
+   "gust"
+  ],
+  "passive": {
+   "id": "insomnia",
+   "name": "Insomnia",
+   "description": "Không bao giờ bị ngủ/choáng.",
+   "kind": "statusImmune",
+   "immune": [
+    "stun"
+   ]
+  },
+  "evolution": null,
+  "sprite": "hoothoot",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  },
+  "art": "icyethics"
+ },
+ {
+  "id": "paras",
+  "name": "Paras",
+  "types": [
+   "bug",
+   "grass"
+  ],
+  "rarity": "common",
+  "role": "support",
+  "baseStats": {
+   "hp": 35,
+   "atk": 70,
+   "def": 55,
+   "spa": 45,
+   "spd": 55,
+   "spe": 25
+  },
+  "moveSpeed": 175,
+  "attackRange": 220,
+  "critRate": 0.05,
+  "radius": 15,
+  "skills": [
+   "scratch",
+   "stun_spore",
+   "leech_life",
+   "spore"
+  ],
+  "passive": {
+   "id": "effect-spore",
+   "name": "Effect Spore",
+   "description": "Kẻ địch đánh cận chiến có 20% bị choáng bởi bào tử.",
+   "kind": "contactStatus",
+   "status": {
+    "kind": "stun",
+    "chance": 0.2,
+    "duration": 0.8,
+    "magnitude": 0
+   }
+  },
+  "evolution": null,
+  "sprite": "paras",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "bug",
+   "aura": "bug"
+  },
+  "art": "icyethics"
+ },
+ {
+  "id": "canight",
+  "name": "Canight",
+  "types": [
+   "dark"
+  ],
+  "rarity": "rare",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 50,
+   "atk": 72,
+   "def": 45,
+   "spa": 70,
+   "spd": 50,
+   "spe": 90
+  },
+  "moveSpeed": 235,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 15,
+  "skills": [
+   "bite",
+   "quick_attack",
+   "dark_pulse",
+   "crunch"
+  ],
+  "passive": {
+   "id": "night-veil",
+   "name": "Màn Đêm",
+   "description": "+12% tỉ lệ chí mạng (đặc tính nguyên bản của fakemon).",
+   "kind": "critBonus",
+   "value": 0.12
+  },
+  "evolution": null,
+  "sprite": "canight",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dark",
+   "aura": "dark"
+  },
+  "art": "icyethics",
+  "fakemon": true
+ },
+ {
+  "id": "perropello",
+  "name": "Perropello",
+  "types": [
+   "normal"
+  ],
+  "rarity": "rare",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 62,
+   "spa": 40,
+   "spd": 55,
+   "spe": 68
+  },
+  "moveSpeed": 215,
+  "attackRange": 58,
+  "critRate": 0.06,
+  "radius": 17,
+  "skills": [
+   "tackle",
+   "bite",
+   "take_down",
+   "crunch"
+  ],
+  "passive": {
+   "id": "guts",
+   "name": "Guts",
+   "description": "+50% sát thương khi đang bị hiệu ứng trạng thái.",
+   "kind": "guts",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "perropello",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  },
+  "art": "icyethics",
+  "fakemon": true
+ }
+]
