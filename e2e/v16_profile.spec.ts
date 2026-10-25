@@ -51,7 +51,7 @@ test('main lobby: profile card, rename and avatar, persisted device-wide', async
   expect(await page.evaluate(() => (window as Win).__save.avatar)).toBe('trainer');
   expect(await textBounds(page, 'Huấn luyện viên')).not.toBeNull();
   // the card shows the active slot summary, not just the name
-  expect(await textBounds(page, 'Ô 1 · 0 Pokémon · Pokédex 0 · 0 xu')).not.toBeNull();
+  expect(await textBounds(page, 'Ô 1 · 0 Pokémon · Pokédex 0 · 0 ngọc')).not.toBeNull();
   expect(await imageBounds(page, 'avt-trainer')).not.toBeNull();
 
   await clickMenuText(page, '✎ Hồ sơ');

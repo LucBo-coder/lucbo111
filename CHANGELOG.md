@@ -1,5 +1,16 @@
 # Changelog
 
+## Chưa phát hành — Ba loại tiền theo chế độ
+
+- **Mỗi chế độ một loại tiền**, không dùng chung nữa:
+  - *Ngọc Sinh tồn* (ngọc): kiếm từ trận Sinh tồn và co-op Sinh tồn, chỉ dùng mua Nâng cấp vĩnh viễn.
+  - *Xu Phiêu lưu* (xu): Phiêu lưu (Thung Lũng Khởi Nguyên) và Thế giới online — cửa hàng, thương nhân, phần thưởng sự kiện / boss / hầm ngục.
+  - *Đồng Odyssey* (đồng): Việt Nam Odyssey.
+- Co-op trả thưởng theo chế độ của chủ phòng (Sinh tồn → ngọc, Phiêu lưu → xu, VN → đồng), kể cả dòng thử thách "+250 ngọc/người".
+- Menu hiện ngọc ở thẻ người chơi, thẻ Sinh tồn, màn Nâng cấp và danh sách ô lưu; HUD / túi đồ / cửa hàng Phiêu lưu hiện đúng đơn vị (xu hoặc đồng).
+- **Lưu game v8**: không ai mất tiền — ví nào cũng bắt đầu bằng số xu chung cũ. Máy chủ online vẫn dùng trường `currency` như trước (không cần deploy lại).
+- Test: `tests/v19_wallets.test.ts`; cập nhật e2e co-op theo từng chế độ.
+
 ## Chưa phát hành — Cửa hàng mới, đá Mega & sự kiện
 
 - **Cửa hàng hoàn chỉnh** (Phiêu lưu, Chú Lâm): thay danh sách chọn bằng cửa sổ riêng chia 8 kệ theo chức năng — Bóng · Hồi phục · Kẹo EXP · Tiến hóa · Đá Mega · Chiến đấu · Tăng hệ · Huấn luyện. Mỗi món có ảnh, giá, số đang có; bảng chi tiết hiện mô tả, Pokémon dùng được ("Dùng cho: Onix → Steelix (cầm + Dây Liên Kết)"), dạng Mega và trạng thái Vòng Mega.

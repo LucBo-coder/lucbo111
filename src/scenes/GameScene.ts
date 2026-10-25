@@ -34,6 +34,7 @@ export class GameScene extends Phaser.Scene {
     this.coopHost?.destroy();
     this.clearCoopHud?.();
     this.coopHost = new CoopHost(this.world, () => ({ kind: 'survivor', id: 'survivor', width: this.world.width, height: this.world.height }), rewardCoopHost);
+    this.coopHost.wallet = 'survivor';
     this.clearCoopHud = addCoopHud(this, this.coopHost);
   }
   world!: World;

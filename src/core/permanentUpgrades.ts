@@ -38,11 +38,11 @@ export function nextCost(levels: Record<string, number>, id: string): number | n
   return lv >= u.max ? null : u.costs[lv];
 }
 
-/** Buys one level if affordable: mutates `save.permanentUpgrades` and `save.currency`. */
-export function buyUpgrade(save: { currency: number; permanentUpgrades: Record<string, number> }, id: string): boolean {
+/** Buys one level if affordable: mutates `save.permanentUpgrades` and the Survivor wallet (`save.survivorCoins`, ngọc). */
+export function buyUpgrade(save: { survivorCoins: number; permanentUpgrades: Record<string, number> }, id: string): boolean {
   const cost = nextCost(save.permanentUpgrades, id);
-  if (cost == null || save.currency < cost) return false;
-  save.currency -= cost;
+  if (cost == null || save.survivorCoins < cost) return false;
+  save.survivorCoins -= cost;
   save.permanentUpgrades[id] = upgradeLevel(save.permanentUpgrades, id) + 1;
   return true;
 }

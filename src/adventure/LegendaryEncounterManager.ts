@@ -100,7 +100,7 @@ export class LegendaryEncounterManager {
     this.scene.state.setFlag('boss:' + id);
     this.scene.state.earn(2500);
     this.scene.state.addItems({ ultraball: 3 });
-    this.scene.ui.banner(`${this.scene.speciesName(id)} kiệt sức! (+2500 xu, +3 Ultra Ball) — ném bóng để thu phục`, '#80ff90');
+    this.scene.ui.banner(`${this.scene.speciesName(id)} kiệt sức! (+2500 ${this.scene.state.unit}, +3 Ultra Ball) — ném bóng để thu phục`, '#80ff90');
     this.scene.openLegendCapture(id, level);
   }
 

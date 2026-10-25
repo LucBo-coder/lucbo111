@@ -4,6 +4,7 @@ import { fitScale } from '../render/spriteRegistry';
 import { gameModes } from '../systems/gameMode';
 import { POKEMON } from '../core/data';
 import { button, COLORS, fmtTime, panel, text, uiScale } from './ui';
+import { fmtCoins } from '../core/wallet';
 
 interface ResultData {
   victory: boolean;
@@ -74,7 +75,7 @@ export class ResultScene extends Phaser.Scene {
     });
 
     const st = saveStore.data.stats;
-    text(this, W / 2, py + ph + 24 * s, `Tổng: ${st.runs} trận · ${st.victories} thắng · kỷ lục ${fmtTime(st.bestTime)} · ${saveStore.data.currency} xu`, 18 * s, COLORS.dim)
+    text(this, W / 2, py + ph + 24 * s, `Tổng: ${st.runs} trận · ${st.victories} thắng · kỷ lục ${fmtTime(st.bestTime)} · ${fmtCoins(saveStore.data.survivorCoins, 'survivor')}`, 18 * s, COLORS.dim)
       .setOrigin(0.5).setWordWrapWidth(W - 32).setAlign('center');
     const by = Math.min(H - 50 * s, py + ph + 100 * s);
     if (d.unlocked?.length) {

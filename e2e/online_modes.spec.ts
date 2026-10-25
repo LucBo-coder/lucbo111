@@ -24,8 +24,11 @@ for (const mode of ['survivor', 'classic', 'vietnam']) {
       const mapId = await guest.evaluate(() => (window as any).__coopGuest.snapshot.map.id);
       expect(mapId).toBe(mode === 'survivor' ? 'survivor' : mode === 'vietnam' ? 'ca-mau' : 'starter-valley');
       expect(await guest.evaluate(() => (window as any).__coopGuest.snapshot.challenge.id)).toBe('hunt');
-      const beforeHost = await host.evaluate(() => (window as any).__save.data.currency);
-      const beforeGuest = await guest.evaluate(() => (window as any).__save.data.currency);
+      // each mode pays its own wallet: Survivor ngọc, Adventure xu, Vietnam Odyssey đồng
+      const field = mode === 'survivor' ? 'survivorCoins' : mode === 'vietnam' ? 'vnCoins' : 'currency';
+      const coins = (page: typeof host) => page.evaluate((f) => (window as any).__save.data[f] as number, field);
+      const beforeHost = await coins(host);
+      const beforeGuest = await coins(guest);
       await host.evaluate((key) => {
         const g = (window as any).__phaser.scene.getScene(key), w = g.world;
         for (let i = 0; i < 15; i++) {
@@ -35,8 +38,8 @@ for (const mode of ['survivor', 'classic', 'vietnam']) {
         w.state = 'playing'; g.paused = false; g.modal = false;
       }, scene);
       await guest.waitForFunction(() => (window as any).__coopGuest.snapshot.challenge.status === 'completed');
-      await expect.poll(() => guest.evaluate(() => (window as any).__save.data.currency)).toBe(beforeGuest + 250);
-      expect(await host.evaluate(() => (window as any).__save.data.currency)).toBeGreaterThanOrEqual(beforeHost + 250);
+      await expect.poll(() => coins(guest)).toBe(beforeGuest + 250);
+      expect(await coins(host)).toBeGreaterThanOrEqual(beforeHost + 250);
       await guest.screenshot({ path: info.outputPath(`${mode}-coop.png`) });
       await guest.evaluate(() => { (window as any).__coopGuest.exit(); });
       await guest.waitForFunction(() => (window as any).__phaser.scene.isActive('Menu'));

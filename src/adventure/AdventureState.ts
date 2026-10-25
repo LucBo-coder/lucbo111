@@ -15,6 +15,7 @@ import {
 } from '../core/pc';
 import { AdventureSave, Difficulty, newAdventure, registerCaught, SaveData } from '../systems/saveSchema';
 import { MAX_STACK, shopCatalogue } from '../core/shop';
+import { balance, campaignWallet, earnTo, spendFrom, Wallet, WALLETS } from '../core/wallet';
 
 // Adventure progression wrapper around the shared save. No Phaser here (unit-tested).
 
@@ -57,7 +58,11 @@ export class AdventureState {
   readonly quests: QuestManager;
   trackedQuest: string | null = null;
 
-  constructor(readonly save: SaveData) {
+  /**
+   * @param walletOverride the online world (server/) always pays the Adventure wallet (`currency`, xu) even though it
+   *   runs on the Vietnam maps; local saves use their campaign's wallet.
+   */
+  constructor(readonly save: SaveData, private walletOverride?: Wallet) {
     if (!save.adventure) save.adventure = newAdventure();
     // authored quests + the generated legendary quest chains (core/legends.ts)
     // each campaign has its own quest book (Vietnam Odyssey: data/vietnam/quests.json, no classic legend chains)
@@ -364,19 +369,29 @@ export class AdventureState {
 
   // ───────────────────────────── money & shop ─────────────────────────────
 
+  /** This campaign's wallet: xu (classic Adventure) or đồng (Vietnam Odyssey). Survivor ngọc is never touched here. */
+  get wallet(): Wallet {
+    return this.walletOverride ?? campaignWallet(this.adv.campaign);
+  }
+
+  /** Currency word shown next to amounts ("xu" / "đồng"). */
+  get unit(): string {
+    return WALLETS[this.wallet].unit;
+  }
+
   get money(): number {
-    return this.save.currency;
+    return balance(this.save, this.wallet);
   }
 
   earn(v: number): void {
-    this.save.currency += Math.max(0, Math.round(v));
+    earnTo(this.save, this.wallet, v);
   }
 
   /** Buys `qty` of an item at `price` each (all or nothing; stacks stop at MAX_STACK). */
   buy(id: string, price: number, qty = 1): boolean {
     qty = Math.floor(qty);
-    if (qty < 1 || price < 0 || this.save.currency < price * qty || this.item(id) + qty > MAX_STACK) return false;
-    this.save.currency -= price * qty;
+    if (qty < 1 || price < 0 || this.money < price * qty || this.item(id) + qty > MAX_STACK) return false;
+    spendFrom(this.save, this.wallet, price * qty);
     this.addItems({ [id]: qty });
     return true;
   }

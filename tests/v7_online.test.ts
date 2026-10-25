@@ -26,7 +26,7 @@ describe('save v7: single active Pokémon + PC', () => {
     };
     const m = migrate(v6);
     expect(m.version).toBe(SAVE_VERSION);
-    expect(SAVE_VERSION).toBe(7);
+    expect(SAVE_VERSION).toBeGreaterThanOrEqual(7);
     expect(m.currency).toBe(99);
     expect(m.adventure!.activeUid).toBe('u0');
     expect(m.adventure!.recalled).toEqual(['u1', 'u2']);

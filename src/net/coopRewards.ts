@@ -2,14 +2,17 @@ import { POKEMON } from '../core/data';
 import { makeOwned } from '../core/progression';
 import { registerCaught, type SaveData } from '../systems/saveSchema';
 import { ITEMS } from '../adventure/AdventureState';
+import { earnTo, fmtCoins, Wallet, WALLETS } from '../core/wallet';
 
 // Co-op PvE loot sharing: the host owns the simulation, so only it decides what loot exists.
 // Grants travel as plain data; the guest applies them to its OWN save, locally.
 
 /** One host → guest loot grant (co-op PvE). All fields optional; bad data is ignored by `applyCoopLoot`. */
 export interface CoopLoot {
-  /** money */
+  /** money, paid into `wallet` */
   currency?: number;
+  /** which mode's currency (the host's mode); absent = Adventure xu */
+  wallet?: Wallet;
   /** item id → quantity */
   items?: Record<string, number>;
   /** a captured wild Pokémon that joins the guest's collection too */
@@ -29,8 +32,9 @@ export function applyCoopLoot(save: SaveData, loot: CoopLoot | null | undefined)
 
   const currency = Math.min(MAX_GRANT_CURRENCY, Math.max(0, Math.round(Number(loot.currency) || 0)));
   if (currency > 0) {
-    save.currency = Math.max(0, save.currency) + currency;
-    lines.push(`+${currency} xu`);
+    const w: Wallet = loot.wallet && loot.wallet in WALLETS ? loot.wallet : 'adventure';
+    earnTo(save, w, currency);
+    lines.push(`+${fmtCoins(currency, w)}`);
   }
 
   if (loot.items && typeof loot.items === 'object') {

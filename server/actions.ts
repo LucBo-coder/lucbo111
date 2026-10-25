@@ -131,7 +131,7 @@ export function performAction(db: Db, accountId: string, actionId: string, type:
 
   return db.tx(() => {
     const save = readSave(db, accountId);
-    const st = new AdventureState(save);
+    const st = new AdventureState(save, 'adventure');
     const result = apply(st, type, data);
     st.ensureStorage();
     const out: ActionResult = { save: st.save as unknown as Record<string, unknown>, result };

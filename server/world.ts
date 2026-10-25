@@ -620,7 +620,7 @@ export class WorldServer {
     if (!portal) return fail('NO_PORTAL', 'Không có cổng này.');
     if (Math.hypot((portal.x + 0.5) * TILE_PX - c.x, (portal.y + 0.5) * TILE_PX - c.y) > PORTAL_RANGE) return fail('TOO_FAR', 'Hãy đến gần cổng.');
     if (!this.maps.has(portal.to)) return fail('REGION_NOT_AVAILABLE', 'Vùng này chưa mở trên máy chủ.');
-    const st = new AdventureState(c.save);
+    const st = new AdventureState(c.save, 'adventure');
     const level = playerLevel(c.save);
     const locked = (portal.requires ?? []).filter((f) => !st.hasFlag(f) && !(ONLINE_BADGE_LEVEL[f] != null && level >= ONLINE_BADGE_LEVEL[f]));
     if (locked.length) {
@@ -632,7 +632,7 @@ export class WorldServer {
     this.db.run('INSERT INTO audit_log (account_id, action, detail_json, created_at) VALUES (?, ?, ?, ?)',
       c.account.id, 'world.travel', JSON.stringify({ from: c.region, to: portal.to, portal: portal.id }), nowMs());
     if (changed) {
-      const st2 = new AdventureState(c.save);
+      const st2 = new AdventureState(c.save, 'adventure');
       st2.adv.visited = { ...(st2.adv.visited ?? {}), [portal.to]: st2.adv.visited?.[portal.to] ?? nowMs() };
     }
     // the client reloads the map first, then receives the new region's Alpha / event / chat state
@@ -871,7 +871,7 @@ export class WorldServer {
       let exp = 0, levels = 0;
       try {
         const save = readSave(this.db, r.account_id);
-        const st = new AdventureState(save);
+        const st = new AdventureState(save, 'adventure');
         st.addItems(items);
         st.earn(money);
         const uid = attackers?.get(r.account_id);
@@ -1026,7 +1026,7 @@ export class WorldServer {
         const money = tier === 'l' ? 1200 : tier === 'm' ? 600 : 250;
         try {
           const save = readSave(this.db, r.account_id);
-          const st = new AdventureState(save);
+          const st = new AdventureState(save, 'adventure');
           st.addItems({ [candy]: 1 });
           st.earn(money);
           writeSave(this.db, r.account_id, st.save);

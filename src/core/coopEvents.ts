@@ -13,12 +13,16 @@ export const COOP_EVENTS: readonly CoopEventDef[] = [
 export interface CoopEventView {
   id: CoopObjective; name: string; hint: string; goal: number; progress: number; left: number;
   status: 'active' | 'completed' | 'expired'; currency: number;
+  /** currency word of the host's mode (ngọc / xu / đồng) */
+  unit?: string;
 }
 export interface CoopEventSample { dt: number; kills: number; elites: number; bosses: number; healing: number; bothAlive: boolean; distance: number }
 
 /** Host simulation time only: pauses, disconnects and browser frame time cannot advance objectives. */
 export class CoopEventDirector {
   view: CoopEventView | null = null;
+  /** currency word shown in the reward line (the host's mode) */
+  unit = 'xu';
   private index = 0;
   private wait = 0;
   update(s: CoopEventSample): CoopEventDef | null {
@@ -27,7 +31,7 @@ export class CoopEventDirector {
       this.wait -= dt;
       if (this.wait > 0) return null;
       const def = COOP_EVENTS[this.index++ % COOP_EVENTS.length];
-      this.view = { ...def, progress: 0, left: def.duration, status: 'active' };
+      this.view = { ...def, progress: 0, left: def.duration, status: 'active', unit: this.unit };
     }
     const v = this.view;
     v.left = Math.max(0, v.left - dt);
@@ -51,7 +55,7 @@ export class CoopEventDirector {
 
 export function coopEventLabel(v: CoopEventView | null | undefined): string {
   if (!v) return 'Thử thách bắt đầu khi đồng đội vào phòng.';
-  if (v.status === 'completed') return `${v.name}: hoàn thành! +${v.currency} xu/người`;
+  if (v.status === 'completed') return `${v.name}: hoàn thành! +${v.currency} ${v.unit ?? 'xu'}/người`;
   if (v.status === 'expired') return `${v.name}: hết giờ · chờ thử thách tiếp theo`;
-  return `${v.name} · ${Math.floor(v.progress)}/${v.goal} · ${Math.ceil(v.left)}s\n${v.hint} · thưởng ${v.currency} xu/người`;
+  return `${v.name} · ${Math.floor(v.progress)}/${v.goal} · ${Math.ceil(v.left)}s\n${v.hint} · thưởng ${v.currency} ${v.unit ?? 'xu'}/người`;
 }

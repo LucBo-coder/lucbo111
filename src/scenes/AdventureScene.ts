@@ -314,6 +314,7 @@ export class AdventureScene extends Phaser.Scene {
       width: this.world.width, height: this.world.height,
       doors: this.map instanceof DungeonMap ? [this.map.doorOpen('D'), this.map.doorOpen('Q')] : undefined,
     }), rewardCoopHost);
+    this.coopHost.wallet = this.state.wallet;
     this.clearCoopHud = addCoopHud(this, this.coopHost);
   }
   startPresence(): void {
@@ -1367,7 +1368,7 @@ export class AdventureScene extends Phaser.Scene {
     this.state.earn(first ? 2000 : 800);
     this.state.addWorldExp(first ? 600 : 250);
     if (first) this.state.setFlag('boss:' + wb.id);
-    const lines = [...Object.entries(items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`), `+${first ? 2000 : 800} xu`, first ? 'Vòng Mega đã được mở khóa! (phím G)' : 'Boss sẽ hồi sinh sau 10 phút chơi'];
+    const lines = [...Object.entries(items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`), `+${first ? 2000 : 800} ${this.state.unit}`, first ? 'Vòng Mega đã được mở khóa! (phím G)' : 'Boss sẽ hồi sinh sau 10 phút chơi'];
     this.time.delayedCall(800, () => this.ui.questComplete('Đã đánh bại Mega Venusaur!', lines));
     this.persist();
   }
@@ -1383,7 +1384,7 @@ export class AdventureScene extends Phaser.Scene {
     this.state.earn(money);
     this.state.addWorldExp(first ? 500 : 150);
     if (first) { this.state.setFlag(r.flag); this.state.setFlag('boss:' + wb.id); }
-    const lines = [...Object.entries(items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`), `+${money} xu`, first ? r.message : 'Boss sẽ quay lại sau một thời gian'];
+    const lines = [...Object.entries(items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`), `+${money} ${this.state.unit}`, first ? r.message : 'Boss sẽ quay lại sau một thời gian'];
     this.time.delayedCall(800, () => this.ui.questComplete(`Đã đánh bại ${wb.name}!`, lines));
     this.persist();
   }
@@ -1423,7 +1424,7 @@ export class AdventureScene extends Phaser.Scene {
     this.state.earn(first ? 3000 : 1000);
     this.state.addWorldExp(first ? 800 : 300);
     const name = POKEMON.get(id)?.name ?? id;
-    const lines = [...Object.entries(items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`), `+${first ? 3000 : 1000} xu`];
+    const lines = [...Object.entries(items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`), `+${first ? 3000 : 1000} ${this.state.unit}`];
     if (first) {
       // story progress never depends on a capture roll: beating every phase opens the next shrines
       this.state.setFlag('boss:' + id);

@@ -5,6 +5,7 @@ import { RULESETS, validateParty, shareableEvents } from './duel';
 import { net } from './session';
 import type { NetMsg } from './protocol';
 import type { CoopLoot } from './coopRewards';
+import { type Wallet, WALLETS } from '../core/wallet';
 import { CoopEventDirector, type CoopEventView } from '../core/coopEvents';
 
 export interface CoopMap {
@@ -130,6 +131,10 @@ export class CoopHost {
   private obsSentAt = -1e9;
   private off: () => void;
   private offStatus: () => void;
+  /** currency of the host's mode: every grant pays the guest (and the host's own challenge reward) in it */
+  private _wallet: Wallet = 'adventure';
+  get wallet(): Wallet { return this._wallet; }
+  set wallet(w: Wallet) { this._wallet = w; this.challenges.unit = WALLETS[w].unit; }
   constructor(readonly world: World, private map: () => CoopMap, private reward?: (loot: CoopLoot) => void) {
     this.challengeTime = world.time;
     this.off = net.on(m => this.receive(m));
@@ -173,7 +178,7 @@ export class CoopHost {
   /** Host → guest: share one loot/reward drop with the attached teammate. No-op when no guest is playing. */
   grant(loot: CoopLoot): void {
     if (!coopSession.active || net.role !== 'host' || !net.connected || !this.world.companion) return;
-    net.send({ t: 'coopLoot', reward: loot });
+    net.send({ t: 'coopLoot', reward: loot.currency ? { ...loot, wallet: loot.wallet ?? this.wallet } : loot });
   }
 
   update(now: number, paused: boolean, events: WorldEvent[]): void {
@@ -190,7 +195,7 @@ export class CoopHost {
         distance: Math.hypot(w.trainer.x - w.companion.trainer.x, w.trainer.y - w.companion.trainer.y),
       });
       if (result) {
-        const loot = { currency: result.currency, note: result.name };
+        const loot: CoopLoot = { currency: result.currency, note: result.name, wallet: this.wallet };
         this.reward?.(loot); this.grant(loot);
       }
     }

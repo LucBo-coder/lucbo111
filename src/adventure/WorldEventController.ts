@@ -373,20 +373,20 @@ export class WorldEventController {
   private end(ev: ActiveEvent, completed: boolean): void {
     if (!this.director.active.includes(ev)) return;
     const st = this.scene.state;
-    const beforeMoney = st.save.currency, beforeItems = { ...st.save.inventory };
+    const beforeMoney = st.money, beforeItems = { ...st.save.inventory };
     const region = REGIONS.get(ev.region);
     const lines: string[] = [];
     if (completed) {
       switch (ev.type) {
-        case 'outbreak': st.addItems({ greatball: 5 }); st.earn(800); lines.push('+5 Great Ball', '+800 xu'); break;
-        case 'alpha': { const loot = this.world.rng.pick(TREASURE_LOOT); st.addItems({ [loot]: 1 }); st.earn(1500); lines.push(`+1 ${ITEMS[loot]?.name ?? loot}`, '+1500 xu'); break; }
-        case 'ambush': st.earn(700 + (region?.danger ?? 1) * 200); st.addItems({ superpotion: 1 }); lines.push(`+${700 + (region?.danger ?? 1) * 200} xu`, '+1 Super Potion'); break;
-        case 'treasure': st.addItems({ [ev.data.loot as string]: 1, ultraball: 3 }); st.earn(1200); lines.push(`+1 ${ITEMS[ev.data.loot as string]?.name ?? ev.data.loot}`, '+3 Ultra Ball', '+1200 xu (cổ vật)'); break;
-        case 'distortion': st.addItems({ 'moon-stone': 1, ultraball: 2 }); st.earn(1500); lines.push('+1 Moon Stone', '+2 Ultra Ball', '+1500 xu'); break;
+        case 'outbreak': st.addItems({ greatball: 5 }); st.earn(800); lines.push('+5 Great Ball', `+800 ${st.unit}`); break;
+        case 'alpha': { const loot = this.world.rng.pick(TREASURE_LOOT); st.addItems({ [loot]: 1 }); st.earn(1500); lines.push(`+1 ${ITEMS[loot]?.name ?? loot}`, `+1500 ${st.unit}`); break; }
+        case 'ambush': st.earn(700 + (region?.danger ?? 1) * 200); st.addItems({ superpotion: 1 }); lines.push(`+${700 + (region?.danger ?? 1) * 200} ${st.unit}`, '+1 Super Potion'); break;
+        case 'treasure': st.addItems({ [ev.data.loot as string]: 1, ultraball: 3 }); st.earn(1200); lines.push(`+1 ${ITEMS[ev.data.loot as string]?.name ?? ev.data.loot}`, '+3 Ultra Ball', `+1200 ${st.unit} (cổ vật)`); break;
+        case 'distortion': st.addItems({ 'moon-stone': 1, ultraball: 2 }); st.earn(1500); lines.push('+1 Moon Stone', '+2 Ultra Ball', `+1500 ${st.unit}`); break;
         case 'merchant': st.addItems({ ultraball: 2 }); lines.push('Thương nhân bán hết hàng', '+2 Ultra Ball (quà cảm ơn)'); break;
         case 'meteor': {
           const stone = this.world.rng.pick(METEOR_STONES);
-          st.addItems({ [stone]: 1 }); st.earn(1500); lines.push(`+1 ${ITEMS[stone]?.name ?? stone}`, '+1500 xu');
+          st.addItems({ [stone]: 1 }); st.earn(1500); lines.push(`+1 ${ITEMS[stone]?.name ?? stone}`, `+1500 ${st.unit}`);
           if (this.world.rng.chance(0.3)) {
             const mega = this.world.rng.pick(shopCatalogue().filter((e) => e.category === 'mega')).id;
             st.addItems({ [mega]: 1 }); lines.push(`+1 ${ITEMS[mega]?.name ?? mega} (hiếm!)`);
@@ -397,13 +397,13 @@ export class WorldEventController {
       }
       st.addWorldExp(ev.type === 'weather' || ev.type === 'migration' || ev.type === 'merchant' ? 60 : 150);
       const items = Object.fromEntries(Object.entries(st.save.inventory).map(([id, qty]) => [id, qty - (beforeItems[id] ?? 0)]).filter(([, qty]) => Number(qty) > 0));
-      this.scene.coopHost?.grant({ currency: st.save.currency - beforeMoney, items, note: EVENT_DEFS[ev.type].name });
+      this.scene.coopHost?.grant({ currency: st.money - beforeMoney, items, note: EVENT_DEFS[ev.type].name });
     }
     let partial = '';
     if (!completed && ev.type === 'meteor' && ev.progress > 0) {
       // shards picked before the shower ended still sell for something
       st.earn(ev.progress * 250);
-      partial = ` — ${ev.progress} mảnh sao bán được ${ev.progress * 250} xu`;
+      partial = ` — ${ev.progress} mảnh sao bán được ${ev.progress * 250} ${st.unit}`;
       this.scene.coopHost?.grant({ currency: ev.progress * 250, items: {}, note: EVENT_DEFS[ev.type].name });
     }
     if (ev.type === 'merchant' && this.merchantOpen === ev.uid) this.scene.ui.shop?.close();

@@ -11,7 +11,7 @@ export function seedSave(starter = 'charmander', now = Date.now()): SaveData {
   if (!(STARTERS as readonly string[]).includes(starter) || !POKEMON.has(starter)) starter = 'charmander';
   const s = defaultSave();
   s.adventure = newAdventure('vietnam');
-  const st = new AdventureState(s);
+  const st = new AdventureState(s, 'adventure');
   st.adv.started = true;
   st.adv.region = 'ca-mau';
   st.adv.lastWaypoint = 'wp-ca-mau-center';

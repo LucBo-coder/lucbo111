@@ -37,6 +37,7 @@ import { askText, button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text
 import { net } from '../net/session';
 import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
+import { WALLETS } from '../core/wallet';
 
 const STAT_VI: Record<string, string> = { hp: 'HP', atk: 'Công', def: 'Thủ', spa: 'Công ĐB', spd: 'Thủ ĐB', spe: 'Tốc' };
 
@@ -383,7 +384,7 @@ export class AdventureUI extends Phaser.Scene {
       const ready = !!st.ally && a.state.item('key-stone') > 0;
       this.setMegaText(a.state.item('key-stone') > 0 ? (ready ? '[G] MEGA sẵn sàng' : a.megaCd > 0 ? `MEGA hồi ${Math.ceil(a.megaCd)}s` : '') : '', mx + 5 * s, my);
     }
-    this.texts.money?.setText(`${a.state.money} xu`);
+    this.texts.money?.setText(`${a.state.money} ${a.state.unit}`);
 
     // Items + command
     const ball = a.selectedBall;
@@ -1379,7 +1380,7 @@ export class AdventureUI extends Phaser.Scene {
     const base = [...BALL_ORDER, 'potion', 'superpotion', 'oranberry'];
     const extra = Object.keys(st.save.inventory).filter((k) => !base.includes(k) && st.item(k) > 0 && ITEMS[k]);
     const ids = [...base, ...extra];
-    c.add(text(this, r.x, r.y, `Xu: ${st.money}   ·   Vật phẩm: ${ids.filter((i) => st.item(i) > 0).length}`, 18 * s, '#ffe066'));
+    c.add(text(this, r.x, r.y, `${WALLETS[st.wallet].name}: ${st.money}   ·   Vật phẩm: ${ids.filter((i) => st.item(i) > 0).length}`, 18 * s, '#ffe066'));
     const cols = this.portraitMenu ? 1 : 2, cw = r.w / cols - 6 * s, rh = 54 * s;
     const rowsPerPage = Math.max(1, Math.floor((r.h - 92 * s) / (rh + 6 * s)));
     const perPage = cols * rowsPerPage;

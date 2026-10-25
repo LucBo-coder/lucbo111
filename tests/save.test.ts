@@ -23,11 +23,13 @@ describe('save schema', () => {
     expect(m.stats.totalKills).toBe(0);
     expect(m.unlockedPokemon.length).toBe(3);
   });
-  it('records run stats and currency', () => {
+  it('records run stats and pays the Survivor wallet only', () => {
     const s = recordRun(defaultSave(), { victory: true, time: 930.5, kills: 1000, level: 40, bosses: 3 });
     expect(s.stats.runs).toBe(1);
     expect(s.stats.victories).toBe(1);
     expect(s.stats.bestTime).toBe(930);
-    expect(s.currency).toBe(100 + 150 + 200);
+    expect(s.survivorCoins).toBe(100 + 150 + 200);
+    expect(s.currency).toBe(0);
+    expect(s.vnCoins).toBe(0);
   });
 });

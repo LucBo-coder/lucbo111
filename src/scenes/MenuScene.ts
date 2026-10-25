@@ -18,6 +18,7 @@ import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge, uiScale } 
 import { openPlayerProfile } from './playerProfile';
 
 import { GAME_VERSION } from '../version';
+import { balance, campaignWallet, fmtCoins, WALLETS } from '../core/wallet';
 export { GAME_VERSION };
 
 type View = 'home' | 'survivor' | 'settings' | 'credits' | 'slots' | 'confirm' | 'upgrades';
@@ -237,7 +238,8 @@ export class MenuScene extends Phaser.Scene {
       parts.push(`Pokédex ${sv.pokedex.caught.length}`);
       if (adv?.started) parts.push(fmtTime(adv.playTime));
     }
-    parts.push(`${sv.currency} xu`);
+    parts.push(fmtCoins(sv.survivorCoins, 'survivor'));
+    if (adv?.started) parts.push(fmtCoins(balance(sv, campaignWallet(adv.campaign)), campaignWallet(adv.campaign)));
     if (!portrait && sv.pvp) parts.push(`PvP ${sv.pvp.wins}–${sv.pvp.losses}`);
     text(this, nx, y + 34 * s, parts.join(' · '), 14 * s, '#a8b8d8').setWordWrapWidth(tw);
   }
@@ -261,7 +263,7 @@ export class MenuScene extends Phaser.Scene {
     this.modeCard(a.x, a.y, cw, ch, s, {
       title: 'SINH TỒN', edge: 0xff7040, fill: 0x2a1c1c, band: 0x7a3020, color: '#ffc090',
       desc: 'Sống sót 15 phút trước làn sóng kẻ địch.\nLên cấp, chọn nâng cấp, hạ 3 Boss.',
-      stats: `Kỷ lục ${fmtTime(sv.stats.bestTime)} · ${sv.stats.runs} trận · ${survivorPool(sv).length} Pokémon`, statColor: '#e0b090',
+      stats: `Kỷ lục ${fmtTime(sv.stats.bestTime)} · ${sv.stats.runs} trận · ${survivorPool(sv).length} Pokémon · ${fmtCoins(sv.survivorCoins, 'survivor')}`, statColor: '#e0b090',
       art: () => ['charmander', 'squirtle', 'bulbasaur'].forEach((sp, i) => {
         const img = this.add.sprite(a.x + cw / 2 + (i - 1) * 80 * s, a.y + 94 * s, sp + '_sheet', 0).setScale(fitScale(this, sp, 76 * s));
         if (this.anims.exists(sp + ':walk')) img.play(sp + ':walk');
@@ -431,17 +433,18 @@ export class MenuScene extends Phaser.Scene {
 
   private buildUpgrades(W: number, H: number, s: number): void {
     const sv = saveStore.data;
-    const cw = Math.min(W - 32, 720 * s), rh = Math.min(62 * s, (H - 280 * s) / PERM_UPGRADES.length - 6 * s);
-    const x = (W - cw) / 2, top = 128 * s;
-    text(this, W / 2, top - 8 * s, `Xu: ${sv.currency}  ·  áp dụng cho mọi trận Sinh tồn của ô ${saveStore.slot}`, 18 * s, '#ffe080').setOrigin(0.5, 1);
+    const cw = Math.min(W - 32, 720 * s), rh = Math.min(62 * s, (H - 300 * s) / PERM_UPGRADES.length - 6 * s);
+    const x = (W - cw) / 2, top = 148 * s;
+    const wallet = text(this, W / 2, top - 8 * s, `${WALLETS.survivor.name}: ${fmtCoins(sv.survivorCoins, 'survivor')}  ·  kiếm từ trận Sinh tồn, dùng cho mọi trận của ô ${saveStore.slot}`, 18 * s, WALLETS.survivor.color).setOrigin(0.5, 1);
+    if (wallet.width > W - 24) wallet.setText(`${WALLETS.survivor.name}: ${fmtCoins(sv.survivorCoins, 'survivor')}`);
     PERM_UPGRADES.forEach((u, i) => {
       const y = top + 6 * s + i * (rh + 6 * s);
       const lv = upgradeLevel(sv.permanentUpgrades, u.id), cost = nextCost(sv.permanentUpgrades, u.id);
       panel(this, x, y, cw, rh, lv >= u.max ? 0xffd640 : COLORS.panelEdge, COLORS.panel);
       text(this, x + 14 * s, y + 6 * s, `${u.name}  ${'■'.repeat(lv)}${'□'.repeat(u.max - lv)}`, 20 * s);
       text(this, x + 14 * s, y + rh - 22 * s, u.description, 14 * s, COLORS.dim);
-      const can = cost != null && sv.currency >= cost;
-      button(this, x + cw - 90 * s, y + rh / 2, 160 * s, rh - 16 * s, cost == null ? 'Tối đa' : `${cost} xu`, () => {
+      const can = cost != null && sv.survivorCoins >= cost;
+      button(this, x + cw - 90 * s, y + rh / 2, 160 * s, rh - 16 * s, cost == null ? 'Tối đa' : fmtCoins(cost, 'survivor'), () => {
         if (!buyUpgrade(sv, u.id)) { audio.play('hurt'); return; }
         audio.play('levelup');
         void saveStore.save();
@@ -465,7 +468,7 @@ export class MenuScene extends Phaser.Scene {
       if (sum) {
         const when = sum.savedAt ? new Date(sum.savedAt).toLocaleString('vi-VN') : '—';
         text(this, x + 16 * s, y + 40 * s, `${sum.campaign === 'vietnam' ? '[Việt Nam] ' : ''}${regionDef(sum.region).name} · ${fmtTime(sum.playTime)} · lưu lúc ${when}`, 16 * s, COLORS.dim).setWordWrapWidth(cw - 200 * s);
-        text(this, x + 16 * s, y + 62 * s, `${sum.collection} Pokémon · Pokédex ${sum.caught} · ${sum.badges} huyền thoại · ${sum.money} xu · ${sum.runs} trận Sinh tồn`, 15 * s, '#90c0d0').setWordWrapWidth(cw - 200 * s);
+        text(this, x + 16 * s, y + 62 * s, `${sum.collection} Pokémon · Pokédex ${sum.caught} · ${sum.badges} huyền thoại · ${fmtCoins(sum.money, campaignWallet(sum.campaign))} · ${fmtCoins(sum.survivorCoins, 'survivor')} · ${sum.runs} trận Sinh tồn`, 15 * s, '#90c0d0').setWordWrapWidth(cw - 200 * s);
         sum.party.slice(0, 6).forEach((sp, i) => {
           if (this.textures.exists(sp + '_sheet')) this.add.sprite(x + 34 * s + i * 44 * s, y + rh - 18 * s, sp + '_sheet', 0).setScale(fitScale(this, sp, 40 * s));
         });

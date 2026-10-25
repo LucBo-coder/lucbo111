@@ -93,7 +93,7 @@ describe('save migration', () => {
     delete (v5.adventure as Record<string, unknown>).recalled;
     const m = migrate(v5);
     expect(m.version).toBe(SAVE_VERSION);
-    expect(SAVE_VERSION).toBe(7);
+    expect(SAVE_VERSION).toBeGreaterThanOrEqual(7);
     expect(m.savedAt).toBe(0);
     expect(m.adventure!.bossFights).toEqual({});
     expect(m.adventure!.recalled).toEqual([]);

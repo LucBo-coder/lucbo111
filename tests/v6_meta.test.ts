@@ -23,17 +23,17 @@ describe('Survivor: held items', () => {
 
 describe('Permanent Upgrades', () => {
   it('buying: costs rise, coins are spent, max level holds', () => {
-    const s = { currency: 10_000, permanentUpgrades: {} as Record<string, number> };
+    const s = { survivorCoins: 10_000, permanentUpgrades: {} as Record<string, number> };
     const u = PERM_UPGRADES[0];
     let spent = 0;
     for (let i = 0; i < u.max; i++) { spent += nextCost(s.permanentUpgrades, u.id)!; expect(buyUpgrade(s, u.id)).toBe(true); }
     expect(upgradeLevel(s.permanentUpgrades, u.id)).toBe(u.max);
     expect(nextCost(s.permanentUpgrades, u.id)).toBeNull();
     expect(buyUpgrade(s, u.id)).toBe(false);
-    expect(s.currency).toBe(10_000 - spent);
-    const poor = { currency: 5, permanentUpgrades: {} };
+    expect(s.survivorCoins).toBe(10_000 - spent);
+    const poor = { survivorCoins: 5, permanentUpgrades: {} };
     expect(buyUpgrade(poor, 'power')).toBe(false);
-    expect(poor.currency).toBe(5);
+    expect(poor.survivorCoins).toBe(5);
   });
 
   it('applied to Survivor runs only, clamped', () => {

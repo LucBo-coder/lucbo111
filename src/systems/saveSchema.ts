@@ -1,7 +1,8 @@
 // Save schema + migrations. Pure (no IndexedDB) so it can be unit-tested.
 //
 // Separation of data:
-//  • PERMANENT (shared by both modes): collection, pokedex, inventory, currency, unlockedPokemon, stats
+//  • PERMANENT (shared by both modes): collection, pokedex, inventory, unlockedPokemon, stats
+//  • WALLETS (one per mode, core/wallet.ts): survivorCoins (Sinh tồn), currency (Phiêu lưu + online), vnCoins (Việt Nam Odyssey)
 //  • ADVENTURE-ONLY: `adventure` (position, quests, flags, waypoints, exploration, dungeons, clock)
 //  • SURVIVOR RUN DATA: never saved (level-up cards, run levels, mods live only inside World)
 
@@ -13,7 +14,7 @@ import { buildPcForCollection, emptyPc, PcStorage } from '../core/pc';
 import { EventSave, newEventSave } from '../core/worldEvents';
 import type { PhaseSnapshot } from '../core/bossPhases';
 
-export const SAVE_VERSION = 7;
+export const SAVE_VERSION = 8;
 export type QualitySetting = 'low' | 'medium' | 'high';
 export type Difficulty = 'normal' | 'hard' | 'expert';
 
@@ -83,7 +84,12 @@ export interface SaveData {
   settings: { sfx: boolean; showFps: boolean; quality: QualitySetting; officialSprites: boolean; gen1Survivor: boolean; /** player toggled the official pack themselves */ officialChosen?: boolean; /** background music */ music: boolean; /** PMD animation pack (personal, if downloaded) */ pmdSprites?: boolean };
   unlockedPokemon: string[];
   permanentUpgrades: Record<string, number>;
+  /** Adventure wallet ("xu"): classic Adventure + online world. The other modes have their own (core/wallet.ts). */
   currency: number;
+  /** Survivor wallet ("ngọc"): runs → Permanent Upgrades */
+  survivorCoins: number;
+  /** Vietnam Odyssey wallet ("đồng") */
+  vnCoins: number;
   achievements: string[];
   stats: {
     runs: number;
@@ -131,6 +137,8 @@ export function defaultSave(): SaveData {
     unlockedPokemon: [...DEFAULT_UNLOCKED],
     permanentUpgrades: {},
     currency: 0,
+    survivorCoins: 0,
+    vnCoins: 0,
     achievements: [],
     stats: { runs: 0, victories: 0, bestTime: 0, totalKills: 0, bossesDefeated: 0, bestLevel: 0 },
     collection: [],
@@ -149,7 +157,7 @@ export function freshSave(settings?: SaveData['settings']): SaveData {
 
 /** True while a slot holds no progress at all (so it is shown as "empty" and never written by a settings toggle). */
 export function isEmptySave(d: SaveData): boolean {
-  return !d.adventure?.started && d.stats.runs === 0 && d.collection.length === 0 && d.currency === 0 && d.pokedex.seen.length === 0;
+  return !d.adventure?.started && d.stats.runs === 0 && d.collection.length === 0 && d.currency === 0 && d.survivorCoins === 0 && d.vnCoins === 0 && d.pokedex.seen.length === 0;
 }
 
 export interface SlotSummary {
@@ -160,7 +168,10 @@ export interface SlotSummary {
   collection: number;
   caught: number;
   badges: number; // legendaries caught
+  /** wallet of the slot's Adventure campaign (xu, or đồng for Vietnam Odyssey) */
   money: number;
+  /** Survivor wallet (ngọc) */
+  survivorCoins: number;
   runs: number;
   adventureStarted: boolean;
   campaign: Campaign;
@@ -177,7 +188,8 @@ export function slotSummary(d: SaveData): SlotSummary {
     collection: d.collection.length,
     caught: d.pokedex.caught.length,
     badges: Object.values(adv?.legends ?? {}).filter((v) => v === 'caught').length,
-    money: d.currency,
+    money: adv?.campaign === 'vietnam' ? d.vnCoins : d.currency,
+    survivorCoins: d.survivorCoins,
     runs: d.stats.runs,
     adventureStarted: !!adv?.started,
     campaign: adv?.campaign ?? 'classic',
@@ -273,6 +285,11 @@ const MIGRATIONS: Record<number, Migration> = {
       version: 7,
     };
   },
+  // v7 → v8: one wallet per mode. Nobody loses coins: every wallet starts with the old shared balance.
+  7: (d) => {
+    const old = Math.max(0, Math.floor(Number(d.currency) || 0));
+    return { ...d, currency: old, survivorCoins: old, vnCoins: old, version: 8 };
+  },
 };
 
 export function migrate(raw: unknown): SaveData {
@@ -335,7 +352,7 @@ export function recordRun(save: SaveData, run: RunSummary, makeEntry?: (species:
   s.bossesDefeated += run.bosses;
   s.bestLevel = Math.max(s.bestLevel, run.level);
   const earned = Math.floor(run.kills / 10) + run.bosses * 50 + (run.victory ? 200 : 0);
-  const next: SaveData = { ...save, stats: s, currency: save.currency + earned, collection: [...save.collection], pokedex: { seen: [...save.pokedex.seen], caught: [...save.pokedex.caught] } };
+  const next: SaveData = { ...save, stats: s, survivorCoins: (save.survivorCoins ?? 0) + earned, collection: [...save.collection], pokedex: { seen: [...save.pokedex.seen], caught: [...save.pokedex.caught] } };
   for (const sp of run.recruited ?? []) if (!next.pokedex.seen.includes(sp)) next.pokedex.seen.push(sp);
   if (makeEntry && (run.time >= SURVIVOR_UNLOCK_TIME || run.bosses >= 2)) {
     for (const sp of run.recruited ?? []) {

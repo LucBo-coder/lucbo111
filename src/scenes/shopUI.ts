@@ -120,13 +120,13 @@ export class ShopWindow {
     if (!o) return false;
     const qty = this.qty;
     if (qty > this.maxQty()) {
-      this.host.banner(o.stock === 0 ? 'Món này đã bán hết' : this.st.item(o.id) + qty > MAX_STACK ? `Mỗi món mang tối đa ${MAX_STACK}` : 'Không đủ xu', '#ff9080');
+      this.host.banner(o.stock === 0 ? 'Món này đã bán hết' : this.st.item(o.id) + qty > MAX_STACK ? `Mỗi món mang tối đa ${MAX_STACK}` : `Không đủ ${this.st.unit}`, '#ff9080');
       return false;
     }
     if (!this.st.buy(o.id, o.price, qty)) return false;
     if (o.stock != null) o.stock -= qty;
     audio.play('gem');
-    this.host.banner(`Đã mua ${qty} ${ITEMS[o.id]?.name ?? o.id} (−${fmt(o.price * qty)} xu)`, '#ffe066');
+    this.host.banner(`Đã mua ${qty} ${ITEMS[o.id]?.name ?? o.id} (−${fmt(o.price * qty)} ${this.st.unit})`, '#ffe066');
     this.opts.onBought?.(o, qty);
     this.host.persist();
     this.qty = 1;
@@ -165,8 +165,8 @@ export class ShopWindow {
     // header: shop name, greeting, money, close
     c.add(text(this.scene, x0 + 18 * s, y0 + 12 * s, this.opts.title, 26 * s, '#ffe080'));
     c.add(text(this.scene, x0 + 18 * s, y0 + 44 * s, this.opts.greeting, 15 * s, '#c8d0e8').setWordWrapWidth(pw - 280 * s).setMaxLines(2));
-    c.add(text(this.scene, x0 + pw - 62 * s, y0 + 16 * s, `${fmt(this.st.money)} xu`, 24 * s, '#ffe066').setOrigin(1, 0));
-    c.add(this.scene.add.image(x0 + pw - 62 * s - this.measure(`${fmt(this.st.money)} xu`, 24 * s) - 16 * s, y0 + 29 * s, 'item-pokeball').setScale(this.px(10, 22 * s)));
+    c.add(text(this.scene, x0 + pw - 62 * s, y0 + 16 * s, `${fmt(this.st.money)} ${this.st.unit}`, 24 * s, '#ffe066').setOrigin(1, 0));
+    c.add(this.scene.add.image(x0 + pw - 62 * s - this.measure(`${fmt(this.st.money)} ${this.st.unit}`, 24 * s) - 16 * s, y0 + 29 * s, 'item-pokeball').setScale(this.px(10, 22 * s)));
     c.add(button(this.scene, x0 + pw - 30 * s, y0 + 28 * s, 40 * s, 36 * s, '✕', () => this.close(), 0x6a2f2f).container);
     // shelves
     let top = y0 + 80 * s;
@@ -214,7 +214,7 @@ export class ShopWindow {
       const ik = itemIconKey(this.scene, o.id);
       c.add(this.scene.add.image(x + 28 * s, y + chh / 2, ik).setScale(this.px(this.iconW(o.id), 40 * s)).setAlpha(afford ? 1 : 0.55));
       c.add(text(this.scene, x + 54 * s, y + 6 * s, ITEMS[o.id]?.name ?? o.id, 15 * s, afford ? '#ffffff' : '#9098b0').setWordWrapWidth(w - 58 * s).setMaxLines(2).setLineSpacing(-2));
-      c.add(text(this.scene, x + 54 * s, y + chh - 24 * s, `${fmt(o.price)} xu`, 16 * s, afford ? '#ffe066' : '#a08050'));
+      c.add(text(this.scene, x + 54 * s, y + chh - 24 * s, `${fmt(o.price)} ${this.st.unit}`, 16 * s, afford ? '#ffe066' : '#a08050'));
       const own = this.st.item(o.id);
       const tag = o.stock != null ? `còn ${o.stock}` : own ? `có ${own}` : '';
       if (tag) c.add(text(this.scene, x + w - 6 * s, y + chh - 22 * s, tag, 13 * s, o.stock === 0 ? '#ff8070' : '#a0d8ff').setOrigin(1, 0));
@@ -244,7 +244,7 @@ export class ShopWindow {
     c.add(this.scene.add.image(r.x + 14 * s + iconBox / 2, r.y + 14 * s + iconBox / 2, ik).setScale(this.px(this.iconW(o.id), iconBox - 16 * s)));
     const tx = r.x + iconBox + 28 * s, tw = r.w - iconBox - 42 * s;
     c.add(text(this.scene, tx, r.y + 10 * s, it?.name ?? o.id, (this.portrait ? 20 : 24) * s, '#ffffff').setWordWrapWidth(tw).setMaxLines(this.portrait ? 1 : 2));
-    c.add(text(this.scene, tx, r.y + 14 * s + iconBox - 44 * s, `${CAT_LABEL[o.category]} · ${o.was ? `${fmt(o.price)} xu (gốc ${fmt(o.was)})` : `${fmt(o.price)} xu`}`, 15 * s, '#ffe066').setWordWrapWidth(tw).setMaxLines(1));
+    c.add(text(this.scene, tx, r.y + 14 * s + iconBox - 44 * s, `${CAT_LABEL[o.category]} · ${o.was ? `${fmt(o.price)} ${this.st.unit} (gốc ${fmt(o.was)} ${this.st.unit})` : `${fmt(o.price)} ${this.st.unit}`}`, 15 * s, '#ffe066').setWordWrapWidth(tw).setMaxLines(1));
     const own = this.st.item(o.id);
     c.add(text(this.scene, tx, r.y + 14 * s + iconBox - 22 * s, `Đang có: ${own}${o.stock != null ? ` · còn ${o.stock} trong kho` : ''}`, 15 * s, '#a0d8ff'));
     // description + what it is for
@@ -287,10 +287,10 @@ export class ShopWindow {
     picks.forEach(([l, n], i) => c.add(button(this.scene, r.x + 16 * s + pw / 2 + i * pw, qy + 44 * s, pw - 8 * s, 34 * s, l, () => this.setQty(n), this.qty === n ? 0x4a5a8a : 0x262c44).container));
     const total = o.price * this.qty;
     const ok = max >= this.qty && max > 0;
-    c.add(text(this.scene, r.x + 16 * s, qy + 72 * s, `Tổng: ${fmt(total)} xu`, 18 * s, ok ? '#ffe066' : '#ff8070'));
-    c.add(text(this.scene, r.x + r.w - 16 * s, qy + 74 * s, `còn lại ${fmt(Math.max(0, this.st.money - total))} xu`, 14 * s, COLORS.dim).setOrigin(1, 0));
-    const why = o.stock === 0 ? 'Đã bán hết' : own >= MAX_STACK ? `Đã đầy (${MAX_STACK})` : 'Không đủ xu';
-    c.add(button(this.scene, r.x + r.w / 2, r.y + r.h - 26 * s, r.w - 32 * s, 40 * s, ok ? `Mua ×${this.qty} — ${fmt(total)} xu` : why, () => this.buy(), ok ? 0x2f7a3a : 0x3a3c48).container);
+    c.add(text(this.scene, r.x + 16 * s, qy + 72 * s, `Tổng: ${fmt(total)} ${this.st.unit}`, 18 * s, ok ? '#ffe066' : '#ff8070'));
+    c.add(text(this.scene, r.x + r.w - 16 * s, qy + 74 * s, `còn lại ${fmt(Math.max(0, this.st.money - total))} ${this.st.unit}`, 14 * s, COLORS.dim).setOrigin(1, 0));
+    const why = o.stock === 0 ? 'Đã bán hết' : own >= MAX_STACK ? `Đã đầy (${MAX_STACK})` : `Không đủ ${this.st.unit}`;
+    c.add(button(this.scene, r.x + r.w / 2, r.y + r.h - 26 * s, r.w - 32 * s, 40 * s, ok ? `Mua ×${this.qty} — ${fmt(total)} ${this.st.unit}` : why, () => this.buy(), ok ? 0x2f7a3a : 0x3a3c48).container);
   }
 
   // ───────────────────────────── helpers ─────────────────────────────
