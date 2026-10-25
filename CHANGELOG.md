@@ -7,6 +7,7 @@
 - Thế giới online chạy cùng mã `server/world.ts` trên SQLite của Durable Object; máy chủ Node (`npm run server`) vẫn dùng được như cũ.
 - Bảo vệ: chỉ nhận trang GitHub Pages + localhost, giới hạn mở kết nối theo IP, giới hạn kích thước / tần suất khung tin.
 - `?net=peer` dùng lại WebRTC, `?net=local` (thử trong một trình duyệt), `?cloud=wss://…` chọn máy chủ khác. Gameplay, UI, save không đổi.
+- **Sửa giao diện khách co-op**: người vào phòng trước đây chỉ thấy một khối chữ và nút *Rời co-op*. Giờ có HUD riêng (`CoopGuestUI`) giống chủ phòng: thanh HP huấn luyện viên, đội Pokémon (biểu tượng, HP, năng lượng), thẻ đồng đội + ping, bản đồ nhỏ, thử thách co-op, thanh boss, khung mục tiêu đang đánh, thanh lệnh đội (Tự do / Tấn công / Bảo vệ / Đi theo / Giữ / Rút, thêm *Chạy* trên cảm ứng), cần điều khiển ảo, màn chờ chủ phòng và thông báo khi phiên kết thúc. Tự co giãn theo màn dọc / ngang, chữ dài được rút gọn hoặc xuống dòng. Sửa thông báo "Chưa nhận được trận co-op" hiện ngay lập tức.
 - Test: `scripts/cloud-room-test.mjs` (19 kiểm tra relay), `e2e/relay_reconnect.spec.ts`; các e2e co-op/PvP/thế giới chung chạy được qua relay (`E2E_NET=cloud=…`), e2e Thế giới online chạy được với máy chủ thật (`SERVER_WS=…`).
 
 ## 0.14.0 — Sảnh Online, thử thách co-op & server tài khoản

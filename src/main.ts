@@ -10,6 +10,7 @@ import { LobbyScene } from './scenes/LobbyScene';
 import { DuelScene } from './scenes/DuelScene';
 import { DuelUI } from './scenes/DuelUI';
 import { CoopGuestScene } from './scenes/CoopGuestScene';
+import { CoopGuestUI } from './scenes/CoopGuestUI';
 import { ServerScene } from './scenes/ServerScene';
 import { OnlineHubScene } from './scenes/OnlineHubScene';
 
@@ -29,7 +30,7 @@ async function boot(): Promise<void> {
     scale: { mode: Phaser.Scale.RESIZE, width: window.innerWidth, height: window.innerHeight },
     input: { activePointers: 3 },
     fps: { target: 60, forceSetTimeOut: false },
-    scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene, ServerScene, OnlineHubScene],
+    scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene, CoopGuestUI, ServerScene, OnlineHubScene],
   });
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
 }

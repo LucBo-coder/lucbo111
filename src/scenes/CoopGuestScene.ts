@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { coopEventLabel } from '../core/coopEvents';
 import { CoopMirror, coopSession, type CoopSnapshot } from '../net/coop';
 import { applyCoopLoot, type CoopLoot } from '../net/coopRewards';
 import { net } from '../net/session';
@@ -14,7 +13,6 @@ import { TILE_PX, DUNGEON } from '../core/map/tiles';
 import { type AllyCommand } from '../core/world';
 import { saveStore } from '../systems/save';
 import { gameModes } from '../systems/gameMode';
-import { button, text } from './ui';
 import { music } from '../systems/music';
 
 /** Guests render the host's world and send controls; their campaign save stays local. */
@@ -23,7 +21,7 @@ export class CoopGuestScene extends Phaser.Scene {
   snapshot: CoopSnapshot | null = null;
   private renderer_: WorldRenderer | null = null;
   private chunks: ChunkView | null = null;
-  private map: ValleyMap | DungeonMap | null = null;
+  map: ValleyMap | DungeonMap | null = null;
   private party: DuelMon[] = [];
   private returnTo: 'adventure' | 'menu' = 'menu';
   private off: (() => void) | null = null;
@@ -32,55 +30,47 @@ export class CoopGuestScene extends Phaser.Scene {
   private seq = 0;
   private sent = 0;
   private joined = 0;
-  private received = 0;
-  private command: AllyCommand = 'auto';
+  private startedAt = 0;
+  /** performance.now() of the last snapshot */
+  receivedAt = 0;
+  command: AllyCommand = 'auto';
   private target?: number;
-  private hud!: Phaser.GameObjects.Text;
+  /** why the session ended (shown by the HUD); empty while playing */
+  notice = '';
+  runHeld = false;
+  /** set by the HUD's virtual joystick */
+  readonly joystick = { x: 0, y: 0 };
   private scenery: Phaser.GameObjects.GameObject[] = [];
-  private ended = false;
-  private joy: { id: number; x: number; y: number; dx: number; dy: number } | null = null;
+  ended = false;
   private lootLine = '';
   private lootUntil = 0;
 
   constructor() { super('CoopGuest'); }
   init(d: { party: DuelMon[]; returnTo?: 'adventure' | 'menu' }): void {
     this.party = d.party; this.returnTo = d.returnTo ?? 'menu';
-    this.mirror = null; this.snapshot = null; this.seq = 0; this.sent = this.joined = this.received = 0;
-    this.command = 'auto'; this.target = undefined; this.ended = false; this.joy = null; this.scenery = [];
-    this.lootLine = ''; this.lootUntil = 0;
+    this.mirror = null; this.snapshot = null; this.seq = 0; this.sent = this.joined = this.receivedAt = 0;
+    this.command = 'auto'; this.target = undefined; this.ended = false; this.notice = ''; this.runHeld = false; this.scenery = [];
+    this.joystick.x = this.joystick.y = 0; this.lootLine = ''; this.lootUntil = 0; this.map = null;
   }
   create(): void {
     coopSession.active = true;
     net.setProfile(saveStore.playerName, saveStore.avatar);
     (window as unknown as { __coopGuest: CoopGuestScene }).__coopGuest = this;
     this.cameras.main.setBackgroundColor(0x1a3a1c);
-    this.hud = text(this, 16, 14, 'Đang chờ chủ phòng…', 20, '#ffffff').setScrollFactor(0).setDepth(10000);
-    const exit = button(this, this.scale.width - 80, 32, 140, 40, 'Rời co-op', () => this.exit(), 0x6a2f2f).container;
-    exit.setScrollFactor(0).setDepth(10001);
+    this.startedAt = performance.now();
+    this.scene.launch('CoopGuestUI', { guest: this });
     this.keys = this.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT') as Record<string, Phaser.Input.Keyboard.Key>;
     const commands: AllyCommand[] = ['auto', 'attack', 'defend', 'follow', 'hold', 'retreat'];
-    ['BACKTICK', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].forEach((key, i) => this.input.keyboard!.on('keydown-' + key, () => { this.command = commands[i]; this.target = undefined; }));
+    ['BACKTICK', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].forEach((key, i) => this.input.keyboard!.on('keydown-' + key, () => this.setCommand(commands[i])));
     this.input.keyboard!.on('keydown-ESC', () => this.exit());
-    this.input.on('pointerdown', (p: Phaser.Input.Pointer) => {
-      if (p.y < 80) return;
-      if (p.x < this.scale.width / 3) this.joy = { id: p.id, x: p.x, y: p.y, dx: 0, dy: 0 };
-      else {
-        const u = this.mirror?.world.enemies.find(e => Math.hypot(e.x - p.worldX, e.y - p.worldY) < e.radius + 20);
-        if (u) { this.command = 'attack'; this.target = u.id; }
-      }
-    });
-    this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
-      if (this.joy?.id === p.id) { this.joy.dx = Phaser.Math.Clamp((p.x - this.joy.x) / 55, -1, 1); this.joy.dy = Phaser.Math.Clamp((p.y - this.joy.y) / 55, -1, 1); }
-    });
-    this.input.on('pointerup', (p: Phaser.Input.Pointer) => { if (this.joy?.id === p.id) this.joy = null; });
-    this.input.on('gameout', () => { this.joy = null; });
     this.off = net.on(m => {
       if (m.t === 'coopSnap') this.receive(m.s);
       if (m.t === 'coopLoot') this.receiveLoot(m.reward);
-      if (m.t === 'coopEnd') { this.ended = true; this.hud.setText(m.reason + '\nNhấn Rời co-op để quay về.'); }
+      if (m.t === 'coopEnd') this.end(m.reason);
     });
-    this.offStatus = net.onStatus(() => { if (!net.connected) { this.ended = true; this.hud.setText('Đã mất kết nối. Nhấn Rời co-op để quay về.'); } });
+    this.offStatus = net.onStatus(() => { if (!net.connected) this.end('Đã mất kết nối với chủ phòng.'); });
     this.events.once('shutdown', () => {
+      this.scene.stop('CoopGuestUI');
       this.off?.(); this.offStatus?.(); this.renderer_?.destroy(); this.chunks?.destroyAll();
       this.renderer_ = null; this.chunks = null; this.map = null;
     });
@@ -108,7 +98,7 @@ export class CoopGuestScene extends Phaser.Scene {
         this.map.setDoor('D', d); this.map.setDoor('Q', q); this.chunks?.refreshTiles();
       }
     }
-    this.snapshot = s; this.received = performance.now();
+    this.snapshot = s; this.receivedAt = performance.now();
     this.renderer_!.handle(s.events);
   }
   /** Host shared a drop: apply it to this player's own save immediately (progress survives a disconnect). */
@@ -134,25 +124,32 @@ export class CoopGuestScene extends Phaser.Scene {
     if (this.ended) return;
     const now = performance.now();
     if (now - this.joined >= 1000) { net.send({ t: 'coopJoin', party: this.party, avatar: saveStore.avatar }); this.joined = now; }
-    if (!this.snapshot || !this.mirror) {
-      if (this.time.now > 15000) this.hud.setText('Chưa nhận được trận co-op. Kiểm tra chủ phòng đã chọn co-op.\nNhấn Rời co-op để quay về.');
-      return;
-    }
+    if (!this.snapshot || !this.mirror) return;
     music.play(this.mirror.world.enemies.some(e => e.kind === 'boss') ? 'boss' : 'battle');
     const k = this.keys;
     if (now - this.sent >= 66) {
       const x = (k.D.isDown || k.RIGHT.isDown ? 1 : 0) - (k.A.isDown || k.LEFT.isDown ? 1 : 0);
       const y = (k.S.isDown || k.DOWN.isDown ? 1 : 0) - (k.W.isDown || k.UP.isDown ? 1 : 0);
-      net.send({ t: 'coopInput', epoch: this.snapshot.epoch, seq: ++this.seq, x: x || this.joy?.dx || 0, y: y || this.joy?.dy || 0, run: k.SHIFT.isDown, command: this.command, target: this.target });
+      net.send({ t: 'coopInput', epoch: this.snapshot.epoch, seq: ++this.seq, x: x || this.joystick.x, y: y || this.joystick.y, run: k.SHIFT.isDown || this.runHeld, command: this.command, target: this.target });
       this.sent = now;
     }
     this.chunks?.update(this.cameras.main.worldView);
     this.mirror.interpolate(delta);
     this.renderer_?.render(delta);
-    const w = this.mirror.world, s = this.snapshot;
-    const status = now - this.received > 3000 ? 'Đang chờ chủ phòng / chuyển bản đồ…' : s.paused || s.state === 'levelup' ? 'Chủ phòng đang tạm dừng / chọn nâng cấp' : w.trainer.hp <= 0 ? 'Đã gục — đồng đội đứng gần 3 giây để cứu' : `${Math.ceil(w.trainer.hp)}/${w.trainer.maxHp} HP · Lv${w.level} · ${w.kills} hạ gục`;
-    const loot = `\n${coopEventLabel(s.challenge)}` + (this.time.now < this.lootUntil ? `\n${this.lootLine}` : '');
-    this.hud.setText(`CO-OP · ${net.peerName} · ${net.rtt} ms\n${status}\nWASD / kéo bên trái: di chuyển · Chạm quái: tấn công\nNhiệm vụ thuộc chủ phòng · chiến lợi phẩm và xu được chia cho bạn${loot}`);
+    if (this.target != null && !this.targetUnit()) { this.target = undefined; if (this.command === 'attack') this.command = 'auto'; }
+  }
+  // ── used by the HUD (CoopGuestUI) ──
+  private end(reason: string): void { this.ended = true; this.notice = `${reason}\nNhấn Rời co-op để quay về.`; }
+  waitedMs(): number { return performance.now() - this.startedAt; }
+  lootText(): string { return this.time.now < this.lootUntil ? this.lootLine : ''; }
+  setCommand(c: AllyCommand): void { this.command = c; this.target = undefined; }
+  toggleRun(): void { this.runHeld = !this.runHeld; }
+  targetUnit() { return this.target == null ? undefined : this.mirror?.world.enemies.find(e => e.id === this.target && e.alive); }
+  /** Tap / click on an enemy (screen coordinates): the team focuses it. */
+  pickTarget(sx: number, sy: number): void {
+    const p = this.cameras.main.getWorldPoint(sx, sy);
+    const u = this.mirror?.world.enemies.find(e => e.alive && !e.captured && Math.hypot(e.x - p.x, e.y - p.y) < e.radius + 20);
+    if (u) { this.command = 'attack'; this.target = u.id; }
   }
   exit(): void {
     coopSession.active = false; net.leave();
