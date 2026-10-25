@@ -38,7 +38,7 @@ export class MenuScene extends Phaser.Scene {
 
   create(): void {
     this.view = 'home';
-    net.myName = saveStore.playerName;
+    net.setName(saveStore.playerName);
     this.build();
     this.scale.on('resize', this.rebuild, this);
     this.events.once('shutdown', () => this.scale.off('resize', this.rebuild, this));
@@ -87,7 +87,7 @@ export class MenuScene extends Phaser.Scene {
     const v = await askText(this, 'Tên người chơi (bạn bè sẽ thấy khi online)', saveStore.playerName, 16);
     if (v == null) return;
     const name = await saveStore.setPlayerName(v);
-    net.myName = name;
+    net.setName(name);
     this.rebuild();
   }
 

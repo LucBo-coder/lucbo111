@@ -40,6 +40,12 @@ export class NetSession {
     return this.status === 'connected';
   }
 
+  /** Updates the local display name; if a link is already open, tells the peer so their labels update live. */
+  setName(name: string): void {
+    this.myName = name;
+    if (this.connected) this.send({ t: 'hello', v: PROTOCOL_VERSION, name, game: GAME_VERSION });
+  }
+
   /** Creates a room; resolves with its code once it is open (the guest may join any time later). */
   async host(kind: LinkKind = defaultLinkKind()): Promise<string> {
     this.leave();

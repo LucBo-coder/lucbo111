@@ -43,7 +43,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   create(): void {
-    net.myName = saveStore.playerName;
+    net.setName(saveStore.playerName);
     (window as unknown as { __lobby: LobbyScene }).__lobby = this;
     if (this.view === 'room') this.openHandshake();
     this.offStatus = net.onStatus(() => this.rebuild());
@@ -177,7 +177,7 @@ export class LobbyScene extends Phaser.Scene {
   async editName(): Promise<void> {
     const v = await askText(this, 'Tên người chơi (bạn bè sẽ thấy khi online)', saveStore.playerName, 16);
     if (v == null) return;
-    net.myName = await saveStore.setPlayerName(v);
+    net.setName(await saveStore.setPlayerName(v));
     this.rebuild();
   }
 

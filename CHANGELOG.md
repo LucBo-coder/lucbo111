@@ -5,7 +5,7 @@
 ### Sảnh chính / hồ sơ người chơi
 - **Thẻ người chơi trong sảnh chính**: avatar huấn luyện viên, tên, ô lưu đang dùng, số Pokémon, Pokédex, số xu, thời gian chơi và thành tích PvP (bản ngang); bản dọc rút gọn để vừa màn hình điện thoại.
 - **Đặt tên người chơi** ngay từ sảnh chính (nút *✎ Đổi tên*, bàn phím HTML nên dùng tốt trên điện thoại): 1–16 ký tự, tự cắt khoảng trắng / ký tự điều khiển, tên rỗng quay về “Huấn luyện viên”. Tên lưu **theo thiết bị** (`meta.profile`) nên không mất khi chơi mới, đổi ô lưu hay xóa ô; save cũ có `playerName` được tự động chuyển lên hồ sơ thiết bị.
-- Tên được đồng bộ vào `net.myName` khi mở sảnh, tạo/vào phòng đấu, co-op và thế giới mở — bạn bè thấy đúng tên này. Sảnh đấu online cũng có thẻ hồ sơ (avatar + tên + thành tích) và nút đổi tên dùng chung một nguồn.
+- Tên được đồng bộ vào `net.myName` khi mở sảnh, tạo/vào phòng đấu, co-op và thế giới mở — bạn bè thấy đúng tên này; đổi tên khi đang trong phòng sẽ gửi `hello` để đối phương cập nhật ngay. Sảnh đấu online cũng có thẻ hồ sơ (avatar + tên + thành tích) và nút đổi tên dùng chung một nguồn.
 - Sửa nội dung bảng co-op còn ghi “phần thưởng thuộc chủ phòng” thành đúng hành vi chia chiến lợi phẩm hiện tại.
 - Test mới: 4 unit cho hồ sơ (làm sạch tên, giữ tên qua chơi mới/đổi ô/tải lại, chuyển tên từ save cũ) và 2 e2e (đổi tên trong sảnh chính + tải lại; thẻ hồ sơ vừa khung dọc 390×844).
 

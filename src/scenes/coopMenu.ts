@@ -41,7 +41,7 @@ export function openCoopMenu(ui: Phaser.Scene, game: AdventureScene | GameScene)
     if (busy) return;
     busy = true;
     try {
-      net.myName = saveStore.playerName;
+      net.setName(saveStore.playerName);
       if (host) {
         const code = await net.host();
         coopSession.active = true;
