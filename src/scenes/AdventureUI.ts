@@ -33,7 +33,7 @@ import { saveStore } from '../systems/save';
 import { fitScale, itemIconKey, officialPack } from '../render/spriteRegistry';
 import type { QualitySetting } from '../systems/saveSchema';
 import { AdventureScene, COMMANDS } from './AdventureScene';
-import { askText, button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge } from './ui';
+import { askText, button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
 import { net } from '../net/session';
 import { defaultLinkKind } from '../net/transport';
 
@@ -101,6 +101,11 @@ export class AdventureUI extends Phaser.Scene {
   private dexStatus = '';
   private dexPage = 0;
   private partyPage = 0;
+  private questPage = 0;
+  /** the HUD is laid out for a portrait phone */
+  private portraitHud = false;
+  /** the open menu is laid out for a portrait phone (stacked columns) */
+  private portraitMenu = false;
   private bagPage = 0;
   private passportPage = 0;
   // PC storage browser
@@ -172,7 +177,7 @@ export class AdventureUI extends Phaser.Scene {
     this.bossHud = new BossHUDController(this);
     // full-screen tint while a regional event runs (blizzard white-out, eruption glow)
     this.envTint = this.add.rectangle(0, 0, W, H, 0xffffff, 0).setOrigin(0).setDepth(-10);
-    const s = (this.s = Phaser.Math.Clamp(Math.min(W / 1100, H / 680), 0.55, 1.4));
+    const s = (this.s = uiScale(W, H, (w, h) => Phaser.Math.Clamp(h > w ? Math.min(w / 620, h / 1000) : Math.min(w / 1100, h / 680), 0.55, 1.4)));
     this.hud = this.add.graphics();
     const T = (k: string, x: number, y: number, size: number, color: string = COLORS.text) => (this.texts[k] = text(this, x, y, '', size * s, color));
     T('hp', 16 * s, 12 * s, 18);
@@ -205,7 +210,14 @@ export class AdventureUI extends Phaser.Scene {
     const by = this.miniBox.y + mh + 26 * s;
     const small: [string, () => void][] = [['≡', () => this.toggleMenu('settings')], ['Đội', () => this.toggleMenu('party')], ['Q', () => this.toggleMenu('quests')], ['Túi', () => this.toggleMenu('bag')]];
     small.forEach(([l, fn], i) => button(this, W - 30 * s - i * 54 * s, by, 48 * s, 36 * s, l, fn));
-    if (this.touch || W < 900) {
+    // portrait phones: the HP bar and the minimap fill the top row, so the clock sits left of the buttons and the
+    // area name under them (the quest tracker moves down one line)
+    this.portraitHud = H > W * 1.15;
+    if (this.portraitHud) {
+      this.texts.clock.setOrigin(1, 0.5).setPosition(W - 30 * s - 3 * 54 * s - 34 * s, by).setFontSize(22 * s);
+      this.texts.area.setOrigin(1, 0).setPosition(W - 12 * s, by + 22 * s);
+    }
+    if (this.touch || W / DPR < 900) {
       const R = 34 * s;
       const cx = W - 70 * s, cy = H - 80 * s;
       const big: [string, number, number, () => void][] = [
@@ -330,7 +342,7 @@ export class AdventureUI extends Phaser.Scene {
     const qid = a.state.trackedQuest;
     const qdef = qid ? a.state.quests.def(qid) : undefined;
     const obj = qid ? a.state.quests.currentObjective(qid) : null;
-    const qy = this.miniBox.y + this.miniBox.h + 52 * s;
+    const qy = this.miniBox.y + this.miniBox.h + (this.portraitHud ? 76 : 52) * s;
     if (qdef && obj) {
       const st = a.state.quests.states[qid!];
       const prog = obj.count > 1 ? ` (${st.progress}/${obj.count})` : '';
@@ -793,21 +805,46 @@ export class AdventureUI extends Phaser.Scene {
     this.adv.modal = true;
     this.menuTab = tab;
     const { width: W, height: H } = this.scale;
-    const s = this.s;
+    // portrait phones: the menu fills the screen, columns stack (list above detail) and the text gets bigger
+    // than the HUD scale, which is limited by the narrow width
+    const hud = this.s;
+    this.portraitMenu = H > W * 1.15;
+    const s = (this.s = this.portraitMenu ? uiScale(W, H, (w, h) => Phaser.Math.Clamp(Math.min((w - 16) / 540, (h - 16) / 900), 0.55, 1.4)) : hud);
     const c = this.add.container(0, 0).setDepth(120);
     this.menu = c;
     c.add(this.add.rectangle(0, 0, W, H, 0x05060c, 0.8).setOrigin(0).setInteractive());
-    const pw = Math.min(W - 16, 1040 * s), ph = Math.min(H - 16, 640 * s);
+    const pw = this.portraitMenu ? W - 16 * DPR : Math.min(W - 16, 1040 * s), ph = this.portraitMenu ? H - 16 * DPR : Math.min(H - 16, 640 * s);
     const x0 = (W - pw) / 2, y0 = (H - ph) / 2;
     c.add(panel(this, x0, y0, pw, ph, COLORS.panelEdge, 0x161a28, 0.97));
     const tabs = this.tabs();
-    const tw = (pw - 70 * s) / tabs.length;
+    const rows = this.portraitMenu ? 2 : 1, perRow = Math.ceil(tabs.length / rows);
+    const tw = (pw - 70 * s) / perRow;
     tabs.forEach((t, i) => {
-      const b = button(this, x0 + 10 * s + tw / 2 + i * tw, y0 + 26 * s, tw - 6 * s, 36 * s, t.label, () => this.openMenu(t.id), t.id === tab ? 0x4a5a8a : 0x262c44);
+      const b = button(this, x0 + 10 * s + tw / 2 + (i % perRow) * tw, y0 + 26 * s + Math.floor(i / perRow) * 42 * s, tw - 6 * s, 36 * s, t.label, () => this.openMenu(t.id), t.id === tab ? 0x4a5a8a : 0x262c44);
       c.add(b.container);
     });
     c.add(button(this, x0 + pw - 30 * s, y0 + 26 * s, 40 * s, 36 * s, '✕', () => this.closeMenu(), 0x6a2f2f).container);
-    const body = { x: x0 + 16 * s, y: y0 + 56 * s, w: pw - 32 * s, h: ph - 72 * s };
+    const top = 56 * s + (rows - 1) * 42 * s;
+    const body = { x: x0 + 16 * s, y: y0 + top, w: pw - 32 * s, h: ph - top - 16 * s };
+    try {
+      this.buildTab(c, tab, body);
+    } finally {
+      this.s = hud;
+    }
+  }
+
+  /** Menu body columns: list | detail side by side, or list above detail on portrait phones. */
+  private split(r: Rect, frac: number, top: number): [Rect, Rect] {
+    const gap = 12 * this.s;
+    if (!this.portraitMenu) {
+      const lw = r.w * frac;
+      return [{ x: r.x, y: r.y, w: lw, h: r.h }, { x: r.x + lw + gap, y: r.y, w: r.w - lw - gap, h: r.h }];
+    }
+    const lh = r.h * top;
+    return [{ x: r.x, y: r.y, w: r.w, h: lh }, { x: r.x, y: r.y + lh + gap, w: r.w, h: r.h - lh - gap }];
+  }
+
+  private buildTab(c: Phaser.GameObjects.Container, tab: MenuTab, body: Rect): void {
     switch (tab) {
       case 'party': this.buildParty(c, body); break;
       case 'pc': this.buildPc(c, body); break;
@@ -824,11 +861,11 @@ export class AdventureUI extends Phaser.Scene {
   private buildParty(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, st = this.adv.state;
     const coll = st.save.collection;
-    const lw = r.w * 0.46;
+    const [L, D] = this.split(r, 0.46, 0.3), lw = L.w;
     c.add(text(this, r.x, r.y, `Bộ sưu tập (${coll.length}) · Đội hình ${st.adv.party.length}/6 — chạm để xem, nút bên phải để thêm/rút`, 17 * s, COLORS.dim).setWordWrapWidth(r.w));
     if (!coll.length) { c.add(text(this, r.x, r.y + 40 * s, 'Chưa có Pokémon. Hãy gặp Giáo sư Tùng ở làng!', 22 * s)); return; }
     const cols = 3, cw = lw / cols, chh = 70 * s;
-    const perPage = cols * Math.max(1, Math.floor((r.h - 70 * s) / (chh + 6 * s)));
+    const perPage = cols * Math.max(1, Math.floor((L.h - 70 * s) / (chh + 6 * s)));
     const pages = Math.ceil(coll.length / perPage);
     this.partyPage = Math.min(this.partyPage, pages - 1);
     coll.slice(this.partyPage * perPage, (this.partyPage + 1) * perPage).forEach((p, i) => {
@@ -848,12 +885,12 @@ export class AdventureUI extends Phaser.Scene {
       c.add(z);
     });
     if (pages > 1) {
-      c.add(button(this, r.x + 60 * s, r.y + r.h - 18 * s, 100 * s, 30 * s, '◀', () => { this.partyPage = (this.partyPage + pages - 1) % pages; this.openMenu('party'); }).container);
-      c.add(text(this, r.x + lw / 2, r.y + r.h - 18 * s, `${this.partyPage + 1}/${pages}`, 18 * s).setOrigin(0.5));
-      c.add(button(this, r.x + lw - 60 * s, r.y + r.h - 18 * s, 100 * s, 30 * s, '▶', () => { this.partyPage = (this.partyPage + 1) % pages; this.openMenu('party'); }).container);
+      c.add(button(this, r.x + 60 * s, L.y + L.h - 18 * s, 100 * s, 30 * s, '◀', () => { this.partyPage = (this.partyPage + pages - 1) % pages; this.openMenu('party'); }).container);
+      c.add(text(this, r.x + lw / 2, L.y + L.h - 18 * s, `${this.partyPage + 1}/${pages}`, 18 * s).setOrigin(0.5));
+      c.add(button(this, r.x + lw - 60 * s, L.y + L.h - 18 * s, 100 * s, 30 * s, '▶', () => { this.partyPage = (this.partyPage + 1) % pages; this.openMenu('party'); }).container);
     }
     const sel = coll.find((p) => p.uid === this.selected.party) ?? coll[0];
-    this.pokemonDetails(c, { x: r.x + lw + 12 * s, y: r.y + 26 * s, w: r.w - lw - 12 * s, h: r.h - 26 * s }, sel);
+    this.pokemonDetails(c, this.portraitMenu ? D : { x: D.x, y: D.y + 26 * s, w: D.w, h: D.h - 26 * s }, sel);
   }
 
   /** Pokémon Center PC: boxes, search, filters, sorting, moves, withdraw and favourite. */
@@ -862,14 +899,14 @@ export class AdventureUI extends Phaser.Scene {
     c.add(text(this, r.x, r.y, `PC · ${pc.boxes.length} box × ${pc.boxSize} ô · Đội hình ${st.adv.party.length}/6 · ${st.pcPokemon().length} trong PC`, 17 * s, COLORS.dim));
     if (!this.adv.pcNearby()) {
       c.add(panel(this, r.x, r.y + 34 * s, r.w, 120 * s, 0x6a5a2f, 0x24201a, 1));
-      c.add(text(this, r.x + 20 * s, r.y + 54 * s, 'Máy PC chỉ dùng được tại Trung tâm Pokémon hoặc trạm nghiên cứu của thị trấn.', 20 * s, '#ffe080'));
-      c.add(text(this, r.x + 20 * s, r.y + 84 * s, 'Đi tới cửa có nhãn “PC” rồi nhấn E / nút tương tác.', 16 * s, '#d0d8f0'));
+      c.add(text(this, r.x + 20 * s, r.y + 54 * s, 'Máy PC chỉ dùng được tại Trung tâm Pokémon hoặc trạm nghiên cứu của thị trấn.', 20 * s, '#ffe080').setWordWrapWidth(r.w - 40 * s));
+      c.add(text(this, r.x + 20 * s, r.y + 104 * s, 'Đi tới cửa có nhãn “PC” rồi nhấn E / nút tương tác.', 16 * s, '#d0d8f0'));
       return;
     }
 
     this.pcBox = Phaser.Math.Clamp(this.pcBox, 0, pc.boxes.length - 1);
     const box = pc.boxes[this.pcBox];
-    const leftW = r.w * 0.61;
+    const [L, D] = this.split(r, 0.61, 0.5), leftW = L.w;
     const unplaced = st.unplacedPokemon();
     const norm = (v: string) => v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const q = norm(this.pcQuery.trim());
@@ -894,7 +931,7 @@ export class AdventureUI extends Phaser.Scene {
     // grid
     const cols = 6, top = r.y + 34 * s;
     const cw = (leftW - 8 * s) / cols;
-    const chh = Math.min(cw * 0.92, (r.h - 150 * s) / 5);
+    const chh = Math.min(cw * 0.92, (L.h - 150 * s) / 5);
     shown.forEach((uid, i) => {
       const x = r.x + (i % cols) * cw, y = top + Math.floor(i / cols) * chh;
       const p = uid ? st.owned(uid) : undefined;
@@ -934,7 +971,7 @@ export class AdventureUI extends Phaser.Scene {
     });
 
     // navigation / tools
-    const by = r.y + r.h - 30 * s;
+    const by = L.y + L.h - 30 * s;
     if (pool) {
       c.add(text(this, r.x, by, `Kết quả: ${pool.length} · lọc ${this.pcFilter === 'all' ? 'tất cả' : this.pcFilter === 'favorite' ? 'yêu thích' : 'shiny'}${q ? ` · “${this.pcQuery}”` : ''}`, 15 * s, '#a0d8ff'));
       if (pages > 1) {
@@ -972,26 +1009,27 @@ export class AdventureUI extends Phaser.Scene {
     if (unplaced.length) c.add(text(this, r.x, r.y + 18 * s, `⚠ ${unplaced.length} Pokémon chưa xếp (kho đầy) — vẫn an toàn trong bộ sưu tập`, 13 * s, '#ffb060'));
 
     // right detail panel
-    const dx = r.x + leftW + 12 * s, dw = r.w - leftW - 12 * s;
+    const dx = D.x, dw = D.w;
+    const dy = this.portraitMenu ? D.y - 26 * s : r.y; // detail rows are laid out from here
     const p = this.pcSelected ? st.owned(this.pcSelected) : undefined;
-    c.add(panel(this, dx, r.y + 26 * s, dw, r.h - 26 * s, COLORS.panelEdge, 0x1c2134, 1));
+    c.add(panel(this, dx, dy + 26 * s, dw, r.y + r.h - dy - 26 * s, COLORS.panelEdge, 0x1c2134, 1));
     if (!p) {
-      c.add(text(this, dx + 16 * s, r.y + 44 * s, 'Chọn một Pokémon để xem chi tiết.\n\n• Chạm ô trống để bỏ chọn\n• “Di chuyển” rồi chạm ô đích để đổi chỗ\n• Tìm/lọc xem toàn bộ kho\n• PC tự lưu mọi thay đổi', 17 * s, '#c8d0e8').setWordWrapWidth(dw - 32 * s));
+      c.add(text(this, dx + 16 * s, dy + 44 * s, 'Chọn một Pokémon để xem chi tiết.\n\n• Chạm ô trống để bỏ chọn\n• “Di chuyển” rồi chạm ô đích để đổi chỗ\n• Tìm/lọc xem toàn bộ kho\n• PC tự lưu mọi thay đổi', 17 * s, '#c8d0e8').setWordWrapWidth(dw - 32 * s));
       return;
     }
     const def = POKEMON.get(p.species)!;
     const stt = st.pcLocation(p.uid) ? `PC Box ${st.pcLocation(p.uid)!.box + 1} · ô ${st.pcLocation(p.uid)!.slot + 1}` : st.inParty(p.uid) ? (st.isActive(p.uid) ? 'Đang ở ngoài bóng ★' : 'Trong đội · trong bóng') : 'Chưa xếp';
-    c.add(text(this, dx + 14 * s, r.y + 38 * s, `${def.name}${p.nickname ? ` “${p.nickname}”` : ''}`, 24 * s));
-    c.add(text(this, dx + 14 * s, r.y + 68 * s, `Lv${p.level} · ${stt} · ${p.shiny ? '✦ Shiny' : 'thường'}`, 15 * s, p.shiny ? '#fff0a0' : '#a0d8ff'));
+    c.add(text(this, dx + 14 * s, dy + 38 * s, `${def.name}${p.nickname ? ` “${p.nickname}”` : ''}`, 24 * s));
+    c.add(text(this, dx + 14 * s, dy + 68 * s, `Lv${p.level} · ${stt} · ${p.shiny ? '✦ Shiny' : 'thường'}`, 15 * s, p.shiny ? '#fff0a0' : '#a0d8ff'));
     const ik = p.shiny ? shinyKey(p.species) : p.species;
-    c.add(this.add.image(dx + 66 * s, r.y + 142 * s, ik).setScale(fitScale(this, ik, 110 * s)));
+    c.add(this.add.image(dx + 66 * s, dy + 142 * s, ik).setScale(fitScale(this, ik, 110 * s)));
     let bx = dx + 128 * s;
-    for (const t of def.types) { const b = typeBadge(this, bx, r.y + 100 * s, t, 14 * s); c.add(b); bx += b.width + 6; }
+    for (const t of def.types) { const b = typeBadge(this, bx, dy + 100 * s, t, 14 * s); c.add(b); bx += b.width + 6; }
     const ind = individualOf(p);
     const stats = calcStats(def.baseStats, p.level, ind);
-    c.add(text(this, dx + 128 * s, r.y + 126 * s, `HP ${Math.floor(stats.hp * 4)} · Atk ${stats.atk} · Def ${stats.def}\nSpA ${stats.spa} · SpD ${stats.spd} · Spe ${stats.spe}\nIV ${STAT_KEYS.map((k) => ind.ivs[k]).join('/')} · Thân thiết ${p.friendship ?? 0}/255`, 13 * s, '#d8e0f8').setWordWrapWidth(dw - 146 * s));
-    c.add(text(this, dx + 14 * s, r.y + 210 * s, `EXP ${p.exp}/${levelProgress(p) >= 1 ? 'MAX' : '—'} · Bắt lúc ${new Date(p.caughtAt).toLocaleDateString('vi-VN')}\nNguồn: ${p.origin}${p.held ? ` · Đang giữ ${ITEM_DEFS.get(p.held)?.name ?? p.held}` : ''}`, 14 * s, COLORS.dim).setWordWrapWidth(dw - 28 * s));
-    let by2 = r.y + 274 * s;
+    c.add(text(this, dx + 128 * s, dy + 126 * s, `HP ${Math.floor(stats.hp * 4)} · Atk ${stats.atk} · Def ${stats.def}\nSpA ${stats.spa} · SpD ${stats.spd} · Spe ${stats.spe}\nIV ${STAT_KEYS.map((k) => ind.ivs[k]).join('/')} · Thân thiết ${p.friendship ?? 0}/255`, 13 * s, '#d8e0f8').setWordWrapWidth(dw - 146 * s));
+    c.add(text(this, dx + 14 * s, dy + 210 * s, `EXP ${p.exp}/${levelProgress(p) >= 1 ? 'MAX' : '—'} · Bắt lúc ${new Date(p.caughtAt).toLocaleDateString('vi-VN')}\nNguồn: ${p.origin}${p.held ? ` · Đang giữ ${ITEM_DEFS.get(p.held)?.name ?? p.held}` : ''}`, 14 * s, COLORS.dim).setWordWrapWidth(dw - 28 * s));
+    let by2 = dy + 274 * s;
     if (st.pcLocation(p.uid)) {
       c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, `Rút vào đội (${st.adv.party.length}/6)`, () => {
         if (!st.withdrawFromPc(p.uid)) this.banner('Đội hình đã đủ 6 hoặc Pokémon không có trong PC', '#ff9080');
@@ -1236,14 +1274,14 @@ export class AdventureUI extends Phaser.Scene {
     const list = Object.values(SPECIES).sort((a, b) => a.id - b.id);
     const caught = new Set(sv.pokedex.caught), seen = new Set(sv.pokedex.seen);
     c.add(text(this, r.x, r.y, `Đã thấy ${seen.size} · Đã bắt ${caught.size} / ${list.length} loài trong dữ liệu`, 17 * s, COLORS.dim));
-    const lw = r.w * 0.5, cols = 4, cw = lw / cols, chh = 42 * s;
-    const perPage = cols * Math.max(1, Math.floor((r.h - 70 * s) / (chh + 4 * s)));
+    const [L, D] = this.split(r, 0.5, 0.4), lw = L.w, cols = 4, cw = lw / cols, chh = 42 * s;
+    const perPage = cols * Math.max(1, Math.floor((L.h - 70 * s) / (chh + 4 * s)));
     const pages = Math.ceil(list.length / perPage);
     this.dexPage = Math.min(this.dexPage, pages - 1);
     if (pages > 1) {
-      c.add(button(this, r.x + 50 * s, r.y + r.h - 16 * s, 90 * s, 28 * s, '◀', () => { this.dexPage = (this.dexPage + pages - 1) % pages; this.openMenu('dex'); }).container);
-      c.add(text(this, r.x + lw / 2, r.y + r.h - 16 * s, `${this.dexPage + 1}/${pages}`, 16 * s).setOrigin(0.5));
-      c.add(button(this, r.x + lw - 50 * s, r.y + r.h - 16 * s, 90 * s, 28 * s, '▶', () => { this.dexPage = (this.dexPage + 1) % pages; this.openMenu('dex'); }).container);
+      c.add(button(this, r.x + 50 * s, L.y + L.h - 16 * s, 90 * s, 28 * s, '◀', () => { this.dexPage = (this.dexPage + pages - 1) % pages; this.openMenu('dex'); }).container);
+      c.add(text(this, r.x + lw / 2, L.y + L.h - 16 * s, `${this.dexPage + 1}/${pages}`, 16 * s).setOrigin(0.5));
+      c.add(button(this, r.x + lw - 50 * s, L.y + L.h - 16 * s, 90 * s, 28 * s, '▶', () => { this.dexPage = (this.dexPage + 1) % pages; this.openMenu('dex'); }).container);
     }
     list.slice(this.dexPage * perPage, (this.dexPage + 1) * perPage).forEach((sp, i) => {
       const x = r.x + (i % cols) * cw, y = r.y + 28 * s + Math.floor(i / cols) * (chh + 4 * s);
@@ -1266,24 +1304,25 @@ export class AdventureUI extends Phaser.Scene {
     const firstKnown = list.find((sp) => seen.has(sp.name) || caught.has(sp.name)) ?? list[0];
     const sel = SPECIES[this.selected.dex ?? firstKnown.name];
     const known = seen.has(sel.name) || caught.has(sel.name);
-    const dx = r.x + lw + 12 * s, dw = r.w - lw - 12 * s;
-    c.add(panel(this, dx, r.y + 24 * s, dw, r.h - 24 * s, COLORS.panelEdge, 0x1c2134, 1));
-    if (!known) { c.add(text(this, dx + 20 * s, r.y + 50 * s, '???\nChưa gặp loài này. Khám phá thêm để ghi nhận vào Pokédex.', 20 * s).setWordWrapWidth(dw - 40 * s)); return; }
-    c.add(text(this, dx + 16 * s, r.y + 34 * s, `#${String(sel.id).padStart(3, '0')} ${sel.displayName}`, 26 * s));
-    c.add(text(this, dx + 16 * s, r.y + 64 * s, sel.genus, 17 * s, COLORS.dim));
+    const dx = D.x, dw = D.w;
+    const dy = this.portraitMenu ? D.y - 24 * s : r.y; // detail rows are laid out from here
+    c.add(panel(this, dx, dy + 24 * s, dw, r.y + r.h - dy - 24 * s, COLORS.panelEdge, 0x1c2134, 1));
+    if (!known) { c.add(text(this, dx + 20 * s, dy + 50 * s, '???\nChưa gặp loài này. Khám phá thêm để ghi nhận vào Pokédex.', 20 * s).setWordWrapWidth(dw - 40 * s)); return; }
+    c.add(text(this, dx + 16 * s, dy + 34 * s, `#${String(sel.id).padStart(3, '0')} ${sel.displayName}`, 26 * s));
+    c.add(text(this, dx + 16 * s, dy + 64 * s, sel.genus, 17 * s, COLORS.dim));
     let bx = dx + 16 * s;
-    for (const t of sel.types) { const b = typeBadge(this, bx, r.y + 88 * s, t, 14 * s); c.add(b); bx += b.width + 6; }
-    c.add(text(this, dx + 16 * s, r.y + 116 * s, `Cao ${(sel.heightDm / 10).toFixed(1)}m · Nặng ${(sel.weightHg / 10).toFixed(1)}kg · Tỉ lệ bắt ${sel.captureRate}/255 · ${sel.growthRate}`, 15 * s, '#c8e0ff').setWordWrapWidth(dw - 32 * s));
+    for (const t of sel.types) { const b = typeBadge(this, bx, dy + 88 * s, t, 14 * s); c.add(b); bx += b.width + 6; }
+    c.add(text(this, dx + 16 * s, dy + 116 * s, `Cao ${(sel.heightDm / 10).toFixed(1)}m · Nặng ${(sel.weightHg / 10).toFixed(1)}kg · Tỉ lệ bắt ${sel.captureRate}/255 · ${sel.growthRate}`, 15 * s, '#c8e0ff').setWordWrapWidth(dw - 32 * s));
     const g = this.add.graphics();
     c.add(g);
     (['hp', 'atk', 'def', 'spa', 'spd', 'spe'] as const).forEach((k, i) => {
-      const y = r.y + 150 * s + i * 20 * s;
+      const y = dy + 150 * s + i * 20 * s;
       c.add(text(this, dx + 16 * s, y, ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'][i] + ' ' + sel.baseStats[k], 15 * s));
       bar(g, dx + 100 * s, y + 6 * s, dw - 130 * s, 6 * s, sel.baseStats[k] / 160, 0x60c0ff);
     });
     const evo = sel.evolutions.map((e) => `${e.from} → ${e.to}${e.minLevel ? ' (Lv' + e.minLevel + ')' : ''}`).join(',  ');
     const megaForms = megaFormsOf(sel.name).map((m) => `${POKEMON.get(m.form)?.name} (${POKEMON.get(m.form)?.types.join('/')})`);
-    c.add(text(this, dx + 16 * s, r.y + 280 * s, `Tiến hóa: ${evo || 'không có'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s));
+    c.add(text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa: ${evo || 'không có'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s));
     // Encounter info (V3 §4.3): habitat, rarity, time, weather, method — never an exact position
     const eco = ECOLOGY.get(sel.name);
     if (eco) {
@@ -1294,9 +1333,9 @@ export class AdventureUI extends Phaser.Scene {
       const info = leg
         ? `Huyền thoại · ${method}${leg.time ? ' · ' + (leg.time === 'night' ? 'ban đêm' : leg.time === 'dawn' ? 'bình minh' : 'ban ngày') : ''}${caught.has(sel.name) ? '\n' + leg.lore : ''}`
         : `Môi trường: ${eco.biomes.map((b) => BIOME_VI[b] ?? b).join(', ')} · Độ hiếm: ${RARITY_LABEL[eco.rarity]} · ${eco.time === 'night' ? 'Ban đêm' : 'Mọi lúc'}${prefer ? ' · Ưa: ' + prefer : ''}\nCách gặp: ${method}${eco.minLevel > 1 ? ` (từ Lv${eco.minLevel})` : ''}${sv.pokedex.shiny?.includes(sel.name) ? '  ·  ✦ Đã bắt Shiny' : ''}`;
-      c.add(text(this, dx + 16 * s, r.y + 322 * s, info, 14 * s, '#f0d8ff').setWordWrapWidth(dw - 32 * s));
+      c.add(text(this, dx + 16 * s, dy + 322 * s, info, 14 * s, '#f0d8ff').setWordWrapWidth(dw - 32 * s));
     }
-    c.add(text(this, dx + 16 * s, r.y + 372 * s, sel.flavorText, 16 * s, '#e0e4f0').setWordWrapWidth(dw - 32 * s));
+    c.add(text(this, dx + 16 * s, dy + 372 * s, sel.flavorText, 16 * s, '#e0e4f0').setWordWrapWidth(dw - 32 * s));
     c.add(text(this, dx + 16 * s, r.y + r.h - 70 * s, this.dexStatus || 'Dữ liệu từ PokéAPI (cache cục bộ).', 14 * s, COLORS.dim).setWordWrapWidth(dw - 220 * s));
     c.add(button(this, dx + dw - 100 * s, r.y + r.h - 40 * s, 180 * s, 36 * s, 'Làm mới PokéAPI', () => {
       this.dexStatus = 'Đang kết nối pokeapi.co...';
@@ -1317,7 +1356,7 @@ export class AdventureUI extends Phaser.Scene {
     const extra = Object.keys(st.save.inventory).filter((k) => !base.includes(k) && st.item(k) > 0 && ITEMS[k]);
     const ids = [...base, ...extra];
     c.add(text(this, r.x, r.y, `Xu: ${st.money}   ·   Vật phẩm: ${ids.filter((i) => st.item(i) > 0).length}`, 18 * s, '#ffe066'));
-    const cols = 2, cw = r.w / cols - 6 * s, rh = 54 * s;
+    const cols = this.portraitMenu ? 1 : 2, cw = r.w / cols - 6 * s, rh = 54 * s;
     const rowsPerPage = Math.max(1, Math.floor((r.h - 92 * s) / (rh + 6 * s)));
     const perPage = cols * rowsPerPage;
     const pages = Math.max(1, Math.ceil(ids.length / perPage));
@@ -1362,9 +1401,17 @@ export class AdventureUI extends Phaser.Scene {
   private buildQuests(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, st = this.adv.state, qs = st.quests;
     const list = qs.defs.filter((d) => qs.states[d.id].status === 'active' || qs.states[d.id].status === 'completed' || qs.states[d.id].status === 'available');
-    const lw = r.w * 0.42;
+    const [L, D] = this.split(r, 0.42, 0.4), lw = L.w;
     list.sort((a, b) => order(qs.states[a.id].status) - order(qs.states[b.id].status));
-    list.forEach((d, i) => {
+    const perPage = Math.max(1, Math.floor((L.h - 40 * s) / (46 * s)));
+    const pages = Math.max(1, Math.ceil(list.length / perPage));
+    this.questPage = Phaser.Math.Clamp(this.questPage, 0, pages - 1);
+    if (pages > 1) {
+      c.add(button(this, r.x + 50 * s, L.y + L.h - 16 * s, 90 * s, 28 * s, '◀', () => { this.questPage = (this.questPage + pages - 1) % pages; this.openMenu('quests'); }).container);
+      c.add(text(this, r.x + lw / 2, L.y + L.h - 16 * s, `${this.questPage + 1}/${pages}`, 16 * s).setOrigin(0.5));
+      c.add(button(this, r.x + lw - 50 * s, L.y + L.h - 16 * s, 90 * s, 28 * s, '▶', () => { this.questPage = (this.questPage + 1) % pages; this.openMenu('quests'); }).container);
+    }
+    list.slice(this.questPage * perPage, (this.questPage + 1) * perPage).forEach((d, i) => {
       const y = r.y + i * 46 * s;
       const stt = qs.states[d.id].status;
       const g = this.add.graphics();
@@ -1377,17 +1424,17 @@ export class AdventureUI extends Phaser.Scene {
       c.add(z);
     });
     const sel = qs.def(this.selected.quest ?? st.trackedQuest ?? list[0]?.id ?? '');
-    const dx = r.x + lw + 12 * s, dw = r.w - lw - 12 * s;
-    c.add(panel(this, dx, r.y, dw, r.h, COLORS.panelEdge, 0x1c2134, 1));
-    if (!sel) { c.add(text(this, dx + 16 * s, r.y + 16 * s, 'Chưa có nhiệm vụ.', 20 * s)); return; }
+    const dx = D.x, dw = D.w, dy = D.y;
+    c.add(panel(this, dx, dy, dw, D.h, COLORS.panelEdge, 0x1c2134, 1));
+    if (!sel) { c.add(text(this, dx + 16 * s, dy + 16 * s, 'Chưa có nhiệm vụ.', 20 * s)); return; }
     const state = qs.states[sel.id];
-    c.add(text(this, dx + 16 * s, r.y + 12 * s, sel.title, 26 * s));
-    c.add(text(this, dx + 16 * s, r.y + 46 * s, sel.description, 17 * s, '#d0d8f0').setWordWrapWidth(dw - 32 * s));
+    c.add(text(this, dx + 16 * s, dy + 12 * s, sel.title, 26 * s));
+    c.add(text(this, dx + 16 * s, dy + 46 * s, sel.description, 17 * s, '#d0d8f0').setWordWrapWidth(dw - 32 * s));
     sel.objectives.forEach((o, i) => {
       const done = state.status === 'completed' || i < state.step;
       const cur = state.status === 'active' && i === state.step;
       const prog = cur && o.count > 1 ? ` (${state.progress}/${o.count})` : '';
-      c.add(text(this, dx + 24 * s, r.y + 110 * s + i * 28 * s, `${done ? '☑' : cur ? '▶' : '☐'} ${o.text.replace(/\(\d+\/\d+\)/, '')}${prog}`, 18 * s, done ? '#80c080' : cur ? '#ffe080' : COLORS.dim));
+      c.add(text(this, dx + 24 * s, dy + 110 * s + i * 28 * s, `${done ? '☑' : cur ? '▶' : '☐'} ${o.text.replace(/\(\d+\/\d+\)/, '')}${prog}`, 18 * s, done ? '#80c080' : cur ? '#ffe080' : COLORS.dim));
     });
     const rw = sel.rewards;
     const rewards = [...Object.entries(rw.items ?? {}).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`), rw.worldExp ? `${rw.worldExp} EXP thế giới` : '', rw.reputation ? `${rw.reputation} danh tiếng` : '', rw.pokemon ? `${POKEMON.get(rw.pokemon.species)?.name} Lv${rw.pokemon.level}` : ''].filter(Boolean);
@@ -1398,8 +1445,8 @@ export class AdventureUI extends Phaser.Scene {
   private buildMap(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, a = this.adv, m = a.map, st = a.state;
     const key = this.ensureMapTexture();
-    const side = 250 * s;
-    const vw = r.w - side - 12 * s, vh = r.h - 10 * s;
+    const side = this.portraitMenu ? r.w : 250 * s;
+    const vw = this.portraitMenu ? r.w : r.w - side - 12 * s, vh = this.portraitMenu ? r.h - 540 * s : r.h - 10 * s;
     const base = Math.min(vw / m.widthTiles, vh / m.heightTiles);
     const k = base * this.mapView.zoom;
     const view = this.add.container(r.x, r.y);
@@ -1458,22 +1505,23 @@ export class AdventureUI extends Phaser.Scene {
     pan.on('pointermove', (p: Phaser.Input.Pointer) => { if (drag && p.isDown) { this.mapView.ox = drag.ox + p.x - drag.x; this.mapView.oy = drag.oy + p.y - drag.y; inner.setPosition(this.mapView.ox, this.mapView.oy); } });
     pan.on('pointerup', () => { drag = null; });
     pan.on('wheel', (_p: Phaser.Input.Pointer, _dx: number, dy: number) => this.zoomMap(dy < 0 ? 1.25 : 0.8));
-    const sx = r.x + vw + 12 * s;
-    c.add(button(this, sx + 40 * s, r.y + 20 * s, 70 * s, 34 * s, '+', () => this.zoomMap(1.25)).container);
-    c.add(button(this, sx + 120 * s, r.y + 20 * s, 70 * s, 34 * s, '−', () => this.zoomMap(0.8)).container);
-    c.add(button(this, sx + 200 * s, r.y + 20 * s, 70 * s, 34 * s, '⌖', () => { this.mapView = { zoom: 1, ox: 0, oy: 0 }; this.openMenu('map'); }).container);
+    const sx = this.portraitMenu ? r.x : r.x + vw + 12 * s, sy = this.portraitMenu ? r.y + vh + 8 * s : r.y;
+    c.add(button(this, sx + 40 * s, sy + 20 * s, 70 * s, 34 * s, '+', () => this.zoomMap(1.25)).container);
+    c.add(button(this, sx + 120 * s, sy + 20 * s, 70 * s, 34 * s, '−', () => this.zoomMap(0.8)).container);
+    c.add(button(this, sx + 200 * s, sy + 20 * s, 70 * s, 34 * s, '⌖', () => { this.mapView = { zoom: 1, ox: 0, oy: 0 }; this.openMenu('map'); }).container);
     const tot = a.totals();
-    c.add(text(this, sx, r.y + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%\nCấp thế giới: ${st.worldLevel}\nDanh tiếng: ${st.adv.reputation}\nTrạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}\nThời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
+    c.add(text(this, sx, sy + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%\nCấp thế giới: ${st.worldLevel}\nDanh tiếng: ${st.adv.reputation}\nTrạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}\nThời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
     const vn = st.adv.campaign === 'vietnam';
-    c.add(text(this, sx, r.y + 170 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080'));
-    if (vn) c.add(button(this, sx + 110 * s, r.y + 216 * s + VN_REGIONS.length * 40 * s, 200 * s, 34 * s, 'Mở Hộ chiếu (P)', () => this.openMenu('passport'), 0x7a3a2a).container);
+    c.add(text(this, sx, sy + 170 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080'));
+    const rowH = (this.portraitMenu ? 52 : 40) * s; // a wrapped hint takes two lines
+    if (vn) c.add(button(this, sx + 110 * s, sy + 216 * s + VN_REGIONS.length * rowH, 200 * s, 34 * s, 'Mở Hộ chiếu (P)', () => this.openMenu('passport'), 0x7a3a2a).container);
     (vn ? VN_REGIONS : REGIONS).forEach((rg, i) => {
       const unlocked = rg.need.every((f) => st.hasFlag(f));
       const cur = rg.id === a.regionDef.id;
       const lv = ENC_REGIONS.get(rg.id);
       const status = cur ? 'đang ở đây' : unlocked ? `đã mở — đi qua cổng${lv ? ` · Lv${lv.level[0]}–${lv.level[1]}` : ''}` : `khóa · ${rg.hint}`;
-      c.add(text(this, sx, r.y + 196 * s + i * 40 * s, `${cur ? '▶' : unlocked ? '○' : '–'} ${rg.name}`, 16 * s, cur ? '#80ff90' : unlocked ? '#ffe080' : COLORS.dim));
-      c.add(text(this, sx + 14 * s, r.y + 214 * s + i * 40 * s, status, 13 * s, COLORS.dim).setWordWrapWidth(side - 20 * s));
+      c.add(text(this, sx, sy + 196 * s + i * rowH, `${cur ? '▶' : unlocked ? '○' : '–'} ${rg.name}`, 16 * s, cur ? '#80ff90' : unlocked ? '#ffe080' : COLORS.dim));
+      c.add(text(this, sx + 14 * s, sy + 214 * s + i * rowH, status, 13 * s, COLORS.dim).setWordWrapWidth(side - 20 * s));
     });
     c.add(text(this, r.x + 8 * s, r.y + vh - 22 * s, 'Kéo để di chuyển · cuộn/nút để thu phóng · chạm trạm xanh để dịch chuyển', 14 * s, COLORS.dim));
   }
@@ -1489,7 +1537,7 @@ export class AdventureUI extends Phaser.Scene {
     const visited = pages.filter((p) => p.visited).length, badges = pages.filter((p) => p.badge).length;
     c.add(text(this, r.x, r.y, 'HỘ CHIẾU HÀNH TRÌNH VIỆT NAM', 22 * s, '#ffe080'));
     c.add(text(this, r.x, r.y + 30 * s, `Tỉnh đã đến: ${visited}/${pages.filter((p) => p.playable).length} · Huy hiệu: ${badges} · Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
-    const per = 3, total = Math.max(1, Math.ceil(pages.length / per));
+    const per = this.portraitMenu ? 1 : 3, total = Math.max(1, Math.ceil(pages.length / per));
     this.passportPage = Math.min(this.passportPage, total - 1);
     const shown = pages.slice(this.passportPage * per, this.passportPage * per + per);
     const top = r.y + 62 * s, ch = r.h - 62 * s - (total > 1 ? 44 * s : 4 * s), gap = 12 * s;
@@ -1605,7 +1653,7 @@ export class AdventureUI extends Phaser.Scene {
     c.add(button(this, r.x + 160 * s, r.y + 290 * s, 300 * s, 40 * s, 'Lưu & về menu chính', () => { this.closeMenu(); this.adv.exitToMenu(); }, 0x6a2f2f).container);
     c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', () => openCoopMenu(this, this.adv), 0x2f5a6a).container);
     c.add(button(this, r.x + 160 * s, r.y + 388 * s, 300 * s, 36 * s, 'Đi chung / thách đấu PvP', () => void this.onlineMenu(), 0x3a3a5a).container);
-    c.add(text(this, r.x + 340 * s, r.y + 130 * s,
+    c.add(text(this, this.portraitMenu ? r.x : r.x + 340 * s, r.y + (this.portraitMenu ? 440 : 130) * s,
       'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\n` 1-5 lệnh đội: Tự do / Tấn công / Bảo vệ /\n   Đi theo / Giữ vị trí / Rút lui\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
   }
 }

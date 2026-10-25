@@ -3,13 +3,13 @@ import { AVATARS, avatarTextureKey } from '../core/avatars';
 import { fitScale } from '../render/spriteRegistry';
 import { net } from '../net/session';
 import { saveStore } from '../systems/save';
-import { askText, button, COLORS, panel, text } from './ui';
+import { askText, button, COLORS, panel, text, uiScale } from './ui';
 
 // Player profile (avatar + name) shared by the main lobby and the online lobby.
 // The modal is plain Phaser UI; only the name box is HTML (askText) so phone keyboards work.
 
 function layoutScale(W: number, H: number): number {
-  return W < H ? Math.min(W / 470, H / 995, 1.4) : Math.min(W / 960, H / 640, 1.6);
+  return uiScale(W, H, (w, h) => (w < h ? Math.min(w / 470, h / 995, 1.4) : Math.min(w / 960, h / 640, 1.6)));
 }
 
 /**

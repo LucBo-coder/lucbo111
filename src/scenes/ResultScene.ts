@@ -3,7 +3,7 @@ import { saveStore } from '../systems/save';
 import { fitScale } from '../render/spriteRegistry';
 import { gameModes } from '../systems/gameMode';
 import { POKEMON } from '../core/data';
-import { button, COLORS, fmtTime, panel, text } from './ui';
+import { button, COLORS, fmtTime, panel, text, uiScale } from './ui';
 
 interface ResultData {
   victory: boolean;
@@ -43,7 +43,7 @@ export class ResultScene extends Phaser.Scene {
   private build(): void {
     const d = this.data_;
     const { width: W, height: H } = this.scale;
-    const s = Math.min(W / 900, H / 640, 1.5);
+    const s = uiScale(W, H, (w, h) => Math.min(w / 900, h / 640, 1.5));
     this.cameras.main.setBackgroundColor(COLORS.bg);
     text(this, W / 2, 60 * s, d.victory ? 'CHIẾN THẮNG!' : 'THẤT BẠI', 64 * s, d.victory ? '#ffd640' : '#ff6060').setOrigin(0.5);
     text(this, W / 2, 108 * s, d.victory ? 'Bạn đã hạ Boss cuối cùng!' : 'Huấn luyện viên đã gục ngã...', 22 * s, COLORS.dim).setOrigin(0.5);

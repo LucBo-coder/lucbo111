@@ -12,6 +12,7 @@ import { saveStore } from '../systems/save';
 import { recordRun, RunSummary, starterEntry, survivorPool } from '../systems/saveSchema';
 import type { UIScene } from './UIScene';
 import { addCoopHud, rewardCoopHost } from './coopHud';
+import { DPR } from './ui';
 
 const SCALE = 3;
 const MAX_SIM_STEPS_PER_FRAME = 6;
@@ -69,7 +70,7 @@ export class GameScene extends Phaser.Scene {
     net.setProfile(saveStore.playerName, saveStore.avatar);
 
     this.buildMap();
-    this.renderer_ = new WorldRenderer(this, this.world, { banner: (t, c) => this.ui.banner(t, c) }, saveStore.data.settings.quality);
+    this.renderer_ = new WorldRenderer(this, this.world, { banner: (t, c) => this.ui.banner(t, c), names: 'notable' }, saveStore.data.settings.quality);
 
     const cam = this.cameras.main;
     cam.setBounds(0, 0, WORLD_W, WORLD_H);
@@ -123,7 +124,7 @@ export class GameScene extends Phaser.Scene {
 
   private applyZoom(): void {
     const { width, height } = this.scale;
-    this.cameras.main.setZoom(pixelPerfectZoom(Math.min(width, height) / 640, 0.6, 1.5));
+    this.cameras.main.setZoom(DPR * pixelPerfectZoom(Math.min(width, height) / DPR / 640, 0.6, 1.5));
   }
 
   private buildMap(): void {

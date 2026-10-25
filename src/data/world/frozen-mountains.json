@@ -98,6 +98,53 @@
      14
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     30,
+     40
+    ],
+    [
+     40,
+     26
+    ],
+    [
+     36,
+     12
+    ],
+    [
+     27,
+     9
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     86,
+     30
+    ],
+    [
+     74,
+     24
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     80,
+     42
+    ],
+    [
+     94,
+     42
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -126,14 +173,64 @@
   }
  ],
  "fences": [],
- "props": [],
+ "props": [
+  {
+   "kind": "log",
+   "x": 60,
+   "y": 85
+  },
+  {
+   "kind": "bucket",
+   "x": 69,
+   "y": 82
+  },
+  {
+   "kind": "log",
+   "x": 52,
+   "y": 79
+  },
+  {
+   "kind": "target",
+   "x": 44,
+   "y": 67
+  },
+  {
+   "kind": "log",
+   "x": 88,
+   "y": 28
+  }
+ ],
  "signs": [
   {
    "x": 53,
    "y": 89,
    "text": [
     "NÚI TUYẾT VĨNH HẰNG",
-    "Khuyến nghị Lv40 · Đỉnh Bão Tuyết rất nguy hiểm."
+    "Khuyến nghị Lv40 · Articuno, Regice, Uxie và Regigigas ngự trên núi."
+   ]
+  },
+  {
+   "x": 57,
+   "y": 70,
+   "text": [
+    "↖ Hồ Băng Lam · Băng Đài",
+    "↗ Đỉnh Bão Tuyết · Lăng Băng"
+   ]
+  },
+  {
+   "x": 33,
+   "y": 38,
+   "text": [
+    "↑ Hồ Trí Tuệ",
+    "← Băng Đài (Articuno)"
+   ]
+  },
+  {
+   "x": 84,
+   "y": 32,
+   "text": [
+    "← Đền Khổng Lồ",
+    "↓ Lăng Băng Ẩn"
    ]
   }
  ],
@@ -148,9 +245,169 @@
     "Chào mừng đến Núi Tuyết! Pokémon ở đây mạnh hơn hẳn thung lũng (Lv32–45).",
     "Pokémon hệ Băng sống ở khắp nơi trên núi — đỉnh núi là nguy hiểm nhất."
    ]
+  },
+  {
+   "id": "frozen-hermit",
+   "name": "Ẩn sĩ Băng Tâm",
+   "sprite": "wizard",
+   "x": 31,
+   "y": 12,
+   "lines": [
+    "Hồ Trí Tuệ giữ ký ức của cả vùng núi. Hộ thần Uxie chỉ mở mắt trước người đã đối mặt với Mewtwo.",
+    "Khi đi trên băng, Pokémon của cháu sẽ trượt chậm lại — đừng đánh nhau trên mặt hồ đóng băng."
+   ]
+  },
+  {
+   "id": "frozen-monk",
+   "name": "Sư thầy Tuyết Sơn",
+   "sprite": "elder",
+   "x": 78,
+   "y": 26,
+   "lines": [
+    "Đền Khổng Lồ có từ trước khi thung lũng được đặt tên.",
+    "Người ta nói Regigigas chỉ cử động khi Regirock, Regice và Registeel cùng công nhận một người."
+   ]
+  },
+  {
+   "id": "frozen-ranger",
+   "name": "Kiểm lâm Hàn Phong",
+   "sprite": "ranger",
+   "x": 30,
+   "y": 48,
+   "lines": [
+    "Articuno đậu ở Băng Đài phía tây hồ. Bão Tuyết của nó rất nguy hiểm — tìm ba vòng an toàn!",
+    "Bão tuyết trên núi khiến cả đội chậm đi; đứng gần Pokémon hệ Lửa để sưởi ấm."
+   ]
+  },
+  {
+   "id": "frozen-researcher",
+   "name": "Nhà nghiên cứu Minh Băng",
+   "sprite": "wizard",
+   "x": 60,
+   "y": 78,
+   "lines": [
+    "Tôi đang ghi chép Pokémon hệ Băng: Snorunt chỉ tiến hóa thành Froslass ở nơi rất lạnh...",
+    "Regice thức dậy trong những cơn bão tuyết. Trạm Đỉnh Tuyết là nơi dừng chân an toàn trước khi lên Lăng Băng."
+   ]
   }
  ],
- "trainers": [],
+ "trainers": [
+  {
+   "id": "frozen-skier",
+   "name": "Vận động viên trượt tuyết Khoa",
+   "sprite": "youngster",
+   "x": 42,
+   "y": 64,
+   "team": [
+    [
+     "snorunt",
+     34
+    ],
+    [
+     "swinub",
+     35
+    ],
+    [
+     "sneasel",
+     36
+    ]
+   ],
+   "challenge": [
+    "Dốc tuyết này là sân nhà của tôi! Thử đấu xem nào!"
+   ],
+   "win": [
+    "Nhanh thật... bạn trượt giỏi hơn tôi rồi."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "superpotion": 1
+    },
+    "exp": 900
+   }
+  },
+  {
+   "id": "frozen-climber",
+   "name": "Nhà leo núi Đông Phong",
+   "sprite": "viking",
+   "x": 76,
+   "y": 50,
+   "team": [
+    [
+     "piloswine",
+     38
+    ],
+    [
+     "sealeo",
+     38
+    ],
+    [
+     "glalie",
+     39
+    ]
+   ],
+   "challenge": [
+    "Lên tới đây mà chưa mệt à? Đấu một trận cho ấm người!"
+   ],
+   "win": [
+    "Đội của bạn chịu lạnh giỏi thật."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 3,
+     "never-melt-ice": 1
+    },
+    "exp": 1300
+   }
+  },
+  {
+   "id": "frozen-ace",
+   "name": "Cao thủ Băng Hàn Tuyết Nhi",
+   "sprite": "girl",
+   "x": 96,
+   "y": 24,
+   "team": [
+    [
+     "froslass",
+     42
+    ],
+    [
+     "weavile",
+     43
+    ],
+    [
+     "walrein",
+     43
+    ],
+    [
+     "mamoswine",
+     44
+    ]
+   ],
+   "challenge": [
+    "Đỉnh Bão Tuyết chỉ dành cho người mạnh nhất. Chứng minh đi!"
+   ],
+   "win": [
+    "Bạn xứng đáng đứng trên đỉnh núi này."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 4,
+     "superpotion": 2
+    },
+    "exp": 2000
+   }
+  }
+ ],
  "rescue": {
   "id": "none",
   "x": -99,
@@ -171,10 +428,28 @@
   },
   {
    "id": "chest-frozen-lake",
-   "x": 40,
-   "y": 40,
+   "x": 44,
+   "y": 34,
    "items": {
     "never-melt-ice": 1
+   }
+  },
+  {
+   "id": "chest-frozen-shrine",
+   "x": 12,
+   "y": 52,
+   "items": {
+    "ultraball": 2,
+    "sitrus-berry": 2
+   }
+  },
+  {
+   "id": "chest-frozen-cliff",
+   "x": 104,
+   "y": 60,
+   "items": {
+    "superpotion": 2,
+    "quick-claw": 1
    }
   }
  ],
@@ -184,6 +459,12 @@
    "name": "Trại Núi Tuyết",
    "x": 58,
    "y": 86
+  },
+  {
+   "id": "wp-frozen-summit",
+   "name": "Trạm Đỉnh Tuyết",
+   "x": 88,
+   "y": 36
   }
  ],
  "puzzles": [],
@@ -197,7 +478,73 @@
  ],
  "pillars": [],
  "spawns": {},
- "legendaries": [],
+ "legendaries": [
+  {
+   "id": "articuno",
+   "name": "Băng Đài Hồ Băng Lam",
+   "x": 22,
+   "y": 45,
+   "level": 38,
+   "respawn": 900,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.82,
+   "hint": "Một luồng khí lạnh buốt tỏa ra từ vòng đá bên Hồ Băng Lam... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur)."
+  },
+  {
+   "id": "uxie",
+   "name": "Hồ Trí Tuệ",
+   "x": 22,
+   "y": 9,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 0.21,
+   "hint": "Mặt hồ băng phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+   "condition": {}
+  },
+  {
+   "id": "regice",
+   "name": "Lăng Băng Ẩn",
+   "x": 100,
+   "y": 42,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 3.14,
+   "hint": "Lớp băng mỏng phủ vòng đá trên Đỉnh Bão Tuyết... Regice chỉ thức dậy trong bão tuyết.",
+   "condition": {
+    "weather": [
+     "blizzard"
+    ]
+   }
+  },
+  {
+   "id": "regigigas",
+   "name": "Đền Khổng Lồ",
+   "x": 68,
+   "y": 22,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:regirock",
+    "boss:regice",
+    "boss:registeel"
+   ],
+   "gap": 0.24,
+   "hint": "Bức tượng khổng lồ phủ tuyết không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
+   "condition": {}
+  }
+ ],
  "portals": [
   {
    "id": "portal-frozen-valley",

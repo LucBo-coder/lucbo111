@@ -148,6 +148,17 @@ export const NPC_TRAINER_ART: Record<string, string> = {
   'ag-climber': 'hiker', 'ag-boater': 'acetrainerf', 'ag-diver': 'veteran',
   'ct-guide': 'beauty', 'ct-boatwoman': 'picnicker', 'ct-merchant': 'gentleman', 'ct-ranger': 'pokemonranger', 'ct-gardener': 'rancher',
   'ct-vendor': 'lass', 'ct-farmer': 'rancher', 'ct-birder': 'birdkeeper', 'ct-student': 'psychic',
+  // 0.17 map content: themed regions, the Sanctuary and the Mekong provinces
+  'frozen-hermit': 'sage', 'frozen-monk': 'sage', 'frozen-ranger': 'pokemonranger', 'frozen-researcher': 'scientist',
+  'frozen-skier': 'skier', 'frozen-climber': 'hiker', 'frozen-ace': 'acetrainerf',
+  'volcano-geologist': 'scientist', 'volcano-elder': 'sage', 'volcano-guard': 'pokemonranger',
+  'volcano-firebreather': 'blackbelt', 'volcano-miner': 'hiker', 'volcano-ace': 'acetrainer',
+  'swamp-fortune': 'psychic', 'swamp-hunter': 'pokemonranger', 'swamp-fisher2': 'fisherman', 'swamp-hexer': 'beauty', 'swamp-frogman': 'bugcatcher',
+  'coast-diver2': 'acetrainerf', 'coast-old-sailor': 'gentleman', 'coast-surfer': 'picnicker', 'coast-cliff': 'hiker',
+  'sanctuary-sage': 'sage', 'sanctuary-astronomer': 'scientist', 'sanctuary-champion': 'veteran',
+  'cm-fisher-ut': 'fisherman', 'cm-ranger-uminh': 'pokemonranger', 'cm-dried-fish': 'lass', 'cm-kid-fish': 'youngster', 'cm-boatman': 'camper',
+  'ag-monk-cam': 'sage', 'ag-sugar-palm': 'picnicker', 'ag-rock-hiker': 'hiker', 'ag-wetland-girl': 'lass',
+  'ct-orchard-owner': 'rancher', 'ct-ferry-girl': 'picnicker', 'ct-rice-farmer': 'rancher', 'ct-market-boy': 'youngster',
 };
 export const AMBUSH_TRAINER_ART = ['acetrainer', 'acetrainerf', 'blackbelt', 'beauty', 'veteran', 'cyclist', 'skier'];
 

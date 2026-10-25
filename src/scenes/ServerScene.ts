@@ -16,7 +16,7 @@ import type {
 import type { SaveData } from '../systems/saveSchema';
 import type { OwnedPokemon } from '../core/progression';
 import { audio } from '../systems/audio';
-import { text, TYPE_COLOR } from './ui';
+import { DPR, text, TYPE_COLOR } from './ui';
 import { ServerPc } from './serverPc';
 import './serverScene.css';
 
@@ -114,7 +114,7 @@ export class ServerScene extends Phaser.Scene {
     this.nearby = null; this.nearbyKey = ''; this.nearAt = 0; this.tab = 'party'; this.miniBase = undefined; this.miniAt = 0;
     // phones start with the map visible; wide screens keep the menu open beside it
     this.drawerOpen = innerWidth >= 900 && innerHeight >= 560;
-    this.cameras.main.setBackgroundColor('#16382e');
+    this.cameras.main.setBackgroundColor('#16382e').setZoom(DPR);
     this.root = document.createElement('div');
     this.root.className = 'server-world ol-root';
     this.root.innerHTML = `

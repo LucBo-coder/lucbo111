@@ -95,8 +95,9 @@ describe('legendary world bosses', () => {
   it('shrines are open ground ringed by stones, outside other landmarks', () => {
     const d = valleyJson as unknown as RegionDef;
     const m = new ValleyMap(d);
-    expect(d.legendaries!.map((l) => l.id).slice(0, 5)).toEqual(LEGENDS);
-    expect(d.legendaries!.length).toBe(25); // Arceus lives in the Legendary Sanctuary since 0.7.0
+    // since 0.17 the themed regions hold their own shrines (ice on the mountain, fire in the volcano, …)
+    expect(d.legendaries!.map((l) => l.id).slice(0, 4)).toEqual(LEGENDS.slice(1));
+    expect(d.legendaries!.length).toBe(8);
     for (const l of d.legendaries!) {
       if (l.ring === false) continue; // shares the Sacred Grove clearing
       for (let dy = -5; dy <= 5; dy++) for (let dx = -5; dx <= 5; dx++) if (dx * dx + dy * dy <= 25) expect(m.solidAt(l.x + dx, l.y + dy), `${l.id} ${dx},${dy}`).toBe(false);

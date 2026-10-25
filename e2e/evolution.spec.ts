@@ -122,7 +122,10 @@ test('legendary shrines: sealed until the story flag, then Articuno fights and j
   await startAdventure(page);
   // the trainer is made sturdy: this test checks the shrine mechanics, not whether a Lv1 trainer survives a Lv38 legendary
   // (a knocked-out trainer respawns in the village and the boss resets, which made the test flaky on slow machines)
-  await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('blastoise', 40, 'gift'); a.state.addPokemon('charizard', 40, 'gift'); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e7; a.world.teleport(144.5*48, 61*48); })()`);
+  // since 0.17 the shrine stands in its themed region: travel there first (bypasses the portal gate)
+  await ev(page, `window.__adv.travelTo('frozen-mountains', 22, 48)`);
+  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'frozen-mountains', { timeout: 15_000 });
+  await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('blastoise', 40, 'gift'); a.state.addPokemon('charizard', 40, 'gift'); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e7; a.world.teleport(22.5*48, 48*48); })()`);
   // sealed: no boss without the Mega Venusaur flag
   await page.waitForTimeout(2500);
   expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false);

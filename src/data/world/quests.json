@@ -579,16 +579,17 @@
    "q-main-4"
   ],
   "autoStart": true,
-  "description": "Sương giá phủ kín bờ đông Hồ Pha Lê. Thần Điểu băng giá đang chờ ở Băng Đài.",
+  "description": "Sương giá phủ kín Hồ Băng Lam trên Núi Tuyết. Thần Điểu băng giá đang chờ ở Băng Đài.",
   "objectives": [
    {
     "type": "boss",
     "target": "articuno",
     "count": 1,
-    "text": "Đánh bại Articuno",
+    "text": "Đánh bại Articuno (Núi Tuyết)",
     "marker": {
-     "x": 144,
-     "y": 57
+     "x": 22,
+     "y": 45,
+     "region": "frozen-mountains"
     }
    }
   ],
@@ -599,7 +600,7 @@
   "dialogue": {
    "offer": [
     "Người già trong làng kể rằng ba Thần Điểu canh giữ thung lũng này.",
-    "Articuno ngự ở Băng Đài phía đông Hồ Pha Lê."
+    "Articuno ngự ở Băng Đài bên Hồ Băng Lam, trên Núi Tuyết Vĩnh Hằng (cổng ở góc đông bắc thung lũng)."
    ],
    "progress": [
     "Khi Articuno gọi Bão Tuyết, hãy đứng vào ba vòng an toàn!"

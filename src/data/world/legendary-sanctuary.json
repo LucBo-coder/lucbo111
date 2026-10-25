@@ -69,6 +69,23 @@
      42
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     48,
+     26
+    ],
+    [
+     70,
+     18
+    ],
+    [
+     78,
+     15
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -85,7 +102,13 @@
  },
  "buildings": [],
  "fences": [],
- "props": [],
+ "props": [
+  {
+   "kind": "target",
+   "x": 44,
+   "y": 62
+  }
+ ],
  "signs": [
   {
    "x": 52,
@@ -93,6 +116,14 @@
    "text": [
     "THÁNH ĐỊA HUYỀN THOẠI",
     "Khuyến nghị Lv75 · Vùng cuối của thế giới."
+   ]
+  },
+  {
+   "x": 50,
+   "y": 52,
+   "text": [
+    "← Cột Thời Gian · Cột Không Gian →",
+    "↑ Đền Arceus"
    ]
   }
  ],
@@ -107,9 +138,73 @@
     "Nơi đây chỉ dành cho người đã thấy thời gian, không gian và thế giới đảo ngược.",
     "Pokémon ở Thánh Địa mạnh nhất thế gian (Lv65–85). Đấng Khởi Nguyên chờ ở đài phía bắc."
    ]
+  },
+  {
+   "id": "sanctuary-sage",
+   "name": "Hiền giả Thời Không",
+   "sprite": "wizard",
+   "x": 30,
+   "y": 46,
+   "lines": [
+    "Hai cột đá này giữ thời gian và không gian của thế giới.",
+    "Dialga và Palkia chờ người được cả ba hộ thần hồ — Uxie, Mesprit, Azelf — công nhận."
+   ]
+  },
+  {
+   "id": "sanctuary-astronomer",
+   "name": "Nhà thiên văn Tinh Vân",
+   "sprite": "wizard",
+   "x": 66,
+   "y": 22,
+   "lines": [
+    "Một thiên thạch rơi xuống đây từ rất lâu... vào đêm nó phát sáng.",
+    "Deoxys chỉ hạ xuống vào ban đêm."
+   ]
   }
  ],
- "trainers": [],
+ "trainers": [
+  {
+   "id": "sanctuary-champion",
+   "name": "Nhà vô địch Thiên Long",
+   "sprite": "knight",
+   "x": 48,
+   "y": 58,
+   "team": [
+    [
+     "dragonite",
+     68
+    ],
+    [
+     "metagross",
+     68
+    ],
+    [
+     "togekiss",
+     69
+    ],
+    [
+     "garchomp",
+     70
+    ]
+   ],
+   "challenge": [
+    "Đến được Thánh Địa nghĩa là bạn không tầm thường. Đấu với tôi!"
+   ],
+   "win": [
+    "Thật xứng đáng... Arceus đang chờ bạn ở cuối con đường."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 6,
+     "superpotion": 3
+    },
+    "exp": 5000
+   }
+  }
+ ],
  "rescue": {
   "id": "none",
   "x": -99,
@@ -127,6 +222,15 @@
     "ultraball": 5,
     "moon-stone": 1,
     "dragon-scale": 1
+   }
+  },
+  {
+   "id": "chest-sanctuary-west",
+   "x": 10,
+   "y": 66,
+   "items": {
+    "ultraball": 5,
+    "life-orb": 1
    }
   }
  ],
@@ -168,6 +272,57 @@
    "gap": 1.57,
    "hint": "Một bậc thang ánh sáng mờ ảo... chỉ người đã thấy thời gian, không gian, phản vật chất, rồng trời và Mewtwo mới được bước lên.",
    "condition": {}
+  },
+  {
+   "id": "dialga",
+   "name": "Cột Thời Gian",
+   "x": 16,
+   "y": 44,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "gap": 5.96,
+   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
+   "condition": {}
+  },
+  {
+   "id": "palkia",
+   "name": "Cột Không Gian",
+   "x": 80,
+   "y": 44,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "gap": 3.61,
+   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
+   "condition": {}
+  },
+  {
+   "id": "deoxys",
+   "name": "Hố Thiên Thạch",
+   "x": 80,
+   "y": 14,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:rayquaza"
+   ],
+   "gap": 2.78,
+   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
+   "condition": {
+    "time": "night"
+   }
   }
  ],
  "portals": [

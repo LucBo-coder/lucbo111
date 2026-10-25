@@ -14,7 +14,7 @@ import { ITEM_DEFS } from '../core/evolution';
 import { buyUpgrade, nextCost, PERM_UPGRADES, upgradeLevel } from '../core/permanentUpgrades';
 import { regionDef } from '../core/map/regionDefs';
 import { net } from '../net/session';
-import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
+import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge, uiScale } from './ui';
 import { openPlayerProfile } from './playerProfile';
 
 import { GAME_VERSION } from '../version';
@@ -108,7 +108,7 @@ export class MenuScene extends Phaser.Scene {
   private build(): void {
     const { width: W, height: H } = this.scale;
     // portrait phones lay out in one column: scale against a narrow reference instead of 960 px
-    const s = W < H ? Math.min(W / 470, H / 995, 1.4) : Math.min(W / 960, H / 640, 1.6);
+    const s = uiScale(W, H, (w, h) => (w < h ? Math.min(w / 470, h / 995, 1.4) : Math.min(w / 960, h / 640, 1.6)));
     this.cameras.main.setBackgroundColor(COLORS.bg);
     this.buildBackdrop(W, H, s);
     this.buildLogo(W, s);

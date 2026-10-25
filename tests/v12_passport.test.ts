@@ -26,7 +26,7 @@ describe('Journey Passport (Vietnam Odyssey)', () => {
     const [cm, ag] = passportPages(adv, QUEST_IDS);
     expect(cm.badge).toBe(true);
     expect(cm.boss?.defeated).toBe(true);
-    expect(cm.trainers).toEqual({ done: 1, total: 3 });
+    expect(cm.trainers).toEqual({ done: 1, total: 5 });
     expect(cm.chests.done).toBe(1);
     expect(cm.areas.done).toBe(2);
     expect(cm.quests.done).toBe(1);

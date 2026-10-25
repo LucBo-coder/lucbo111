@@ -12,7 +12,7 @@ import { saveStore } from '../systems/save';
 import { audio } from '../systems/audio';
 import { music } from '../systems/music';
 import { gameModes } from '../systems/gameMode';
-import { askText, button, COLORS, panel, text } from './ui';
+import { askText, button, COLORS, panel, text, uiScale } from './ui';
 import { openPlayerProfile } from './playerProfile';
 import type { DuelSceneData } from './DuelScene';
 
@@ -185,7 +185,7 @@ export class LobbyScene extends Phaser.Scene {
 
   private build(): void {
     const { width: W, height: H } = this.scale;
-    const s = Math.max(0.55, Math.min(W / 1100, H / 700, 1.5));
+    const s = uiScale(W, H, (w, h) => Math.max(0.55, Math.min(w / 1100, h / 700, 1.5)));
     this.cameras.main.setBackgroundColor(COLORS.bg);
     text(this, W / 2, 16 * s, this.view === 'practice' ? 'LUYỆN TẬP ĐẤU' : 'ĐẤU ONLINE', 40 * s, '#ffe080').setOrigin(0.5, 0);
     button(this, 70 * s, 34 * s, 120 * s, 40 * s, '◀ Quay lại', () => this.back(), 0x3a3a5a);

@@ -4,6 +4,18 @@ import { Rarity } from '../core/types';
 
 export const FONT = '"VT323", monospace';
 
+/**
+ * Canvas pixels per CSS pixel. Phones / tablets with a dense screen render at 2× so the pixel font stays sharp
+ * instead of being upscaled from a CSS-pixel canvas; desktops keep 1 (no huge canvas on big retina monitors, no
+ * uneven pixels at 125 % scaling). Layout formulas work in CSS pixels through `uiScale` / `cssWidth`.
+ */
+export const DPR = typeof window !== 'undefined' && (window.devicePixelRatio || 1) >= 2 && Math.min(screen.width, screen.height) <= 1024 ? 2 : 1;
+
+/** A layout scale computed from the CSS size of the screen, returned in canvas pixels. */
+export function uiScale(W: number, H: number, f: (cssW: number, cssH: number) => number): number {
+  return f(W / DPR, H / DPR) * DPR;
+}
+
 export const COLORS = {
   bg: 0x14161f,
   panel: 0x1e2230,

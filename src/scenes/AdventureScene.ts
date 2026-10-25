@@ -42,6 +42,7 @@ import { saveStore } from '../systems/save';
 import type { Difficulty } from '../systems/saveSchema';
 import type { PerfStats } from './GameScene';
 import type { AdventureUI, DialogueChoice } from './AdventureUI';
+import { DPR } from './ui';
 
 /** First-win rewards of the legendary shrines (the legendary itself also joins) */
 const LEGEND_REWARDS: Record<string, Record<string, number>> = {
@@ -79,6 +80,8 @@ export interface Interactable {
   obj: MapObject;
   sprite?: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite;
   marker?: Phaser.GameObjects.Text;
+  /** name plate under an NPC / trainer */
+  nameTag?: Phaser.GameObjects.Text;
 }
 
 /** Floor colour wash of the dungeons that reuse the Ancient Cave layout. */
@@ -121,7 +124,7 @@ export class AdventureScene extends Phaser.Scene {
   legendCap: { unit: Unit; id: string; level: number; left: number; rule: LegendCaptureRule } | null = null;
   battle: { id: string; units: Unit[] } | null = null;
   areaName = '';
-  weather: { kind: 'clear' | 'rain' | 'fog'; t: number } = { kind: 'clear', t: 240 };
+  weather: { kind: WeatherKind; t: number } = { kind: 'clear', t: 240 };
   pointerWorld = { x: 0, y: 0, at: -99999 };
   /** Mega Evolution runtime state */
   megaUnit: Unit | null = null;
@@ -241,6 +244,7 @@ export class AdventureScene extends Phaser.Scene {
     this.renderer_ = new WorldRenderer(this, this.world, {
       banner: (t, c) => this.ui?.banner(t, c),
       decorate: (u, v) => this.decorate(u, v),
+      names: 'all',
     }, saveStore.data.settings.quality);
     this.chunks = new ChunkView(this, map, { onLoad: (r) => this.onChunkLoad(r), onUnload: (r) => this.onChunkUnload(r) });
     // elemental / challenge dungeons share the cave layout: a multiply wash over the floor tiles gives each its own look
@@ -342,7 +346,7 @@ export class AdventureScene extends Phaser.Scene {
 
   private applyZoom(): void {
     const { width, height } = this.scale;
-    this.cameras.main.setZoom(pixelPerfectZoom(Math.min(width, height) / 620, 0.6, 1.6));
+    this.cameras.main.setZoom(DPR * pixelPerfectZoom(Math.min(width, height) / DPR / 620, 0.6, 1.6));
     if (this.dark?.active) this.dark.setSize(width * 4, height * 4);
   }
 
@@ -482,6 +486,11 @@ export class AdventureScene extends Phaser.Scene {
           this.world.addObstacle({ x: s.x, y: s.y + 6, r: 14, kind: 'prop', tag });
           const it = this.addInteractable(o, s.x, s.y + 24, o.kind === 'trainer' ? 'Thách đấu' : 'Nói chuyện', s);
           it.marker = add(this.add.text(s.x, s.y - 44, '', { fontFamily: '"VT323", monospace', fontSize: '34px', color: '#ffe040', stroke: '#000', strokeThickness: 5 }).setOrigin(0.5).setDepth(9100));
+          // name under the feet, sized for the camera zoom (readable on phones); trainers: orange, grey once beaten
+          const zoom = this.cameras.main.zoom || 1;
+          it.nameTag = add(this.add.text(px + TILE_PX / 2, py + TILE_PX + 4, '', { fontFamily: '"VT323", monospace', fontSize: `${Math.round((16 * DPR) / zoom)}px`, color: '#ffffff', stroke: '#000', strokeThickness: Math.max(3, Math.round((4 * DPR) / zoom)), resolution: Math.max(1, zoom) })
+            .setOrigin(0.5, 0).setDepth(9100));
+          this.tagNpc(it, d.name, o.kind === 'trainer', o.kind === 'trainer' && this.state.hasFlag('beat:' + o.id));
           break;
         }
         case 'chest': {
@@ -598,7 +607,9 @@ export class AdventureScene extends Phaser.Scene {
 
   /** Sky right now: a weather anomaly event overrides the normal cycle. */
   effectiveWeather(): WeatherKind {
-    return this.worldEvents?.weatherOverride() ?? this.weather.kind;
+    // a mountain blizzard / an eruption (EnvironmentController) counts as that weather (Regice, Groudon, Heatran)
+    const env = this.env?.cycle.event;
+    return this.worldEvents?.weatherOverride() ?? (env === 'blizzard' ? 'blizzard' : env === 'eruption' ? 'heatwave' : this.weather.kind);
   }
 
   /** Seconds of play (finer than the saved playTime, which advances in 20 s steps). */
@@ -683,9 +694,11 @@ export class AdventureScene extends Phaser.Scene {
       this.weather.t -= dt;
       if (this.weather.t <= 0) {
         const r = this.world.rng.next();
-        const vol = this.regionDef.theme === 'volcanic';
-        const next = vol ? (r < 0.75 ? 'clear' : 'fog') : r < 0.6 ? 'clear' : r < 0.85 ? 'rain' : 'fog';
-        if (next !== this.weather.kind) this.ui?.banner(next === 'rain' ? 'Trời bắt đầu mưa...' : next === 'fog' ? 'Sương mù kéo đến' : 'Trời quang đãng', '#c0d8ff');
+        const theme = this.regionDef.theme;
+        const next: WeatherKind = theme === 'volcanic' ? (r < 0.6 ? 'clear' : r < 0.85 ? 'heatwave' : 'fog')
+          : theme === 'frozen' ? (r < 0.55 ? 'clear' : r < 0.8 ? 'blizzard' : 'fog')
+          : r < 0.6 ? 'clear' : r < 0.85 ? 'rain' : 'fog';
+        if (next !== this.weather.kind) this.ui?.banner(next === 'rain' ? 'Trời bắt đầu mưa...' : next === 'fog' ? 'Sương mù kéo đến' : next === 'blizzard' ? 'Bão tuyết nổi lên...' : next === 'heatwave' ? 'Nắng nóng như thiêu đốt' : 'Trời quang đãng', '#c0d8ff');
         this.weather = { kind: next, t: this.world.rng.range(180, 360) };
       }
     }
@@ -1610,6 +1623,10 @@ export class AdventureScene extends Phaser.Scene {
     this.time.delayedCall(420, () => gameModes.start(this, 'adventure', { map: 'valley' }));
   }
 
+  private tagNpc(it: Interactable, name: string, trainer: boolean, beaten: boolean): void {
+    it.nameTag?.setText(trainer ? `${beaten ? '✓' : '⚔'} ${name}` : name).setColor(!trainer ? '#e8f0ff' : beaten ? '#a0a8b8' : '#ffc070');
+  }
+
   private async challenge(it: Interactable): Promise<void> {
     const tr = it.obj.data as RegionDef['trainers'][number];
     if (this.state.hasFlag('beat:' + tr.id)) return void (await this.say(tr.name, tr.win, undefined, this.portraitOf(tr.id)));
@@ -1632,6 +1649,8 @@ export class AdventureScene extends Phaser.Scene {
     this.battle = null;
     const tr = this.regionDef.trainers.find((t) => t.id === b.id)!;
     this.state.setFlag('beat:' + tr.id);
+    const it = this.interactables.get(tr.id);
+    if (it) this.tagNpc(it, tr.name, true, true);
     this.state.addItems(tr.rewards.items);
     this.state.adv.reputation += 5;
     this.state.earn(500);

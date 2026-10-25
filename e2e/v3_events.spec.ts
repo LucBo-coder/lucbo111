@@ -131,7 +131,10 @@ test('new shrine with a weather condition: Lugia waits for rain, then fights wit
   test.setTimeout(120_000);
   const errors = errorsOf(page);
   await start(page);
-  await ev(page, `(() => { const a = window.__adv; ['mega-venusaur', 'articuno', 'zapdos', 'moltres'].forEach((b) => a.state.setFlag('boss:' + b)); a.weather = { kind: 'clear', t: 999 }; a.world.teleport(110.5*48, 60*48); })()`);
+  // since 0.17 the shrine stands in its themed region: travel there first (bypasses the portal gate)
+  await ev(page, `window.__adv.travelTo('coral-coast', 58, 15)`);
+  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'coral-coast', { timeout: 15_000 });
+  await ev(page, `(() => { const a = window.__adv; ['mega-venusaur', 'articuno', 'zapdos', 'moltres'].forEach((b) => a.state.setFlag('boss:' + b)); a.weather = { kind: 'clear', t: 999 }; const t = a.world.trainer; t.maxHp = t.hp = 1e7; a.world.teleport(58.5*48, 15*48); })()`);
   await page.waitForTimeout(2500);
   expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false); // clear sky: Lugia stays hidden
   await ev(page, `window.__adv.weather = { kind: 'rain', t: 999 }`);

@@ -94,6 +94,49 @@
      26
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     22,
+     24
+    ],
+    [
+     16,
+     34
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     66,
+     44
+    ],
+    [
+     84,
+     50
+    ],
+    [
+     92,
+     48
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     60,
+     26
+    ],
+    [
+     62,
+     14
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -122,14 +165,50 @@
   }
  ],
  "fences": [],
- "props": [],
+ "props": [
+  {
+   "kind": "log",
+   "x": 60,
+   "y": 85
+  },
+  {
+   "kind": "bucket",
+   "x": 61,
+   "y": 78
+  },
+  {
+   "kind": "target",
+   "x": 46,
+   "y": 72
+  },
+  {
+   "kind": "log",
+   "x": 28,
+   "y": 36
+  }
+ ],
  "signs": [
   {
    "x": 53,
    "y": 89,
    "text": [
     "VÙNG ĐẤT NÚI LỬA",
-    "Khuyến nghị Lv50 · Đừng đến gần dung nham."
+    "Khuyến nghị Lv50 · Groudon, Heatran và Regirock ngự ở đây."
+   ]
+  },
+  {
+   "x": 58,
+   "y": 64,
+   "text": [
+    "← Cánh Đồng Dung Nham · Lăng Đá Đỏ",
+    "↗ Đền Dung Nham · Miệng Núi Lửa"
+   ]
+  },
+  {
+   "x": 64,
+   "y": 30,
+   "text": [
+    "↑ Miệng Núi Lửa Ngầm (Heatran)"
    ]
   }
  ],
@@ -144,9 +223,158 @@
     "Cẩn thận dung nham! Không ai đi qua được đâu.",
     "Pokémon Lửa và Đá sống ở đây, Lv42–58. Miệng núi lửa có Pokémon mạnh nhất."
    ]
+  },
+  {
+   "id": "volcano-geologist",
+   "name": "Nhà địa chất Hỏa Sơn",
+   "sprite": "wizard",
+   "x": 70,
+   "y": 60,
+   "lines": [
+    "Đá ở đây vẫn còn ấm — dưới chân chúng ta là cả một biển dung nham.",
+    "Groudon ngủ trong Đền Dung Nham phía đông. Nó chỉ thức khi nắng gắt."
+   ]
+  },
+  {
+   "id": "volcano-elder",
+   "name": "Cụ Lò Rèn",
+   "sprite": "elder",
+   "x": 26,
+   "y": 34,
+   "lines": [
+    "Lăng Đá Đỏ được khắc bằng thứ chữ không ai còn đọc được.",
+    "Regirock là một trong ba người khổng lồ. Hai người kia ở Núi Tuyết và Bờ Biển San Hô."
+   ]
+  },
+  {
+   "id": "volcano-guard",
+   "name": "Lính canh Miệng Núi",
+   "sprite": "ranger",
+   "x": 59,
+   "y": 19,
+   "lines": [
+    "Phía trên là miệng núi lửa. Heatran chỉ xuất hiện sau khi Groudon đã thức giấc.",
+    "Khi núi phun trào, tránh xa những vũng dung nham đỏ rực!"
+   ]
   }
  ],
- "trainers": [],
+ "trainers": [
+  {
+   "id": "volcano-firebreather",
+   "name": "Nghệ sĩ phun lửa Lửa Đỏ",
+   "sprite": "youngster",
+   "x": 44,
+   "y": 70,
+   "team": [
+    [
+     "magmar",
+     45
+    ],
+    [
+     "camerupt",
+     46
+    ],
+    [
+     "houndoom",
+     46
+    ]
+   ],
+   "challenge": [
+    "Nóng chưa? Đội của tôi còn nóng hơn!"
+   ],
+   "win": [
+    "Bạn chịu nhiệt giỏi thật đấy."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 3,
+     "charcoal": 1
+    },
+    "exp": 1800
+   }
+  },
+  {
+   "id": "volcano-miner",
+   "name": "Thợ mỏ Than Hồng",
+   "sprite": "viking",
+   "x": 30,
+   "y": 50,
+   "team": [
+    [
+     "magcargo",
+     48
+    ],
+    [
+     "torkoal",
+     48
+    ],
+    [
+     "golem",
+     49
+    ]
+   ],
+   "challenge": [
+    "Mỏ này là của tôi! Muốn qua thì thắng tôi trước."
+   ],
+   "win": [
+    "Được rồi, được rồi, mời bạn qua."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 3,
+     "hard-stone": 1
+    },
+    "exp": 2000
+   }
+  },
+  {
+   "id": "volcano-ace",
+   "name": "Cao thủ Hỏa Diệm Long",
+   "sprite": "knight",
+   "x": 74,
+   "y": 36,
+   "team": [
+    [
+     "arcanine",
+     52
+    ],
+    [
+     "rapidash",
+     52
+    ],
+    [
+     "magmortar",
+     53
+    ],
+    [
+     "infernape",
+     54
+    ]
+   ],
+   "challenge": [
+    "Chỉ người vượt qua tôi mới được lên miệng núi lửa!"
+   ],
+   "win": [
+    "Ngọn lửa của bạn mạnh hơn của tôi."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 5,
+     "superpotion": 2
+    },
+    "exp": 2800
+   }
+  }
+ ],
  "rescue": {
   "id": "none",
   "x": -99,
@@ -158,8 +386,8 @@
  "chests": [
   {
    "id": "chest-crater",
-   "x": 100,
-   "y": 44,
+   "x": 99,
+   "y": 43,
    "items": {
     "fire-stone": 1,
     "ultraball": 3
@@ -173,6 +401,24 @@
     "charcoal": 1,
     "superpotion": 3
    }
+  },
+  {
+   "id": "chest-volcano-ash",
+   "x": 90,
+   "y": 70,
+   "items": {
+    "ultraball": 3,
+    "fire-stone": 1
+   }
+  },
+  {
+   "id": "chest-volcano-rock",
+   "x": 8,
+   "y": 80,
+   "items": {
+    "superpotion": 2,
+    "rocky-helmet": 1
+   }
   }
  ],
  "waypoints": [
@@ -181,6 +427,12 @@
    "name": "Trạm Núi Lửa",
    "x": 58,
    "y": 86
+  },
+  {
+   "id": "wp-volcano-crater",
+   "name": "Trạm Miệng Núi",
+   "x": 66,
+   "y": 40
   }
  ],
  "puzzles": [],
@@ -194,7 +446,64 @@
  ],
  "pillars": [],
  "spawns": {},
- "legendaries": [],
+ "legendaries": [
+  {
+   "id": "regirock",
+   "name": "Lăng Đá Đỏ",
+   "x": 12,
+   "y": 38,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.61,
+   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {}
+  },
+  {
+   "id": "groudon",
+   "name": "Đền Dung Nham",
+   "x": 95,
+   "y": 45,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 2.71,
+   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
+   "condition": {
+    "weather": [
+     "heatwave",
+     "clear"
+    ]
+   }
+  },
+  {
+   "id": "heatran",
+   "name": "Miệng Núi Lửa Ngầm",
+   "x": 73,
+   "y": 8,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:groudon"
+   ],
+   "gap": 2.32,
+   "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
+   "condition": {
+    "weather": [
+     "heatwave",
+     "clear"
+    ]
+   }
+  }
+ ],
  "portals": [
   {
    "id": "portal-volcano-valley",

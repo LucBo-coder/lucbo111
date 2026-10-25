@@ -94,6 +94,49 @@
      80
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     44,
+     66
+    ],
+    [
+     30,
+     74
+    ],
+    [
+     20,
+     80
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     56,
+     80
+    ],
+    [
+     46,
+     86
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     50,
+     30
+    ],
+    [
+     54,
+     52
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -143,6 +186,21 @@
    "kind": "haystack",
    "x": 20,
    "y": 41
+  },
+  {
+   "kind": "bucket",
+   "x": 22,
+   "y": 46
+  },
+  {
+   "kind": "log",
+   "x": 40,
+   "y": 46
+  },
+  {
+   "kind": "target",
+   "x": 34,
+   "y": 62
   }
  ],
  "signs": [
@@ -152,6 +210,22 @@
    "text": [
     "BỜ BIỂN SAN HÔ",
     "Khuyến nghị Lv30 · Rạn San Hô phía đông có Pokémon mạnh nhất."
+   ]
+  },
+  {
+   "x": 44,
+   "y": 62,
+   "text": [
+    "↙ Vách Đá Hải Âu · Trụ Trời",
+    "↘ Lăng Thép"
+   ]
+  },
+  {
+   "x": 56,
+   "y": 24,
+   "text": [
+    "↑ Đền Biển Sâu (Lugia)",
+    "↓ Đền Đáy Biển (Kyogre)"
    ]
   }
  ],
@@ -185,6 +259,28 @@
    "lines": [
     "Đêm nào ta cũng thắp đèn cho tàu thuyền.",
     "Mấy tảng đá quanh vách là nơi Onix và Graveler ẩn mình."
+   ]
+  },
+  {
+   "id": "coast-diver2",
+   "name": "Thợ lặn Hải Yến",
+   "sprite": "girl",
+   "x": 48,
+   "y": 46,
+   "lines": [
+    "Dưới đền Đáy Biển có những bậc thang dẫn xuống tận đáy... Kyogre chỉ lên khi trời mưa.",
+    "Lugia hiện ra ở Đền Biển Sâu phía bắc trong mưa bão."
+   ]
+  },
+  {
+   "id": "coast-old-sailor",
+   "name": "Thuyền trưởng Sóng Bạc",
+   "sprite": "elder",
+   "x": 26,
+   "y": 76,
+   "lines": [
+    "Trụ Trời trên vách đá — nơi Rayquaza nghỉ chân giữa hai lần bay qua bầu trời.",
+    "Chỉ người đã thuần phục Kyogre và Groudon mới được nó công nhận."
    ]
   }
  ],
@@ -262,6 +358,80 @@
     },
     "exp": 1300
    }
+  },
+  {
+   "id": "coast-surfer",
+   "name": "Tay lướt sóng Thái Dương",
+   "sprite": "girl",
+   "x": 30,
+   "y": 58,
+   "team": [
+    [
+     "marill",
+     30
+    ],
+    [
+     "wingull",
+     31
+    ],
+    [
+     "staryu",
+     32
+    ]
+   ],
+   "challenge": [
+    "Sóng hôm nay đẹp quá — đấu một trận nhé!"
+   ],
+   "win": [
+    "Bạn cưỡi sóng giỏi thật."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 4,
+     "mystic-water": 1
+    },
+    "exp": 900
+   }
+  },
+  {
+   "id": "coast-cliff",
+   "name": "Nhà leo vách Hải Âu",
+   "sprite": "viking",
+   "x": 30,
+   "y": 88,
+   "team": [
+    [
+     "kingler",
+     34
+    ],
+    [
+     "crawdaunt",
+     35
+    ],
+    [
+     "pelipper",
+     35
+    ]
+   ],
+   "challenge": [
+    "Vách đá này gió lắm, giữ chặt mũ nhé!"
+   ],
+   "win": [
+    "Đội của bạn vững như đá."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "superpotion": 2
+    },
+    "exp": 1100
+   }
   }
  ],
  "rescue": {
@@ -307,13 +477,96 @@
    "name": "Trạm Bờ Biển",
    "x": 38,
    "y": 42
+  },
+  {
+   "id": "wp-coast-cliffs",
+   "name": "Trạm Vách Đá",
+   "x": 44,
+   "y": 70
   }
  ],
  "puzzles": [],
  "dungeons": [],
  "pillars": [],
  "spawns": {},
- "legendaries": [],
+ "legendaries": [
+  {
+   "id": "lugia",
+   "name": "Đền Biển Sâu",
+   "x": 58,
+   "y": 12,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "gap": 1.37,
+   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+   "condition": {
+    "weather": [
+     "rain",
+     "heavyRain",
+     "thunderstorm"
+    ]
+   }
+  },
+  {
+   "id": "kyogre",
+   "name": "Đền Đáy Biển",
+   "x": 58,
+   "y": 56,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 2.82,
+   "hint": "Sóng dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi trời mưa.",
+   "condition": {
+    "weather": [
+     "heavyRain",
+     "rain",
+     "thunderstorm"
+    ]
+   }
+  },
+  {
+   "id": "rayquaza",
+   "name": "Trụ Trời",
+   "x": 14,
+   "y": 82,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:kyogre",
+    "boss:groudon"
+   ],
+   "gap": 5.82,
+   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
+   "condition": {}
+  },
+  {
+   "id": "registeel",
+   "name": "Lăng Thép",
+   "x": 40,
+   "y": 88,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.7,
+   "hint": "Một khối thép lạnh ngắt nằm im dưới vách đá... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {}
+  }
+ ],
  "portals": [
   {
    "id": "portal-coast-valley",

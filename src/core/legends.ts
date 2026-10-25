@@ -1,4 +1,5 @@
 import legendsJson from '../data/world/legends.json';
+import { REGION_DEFS } from './map/regionDefs';
 import type { WeatherKind } from './encounters';
 import type { QuestDef } from './quests';
 
@@ -78,7 +79,9 @@ export function legendQuests(authored: QuestDef[]): QuestDef[] {
     if (have.has(id)) continue;
     const req = l.requires.filter((f) => f.startsWith('boss:')).map((f) => QUEST_ID(f.slice(5)));
     const name = l.name ?? l.id;
-    const where = l.kind === 'roaming' ? 'Lang thang — tìm trong các vùng của nó' : l.kind === 'egg' ? 'Ấp trứng (tự nở sau một thời gian chơi)' : name;
+    // shrines / meetings name their map too: they are spread over the regions, not all in the valley
+    const map = REGION_DEFS[l.site?.region ?? 'starter-valley']?.name;
+    const where = l.kind === 'roaming' ? 'Lang thang — tìm trong các vùng của nó' : l.kind === 'egg' ? 'Ấp trứng (tự nở sau một thời gian chơi)' : map ? `${name} — ${map}` : name;
     const verb = l.kind === 'gift' ? 'Gặp' : l.kind === 'egg' ? 'Ấp nở' : 'Đánh bại';
     out.push({
       id, kind: 'boss', title: `Truyền thuyết — ${cap(l.id)}`, requires: req, autoStart: true, description: l.lore,

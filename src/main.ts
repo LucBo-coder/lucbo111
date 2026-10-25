@@ -13,6 +13,7 @@ import { CoopGuestScene } from './scenes/CoopGuestScene';
 import { CoopGuestUI } from './scenes/CoopGuestUI';
 import { ServerScene } from './scenes/ServerScene';
 import { OnlineHubScene } from './scenes/OnlineHubScene';
+import { DPR } from './scenes/ui';
 
 async function boot(): Promise<void> {
   // Wait (briefly) for the pixel font so canvas text doesn't render in a fallback font
@@ -27,12 +28,20 @@ async function boot(): Promise<void> {
     backgroundColor: '#14161f',
     pixelArt: true,
     roundPixels: true,
-    scale: { mode: Phaser.Scale.RESIZE, width: window.innerWidth, height: window.innerHeight },
+    // phones render at DPR× (sharp text); the canvas is shown at the CSS size of the window
+    scale: DPR > 1
+      ? { mode: Phaser.Scale.NONE, width: innerWidth * DPR, height: innerHeight * DPR, zoom: 1 / DPR }
+      : { mode: Phaser.Scale.RESIZE, width: innerWidth, height: innerHeight },
     input: { activePointers: 3 },
     fps: { target: 60, forceSetTimeOut: false },
     scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene, CoopGuestUI, ServerScene, OnlineHubScene],
   });
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
+  if (DPR > 1) {
+    const fit = () => game.scale.resize(innerWidth * DPR, innerHeight * DPR);
+    addEventListener('resize', fit);
+    addEventListener('orientationchange', () => setTimeout(fit, 150));
+  }
   if (new URLSearchParams(location.search).has('netstats')) void import('./net/netOverlay').then(m => m.startNetOverlay());
 }
 

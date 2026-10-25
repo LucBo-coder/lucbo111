@@ -106,7 +106,7 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
     const page = passportPages(adv, quests.map((q) => q.id)).find((p) => p.def.id === 'can-tho')!;
     expect(page.playable).toBe(true);
     expect(page.unlocked).toBe(true);
-    expect(page.trainers.total).toBe(4);
+    expect(page.trainers.total).toBe(6);
     expect(page.quests.total).toBe(6);
     expect(page.boss?.name).toContain('Whiscash');
   });

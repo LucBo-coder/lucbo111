@@ -190,6 +190,21 @@
    "kind": "log",
    "x": 58,
    "y": 34
+  },
+  {
+   "kind": "haystack",
+   "x": 82,
+   "y": 98
+  },
+  {
+   "kind": "bucket",
+   "x": 66,
+   "y": 99
+  },
+  {
+   "kind": "log",
+   "x": 30,
+   "y": 22
   }
  ],
  "signs": [
@@ -215,6 +230,14 @@
    "text": [
     "RỪNG U MINH HẠ",
     "Rừng tràm trên đất than bùn. Cẩn thận lửa — than bùn rất dễ cháy."
+   ]
+  },
+  {
+   "x": 64,
+   "y": 50,
+   "text": [
+    "↑ Rừng Tràm U Minh Hạ",
+    "↓ Thị trấn · Mũi Cà Mau"
    ]
   }
  ],
@@ -300,6 +323,39 @@
    "lines": [
     "Một khối sáng trong suốt đang ngân nga... Khi bạn bước lại gần, nó chớp nháy rồi mờ dần.",
     "Có thứ gì đó rất cổ xưa đang ngủ ở nơi khác — xa hơn về phía bắc."
+   ]
+  },
+  {
+   "id": "cm-fisher-ut",
+   "name": "Ngư dân Út Mũi",
+   "sprite": "bald",
+   "x": 50,
+   "y": 92,
+   "lines": [
+    "Mũi Cà Mau là điểm cực Nam của Tổ quốc — đất ở đây năm nào cũng lấn ra biển thêm vài chục mét.",
+    "Rừng đước giữ đất cho làng. Đừng đốt lửa trong rừng nhé!"
+   ]
+  },
+  {
+   "id": "cm-ranger-uminh",
+   "name": "Kiểm lâm U Minh",
+   "sprite": "ranger",
+   "x": 24,
+   "y": 26,
+   "lines": [
+    "Rừng tràm U Minh Hạ mùa khô rất dễ cháy. Pokémon hệ Lửa phải đi cùng huấn luyện viên.",
+    "Ong mật trong rừng tràm làm ra mật ngon nhất miền Tây."
+   ]
+  },
+  {
+   "id": "cm-dried-fish",
+   "name": "Cô Năm bán khô",
+   "sprite": "villager",
+   "x": 89,
+   "y": 91,
+   "lines": [
+    "Khô cá lóc, khô cá sặc đây! Mua về làm quà nha con.",
+    "Mùa nước nổi cá về nhiều lắm, cả làng đi giăng lưới."
    ]
   }
  ],
@@ -410,6 +466,76 @@
     },
     "exp": 320
    }
+  },
+  {
+   "id": "cm-kid-fish",
+   "name": "Bé Tí bắt cá",
+   "sprite": "youngster",
+   "x": 40,
+   "y": 60,
+   "team": [
+    [
+     "poliwag",
+     5
+    ],
+    [
+     "wooper",
+     6
+    ]
+   ],
+   "challenge": [
+    "Em bắt cá giỏi nhất xóm! Đấu với em nha!"
+   ],
+   "win": [
+    "Anh/chị giỏi quá à!"
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "pokeball": 3,
+     "oranberry": 2
+    },
+    "exp": 120
+   }
+  },
+  {
+   "id": "cm-boatman",
+   "name": "Anh Ba xuồng ba lá",
+   "sprite": "viking",
+   "x": 76,
+   "y": 28,
+   "team": [
+    [
+     "psyduck",
+     8
+    ],
+    [
+     "hoothoot",
+     9
+    ],
+    [
+     "oddish",
+     9
+    ]
+   ],
+   "challenge": [
+    "Chèo xuồng cả ngày mỏi tay, đấu một trận cho vui!"
+   ],
+   "win": [
+    "Hay! Mai anh chở em đi coi rừng tràm."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "pokeball": 3,
+     "potion": 2
+    },
+    "exp": 220
+   }
   }
  ],
  "rescue": {
@@ -446,6 +572,15 @@
    "items": {
     "miracle-seed": 1,
     "superpotion": 1
+   }
+  },
+  {
+   "id": "chest-cm-mangrove",
+   "x": 20,
+   "y": 56,
+   "items": {
+    "greatball": 2,
+    "oranberry": 3
    }
   }
  ],

@@ -6,7 +6,7 @@ import { net } from '../net/session';
 import { bar, hpColor } from '../render/WorldRenderer';
 import { audio } from '../systems/audio';
 import type { CoopGuestScene } from './CoopGuestScene';
-import { button, COLORS, panel, text } from './ui';
+import { button, COLORS, panel, text, DPR, uiScale } from './ui';
 
 /** Short labels so six (seven on touch) buttons fit a 390 px wide phone. */
 const COMMAND_BUTTONS: { id: AllyCommand; label: string }[] = [
@@ -65,8 +65,8 @@ export class CoopGuestUI extends Phaser.Scene {
   private build(): void {
     const { width: W, height: H } = this.scale;
     // the long edge and the short edge both count, so a 390×844 phone gets the same scale upright or sideways
-    const s = (this.s = Phaser.Math.Clamp(Math.min(Math.max(W, H) / 1100, Math.min(W, H) / 520), 0.6, 1.4));
-    const narrow = W < 700;
+    const s = (this.s = uiScale(W, H, (w, h) => Phaser.Math.Clamp(Math.min(Math.max(w, h) / 1100, Math.min(w, h) / 520), 0.6, 1.4)));
+    const narrow = W / DPR < 700;
     const gap = 12 * s;
     // left column: own HP + party; right column: leave, minimap, teammate, challenge
     const lw = Math.min(250 * s, (W - 3 * gap) * (narrow ? 0.52 : 0.4));
@@ -235,7 +235,7 @@ export class CoopGuestUI extends Phaser.Scene {
     const boss = w.enemies.find((e) => e.boss && e.alive);
     // phones: just above the command bar (the top edge is full); wide screens: top centre between the columns
     this.t.loot.setText(loot);
-    this.t.loot.setPosition(W / 2, W < 700 ? barTop - (boss ? 60 : 24) * s : 12 * s + this.t.loot.height);
+    this.t.loot.setPosition(W / 2, W / DPR < 700 ? barTop - (boss ? 60 : 24) * s : 12 * s + this.t.loot.height);
     if (loot) {
       const b = this.t.loot.getBounds();
       g.fillStyle(0x2a2008, 0.85).fillRect(b.x - 10 * s, b.y - 6 * s, b.width + 20 * s, b.height + 12 * s);

@@ -5,7 +5,13 @@
   "lore": "Thần Điểu băng giá, mỗi lần vỗ cánh là tuyết rơi.",
   "requires": [
    "boss:mega-venusaur"
-  ]
+  ],
+  "site": {
+   "x": 22,
+   "y": 45,
+   "region": "frozen-mountains"
+  },
+  "name": "Băng Đài Hồ Băng Lam"
  },
  {
   "id": "zapdos",
@@ -48,7 +54,8 @@
   "regions": [
    "starter-valley",
    "farm",
-   "rocky-highlands"
+   "rocky-highlands",
+   "coral-coast"
   ],
   "level": 40,
   "requires": [
@@ -67,7 +74,8 @@
   "regions": [
    "rocky-highlands",
    "ancient-ruins",
-   "emerald-forest"
+   "emerald-forest",
+   "volcanic-lands"
   ],
   "level": 40,
   "requires": [
@@ -84,7 +92,9 @@
   "kind": "roaming",
   "name": "Suicune bên hồ",
   "regions": [
-   "crystal-lake"
+   "crystal-lake",
+   "frozen-mountains",
+   "coral-coast"
   ],
   "level": 40,
   "requires": [
@@ -113,10 +123,11 @@
    "thunderstorm"
   ],
   "lore": "Hộ thần của biển cả và ba Thần Điểu — chỉ trồi lên khi trời mưa bão.",
-  "hint": "Mặt hồ lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+  "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
   "site": {
-   "x": 110,
-   "y": 56
+   "x": 58,
+   "y": 12,
+   "region": "coral-coast"
   }
  },
  {
@@ -163,10 +174,11 @@
    "boss:mega-venusaur"
   ],
   "lore": "Người khổng lồ đá bị phong ấn từ thời cổ đại.",
-  "hint": "Những ký tự cổ khắc trên đá... cần sức mạnh đã đánh bại Thần Rừng.",
+  "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
   "site": {
-   "x": 151,
-   "y": 10
+   "x": 12,
+   "y": 38,
+   "region": "volcanic-lands"
   }
  },
  {
@@ -181,10 +193,11 @@
    "blizzard"
   ],
   "lore": "Người khổng lồ băng ngủ say — chỉ thức dậy trong bão tuyết.",
-  "hint": "Lớp băng mỏng phủ vòng đá... có lẽ Regice chỉ thức dậy trong bão tuyết.",
+  "hint": "Lớp băng mỏng phủ vòng đá trên Đỉnh Bão Tuyết... Regice chỉ thức dậy trong bão tuyết.",
   "site": {
-   "x": 35,
-   "y": 42
+   "x": 100,
+   "y": 42,
+   "region": "frozen-mountains"
   }
  },
  {
@@ -196,10 +209,11 @@
    "boss:mega-venusaur"
   ],
   "lore": "Người khổng lồ thép cứng hơn mọi kim loại.",
-  "hint": "Một khối thép lạnh ngắt nằm im... cần sức mạnh đã đánh bại Thần Rừng.",
+  "hint": "Một khối thép lạnh ngắt nằm im dưới vách đá... cần sức mạnh đã đánh bại Thần Rừng.",
   "site": {
-   "x": 126,
-   "y": 43
+   "x": 40,
+   "y": 88,
+   "region": "coral-coast"
   }
  },
  {
@@ -213,10 +227,11 @@
    "boss:registeel"
   ],
   "lore": "Vị thần đã kéo các lục địa — chủ nhân của ba người khổng lồ.",
-  "hint": "Bức tượng khổng lồ không nhúc nhích... nó đang chờ ba người khổng lồ.",
+  "hint": "Bức tượng khổng lồ phủ tuyết không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
   "site": {
-   "x": 20,
-   "y": 68
+   "x": 68,
+   "y": 22,
+   "region": "frozen-mountains"
   }
  },
  {
@@ -226,7 +241,8 @@
   "regions": [
    "crystal-lake",
    "starter-valley",
-   "farm"
+   "farm",
+   "coral-coast"
   ],
   "level": 45,
   "requires": [
@@ -241,7 +257,8 @@
   "regions": [
    "crystal-lake",
    "emerald-forest",
-   "rocky-highlands"
+   "rocky-highlands",
+   "coral-coast"
   ],
   "level": 45,
   "requires": [
@@ -252,7 +269,7 @@
  {
   "id": "kyogre",
   "kind": "shrine",
-  "name": "Đền Đáy Hồ",
+  "name": "Đền Đáy Biển",
   "level": 50,
   "requires": [
    "boss:lugia",
@@ -264,10 +281,11 @@
    "thunderstorm"
   ],
   "lore": "Chúa tể đại dương, gọi mưa bão mở rộng biển cả.",
-  "hint": "Nước hồ dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi mưa lớn.",
+  "hint": "Sóng dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi trời mưa.",
   "site": {
-   "x": 113,
-   "y": 84
+   "x": 58,
+   "y": 56,
+   "region": "coral-coast"
   }
  },
  {
@@ -284,10 +302,11 @@
    "clear"
   ],
   "lore": "Chúa tể đất liền, tạo ra lục địa bằng dung nham.",
-  "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt.",
+  "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
   "site": {
-   "x": 118,
-   "y": 10
+   "x": 95,
+   "y": 45,
+   "region": "volcanic-lands"
   }
  },
  {
@@ -300,10 +319,11 @@
    "boss:groudon"
   ],
   "lore": "Rồng trời đã chấm dứt cuộc chiến giữa Kyogre và Groudon.",
-  "hint": "Gió trên đỉnh trụ gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
+  "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
   "site": {
-   "x": 151,
-   "y": 25
+   "x": 14,
+   "y": 82,
+   "region": "coral-coast"
   }
  },
  {
@@ -338,8 +358,9 @@
   "lore": "Virus ngoài vũ trụ đột biến sau khi bị tia laser chiếu vào.",
   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
   "site": {
-   "x": 93,
-   "y": 79
+   "x": 80,
+   "y": 14,
+   "region": "legendary-sanctuary"
   }
  },
  {
@@ -351,10 +372,11 @@
    "boss:mewtwo"
   ],
   "lore": "Hộ thần tri thức — nhìn vào mắt nó sẽ mất trí nhớ.",
-  "hint": "Mặt nước phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+  "hint": "Mặt hồ băng phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
   "site": {
-   "x": 101,
-   "y": 38
+   "x": 22,
+   "y": 9,
+   "region": "frozen-mountains"
   }
  },
  {
@@ -365,7 +387,8 @@
    "crystal-lake",
    "starter-valley",
    "emerald-forest",
-   "farm"
+   "farm",
+   "misty-swamp"
   ],
   "level": 45,
   "requires": [
@@ -382,10 +405,11 @@
    "boss:mewtwo"
   ],
   "lore": "Hộ thần ý chí, giữ cân bằng thế giới.",
-  "hint": "Gió thổi mạnh quanh vòng đá... Azelf chờ người đã đối mặt với Mewtwo.",
+  "hint": "Gió thổi mạnh quanh vòng đá bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
   "site": {
-   "x": 55,
-   "y": 81
+   "x": 44,
+   "y": 20,
+   "region": "misty-swamp"
   }
  },
  {
@@ -401,8 +425,9 @@
   "lore": "Thần thời gian — tim nó đập là thời gian trôi.",
   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
   "site": {
-   "x": 85,
-   "y": 26
+   "x": 16,
+   "y": 44,
+   "region": "legendary-sanctuary"
   }
  },
  {
@@ -418,8 +443,9 @@
   "lore": "Thần không gian — mỗi hơi thở là một không gian mới.",
   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
   "site": {
-   "x": 98,
-   "y": 10
+   "x": 80,
+   "y": 44,
+   "region": "legendary-sanctuary"
   }
  },
  {
@@ -433,10 +459,11 @@
   ],
   "time": "night",
   "lore": "Bị đày vào Thế Giới Đảo Ngược vì sự hung bạo — chỉ lộ diện trong bóng tối.",
-  "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi thời gian và không gian bị khuấy động.",
+  "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi Dialga và Palkia bị khuấy động.",
   "site": {
-   "x": 35,
-   "y": 82
+   "x": 100,
+   "y": 12,
+   "region": "misty-swamp"
   }
  },
  {
@@ -452,10 +479,11 @@
    "clear"
   ],
   "lore": "Sống trong hang núi lửa, máu nó là dung nham sôi.",
-  "hint": "Hơi nóng phả ra từ khe đá... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
+  "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
   "site": {
-   "x": 138,
-   "y": 39
+   "x": 73,
+   "y": 8,
+   "region": "volcanic-lands"
   }
  },
  {
@@ -465,7 +493,8 @@
   "regions": [
    "starter-valley",
    "crystal-lake",
-   "emerald-forest"
+   "emerald-forest",
+   "misty-swamp"
   ],
   "level": 48,
   "requires": [
@@ -484,10 +513,11 @@
   ],
   "time": "night",
   "lore": "Gieo ác mộng cho người ngủ gần nó; chỉ Cresselia mới xua tan được.",
-  "hint": "Bạn bỗng thấy buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
+  "hint": "Sương độc làm bạn buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
   "site": {
-   "x": 50,
-   "y": 55
+   "x": 18,
+   "y": 8,
+   "region": "misty-swamp"
   }
  },
  {

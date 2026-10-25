@@ -111,6 +111,53 @@
      80
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     30,
+     42
+    ],
+    [
+     36,
+     30
+    ],
+    [
+     42,
+     24
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     36,
+     30
+    ],
+    [
+     28,
+     12
+    ],
+    [
+     22,
+     10
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     84,
+     24
+    ],
+    [
+     94,
+     14
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -160,6 +207,21 @@
    "kind": "log",
    "x": 66,
    "y": 82
+  },
+  {
+   "kind": "bucket",
+   "x": 64,
+   "y": 82
+  },
+  {
+   "kind": "log",
+   "x": 48,
+   "y": 66
+  },
+  {
+   "kind": "log",
+   "x": 80,
+   "y": 40
   }
  ],
  "signs": [
@@ -169,6 +231,20 @@
    "text": [
     "ĐẦM LẦY SƯƠNG MÙ",
     "Khuyến nghị Lv25 · Vũng bùn tím gây độc — Pokémon hệ Độc / Thép không sợ."
+   ]
+  },
+  {
+   "x": 33,
+   "y": 40,
+   "text": [
+    "↑ Hồ Dũng Khí · Đảo Ác Mộng"
+   ]
+  },
+  {
+   "x": 82,
+   "y": 30,
+   "text": [
+    "↗ Cổng Thế Giới Đảo Ngược"
    ]
   }
  ],
@@ -203,6 +279,39 @@
    "lines": [
     "Chào mừng đến Đầm Lầy Sương Mù! Đi trên lối ván gỗ để tránh vũng độc.",
     "Pokémon ở đây Lv22–32 — vừa sức sau Hang Đá Cổ."
+   ]
+  },
+  {
+   "id": "swamp-fortune",
+   "name": "Bà thầy bói Mộng Lan",
+   "sprite": "elder",
+   "x": 34,
+   "y": 14,
+   "lines": [
+    "Ta thấy một cơn ác mộng trên hòn đảo phía tây hồ... Darkrai chỉ đến vào ban đêm.",
+    "Muốn thoát ác mộng, hãy tìm Cresselia dưới trăng trước đã."
+   ]
+  },
+  {
+   "id": "swamp-hunter",
+   "name": "Thợ săn ma Bóng Đêm",
+   "sprite": "ranger",
+   "x": 90,
+   "y": 22,
+   "lines": [
+    "Hốc cây kia có một cánh cổng mà bóng đổ ngược chiều...",
+    "Giratina chỉ hiện ra ban đêm, khi thời gian và không gian đã bị khuấy động."
+   ]
+  },
+  {
+   "id": "swamp-fisher2",
+   "name": "Ngư dân Lão Thất",
+   "sprite": "bald",
+   "x": 40,
+   "y": 30,
+   "lines": [
+    "Hồ Dũng Khí — nơi hộ thần Azelf canh giữ. Gió ở đó chưa bao giờ ngừng.",
+    "Nước đầm có độc — đừng đứng lâu trong vũng tím."
    ]
   }
  ],
@@ -280,6 +389,80 @@
     },
     "exp": 850
    }
+  },
+  {
+   "id": "swamp-hexer",
+   "name": "Pháp sư Đầm Lầy Liên",
+   "sprite": "girl",
+   "x": 70,
+   "y": 30,
+   "team": [
+    [
+     "haunter",
+     27
+    ],
+    [
+     "misdreavus",
+     28
+    ],
+    [
+     "skuntank",
+     28
+    ]
+   ],
+   "challenge": [
+    "Sương mù này là của ta! Đấu đi!"
+   ],
+   "win": [
+    "Hừm... ma thuật của ta chưa đủ mạnh."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 4,
+     "superpotion": 1
+    },
+    "exp": 700
+   }
+  },
+  {
+   "id": "swamp-frogman",
+   "name": "Cậu bé Ếch Xanh",
+   "sprite": "youngster",
+   "x": 24,
+   "y": 50,
+   "team": [
+    [
+     "croagunk",
+     25
+    ],
+    [
+     "quagsire",
+     26
+    ],
+    [
+     "wooper",
+     25
+    ]
+   ],
+   "challenge": [
+    "Ếch của em nhảy xa nhất đầm này! Đấu không?"
+   ],
+   "win": [
+    "Anh/chị giỏi quá đi!"
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 3,
+     "potion": 2
+    },
+    "exp": 550
+   }
   }
  ],
  "rescue": {
@@ -317,6 +500,15 @@
     "greatball": 5,
     "oranberry": 3
    }
+  },
+  {
+   "id": "chest-swamp-island",
+   "x": 8,
+   "y": 22,
+   "items": {
+    "greatball": 3,
+    "black-glasses": 1
+   }
   }
  ],
  "waypoints": [
@@ -325,13 +517,70 @@
    "name": "Trạm Đầm Lầy",
    "x": 58,
    "y": 86
+  },
+  {
+   "id": "wp-swamp-hollow",
+   "name": "Trạm Hốc Cây",
+   "x": 80,
+   "y": 36
   }
  ],
  "puzzles": [],
  "dungeons": [],
  "pillars": [],
  "spawns": {},
- "legendaries": [],
+ "legendaries": [
+  {
+   "id": "azelf",
+   "name": "Hồ Dũng Khí",
+   "x": 44,
+   "y": 20,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 1.93,
+   "hint": "Gió thổi mạnh quanh vòng đá bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
+   "condition": {}
+  },
+  {
+   "id": "darkrai",
+   "name": "Đảo Ác Mộng",
+   "x": 18,
+   "y": 8,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:cresselia"
+   ],
+   "gap": 0.32,
+   "hint": "Sương độc làm bạn buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
+   "condition": {
+    "time": "night"
+   }
+  },
+  {
+   "id": "giratina",
+   "name": "Cổng Thế Giới Đảo Ngược",
+   "x": 100,
+   "y": 12,
+   "level": 58,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:dialga",
+    "boss:palkia"
+   ],
+   "gap": 2.52,
+   "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi Dialga và Palkia bị khuấy động.",
+   "condition": {
+    "time": "night"
+   }
+  }
+ ],
  "portals": [
   {
    "id": "portal-swamp-valley",

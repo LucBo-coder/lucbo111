@@ -11,7 +11,7 @@ import { fitScale } from '../render/spriteRegistry';
 import { moveAssets } from '../render/moveAssets';
 import { gameModes } from '../systems/gameMode';
 import type { GameScene } from './GameScene';
-import { button, COLORS, fmtTime, panel, RARITY_COLOR, RARITY_LABEL, text, TYPE_COLOR } from './ui';
+import { button, COLORS, fmtTime, panel, RARITY_COLOR, RARITY_LABEL, text, TYPE_COLOR, uiScale } from './ui';
 
 interface PartyRow {
   icon: Phaser.GameObjects.Image;
@@ -96,7 +96,7 @@ export class UIScene extends Phaser.Scene {
 
   private build(): void {
     const { width: W, height: H } = this.scale;
-    const s = (this.s = Phaser.Math.Clamp(Math.min(W / 1100, H / 680), 0.55, 1.4));
+    const s = (this.s = uiScale(W, H, (w, h) => Phaser.Math.Clamp(Math.min(w / 1100, h / 680), 0.55, 1.4)));
     this.hud = this.add.graphics();
     this.lvText = text(this, 12 * s, 4 * s, '', 20 * s).setDepth(2);
     this.timerText = text(this, W / 2, 24 * s, '00:00', 40 * s).setOrigin(0.5, 0);

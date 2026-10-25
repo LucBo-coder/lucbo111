@@ -14,6 +14,7 @@ import { saveStore } from '../systems/save';
 import { recordDuel } from '../systems/saveSchema';
 import { gameModes } from '../systems/gameMode';
 import { ITEM_DEFS } from '../core/evolution';
+import { DPR, uiScale } from './ui';
 
 // Real-time duel between two players. The host (or the practice mode) runs the World; the guest draws a
 // DuelMirror of the host's snapshots and sends its inputs. The HUD lives in DuelUI.
@@ -158,16 +159,16 @@ export class DuelScene extends Phaser.Scene {
     const cam = this.cameras.main, { width: W, height: H } = this.scale;
     const aw = this.map.widthTiles * TILE_PX, ah = this.map.heightTiles * TILE_PX;
     // leave room for the party columns (DuelUI) on both sides and the order bar at the bottom
-    const ui = Math.max(0.6, Math.min(W / 1280, H / 720, 1.4));
+    const ui = uiScale(W, H, (w, h) => Math.max(0.6, Math.min(w / 1280, h / 720, 1.4)));
     const fit = Math.min((W - 2 * 236 * ui) / aw, (H - 130 * ui) / ah);
-    if (fit >= 0.45) {
+    if (fit >= 0.45 * DPR) {
       cam.removeBounds();
       cam.setZoom(fit); cam.stopFollow();
       cam.centerOn(aw / 2, ah / 2 + (10 * ui) / fit);
     } else {
       // narrow screens (phones): follow the trainer, the columns overlap the field edges
       cam.setBounds(0, 0, aw, ah);
-      cam.setZoom(Math.max(0.5, Math.min(0.8, W / 900)));
+      cam.setZoom(DPR * Math.max(0.5, Math.min(0.8, W / DPR / 900)));
       cam.startFollow(this.renderer_.trainerSprite(), true, 0.12, 0.12);
     }
   }

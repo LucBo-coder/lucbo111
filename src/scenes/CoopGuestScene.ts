@@ -15,6 +15,7 @@ import { type AllyCommand } from '../core/world';
 import { saveStore } from '../systems/save';
 import { gameModes } from '../systems/gameMode';
 import { music } from '../systems/music';
+import { DPR } from './ui';
 
 /** Guests render the host's world and send controls; their campaign save stays local. */
 export class CoopGuestScene extends Phaser.Scene {
@@ -70,7 +71,7 @@ export class CoopGuestScene extends Phaser.Scene {
     coopSession.active = true;
     net.setProfile(saveStore.playerName, saveStore.avatar);
     (window as unknown as { __coopGuest: CoopGuestScene }).__coopGuest = this;
-    this.cameras.main.setBackgroundColor(0x1a3a1c);
+    this.cameras.main.setBackgroundColor(0x1a3a1c).setZoom(DPR);
     this.startedAt = performance.now();
     this.scene.launch('CoopGuestUI', { guest: this });
     this.keys = this.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT') as Record<string, Phaser.Input.Keyboard.Key>;
@@ -108,7 +109,7 @@ export class CoopGuestScene extends Phaser.Scene {
       this.trees.forEach(o => o.destroy()); this.trees = []; this.treesFor = '';
       this.mirror = new CoopMirror(s.map); this.mirror.apply(s);
       const w = this.mirror.world;
-      this.renderer_ = new WorldRenderer(this, w, { banner: () => {} }, saveStore.data.settings.quality);
+      this.renderer_ = new WorldRenderer(this, w, { banner: () => {}, names: s.map.kind === 'survivor' ? 'notable' : 'all' }, saveStore.data.settings.quality);
       this.map = s.map.kind === 'region' ? new ValleyMap(regionDef(s.map.id)) : s.map.kind === 'dungeon' ? new DungeonMap(dungeonDef(s.map.id)) : null;
       this.chunks = this.map ? new ChunkView(this, this.map, { onLoad: r => this.decorate(r), onUnload: () => {} }) : null;
       const map = this.map;

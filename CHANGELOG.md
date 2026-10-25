@@ -1,5 +1,17 @@
 # Changelog
 
+## Chưa phát hành — Bản đồ, huyền thoại & giao diện điện thoại
+
+- **Phân bố lại đền huyền thoại** (Phiêu lưu): Thung Lũng Khởi Nguyên không còn giữ 25 đền; 17 đền chuyển về vùng hợp chủ đề, tối đa 8 đền mỗi bản đồ.
+  - Thung Lũng: Zapdos, Moltres, Mewtwo, Mew, Ho-Oh, Celebi, Jirachi, Shaymin.
+  - Núi Tuyết: Articuno, Uxie, Regice, Regigigas · Vùng Đất Núi Lửa: Regirock, Groudon, Heatran · Đầm Lầy Sương Mù: Azelf, Darkrai, Giratina · Bờ Biển San Hô: Lugia, Kyogre, Rayquaza, Registeel · Thánh Địa: Arceus, Dialga, Palkia, Deoxys.
+  - Gợi ý / nhiệm vụ huyền thoại ghi rõ bản đồ; huyền thoại lang thang (Raikou, Entei, Suicune, Latias/Latios, Mesprit, Cresselia) đi thêm các vùng chủ đề.
+- **Bản đồ đầy đặn hơn**: mỗi vùng chủ đề có thêm NPC, huấn luyện viên, rương, biển chỉ đường, đạo cụ, đường đi và trạm dịch chuyển thứ hai; Thánh Địa có hiền giả, nhà thiên văn và Nhà vô địch; Cà Mau / An Giang / Cần Thơ mỗi tỉnh thêm NPC, 2 huấn luyện viên, đạo cụ, biển và rương. Thời tiết theo vùng (bão tuyết trên núi, nắng nóng ở núi lửa).
+- Sửa: rương Hồ Băng nằm giữa sông, rương miệng núi lửa nằm trong dung nham, Chú làm vườn Cần Thơ đứng trên ô chặn.
+- **Bảng tên**: Pokémon đối thủ hiện tên + cấp (α Alpha, ★ tinh anh, ✦ shiny); NPC và huấn luyện viên có tên dưới chân (⚔ cam = chưa đấu, ✓ xám = đã thắng).
+- **Giao diện điện thoại**: canvas vẽ ở 2× trên điện thoại / máy tính bảng màn hình dày nên chữ nét thay vì bị phóng to mờ (máy tính giữ nguyên 1×). Màn dọc: menu chiếm cả màn hình, tab 2 hàng, chữ lớn hơn, danh sách nằm trên – chi tiết nằm dưới (Đội hình, PC, Pokédex, Nhiệm vụ có phân trang), Túi đồ 1 cột, Bản đồ có thông tin bên dưới, Hộ chiếu 1 thẻ/trang; HUD dời đồng hồ và tên khu vực để không đè thanh HP.
+- Test: `tests/v17_maps.test.ts` (phân bố đền, vật thể đứng trên nền đi được, đội hình huấn luyện viên hợp lệ).
+
 ## Chưa phát hành — Multiplayer qua Cloudflare
 
 - **Sửa lỗi "Hết thời gian chờ — mạng chặn kết nối trực tiếp (WebRTC)"**: PeerJS chỉ có STUN, không có TURN, nên mạng 4G / công ty (NAT đối xứng) không nối được. Mọi chế độ online giờ mặc định đi qua máy chủ Cloudflare `wss://pokemon-server.pokemon-server.workers.dev` (Workers + Durable Objects, gói Free): PvP, co-op Sinh tồn / Phiêu lưu / Việt Nam Odyssey, thế giới mở chung + thách đấu, và Thế giới online (tài khoản).

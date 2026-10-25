@@ -242,6 +242,21 @@
    "kind": "bucket",
    "x": 66,
    "y": 43
+  },
+  {
+   "kind": "haystack",
+   "x": 92,
+   "y": 96
+  },
+  {
+   "kind": "bucket",
+   "x": 69,
+   "y": 88
+  },
+  {
+   "kind": "log",
+   "x": 60,
+   "y": 30
   }
  ],
  "signs": [
@@ -275,6 +290,14 @@
    "text": [
     "BẾN PHÀ",
     "Phà ra Đảo Phú Quốc — hòn đảo lớn nhất Việt Nam."
+   ]
+  },
+  {
+   "x": 98,
+   "y": 72,
+   "text": [
+    "↗ Núi Sam · Núi Cấm",
+    "← Rừng tràm Trà Sư"
    ]
   }
  ],
@@ -338,6 +361,28 @@
    "y": 66,
    "lines": [
     "Biển Phú Quốc trong lắm, Pokémon biển ở đây hiền hơn trong đất liền."
+   ]
+  },
+  {
+   "id": "ag-monk-cam",
+   "name": "Sư cô Núi Cấm",
+   "sprite": "elder",
+   "x": 104,
+   "y": 30,
+   "lines": [
+    "Núi Cấm là ngọn núi cao nhất miền Tây, quanh năm mây phủ.",
+    "Pokémon hệ Đá trên Bảy Núi rất khỏe — mang theo Pokémon hệ Nước hoặc Cỏ nhé."
+   ]
+  },
+  {
+   "id": "ag-sugar-palm",
+   "name": "Cô Sáu đường thốt nốt",
+   "sprite": "villager",
+   "x": 76,
+   "y": 72,
+   "lines": [
+    "Cây thốt nốt cao vút, nước thốt nốt nấu thành đường thơm lừng!",
+    "Rừng tràm Trà Sư mùa nước nổi đẹp nhất — đi xuồng mới thấy hết."
    ]
   }
  ],
@@ -452,6 +497,80 @@
     },
     "exp": 600
    }
+  },
+  {
+   "id": "ag-rock-hiker",
+   "name": "Người leo Bảy Núi",
+   "sprite": "viking",
+   "x": 70,
+   "y": 40,
+   "team": [
+    [
+     "geodude",
+     13
+    ],
+    [
+     "machop",
+     14
+    ],
+    [
+     "sandshrew",
+     14
+    ]
+   ],
+   "challenge": [
+    "Leo núi xong còn sức đấu không?"
+   ],
+   "win": [
+    "Hay lắm, bạn leo núi giỏi thật."
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 2,
+     "superpotion": 1
+    },
+    "exp": 380
+   }
+  },
+  {
+   "id": "ag-wetland-girl",
+   "name": "Cô gái mùa nước nổi",
+   "sprite": "girl",
+   "x": 112,
+   "y": 76,
+   "team": [
+    [
+     "lotad",
+     11
+    ],
+    [
+     "marill",
+     12
+    ],
+    [
+     "psyduck",
+     12
+    ]
+   ],
+   "challenge": [
+    "Nước lên rồi, Pokémon của em vui lắm! Đấu nha!"
+   ],
+   "win": [
+    "Ui, thua rồi... nhưng vui ghê!"
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 2,
+     "potion": 2
+    },
+    "exp": 320
+   }
   }
  ],
  "rescue": {
@@ -504,6 +623,15 @@
    "items": {
     "moon-stone": 1,
     "superpotion": 2
+   }
+  },
+  {
+   "id": "chest-ag-forest",
+   "x": 56,
+   "y": 66,
+   "items": {
+    "greatball": 2,
+    "sitrus-berry": 1
    }
   }
  ],

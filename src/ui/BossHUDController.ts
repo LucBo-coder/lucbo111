@@ -3,6 +3,7 @@ import type { StatusKind } from '../core/types';
 import type { Unit, World } from '../core/world';
 import { LEGENDS } from '../core/legends';
 import { POKEMON } from '../core/data';
+import { DPR } from '../scenes/ui';
 
 // Boss HUD built from the Rayquaza UI pack (public/assets/ui/boss, prepared by scripts/prepare-boss-ui.py).
 // Everything shown is read from the live boss every frame: name, level, HP (dynamic bar + delayed damage trail),
@@ -126,10 +127,10 @@ export class BossHUDController {
   /** Lays the HUD out for the current screen size (top centre). */
   private layout(W: number): void {
     const [fw, fh] = HUD_SIZE[this.color];
-    this.k = Math.min(1, (Math.min(W - 24, 560)) / fw);
+    this.k = DPR * Math.min(1, (Math.min(W / DPR - 24, 560)) / fw);
     const k = this.k;
     // centred, nudged right of the party list on wide screens (never past the right edge)
-    this.root.setPosition(Math.min(W - 12 - fw * k, (W - fw * k) / 2 + (W > 1000 ? 40 : 0)), 8).setScale(k);
+    this.root.setPosition(Math.min(W - 12 * DPR - fw * k, (W - fw * k) / 2 + (W / DPR > 1000 ? 40 * DPR : 0)), 8 * DPR).setScale(k);
     this.frame.setTexture(key('hud_frame_' + this.color));
     const [bx, by, bw, bh] = HUD_BAR[this.color];
     this.fill.setPosition(bx, by); this.trail.setPosition(bx, by);

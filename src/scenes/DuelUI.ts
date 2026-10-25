@@ -7,7 +7,7 @@ import { saveStore } from '../systems/save';
 import { audio } from '../systems/audio';
 import { RULE_LABEL } from '../net/duel';
 import { CMD_LABEL, DuelScene } from './DuelScene';
-import { button, Button, COLORS, fmtTime, panel, text } from './ui';
+import { button, Button, COLORS, fmtTime, panel, text, uiScale } from './ui';
 
 // HUD of a duel: both parties (field / bench / fainted), the clock, orders, Mega, forfeit, result screen.
 
@@ -62,7 +62,7 @@ export class DuelUI extends Phaser.Scene {
 
   private build(): void {
     const { width: W, height: H } = this.scale;
-    const s = (this.s = Math.max(0.6, Math.min(W / 1280, H / 720, 1.4)));
+    const s = (this.s = uiScale(W, H, (w, h) => Math.max(0.6, Math.min(w / 1280, h / 720, 1.4))));
     this.g = this.add.graphics();
     const st = this.duel.start, guest = this.duel.role === 'guest';
     const me = guest ? st.guestName : st.hostName, opp = this.duel.role === 'practice' ? 'Máy (luyện tập)' : guest ? st.hostName : st.guestName;

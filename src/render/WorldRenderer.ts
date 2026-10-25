@@ -6,7 +6,7 @@ import { SKILLS } from '../core/data';
 import { avatarTextureKey } from '../core/avatars';
 import type { Unit, World, WorldEvent } from '../core/world';
 import { audio } from '../systems/audio';
-import { FONT } from '../scenes/ui';
+import { DPR, FONT } from '../scenes/ui';
 import { AnimName, creatureFootAnchor, sheetKey } from './animation';
 import { TYPE_PROJECTILE_TEX } from './pixelArt';
 import { moveAssets } from './moveAssets';
@@ -31,6 +31,9 @@ export interface UnitView {
   deco: Phaser.GameObjects.Image | null;
   /** Status icons shown above the unit (max 2, pooled per view) */
   sicons: Phaser.GameObjects.Image[];
+  /** name plate under the HP bar (wild / hostile Pokémon) and the text it shows */
+  label?: Phaser.GameObjects.Text;
+  labelStr?: string;
   /** PMD pack: facing direction row 0..7, time since the last turn, moving state with hysteresis */
   pdir?: number;
   pturn?: number;
@@ -56,6 +59,8 @@ export interface RendererHooks {
   decorate?(u: Unit, v: UnitView): void;
   /** Whether a unit should be drawn (adventure hides units in unloaded chunks) */
   visible?(u: Unit): boolean;
+  /** Name + level under opposing Pokémon: every one, or only notable ones (elite / alpha / shiny — survivor hordes) */
+  names?: 'all' | 'notable';
 }
 
 interface DmgText {
@@ -156,12 +161,12 @@ export class WorldRenderer {
       if (show) this.syncUnit(e);
       else {
         const v = this.views.get(e.id);
-        if (v) { v.body.setVisible(false); v.shadow.setVisible(false); v.deco?.setVisible(false); v.ring?.setVisible(false); v.sicons.forEach((i) => i.setVisible(false)); v.stamp = this.frameNo; }
+        if (v) { v.body.setVisible(false); v.shadow.setVisible(false); v.deco?.setVisible(false); v.ring?.setVisible(false); v.sicons.forEach((i) => i.setVisible(false)); v.label?.setVisible(false); v.stamp = this.frameNo; }
       }
     }
     for (const [id, v] of this.views) {
       if (v.stamp !== this.frameNo) {
-        v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy());
+        v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); v.label?.destroy();
         this.views.delete(id);
       }
     }
@@ -398,8 +403,28 @@ export class WorldRenderer {
       const bw = u.elite ? 40 : 30;
       bar(g, barX - bw / 2, barY, bw, 3, u.hp / u.maxHp, u.elite ? 0xffb020 : u.hostile ? 0xff4040 : 0xa0a0a0);
     }
+    this.nameplate(u, v, barX, barY + 7);
     this.hooks.decorate?.(u, v);
     return v;
+  }
+
+  /** "Rattata Lv5" under opposing Pokémon; sized for the camera zoom so it reads the same on phones and desktops. */
+  private nameplate(u: Unit, v: UnitView, x: number, y: number): void {
+    const mode = this.hooks.names;
+    const show = !!mode && u.team === 'enemy' && u.kind !== 'boss' && u.kind !== 'trainer' && !u.fainted && u.alive && v.body.visible
+      && (mode === 'all' || u.elite || u.alpha || u.shiny);
+    if (!show) { v.label?.setVisible(false); return; }
+    if (!v.label) {
+      const zoom = this.scene.cameras.main.zoom || 1;
+      v.label = this.scene.add.text(0, 0, '', { fontFamily: FONT, fontSize: `${Math.round((13 * DPR) / zoom)}px`, color: '#ffffff', stroke: '#000000', strokeThickness: Math.max(3, Math.round((4 * DPR) / zoom)), resolution: Math.max(1, zoom) })
+        .setOrigin(0.5, 0);
+    }
+    const str = `${u.alpha ? 'α ' : u.elite ? '★ ' : ''}${u.name} Lv${u.level}${u.shiny ? ' ✦' : ''}`;
+    if (v.labelStr !== str) {
+      v.labelStr = str;
+      v.label.setText(str).setColor(u.alpha ? '#ff90ff' : u.elite ? '#ffd060' : u.shiny ? '#fff0a0' : u.hostile ? '#ffb0a0' : '#f0f4ff');
+    }
+    v.label.setVisible(true).setPosition(Math.round(x), Math.round(y)).setDepth(9001);
   }
 
   private drawZones(): void {
@@ -555,7 +580,7 @@ export class WorldRenderer {
 
   /** Drops every view (used when swapping World instances, e.g. entering a dungeon). */
   reset(world: World): void {
-    for (const v of this.views.values()) { v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); }
+    for (const v of this.views.values()) { v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); v.label?.destroy(); }
     this.views.clear();
     this.projImgs.forEach((p) => p?.destroy());
     this.gemImgs.forEach((p) => p?.destroy());

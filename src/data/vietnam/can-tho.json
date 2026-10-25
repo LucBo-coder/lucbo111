@@ -31,13 +31,14 @@
   { "id": "ct-station", "name": "Trạm vườn cò", "x": 26, "y": 20, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1 }
  ],
  "fences": [],
- "props": [{ "kind": "haystack", "x": 44, "y": 50 }, { "kind": "haystack", "x": 14, "y": 46 }, { "kind": "bucket", "x": 42, "y": 98 }, { "kind": "log", "x": 112, "y": 98 }],
+ "props": [{ "kind": "haystack", "x": 44, "y": 50 }, { "kind": "haystack", "x": 14, "y": 46 }, { "kind": "bucket", "x": 42, "y": 98 }, { "kind": "log", "x": 112, "y": 98 }, { "kind": "haystack", "x": 20, "y": 66 }, { "kind": "bucket", "x": 86, "y": 74 }, { "kind": "log", "x": 26, "y": 82 }],
  "signs": [
   { "x": 86, "y": 70, "text": ["BẾN NINH KIỀU — CẦN THƠ", "Bến nằm nơi sông Cần Thơ đổ ra sông Hậu. Phía bắc: bờ sông Hậu · Phía đông nam: Chợ nổi Cái Răng · Phía tây nam: miệt vườn · Phía tây: đồng lúa, đường về An Giang."] },
   { "x": 92, "y": 44, "text": ["SÔNG HẬU", "Nhánh lớn của sông Mê Kông. Phía xa là Cầu Cần Thơ bắc qua sông Hậu, khánh thành năm 2010.", "Đò ra Cồn Sơn ở bến phía trước. (Chúa Sông Hậu trong game là sinh vật giả tưởng.)"] },
   { "x": 112, "y": 86, "text": ["CHỢ NỔI CÁI RĂNG", "Chợ họp trên sông từ tờ mờ sáng. Mỗi ghe treo hàng mẫu lên cây bẹo để người mua biết ghe bán gì."] },
   { "x": 38, "y": 90, "text": ["MIỆT VƯỜN PHONG ĐIỀN", "Vườn cây trái ven kênh rạch của Cần Thơ."] },
-  { "x": 24, "y": 26, "text": ["VƯỜN CÒ BẰNG LĂNG", "Vườn cò ở Thốt Nốt, nơi đàn cò về trú ngụ. Xin giữ yên lặng!"] }
+  { "x": 24, "y": 26, "text": ["VƯỜN CÒ BẰNG LĂNG", "Vườn cò ở Thốt Nốt, nơi đàn cò về trú ngụ. Xin giữ yên lặng!"] },
+  { "x": 34, "y": 60, "text": ["↑ Vườn cò Bằng Lăng", "↓ Miệt vườn Phong Điền · → Bến Ninh Kiều"] }
  ],
  "npcs": [
   { "id": "ct-guide", "name": "Hướng dẫn viên Ngọc", "sprite": "girl", "x": 84, "y": 69, "lines": ["Chào mừng tới Cần Thơ — thành phố bên dòng sông Hậu!", "Chợ nổi, miệt vườn, vườn cò đều là nơi có thật. Chúa Sông Hậu và cổ vật trong game là giả tưởng."] },
@@ -46,19 +47,24 @@
   { "id": "ct-boatwoman", "name": "Cô Út chèo đò", "sprite": "farmer", "x": 94, "y": 46, "lines": ["Chở khách qua sông Hậu mấy chục năm, chưa thấy sóng nào dữ như dạo này."] },
   { "id": "ct-merchant", "name": "Chủ ghe Tư Hiền", "sprite": "elder", "x": 118, "y": 88, "lines": ["Ghe tôi bán khóm — thấy trái khóm treo trên cây bẹo đó không?"] },
   { "id": "ct-ranger", "name": "Cán bộ vườn cò Lâm", "sprite": "ranger", "x": 22, "y": 24, "lines": ["Mùa này cò về đông lắm. Pokémon chim cũng tới làm tổ."] },
-  { "id": "ct-gardener", "name": "Ông Sáu nhà vườn", "sprite": "farmer", "x": 36, "y": 96, "lines": ["Vườn tui có đủ thứ trái. Pokémon cũng mê trái cây lắm đó."] }
+  { "id": "ct-gardener", "name": "Ông Sáu nhà vườn", "sprite": "farmer", "x": 37, "y": 96, "lines": ["Vườn tui có đủ thứ trái. Pokémon cũng mê trái cây lắm đó."] },
+  { "id": "ct-orchard-owner", "name": "Chú Tám chủ vườn", "sprite": "farmer", "x": 40, "y": 86, "lines": ["Miệt vườn Phong Điền mùa này trái chín đầy cây — dâu, chôm chôm, sầu riêng!", "Pokémon hệ Bọ hay phá vườn lắm, con giúp chú với nha."] },
+  { "id": "ct-ferry-girl", "name": "Cô lái đò Ninh Kiều", "sprite": "girl", "x": 74, "y": 70, "lines": ["Bến Ninh Kiều về đêm đèn sáng rực cả bờ sông Hậu.", "Chợ nổi Cái Răng họp từ tờ mờ sáng, ghe nào bán gì thì treo lên cây bẹo."] }
  ],
  "trainers": [
   { "id": "ct-vendor", "name": "Tiểu thương Hạnh", "sprite": "girl", "x": 114, "y": 94, "team": [["lombre", 19], ["quagsire", 20], ["pelipper", 21]], "challenge": ["Muốn hỏi chuyện sông nước hả? Thắng tôi trước đã!"], "win": ["Được rồi, tôi kể: đêm nào cũng có bóng cá khổng lồ quanh Cồn Sơn."], "lose": ["Về luyện thêm rồi ghé chợ nghen!"], "rewards": { "items": { "mystic-water": 1, "superpotion": 2 }, "exp": 800 } },
   { "id": "ct-farmer", "name": "Nông dân Tư", "sprite": "farmer", "x": 26, "y": 86, "team": [["sunflora", 19], ["breloom", 20], ["tropius", 21]], "challenge": ["Trái chín rồi, đấu một trận rồi ăn trái!"], "win": ["Thua mà vui. Lấy trái về ăn đi!"], "lose": ["Vườn tui mạnh nhứt xứ!"], "rewards": { "items": { "sitrus-berry": 1, "greatball": 3 }, "exp": 760 } },
   { "id": "ct-birder", "name": "Nhà điểu học Thảo", "sprite": "youngster", "x": 14, "y": 12, "team": [["staravia", 21], ["noctowl", 21], ["swellow", 22]], "challenge": ["Suỵt... đấu nhỏ tiếng thôi, kẻo cò bay mất!"], "win": ["Bạn quan sát còn giỏi hơn tôi."], "lose": ["Chim trời không dễ bắt đâu!"], "rewards": { "items": { "sharp-beak": 1, "ultraball": 1 }, "exp": 860 } },
-  { "id": "ct-student", "name": "Sinh viên Tâm", "sprite": "wizard", "x": 58, "y": 62, "team": [["kadabra", 21], ["magneton", 21], ["porygon", 22]], "challenge": ["Em đang làm đề tài về Pokémon miền Tây. Cho em xin một trận làm dữ liệu!"], "win": ["Dữ liệu này đủ viết cả luận văn!"], "lose": ["Kết quả thí nghiệm: em thắng!"], "rewards": { "items": { "wise-glasses": 1, "greatball": 3 }, "exp": 860 } }
+  { "id": "ct-student", "name": "Sinh viên Tâm", "sprite": "wizard", "x": 58, "y": 62, "team": [["kadabra", 21], ["magneton", 21], ["porygon", 22]], "challenge": ["Em đang làm đề tài về Pokémon miền Tây. Cho em xin một trận làm dữ liệu!"], "win": ["Dữ liệu này đủ viết cả luận văn!"], "lose": ["Kết quả thí nghiệm: em thắng!"], "rewards": { "items": { "wise-glasses": 1, "greatball": 3 }, "exp": 860 } },
+  { "id": "ct-rice-farmer", "name": "Anh nông dân Thới Lai", "sprite": "farmer", "x": 40, "y": 46, "team": [["bellsprout", 18], ["pidgeotto", 19], ["farfetchd", 19]], "challenge": ["Lúa sắp gặt rồi, đấu một trận ăn mừng nào!"], "win": ["Năm nay được mùa, thua cũng vui!"], "lose": ["Về hồi phục rồi quay lại đấu tiếp nhé!"], "rewards": { "items": { "greatball": 3, "superpotion": 1 }, "exp": 520 } },
+  { "id": "ct-market-boy", "name": "Cậu bé chợ nổi", "sprite": "youngster", "x": 118, "y": 96, "team": [["lombre", 20], ["quagsire", 21], ["raticate", 20]], "challenge": ["Em bán trái cây trên ghe nè, đấu xong mua giùm em nha!"], "win": ["Anh/chị mạnh quá, tặng anh/chị trái cây nè!"], "lose": ["Về hồi phục rồi quay lại đấu tiếp nhé!"], "rewards": { "items": { "greatball": 3, "sitrus-berry": 2 }, "exp": 600 } }
  ],
  "rescue": { "id": "ct-stork-ducklett", "x": 42, "y": 10, "species": "ducklett", "level": 19, "guards": [["ekans", 19], ["ekans", 19], ["arbok", 22]], "quest": "vn-ct-rescue", "reporter": "Cán bộ vườn cò Lâm" },
  "chests": [
   { "id": "chest-ct-island", "x": 110, "y": 8, "items": { "ultraball": 2, "sitrus-berry": 1 } },
   { "id": "chest-ct-stork", "x": 50, "y": 6, "items": { "leaf-stone": 1, "greatball": 3 } },
-  { "id": "chest-ct-garden", "x": 12, "y": 92, "items": { "superpotion": 2, "rocky-helmet": 1 } }
+  { "id": "chest-ct-garden", "x": 12, "y": 92, "items": { "superpotion": 2, "rocky-helmet": 1 } },
+  { "id": "chest-ct-fields", "x": 60, "y": 40, "items": { "greatball": 3, "miracle-seed": 1 } }
  ],
  "waypoints": [
   { "id": "wp-can-tho-center", "name": "Trung tâm Pokémon Ninh Kiều", "x": 81, "y": 65 },
