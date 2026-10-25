@@ -16,20 +16,20 @@ export class OnlineHubScene extends Phaser.Scene {
 
   create(): void {
     this.busy = false; this.leaving = false;
-    this.cameras.main.setBackgroundColor('#152b31');
-    this.root = document.createElement('div'); this.root.className = 'online-hub';
+    this.cameras.main.setBackgroundColor('#14161f');
+    this.root = document.createElement('div'); this.root.className = 'online-hub ol-root';
     this.root.innerHTML = `<main>
-      <header><div><p>Pokémon Survivor · Chơi cùng bạn</p><h1>Sảnh Online</h1></div><button data-back>Về sảnh chính</button></header>
-      <p data-status role="status">Chọn hành trình, tạo phòng rồi gửi mã 6 ký tự cho bạn.</p>
-      <div class="online-options"><label>Ô lưu cho co-op<select data-slot></select></label>
-      <label>Pokémon khởi đầu<select data-starter><option value="charmander">Charmander</option><option value="bulbasaur">Bulbasaur</option><option value="squirtle">Squirtle</option></select></label></div>
+      <header class="ol-topbar"><button class="ol-btn ol-btn-back" data-back>◀ Quay lại</button><h1 class="ol-title">CHƠI ONLINE</h1><span></span></header>
+      <section class="ol-panel online-intro"><p data-status role="status">Chọn hành trình, tạo phòng rồi gửi mã 6 ký tự cho bạn.</p>
+        <div class="online-options"><label>Ô lưu cho co-op<select data-slot></select></label>
+        <label>Pokémon khởi đầu<select data-starter><option value="charmander">Charmander</option><option value="bulbasaur">Bulbasaur</option><option value="squirtle">Squirtle</option></select></label></div></section>
       <section class="online-modes" aria-label="Chọn mode online">
-        <article><span>01 · Sinh tồn</span><h2>Sống sót cùng nhau</h2><p>Hai người cùng chiến đấu, cứu đồng đội và vượt các đợt quái trong lượt sinh tồn.</p><button data-host="survivor">Tạo phòng Sinh tồn</button></article>
-        <article><span>02 · Phiêu lưu</span><h2>Khám phá sáu vùng đất</h2><p>Tiếp tục ô lưu Phiêu lưu, cùng săn boss, vào hầm ngục và chia chiến lợi phẩm.</p><button data-host="classic">Tạo phòng Phiêu lưu</button></article>
-        <article><span>03 · Việt Nam Odyssey</span><h2>Hẹn nhau ở Đất Mũi</h2><p>Hành trình Cà Mau, An Giang, Cần Thơ cùng bạn. Nhiệm vụ theo tiến trình chủ phòng.</p><button data-host="vietnam">Tạo phòng Việt Nam</button></article>
+        <article class="ol-panel mode-survivor"><span>01 · Co-op</span><h2 class="ol-title">SINH TỒN</h2><p>Hai người cùng chiến đấu, cứu đồng đội và vượt các đợt quái trong lượt sinh tồn.</p><button class="ol-btn ol-btn-orange" data-host="survivor">Tạo phòng Sinh tồn</button></article>
+        <article class="ol-panel mode-adventure"><span>02 · Co-op</span><h2 class="ol-title">PHIÊU LƯU</h2><p>Tiếp tục ô lưu Phiêu lưu, cùng săn boss, vào hầm ngục và chia chiến lợi phẩm.</p><button class="ol-btn ol-btn-blue" data-host="classic">Tạo phòng Phiêu lưu</button></article>
+        <article class="ol-panel mode-vietnam"><span>03 · Co-op</span><h2 class="ol-title">VIỆT NAM ODYSSEY</h2><p>Hành trình Cà Mau, An Giang, Cần Thơ cùng bạn. Nhiệm vụ theo tiến trình chủ phòng.</p><button class="ol-btn ol-btn-red" data-host="vietnam">Tạo phòng Việt Nam</button></article>
       </section>
-      <section class="online-join"><div><h2>Đã có mã phòng co-op?</h2><p>Chọn ô lưu để mang đội Pokémon của bạn. Ô trống được mượn Pokémon khởi đầu.</p></div><form data-join><label>Mã phòng<input name="code" aria-label="Mã phòng co-op" pattern="[A-Za-z0-9]{6}" minlength="6" maxlength="6" required autocomplete="off"></label><button>Vào phòng co-op</button></form></section>
-      <footer><button data-pvp>Đấu PvP online</button><button data-server>Thế giới online · tài khoản</button><p>Co-op: 2 người/phòng · Thử thách chung có thưởng · Chủ phòng giữ kết nối khi chơi.</p></footer>
+      <section class="ol-panel online-join"><div><h2>Đã có mã phòng co-op?</h2><p>Chọn ô lưu để mang đội Pokémon của bạn. Ô trống được mượn Pokémon khởi đầu.</p></div><form data-join><label>Mã phòng<input name="code" aria-label="Mã phòng co-op" pattern="[A-Za-z0-9]{6}" minlength="6" maxlength="6" required autocomplete="off"></label><button class="ol-btn ol-btn-green">Vào phòng co-op</button></form></section>
+      <footer class="online-links"><button class="ol-btn ol-btn-blue" data-pvp>⚔ Đấu PvP online</button><button class="ol-btn ol-btn-teal" data-server>🌐 Thế giới online · tài khoản</button><p>Co-op: 2 người/phòng · Thử thách chung có thưởng · Chủ phòng giữ kết nối khi chơi.</p></footer>
     </main>`;
     document.body.append(this.root);
     void this.fillSlots();

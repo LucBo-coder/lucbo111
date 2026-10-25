@@ -1,32 +1,48 @@
-.server-world { position: fixed; inset: 0; pointer-events: none; z-index: 10; color: #f2f4ff; font: 19px 'VT323', monospace; }
-.server-world .server-panel { pointer-events: auto; position: absolute; top: 12px; left: 12px; width: min(330px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; box-sizing: border-box; padding: 16px; background: #1e2230f5; border: 3px solid #63769e; box-shadow: 4px 4px #080c16; }
-.server-world header { display: flex; align-items: center; gap: 12px; justify-content: space-between; position: sticky; top: -16px; background: #1e2230; padding: 8px 0; z-index: 1; }
-.server-world h1 { color: #ffda65; font-size: 27px; margin: 0; }
+@import './onlineTheme.css';
+.server-world { position: fixed; inset: 0; pointer-events: none; z-index: 10; color: var(--ol-text); font: 19px var(--ol-font); }
+.server-world .server-panel { pointer-events: auto; position: absolute; top: 12px; left: 12px; width: min(340px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; padding: 0 16px 16px; }
+.server-world header { display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 1; margin: 0 -16px 4px; padding: 10px 16px; background: var(--ol-panel-top); border-bottom: 1px solid var(--ol-edge); }
+.server-world header .ol-title { font-size: 28px; flex: 1; text-align: right; }
+.server-world header .ol-btn { font-size: 17px; min-height: 34px; padding: 3px 10px; }
 .server-world p { margin: 10px 0; white-space: pre-line; line-height: 1.25; }
-.server-world label { display: block; margin: 10px 0; }
-.server-world input, .server-world select { display: block; box-sizing: border-box; width: 100%; min-width: 0; padding: 9px; color: #fff; background: #111725; border: 1px solid #63769e; font: inherit; }
-.server-world button { min-height: 38px; padding: 6px 10px; background: #2c3654; border: 2px solid #63769e; color: #fff; cursor: pointer; font: inherit; }
-.server-world button:hover, .server-world button:focus-visible { border-color: #ffda65; }
-.server-world :focus-visible { outline: 2px solid #ffda65; outline-offset: 2px; }
+.server-world label { display: block; margin: 10px 0; color: var(--ol-dim); }
+.server-world input, .server-world select { display: block; width: 100%; min-width: 0; margin-top: 3px; }
+.server-world button:not(.ol-btn) { min-height: 36px; padding: 5px 10px; font: inherit; color: #fff; cursor: pointer;
+  background: linear-gradient(#36416a, #1f2740); border: 2px solid var(--ol-edge-hi); outline: 1px solid #05060a; box-shadow: inset 0 1px rgba(255, 255, 255, .22), 2px 3px rgba(0, 0, 0, .4); }
+.server-world button:not(.ol-btn):hover, .server-world button:not(.ol-btn):focus-visible { border-color: var(--ol-gold); }
+.server-world button:not(.ol-btn):disabled { opacity: .5; cursor: not-allowed; }
 .server-world .server-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.server-world .server-row input { flex: 1; width: 150px; }
-.server-world details { margin: 12px 0; border-top: 1px solid #63769e; padding-top: 10px; }
-.server-world summary { cursor: pointer; color: #ffda65; }
-.server-world .server-help { color: #bdc9e5; }
+.server-world .server-row input { flex: 1; width: 150px; margin-top: 0; }
+.server-world details { margin: 12px 0; border-top: 1px solid var(--ol-edge); padding-top: 10px; }
+.server-world summary { cursor: pointer; color: var(--ol-gold); }
+.server-world .server-help { color: var(--ol-dim); }
 .server-world .server-pokemon { padding-bottom: 10px; }
 .server-world .server-pokemon button { margin: 2px; }
 .server-world [data-chat] { max-height: 130px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: 10px 0; }
-.server-world [data-status] { color: #b7e2c4; }
-.server-world [hidden] { display: none !important; }
+.server-world [data-status] { color: var(--ol-ok); }
+.server-world [data-logout] { width: 100%; }
 @media (max-width: 650px) { .server-world .server-panel:has([data-auth][hidden]) { top: auto; bottom: 8px; left: 8px; width: calc(100vw - 16px); max-height: 38dvh; } }
-.server-world .server-card { margin: 10px 0; padding: 10px; background: #141a2a; border: 2px solid #63769e; }
+
+/* Login / register: full-screen backdrop, the card centered on the page */
+.server-world:has([data-auth]:not([hidden])) { pointer-events: auto; overflow: auto; display: grid; place-items: center; padding: 16px; box-sizing: border-box;
+  background: radial-gradient(ellipse at 50% -10%, #263052 0%, var(--ol-bg) 60%); }
+.server-world .server-panel:has([data-auth]:not([hidden])) { position: relative; top: auto; left: auto; width: min(440px, 100%); max-height: none; overflow: visible; padding: 0 22px 20px; }
+.server-world .server-panel:has([data-auth]:not([hidden])) header { position: static; margin: 0 -22px 8px; padding: 12px 22px; }
+.server-world .server-panel:has([data-auth]:not([hidden])) header .ol-title { font-size: 32px; }
+.server-world .server-panel:has([data-auth]:not([hidden])) > [data-status] { text-align: center; }
+.server-world [data-auth] .server-auth-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.server-world [data-auth] .server-auth-actions .ol-btn { width: 100%; }
+.server-world [data-auth] > p { color: var(--ol-dim); font-size: 17px; text-align: center; }
+
+.server-world .server-card { margin: 10px 0; padding: 10px; background: var(--ol-field); border: 2px solid var(--ol-edge-hi); }
 .server-world .server-card select, .server-world .server-card input { margin: 6px 0; }
-.server-world .server-incoming { border-color: #ffda65; color: #ffe9a8; white-space: pre-line; }
-.server-world .server-bar { height: 10px; background: #111725; border: 1px solid #63769e; }
-.server-world .server-bar i { display: block; height: 100%; width: 0; background: #ffda65; transition: width .3s; }
-.server-world [data-chat-form] select { width: auto; flex: 0 0 auto; }
-.server-world .server-pc { pointer-events: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(820px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); overflow: auto; box-sizing: border-box; padding: 14px; background: #1e2230fa; border: 3px solid #80e0ff; box-shadow: 4px 4px #080c16; z-index: 2; outline: none; }
-.server-world .server-pc header { position: static; padding: 0 0 8px; }
+.server-world .server-incoming { border-color: var(--ol-gold); color: #ffe9a8; white-space: pre-line; }
+.server-world .server-bar { height: 10px; background: var(--ol-field); border: 1px solid var(--ol-edge-hi); }
+.server-world .server-bar i { display: block; height: 100%; width: 0; background: var(--ol-gold); transition: width .3s; }
+.server-world [data-chat-form] select { width: auto; flex: 0 0 auto; margin-top: 0; }
+.server-world .server-pc { pointer-events: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(820px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); overflow: auto; box-sizing: border-box; padding: 14px; border-color: #4ab0e0; z-index: 2; }
+.server-world .server-pc:focus { outline: 1px solid #05060a; }
+.server-world .server-pc header { position: static; margin: 0 0 8px; padding: 0 0 8px; background: none; }
 .server-world .server-pc h2 { margin: 0; color: #80e0ff; font-size: 26px; }
 .server-world .server-pc h3 { margin: 6px 0; color: #ffda65; }
 .server-world .server-pc-tools input, .server-world .server-pc-tools select { flex: 1 1 130px; width: auto; }
@@ -51,3 +67,4 @@
   .server-world .server-pc-party { flex-direction: row; flex-wrap: wrap; }
   .server-world .server-pc-party .server-pc-cell { width: 52px; }
 }
+@media (max-width: 420px) { .server-world .server-panel:has([data-auth]:not([hidden])) header .ol-title { font-size: 25px; } }

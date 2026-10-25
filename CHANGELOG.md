@@ -19,6 +19,7 @@
 - **Máy PC trong bản đồ online**: đứng trước cửa Trung tâm Pokémon / phòng thí nghiệm, bấm E. Hộp thoại PC kiểu GBA: 16 box × 30 ô, đổi box bằng nút / lăn chuột / `[` `]`, tìm, lọc (khóa / Shiny / hệ), sắp xếp, chi tiết (IV, EV, chiêu, tính cách, đặc tính, vật phẩm), rút / gửi, khóa ★, biệt danh, di chuyển ô / box, đổi tên box; điều khiển bằng phím. Server từ chối thao tác PC ở xa máy PC (`NOT_AT_PC`).
 - **Ba vùng online + cổng**: An Giang và Cần Thơ bật mặc định, Alpha riêng từng vùng; đổi vùng chỉ khi đứng ở cổng (`travel`), cổng huy hiệu mở khi đội đạt Lv12 / Lv16; `enter` không còn dịch chuyển sang vùng khác.
 - **Khôi phục tài khoản**: mã khôi phục một lần khi đăng ký (chỉ lưu bản băm), *Quên mật khẩu?* đặt lại mật khẩu + thu hồi mọi phiên + cấp mã mới; đổi mật khẩu, tạo mã mới, đăng xuất mọi thiết bị (migration `003_account_recovery.sql`).
+- **Giao diện online đồng nhất**: Sảnh online, đăng nhập Thế giới online, bảng điều khiển trong thế giới và máy PC dùng chung một theme (`onlineTheme.css`) theo bảng màu, khung và nút của game; thanh trên cùng ◀ Quay lại + tiêu đề vàng giống sảnh PvP; khung đăng nhập nằm giữa màn hình (cả điện thoại).
 - Cửa hàng: Poké Ball trở lại vị trí #1, kẹo EXP xếp sau thuốc hồi phục.
 - Sửa: đám đông Pokémon hoang dã không còn đẩy nhau xuống nước / vào tường (đẩy tách nhóm tôn trọng địa hình).
 - E2E cập nhật theo quy tắc một Pokémon ra trận (gọi ra / thu hồi / đổi, Mega, boss).

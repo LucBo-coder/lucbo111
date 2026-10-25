@@ -1,22 +1,26 @@
-.online-hub { position: fixed; inset: 0; overflow: auto; z-index: 10; color: #eaf0fa; background: #152b31; font: 18px 'VT323', monospace; line-height: 1.4; }
-.online-hub main { max-width: 1120px; margin: 0 auto; padding: 30px 24px; }
-.online-hub header, .online-hub footer, .online-options, .online-join, .online-join form { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
-.online-hub h1 { font-size: 48px; color: #ffda65; margin: 0; }
-.online-hub h2 { font-size: 27px; margin: 10px 0; }
-.online-hub p { color: #bdcddd; margin: 8px 0; max-width: 65ch; }
-.online-hub button { font: inherit; color: #fff; background: #305767; border: 2px solid #7ba4ac; padding: 10px 16px; min-height: 44px; cursor: pointer; }
-.online-hub button:hover { border-color: #ffda65; }
-.online-hub button:disabled { opacity: .5; cursor: wait; }
-.online-hub :focus-visible { outline: 3px solid #ffda65; outline-offset: 3px; }
-.online-hub label { display: grid; gap: 6px; }
-.online-hub select, .online-hub input { background: #102027; color: #fff; border: 1px solid #7ba4ac; font: inherit; padding: 10px; max-width: 100%; box-sizing: border-box; }
-.online-options { justify-content: flex-start; margin: 24px 0; }
+@import './onlineTheme.css';
+.online-hub { position: fixed; inset: 0; overflow: auto; z-index: 10; color: var(--ol-text); font: 19px var(--ol-font); line-height: 1.3;
+  background: radial-gradient(ellipse at 50% -10%, #263052 0%, var(--ol-bg) 60%); }
+.online-hub main { max-width: 1080px; margin: 0 auto; padding: 18px 16px 28px; display: flex; flex-direction: column; gap: 18px; }
+.online-hub h2 { font-size: 28px; font-weight: normal; margin: 4px 0; color: #fff; text-shadow: 2px 2px #0b0c12; }
+.online-hub p { color: #c8d4f0; margin: 6px 0; }
+.online-hub label { display: grid; gap: 4px; color: var(--ol-dim); }
+.online-intro { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; }
+.online-intro [data-status] { flex: 1 1 320px; color: var(--ol-ok); min-height: 26px; margin: 0; align-self: center; }
+.online-options { display: flex; flex-wrap: wrap; gap: 12px; }
 .online-modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.online-modes article { padding: 22px; border: 2px solid #65837c; background: #243c3c; display: flex; flex-direction: column; }
-.online-modes article:nth-child(2) { border-color: #668eaa; background: #223944; }
-.online-modes article:nth-child(3) { border-color: #b29454; background: #44382b; }
-.online-modes span { color: #ffda65; }
-.online-modes p { flex: 1; margin-bottom: 24px; }
-.online-join { border-block: 1px solid #58747e; padding: 22px 0; margin: 26px 0; }
-.online-hub [data-status] { color: #c7ead5; min-height: 26px; }
-@media(max-width: 700px) { .online-modes { grid-template-columns: 1fr; } .online-hub main { padding: 18px 16px; } .online-hub h1 { font-size: 38px; } .online-options label { width: 100%; } }
+.online-modes article { padding: 18px; display: flex; flex-direction: column; text-align: center; }
+.online-modes article .ol-title { font-size: 30px; margin: 2px 0 6px; }
+.online-modes article span { color: var(--ol-dim); font-size: 17px; }
+.online-modes article p { flex: 1; margin: 8px 0 16px; }
+.online-modes .mode-survivor { border-color: #e0603a; background: linear-gradient(#5a2a20, #1c0f12); }
+.online-modes .mode-adventure { border-color: #4ab0e0; background: linear-gradient(#20405a, #0d1420); }
+.online-modes .mode-vietnam { border-color: #e0b030; background: linear-gradient(#4a3818, #18120a); }
+.online-modes .mode-vietnam .ol-title { color: #ffe680; }
+.online-join { padding: 16px 18px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; }
+.online-join > div { flex: 1 1 320px; }
+.online-join form { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+.online-join input { width: 9em; text-transform: uppercase; letter-spacing: 3px; font-size: 22px; }
+.online-links { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; text-align: center; }
+.online-links p { flex-basis: 100%; color: var(--ol-dim); font-size: 17px; }
+@media (max-width: 760px) { .online-modes { grid-template-columns: 1fr; } .online-links .ol-btn { flex: 1 1 100%; } }

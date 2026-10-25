@@ -83,17 +83,17 @@ export class ServerScene extends Phaser.Scene {
     this.nearby = null; this.nearbyKey = ''; this.nearAt = 0;
     this.cameras.main.setBackgroundColor('#16382e');
     this.root = document.createElement('div');
-    this.root.className = 'server-world';
+    this.root.className = 'server-world ol-root';
     this.root.innerHTML = `
-      <section class="server-panel" aria-label="Thế giới online">
-        <header><h1>Thế giới online</h1><button data-exit>Về sảnh</button></header>
+      <section class="server-panel ol-panel" aria-label="Thế giới online">
+        <header><button class="ol-btn ol-btn-back" data-exit>◀ Quay lại</button><h1 class="ol-title">THẾ GIỚI ONLINE</h1></header>
         <p data-status role="status">Cà Mau · Cùng khám phá, cùng săn Alpha</p>
         <form data-auth>
           <label>Máy chủ<input name="endpoint" aria-label="Máy chủ" required></label>
           <label>Tên đăng nhập<input name="username" aria-label="Tên đăng nhập" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" minlength="3" maxlength="20" required></label>
           <label>Mật khẩu<input name="password" aria-label="Mật khẩu" type="password" autocomplete="current-password" minlength="6" maxlength="128" required></label>
           <label>Pokémon khởi đầu<select name="starter"><option value="charmander">Charmander</option><option value="squirtle">Squirtle</option><option value="bulbasaur">Bulbasaur</option><option value="pikachu">Pikachu</option><option value="eevee">Eevee</option></select></label>
-          <div class="server-row"><button type="submit" value="login">Đăng nhập</button><button type="submit" value="register">Tạo tài khoản</button></div>
+          <div class="server-auth-actions"><button class="ol-btn ol-btn-green" type="submit" value="login">Đăng nhập</button><button class="ol-btn ol-btn-blue" type="submit" value="register">Tạo tài khoản</button></div>
           <p>Nhân vật online được lưu trên máy chủ. Dùng cùng địa chỉ máy chủ với bạn bè.</p>
           <details data-recover-box><summary>Quên mật khẩu?</summary>
             <label>Mã khôi phục<input name="code" aria-label="Mã khôi phục" autocomplete="off" maxlength="40"></label>

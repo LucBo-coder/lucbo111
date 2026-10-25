@@ -51,7 +51,7 @@ export class ServerPc {
   private renaming: 'box' | 'pokemon' | null = null;
 
   constructor(host: HTMLElement, private deps: PcDeps) {
-    this.root = el('div', { className: 'server-pc', role: 'dialog', 'aria-label': 'Máy PC Pokémon', tabIndex: -1 });
+    this.root = el('div', { className: 'server-pc ol-panel', role: 'dialog', 'aria-label': 'Máy PC Pokémon', tabIndex: -1 });
     this.root.hidden = true;
     this.root.addEventListener('keydown', (e) => this.key(e));
     host.append(this.root);

@@ -142,7 +142,7 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
     await a.getByText('Đội Pokémon & PC', { exact: true }).click();
     await expect(a.locator('[data-roster]')).toContainText('charmander · Lv6');
     await expect(a.locator('[data-roster]')).toContainText('pidgey · Lv4 · Đội');
-    await a.getByRole('button', { name: 'Về sảnh', exact: true }).click();
+    await a.getByRole('button', { name: '◀ Quay lại', exact: true }).click();
     await expect(a.locator('.server-world')).toHaveCount(0);
     await expect.poll(() => b.evaluate(() => (window as any).__phaser.scene.getScene('ServerWorld').remotes.size)).toBe(0);
     const after = await a.evaluate(() => { const copy = { ...localStorage }; delete copy['survivor.server.endpoint']; return JSON.stringify(copy); });

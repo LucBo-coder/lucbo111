@@ -48,6 +48,8 @@ test('online duel: room code, teams, host simulation mirrored on the guest, gues
   expect(await ev(host, `window.__duel.world.rival.allies.map(u => u.defId)`)).toEqual(['sceptile', 'blaziken', 'swampert']);
 
   // after the countdown both sides really fight and the guest sees the host's numbers
+  // the host runs the simulation: keep its tab in front (a background tab's game loop is throttled)
+  await host.bringToFront();
   await host.waitForFunction(() => (window as Win).__duel.world.allies.some((u: Win) => u.hp < u.maxHp) && (window as Win).__duel.world.rival.allies.some((u: Win) => u.hp < u.maxHp), undefined, { timeout: 30_000 });
   await guest.waitForTimeout(400);
   const hpHost = await ev<number[]>(host, `window.__duel.world.rival.allies.map(u => u.hp)`);

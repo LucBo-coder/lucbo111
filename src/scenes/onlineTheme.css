@@ -1,0 +1,71 @@
+/* Shared look of the online screens (hub, server login, in-world panel, PC). Mirrors the Phaser UI in ui.ts:
+   COLORS palette, beveled gradient panels with a dark outline + drop shadow, beveled buttons with a gold hover edge. */
+:root {
+  --ol-bg: #14161f;
+  --ol-panel-top: #2a2f42;
+  --ol-panel-bot: #0f1220;
+  --ol-edge: #3a4260;
+  --ol-edge-hi: #63769e;
+  --ol-field: #111725;
+  --ol-text: #f2f4ff;
+  --ol-dim: #9aa3c0;
+  --ol-gold: #ffe080;
+  --ol-ok: #b7e2c4;
+  --ol-font: 'VT323', monospace;
+}
+
+.ol-panel {
+  position: relative; box-sizing: border-box;
+  background: linear-gradient(var(--ol-panel-top), var(--ol-panel-bot));
+  border: 3px solid var(--ol-edge);
+  outline: 1px solid #05060a;
+  box-shadow: inset 0 1px rgba(255, 255, 255, .16), inset 0 -1px rgba(0, 0, 0, .35), 5px 6px rgba(0, 0, 0, .4);
+}
+
+.ol-btn {
+  --c: #2c3654; --hi: #4b5a85;
+  font: inherit; font-size: 20px; color: #fff; cursor: pointer;
+  min-height: 42px; padding: 6px 14px;
+  background: linear-gradient(color-mix(in srgb, var(--c), #fff 12%), color-mix(in srgb, var(--c), #000 22%));
+  border: 2px solid var(--hi);
+  outline: 1px solid #05060a;
+  box-shadow: inset 0 1px rgba(255, 255, 255, .28), inset 0 -1px rgba(0, 0, 0, .4), 3px 5px rgba(0, 0, 0, .45);
+  text-shadow: 1px 1px #0b0c12, -1px 1px #0b0c12, 1px -1px #0b0c12, -1px -1px #0b0c12;
+  transition: transform .09s, border-color .09s;
+}
+.ol-btn:hover:not(:disabled), .ol-btn:focus-visible { border-color: var(--ol-gold); transform: scale(1.03); }
+.ol-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: inset 0 1px rgba(255, 255, 255, .08), 1px 2px rgba(0, 0, 0, .45); }
+.ol-btn:disabled { opacity: .5; cursor: wait; }
+.ol-btn-back { --c: #3a3a5a; --hi: #6a6a96; }
+.ol-btn-green { --c: #2f6a3a; --hi: #5aa868; }
+.ol-btn-blue { --c: #2f5a8a; --hi: #5c8cc4; }
+.ol-btn-orange { --c: #8a3a24; --hi: #d0683c; }
+.ol-btn-red { --c: #a0282c; --hi: #e05a5a; }
+.ol-btn-teal { --c: #1f6a62; --hi: #4ab8a8; }
+
+.ol-title {
+  margin: 0; color: var(--ol-gold); font-weight: normal; letter-spacing: 1px;
+  text-shadow: 2px 2px #0b0c12, -2px 2px #0b0c12, 2px -2px #0b0c12, -2px -2px #0b0c12, 0 4px rgba(0, 0, 0, .5);
+}
+
+/* ◀ back button on the left, title centered on the page (same as the PvP lobby) */
+.ol-topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+.ol-topbar > :first-child { justify-self: start; }
+.ol-topbar .ol-title { font-size: 40px; text-align: center; }
+
+.ol-field, .ol-root input, .ol-root select {
+  box-sizing: border-box; max-width: 100%; padding: 9px; font: inherit; color: #fff;
+  background: var(--ol-field); border: 1px solid var(--ol-edge-hi);
+}
+.ol-root :focus-visible { outline: 2px solid var(--ol-gold); outline-offset: 2px; }
+.ol-root [hidden] { display: none !important; }
+
+@media (max-width: 650px) {
+  .ol-topbar .ol-title { font-size: 30px; }
+  .ol-btn { font-size: 18px; }
+}
+@media (max-width: 520px) {
+  .ol-topbar { grid-template-columns: auto 1fr; }
+  .ol-topbar .ol-title { text-align: right; }
+  .ol-topbar > :nth-child(3):empty { display: none; }
+}
