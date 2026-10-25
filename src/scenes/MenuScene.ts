@@ -324,9 +324,10 @@ export class MenuScene extends Phaser.Scene {
     const by = portrait ? sy + sh + 80 * s : sy + sh + 34 * s;
     const bw4 = Math.min(210 * s, (W - 60) / 4), gx = (i: number) => W / 2 + (i - 1.5) * (bw4 + 10 * s);
     button(this, gx(0), by, bw4, 42 * s, '⚙ Cài đặt', () => this.go('settings'), 0x2c3654);
-    button(this, gx(1), by, bw4, 42 * s, portrait ? '⚔ Online' : '⚔ Đấu online', () => { audio.unlock(); gameModes.start(this, 'online'); }, 0x8a2f4a);
+    button(this, gx(1), by, bw4, 42 * s, '🌐 Chơi online', () => { audio.unlock(); gameModes.start(this, 'online', { entry: 'OnlineHub' }); }, 0x8a2f4a);
     button(this, gx(2), by, bw4, 42 * s, portrait ? '★ Nâng cấp' : '★ Nâng cấp vĩnh viễn', () => this.go('upgrades'), 0x6a5424);
-    button(this, gx(3), by, bw4, 42 * s, '© Ghi công', () => this.go('credits'), 0x2c3654);
+    button(this, gx(3), by, bw4, 42 * s, portrait ? 'Thế giới online' : '🌐 Thế giới online', () => { audio.unlock(); this.scene.start('ServerWorld'); }, 0x28604e);
+    text(this, 10, H - 8, '© Ghi công', 16 * s, '#a8b4d8').setOrigin(0, 1).setInteractive({ useHandCursor: true }).on('pointerdown', () => this.go('credits'));
     text(this, W / 2, H - 20 * s, 'Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.  ·  Enter: Sinh tồn', 15 * s, '#a8b4d8').setOrigin(0.5).setWordWrapWidth(W - 120).setAlign('center');
     text(this, W - 10, H - 8, `v${GAME_VERSION}`, 14 * s, '#7a86a8').setOrigin(1, 1);
     this.slideIn(n0, 260, 20);

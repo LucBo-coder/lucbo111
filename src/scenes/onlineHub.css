@@ -1,0 +1,22 @@
+.online-hub { position: fixed; inset: 0; overflow: auto; z-index: 10; color: #eaf0fa; background: #152b31; font: 18px 'VT323', monospace; line-height: 1.4; }
+.online-hub main { max-width: 1120px; margin: 0 auto; padding: 30px 24px; }
+.online-hub header, .online-hub footer, .online-options, .online-join, .online-join form { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+.online-hub h1 { font-size: 48px; color: #ffda65; margin: 0; }
+.online-hub h2 { font-size: 27px; margin: 10px 0; }
+.online-hub p { color: #bdcddd; margin: 8px 0; max-width: 65ch; }
+.online-hub button { font: inherit; color: #fff; background: #305767; border: 2px solid #7ba4ac; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+.online-hub button:hover { border-color: #ffda65; }
+.online-hub button:disabled { opacity: .5; cursor: wait; }
+.online-hub :focus-visible { outline: 3px solid #ffda65; outline-offset: 3px; }
+.online-hub label { display: grid; gap: 6px; }
+.online-hub select, .online-hub input { background: #102027; color: #fff; border: 1px solid #7ba4ac; font: inherit; padding: 10px; max-width: 100%; box-sizing: border-box; }
+.online-options { justify-content: flex-start; margin: 24px 0; }
+.online-modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.online-modes article { padding: 22px; border: 2px solid #65837c; background: #243c3c; display: flex; flex-direction: column; }
+.online-modes article:nth-child(2) { border-color: #668eaa; background: #223944; }
+.online-modes article:nth-child(3) { border-color: #b29454; background: #44382b; }
+.online-modes span { color: #ffda65; }
+.online-modes p { flex: 1; margin-bottom: 24px; }
+.online-join { border-block: 1px solid #58747e; padding: 22px 0; margin: 26px 0; }
+.online-hub [data-status] { color: #c7ead5; min-height: 26px; }
+@media(max-width: 700px) { .online-modes { grid-template-columns: 1fr; } .online-hub main { padding: 18px 16px; } .online-hub h1 { font-size: 38px; } .online-options label { width: 100%; } }

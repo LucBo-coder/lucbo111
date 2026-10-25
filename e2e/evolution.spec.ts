@@ -77,7 +77,7 @@ test('shop, level-up evolution prompt, equipment and Mega Evolution', async ({ p
   expect(await ev(page, `window.__adv.state.item('charcoal')`)).toBe(0);
 
   // Mega: Charizard + Charizardite X + Key Stone, press G in combat
-  await ev(page, `(() => { const a = window.__adv; const p = a.state.addPokemon('charizard', 40, 'gift'); a.state.addItems({ 'key-stone': 1, 'charizardite-x': 1 }); a.equipItem(p.uid, 'charizardite-x'); a.applyParty(); })()`);
+  await ev(page, `(() => { const a = window.__adv; const p = a.state.addPokemon('charizard', 40, 'gift'); a.state.addItems({ 'key-stone': 1, 'charizardite-x': 1 }); a.equipItem(p.uid, 'charizardite-x'); a.state.adv.activeUid = p.uid; a.summons.sanitize(); a.applyParty(); })()`); // single active: send Charizard out
   await page.keyboard.press('g');
   await page.waitForTimeout(200);
   expect(await ev(page, `window.__adv.megaUnit`)).toBeNull(); // not in combat → refused
@@ -100,6 +100,8 @@ test('world boss Mega Venusaur spawns in its grove and drops the Key Stone', asy
   const errors = errorsOf(page);
   await startAdventure(page);
   await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('charizard', 35, 'gift'); a.state.addPokemon('pidgeot', 35, 'gift'); a.applyParty(); a.world.teleport(44.5*48, 30*48); })()`);
+  // sturdy trainer: with a single active partner a KO under load would whisk the trainer away before the drop
+  await ev(page, `(() => { const t = window.__adv.world.trainer; t.maxHp = t.hp = 1e7; })()`);
   await page.waitForFunction(() => (window as Win).__adv.worldBoss?.alive, null, { timeout: 10_000 });
   expect(await ev(page, `window.__adv.world.boss.boss.def.ai`)).toBe('venusaur');
   // its own AI telegraphs attacks (beam lines / rings / spore fields)

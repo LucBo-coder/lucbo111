@@ -85,19 +85,21 @@ describe('save slots', () => {
   });
 });
 
-describe('save v6 migration', () => {
-  it('v5 → v6: savedAt, boss fight checkpoints and recalled list added, progress kept', async () => {
+describe('save migration', () => {
+  it('v5 → latest: savedAt, boss fight checkpoints and recalled list added, progress kept', async () => {
     const { migrate, SAVE_VERSION } = await import('../src/systems/saveSchema');
     const v5 = { version: 5, currency: 12, collection: [], pokedex: { seen: ['pidgey'], caught: [], shiny: [] }, adventure: { ...newAdventure(), started: true, legends: { lugia: 'caught' } } } as Record<string, unknown>;
     delete (v5.adventure as Record<string, unknown>).bossFights;
     delete (v5.adventure as Record<string, unknown>).recalled;
     const m = migrate(v5);
     expect(m.version).toBe(SAVE_VERSION);
-    expect(SAVE_VERSION).toBe(6);
+    expect(SAVE_VERSION).toBe(7);
     expect(m.savedAt).toBe(0);
     expect(m.adventure!.bossFights).toEqual({});
     expect(m.adventure!.recalled).toEqual([]);
     expect(m.adventure!.legends.lugia).toBe('caught');
     expect(m.currency).toBe(12);
+    expect(m.adventure!.activeUid).toBeNull();
+    expect(m.adventure!.pc.boxes.length).toBeGreaterThan(0);
   });
 });

@@ -9,10 +9,11 @@ import type { OwnedPokemon } from '../core/progression';
 import type { QuestState } from '../core/quests';
 
 import { ensureIndividual } from '../core/progression';
+import { buildPcForCollection, emptyPc, PcStorage } from '../core/pc';
 import { EventSave, newEventSave } from '../core/worldEvents';
 import type { PhaseSnapshot } from '../core/bossPhases';
 
-export const SAVE_VERSION = 6;
+export const SAVE_VERSION = 7;
 export type QualitySetting = 'low' | 'medium' | 'high';
 export type Difficulty = 'normal' | 'hard' | 'expert';
 
@@ -53,6 +54,13 @@ export interface AdventureSave {
   bossFights: Record<string, BossFightSave>;
   /** Party members currently recalled into their Poké Ball (not on the field) */
   recalled: string[];
+  /**
+   * The only party member allowed outside its ball in Adventure Mode (null = none on the field).
+   * The server validates the same rule; the UI never spawns the rest of the party.
+   */
+  activeUid: string | null;
+  /** PC boxes. Slots reference collection uids; a uid is never in the party and the PC at once. */
+  pc: PcStorage;
   /** Vietnam Odyssey passport: Date.now() of the first visit of each province */
   visited?: Record<string, number>;
 }
@@ -186,7 +194,8 @@ export function newAdventure(campaign: Campaign = 'classic'): AdventureSave {
   return {
     started: false, campaign, region: CAMPAIGN_START[campaign].region, party: [], pos: { x: -1, y: -1 }, lastWaypoint: CAMPAIGN_START[campaign].waypoint, waypoints: [],
     quests: {}, flags: [], discovered: [], chests: [], areas: [], worldExp: 0, reputation: 0, dungeons: {}, clock: 8 * 60, playTime: 0, bossDefeatedAt: {},
-    events: newEventSave(), legends: {}, legendHp: {}, eggs: [], discoveredBy: {}, bossFights: {}, recalled: [], visited: {},
+    events: newEventSave(), legends: {}, legendHp: {}, eggs: [], discoveredBy: {}, bossFights: {}, recalled: [],
+    activeUid: null, pc: emptyPc(), visited: {},
   };
 }
 
@@ -241,6 +250,29 @@ const MIGRATIONS: Record<number, Migration> = {
       version: 6,
     };
   },
+  // v6 → v7: single active Pokémon + PC storage. The old model allowed the whole party on the field;
+  // we keep the first unfainted/unrecalled member active and put every other owned Pokémon in a PC box.
+  // No Pokémon is ever deleted: entries beyond capacity simply stay in the Collection (reported as unplaced).
+  6: (d) => {
+    const adv = d.adventure as (Partial<AdventureSave> & { party?: string[]; recalled?: string[] }) | null | undefined;
+    const collection = Array.isArray(d.collection) ? (d.collection as OwnedPokemon[]) : [];
+    if (!adv) return { ...d, version: 7 };
+    const party = [...new Set((adv.party ?? []).filter((u): u is string => typeof u === 'string' && !!u))];
+    const oldRecalled = Array.isArray(adv.recalled) ? adv.recalled : [];
+    const activeUid = party.find((u) => !oldRecalled.includes(u)) ?? null;
+    return {
+      ...d,
+      adventure: {
+        ...adv,
+        party,
+        activeUid,
+        // exactly the active Pokémon may be outside its ball; empty field is valid
+        recalled: party.filter((u) => u !== activeUid),
+        pc: buildPcForCollection(collection, party, adv.pc as PcStorage | undefined),
+      },
+      version: 7,
+    };
+  },
 };
 
 export function migrate(raw: unknown): SaveData {
@@ -255,16 +287,28 @@ export function migrate(raw: unknown): SaveData {
     v = d.version as number;
   }
   // Deep-merge onto defaults so newly-added fields always exist
-  const adv = d.adventure as AdventureSave | null | undefined;
+  const adv = d.adventure as (Partial<AdventureSave> & Record<string, unknown>) | null | undefined;
+  const collection = Array.isArray(d.collection) ? (d.collection as OwnedPokemon[]) : [];
+  let adventure: AdventureSave | null = null;
+  if (adv) {
+    const owned = new Set(collection.map((p) => p.uid));
+    // repair duplicates / references to Pokémon that do not exist any more
+    const party = [...new Set((Array.isArray(adv.party) ? adv.party : []).filter((u): u is string => typeof u === 'string' && owned.has(u)))].slice(0, 6);
+    const activeUid = typeof adv.activeUid === 'string' && party.includes(adv.activeUid) ? adv.activeUid : null;
+    const recalled = [...new Set((Array.isArray(adv.recalled) ? adv.recalled : []).filter((u): u is string => typeof u === 'string' && u !== activeUid && party.includes(u)))];
+    const merged = { ...newAdventure(), ...adv, campaign: adv.campaign ?? 'classic', party, activeUid: activeUid as string | null, recalled };
+    merged.pc = buildPcForCollection(collection, party, adv.pc as PcStorage | undefined, merged.pc.boxCount, merged.pc.boxSize);
+    adventure = merged;
+  }
   return {
     ...base,
     ...(d as Partial<SaveData>),
     settings: { ...base.settings, ...(d.settings as object) },
     stats: { ...base.stats, ...(d.stats as object) },
     pokedex: { ...base.pokedex, ...(d.pokedex as object) },
-    collection: Array.isArray(d.collection) ? (d.collection as OwnedPokemon[]) : [],
+    collection,
     inventory: { ...(d.inventory as object) },
-    adventure: adv ? { ...newAdventure(), ...adv, campaign: adv.campaign ?? 'classic' } : null,
+    adventure,
     version: SAVE_VERSION,
   };
 }

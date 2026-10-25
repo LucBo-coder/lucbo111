@@ -1,12 +1,16 @@
 # Pokémon Survivor
 
+**Thế giới online (server riêng, đang phát triển):** menu chính → *Thế giới online*. Đăng nhập/tạo tài khoản, chơi chung ở Cà Mau, chat, đội/PC và Alpha. Xem [hướng dẫn chạy server và phạm vi tính năng](ONLINE_SERVER.md).
+
 Fan-made Pokémon game (Phaser 3 + TypeScript) với 2 chế độ:
 - **Sinh tồn** — auto-battle roguelite 15 phút.
 - **Phiêu lưu** — thế giới mở 2D: khám phá, thu phục, nhiệm vụ, hầm ngục.
 
 Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.
 
-**Online** (0.13.0): menu chính → *⚔ Đấu online* — tạo phòng / vào bằng mã 6 ký tự, đấu đội thời gian thực; hoặc trong Phiêu lưu → Cài đặt → *Chơi online cùng bạn* để đi chung thế giới và thách đấu nhau. Kết nối WebRTC trực tiếp giữa hai trình duyệt (PeerJS), không cần server riêng. Thêm `?net=local` để chơi 2 tab trên cùng máy.
+**Online (0.14.0):** menu chính → **Chơi online** → chọn Sinh tồn, Phiêu lưu hoặc Việt Nam Odyssey để tạo phòng co-op; bạn còn lại nhập mã 6 ký tự tại cùng sảnh. Chọn ô lưu đúng hành trình hoặc ô trống; game không ghi đè ô của hành trình khác. PvP và Thế giới online có nút riêng trong sảnh. Co-op/PvP dùng WebRTC trực tiếp (PeerJS), không cần tự chạy server; thêm `?net=local` để chơi 2 tab trên cùng máy.
+
+**Sự kiện co-op:** sáu thử thách luân phiên khi có hai người: Dọn đường cùng bạn, Kề vai sát cánh, Thợ săn tinh nhuệ, Không bỏ lại ai, Tiếp sức đồng đội, Song hành diệt boss. Hai phía thấy cùng tiến độ/thời gian và nhận 200–600 xu/người khi hoàn thành. Phần thưởng sự kiện khám phá trong Phiêu lưu cũng được chia cho khách. Thế giới tài khoản có tám sự kiện Alpha với ba loại mục tiêu và thưởng theo đóng góp.
 
 **Hồ sơ người chơi**: thẻ ở sảnh chính hiển thị avatar, tên, ô lưu, số Pokémon/Pokédex/xu và thành tích; bấm *✎ Hồ sơ* (hoặc chạm avatar) để chọn một trong **8 avatar pixel** và đặt tên 1–16 ký tự. Avatar + tên lưu theo thiết bị nên không mất khi chơi mới hay đổi ô lưu; tên là thứ bạn bè thấy khi đấu online / co-op. Sảnh đấu online dùng chung hồ sơ này. Avatar cũng chính là nhân vật của bạn trong thế giới mở, co-op và đấu PvP: hai người chơi thấy đúng avatar của nhau, và đổi avatar khi đang online thì bên kia đổi theo ngay.
 

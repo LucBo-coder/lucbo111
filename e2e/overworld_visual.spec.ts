@@ -94,7 +94,10 @@ test('ground alignment, padding, actions, forms and depth in the actual renderer
   for (const pivot of depthChecks.pivots) expect(pivot).toBeCloseTo(depthChecks.pivots[0], 8);
   await page.screenshot({ path: info.outputPath('ground-overlay.png') });
   await page.evaluate(() => { (window as Win).__adv.scene.resume(); });
+  // resume() lands on the next game step; keys pressed while the scene is still paused are dropped
+  await page.waitForFunction(() => (window as Win).__adv.scene.isActive());
+  await page.waitForTimeout(100);
   await page.keyboard.press('F8');
-  expect(await page.evaluate(() => (window as Win).__adv.renderer_.debugVisuals)).toBe(false);
+  await expect.poll(() => page.evaluate(() => (window as Win).__adv.renderer_.debugVisuals)).toBe(false);
   expect(errors).toEqual([]);
 });

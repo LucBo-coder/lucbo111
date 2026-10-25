@@ -1,0 +1,82 @@
+{
+  "at": "2026-10-25T09:40:43.443Z",
+  "env": {
+    "node": "v24.15.0",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13420H",
+    "cores": 12,
+    "ramGB": 16,
+    "platform": "win32 10.0.26200",
+    "seconds": 20
+  },
+  "results": [
+    {
+      "players": 10,
+      "channels": {
+        "ca-mau#1": 10
+      },
+      "loginMsPerPlayer": 30,
+      "serverCpuPct": 4.1,
+      "rssMB": 101,
+      "heapMB": 35,
+      "tickLagMaxMs": 16,
+      "downKBpsPerClient": 32.8,
+      "msgsPerSecPerClient": 18,
+      "rttP50": 0.7,
+      "rttP95": 5.6,
+      "actionP50": 3.7,
+      "actionP95": 8.2
+    },
+    {
+      "players": 20,
+      "channels": {
+        "ca-mau#1": 20
+      },
+      "loginMsPerPlayer": 35,
+      "serverCpuPct": 7.7,
+      "rssMB": 111,
+      "heapMB": 40,
+      "tickLagMaxMs": 14,
+      "downKBpsPerClient": 67.9,
+      "msgsPerSecPerClient": 27,
+      "rttP50": 0.8,
+      "rttP95": 1.9,
+      "actionP50": 7.8,
+      "actionP95": 14.4
+    },
+    {
+      "players": 30,
+      "channels": {
+        "ca-mau#1": 30
+      },
+      "loginMsPerPlayer": 30,
+      "serverCpuPct": 10.1,
+      "rssMB": 121,
+      "heapMB": 41,
+      "tickLagMaxMs": 13,
+      "downKBpsPerClient": 103.2,
+      "msgsPerSecPerClient": 36,
+      "rttP50": 1.6,
+      "rttP95": 18.7,
+      "actionP50": 11.6,
+      "actionP95": 19.2
+    },
+    {
+      "players": 50,
+      "channels": {
+        "ca-mau#1": 30,
+        "ca-mau#2": 20
+      },
+      "loginMsPerPlayer": 30,
+      "serverCpuPct": 15.5,
+      "rssMB": 139,
+      "heapMB": 44,
+      "tickLagMaxMs": 15,
+      "downKBpsPerClient": 88.5,
+      "msgsPerSecPerClient": 33,
+      "rttP50": 6.5,
+      "rttP95": 22.8,
+      "actionP50": 17.4,
+      "actionP95": 34.7
+    }
+  ]
+}

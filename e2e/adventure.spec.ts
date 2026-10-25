@@ -140,7 +140,7 @@ test('open world: start, move, follow, auto-combat, spawns, capture, quests, sav
   expect(await ev(page, `window.__adv.state.quests.states['q-main-1'].status`)).toBe('completed');
   const pos = await ev<{ x: number; y: number }>(page, `({ x: window.__adv.world.trainer.x, y: window.__adv.world.trainer.y })`);
   expect(Math.abs(pos.x - savedPos.x)).toBeLessThan(5);
-  expect(await ev(page, `window.__adv.world.allies.length`)).toBe(2);
+  expect(await ev(page, `window.__adv.world.allies.length`)).toBe(1); // single active partner
   await page.screenshot({ path: 'test-results/adv-after-load.png' });
   expect(errors).toEqual([]);
 });

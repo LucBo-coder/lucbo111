@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { CoopHost, coopSession } from '../net/coop';
+import { addCoopHud, rewardCoopHost } from './coopHud';
 import { passportPages, stampVisit } from '../adventure/passport';
 import { OnlinePresence } from '../adventure/OnlinePresence';
 import { net } from '../net/session';
@@ -148,6 +149,8 @@ export class AdventureScene extends Phaser.Scene {
   private fog: Phaser.GameObjects.TileSprite | null = null;
   private ambientT = 0;
   private sway: Phaser.Tweens.Tween[] = [];
+  /** World positions of PC terminals (Pokémon Center / town lab). PC access is gated by proximity. */
+  private pcTerminals: { x: number; y: number }[] = [];
 
   constructor() {
     super('Adventure');
@@ -172,6 +175,7 @@ export class AdventureScene extends Phaser.Scene {
     this.mapKind = data.map ?? 'valley';
     this.difficulty = data.difficulty ?? 'normal';
     this.interactables = new Map();
+    this.pcTerminals = [];
     this.nearest = null;
     this.spawns = null;
     this.dungeon = null;
@@ -286,22 +290,26 @@ export class AdventureScene extends Phaser.Scene {
     this.scene.launch('AdvUI', { adv: this });
     this.events.once('shutdown', () => this.shutdown());
     audio.play('levelup');
-    if (net.connected) this.startPresence();
+    if (coopSession.active && net.role === 'host') this.startCoopHost();
+    else if (net.connected) this.startPresence();
   }
 
   /** Shared open world with the other player of the online session (see OnlinePresence). */
   presence: OnlinePresence | null = null;
   coopHost: CoopHost | null = null;
+  private clearCoopHud?: () => void;
   startCoopHost(): void {
     coopSession.active = true;
     this.presence?.destroy(); this.presence = null;
     this.coopHost?.destroy();
+    this.clearCoopHud?.();
     this.coopHost = new CoopHost(this.world, () => ({
       kind: this.mapKind === 'dungeon' ? 'dungeon' : 'region',
       id: this.mapKind === 'dungeon' ? this.dungeonId : this.regionDef.id,
       width: this.world.width, height: this.world.height,
       doors: this.map instanceof DungeonMap ? [this.map.doorOpen('D'), this.map.doorOpen('Q')] : undefined,
-    }));
+    }), rewardCoopHost);
+    this.clearCoopHud = addCoopHud(this, this.coopHost);
   }
   startPresence(): void {
     if (coopSession.active) { if (net.role === 'host') this.startCoopHost(); return; }
@@ -340,22 +348,58 @@ export class AdventureScene extends Phaser.Scene {
 
   // ───────────────────────────── party ─────────────────────────────
 
-  /** Syncs field Pokémon with the persistent party (collection uids). */
+  /**
+   * Syncs the field with the single active Pokémon (Adventure Mode rule: only ONE Pokémon may be
+   * outside its ball). The rest of the party stays in its balls; the server enforces the same rule.
+   */
   applyParty(): void {
     this.summons?.sanitize();
-    // Pokémon recalled into their Poké Ball stay off the field (PokemonSummonManager)
-    const party = this.state.party().filter((p) => !this.state.adv.recalled.includes(p.uid));
-    const uids = new Set(party.map((p) => p.uid));
-    for (const a of [...this.world.allies]) if (!a.ownerUid || !uids.has(a.ownerUid)) this.world.removePokemon(a);
-    for (const p of party) {
-      if (this.world.allies.some((a) => a.ownerUid === p.uid)) continue;
-      const u = this.world.addPokemon(p.species, { level: p.level, uid: p.uid, hpFrac: p.hpFrac ?? 1, held: p.held ?? null, ind: individualOf(p) });
-      u.shiny = !!p.shiny;
-      u.x = this.world.trainer.x + this.world.rng.range(-30, 30); u.y = this.world.trainer.y + this.world.rng.range(-30, 30);
+    const active = this.state.activePokemon();
+    const keep = active ? active.uid : null;
+    for (const a of [...this.world.allies]) {
+      if (a.ownerUid && a.ownerUid === keep) continue;
+      // remember the HP of a partner leaving the field (recall, deposit, faint)
+      const p = a.ownerUid ? this.state.owned(a.ownerUid) : undefined;
+      if (p) p.hpFrac = a.fainted ? 0.5 : Math.max(0.05, a.hp / a.maxHp);
+      this.world.removePokemon(a);
     }
-    // keep save order
+    if (active && !this.world.allies.some((a) => a.ownerUid === active.uid)) {
+      if ((active.hpFrac ?? 1) <= 0) {
+        // a fainted Pokémon stays in its ball until healed
+        this.state.adv.activeUid = null;
+        if (!this.state.adv.recalled.includes(active.uid)) this.state.adv.recalled.push(active.uid);
+      } else {
+        const u = this.world.addPokemon(active.species, { level: active.level, uid: active.uid, hpFrac: active.hpFrac ?? 1, held: active.held ?? null, ind: individualOf(active) });
+        u.shiny = !!active.shiny;
+        u.x = this.world.trainer.x + this.world.rng.range(-30, 30); u.y = this.world.trainer.y + this.world.rng.range(-30, 30);
+      }
+    }
     this.world.allies.sort((a, b) => this.state.adv.party.indexOf(a.ownerUid!) - this.state.adv.party.indexOf(b.ownerUid!));
     this.world.allies.forEach((a, i) => (a.slotIndex = i));
+  }
+
+  /** True when the trainer stands at a Pokémon Center / town-lab PC terminal. */
+  pcNearby(): boolean {
+    if (!this.world?.trainer || !this.pcTerminals.length) return false;
+    const t = this.world.trainer;
+    return this.pcTerminals.some((p) => Math.hypot(p.x - t.x, p.y - t.y) < 110);
+  }
+
+  /** Applies EXP/Rare Candy through the authoritative state and refreshes the field + evolutions. */
+  useCandy(uid: string, candyId: string, qty: number): ReturnType<AdventureState['useCandy']> {
+    const res = this.state.useCandy(uid, candyId, qty);
+    if (res.used > 0) {
+      const ally = this.world.allies.find((a) => a.ownerUid === uid);
+      if (ally) {
+        this.world.setAllyLevel(ally, res.afterLevel);
+        this.renderer_.vfx.ring(ally.x, ally.y, 80, 0xffe060, 500);
+      }
+      if (res.evolutions.length) this.evoQueue.add(uid);
+      this.ui?.banner(`${this.state.owned(uid) ? POKEMON.get(this.state.owned(uid)!.species)?.name : ''} +${res.expGained} EXP · Lv${res.afterLevel}`, '#ffe060');
+      audio.play('levelup');
+      this.persist();
+    }
+    return res;
   }
 
   persist(): void {
@@ -402,6 +446,13 @@ export class AdventureScene extends Phaser.Scene {
           }));
           const dx = (o.data!.doorX as number + 0.5) * TILE_PX, dy = (o.data!.doorY as number + 0.5) * TILE_PX;
           this.addLight(rec, dx, dy - 10, 120, true);
+          // PC storage lives at Pokémon Centers (and the town lab as a second hub).
+          if (/center|lab/i.test(o.id)) {
+            this.pcTerminals.push({ x: dx, y: dy });
+            const marker = add(this.add.text(dx, dy - 42, 'PC', { fontFamily: '"VT323", monospace', fontSize: '26px', color: '#80e0ff', stroke: '#001018', strokeThickness: 5 }).setOrigin(0.5).setDepth(9100));
+            this.tweens.add({ targets: marker, alpha: { from: 1, to: 0.45 }, duration: 900, yoyo: true, repeat: -1 });
+            this.addInteractable(o, dx, dy + 18, 'Máy PC');
+          }
           break;
         }
         case 'fence': add(this.add.image(px, py, 'ow_tiles', o.tile).setOrigin(0).setScale(SCALE).setDepth(py + TILE_PX)); break;
@@ -998,6 +1049,7 @@ export class AdventureScene extends Phaser.Scene {
         if (evUid != null) { if (this.worldEvents?.openTreasure(evUid)) audio.play('victory'); return; }
         return this.openChest(it);
       }
+      case 'building': return this.ui.openMenu('pc');
       case 'waypoint': return this.useWaypoint(it);
       case 'portal': return this.usePortal(it.obj.data as unknown as PortalDef);
       case 'cave': return this.enterCave((it.obj.data as { id?: string } | undefined)?.id ?? 'ancient-cave');

@@ -49,11 +49,15 @@ export class PokemonSummonManager {
     return 'ok';
   }
 
-  /** Slot n (0-based) of the party: summons it if it is in its ball, recalls it if it is out. */
+  /**
+   * Slot n (0-based) of the party. Tapping the active Pokémon recalls it; tapping another one switches
+   * (recall + summon) so a trainer can never have two Pokémon outside their balls.
+   */
   toggleSlot(n: number): SummonResult {
     const uid = this.adv.party[n];
     if (!uid) return 'invalid';
-    const r = this.isRecalled(uid) ? this.summon(uid) : this.recall(uid);
+    const out = this.scene.world.allies.find((a) => a.ownerUid === uid);
+    const r = out ? this.recall(uid, { allowEmpty: true }) : this.summon(uid);
     this.feedback(r);
     return r;
   }
@@ -75,7 +79,8 @@ export class PokemonSummonManager {
     if (c !== 'ok') return c;
     const u = this.scene.world.allies.find((a) => a.ownerUid === uid);
     if (!u) return 'invalid';
-    if (!opts.allowEmpty && this.scene.world.allies.length <= 1) return 'last';
+    // Adventure Mode permits an empty field: recalling the last Pokémon is valid.
+    void opts.allowEmpty;
     const p = this.scene.state.owned(uid)!;
     // store exactly what it has now — no healing in the ball
     p.hpFrac = u.fainted ? 0 : Math.max(0.01, u.hp / u.maxHp);
@@ -85,7 +90,8 @@ export class PokemonSummonManager {
     const x = u.x, y = u.y, key = u.shiny ? u.defId + '~shiny' : u.defId;
     const visual = this.scene.renderer_.views.get(u.id)?.body;
     this.scene.world.removePokemon(u);
-    this.adv.recalled.push(uid);
+    if (!this.adv.recalled.includes(uid)) this.adv.recalled.push(uid);
+    if (this.adv.activeUid === uid) this.adv.activeUid = null;
     this.animateRecall(x, y, key, () => {
       if (opts.then) { this.locked.delete(uid); opts.then(); return; }
       this.done(uid);
@@ -96,6 +102,9 @@ export class PokemonSummonManager {
   summon(uid: string, at?: { x: number; y: number }, force = false): SummonResult {
     const c = force ? 'ok' : this.check(uid);
     if (c !== 'ok') return c;
+    // Single active rule: summoning someone else while a partner is out is a switch.
+    const other = this.scene.world.allies.find((a) => !!a.ownerUid && a.ownerUid !== uid);
+    if (!force && !at && other?.ownerUid) return this.switchTo(other.ownerUid, uid);
     if (!this.isRecalled(uid)) return 'invalid';
     const p = this.scene.state.owned(uid);
     if (!p) return 'invalid';
@@ -104,7 +113,10 @@ export class PokemonSummonManager {
     const t = this.scene.world.trainer;
     const tx = at?.x ?? t.x + t.facing * 70, ty = at?.y ?? t.y + 18;
     this.animateSummon(t.x, t.y - 20, tx, ty, p.ball ?? 'pokeball', p.shiny ? p.species + '~shiny' : p.species, () => {
-      this.adv.recalled = this.adv.recalled.filter((x) => x !== uid);
+      // The active Pokémon becomes authoritative only when the materialise animation finishes;
+      // every other party member is explicitly in its ball.
+      this.adv.activeUid = uid;
+      this.adv.recalled = this.adv.party.filter((u) => u !== uid);
       this.scene.applyParty();
       const u = this.scene.world.allies.find((a) => a.ownerUid === uid);
       if (u) {
@@ -133,9 +145,12 @@ export class PokemonSummonManager {
     for (const uid of this.adv.recalled) { const p = this.scene.state.owned(uid); if (p) { p.hpFrac = 1; p.status = undefined; } }
   }
 
-  /** Drops recalled entries that are no longer in the party (released / moved to the box). */
+  /** Rebuilds the single-active invariant (after loading, party edits or box transfers). */
   sanitize(): void {
-    this.adv.recalled = this.adv.recalled.filter((u) => this.adv.party.includes(u));
+    const active = this.adv.activeUid && this.adv.party.includes(this.adv.activeUid) ? this.adv.activeUid : null;
+    this.adv.activeUid = active;
+    // Every party member except the one outside its ball is recalled; the active one never is.
+    this.adv.recalled = this.adv.party.filter((u) => u !== active);
   }
 
   private done(uid: string): void {

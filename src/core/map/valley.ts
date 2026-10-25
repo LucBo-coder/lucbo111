@@ -216,6 +216,14 @@ export class ValleyMap implements MapProvider {
     }
   }
 
+  /** PC terminals (tile coords): the door of every Pokémon Center / lab. Shared by Adventure and the online server. */
+  pcTerminalTiles(): { x: number; y: number }[] {
+    return this.def.buildings.filter((b) => /center|lab/i.test(b.id)).map((b) => ({ x: b.x + b.door + 0.5, y: b.y + b.h - 0.5 }));
+  }
+
+  portals(): PortalDef[] {
+    return this.def.portals ?? [];
+  }
 
   // ───────────────────────────── terrain ─────────────────────────────
 

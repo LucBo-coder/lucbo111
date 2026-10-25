@@ -65,6 +65,8 @@ export interface OwnedPokemon {
   ball?: string;
   /** Lasting status kept while recalled into its ball (kind, seconds left) */
   status?: { kind: string; t: number };
+  /** Locked / favourite in the PC: protected against accidental release and sorted first */
+  favorite?: boolean;
 }
 
 export const MAX_FRIENDSHIP = 255;

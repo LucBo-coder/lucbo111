@@ -129,6 +129,26 @@ Trạng thái theo V6: IMPLEMENTED+TESTED · PARTIAL · DATA ONLY · NOT IMPLEME
 - [ ] Rừng Ngọc Lục Bảo / Khu Rừng Thiêng thành bản đồ riêng (hiện là khu trong Thung Lũng)
 
 ## 0.13.0 — Online
+- [x] Thế giới online qua WebSocket: màn đăng ký/đăng nhập, Cà Mau chung, chat, đội/PC/kẹo, bạn bè/nhóm, Alpha/sự kiện; dữ liệu SQLite riêng (xem ONLINE_SERVER.md).
+- [x] Sửa tọa độ xuất hiện, phản hồi vị trí bị từ chối, khôi phục vị trí khi đăng nhập lại và chống lùi trạng thái khi gửi lại thao tác cũ.
+- [ ] Thế giới server: bắt hoang dã/nhiệm vụ/chiến đấu Adventure đầy đủ, chuyển vùng từ UI và triển khai Internet/WSS (tự kết nối lại: xong ở 0.14.0).
+
+## 0.14.0 — Master Prompt V7 (Online Multiplayer) — trạng thái theo Phần XVIII
+Mốc First Playable (Phần XVII), kiểm bằng server thật + client độc lập (unit `ws` + e2e 2 trình duyệt):
+- [x] TESTED — 2 tài khoản khác nhau, cùng xuất hiện ở Cà Mau, thấy nhau di chuyển (nội suy, presence delta)
+- [x] TESTED — mỗi người gọi 1 Pokémon, thấy Pokémon của người kia, thu hồi / đổi (hồi chiêu + trạng thái summoning/recalling do server giữ, hiệu ứng đồng bộ)
+- [x] TESTED — mời nhóm (thẻ lời mời, đồng ý/từ chối), cùng đánh Alpha, nhận EXP + vật phẩm (thưởng nhóm có trần, chỉ tính người đã đánh)
+- [x] TESTED — dùng EXP Candy (hộp thoại số lượng + xem trước), tiến hóa sau khi lên cấp, gửi PC, thoát rồi đăng nhập lại còn dữ liệu, tự kết nối lại khi rớt mạng
+- [x] TESTED — lịch sự kiện server 10 phút (test dùng chu kỳ ngắn), thông báo trước, hai người cùng tham gia, kết thúc và thưởng đúng một lần
+- [x] IMPLEMENTED+TESTED — bảng sự kiện riêng Cà Mau / An Giang / Cần Thơ, có trọng số, không lặp liền, khóa sự kiện huyền thoại theo cấp
+- [x] IMPLEMENTED+TESTED — kênh theo vùng (30 người/kênh), interest management theo bán kính, nhắn riêng giữa bạn bè, biểu cảm, chặn/báo cáo, trao trưởng nhóm/giải tán
+- [x] TESTED — load test 10/20/30/50 bot trên cùng máy (bảng số liệu trong ONLINE_SERVER.md, `reports/load-test.json`)
+- [x] IMPLEMENTED+TESTED — PC online: máy PC tại Trung tâm Pokémon / phòng thí nghiệm (server kiểm tra khoảng cách), hộp thoại box/lưới/tìm/lọc/sắp xếp/chi tiết/di chuyển/khóa/biệt danh, bàn phím + lăn chuột + chạm
+- [x] IMPLEMENTED+TESTED — 3 vùng online (Cà Mau, An Giang, Cần Thơ), đổi vùng chỉ qua cổng, cổng huy hiệu mở theo cấp đội, Alpha theo vùng
+- [~] PARTIAL — Boss Raid: Alpha chung có thưởng theo đóng góp; chưa có sảnh raid, ready check, nhiều phase, hồi sinh
+- [x] IMPLEMENTED+TESTED — khôi phục tài khoản bằng mã khôi phục một lần (không cần e-mail), đổi mật khẩu, tạo mã mới, đăng xuất mọi thiết bị
+- [ ] NOT IMPLEMENTED — bắt Pokémon hoang dã / nhiệm vụ / chiến đấu PvE real-time qua server; trao đổi; khôi phục qua e-mail
+- [ ] NOT TESTED — máy chủ Internet thật (độ trễ xa), điện thoại thật, > 50 người, nhiều vùng bật cùng lúc dưới tải
 - [x] IMPLEMENTED+TESTED — PvP thời gian thực qua WebRTC (PeerJS), phòng bằng mã, 3 luật, đội từ Bộ sưu tập / đội thuê, dự bị + đổi + Mega, đầu hàng, thành tích
 - [x] IMPLEMENTED+TESTED — Đi chung thế giới mở + thách đấu tại chỗ (E)
 - [x] IMPLEMENTED+TESTED — Engine hai phe, công bằng đã đo (47–54 % đấu gương), tất định

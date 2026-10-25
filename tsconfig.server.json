@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["server", "src/adventure/AdventureState.ts", "src/core", "src/net/serverProtocol.ts", "src/systems/saveSchema.ts", "src/data"]
+}

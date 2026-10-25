@@ -11,6 +11,7 @@ import { pixelPerfectZoom } from '../render/pixelZoom';
 import { saveStore } from '../systems/save';
 import { recordRun, RunSummary, starterEntry, survivorPool } from '../systems/saveSchema';
 import type { UIScene } from './UIScene';
+import { addCoopHud, rewardCoopHost } from './coopHud';
 
 const SCALE = 3;
 const MAX_SIM_STEPS_PER_FRAME = 6;
@@ -26,10 +27,13 @@ export interface PerfStats {
 /** SURVIVOR mode. Run-only data (levels, cards, mods) lives in its World and is never saved. */
 export class GameScene extends Phaser.Scene {
   coopHost: CoopHost | null = null;
+  private clearCoopHud?: () => void;
   startCoopHost(): void {
     coopSession.active = true;
     this.coopHost?.destroy();
-    this.coopHost = new CoopHost(this.world, () => ({ kind: 'survivor', id: 'survivor', width: this.world.width, height: this.world.height }));
+    this.clearCoopHud?.();
+    this.coopHost = new CoopHost(this.world, () => ({ kind: 'survivor', id: 'survivor', width: this.world.width, height: this.world.height }), rewardCoopHost);
+    this.clearCoopHud = addCoopHud(this, this.coopHost);
   }
   world!: World;
   starter = 'charmander';

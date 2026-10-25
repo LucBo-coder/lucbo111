@@ -10,7 +10,7 @@ export type GameMode = 'survivor' | 'adventure' | 'online';
 const MODE_SCENES: Record<GameMode, string[]> = {
   survivor: ['Game', 'UI', 'Result'],
   adventure: ['Adventure', 'AdvUI'],
-  online: ['Lobby', 'Duel', 'DuelUI', 'CoopGuest'],
+  online: ['Lobby', 'Duel', 'DuelUI', 'CoopGuest', 'OnlineHub', 'ServerWorld'],
 };
 
 class GameModeManager {

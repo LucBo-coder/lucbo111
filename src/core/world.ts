@@ -256,7 +256,7 @@ export interface Obstacle {
 
 export type WorldEvent =
   | { t: 'dmg'; x: number; y: number; amount: number; crit: boolean; eff: number; victimTeam: Team }
-  | { t: 'heal'; x: number; y: number; amount: number }
+  | { t: 'heal'; x: number; y: number; amount: number; team?: Team }
   | { t: 'vfx'; name: string; x: number; y: number; r?: number; angle?: number; len?: number; type?: PokeType }
   | { t: 'sfx'; name: string }
   | { t: 'death'; x: number; y: number; defId: string; elite: boolean; boss: boolean; id?: number; level?: number; wild?: boolean; tag?: string | null }
@@ -1435,7 +1435,9 @@ export class World {
         const d = Math.hypot(dx, dy);
         if (d > 0.01 && d < min) {
           const push = (min - d) * 0.25;
-          e.x += (dx / d) * push; e.y += (dy / d) * push;
+          const nx = e.x + (dx / d) * push, ny = e.y + (dy / d) * push;
+          // a crowd must not shove anyone into water / walls (no terrain in Survivor: unchanged there)
+          if (!this.terrainBlocks(e, nx, ny)) { e.x = nx; e.y = ny; }
           n++;
         }
       }
@@ -2370,7 +2372,7 @@ export class World {
     u.hp = Math.min(u.maxHp, Math.round(u.hp + amount));
     const healed = Math.round(u.hp - before);
     if (healed > 0) {
-      this.emit({ t: 'heal', x: u.x, y: u.y - u.radius, amount: healed });
+      this.emit({ t: 'heal', x: u.x, y: u.y - u.radius, amount: healed, team: u.team });
       this.emit({ t: 'vfx', name: 'heal', x: u.x, y: u.y });
     }
   }
@@ -2616,16 +2618,21 @@ export class World {
     }
     u.x = clamp(u.x, u.radius + 10, this.width - u.radius - 10);
     u.y = clamp(u.y, u.radius + 10, this.height - u.radius - 10);
-    const t = this.terrain;
-    if (!t) return;
-    // swimmers are blocked by land, everyone else by walls / water
-    const block = u.aquatic && t.isWater ? (x: number, y: number) => !t.isWater!(x, y) : (x: number, y: number) => t.blocksMove(x, y);
+    if (!this.terrain) return;
+    const block = (x: number, y: number) => this.terrainBlocks(u, x, y);
     if (block(u.x, u.y)) {
       // Axis-separated slide: keep whichever axis is free so units glide along walls/water
       if (!block(u.x, u.lastY)) u.y = u.lastY;
       else if (!block(u.lastX, u.y)) u.x = u.lastX;
       else { u.x = u.lastX; u.y = u.lastY; }
     }
+  }
+
+  /** Swimmers are blocked by land, everyone else by walls / water. */
+  private terrainBlocks(u: Unit, x: number, y: number): boolean {
+    const t = this.terrain;
+    if (!t) return false;
+    return u.aquatic && t.isWater ? !t.isWater(x, y) : t.blocksMove(x, y);
   }
 
   private cleanup(): void {

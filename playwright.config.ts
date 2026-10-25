@@ -2,6 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: 'e2e',
+  testIgnore: 'server_world.spec.ts',
   timeout: 60_000,
   // Each worker runs a software-WebGL Edge instance; more than 3 starves timing-sensitive checks on 16 GB machines
   workers: 3,

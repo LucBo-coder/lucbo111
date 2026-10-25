@@ -5,6 +5,7 @@ import { RULESETS, validateParty, shareableEvents } from './duel';
 import { net } from './session';
 import type { NetMsg } from './protocol';
 import type { CoopLoot } from './coopRewards';
+import { CoopEventDirector, type CoopEventView } from '../core/coopEvents';
 
 export interface CoopMap {
   kind: 'survivor' | 'region' | 'dungeon';
@@ -22,6 +23,7 @@ export interface CoopSnapshot {
   projectiles: { x: number; y: number; vx: number; vy: number; r: number; team: Unit['team']; skill: string }[];
   zones: (Omit<World['zones'][number], 'owner' | 'slot'> & { skill: string })[];
   gems: World['gems']; obstacles: World['obstacles']; events: WorldEvent[];
+  challenge?: CoopEventView | null;
 }
 export const coopSession = { active: false };
 
@@ -46,6 +48,8 @@ export function packCoop(w: World, map: CoopMap, epoch: string, n: number, pause
 
 /** Only the host simulates. Guest packets contain intent, never damage or rewards. */
 export class CoopHost {
+  readonly challenges = new CoopEventDirector();
+  private challengeTime: number;
   readonly epoch = `${Date.now()}-${Math.random()}`;
   private n = 0;
   private seq = -1;
@@ -54,7 +58,8 @@ export class CoopHost {
   private events: WorldEvent[] = [];
   private off: () => void;
   private offStatus: () => void;
-  constructor(readonly world: World, private map: () => CoopMap) {
+  constructor(readonly world: World, private map: () => CoopMap, private reward?: (loot: CoopLoot) => void) {
+    this.challengeTime = world.time;
     this.off = net.on(m => this.receive(m));
     this.offStatus = net.onStatus(() => { if (!net.connected) world.removeCompanion(); });
   }
@@ -97,6 +102,22 @@ export class CoopHost {
 
   update(now: number, paused: boolean, events: WorldEvent[]): void {
     const w = this.world;
+    const dt = w.time - this.challengeTime;
+    this.challengeTime = w.time;
+    if (net.connected && w.companion && !paused && (dt > 0 || events.length > 0)) {
+      const deaths = events.filter((e): e is Extract<WorldEvent, { t: 'death' }> => e.t === 'death');
+      const result = this.challenges.update({
+        dt, kills: deaths.length, elites: deaths.filter((e) => e.elite || e.boss).length,
+        bosses: deaths.filter((e) => e.boss).length + events.filter((e) => e.t === 'bossWeakened').length,
+        healing: events.reduce((n, e) => n + (e.t === 'heal' && e.team === 'ally' ? Math.max(0, e.amount) : 0), 0),
+        bothAlive: w.trainer.hp > 0 && w.companion.trainer.hp > 0,
+        distance: Math.hypot(w.trainer.x - w.companion.trainer.x, w.trainer.y - w.companion.trainer.y),
+      });
+      if (result) {
+        const loot = { currency: result.currency, note: result.name };
+        this.reward?.(loot); this.grant(loot);
+      }
+    }
     if (w.companion && Math.hypot(w.companion.trainer.x - w.trainer.x, w.companion.trainer.y - w.trainer.y) > 900) {
       for (const u of [w.companion.trainer, ...w.companion.allies]) { u.x = u.lastX = w.trainer.x; u.y = u.lastY = w.trainer.y; }
     }
@@ -117,7 +138,9 @@ export class CoopHost {
     this.events.push(...shareableEvents(events));
     if (now - this.lastSend < 100) return;
     this.lastSend = now;
-    net.send({ t: 'coopSnap', s: packCoop(w, this.map(), this.epoch, ++this.n, paused, this.events) });
+    const snapshot = packCoop(w, this.map(), this.epoch, ++this.n, paused, this.events);
+    snapshot.challenge = this.challenges.view ? { ...this.challenges.view } : null;
+    net.send({ t: 'coopSnap', s: snapshot });
     this.events = [];
   }
   private lastTick = 0;

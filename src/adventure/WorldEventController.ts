@@ -288,6 +288,7 @@ export class WorldEventController {
   private end(ev: ActiveEvent, completed: boolean): void {
     if (!this.director.active.includes(ev)) return;
     const st = this.scene.state;
+    const beforeMoney = st.save.currency, beforeItems = { ...st.save.inventory };
     const region = REGIONS.get(ev.region);
     const lines: string[] = [];
     if (completed) {
@@ -300,6 +301,8 @@ export class WorldEventController {
         default: break;
       }
       st.addWorldExp(ev.type === 'weather' || ev.type === 'migration' ? 60 : 150);
+      const items = Object.fromEntries(Object.entries(st.save.inventory).map(([id, qty]) => [id, qty - (beforeItems[id] ?? 0)]).filter(([, qty]) => Number(qty) > 0));
+      this.scene.coopHost?.grant({ currency: st.save.currency - beforeMoney, items, note: EVENT_DEFS[ev.type].name });
     }
     this.director.finish(ev, completed ? 'completed' : 'expired');
     // cleanup: everything the event spawned goes away with it (captured ones are already in the collection)

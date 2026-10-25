@@ -98,6 +98,8 @@ test('Cần Thơ: An Giang gate → Ninh Kiều → floating market → Chúa S�
   await page.waitForFunction(near(104, 13), undefined, { timeout: 20_000 });
   await page.waitForTimeout(800);
   expect(await ev(page, `window.__adv.areaName`)).toBe('Cồn Sơn');
+  // sturdy trainer: with a single active partner the boss focuses the trainer, and a KO would send them back to Ninh Kiều
+  await ev(page, `(() => { const t = window.__adv.world.trainer; t.maxHp = t.hp = 1e7; })()`);
   await teleport(page, 104, 12);
   await page.waitForFunction(() => (window as Win).__adv.world.boss?.defId === 'whiscash', undefined, { timeout: 30_000 });
   await page.waitForTimeout(2500);

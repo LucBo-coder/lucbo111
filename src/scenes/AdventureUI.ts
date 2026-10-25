@@ -11,6 +11,7 @@ import { getSkill, POKEMON } from '../core/data';
 import { chunkCols, chunkRows } from '../core/map/mapProvider';
 import { TILE_PX } from '../core/map/tiles';
 import { levelProgress, OwnedPokemon } from '../core/progression';
+import { CANDY_DEFS, candyDef, maxUsefulCandy, previewCandy } from '../core/candy';
 import { evolutionsOf, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions } from '../core/evolution';
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
@@ -55,9 +56,10 @@ const EVENT_HINT: Record<string, string> = {
   weather: 'Thời tiết thay đổi Pokémon xuất hiện & sức mạnh đòn', ambush: 'Đánh bại cả đội của huấn luyện viên', treasure: 'Hạ Pokémon canh giữ rồi mở rương (E)', distortion: 'Hạ 5 Pokémon trong vùng biến dạng',
 };
 const REGION_NAMES: Record<string, string> = Object.fromEntries([...ENC_REGIONS.values()].map((r) => [r.id, r.name]));
-type MenuTab = 'party' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'passport' | 'settings';
+type MenuTab = 'party' | 'pc' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'passport' | 'settings';
 const TABS: { id: MenuTab; label: string; key: string }[] = [
   { id: 'party', label: 'Đội hình', key: 'Tab' },
+  { id: 'pc', label: 'PC', key: 'O' },
   { id: 'dex', label: 'Pokédex', key: 'X' },
   { id: 'bag', label: 'Túi đồ', key: 'I' },
   { id: 'quests', label: 'Nhiệm vụ', key: 'J' },
@@ -101,6 +103,16 @@ export class AdventureUI extends Phaser.Scene {
   private partyPage = 0;
   private bagPage = 0;
   private passportPage = 0;
+  // PC storage browser
+  private pcBox = 0;
+  private pcSelected: string | null = null;
+  private pcMoveUid: string | null = null;
+  private pcFilter: 'all' | 'favorite' | 'shiny' = 'all';
+  private pcQuery = '';
+  private pcResultPage = 0;
+  private pcSort: 'level' | 'name' | 'recent' | 'favorite' = 'level';
+  // candy dialog
+  private candyDialog: Phaser.GameObjects.Container | null = null;
 
   constructor() {
     super('AdvUI');
@@ -272,7 +284,7 @@ export class AdventureUI extends Phaser.Scene {
         row.ball.setVisible(true).setPosition(44 * s, y + 28 * s).setScale((16 * s) / Math.max(1, row.ball.width)).setDepth(5);
       } else row.ball.setVisible(false);
       g.fillStyle(0x0b0d16, 0.75).fillRect(12 * s, y, hw, 36 * s);
-      g.lineStyle(2, ally?.fainted ? 0x803030 : 0x3a4260, 1).strokeRect(12 * s, y, hw, 36 * s);
+      g.lineStyle(2, ally?.fainted ? 0x803030 : a.state.isActive(p.uid) ? 0xffcc33 : 0x3a4260, 1).strokeRect(12 * s, y, hw, 36 * s);
       let icon = this.partyIcons[i];
       const ik = p.shiny ? shinyKey(p.species) : p.species;
       if (!icon) { icon = this.add.image(0, 0, ik); this.partyIcons[i] = icon; }
@@ -281,7 +293,7 @@ export class AdventureUI extends Phaser.Scene {
       icon.setPosition(32 * s, y + 18 * s).setAlpha(ally?.fainted ? 0.35 : inBall ? 0.5 : 1).setDepth(4);
       const k = 'p' + i;
       if (!this.texts[k]) this.texts[k] = text(this, 0, 0, '', 15 * s);
-      this.texts[k].setText(`${POKEMON.get(p.species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : inBall ? '  · trong bóng' : ''}`).setPosition(52 * s, y + 1 * s);
+      this.texts[k].setText(`${POKEMON.get(p.species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : a.state.isActive(p.uid) ? '  ★ ngoài bóng' : inBall ? '  · trong bóng' : ''}`).setPosition(52 * s, y + 1 * s);
       const bx = 52 * s, bw = hw - 112 * s;
       if (ally) bar(g, bx, y + 21 * s, bw, 6 * s, ally.hp / ally.maxHp, hpColor(ally.hp / ally.maxHp));
       else if (inBall) bar(g, bx, y + 21 * s, bw, 6 * s, p.hpFrac ?? 1, 0x8890a8); // HP kept in the ball (no healing)
@@ -798,6 +810,7 @@ export class AdventureUI extends Phaser.Scene {
     const body = { x: x0 + 16 * s, y: y0 + 56 * s, w: pw - 32 * s, h: ph - 72 * s };
     switch (tab) {
       case 'party': this.buildParty(c, body); break;
+      case 'pc': this.buildPc(c, body); break;
       case 'dex': this.buildDex(c, body); break;
       case 'bag': this.buildBag(c, body); break;
       case 'quests': this.buildQuests(c, body); break;
@@ -843,6 +856,176 @@ export class AdventureUI extends Phaser.Scene {
     this.pokemonDetails(c, { x: r.x + lw + 12 * s, y: r.y + 26 * s, w: r.w - lw - 12 * s, h: r.h - 26 * s }, sel);
   }
 
+  /** Pokémon Center PC: boxes, search, filters, sorting, moves, withdraw and favourite. */
+  private buildPc(c: Phaser.GameObjects.Container, r: Rect): void {
+    const s = this.s, st = this.adv.state, pc = st.pc;
+    c.add(text(this, r.x, r.y, `PC · ${pc.boxes.length} box × ${pc.boxSize} ô · Đội hình ${st.adv.party.length}/6 · ${st.pcPokemon().length} trong PC`, 17 * s, COLORS.dim));
+    if (!this.adv.pcNearby()) {
+      c.add(panel(this, r.x, r.y + 34 * s, r.w, 120 * s, 0x6a5a2f, 0x24201a, 1));
+      c.add(text(this, r.x + 20 * s, r.y + 54 * s, 'Máy PC chỉ dùng được tại Trung tâm Pokémon hoặc trạm nghiên cứu của thị trấn.', 20 * s, '#ffe080'));
+      c.add(text(this, r.x + 20 * s, r.y + 84 * s, 'Đi tới cửa có nhãn “PC” rồi nhấn E / nút tương tác.', 16 * s, '#d0d8f0'));
+      return;
+    }
+
+    this.pcBox = Phaser.Math.Clamp(this.pcBox, 0, pc.boxes.length - 1);
+    const box = pc.boxes[this.pcBox];
+    const leftW = r.w * 0.61;
+    const unplaced = st.unplacedPokemon();
+    const norm = (v: string) => v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const q = norm(this.pcQuery.trim());
+    const matches = (p: OwnedPokemon) => {
+      if (this.pcFilter === 'favorite' && !p.favorite) return false;
+      if (this.pcFilter === 'shiny' && !p.shiny) return false;
+      if (!q) return true;
+      const name = norm(POKEMON.get(p.species)?.name ?? p.species);
+      const nick = norm(p.nickname ?? '');
+      return name.includes(q) || nick.includes(q) || p.species.toLowerCase().includes(q);
+    };
+    const searching = !!q || this.pcFilter !== 'all';
+    const pool = searching ? st.save.collection.filter(matches).sort((a, b) => b.level - a.level) : null;
+    const perPage = 30;
+    const pages = pool ? Math.max(1, Math.ceil(pool.length / perPage)) : 1;
+    this.pcResultPage = Phaser.Math.Clamp(this.pcResultPage, 0, pages - 1);
+    const shown: (string | null)[] = pool
+      ? pool.slice(this.pcResultPage * perPage, (this.pcResultPage + 1) * perPage).map((p) => p.uid)
+      : box.slots.slice();
+    while (shown.length < perPage) shown.push(null);
+
+    // grid
+    const cols = 6, top = r.y + 34 * s;
+    const cw = (leftW - 8 * s) / cols;
+    const chh = Math.min(cw * 0.92, (r.h - 150 * s) / 5);
+    shown.forEach((uid, i) => {
+      const x = r.x + (i % cols) * cw, y = top + Math.floor(i / cols) * chh;
+      const p = uid ? st.owned(uid) : undefined;
+      const selected = !!uid && this.pcSelected === uid;
+      const moving = !!uid && this.pcMoveUid === uid;
+      const g = this.add.graphics();
+      g.fillStyle(selected ? 0x34406a : moving ? 0x4a3a5a : p ? 0x20263a : 0x171b28, 1).fillRect(x + 2 * s, y + 2 * s, cw - 5 * s, chh - 4 * s);
+      g.lineStyle(2, selected ? 0xffcc33 : moving ? 0xff80e0 : p ? 0x3a4260 : 0x252a3a, 1).strokeRect(x + 2 * s, y + 2 * s, cw - 5 * s, chh - 4 * s);
+      c.add(g);
+      if (p) {
+        const ik = p.shiny ? shinyKey(p.species) : p.species;
+        c.add(this.add.image(x + cw / 2, y + chh * 0.42, ik).setScale(fitScale(this, ik, Math.min(46 * s, chh * 0.55))));
+        const label = p.nickname ?? POKEMON.get(p.species)?.name ?? p.species;
+        c.add(text(this, x + cw / 2, y + chh - 28 * s, `${p.favorite ? '★ ' : ''}${label}`, Math.min(14 * s, cw * 0.22), p.favorite ? '#ffe080' : '#ffffff').setOrigin(0.5, 0).setFixedSize(cw - 8 * s, 16 * s).setAlign('center'));
+        c.add(text(this, x + cw / 2, y + chh - 14 * s, `Lv${p.level}`, Math.min(12 * s, cw * 0.2), COLORS.dim).setOrigin(0.5, 0));
+      } else {
+        c.add(text(this, x + cw / 2, y + chh / 2, '·', 18 * s, '#3a4260').setOrigin(0.5));
+      }
+      const z = this.add.zone(x + 2 * s, y + 2 * s, cw - 5 * s, chh - 4 * s).setOrigin(0).setInteractive({ useHandCursor: true });
+      z.on('pointerup', () => {
+        if (this.pcMoveUid) {
+          if (!pool && uid !== this.pcMoveUid) {
+            if (!st.moveInPc(this.pcMoveUid, this.pcBox, i)) this.banner('Ô này không hợp lệ', '#ff9080');
+          } else if (uid === this.pcMoveUid) {
+            this.banner('Đã hủy di chuyển', '#a0d8ff');
+          } else this.banner('Hãy thoát tìm kiếm để di chuyển trong box', '#ff9080');
+          this.pcMoveUid = null;
+          this.adv.applyParty();
+          this.adv.persist();
+          this.openMenu('pc');
+          return;
+        }
+        this.pcSelected = uid ?? null;
+        this.openMenu('pc');
+      });
+      c.add(z);
+    });
+
+    // navigation / tools
+    const by = r.y + r.h - 30 * s;
+    if (pool) {
+      c.add(text(this, r.x, by, `Kết quả: ${pool.length} · lọc ${this.pcFilter === 'all' ? 'tất cả' : this.pcFilter === 'favorite' ? 'yêu thích' : 'shiny'}${q ? ` · “${this.pcQuery}”` : ''}`, 15 * s, '#a0d8ff'));
+      if (pages > 1) {
+        c.add(button(this, r.x + leftW - 170 * s, by, 80 * s, 30 * s, '◀', () => { this.pcResultPage = (this.pcResultPage + pages - 1) % pages; this.openMenu('pc'); }).container);
+        c.add(text(this, r.x + leftW - 90 * s, by, `${this.pcResultPage + 1}/${pages}`, 15 * s).setOrigin(0.5));
+        c.add(button(this, r.x + leftW - 20 * s, by, 80 * s, 30 * s, '▶', () => { this.pcResultPage = (this.pcResultPage + 1) % pages; this.openMenu('pc'); }).container);
+      }
+      c.add(button(this, r.x + leftW - 280 * s, by, 150 * s, 30 * s, 'Xóa tìm/lọc', () => { this.pcQuery = ''; this.pcFilter = 'all'; this.pcResultPage = 0; this.openMenu('pc'); }, 0x6a3a2f).container);
+    } else {
+      c.add(button(this, r.x + 26 * s, by, 44 * s, 30 * s, '◀', () => { this.pcBox = (this.pcBox + pc.boxes.length - 1) % pc.boxes.length; this.pcSelected = null; this.pcMoveUid = null; this.openMenu('pc'); }).container);
+      c.add(text(this, r.x + 120 * s, by, `Box ${this.pcBox + 1}/${pc.boxes.length} · ${box.name}`, 16 * s, '#ffe080').setOrigin(0.5));
+      c.add(button(this, r.x + 214 * s, by, 44 * s, 30 * s, '▶', () => { this.pcBox = (this.pcBox + 1) % pc.boxes.length; this.pcSelected = null; this.pcMoveUid = null; this.openMenu('pc'); }).container);
+      c.add(button(this, r.x + leftW - 370 * s, by, 92 * s, 30 * s, 'Đổi tên', () => {
+        void askText(this, 'Tên box:', box.name, 24).then((name) => {
+          if (name != null) { st.renameBox(this.pcBox, name); this.openMenu('pc'); }
+        });
+      }).container);
+      c.add(button(this, r.x + leftW - 265 * s, by, 100 * s, 30 * s, `Xếp: ${this.pcSort.toUpperCase()}`, () => {
+        const order: ('level' | 'name' | 'recent' | 'favorite')[] = ['level', 'name', 'recent', 'favorite'];
+        this.pcSort = order[(order.indexOf(this.pcSort) + 1) % order.length];
+        st.sortPc(this.pcBox, this.pcSort);
+        this.openMenu('pc');
+      }).container);
+      c.add(button(this, r.x + leftW - 155 * s, by, 92 * s, 30 * s, `Lọc: ${this.pcFilter === 'all' ? 'Tất cả' : this.pcFilter === 'favorite' ? '★' : '✦'}`, () => {
+        this.pcFilter = this.pcFilter === 'all' ? 'favorite' : this.pcFilter === 'favorite' ? 'shiny' : 'all';
+        this.pcResultPage = 0;
+        this.openMenu('pc');
+      }).container);
+      c.add(button(this, r.x + leftW - 45 * s, by, 80 * s, 30 * s, 'Tìm', () => {
+        void askText(this, 'Tìm Pokémon (tên, biệt danh, loài):', this.pcQuery, 24).then((raw) => {
+          if (raw != null) { this.pcQuery = raw.trim(); this.pcResultPage = 0; this.openMenu('pc'); }
+        });
+      }).container);
+    }
+    if (unplaced.length) c.add(text(this, r.x, r.y + 18 * s, `⚠ ${unplaced.length} Pokémon chưa xếp (kho đầy) — vẫn an toàn trong bộ sưu tập`, 13 * s, '#ffb060'));
+
+    // right detail panel
+    const dx = r.x + leftW + 12 * s, dw = r.w - leftW - 12 * s;
+    const p = this.pcSelected ? st.owned(this.pcSelected) : undefined;
+    c.add(panel(this, dx, r.y + 26 * s, dw, r.h - 26 * s, COLORS.panelEdge, 0x1c2134, 1));
+    if (!p) {
+      c.add(text(this, dx + 16 * s, r.y + 44 * s, 'Chọn một Pokémon để xem chi tiết.\n\n• Chạm ô trống để bỏ chọn\n• “Di chuyển” rồi chạm ô đích để đổi chỗ\n• Tìm/lọc xem toàn bộ kho\n• PC tự lưu mọi thay đổi', 17 * s, '#c8d0e8').setWordWrapWidth(dw - 32 * s));
+      return;
+    }
+    const def = POKEMON.get(p.species)!;
+    const stt = st.pcLocation(p.uid) ? `PC Box ${st.pcLocation(p.uid)!.box + 1} · ô ${st.pcLocation(p.uid)!.slot + 1}` : st.inParty(p.uid) ? (st.isActive(p.uid) ? 'Đang ở ngoài bóng ★' : 'Trong đội · trong bóng') : 'Chưa xếp';
+    c.add(text(this, dx + 14 * s, r.y + 38 * s, `${def.name}${p.nickname ? ` “${p.nickname}”` : ''}`, 24 * s));
+    c.add(text(this, dx + 14 * s, r.y + 68 * s, `Lv${p.level} · ${stt} · ${p.shiny ? '✦ Shiny' : 'thường'}`, 15 * s, p.shiny ? '#fff0a0' : '#a0d8ff'));
+    const ik = p.shiny ? shinyKey(p.species) : p.species;
+    c.add(this.add.image(dx + 66 * s, r.y + 142 * s, ik).setScale(fitScale(this, ik, 110 * s)));
+    let bx = dx + 128 * s;
+    for (const t of def.types) { const b = typeBadge(this, bx, r.y + 100 * s, t, 14 * s); c.add(b); bx += b.width + 6; }
+    const ind = individualOf(p);
+    const stats = calcStats(def.baseStats, p.level, ind);
+    c.add(text(this, dx + 128 * s, r.y + 126 * s, `HP ${Math.floor(stats.hp * 4)} · Atk ${stats.atk} · Def ${stats.def}\nSpA ${stats.spa} · SpD ${stats.spd} · Spe ${stats.spe}\nIV ${STAT_KEYS.map((k) => ind.ivs[k]).join('/')} · Thân thiết ${p.friendship ?? 0}/255`, 13 * s, '#d8e0f8').setWordWrapWidth(dw - 146 * s));
+    c.add(text(this, dx + 14 * s, r.y + 210 * s, `EXP ${p.exp}/${levelProgress(p) >= 1 ? 'MAX' : '—'} · Bắt lúc ${new Date(p.caughtAt).toLocaleDateString('vi-VN')}\nNguồn: ${p.origin}${p.held ? ` · Đang giữ ${ITEM_DEFS.get(p.held)?.name ?? p.held}` : ''}`, 14 * s, COLORS.dim).setWordWrapWidth(dw - 28 * s));
+    let by2 = r.y + 274 * s;
+    if (st.pcLocation(p.uid)) {
+      c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, `Rút vào đội (${st.adv.party.length}/6)`, () => {
+        if (!st.withdrawFromPc(p.uid)) this.banner('Đội hình đã đủ 6 hoặc Pokémon không có trong PC', '#ff9080');
+        else this.banner(`${def.name} đã vào đội (trong bóng)`, '#80ff90');
+        this.adv.applyParty(); this.adv.persist(); this.openMenu('pc');
+      }, 0x2f6a3a).container);
+      by2 += 44 * s;
+      c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, this.pcMoveUid === p.uid ? 'Đang di chuyển…' : 'Di chuyển / đổi chỗ', () => {
+        this.pcQuery = ''; this.pcFilter = 'all';
+        this.pcMoveUid = this.pcMoveUid === p.uid ? null : p.uid;
+        this.banner(this.pcMoveUid ? 'Chạm ô trống hoặc Pokémon khác trong box để đổi chỗ' : 'Đã hủy di chuyển', '#a0d8ff');
+        this.openMenu('pc');
+      }, 0x4a3a6a).container);
+      by2 += 44 * s;
+    } else {
+      c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, st.inParty(p.uid) ? 'Gửi vào PC (khỏi đội)' : 'Thêm vào đội', () => {
+        const ok = st.togglePartyMember(p.uid);
+        if (!ok) this.banner(st.inParty(p.uid) ? 'Cần giữ ít nhất 1 Pokémon trong đội' : 'Đội hình đã đủ 6', '#ff9080');
+        else this.banner(st.inParty(p.uid) ? `${def.name} vào đội` : `${def.name} đã gửi vào PC`, '#80ff90');
+        this.adv.applyParty(); this.adv.persist(); this.openMenu('pc');
+      }, 0x2f6a3a).container);
+      by2 += 44 * s;
+    }
+    c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, p.favorite ? '★ Bỏ yêu thích' : '☆ Đánh dấu yêu thích', () => {
+      st.toggleFavorite(p.uid); this.openMenu('pc');
+    }, p.favorite ? 0x6a5a2f : 0x2c3654).container);
+    by2 += 44 * s;
+    c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, 'Đổi biệt danh', () => {
+      void askText(this, 'Biệt danh (để trống = bỏ):', p.nickname ?? '', 20).then((raw) => {
+        if (raw != null) { st.renamePokemon(p.uid, raw); this.openMenu('pc'); }
+      });
+    }).container);
+  }
+
   private pokemonDetails(c: Phaser.GameObjects.Container, r: Rect, p: OwnedPokemon): void {
     const s = this.s, st = this.adv.state;
     const def = POKEMON.get(p.species)!;
@@ -865,7 +1048,8 @@ export class AdventureUI extends Phaser.Scene {
     const g = this.add.graphics();
     c.add(g);
     bar(g, r.x + 120 * s, r.y + 72 * s, r.w - 140 * s, 6 * s, levelProgress(p), 0x60a0ff);
-    c.add(text(this, r.x + 120 * s, r.y + 80 * s, `EXP ${p.exp} · nhóm tăng trưởng ${api?.growthRate ?? '?'} (PokéAPI)`, 14 * s, COLORS.dim));
+    const where = st.isActive(p.uid) ? '★ đang ở ngoài bóng' : st.pcLocation(p.uid) ? `PC Box ${st.pcLocation(p.uid)!.box + 1}` : st.inParty(p.uid) ? 'trong đội · trong bóng' : 'chưa xếp';
+    c.add(text(this, r.x + 120 * s, r.y + 80 * s, `EXP ${p.exp} · ${where} · nhóm tăng trưởng ${api?.growthRate ?? '?'} (PokéAPI)`, 14 * s, st.isActive(p.uid) ? '#ffe060' : COLORS.dim));
     const ind = individualOf(p);
     const stats = calcStats(def.baseStats, p.level, ind);
     const nat = NATURES[ind.nature];
@@ -910,6 +1094,7 @@ export class AdventureUI extends Phaser.Scene {
     const megas = megaFormsOf(p.species).map((m) => `${POKEMON.get(m.form)?.name} (cầm ${ITEM_DEFS.get(m.stone)?.name})`);
     c.add(text(this, r.x + 14 * s, r.y + r.h - 128 * s, `Trang bị: ${held ? held.name : 'không có'}`, 16 * s, held ? '#ffe080' : COLORS.dim));
     c.add(text(this, r.x + 14 * s, r.y + r.h - 98 * s, `Tiến hóa: ${evo.length ? evo.join(' · ') : 'dạng cuối'}${megas.length ? '   ·   Mega: ' + megas.join(', ') : ''}`, 14 * s, '#a0ffb0').setWordWrapWidth(r.w - 28 * s));
+    c.add(button(this, r.x + r.w - 270 * s, r.y + r.h - 116 * s, 86 * s, 32 * s, 'Dùng kẹo', () => void this.pickCandy(p.uid)).container);
     c.add(button(this, r.x + r.w - 160 * s, r.y + r.h - 116 * s, 120 * s, 32 * s, 'Trang bị', () => void this.pickEquip(p.uid)).container);
     if (p.held) c.add(button(this, r.x + r.w - 60 * s, r.y + r.h - 116 * s, 80 * s, 32 * s, 'Gỡ', () => { this.adv.unequipItem(p.uid); this.openMenu('party'); }, 0x6a3a2f).container);
     const inParty = st.inParty(p.uid);
@@ -938,6 +1123,99 @@ export class AdventureUI extends Phaser.Scene {
     const r = await this.adv.say(ITEM_DEFS.get(itemId)!.name, ['Cho Pokémon nào cầm?'], [...st.save.collection.map((c) => ({ label: `${POKEMON.get(c.species)!.name} Lv${c.level}${c.held ? ` (đang cầm ${ITEM_DEFS.get(c.held)?.name})` : ''}`, value: c.uid })), { label: 'Hủy', value: 'no' }]);
     if (r && r !== 'no') this.adv.equipItem(r, itemId);
     this.openMenu('bag');
+  }
+
+  /**
+   * Candy chooser for one Pokémon (from the party/PC detail). Lists only candies the bag actually has
+   * and that can still do something, then opens the quantity dialog.
+   */
+  private async pickCandy(uid: string): Promise<void> {
+    const st = this.adv.state, p = st.owned(uid);
+    this.closeMenu();
+    if (!p) return;
+    const list = CANDY_DEFS.filter((c) => st.item(c.id) > 0 && maxUsefulCandy(p, c.id) > 0);
+    if (!list.length) {
+      this.banner('Túi không có kẹo nào dùng được cho Pokémon này (hoặc đã đạt Lv100)', '#ff9080');
+      this.openMenu('party');
+      return;
+    }
+    const r = await this.adv.say('Dùng kẹo', [`${POKEMON.get(p.species)?.name} Lv${p.level} — chọn loại kẹo:`], [
+      ...list.map((c) => ({ label: `${c.name} ×${st.item(c.id)} — ${c.desc}`, value: c.id })),
+      { label: 'Hủy', value: 'no' },
+    ]);
+    if (r && r !== 'no') this.openCandyDialog(uid, r, 'party');
+    else this.openMenu('party');
+  }
+
+  private async pickCandyTarget(candyId: string): Promise<void> {
+    const st = this.adv.state, def = candyDef(candyId);
+    this.closeMenu();
+    if (!def) return;
+    const mons = [...st.save.collection].sort((a, b) => Number(st.inParty(b.uid)) - Number(st.inParty(a.uid)) || b.level - a.level);
+    if (!mons.length) { this.banner('Chưa có Pokémon nào', '#ff9080'); this.openMenu('bag'); return; }
+    const r = await this.adv.say(def.name, [`Túi còn ${st.item(candyId)}. Dùng cho Pokémon nào?`], [
+      ...mons.map((p) => ({
+        label: `${POKEMON.get(p.species)?.name} Lv${p.level} · EXP ${p.exp}${maxUsefulCandy(p, candyId) > 0 ? '' : ' · tối đa/không dùng được'}`,
+        value: p.uid,
+      })),
+      { label: 'Hủy', value: 'no' },
+    ]);
+    if (r && r !== 'no') this.openCandyDialog(r, candyId, 'bag');
+    else this.openMenu('bag');
+  }
+
+  private closeCandyDialog(): void {
+    this.candyDialog?.destroy();
+    this.candyDialog = null;
+  }
+
+  /** Quantity + live preview. The actual EXP/level math always comes from core/candy (server-shared). */
+  private openCandyDialog(uid: string, candyId: string, from: 'bag' | 'party', qty = 1): void {
+    const st = this.adv.state, p = st.owned(uid), def = candyDef(candyId);
+    if (!p || !def) return;
+    this.closeMenu();
+    this.closeCandyDialog();
+    const max = Math.min(st.item(candyId), maxUsefulCandy(p, candyId));
+    const n = Phaser.Math.Clamp(Math.floor(qty), max > 0 ? 1 : 0, Math.max(1, max));
+    const preview = previewCandy(p, candyId, n);
+    const { width: W, height: H } = this.scale;
+    const s = this.s;
+    const c = this.add.container(0, 0).setDepth(130);
+    this.candyDialog = c;
+    this.adv.modal = true;
+    c.add(this.add.rectangle(0, 0, W, H, 0x05060c, 0.82).setOrigin(0).setInteractive());
+    const pw = Math.min(W - 24, 620 * s), ph = Math.min(H - 24, 430 * s);
+    const x0 = (W - pw) / 2, y0 = (H - ph) / 2;
+    c.add(panel(this, x0, y0, pw, ph, def.color, 0x1a1f30, 1));
+    c.add(this.add.image(x0 + 42 * s, y0 + 42 * s, itemIconKey(this, candyId)).setScale(2.4 * s));
+    c.add(text(this, x0 + 70 * s, y0 + 22 * s, def.name, 26 * s, '#ffffff'));
+    c.add(text(this, x0 + 70 * s, y0 + 52 * s, `Túi còn ${st.item(candyId)} · dùng được tối đa ${max}`, 15 * s, COLORS.dim));
+    c.add(button(this, x0 + pw - 30 * s, y0 + 30 * s, 40 * s, 34 * s, '✕', () => this.closeCandyDialog(), 0x6a2f2f).container);
+
+    const ik = p.shiny ? shinyKey(p.species) : p.species;
+    c.add(this.add.image(x0 + pw / 2, y0 + 116 * s, ik).setScale(fitScale(this, ik, 92 * s)));
+    c.add(text(this, x0 + pw / 2, y0 + 164 * s, `${POKEMON.get(p.species)?.name} Lv${p.level} · EXP ${p.exp}`, 20 * s).setOrigin(0.5));
+    c.add(text(this, x0 + pw / 2, y0 + 192 * s, `→ Lv${preview.afterLevel} · +${preview.expGained} EXP${preview.levels ? ` · +${preview.levels} cấp` : ''}${def.kind === 'rare' ? ' · +1 cấp / viên' : ''}`, 18 * s, '#ffe060').setOrigin(0.5));
+
+    const qy = y0 + 236 * s;
+    c.add(button(this, x0 + pw / 2 - 120 * s, qy, 44 * s, 36 * s, '−', () => this.openCandyDialog(uid, candyId, from, Math.max(1, n - 1)), 0x2c3654).container);
+    c.add(text(this, x0 + pw / 2, qy, `×${n}`, 28 * s, '#ffffff').setOrigin(0.5));
+    c.add(button(this, x0 + pw / 2 + 120 * s, qy, 44 * s, 36 * s, '+', () => this.openCandyDialog(uid, candyId, from, Math.min(max, n + 1)), 0x2c3654).container);
+    c.add(button(this, x0 + pw / 2, qy + 46 * s, 140 * s, 32 * s, `Tất cả (${max})`, () => this.openCandyDialog(uid, candyId, from, Math.max(1, max)), 0x4a5a8a).container);
+    c.add(button(this, x0 + pw / 2, y0 + ph - 50 * s, 220 * s, 44 * s, max > 0 ? `Dùng ${n} ${def.name}` : 'Không thể dùng', () => {
+      if (max <= 0) return;
+      const res = this.adv.useCandy(uid, candyId, n);
+      this.closeCandyDialog();
+      if (res.used > 0) {
+        audio.play('levelup');
+        this.banner(`${def.name} ×${res.used}: +${res.expGained} EXP · Lv${res.afterLevel}${res.evolutions.length ? ' · tiến hóa sẵn sàng!' : ''}`, '#ffe060');
+      } else {
+        this.banner('Không có tác dụng (đã đạt giới hạn cấp)', '#ff9080');
+      }
+      if (res.evolutions.length) return; // let AdventureScene run the evolution cinematic
+      this.openMenu(from);
+    }, max > 0 ? 0x2f6a3a : 0x3a3a4a).container);
+    c.add(text(this, x0 + pw / 2, y0 + ph - 18 * s, 'Mẹo: giữ nhiều viên rồi dùng một lần — không cần bấm từng viên.', 13 * s, COLORS.dim).setOrigin(0.5));
   }
 
   private async pickEvTarget(itemId: string): Promise<void> {
@@ -1065,6 +1343,7 @@ export class AdventureUI extends Phaser.Scene {
       else if (it.kind === 'stone') { label = 'Dùng'; fn = () => { this.closeMenu(); void this.adv.useStone(id); }; }
       else if (it.kind === 'held') { label = 'Trang bị'; fn = () => void this.pickEquipTarget(id); }
       else if (it.kind === 'ev') { label = 'Dùng'; fn = () => void this.pickEvTarget(id); }
+      else if (it.kind === 'candy') { label = 'Dùng'; fn = () => void this.pickCandyTarget(id); }
       if (fn) c.add(button(this, x + cw - 62 * s, y + rh / 2, 110 * s, 32 * s, label, fn).container);
     });
     if (pages > 1) {

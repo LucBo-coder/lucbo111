@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.14.0 — Sảnh Online, thử thách co-op & server tài khoản
+
+- Sảnh **Chơi online** chung: tạo/vào phòng co-op Sinh tồn, Phiêu lưu, Việt Nam Odyssey; chọn ô lưu và Pokémon khởi đầu; truy cập PvP hoặc Thế giới online.
+- Sáu thử thách co-op có mục tiêu riêng, đồng bộ tiến độ và đồng hồ, thưởng xu cho cả hai, không tiến triển lúc tạm dừng hoặc chưa có đồng đội. Sự kiện khám phá chia thêm chiến lợi phẩm cho khách.
+- Server WebSocket/SQLite: tài khoản, lưu v7, một Pokémon hoạt động, PC, kẹo, chat, bạn bè, nhóm, Alpha chung. Giao diện desktop/mobile độc lập với save offline.
+- Tám sự kiện server luân phiên: bảo vệ rừng tràm, bão Đất Mũi, di cư Alpha, giữ dòng sông, tiếp sức sấm sét, phòng tuyến thép, tuần tra đêm, tiếng gọi huyền thoại; mục tiêu theo sát thương/số đòn/số Alpha. Alpha hồi sinh trong sự kiện dùng loài tương ứng.
+- Sửa lịch sự kiện và hồi sinh Alpha độc lập từng vùng; ghi đóng góp mỗi đòn, trao thưởng một lần và gửi dữ liệu túi mới về người chơi. Sửa vị trí đăng nhập, hiệu chỉnh di chuyển và phát lại thao tác cũ.
+- **Một Pokémon ngoài sân do server giữ**: hồi chiêu đổi 1,5 s, trạng thái `summoning → active → recalling`, không tấn công khi đang gọi ra; đổi = thu hồi rồi gọi; người xung quanh thấy hoạt ảnh ném bóng / tia thu hồi (`petFx`).
+- **EXP khi hạ Alpha** cho Pokémon đã đánh (×1,5), thưởng nhóm +10 %/đồng đội cũng đã đánh, tối đa +30 %; không vượt EXP Lv100.
+- **Hộp thoại kẹo**: chọn loại, ×1/×5/×10/Max/tự nhập, xem EXP và cấp dự kiến, xác nhận; tiến hóa sau khi lên cấp (`pokemon.evolve`, server kiểm tra lại).
+- **SỰ KIỆN SẮP DIỄN RA** 60 s trước mỗi chu kỳ 10 phút (độ khó, cấp gợi ý, phần thưởng, đếm ngược); bảng sự kiện riêng từng vùng (Cà Mau 8, An Giang 4, Cần Thơ 3), chọn theo trọng số, không lặp liền; theo dõi số người tham gia và đóng góp của chính mình.
+- **Xã hội**: nhắn riêng `/w` giữa bạn bè, biểu cảm (vẫy/cổ vũ/ngồi/chỉ), menu khi chạm người chơi khác (kết bạn, mời nhóm, nhắn, chặn, báo cáo), từ chối lời mời, trao trưởng nhóm, giải tán, trưởng nhóm rời thì chuyển quyền, chống mời liên tục; bảng nhóm hiện Pokémon, HP, vùng, khoảng cách.
+- **Kênh** (30 người/kênh/vùng) và **interest management**: chỉ nhận người chơi trong bán kính 1600 px cùng kênh; presence gửi delta thay vì cả danh sách; Alpha chỉ gửi 8 người đóng góp cao nhất. Load test 30 bot: 204 → 103 KB/s mỗi client.
+- **Tự kết nối lại** bằng token khi rớt mạng (giữ thế giới đang mở); đăng nhập nơi khác đóng phiên cũ mà không tranh lại. Nội suy vị trí người chơi khác.
+- `scripts/load-server.mjs` (10/20/30/50 bot, CPU/RAM/tick lag/băng thông/RTT/độ trễ giao dịch), `server/.env.example`, tài liệu kiến trúc + giao thức + triển khai trong ONLINE_SERVER.md. Giao thức server lên v2.
+- Test mới: `tests/server_v7.test.ts` (10 test, nhiều client `ws` thật); e2e thế giới server thêm hộp thoại kẹo, hồi chiêu đổi, biểu cảm, nhóm, rớt mạng → tự kết nối lại.
+- **Máy PC trong bản đồ online**: đứng trước cửa Trung tâm Pokémon / phòng thí nghiệm, bấm E. Hộp thoại PC kiểu GBA: 16 box × 30 ô, đổi box bằng nút / lăn chuột / `[` `]`, tìm, lọc (khóa / Shiny / hệ), sắp xếp, chi tiết (IV, EV, chiêu, tính cách, đặc tính, vật phẩm), rút / gửi, khóa ★, biệt danh, di chuyển ô / box, đổi tên box; điều khiển bằng phím. Server từ chối thao tác PC ở xa máy PC (`NOT_AT_PC`).
+- **Ba vùng online + cổng**: An Giang và Cần Thơ bật mặc định, Alpha riêng từng vùng; đổi vùng chỉ khi đứng ở cổng (`travel`), cổng huy hiệu mở khi đội đạt Lv12 / Lv16; `enter` không còn dịch chuyển sang vùng khác.
+- **Khôi phục tài khoản**: mã khôi phục một lần khi đăng ký (chỉ lưu bản băm), *Quên mật khẩu?* đặt lại mật khẩu + thu hồi mọi phiên + cấp mã mới; đổi mật khẩu, tạo mã mới, đăng xuất mọi thiết bị (migration `003_account_recovery.sql`).
+- Cửa hàng: Poké Ball trở lại vị trí #1, kẹo EXP xếp sau thuốc hồi phục.
+- Sửa: đám đông Pokémon hoang dã không còn đẩy nhau xuống nước / vào tường (đẩy tách nhóm tôn trọng địa hình).
+- E2E cập nhật theo quy tắc một Pokémon ra trận (gọi ra / thu hồi / đổi, Mega, boss).
+- CI dùng Node 24 để kiểm tra server SQLite cùng build và unit tests. GitHub Pages phục vụ client; backend tài khoản cần máy chủ Node riêng (ONLINE_SERVER.md).
+
 ## Chưa phát hành — hồ sơ người chơi & co-op PvE
 
 ### Sảnh chính / hồ sơ người chơi

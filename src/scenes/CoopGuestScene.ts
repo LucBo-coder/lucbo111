@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { coopEventLabel } from '../core/coopEvents';
 import { CoopMirror, coopSession, type CoopSnapshot } from '../net/coop';
 import { applyCoopLoot, type CoopLoot } from '../net/coopRewards';
 import { net } from '../net/session';
@@ -150,7 +151,7 @@ export class CoopGuestScene extends Phaser.Scene {
     this.renderer_?.render(delta);
     const w = this.mirror.world, s = this.snapshot;
     const status = now - this.received > 3000 ? 'Đang chờ chủ phòng / chuyển bản đồ…' : s.paused || s.state === 'levelup' ? 'Chủ phòng đang tạm dừng / chọn nâng cấp' : w.trainer.hp <= 0 ? 'Đã gục — đồng đội đứng gần 3 giây để cứu' : `${Math.ceil(w.trainer.hp)}/${w.trainer.maxHp} HP · Lv${w.level} · ${w.kills} hạ gục`;
-    const loot = this.time.now < this.lootUntil ? `\n${this.lootLine}` : '';
+    const loot = `\n${coopEventLabel(s.challenge)}` + (this.time.now < this.lootUntil ? `\n${this.lootLine}` : '');
     this.hud.setText(`CO-OP · ${net.peerName} · ${net.rtt} ms\n${status}\nWASD / kéo bên trái: di chuyển · Chạm quái: tấn công\nNhiệm vụ thuộc chủ phòng · chiến lợi phẩm và xu được chia cho bạn${loot}`);
   }
   exit(): void {
