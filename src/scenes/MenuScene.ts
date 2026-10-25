@@ -12,7 +12,8 @@ import { Campaign, newAdventure, QualitySetting, SlotSummary, starterEntry, surv
 import { ITEM_DEFS } from '../core/evolution';
 import { buyUpgrade, nextCost, PERM_UPGRADES, upgradeLevel } from '../core/permanentUpgrades';
 import { regionDef } from '../core/map/regionDefs';
-import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
+import { net } from '../net/session';
+import { askText, button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
 
 import { GAME_VERSION } from '../version';
 export { GAME_VERSION };
@@ -37,6 +38,7 @@ export class MenuScene extends Phaser.Scene {
 
   create(): void {
     this.view = 'home';
+    net.myName = saveStore.playerName;
     this.build();
     this.scale.on('resize', this.rebuild, this);
     this.events.once('shutdown', () => this.scale.off('resize', this.rebuild, this));
@@ -80,6 +82,15 @@ export class MenuScene extends Phaser.Scene {
     gameModes.start(this, 'adventure', { map: 'valley' });
   }
 
+  /** Main-lobby rename (also used by e2e). Stored device-wide and mirrored to the active slot. */
+  async editPlayerName(): Promise<void> {
+    const v = await askText(this, 'Tên người chơi (bạn bè sẽ thấy khi online)', saveStore.playerName, 16);
+    if (v == null) return;
+    const name = await saveStore.setPlayerName(v);
+    net.myName = name;
+    this.rebuild();
+  }
+
   /** Opens the slot screen (Load Game / New Game). */
   /** Campaign a "new game" from the slot screen starts */
   private newCampaign: Campaign = 'classic';
@@ -99,7 +110,7 @@ export class MenuScene extends Phaser.Scene {
   private build(): void {
     const { width: W, height: H } = this.scale;
     // portrait phones lay out in one column: scale against a narrow reference instead of 960 px
-    const s = W < H ? Math.min(W / 470, H / 860, 1.4) : Math.min(W / 960, H / 640, 1.6);
+    const s = W < H ? Math.min(W / 470, H / 995, 1.4) : Math.min(W / 960, H / 640, 1.6);
     this.cameras.main.setBackgroundColor(COLORS.bg);
     this.buildBackdrop(W, H, s);
     this.buildLogo(W, s);
@@ -195,16 +206,51 @@ export class MenuScene extends Phaser.Scene {
     text(this, x + cw / 2, y + 186 * s, o.stats, 15 * s, o.statColor).setOrigin(0.5, 0).setWordWrapWidth(cw - 32 * s).setAlign('center');
   }
 
+  /** Main-lobby player card: avatar, name, current-save summary and the rename action. */
+  private buildPlayerBar(x: number, y: number, w: number, h: number, s: number, portrait: boolean): void {
+    const sv = saveStore.data;
+    panel(this, x, y, w, h, 0xffcc33, 0x232a3e);
+    // avatar: trainer sprite inside a gold ring
+    const r = Math.min(22 * s, h / 2 - 5 * s), ax = x + 10 * s + r, ay = y + h / 2;
+    const av = this.add.graphics();
+    av.fillStyle(0x0c0f1a, 1).fillCircle(ax, ay, r);
+    av.lineStyle(2 * s, 0xffd040, 1).strokeCircle(ax, ay, r);
+    av.lineStyle(1 * s, 0xffffff, 0.18).strokeCircle(ax, ay, r - 3 * s);
+    if (this.textures.exists('trainer_sheet')) {
+      const tr = this.add.image(ax, ay - 1 * s, 'trainer_sheet', 0).setScale(2.2 * s);
+      this.tweens.add({ targets: tr, y: tr.y - 2 * s, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+    }
+    const bw = Math.min(132 * s, w * 0.34), bh = Math.min(36 * s, h - 18 * s);
+    button(this, x + w - 10 * s - bw / 2, ay, bw, bh, '✎ Đổi tên', () => void this.editPlayerName(), 0x3a4260);
+    const nx = x + 16 * s + r * 2 + 10 * s;
+    const tw = w - (nx - x) - bw - 24 * s;
+    text(this, nx, y + 6 * s, saveStore.playerName, 25 * s, '#ffe680').setWordWrapWidth(tw);
+    const adv = sv.adventure;
+    const parts = [`Ô ${saveStore.slot}`, `${sv.collection.length} Pokémon`];
+    if (!portrait) {
+      parts.push(`Pokédex ${sv.pokedex.caught.length}`);
+      if (adv?.started) parts.push(fmtTime(adv.playTime));
+    }
+    parts.push(`${sv.currency} xu`);
+    if (!portrait && sv.pvp) parts.push(`PvP ${sv.pvp.wins}–${sv.pvp.losses}`);
+    text(this, nx, y + 34 * s, parts.join(' · '), 14 * s, '#a8b8d8').setWordWrapWidth(tw);
+  }
+
   private buildHome(W: number, H: number, s: number): void {
     const sv = saveStore.data;
     const portrait = W < H;
     const cw = portrait ? Math.min(W - 24, 440 * s) : 390 * s, ch = 280 * s;
     const gap = 28 * s;
-    const top = 124 * s;
+    // Player card (device profile) sits between the subtitle and the mode cards.
+    const barW = portrait ? W - 24 : cw * 2 + gap, barH = 60 * s;
+    let n0 = this.children.length;
+    this.buildPlayerBar((W - barW) / 2, 106 * s, barW, barH, s, portrait);
+    this.slideIn(n0, 0, 16);
+    const top = 106 * s + barH + 12 * s;
     const pos = (i: number) => portrait ? { x: (W - cw) / 2, y: top + i * (ch + gap) } : { x: W / 2 - cw - gap / 2 + i * (cw + gap), y: top };
 
     // SURVIVOR card
-    let n0 = this.children.length;
+    n0 = this.children.length;
     const a = pos(0);
     this.modeCard(a.x, a.y, cw, ch, s, {
       title: 'SINH TỒN', edge: 0xff7040, fill: 0x2a1c1c, band: 0x7a3020, color: '#ffc090',

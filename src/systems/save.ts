@@ -8,8 +8,21 @@ const META_KEY = 'meta';
 export const SLOT_COUNT = 3;
 const slotKey = (n: number) => `slot-${n}`;
 
+export const PLAYER_NAME_MAX = 16;
+export const DEFAULT_PLAYER_NAME = 'Huấn luyện viên';
+
+/** Player identity shown to other players online. Device-wide, so it survives new games and empty slots. */
+export interface PlayerProfile { name: string }
+
+/** Single-line, trimmed, control characters removed; an empty result falls back to the default name. */
+export function cleanPlayerName(raw: unknown): string {
+  const s = typeof raw === 'string' ? raw : '';
+  const clean = s.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, PLAYER_NAME_MAX).trim();
+  return clean || DEFAULT_PLAYER_NAME;
+}
+
 /** Global (per-device) data: which slot is active + settings shared by every slot. */
-interface SaveMeta { activeSlot: number; settings: SaveData['settings']; legacyMigrated?: boolean }
+interface SaveMeta { activeSlot: number; settings: SaveData['settings']; profile?: PlayerProfile; legacyMigrated?: boolean }
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -28,9 +41,25 @@ class SaveStore {
   data: SaveData = defaultSave();
   /** active slot (1-based) */
   slot = 1;
+  /** Player identity shared by every slot (name survives NEW GAME; older saves migrate their slot name). */
+  profile: PlayerProfile = { name: DEFAULT_PLAYER_NAME };
   private db: IDBDatabase | null = null;
   /** memory fallback when IndexedDB is unavailable */
   private mem = new Map<string, unknown>();
+
+  /** Name to show online — always a clean 1–16 character string. */
+  get playerName(): string {
+    return cleanPlayerName(this.profile.name);
+  }
+
+  /** Saves the device-wide name and mirrors it into the active slot (for older builds / exports). */
+  async setPlayerName(raw: string): Promise<string> {
+    const name = cleanPlayerName(raw);
+    this.profile = { ...this.profile, name };
+    this.data.playerName = name;
+    await this.save();
+    return name;
+  }
 
   private async get(key: string): Promise<unknown> {
     if (!this.db) return this.mem.get(key);
@@ -83,6 +112,9 @@ class SaveStore {
       const settings = { ...defaultSave().settings, ...meta.settings };
       this.data = raw ? migrate(raw) : freshSave(settings);
       this.data.settings = settings;
+      // migrate the name stored in older per-slot saves to the device profile
+      this.profile = { name: cleanPlayerName(meta.profile?.name ?? this.data.playerName) };
+      this.data.playerName = this.profile.name;
     } catch (e) {
       console.warn('[save] load failed, starting empty', e);
       this.data = defaultSave();
@@ -93,12 +125,13 @@ class SaveStore {
   /** Writes the active slot (only once it holds progress — toggling a setting never fills an empty slot) + the shared settings. */
   async save(next: SaveData = this.data): Promise<void> {
     this.data = next;
+    next.playerName = this.profile.name;
     try {
       if (!isEmptySave(next)) {
         next.savedAt = Date.now();
         await this.put(slotKey(this.slot), next);
       }
-      await this.put(META_KEY, { activeSlot: this.slot, settings: next.settings, legacyMigrated: true } satisfies SaveMeta);
+      await this.put(META_KEY, { activeSlot: this.slot, settings: next.settings, profile: this.profile, legacyMigrated: true } satisfies SaveMeta);
     } catch (e) {
       console.warn('[save] write failed', e);
     }
@@ -124,7 +157,8 @@ class SaveStore {
     this.slot = n;
     this.data = raw ? migrate(raw) : freshSave(settings);
     this.data.settings = settings;
-    await this.put(META_KEY, { activeSlot: n, settings, legacyMigrated: true } satisfies SaveMeta).catch(() => undefined);
+    this.data.playerName = this.profile.name;
+    await this.put(META_KEY, { activeSlot: n, settings, profile: this.profile, legacyMigrated: true } satisfies SaveMeta).catch(() => undefined);
     return this.data;
   }
 
@@ -136,14 +170,18 @@ class SaveStore {
     const settings = this.data.settings;
     this.slot = n;
     this.data = freshSave(settings);
+    this.data.playerName = this.profile.name;
     await this.del(slotKey(n)).catch(() => undefined);
-    await this.put(META_KEY, { activeSlot: n, settings, legacyMigrated: true } satisfies SaveMeta).catch(() => undefined);
+    await this.put(META_KEY, { activeSlot: n, settings, profile: this.profile, legacyMigrated: true } satisfies SaveMeta).catch(() => undefined);
     return this.data;
   }
 
   async deleteSlot(n: number): Promise<void> {
     await this.del(slotKey(n)).catch(() => undefined);
-    if (n === this.slot) this.data = freshSave(this.data.settings);
+    if (n === this.slot) {
+      this.data = freshSave(this.data.settings);
+      this.data.playerName = this.profile.name;
+    }
   }
 }
 

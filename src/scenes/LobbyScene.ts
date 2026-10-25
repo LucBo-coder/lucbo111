@@ -43,7 +43,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   create(): void {
-    net.myName = saveStore.data.playerName ?? net.myName;
+    net.myName = saveStore.playerName;
     (window as unknown as { __lobby: LobbyScene }).__lobby = this;
     if (this.view === 'room') this.openHandshake();
     this.offStatus = net.onStatus(() => this.rebuild());
@@ -175,11 +175,9 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   async editName(): Promise<void> {
-    const v = await askText(this, 'Tên của bạn khi chơi online', net.myName, 16);
+    const v = await askText(this, 'Tên người chơi (bạn bè sẽ thấy khi online)', saveStore.playerName, 16);
     if (v == null) return;
-    net.myName = v.trim().slice(0, 16) || 'Huấn luyện viên';
-    saveStore.data.playerName = net.myName;
-    void saveStore.save();
+    net.myName = await saveStore.setPlayerName(v);
     this.rebuild();
   }
 
@@ -198,15 +196,25 @@ export class LobbyScene extends Phaser.Scene {
   private buildHome(W: number, H: number, s: number): void {
     const pw = Math.min(W - 20, 760 * s), x0 = (W - pw) / 2, y0 = 80 * s;
     panel(this, x0, y0, pw, H - y0 - 14 * s);
-    text(this, x0 + 20 * s, y0 + 16 * s, `Tên: ${net.myName}`, 24 * s, '#ffffff');
-    button(this, x0 + pw - 90 * s, y0 + 30 * s, 150 * s, 36 * s, 'Đổi tên', () => void this.editName());
-    const r = saveStore.data.pvp;
-    text(this, x0 + 20 * s, y0 + 54 * s, r ? `Thành tích online: ${r.wins} thắng · ${r.losses} thua · ${r.draws} hòa` : 'Chưa có trận online nào', 18 * s, '#c8d4f0');
+    // player card: avatar + name + online record, with the rename action
+    const ar = 20 * s, ax = x0 + 14 * s + ar, ay = y0 + 38 * s;
+    const av = this.add.graphics();
+    av.fillStyle(0x0c0f1a, 1).fillCircle(ax, ay, ar);
+    av.lineStyle(2 * s, 0xffd040, 1).strokeCircle(ax, ay, ar);
+    if (this.textures.exists('trainer_sheet')) this.add.image(ax, ay - 1 * s, 'trainer_sheet', 0).setScale(2 * s);
+    const nx = x0 + 14 * s + ar * 2 + 8 * s;
+    text(this, nx, y0 + 10 * s, saveStore.playerName, 26 * s, '#ffe680');
+    button(this, x0 + pw - 90 * s, ay, 150 * s, 36 * s, '✎ Đổi tên', () => void this.editName());
+    const r2 = saveStore.data.pvp;
+    text(this, nx, y0 + 42 * s,
+      r2 ? `Thành tích online: ${r2.wins} thắng · ${r2.losses} thua · ${r2.draws} hòa · Ô ${saveStore.slot} · ${saveStore.data.collection.length} Pokémon`
+        : `Chưa có trận online nào · Ô ${saveStore.slot} · ${saveStore.data.collection.length} Pokémon`,
+      17 * s, '#c8d4f0').setWordWrapWidth(pw - (nx - x0) - 190 * s);
     const bx = W / 2, bw = Math.min(pw - 40 * s, 420 * s);
     button(this, bx, y0 + 120 * s, bw, 54 * s, '＋ Tạo phòng', () => void this.createRoom(), 0x2f6a3a);
     button(this, bx, y0 + 184 * s, bw, 54 * s, '→ Vào phòng bằng mã', () => void askText(this, 'Nhập mã phòng (6 ký tự)', '', 6).then((c) => { if (c) void this.joinRoom(c); }), 0x2f5a8a);
     button(this, bx, y0 + 248 * s, bw, 54 * s, '⚔ Luyện tập với máy', () => this.go('practice'), 0x6a4a2a);
-    const hist = (r?.history ?? []).slice(0, 5).map((h) => `${h.result === 'win' ? 'Thắng' : h.result === 'loss' ? 'Thua' : 'Hòa'} · ${h.opp}${h.online ? '' : ' (luyện tập)'} · ${new Date(h.at).toLocaleDateString('vi-VN')}`);
+    const hist = (r2?.history ?? []).slice(0, 5).map((h) => `${h.result === 'win' ? 'Thắng' : h.result === 'loss' ? 'Thua' : 'Hòa'} · ${h.opp}${h.online ? '' : ' (luyện tập)'} · ${new Date(h.at).toLocaleDateString('vi-VN')}`);
     text(this, x0 + 20 * s, y0 + 300 * s,
       'Kết nối trực tiếp giữa hai trình duyệt (WebRTC, qua máy chủ mai mối công cộng của PeerJS). Một số mạng (4G, mạng công ty) có thể chặn kết nối trực tiếp.\n' +
       'Chủ phòng chạy trận đấu; đội và cá thể (IV/EV/tính cách/trang bị) lấy từ Bộ sưu tập của ô lưu đang mở.\n' +

@@ -25,13 +25,13 @@ export function openCoopMenu(ui: Phaser.Scene, game: AdventureScene | GameScene)
   const label = text(ui, W / 2, top + 20, 'CO-OP · 2 NGƯỜI', 28, '#ffe080').setOrigin(0.5, 0);
   layer.add(label);
   const note = text(ui, W / 2 - width / 2 + 20, top + 65,
-    'Cùng đánh quái và boss. Khách mang tối đa 3 Pokémon; ô lưu riêng được giữ nguyên.\nNhiệm vụ, bắt Pokémon và phần thưởng thuộc chủ phòng.\nĐứng gần đồng đội bị gục 3 giây để cứu. Đi quá xa sẽ được đưa về cạnh chủ phòng.', 16, '#c8d4f0').setWordWrapWidth(width - 40);
+    'Cùng đánh quái và boss. Khách mang tối đa 3 Pokémon; ô lưu riêng được giữ nguyên.\nNhiệm vụ và cờ cốt truyện thuộc chủ phòng; chiến lợi phẩm (Pokémon bắt được, đồ, xu) được chia cho cả hai.\nĐứng gần đồng đội bị gục 3 giây để cứu. Đi quá xa sẽ được đưa về cạnh chủ phòng.', 16, '#c8d4f0').setWordWrapWidth(width - 40);
   layer.add(note);
   let busy = false;
   const close = () => { if (!busy) layer.destroy(); };
   layer.add(button(ui, W / 2, top + height - 34, width - 40, 40, 'Đóng', close).container);
   if (coopSession.active || net.connected || net.status === 'hosting') {
-    note.setText(`Phòng ${net.code || '—'} · ${net.peerName || 'Đang chờ bạn tham gia'}\nChủ phòng tiếp tục chơi sau khi đóng bảng này.\nNhiệm vụ và phần thưởng được lưu cho chủ phòng.`);
+    note.setText(`Phòng ${net.code || '—'} · ${net.peerName || 'Đang chờ bạn tham gia'}\nBạn là ${net.role === 'host' ? 'chủ phòng' : 'khách'} · chơi tiếp sau khi đóng bảng này.\nChiến lợi phẩm được chia cho cả hai; nhiệm vụ thuộc chủ phòng.`);
     layer.add(button(ui, W / 2, top + height - 88, width - 40, 40, 'Rời / hủy phòng', () => {
       coopSession.active = false; net.leave(); game.coopHost?.destroy(); game.coopHost = null; layer.destroy();
     }, 0x6a2f2f).container);
@@ -41,12 +41,12 @@ export function openCoopMenu(ui: Phaser.Scene, game: AdventureScene | GameScene)
     if (busy) return;
     busy = true;
     try {
-      net.myName = saveStore.data.playerName ?? net.myName;
+      net.myName = saveStore.playerName;
       if (host) {
         const code = await net.host();
         coopSession.active = true;
         game.startCoopHost();
-        note.setText(`Mã phòng: ${code}\nGửi mã này cho bạn của bạn.\nĐóng bảng và tiếp tục chơi để chờ đồng đội.\nNhiệm vụ, bắt Pokémon và phần thưởng được lưu cho chủ phòng.`);
+        note.setText(`Mã phòng: ${code}\nGửi mã này cho bạn của bạn.\nĐóng bảng và tiếp tục chơi để chờ đồng đội.\nChiến lợi phẩm được chia cho cả hai; nhiệm vụ thuộc chủ phòng.`);
         controls.forEach(b => b.setVisible(false));
       } else {
         const code = await askText(ui, 'Mã phòng co-op (tham gia sẽ rời lượt chơi hiện tại)', '', 6);

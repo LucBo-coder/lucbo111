@@ -93,7 +93,7 @@ export interface SaveData {
   savedAt?: number;
   /** Online duels of this slot (optional: older saves have none) */
   pvp?: PvpRecord;
-  /** Name shown to other players online */
+  /** Name shown to other players online (mirrored from the device-wide profile in SaveStore) */
   playerName?: string;
 }
 
