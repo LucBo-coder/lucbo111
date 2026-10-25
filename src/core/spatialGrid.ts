@@ -10,8 +10,9 @@ export class SpatialGrid<T extends Positioned> {
 
   constructor(readonly cellSize: number) {}
 
+  /** 16 bits per axis packed into an int32: V8 keeps it a small integer (fast Map hashing), unlike the old ~2^32 keys */
   private key(cx: number, cy: number): number {
-    return (cx + 32768) * 65536 + (cy + 32768);
+    return ((cx & 0xffff) << 16) | (cy & 0xffff);
   }
 
   clear(): void {

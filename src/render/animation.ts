@@ -129,13 +129,19 @@ export function frameSize(rows: string[]): number {
 /** Stable feet from the base art, including its internal transparent padding.
  * Reused for every derived frame so squash, lean and recoil retain their authored motion. */
 export function creatureFootAnchor(key: string): { x: number; y: number } {
+  // asked for every unit on every frame: scanning the drawing once per key is enough
+  let a = footCache.get(key);
+  if (a) return a;
   const def = REGISTRY[key];
-  if (!def) return { x: 0.5, y: 0.5 };
+  if (!def) return { x: 0.5, y: 0.5 }; // not cached: a lazily registered drawing may appear later
   const f = frameSize(def.rows);
   let bottom = def.rows.length;
   while (bottom > 0 && !/[^.]/.test(def.rows[bottom - 1])) bottom--;
-  return { x: 0.5, y: (f - PAD - def.rows.length + bottom + (def.outline ? 1 : 0)) / f };
+  a = { x: 0.5, y: (f - PAD - def.rows.length + bottom + (def.outline ? 1 : 0)) / f };
+  footCache.set(key, a);
+  return a;
 }
+const footCache = new Map<string, { x: number; y: number }>();
 
 /** Builds atlas textures + Phaser animations for every creature drawing. Idempotent. */
 /** Builds sheets for creatures that must exist at boot; the rest are built on first use (lazyCreatures.ts). */

@@ -91,6 +91,27 @@ export interface SaveData {
   adventure: AdventureSave | null;
   /** ms timestamp of the last write of this slot */
   savedAt?: number;
+  /** Online duels of this slot (optional: older saves have none) */
+  pvp?: PvpRecord;
+  /** Name shown to other players online */
+  playerName?: string;
+}
+
+export interface PvpRecord {
+  wins: number;
+  losses: number;
+  draws: number;
+  /** newest first, at most 20 */
+  history: { opp: string; result: 'win' | 'loss' | 'draw'; rules: string; at: number; online: boolean; note?: string }[];
+}
+
+/** Records a finished duel (practice duels against the computer are not counted in wins/losses). */
+export function recordDuel(save: SaveData, e: PvpRecord['history'][number]): PvpRecord {
+  const r = (save.pvp ??= { wins: 0, losses: 0, draws: 0, history: [] });
+  if (e.online) { if (e.result === 'win') r.wins++; else if (e.result === 'loss') r.losses++; else r.draws++; }
+  r.history.unshift(e);
+  r.history.length = Math.min(r.history.length, 20);
+  return r;
 }
 
 export const DEFAULT_UNLOCKED = ['charmander', 'squirtle', 'bulbasaur'];

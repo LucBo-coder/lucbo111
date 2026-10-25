@@ -6,11 +6,13 @@ Fan-made Pokémon game (Phaser 3 + TypeScript) với 2 chế độ:
 
 Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.
 
+**Online** (0.13.0): menu chính → *⚔ Đấu online* — tạo phòng / vào bằng mã 6 ký tự, đấu đội thời gian thực; hoặc trong Phiêu lưu → Cài đặt → *Chơi online cùng bạn* để đi chung thế giới và thách đấu nhau. Kết nối WebRTC trực tiếp giữa hai trình duyệt (PeerJS), không cần server riêng. Thêm `?net=local` để chơi 2 tab trên cùng máy.
+
 ```bash
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + build production vào dist/
-npm test           # 260 unit test (Vitest)
+npm test           # 278 unit test (Vitest)
 node scripts/sync-pokeapi.mjs   # đồng bộ lại dữ liệu PokéAPI (151 loài Gen 1 + bổ sung)
 node scripts/sync-ev-yield.mjs  # đồng bộ EV yield của 1025 loài từ PokéAPI → src/data/pokeapi/ev-yield.json
 node scripts/build-dex.mjs      # sinh src/data/dex/* (493 loài, kỹ năng, sinh thái, boss huyền thoại) từ cache PokéAPI

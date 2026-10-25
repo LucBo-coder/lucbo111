@@ -128,6 +128,15 @@ Trạng thái theo V6: IMPLEMENTED+TESTED · PARTIAL · DATA ONLY · NOT IMPLEME
 - [x] panel/button mới cho toàn game
 - [ ] Rừng Ngọc Lục Bảo / Khu Rừng Thiêng thành bản đồ riêng (hiện là khu trong Thung Lũng)
 
+## 0.13.0 — Online
+- [x] IMPLEMENTED+TESTED — PvP thời gian thực qua WebRTC (PeerJS), phòng bằng mã, 3 luật, đội từ Bộ sưu tập / đội thuê, dự bị + đổi + Mega, đầu hàng, thành tích
+- [x] IMPLEMENTED+TESTED — Đi chung thế giới mở + thách đấu tại chỗ (E)
+- [x] IMPLEMENTED+TESTED — Engine hai phe, công bằng đã đo (47–54 % đấu gương), tất định
+- [x] Luyện tập với máy (offline)
+- [~] PARTIAL — Bảng xếp hạng: chỉ thành tích của từng ô lưu (không có server nên không có bảng chung)
+- [ ] NOT IMPLEMENTED — TURN relay (một số mạng 4G / công ty chặn WebRTC trực tiếp); quan sát trận (khán giả); trao đổi Pokémon; > 2 người cùng phòng
+- [ ] Chống gian lận đầy đủ cần server (P2P chỉ kiểm tra được dữ liệu hợp lệ, không chứng minh được quyền sở hữu)
+
 ## PHASE E — World expansion
 - [ ] Rừng Ngọc Lục Bảo (cờ mở đã có) và 5 vùng còn lại
 - [x] World Boss ngoài bản đồ (Mega Venusaur — 0.3.0)

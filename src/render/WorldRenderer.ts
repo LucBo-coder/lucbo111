@@ -137,6 +137,8 @@ export class WorldRenderer {
     this.debugLabels.forEach(t => t.setVisible(false));
     this.syncUnit(w.trainer);
     for (const a of w.allies) this.syncUnit(a);
+    // PvP duel: the other player's trainer and Pokémon on the field (the bench is not drawn)
+    if (w.rival) { this.syncUnit(w.rival.trainer); for (const a of w.rival.allies) this.syncUnit(a); }
     for (const e of w.enemies) {
       const show = !e.captured && (e.kind === 'boss' || onScreen(e.x, e.y)) && (this.hooks.visible?.(e) ?? true);
       if (show) this.syncUnit(e);

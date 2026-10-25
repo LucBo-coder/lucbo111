@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.13.0] — 2026-10-25 — Chơi online: thách đấu người chơi, đi chung thế giới mở; engine chiến đấu hai phe
+
+### Đấu online (menu chính → ⚔ Đấu online)
+- **Kết nối trực tiếp giữa hai trình duyệt (WebRTC qua PeerJS)**: một người *Tạo phòng* và nhận mã 6 ký tự, người kia *Vào phòng bằng mã*. Máy chủ mai mối công cộng của PeerJS chỉ trao đổi lời mời kết nối; dữ liệu trận đấu đi thẳng giữa hai máy. Không cần server riêng, chạy được trên GitHub Pages. Thư viện PeerJS chỉ được tải khi vào online (chunk riêng 123 KB).
+- **Sảnh**: đặt tên, chọn luật (*Chuẩn* — Lv50, cấm huyền thoại, không trùng loài · *Tự do* — cấp thật · *Huyền thoại* — Lv50, cho phép huyền thoại), chọn đội tối đa 6 con từ Bộ sưu tập của ô lưu đang mở (giữ IV / EV / tính cách / trang bị / Shiny) hoặc 1 trong 3 **đội thuê**; xem đội và trạng thái sẵn sàng của đối thủ; cả hai *Sẵn sàng* → vào trận.
+- **Trận đấu thời gian thực** trên đấu trường riêng: 3 con trên sân, còn lại dự bị; con gục được thay tự động; **đổi Pokémon** (chạm con dự bị hoặc Z X C, hồi 4 s, HP giữ nguyên); 6 lệnh chiến thuật (\` 1–5, chạm Pokémon đối thủ để cả đội tấn công nó); **Mega Tiến Hóa 1 lần mỗi trận** (G, cần Mega Stone đúng loài, kéo dài hết trận); đầu hàng; 3 phút — hết giờ bên còn nhiều HP (tỉ lệ cả đội) thắng. Mỗi người luôn thấy mình đứng bên trái (hình bên khách được lật gương).
+- **Chủ phòng là trọng tài**: máy chủ phòng chạy mô phỏng, gửi ảnh chụp trạng thái 20 lần/giây (~14 KB/s), máy khách gửi lệnh / di chuyển và vẽ lại có nội suy. Chủ phòng kiểm tra đội của khách (loài, cấp 1–100, IV ≤ 31, EV ≤ 252/510, tính cách, vật phẩm, luật) — dữ liệu không thể có bị từ chối kèm lý do. (Kết nối ngang hàng nên không chứng minh được khách thật sự sở hữu Pokémon đó.)
+- **Luyện tập với máy**: cùng màn đấu, đối thủ là một đội thuê do máy điều khiển (đổi con sắp gục, Mega khi có thể), không cần mạng, không tính thành tích.
+- **Thành tích**: thắng / thua / hòa online và 20 trận gần nhất lưu theo ô lưu (`SaveData.pvp`); đối thủ rời trận / mất kết nối = thắng.
+- Hai tab trên cùng một máy: thêm `?net=local` vào địa chỉ (BroadcastChannel, không cần internet) — dùng cho e2e.
+
+### Đi chung thế giới mở (Phiêu lưu → Cài đặt → Chơi online cùng bạn)
+- Tạo / vào phòng ngay trong chế độ Phiêu lưu: hai người thấy nhau đi trên cùng bản đồ (trainer + Pokémon đầu đội, tên, 10 cập nhật/giây có nội suy); HUD hiện trạng thái phòng và ping. Pokémon hoang dã, nhiệm vụ, đồ, tiến trình vẫn là của riêng mỗi người.
+- Lại gần người kia → **[E] Thách đấu**: người kia nhận hộp thoại (chờ tới lúc rảnh nếu đang nói chuyện / mở menu), nhận lời → cả hai vào trận với **đội hiện tại, cấp thật** (luật Tự do), xong trận trở về đúng chỗ cũ, vẫn còn kết nối.
+
+### Engine chiến đấu
+- **Hai phe người chơi** (`Side`): Sinh tồn / Phiêu lưu chỉ có phe `home` (các trường `trainer`, `allies`, `command`… nay là accessor vào nó, API cũ giữ nguyên); trận đấu có thêm phe `rival` dùng **đúng AI đồng đội** (chọn mục tiêu theo vai trò, chọn chiêu, né telegraph, lệnh). Trainer không bị tấn công trong trận đấu, không hồi sinh.
+- **Công bằng đã đo**: hai đội giống hệt nhau thắng 47–54 % (300 seed mỗi cấu hình, 2 đội khác nhau, cả hai bên sân). Để đạt được: hai phe hành động từ cùng một trạng thái đầu bước rồi mới cùng di chuyển; phe giải quyết trước bốc thăm mỗi bước; đội hình phe rival đối xứng gương; nhịp suy nghĩ AI theo vị trí trong đội; chiêu trong trận quét trực tiếp đội đối phương (không qua lưới đã cũ); né tia trúng tâm hướng vào giữa sân.
+- **Tất định**: cùng seed + cùng lệnh → cùng trận (có test).
+- **Lệnh có hiệu lực ngay** (bước AI kế tiếp) thay vì chờ chu kỳ suy nghĩ 0,18 s.
+
+### Sửa lỗi tìm ra trong lúc làm
+- **Pokémon hoang dã / huấn luyện viên dùng chiêu tăng chỉ số lại buff cho đội người chơi** — nay chỉ buff chính nó (phe người chơi buff cả đội như cũ).
+- **Crash**: một Pokémon đang có ≥ 2 trạng thái gục vì độc / bỏng / hút máu làm vòng lặp trạng thái đọc phần tử đã bị xóa.
+- **Phe thứ hai không được đếm ngược trạng thái** (lộ ra khi thêm PvP: Flinch vĩnh viễn).
+- Test EV đợt trước phụ thuộc tính cách ngẫu nhiên (thỉnh thoảng lỗi) — nay so với công thức đầy đủ.
+
+### Hiệu năng
+- Đo bằng `scripts/bench.test.ts` (`npx vitest run --config scripts/vitest.bench.ts`) và CPU profile (Node + trình duyệt). Mô phỏng Sinh tồn 6 vs 250 ≈ 0,22 ms/bước (trước 0,234), Phiêu lưu 6 vs 40 ≈ 0,04 ms, trận đấu 3v3 ≈ 0,02 ms; khung hình trong trình duyệt do Phaser vẽ sprite chiếm phần lớn.
+- Lưới không gian: khóa ô là số nguyên 32 bit (nhanh hơn khi băm); vòng tách kẻ địch loại cặp xa bằng bình phương khoảng cách trước — **kết quả Sinh tồn giống hệt từng bit** (36 trận probe trùng khít bản cũ). Một cách tách luân phiên nhanh hơn ~40 % đã thử nhưng **không giữ** vì làm thay đổi hành vi đám đông.
+- Renderer: cache điểm chân và hồ sơ hiển thị theo loài (trước đây quét lại hình vẽ cho mọi đơn vị mỗi khung hình).
+
+### Tests
+- 278 unit (mới: `v15_duel` — công bằng, tất định, lệnh theo phe, dự bị / đổi / Mega, hết giờ; `v15_net` — luật & kiểm tra đội, host mô phỏng ↔ khách phản chiếu qua JSON, lật góc nhìn, kết nối + bắt tay 2 phiên, từ chối đội phạm luật, phòng đầy / sai mã).
+- e2e mới: `v15_online` (2 trang: tạo phòng → vào → đội → sẵn sàng → đấu thật → lệnh / di chuyển / đổi từ phía khách tới máy chủ → đầu hàng → thành tích → về phòng; luyện tập), `v15_shared_world` (2 ô lưu thấy nhau trên bản đồ → E thách đấu → nhận lời → đấu với cấp thật → về thế giới, vẫn kết nối → rời phòng), `v15_peerjs` (kết nối WebRTC thật qua máy chủ mai mối PeerJS; tự bỏ qua khi không có mạng).
+
 ## [0.12.0] — 2026-10-25 — Cần Thơ, EV, Hộ chiếu, 9 trang bị mới, tách bundle
 
 ### Việt Nam Odyssey: Cần Thơ (Lv16–26)

@@ -14,8 +14,8 @@ import { buyUpgrade, nextCost, PERM_UPGRADES, upgradeLevel } from '../core/perma
 import { regionDef } from '../core/map/regionDefs';
 import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
 
-/** Shown on the title screen (keep in step with CHANGELOG). */
-export const GAME_VERSION = '0.12.0';
+import { GAME_VERSION } from '../version';
+export { GAME_VERSION };
 
 type View = 'home' | 'survivor' | 'settings' | 'credits' | 'slots' | 'confirm' | 'upgrades';
 /** what the Load Game screen is opened for */
@@ -268,10 +268,11 @@ export class MenuScene extends Phaser.Scene {
     // footer: secondary actions, version, tip
     n0 = this.children.length;
     const by = portrait ? sy + sh + 80 * s : sy + sh + 34 * s;
-    const bw3 = Math.min(230 * s, (W - 48) / 3);
-    button(this, W / 2 - bw3 - 12 * s, by, bw3, 42 * s, '⚙ Cài đặt', () => this.go('settings'), 0x2c3654);
-    button(this, W / 2, by, bw3, 42 * s, portrait ? '★ Nâng cấp' : '★ Nâng cấp vĩnh viễn', () => this.go('upgrades'), 0x6a5424);
-    button(this, W / 2 + bw3 + 12 * s, by, bw3, 42 * s, '© Ghi công', () => this.go('credits'), 0x2c3654);
+    const bw4 = Math.min(210 * s, (W - 60) / 4), gx = (i: number) => W / 2 + (i - 1.5) * (bw4 + 10 * s);
+    button(this, gx(0), by, bw4, 42 * s, '⚙ Cài đặt', () => this.go('settings'), 0x2c3654);
+    button(this, gx(1), by, bw4, 42 * s, portrait ? '⚔ Online' : '⚔ Đấu online', () => { audio.unlock(); gameModes.start(this, 'online'); }, 0x8a2f4a);
+    button(this, gx(2), by, bw4, 42 * s, portrait ? '★ Nâng cấp' : '★ Nâng cấp vĩnh viễn', () => this.go('upgrades'), 0x6a5424);
+    button(this, gx(3), by, bw4, 42 * s, '© Ghi công', () => this.go('credits'), 0x2c3654);
     text(this, W / 2, H - 20 * s, 'Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.  ·  Enter: Sinh tồn', 15 * s, '#a8b4d8').setOrigin(0.5).setWordWrapWidth(W - 120).setAlign('center');
     text(this, W - 10, H - 8, `v${GAME_VERSION}`, 14 * s, '#7a86a8').setOrigin(1, 1);
     this.slideIn(n0, 260, 20);

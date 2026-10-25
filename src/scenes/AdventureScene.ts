@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { passportPages, stampVisit } from '../adventure/passport';
+import { OnlinePresence } from '../adventure/OnlinePresence';
+import { net } from '../net/session';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
@@ -66,7 +68,8 @@ export const PORTRAITS: Record<string, string> = {
 };
 
 export interface Interactable {
-  kind: MapObject['kind'];
+  /** 'remote' = the other player of an online session (shared open world) */
+  kind: MapObject['kind'] | 'remote';
   id: string;
   x: number;
   y: number;
@@ -279,9 +282,19 @@ export class AdventureScene extends Phaser.Scene {
     this.scene.launch('AdvUI', { adv: this });
     this.events.once('shutdown', () => this.shutdown());
     audio.play('levelup');
+    if (net.connected) this.startPresence();
+  }
+
+  /** Shared open world with the other player of the online session (see OnlinePresence). */
+  presence: OnlinePresence | null = null;
+  startPresence(): void {
+    this.presence?.destroy();
+    this.presence = new OnlinePresence(this);
   }
 
   private shutdown(): void {
+    this.presence?.destroy();
+    this.presence = null;
     // events never outlive the scene (timers, spawned units, weather override, chests)
     this.worldEvents?.cleanupAll();
     this.worldEvents = null;
@@ -751,6 +764,7 @@ export class AdventureScene extends Phaser.Scene {
     if (this.animT <= 0) { this.animT = 0.45; this.animFrame ^= 1; this.chunks.animate(this.animFrame); }
     this.updateAtmosphere(dt);
     this.updateExploration();
+    this.presence?.update(performance.now());
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
@@ -970,6 +984,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'trainer': return this.challenge(it);
       case 'rescue': return this.rescue(it);
       case 'exit': return this.leaveDungeon(false);
+      case 'remote': return this.presence?.challenge();
     }
   }
 

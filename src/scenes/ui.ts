@@ -125,3 +125,25 @@ export function typeBadge(scene: Phaser.Scene, x: number, y: number, type: strin
 export function typeIcon(scene: Phaser.Scene, x: number, y: number, type: string, px = 22): Phaser.GameObjects.Image {
   return scene.add.image(x, y, 'type-' + type).setScale(Math.max(1, Math.round(px / 11)));
 }
+
+/** A small HTML text box over the canvas (room codes, names) — works with phone keyboards. */
+export function askText(scene: Phaser.Scene, label: string, initial: string, max: number): Promise<string | null> {
+  document.getElementById('lobby-input')?.remove();
+  return new Promise((resolve) => {
+    const box = document.createElement('div');
+    box.id = 'lobby-input';
+    box.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,6,12,.7);z-index:50;font-family:VT323,monospace';
+    box.innerHTML = `<form style="background:#161a28;border:2px solid #ffd040;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:280px;color:#e8f0ff;font-size:22px">
+      <label>${label}</label>
+      <input maxlength="${max}" autocomplete="off" autocapitalize="characters" style="font:inherit;font-size:28px;padding:6px 10px;background:#0b0d16;color:#ffe060;border:1px solid #3a4260;text-transform:${max <= 6 ? 'uppercase' : 'none'}">
+      <div style="display:flex;gap:10px;justify-content:flex-end"><button type="button" data-x>Hủy</button><button type="submit">OK</button></div></form>`;
+    document.body.appendChild(box);
+    const input = box.querySelector('input')!;
+    input.value = initial;
+    input.focus();
+    const done = (v: string | null) => { box.remove(); scene.input.keyboard?.enableGlobalCapture(); resolve(v); };
+    scene.input.keyboard?.disableGlobalCapture();
+    box.querySelector('form')!.addEventListener('submit', (e) => { e.preventDefault(); done(input.value); });
+    box.querySelector('[data-x]')!.addEventListener('click', () => done(null));
+  });
+}

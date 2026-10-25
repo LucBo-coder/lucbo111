@@ -12,6 +12,7 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "peerjs": "^1.5.4",
     "phaser": "^3.88.2"
   },
   "devDependencies": {

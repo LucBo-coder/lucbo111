@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { AdventureState, SHOP } from '../src/adventure/AdventureState';
 import { addEv, applyEvGain, EV_MAX_STAT, EV_MAX_TOTAL, evGain, evTotal, evYieldOf, zeroEvs } from '../src/core/ev';
 import { ITEM_DEFS } from '../src/core/evolution';
+import { POKEMON } from '../src/core/data';
 import { individualOf } from '../src/core/progression';
 import { calcHp, calcStat, calcStats } from '../src/core/stats';
 import { STEP, World } from '../src/core/world';
@@ -76,7 +77,8 @@ describe('EV in the Adventure', () => {
     for (let i = 0; i < 30; i++) st.gainEvs([p.uid], 'machop'); // machop: +1 Atk, +8 Power Bracer
     expect(p.evs!.atk).toBe(252);
     w.setIndividual(u, individualOf(p));
-    expect(u.stats.atk).toBe(atk0 + Math.floor((63 * p.level) / 100));
+    expect(u.stats.atk).toBe(calcStats(POKEMON.get(p.species)!.baseStats, p.level, individualOf(p)).atk);
+    expect(u.stats.atk).toBeGreaterThan(atk0 + 15); // +18 at Lv30 before the nature multiplier
     w.step(STEP);
   });
 

@@ -275,7 +275,41 @@ export type WorldEvent =
   /** Survivor Elemental Combo went off */
   | { t: 'combo'; name: string; x: number; y: number; type: PokeType };
 
-export type WorldState = 'playing' | 'levelup' | 'gameover' | 'victory';
+export type WorldState = 'playing' | 'levelup' | 'gameover' | 'victory' | 'duelOver';
+
+/**
+ * One player's side: trainer, party and orders. Survivor / Adventure have only `home`;
+ * a PvP duel adds `rival`, whose units are team 'enemy' but run exactly the same party AI.
+ */
+export interface Side {
+  trainer: Unit;
+  allies: Unit[];
+  command: AllyCommand;
+  commandTarget: Unit | null;
+  holdX: number;
+  holdY: number;
+  /** Movement input of that side's trainer (-1..1) */
+  input: { x: number; y: number };
+  run: boolean;
+  /** Duel: party members waiting outside the field (recalled / not sent out yet) */
+  bench: Unit[];
+  /** Duel: seconds until the next switch is allowed; next automatic send-out */
+  switchCd: number;
+  autoSendT: number;
+  /** Duel: Mega Evolution used (once per duel) */
+  megaUsed: boolean;
+}
+
+export interface DuelState {
+  /** Seconds; at the limit the side with more remaining HP (fraction of the party) wins */
+  timeLimit: number;
+  /** Pokémon on the field per side at once (the rest wait on the bench) */
+  fieldMax: number;
+  winner: 'home' | 'rival' | 'draw' | null;
+}
+
+export const DUEL_SWITCH_CD = 4;
+const DUEL_AUTO_SEND = 1.2;
 
 export interface WorldOptions {
   /** Survivor: starting Pokémon. Adventure: optional (party is added by the scene) */
@@ -297,6 +331,8 @@ export interface WorldOptions {
   starterInd?: Individual | null;
   /** Survivor: permanent upgrade levels (menu shop) */
   upgrades?: Record<string, number>;
+  /** PvP duel (Adventure rules, a second player side, no revive, win when the other party is down) */
+  pvp?: { timeLimit?: number; fieldMax?: number };
 }
 
 export class World {
@@ -304,8 +340,11 @@ export class World {
   readonly director: EnemyDirector;
   time = 0;
   state: WorldState = 'playing';
-  trainer: Unit;
-  allies: Unit[] = [];
+  /** The player's side; `trainer`, `allies`, `command`, `input`… are accessors into it */
+  readonly home: Side;
+  /** PvP: the opponent's side */
+  rival: Side | null = null;
+  duel: DuelState | null = null;
   enemies: Unit[] = [];
   projectiles: Projectile[] = [];
   zones: Zone[] = [];
@@ -327,9 +366,6 @@ export class World {
   private synergyT = 0;
   /** Survivor: per-target Elemental Combo cooldown (world time) */
   private comboUntil = new Map<number, number>();
-  input = { x: 0, y: 0 };
-  /** Sprint modifier (adventure: Shift) */
-  run = false;
   /** Simulated steps executed (used for perf stats) */
   steps = 0;
   readonly mode: 'survivor' | 'adventure';
@@ -337,10 +373,6 @@ export class World {
   readonly height: number;
   recruitPool: string[];
   terrain: Terrain | null;
-  command: AllyCommand = 'auto';
-  commandTarget: Unit | null = null;
-  holdX = 0;
-  holdY = 0;
   /** Environment flags read by wild AI (adventure scenes update these from the world clock/weather) */
   env = { night: false, weather: 'clear' as WeatherKind };
   /** Weather-anomaly damage multipliers per move type (set by world events) */
@@ -351,6 +383,7 @@ export class World {
   private bossSlots = new Map<string, Map<string, SkillSlot>>();
   private nextId = 1;
   private victoryT = -1;
+  /** Enemies (targets of the home side outside duels) */
   private grid = new SpatialGrid<Unit>(72);
   private obstacleGrid = new SpatialGrid<Obstacle>(128);
   private scratch: Unit[] = [];
@@ -360,17 +393,35 @@ export class World {
   private impactBudget = 0;
   private scratchObs: Obstacle[] = [];
 
+  get trainer(): Unit { return this.home.trainer; }
+  set trainer(t: Unit) { this.home.trainer = t; }
+  get allies(): Unit[] { return this.home.allies; }
+  set allies(a: Unit[]) { this.home.allies = a; }
+  get command(): AllyCommand { return this.home.command; }
+  set command(c: AllyCommand) { this.home.command = c; }
+  get commandTarget(): Unit | null { return this.home.commandTarget; }
+  set commandTarget(u: Unit | null) { this.home.commandTarget = u; }
+  get holdX(): number { return this.home.holdX; }
+  set holdX(v: number) { this.home.holdX = v; }
+  get holdY(): number { return this.home.holdY; }
+  set holdY(v: number) { this.home.holdY = v; }
+  get input(): { x: number; y: number } { return this.home.input; }
+  set input(v: { x: number; y: number }) { this.home.input = v; }
+  get run(): boolean { return this.home.run; }
+  set run(v: boolean) { this.home.run = v; }
+
   constructor(opts: WorldOptions) {
+    this.home = newSide(null as unknown as Unit);
     this.rng = new Rng(opts.seed ?? (Date.now() & 0xffffffff));
     this.director = new EnemyDirector(this.rng);
-    this.mode = opts.mode ?? 'survivor';
+    this.mode = opts.pvp ? 'adventure' : opts.mode ?? 'survivor';
     // Survivor meta-progression: permanent upgrades bought in the menu (before any unit is built)
     if (this.mode === 'survivor') applyPermanent(this.mods, opts.upgrades);
     this.width = opts.width ?? WORLD_W;
     this.height = opts.height ?? WORLD_H;
     this.recruitPool = opts.recruitPool ?? DEFAULT_RECRUIT_POOL;
     this.terrain = opts.terrain ?? null;
-    this.reviveTime = opts.reviveTime ?? (this.mode === 'adventure' ? 25 : REVIVE_TIME);
+    this.reviveTime = opts.pvp ? Infinity : opts.reviveTime ?? (this.mode === 'adventure' ? 25 : REVIVE_TIME);
     if (this.mode === 'adventure') this.level = opts.trainerLevel ?? 5;
     for (let i = 0; i < PROJECTILE_POOL; i++) {
       this.projectiles.push({
@@ -378,6 +429,12 @@ export class World {
       });
     }
     this.trainer = this.makeTrainer();
+    if (opts.pvp) {
+      this.duel = { timeLimit: opts.pvp.timeLimit ?? 180, fieldMax: opts.pvp.fieldMax ?? 6, winner: null };
+      const r = this.makeTrainer('enemy');
+      this.rival = newSide(r);
+      this.trainer.x = this.width * 0.3; r.x = this.width * 0.7;
+    }
     if (this.mode === 'survivor') {
       if (opts.obstacles !== false) this.generateForest();
       // the starter keeps its equipment and individual values from the shared Collection
@@ -405,9 +462,9 @@ export class World {
     return u;
   }
 
-  private makeTrainer(): Unit {
+  private makeTrainer(team: Team = 'ally'): Unit {
     const t = this.blankUnit({
-      team: 'ally', kind: 'trainer', defId: 'trainer', name: 'Trainer', level: 5,
+      team, kind: 'trainer', defId: 'trainer', name: 'Trainer', level: 5,
       base: { hp: 50, atk: 10, def: 55, spa: 10, spd: 55, spe: 60 }, x: this.width / 2, y: this.height / 2, radius: 12, moveSpeed: 175,
     });
     this.refreshTrainerStats(t, 1);
@@ -422,22 +479,95 @@ export class World {
     t.hp = Math.max(1, Math.round(t.maxHp * frac));
   }
 
-  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null } = {}): Unit {
+  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; shiny?: boolean } = {}): Unit {
     const def = POKEMON.get(defId);
     if (!def) throw new Error('Unknown pokemon ' + defId);
-    const angle = this.allies.length * 1.1;
+    const side = opts.rival && this.rival ? this.rival : this.home;
+    const angle = side.allies.length * 1.1;
     const u = this.blankUnit({
-      team: 'ally', kind: 'pokemon', defId, name: def.name, types: [...def.types], role: def.role,
+      team: side === this.home ? 'ally' : 'enemy', kind: 'pokemon', shiny: !!opts.shiny, defId, name: def.name, types: [...def.types], role: def.role,
       base: def.baseStats, level: opts.level ?? 4 + this.level, radius: def.radius, moveSpeed: def.moveSpeed, ownerUid: opts.uid ?? null,
       attackRange: def.attackRange, critRate: def.critRate, passive: def.passive,
-      x: this.trainer.x + Math.cos(angle) * 50, y: this.trainer.y + Math.sin(angle) * 50,
+      x: side.trainer.x + this.mirror(side) * Math.cos(angle) * 50, y: side.trainer.y + Math.sin(angle) * 50,
       skills: this.kit(defId, opts.level ?? 4 + this.level).map((id) => ({ def: getSkill(id), cd: 0, level: 1, powerBonus: 0 })),
-      slotIndex: this.allies.length, ind: opts.ind ?? null,
+      slotIndex: side.allies.length, ind: opts.ind ?? null,
     });
     this.setHeld(u, opts.held ?? null);
     this.refreshAllyStats(u, opts.hpFrac ?? 1);
-    this.allies.push(u);
+    // duel: the same AI tick phase for the same party slot on both sides (the default staggers by unit id)
+    if (this.rival) u.aiTimer = (u.slotIndex % 7) * 0.03;
+    if (this.duel && side.allies.length >= this.duel.fieldMax) side.bench.push(u);
+    else side.allies.push(u);
     return u;
+  }
+
+  // ───────────────────────────── duel: bench, switching, Mega ─────────────────────────────
+
+  /** Whole party of a side (field + bench). */
+  partyOf(side: Side): Unit[] {
+    return side.bench.length ? [...side.allies, ...side.bench] : side.allies;
+  }
+
+  /** Duel switch: `out` (on the field, standing) goes to the bench, `inc` (bench) comes in. Shared cooldown per side. */
+  duelSwitch(side: Side, out: Unit | null, inc: Unit | null): boolean {
+    if (!this.duel || side.switchCd > 0) return false;
+    if (out && (!side.allies.includes(out) || out.fainted)) return false;
+    if (inc && (!side.bench.includes(inc) || inc.fainted)) return false;
+    if (!out && !inc) return false;
+    if (!out && side.allies.filter((a) => !a.fainted).length >= this.duel.fieldMax) return false;
+    if (out) {
+      side.allies = side.allies.filter((a) => a !== out);
+      out.castSlot = -1; out.dash = null; out.target = null; out.vx = out.vy = 0;
+      side.bench.push(out);
+      this.emit({ t: 'vfx', name: 'poof', x: out.x, y: out.y });
+      if (side.commandTarget === out) side.commandTarget = null;
+      for (const s of this.sides()) for (const a of s.allies) if (a.target === out) a.target = null;
+    }
+    if (inc) this.sendOut(side, inc);
+    side.switchCd = DUEL_SWITCH_CD;
+    return true;
+  }
+
+  private sendOut(side: Side, u: Unit): void {
+    side.bench = side.bench.filter((b) => b !== u);
+    const tr = side.trainer;
+    u.x = tr.x + this.mirror(side) * 40; u.y = tr.y + this.rng.range(-20, 20); u.lastX = u.x; u.lastY = u.y;
+    u.slotIndex = side.allies.length;
+    u.aiTimer = 0;
+    side.allies.push(u);
+    this.emit({ t: 'vfx', name: 'heal', x: u.x, y: u.y });
+    this.emit({ t: 'banner', text: `${u.name} ra sân!`, color: side === this.home ? '#80d0ff' : '#ff9080' });
+  }
+
+  /** A side whose field is short of standing Pokémon sends the next bench member out (main-series rule). */
+  private duelAutoSend(side: Side, dt: number): void {
+    if (side.switchCd > 0) side.switchCd -= dt;
+    const standing = side.allies.filter((a) => !a.fainted).length;
+    const next = side.bench.find((b) => !b.fainted);
+    if (!next || standing >= this.duel!.fieldMax) { side.autoSendT = DUEL_AUTO_SEND; return; }
+    if ((side.autoSendT -= dt) > 0) return;
+    side.autoSendT = DUEL_AUTO_SEND;
+    // fainted members leave the field for good
+    side.allies = side.allies.filter((a) => !a.fainted || a === next);
+    side.allies.forEach((a, i) => (a.slotIndex = i));
+    this.sendOut(side, next);
+  }
+
+  /** Duel Mega Evolution: once per side per duel, the holder of the right Mega Stone; lasts the whole duel. */
+  duelMega(side: Side, u: Unit): boolean {
+    if (!this.duel || side.megaUsed || !side.allies.includes(u) || u.fainted || u.megaFrom) return false;
+    const stone = u.heldId ? ITEM_DEFS.get(u.heldId) : undefined;
+    if (stone?.kind !== 'megaStone' || stone.megaFor !== u.defId || !stone.form || !POKEMON.has(stone.form)) return false;
+    side.megaUsed = true;
+    this.transformAlly(u, stone.form, { mega: true });
+    this.emit({ t: 'banner', text: `${u.name} Mega Tiến Hóa!`, color: '#ff80e0' });
+    return true;
+  }
+
+  /** The player side a unit belongs to (wild Pokémon, trainers' enemies and bosses: none). */
+  sideOf(u: Unit): Side | null {
+    if (u.team === 'ally') return this.home;
+    return this.rival && (u.kind === 'pokemon' || u.kind === 'trainer') ? this.rival : null;
   }
 
   /** New IVs / nature / EVs of a party member (EV training): stats recomputed, HP ratio kept. */
@@ -492,8 +622,9 @@ export class World {
 
   /** Removes a party member (adventure: party swap). */
   removePokemon(u: Unit): void {
-    this.allies = this.allies.filter((a) => a !== u);
-    this.allies.forEach((a, i) => (a.slotIndex = i));
+    const side = this.sideOf(u) ?? this.home;
+    side.allies = side.allies.filter((a) => a !== u);
+    side.allies.forEach((a, i) => (a.slotIndex = i));
   }
 
   setAllyLevel(u: Unit, level: number): void {
@@ -558,12 +689,14 @@ export class World {
     u.hostile = true;
   }
 
-  setCommand(cmd: AllyCommand, target: Unit | null = null): void {
-    this.command = cmd;
-    this.commandTarget = cmd === 'attack' ? target : null;
+  setCommand(cmd: AllyCommand, target: Unit | null = null, side: Side = this.home): void {
+    side.command = cmd;
+    side.commandTarget = cmd === 'attack' ? target : null;
     if (cmd === 'attack' && target) target.hostile = true;
-    if (cmd === 'hold') { this.holdX = this.trainer.x; this.holdY = this.trainer.y; }
-    if (cmd === 'retreat' || cmd === 'follow') for (const a of this.allies) { a.target = null; a.castSlot = -1; }
+    if (cmd === 'hold') { side.holdX = side.trainer.x; side.holdY = side.trainer.y; }
+    if (cmd === 'retreat' || cmd === 'follow') for (const a of side.allies) { a.target = null; a.castSlot = -1; }
+    // orders are obeyed at once (next AI tick), not after the 0.18 s think interval
+    for (const a of side.allies) a.aiTimer = 0;
   }
 
   /** Full heal (waypoint / Pokémon Center / blackout respawn). */
@@ -738,16 +871,24 @@ export class World {
       }
       for (const s of spawns) this.placeSpawn(s);
     }
-    if (this.commandTarget && (!this.commandTarget.alive || this.commandTarget.captured)) { this.command = 'auto'; this.commandTarget = null; }
+    for (const side of this.sides()) {
+      const ct = side.commandTarget;
+      if (ct && (!ct.alive || ct.captured || ct.fainted)) { side.command = 'auto'; side.commandTarget = null; }
+    }
 
     this.grid.clear();
     for (const e of this.enemies) if (e.alive && !e.captured) this.grid.insert(e);
-    this.trainer.lastX = this.trainer.x; this.trainer.lastY = this.trainer.y;
-    for (const a of this.allies) { a.lastX = a.x; a.lastY = a.y; }
+    for (const side of this.sides()) {
+      side.trainer.lastX = side.trainer.x; side.trainer.lastY = side.trainer.y;
+      for (const a of side.allies) { a.lastX = a.x; a.lastY = a.y; }
+    }
     for (const e of this.enemies) { e.lastX = e.x; e.lastY = e.y; }
 
-    this.updateTrainer(dt);
-    for (const a of this.allies) this.updateAlly(a, dt);
+    if (this.rival) this.stepDuelSides(dt);
+    else {
+      this.updateTrainer(this.home, dt);
+      for (const a of this.allies) this.updateAlly(a, this.home, dt);
+    }
     for (const e of this.enemies) if (e.alive) this.updateEnemy(e, dt);
     this.separateEnemies();
     this.updateProjectiles(dt);
@@ -760,6 +901,7 @@ export class World {
     this.updateStatuses(dt);
     if (this.mode === 'survivor') this.updateGems(dt);
     this.cleanup();
+    if (this.duel && this.checkDuel(dt)) return;
 
     if (this.trainer.hp <= 0) {
       this.trainer.hp = 0;
@@ -777,6 +919,55 @@ export class World {
     if (this.pendingLevelUps > 0 || this.pendingBossRewards > 0) this.openLevelUp();
   }
 
+  private movers: { u: Unit; side: Side; m: 'move' | 'dash' }[] = [];
+
+  /**
+   * Duel step: both sides act (cast / think) from the same start-of-step positions, then everyone moves.
+   * The side that resolves first is drawn every step: casts end on fixed step counts, so a parity
+   * alternation would keep favouring the same side for a given pair of teams.
+   */
+  private stepDuelSides(dt: number): void {
+    const order = this.rng.chance(0.5) ? [this.rival!, this.home] : [this.home, this.rival!];
+    const mv = this.movers;
+    mv.length = 0;
+    for (const side of order) for (const a of side.allies) {
+      const m = this.allyAct(a, side, dt);
+      if (m) mv.push({ u: a, side, m });
+    }
+    for (const side of order) this.updateTrainer(side, dt);
+    for (const { u, side, m } of mv) {
+      if (u.fainted) continue;
+      if (m === 'dash') { if (u.dash) this.updateDash(u, dt); }
+      else this.allyMove(u, side, dt);
+    }
+  }
+
+  /** PvP: the rival side's formation is the mirror image of the home side's (left / right). */
+  private mirror(side: Side): number {
+    return side === this.rival ? -1 : 1;
+  }
+
+  /** Every player side (home first). */
+  sides(): Side[] {
+    return this.rival ? [this.home, this.rival] : [this.home];
+  }
+
+  /** PvP: a side with no Pokémon standing loses; at the time limit the larger remaining HP share wins. */
+  private checkDuel(dt: number): boolean {
+    const d = this.duel!, r = this.rival!;
+    for (const side of this.sides()) this.duelAutoSend(side, dt);
+    const left = (s: Side) => { const p = this.partyOf(s); return p.reduce((n, a) => n + (a.fainted ? 0 : a.hp / a.maxHp), 0) / Math.max(1, p.length); };
+    const homeUp = this.partyOf(this.home).some((a) => !a.fainted), rivalUp = this.partyOf(r).some((a) => !a.fainted);
+    if (homeUp && rivalUp && this.time < d.timeLimit) return false;
+    if (!homeUp && !rivalUp) d.winner = 'draw';
+    else if (!rivalUp) d.winner = 'home';
+    else if (!homeUp) d.winner = 'rival';
+    else { const h = left(this.home), v = left(r); d.winner = Math.abs(h - v) < 1e-6 ? 'draw' : h > v ? 'home' : 'rival'; }
+    this.state = 'duelOver';
+    this.emit({ t: 'sfx', name: d.winner === 'home' ? 'victory' : 'gameover' });
+    return true;
+  }
+
   private placeSpawn(s: SpawnRequest): void {
     let x: number, y: number;
     if (s.placement === 'ring') {
@@ -789,12 +980,12 @@ export class World {
 
   // ───────────────────────────── trainer ─────────────────────────────
 
-  private updateTrainer(dt: number): void {
-    const t = this.trainer;
-    let ix = this.input.x, iy = this.input.y;
+  private updateTrainer(side: Side, dt: number): void {
+    const t = side.trainer;
+    let ix = side.input.x, iy = side.input.y;
     const len = Math.hypot(ix, iy);
     if (len > 1) { ix /= len; iy /= len; }
-    const speed = t.moveSpeed * (1 + this.mods.trainerSpeed) * this.slowFactor(t) * (this.run ? 1.6 : 1);
+    const speed = t.moveSpeed * (1 + this.mods.trainerSpeed) * this.slowFactor(t) * (side.run ? 1.6 : 1);
     t.vx = ix * speed;
     t.vy = iy * speed;
     if (Math.abs(ix) > 0.05) t.facing = Math.sign(ix);
@@ -808,20 +999,31 @@ export class World {
 
   // ───────────────────────────── allies ─────────────────────────────
 
-  private updateAlly(u: Unit, dt: number): void {
-    const tr = this.trainer;
+  private updateAlly(u: Unit, side: Side, dt: number): void {
+    const m = this.allyAct(u, side, dt);
+    if (m === 'dash') this.updateDash(u, dt);
+    else if (m === 'move') this.allyMove(u, side, dt);
+  }
+
+  /**
+   * Everything a party member does in a step except moving: timers, revive, casting, thinking.
+   * Returns how it moves afterwards. A duel runs this for every unit of both sides first and moves
+   * them all afterwards, so both sides decide from the same positions (no update-order advantage).
+   */
+  private allyAct(u: Unit, side: Side, dt: number): 'move' | 'dash' | null {
+    const tr = side.trainer;
     if (u.fainted) {
       nextAiState(u, 'fainted', dt);
       u.x = tr.x; u.y = tr.y;
       u.reviveT -= dt;
-      if (u.reviveT <= 0 && this.trainer.hp > 0) {
+      if (u.reviveT <= 0 && tr.hp > 0) {
         u.fainted = false;
         u.hp = Math.round(u.maxHp * 0.5);
         u.x = tr.x + this.rng.range(-30, 30); u.y = tr.y + this.rng.range(-30, 30);
         this.emit({ t: 'revive', id: u.id, name: u.name });
         this.emit({ t: 'vfx', name: 'heal', x: u.x, y: u.y });
       }
-      return;
+      return null;
     }
     this.tickTimers(u, dt);
     u.energy = Math.min(u.maxEnergy, u.energy + 12 * (1 + this.mods.energyRegen) * dt);
@@ -831,16 +1033,16 @@ export class World {
       u.target = null; u.castSlot = -1; u.dash = null;
       this.emit({ t: 'vfx', name: 'poof', x: u.x, y: u.y });
     }
-    if (this.incapacitated(u)) { nextAiState(u, 'stunned', dt); return; }
-    if (u.dash) { nextAiState(u, 'attack', dt); this.updateDash(u, dt); return; }
-    if (u.castSlot >= 0) { nextAiState(u, 'cast', dt); this.updateCast(u, dt); return; }
+    if (this.incapacitated(u)) { nextAiState(u, 'stunned', dt); return null; }
+    if (u.dash) { nextAiState(u, 'attack', dt); return 'dash'; }
+    if (u.castSlot >= 0) { nextAiState(u, 'cast', dt); this.updateCast(u, dt); return null; }
 
     u.aiTimer -= dt;
     if (u.aiTimer <= 0) {
       u.aiTimer = 0.18;
-      this.allyThink(u);
+      this.allyThink(u, side);
     }
-    this.allyMove(u, dt);
+    return 'move';
   }
 
   private tickTimers(u: Unit, dt: number): void {
@@ -863,9 +1065,9 @@ export class World {
   }
 
   /** Role-based target selection with stickiness so allies don't flicker between targets. */
-  private allyThink(u: Unit): void {
-    const tr = this.trainer;
-    const cmd = this.command;
+  private allyThink(u: Unit, side: Side): void {
+    const tr = side.trainer;
+    const cmd = side.command;
     if (cmd === 'follow' || cmd === 'retreat') {
       // Not engaging, but defensive skills (heal/shield) are still allowed
       u.target = null;
@@ -876,25 +1078,26 @@ export class World {
       return;
     }
     this.candBuf.length = 0;
-    const cx = cmd === 'hold' ? this.holdX : tr.x, cy = cmd === 'hold' ? this.holdY : tr.y;
-    const detect = cmd === 'defend' ? 170 : this.mode === 'adventure' ? 360 : ALLY_DETECT;
-    const cands = this.grid.query(cx, cy, detect, this.candBuf);
-    if (cmd === 'attack' && this.commandTarget && this.commandTarget.alive && !this.commandTarget.captured) {
+    const cx = cmd === 'hold' ? side.holdX : tr.x, cy = cmd === 'hold' ? side.holdY : tr.y;
+    const detect = cmd === 'defend' ? 170 : this.duel ? 1400 : this.mode === 'adventure' ? 360 : ALLY_DETECT;
+    const cands = this.queryOpponents(side, cx, cy, detect, this.candBuf);
+    const ct = side.commandTarget;
+    if (cmd === 'attack' && ct && ct.alive && !ct.captured && !ct.fainted) {
       cands.length = 0;
-      cands.push(this.commandTarget);
+      cands.push(ct);
     }
     let best: Unit | null = null, bestScore = -Infinity;
     const limit = Math.min(cands.length, 40);
     for (let i = 0; i < limit; i++) {
       const e = cands[i];
-      if (!e.hostile || e.captured) continue;
+      if (!e.hostile || e.captured || e.fainted) continue;
       const dSelf = Math.hypot(e.x - u.x, e.y - u.y);
       const dTr = Math.hypot(e.x - tr.x, e.y - tr.y);
       let score = -dSelf;
       switch (u.role) {
         case 'tank': score = -dTr * 1.3 - dSelf * 0.3 + (e.target === tr ? 60 : 0); break;
         case 'assassin': score = -dSelf * 0.5 - (e.hp / e.maxHp) * 250 - (e.kind === 'boss' ? 150 : 0); break;
-        case 'mage': score = -dSelf * 0.7 + this.countEnemies(e.x, e.y, 80) * 45; break;
+        case 'mage': score = -dSelf * 0.7 + this.countOpponents(side, e.x, e.y, 80) * 45; break;
         case 'support': score = -dTr * 0.8 - dSelf * 0.4; break;
         default: break;
       }
@@ -918,20 +1121,19 @@ export class World {
   selectorContext(u: Unit): SelectorContext {
     const t = u.target;
     let lowest: Unit | null = null;
-    const friends = u.team === 'ally' ? [this.trainer, ...this.allies] : [u];
-    for (const a of friends) {
-      if (a.fainted) continue;
-      if (!lowest || a.hp / a.maxHp < lowest.hp / lowest.maxHp) lowest = a;
-    }
+    const side = this.sideOf(u);
+    const consider = (a: Unit) => { if (!a.fainted && (!lowest || a.hp / a.maxHp < lowest.hp / lowest.maxHp)) lowest = a; };
+    if (side) { consider(side.trainer); for (const a of side.allies) consider(a); } else consider(u);
+    const threats = (x: number, y: number, r: number) => (side ? this.countOpponents(side, x, y, r) : this.countAllies(x, y, r));
     return {
       selfTypes: u.types,
       selfHpFrac: u.hp / u.maxHp,
       energy: u.energy,
-      threatsNearSelf: u.team === 'ally' ? this.countEnemies(u.x, u.y, 90) : this.countAllies(u.x, u.y, 90),
+      threatsNearSelf: threats(u.x, u.y, 90),
       hasShield: u.shield > 0,
       target: t ? { types: t.types, dist: Math.hypot(t.x - u.x, t.y - u.y), radius: t.radius, hasStatus: (k) => this.hasStatus(t, k as StatusKind) } : null,
-      enemiesAroundTarget: (r) => (t ? (u.team === 'ally' ? this.countEnemies(t.x, t.y, r) : this.countAllies(t.x, t.y, r)) : 0),
-      lowestAlly: lowest ? { hpFrac: lowest.hp / lowest.maxHp, dist: Math.hypot(lowest.x - u.x, lowest.y - u.y) } : null,
+      enemiesAroundTarget: (r) => (t ? threats(t.x, t.y, r) : 0),
+      lowestAlly: lowest ? { hpFrac: (lowest as Unit).hp / (lowest as Unit).maxHp, dist: Math.hypot((lowest as Unit).x - u.x, (lowest as Unit).y - u.y) } : null,
       teamBuffActive: this.hasStatus(u, 'atkUp'),
     };
   }
@@ -941,20 +1143,39 @@ export class World {
     return this.grid.query(x, y, r, this.countBuf).length;
   }
 
+
+  /** Opponents of `side` within r (PvP: never the trainers). */
+  countOpponents(side: Side, x: number, y: number, r: number): number {
+    this.countBuf.length = 0;
+    return this.queryOpponents(side, x, y, r, this.countBuf).length;
+  }
+
+  /**
+   * Opponents of `side` within r of (x, y). A duel scans the other party directly (≤ 6 units, exact and
+   * symmetric for both sides); otherwise the spatial grid of enemies built at the start of the step.
+   */
+  private queryOpponents(side: Side, x: number, y: number, r: number, out: Unit[]): Unit[] {
+    if (!this.rival) return this.grid.query(x, y, r, out);
+    const r2 = r * r;
+    for (const a of (side === this.home ? this.rival : this.home).allies) if (!a.fainted && dist2(a, x, y) <= r2) out.push(a);
+    return out;
+  }
+
   countAllies(x: number, y: number, r: number): number {
     let n = dist2(this.trainer, x, y) <= r * r ? 1 : 0;
     for (const a of this.allies) if (!a.fainted && dist2(a, x, y) <= r * r) n++;
     return n;
   }
 
-  private allyMove(u: Unit, dt: number): void {
-    const tr = this.trainer;
+  private allyMove(u: Unit, side: Side, dt: number): void {
+    const tr = side.trainer;
     const t = u.target && u.target.alive ? u.target : null;
     let gx: number, gy: number;
     const formA = (u.slotIndex / 6) * Math.PI * 2 + Math.PI / 2;
-    const homeX = tr.x + Math.cos(formA) * 58, homeY = tr.y + Math.sin(formA) * 48;
+    const mx0 = this.mirror(side);
+    const homeX = tr.x + mx0 * Math.cos(formA) * 58, homeY = tr.y + Math.sin(formA) * 48;
 
-    if (this.command === 'hold' && !t) { gx = this.holdX + Math.cos(formA) * 40; gy = this.holdY + Math.sin(formA) * 30; }
+    if (side.command === 'hold' && !t) { gx = side.holdX + mx0 * Math.cos(formA) * 40; gy = side.holdY + Math.sin(formA) * 30; }
     else if (!t) { gx = homeX; gy = homeY; }
     else {
       const dx = u.x - t.x, dy = u.y - t.y;
@@ -977,7 +1198,7 @@ export class World {
         }
         case 'support': {
           let lowest: Unit = tr;
-          for (const a of this.allies) if (!a.fainted && a !== u && a.hp / a.maxHp < lowest.hp / lowest.maxHp) lowest = a;
+          for (const a of side.allies) if (!a.fainted && a !== u && a.hp / a.maxHp < lowest.hp / lowest.maxHp) lowest = a;
           gx = lowest.x + (u.x > lowest.x ? 45 : -45); gy = lowest.y + 20;
           const gd = Math.hypot(t.x - gx, t.y - gy);
           if (reach < u.attackRange && gd > reach) {
@@ -997,8 +1218,8 @@ export class World {
         }
       }
       // stay reasonably near the trainer (or the hold point)
-      const ax = this.command === 'hold' ? this.holdX : tr.x, ay = this.command === 'hold' ? this.holdY : tr.y;
-      const leash = this.command === 'defend' ? 140 : 320;
+      const ax = side.command === 'hold' ? side.holdX : tr.x, ay = side.command === 'hold' ? side.holdY : tr.y;
+      const leash = side.command === 'defend' ? 140 : this.duel ? 900 : 320;
       const lx = gx - ax, ly = gy - ay, ll = Math.hypot(lx, ly);
       if (ll > leash) { gx = ax + (lx / ll) * leash; gy = ay + (ly / ll) * leash; }
     }
@@ -1010,7 +1231,7 @@ export class World {
     // Kiting for fragile roles
     if (u.role === 'mage' || u.role === 'marksman' || u.role === 'support') {
       this.scratch.length = 0;
-      const near = this.grid.query(u.x, u.y, 75, this.scratch);
+      const near = this.queryOpponents(side, u.x, u.y, 75, this.scratch);
       if (near.length) {
         let ax = 0, ay = 0;
         for (const e of near) { ax += u.x - e.x; ay += u.y - e.y; }
@@ -1025,11 +1246,11 @@ export class World {
     if (this.hasStatus(u, 'confusion')) { const a = Math.sin(this.time * 6 + u.id) * 1.1; const c = Math.cos(a), sn = Math.sin(a); [mx, my] = [mx * c - my * sn, mx * sn + my * c]; }
     // Explicit state (hysteresis in nextAiState keeps it from flickering)
     const recovering = u.animCast > 0 && !dodge;
-    nextAiState(u, dodge ? 'dodge' : recovering ? 'recover' : !t ? (this.command === 'follow' || this.command === 'retreat' || ml > 40 ? 'follow' : 'idle')
+    nextAiState(u, dodge ? 'dodge' : recovering ? 'recover' : !t ? (side.command === 'follow' || side.command === 'retreat' || ml > 40 ? 'follow' : 'idle')
       : Math.hypot(t.x - u.x, t.y - u.y) > u.attackRange * 1.1 ? 'chase' : 'position', dt);
 
-    const far = Math.hypot(u.x - tr.x, u.y - tr.y) > 260 || this.command === 'retreat' ? 1.3 : 1;
-    const sprint = this.run && !t ? 1.5 : 1;
+    const far = Math.hypot(u.x - tr.x, u.y - tr.y) > 260 || side.command === 'retreat' ? 1.3 : 1;
+    const sprint = side.run && !t ? 1.5 : 1;
     const speed = u.moveSpeed * far * sprint * this.speedFactor(u) * (u.role === 'assassin' ? 1.15 : 1);
     const arrive = !dodge && ml < 30 ? ml / 30 : 1;
     u.vx = mx * speed * arrive; u.vy = my * speed * arrive;
@@ -1067,7 +1288,11 @@ export class World {
         const px = u.x - z.x, py = u.y - z.y;
         const along = px * c + py * s, perp = -px * s + py * c;
         if (along > -z.r && along < z.length + z.r && Math.abs(perp) < z.r + u.radius + 6) {
-          const sign = perp >= 0 ? 1 : -1;
+          // aimed dead-centre: step out on the side facing the middle of the map (not always the beam's left,
+          // which would favour whoever shoots from one particular direction)
+          // duel: aimed dead-centre, step out towards the middle of the arena — "always the beam's left" would
+          // favour whoever shoots from one particular side (other modes keep the original rule)
+          const sign = this.duel && Math.abs(perp) <= 0.5 ? (-s * (this.width / 2 - u.x) + c * (this.height / 2 - u.y) >= 0 ? 1 : -1) : perp >= 0 ? 1 : -1;
           return { x: -s * sign, y: c * sign };
         }
       }
@@ -1152,15 +1377,22 @@ export class World {
   }
 
   private separateEnemies(): void {
-    for (const e of this.enemies) {
+    const en = this.enemies;
+    for (let ei = 0; ei < en.length; ei++) {
+      const e = en[ei];
       if (!e.alive || e.kind === 'boss' || e.captured) continue;
       this.scratch.length = 0;
       const near = this.grid.query(e.x, e.y, e.radius * 2.2, this.scratch);
       let n = 0;
-      for (const o of near) {
-        if (o === e || n > 6) continue;
-        const dx = e.x - o.x, dy = e.y - o.y, d = Math.hypot(dx, dy);
+      for (let i = 0; i < near.length && n <= 6; i++) {
+        const o = near[i];
+        if (o === e) continue;
+        const dx = e.x - o.x, dy = e.y - o.y;
         const min = e.radius + o.radius;
+        // cheap squared-distance reject first (hot loop: 250 enemies in a crowd); overlaps keep the exact
+        // original arithmetic (Math.hypot), so Survivor runs are bit-for-bit unchanged
+        if (dx * dx + dy * dy >= min * min) continue;
+        const d = Math.hypot(dx, dy);
         if (d > 0.01 && d < min) {
           const push = (min - d) * 0.25;
           e.x += (dx / d) * push; e.y += (dy / d) * push;
@@ -1173,7 +1405,9 @@ export class World {
       if (a.fainted || a.dash) continue;
       this.scratch.length = 0;
       for (const o of this.grid.query(a.x, a.y, a.radius + 40, this.scratch)) {
-        const dx = a.x - o.x, dy = a.y - o.y, d = Math.hypot(dx, dy), min = a.radius + o.radius;
+        const dx = a.x - o.x, dy = a.y - o.y, min = a.radius + o.radius;
+        if (dx * dx + dy * dy >= min * min) continue;
+        const d = Math.hypot(dx, dy);
         if (d > 0.01 && d < min) { a.x += (dx / d) * (min - d) * 0.5; a.y += (dy / d) * (min - d) * 0.5; }
       }
     }
@@ -1596,7 +1830,7 @@ export class World {
       this.emit({ t: 'status', x: u.x, y: u.y - u.radius, kind: 'fullPara', team: u.team });
       return;
     }
-    if (u.team === 'ally') {
+    if (u.kind === 'pokemon') {
       if (u.energy < def.energyCost) return;
       u.energy -= def.energyCost;
       const heldCdr = u.held?.type === 'cdr' ? u.held.value ?? 0 : u.held?.type === 'choice' && !u.held.category ? 0.15 : 0;
@@ -1605,7 +1839,7 @@ export class World {
       if (u.held?.type === 'choice' && def.power > 0 && !u.choiceLock) u.choiceLock = def.id;
     } else slot.cd = (def.cooldown / (this.mode === 'survivor' ? curves.aggression(this.time) : 1)) * (u.alpha ? 0.7 : 1);
     slot.cdMax = slot.cd;
-    if (u.team === 'ally' || !u.castTarget) u.castTarget = u.target;
+    if (u.kind === 'pokemon' || !u.castTarget) u.castTarget = u.target;
     const tg = u.castTarget;
     u.castX = tg ? tg.x : u.x;
     u.castY = tg ? tg.y : u.y;
@@ -1707,7 +1941,8 @@ export class World {
       }
       case 'heal': {
         let best: Unit | null = null;
-        for (const a of u.team === 'ally' ? [this.trainer, ...this.allies] : [u]) {
+        const hs = this.sideOf(u);
+        for (const a of hs ? [hs.trainer, ...hs.allies] : [u]) {
           if (a.fainted || Math.hypot(a.x - u.x, a.y - u.y) > s.range) continue;
           if (!best || a.hp / a.maxHp < best.hp / best.maxHp) best = a;
         }
@@ -1722,7 +1957,9 @@ export class World {
         break;
       }
       case 'buff': {
-        for (const a of this.allies) if (!a.fainted && s.status) this.applyStatus(a, s.status, u);
+        // the caster's own side (a wild / trainer Pokémon only buffs itself)
+        const bs = this.sideOf(u);
+        for (const a of bs ? bs.allies : [u]) if (!a.fainted && s.status) this.applyStatus(a, s.status, u);
         this.emit({ t: 'vfx', name: 'buff', x: u.x, y: u.y });
         break;
       }
@@ -1765,9 +2002,15 @@ export class World {
 
   private opponentsNear(team: Team, x: number, y: number, r: number): Unit[] {
     this.scratch.length = 0;
-    if (team === 'ally') return this.grid.query(x, y, r, this.scratch);
     const out = this.scratch;
     const r2 = (r + 40) * (r + 40);
+    if (this.rival) {
+      // duel: both directions scan the live party (≤ 6 units) the same way — no stale grid cells, no side bias;
+      // trainers are not targets
+      for (const a of (team === 'ally' ? this.rival : this.home).allies) if (!a.fainted && dist2(a, x, y) <= r2) out.push(a);
+      return out;
+    }
+    if (team === 'ally') return this.grid.query(x, y, r, out);
     if (dist2(this.trainer, x, y) <= r2) out.push(this.trainer);
     for (const a of this.allies) if (!a.fainted && dist2(a, x, y) <= r2) out.push(a);
     return out;
@@ -2034,7 +2277,7 @@ export class World {
       this.emit({ t: 'vfx', name: 'shield', x: dst.x, y: dst.y, r: dst.radius + 10 });
     }
     dst.hitFlash = 0.12;
-    if (src && src.team === 'ally') src.damageDealt += dmg;
+    if (src && src.kind === 'pokemon') src.damageDealt += dmg;
     this.emit({ t: 'dmg', x: dst.x, y: dst.y - dst.radius, amount: Math.round(amount), crit, eff, victimTeam: dst.team });
     if (dst.hp > 0) return;
     dst.hp = 0;
@@ -2176,14 +2419,18 @@ export class World {
             const dmg = Math.max(1, Math.round(u.maxHp * s.magnitude * 0.5 * resist * ramp));
             this.applyDamage(u, dmg, s.source, false, 1, true);
             if (s.kind === 'leech' && s.source && !s.source.fainted) this.heal(s.source, dmg);
+            // fainting from the DoT clears every status: stop walking the (now empty) list
+            if (u.fainted || !u.alive) return;
           }
         }
         if (s.t <= 0) u.statuses.splice(i, 1);
       }
     };
     for (const e of this.enemies) if (e.alive) tickUnit(e);
-    for (const a of this.allies) if (!a.fainted) tickUnit(a);
-    tickUnit(this.trainer);
+    for (const side of this.sides()) {
+      for (const a of side.allies) if (!a.fainted) tickUnit(a);
+      tickUnit(side.trainer);
+    }
   }
 
   // ───────────────────────────── EXP & level ─────────────────────────────
@@ -2352,6 +2599,10 @@ export class World {
       }
     }
   }
+}
+
+function newSide(trainer: Unit): Side {
+  return { trainer, allies: [], command: 'auto', commandTarget: null, holdX: 0, holdY: 0, input: { x: 0, y: 0 }, run: false, bench: [], switchCd: 0, autoSendT: DUEL_AUTO_SEND, megaUsed: false };
 }
 
 function clamp(v: number, a: number, b: number): number {

@@ -29,7 +29,17 @@ export const VISUAL_OVERRIDES: Record<string, Partial<VisualProfile>> = {
   'articuno-galar': { locomotion: 'high-flight', flightHeight: 24, shadowScale: 2.5 },
   'zapdos-galar': { locomotion: 'walk', flightHeight: 0, shadowScale: 2.5 },
 };
+const profileCache = new Map<string, VisualProfile>();
+
+/** Visual profile of a species (cached: it is asked for every unit on every frame; callers never mutate it). */
 export function visualProfile(species: string, pmd: boolean, fallbackScale = 3): VisualProfile {
+  const k = `${species}|${pmd ? 1 : 0}|${fallbackScale}`;
+  let p = profileCache.get(k);
+  if (!p) profileCache.set(k, (p = buildProfile(species, pmd, fallbackScale)));
+  return p;
+}
+
+function buildProfile(species: string, pmd: boolean, fallbackScale: number): VisualProfile {
   const id = species.replace('~shiny', '');
   const locomotion: Locomotion = high.has(id) ? 'high-flight' : low.has(id) ? 'low-flight' : crawl.has(id) ? 'crawl' : 'walk';
   const override = VISUAL_OVERRIDES[id] ?? {};

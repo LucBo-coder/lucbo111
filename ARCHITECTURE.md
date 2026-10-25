@@ -101,6 +101,13 @@ src/
     vfx.ts                 thư viện VFX 18 hệ, pool, quality
     tileset.ts             atlas 'ow_tiles' (Kenney CC0 + thủ tục)
     ChunkView.ts           tilemap theo chunk, load/unload theo camera
+  net/                     chơi online (thuần TS trừ transport dùng API trình duyệt)
+    protocol.ts            tin nhắn JSON, snapshot nén dạng mảng, phiên bản giao thức
+    transport.ts           PeerJS/WebRTC (nạp lười) hoặc BroadcastChannel (`?net=local`, e2e)
+    session.ts             phiên duy nhất xuyên scene (ping, tên, trạng thái) + DuelHandshake (đội → kiểm tra → start)
+    duel.ts                luật, đội thuê, kiểm tra đội, buildDuel, packSnapshot (host) / DuelMirror (khách, lật gương)
+  scenes/LobbyScene · DuelScene · DuelUI   sảnh, trận đấu (host / guest / practice), HUD
+  adventure/OnlinePresence.ts   thấy người chơi kia trong thế giới mở, thách đấu bằng E
   systems/
     gameMode.ts            GameModeManager (chỉ 1 chế độ chạy tại một thời điểm)
     pokemonDataProvider.ts PokéAPI provider (bundle → IndexedDB → mạng)

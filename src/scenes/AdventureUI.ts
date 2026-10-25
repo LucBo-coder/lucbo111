@@ -30,7 +30,9 @@ import { saveStore } from '../systems/save';
 import { fitScale, itemIconKey, officialPack } from '../render/spriteRegistry';
 import type { QualitySetting } from '../systems/saveSchema';
 import { AdventureScene, COMMANDS } from './AdventureScene';
-import { button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge } from './ui';
+import { askText, button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge } from './ui';
+import { net } from '../net/session';
+import { defaultLinkKind } from '../net/transport';
 
 const STAT_VI: Record<string, string> = { hp: 'HP', atk: 'Công', def: 'Thủ', spa: 'Công ĐB', spd: 'Thủ ĐB', spe: 'Tốc' };
 
@@ -173,6 +175,7 @@ export class AdventureUI extends Phaser.Scene {
     T('boss', W / 2, H - 58 * s, 22, '#ffb0a0').setOrigin(0.5, 1);
     T('mega', 0, 0, 18, '#ffb0ff').setOrigin(0.5, 0);
     T('money', 16 * s, H - 78 * s, 18, '#ffe066');
+    T('online', W / 2, 62 * s, 16, '#ffd0a0').setOrigin(0.5, 0);
 
     // Minimap (whole-region thumbnail with fog of war)
     const key = this.ensureMapTexture();
@@ -358,6 +361,9 @@ export class AdventureUI extends Phaser.Scene {
       .setPosition(16 * s, H - 30 * s);
     const cmd = COMMANDS.find((cc) => cc.id === w.command)!;
     this.texts.cmd.setText(`Lệnh đội: ${cmd.label}${w.commandTarget ? ' → ' + w.commandTarget.name : ''}   (\` 1-5)`).setPosition(16 * s, H - 54 * s);
+
+    // Online session (shared open world)
+    this.texts.online.setText(net.status === 'hosting' ? `ONLINE · Phòng ${net.code} — chờ bạn vào (Cài đặt → Chơi online)` : net.connected ? `ONLINE · Đang chơi cùng ${net.peerName} · ${net.rtt} ms${a.presence?.visible() ? '' : ' · ở vùng khác'}` : '');
 
     // Interaction prompt
     const n = a.nearest;
@@ -1251,6 +1257,33 @@ export class AdventureUI extends Phaser.Scene {
     c.add(text(this, r.x + r.w - 14 * s, by + 44 * s, `Hoàn thành ${p.completion}%`, 13 * s, '#d0c090').setOrigin(1, 0));
   }
 
+  /** Shared open world: create / join / leave a room from inside the Adventure. */
+  async onlineMenu(): Promise<void> {
+    this.closeMenu();
+    const a = this.adv;
+    if (net.connected || net.status === 'hosting') { net.leave(); a.presence?.destroy(); a.presence = null; this.banner('Đã rời phòng online', '#c0c8e0'); return; }
+    const r = await a.say('Chơi online cùng bạn', ['Hai người cùng đi trong thế giới mở (mỗi người giữ Pokémon hoang dã, nhiệm vụ, đồ của mình) và thách đấu nhau bằng cách lại gần rồi nhấn E.', 'Kết nối trực tiếp qua WebRTC; người tạo phòng đọc mã cho bạn mình.'],
+      [{ label: 'Tạo phòng', value: 'host' }, { label: 'Vào phòng bằng mã', value: 'join' }, { label: 'Hủy', value: 'no' }]);
+    const kind = defaultLinkKind();
+    net.myName = saveStore.data.playerName ?? net.myName;
+    try {
+      if (r === 'host') {
+        const code = await net.host(kind);
+        this.banner(`Mã phòng: ${code} — đưa mã này cho bạn của bạn`, '#ffe080');
+        const off = net.onStatus(() => { if (net.connected) { off(); a.startPresence(); this.banner(`${net.peerName} đã vào phòng!`, '#80ff90'); } else if (net.status !== 'hosting') off(); });
+      } else if (r === 'join') {
+        const code = await askText(this, 'Nhập mã phòng (6 ký tự)', '', 6);
+        if (!code) return;
+        this.banner('Đang kết nối…', '#a0d8ff');
+        await net.join(code, kind);
+        a.startPresence();
+        this.banner(`Đã vào phòng của ${net.peerName || 'bạn'}!`, '#80ff90');
+      }
+    } catch (e) {
+      this.banner(e instanceof Error ? e.message : String(e), '#ff9080');
+    }
+  }
+
   private zoomMap(f: number): void {
     this.mapView.zoom = Phaser.Math.Clamp(this.mapView.zoom * f, 1, 4);
     this.openMenu('map');
@@ -1289,6 +1322,7 @@ export class AdventureUI extends Phaser.Scene {
     }
     c.add(button(this, r.x + 160 * s, r.y + 240 * s, 300 * s, 40 * s, 'Lưu game', () => { this.adv.persist(); this.banner('Đã lưu', '#80ff90'); }).container);
     c.add(button(this, r.x + 160 * s, r.y + 290 * s, 300 * s, 40 * s, 'Lưu & về menu chính', () => { this.closeMenu(); this.adv.exitToMenu(); }, 0x6a2f2f).container);
+    c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Rời phòng (${net.peerName})` : net.status === 'hosting' ? `Hủy phòng ${net.code}` : 'Chơi online cùng bạn', () => void this.onlineMenu(), 0x2f5a6a).container);
     c.add(text(this, r.x + 340 * s, r.y + 130 * s,
       'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\n` 1-5 lệnh đội: Tự do / Tấn công / Bảo vệ /\n   Đi theo / Giữ vị trí / Rút lui\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
   }
