@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { World, STEP } from '../src/core/world';
-import { CoopHost, CoopMirror, coopSession, packCoop } from '../src/net/coop';
+import { applyCoopDelta, CoopHost, CoopMirror, coopSession, diffCoop, packCoop, type CoopSnapshot } from '../src/net/coop';
 import { net } from '../src/net/session';
 import type { NetMsg } from '../src/net/protocol';
 
@@ -106,5 +106,59 @@ describe('co-op snapshots and inputs', () => {
     host.update(performance.now() + 2000, false, []);
     expect(w.companion!.input).toEqual({ x: 0, y: 0 });
     host.destroy();
+  });
+  it('deltas rebuild the exact snapshot and refuse a wrong base', () => {
+    const w = world('survivor');
+    w.spawnWild('rattata', 5, 700, 600, { hostile: true });
+    const a = packCoop(w, map, 'e', 1, false);
+    w.companion!.input.x = 1;
+    for (let i = 0; i < 5; i++) w.step();
+    w.spawnWild('pidgey', 5, 900, 600, { hostile: true });
+    const b = packCoop(w, map, 'e', 2, false);
+    const d = JSON.parse(JSON.stringify(diffCoop(a, b)));
+    expect(JSON.stringify(d).length).toBeLessThan(JSON.stringify(b).length / 2);
+    expect(d.units[w.trainer.id]?.name).toBeUndefined(); // static fields stay out
+    expect(applyCoopDelta(a, d)).toEqual(b);
+    expect(applyCoopDelta({ ...a, n: 0 }, d)).toBeNull();
+    expect(applyCoopDelta(null, d)).toBeNull();
+  });
+  it('host sends keyframes, then deltas; obstacles only when the guest lacks them', () => {
+    const sent: NetMsg[] = [];
+    let receive!: (m: NetMsg) => void;
+    vi.spyOn(net, 'on').mockImplementation(cb => { receive = cb; return () => {}; });
+    vi.spyOn(net, 'send').mockImplementation((m: NetMsg) => { sent.push(m); });
+    net.role = 'host'; net.status = 'connected'; coopSession.active = true;
+    const w = new World({ mode: 'survivor', seed: 5, width: 1600, height: 1200 });
+    const host = new CoopHost(w, () => ({ ...map, kind: 'survivor' }));
+    receive({ t: 'coopJoin', party: [{ species: 'pikachu', level: 5 }] });
+    const snaps = () => sent.filter((m): m is Extract<NetMsg, { t: 'coopSnap' }> => m.t === 'coopSnap').map(m => m.s);
+    let t = 1000;
+    for (let i = 0; i < 3; i++) host.update(t += 120, false, []);
+    const [k, d1] = snaps();
+    expect('d' in k).toBe(false);
+    expect((k as CoopSnapshot).obstacles.length).toBe(w.obstacles.length);
+    expect('d' in d1).toBe(true);
+    // the guest reports it holds this obstacle version: the next keyframes leave the list out
+    receive({ t: 'coopJoin', party: [{ species: 'pikachu', level: 5 }], obs: (k as CoopSnapshot).obsSig, need: true });
+    host.update(t += 120, false, []);
+    const k2 = snaps().pop() as CoopSnapshot;
+    expect(k2.noObs).toBe(true);
+    expect(k2.obstacles).toEqual([]);
+    host.destroy();
+  });
+  it('guest prediction moves its own trainer at once and settles on the host position', () => {
+    const w = world(), s = packCoop(w, map, 'p', 1, false);
+    const m = new CoopMirror(map);
+    m.apply(s);
+    const x0 = m.world.trainer.x, t0 = performance.now();
+    m.input(1, 1, 0, false, t0);
+    m.interpolate(16, t0 + 100);
+    expect(m.world.trainer.x).toBeGreaterThan(x0 + 3);
+    // host acknowledges the input with the trainer moved: no pending input left, the mirror converges to it
+    const s2 = { ...packCoop(w, map, 'p', 2, false), ack: 1 };
+    s2.guest[0] = { ...s2.guest[0], x: x0 + 20 };
+    m.apply(s2);
+    for (let i = 0; i < 60; i++) m.interpolate(16, t0 + 200 + i * 16);
+    expect(m.world.trainer.x).toBeCloseTo(x0 + 20, 0);
   });
 });

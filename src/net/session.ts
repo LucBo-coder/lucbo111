@@ -3,6 +3,7 @@ import { cleanAvatarId, DEFAULT_AVATAR } from '../core/avatars';
 import type { DuelMon, DuelRules, NetMsg, RosterUnit } from './protocol';
 import { PROTOCOL_VERSION } from './protocol';
 import { hostRoom, HostHandle, joinRoom, Link, LinkKind, defaultLinkKind } from './transport';
+import { LatencySeries } from './netStats';
 import { applyRules, buildDuel, RULESETS, validateParty } from './duel';
 
 // One online session at a time. It outlives scenes: the lobby, a duel and the shared open world all use
@@ -30,9 +31,15 @@ export class NetSession {
   myAvatar = DEFAULT_AVATAR;
   peerName = '';
   peerAvatar = DEFAULT_AVATAR;
-  /** round-trip time (ms), updated every 2 s; `pongs` counts the answers received */
+  /**
+   * Player ↔ player round trip (ms): ping → other browser → pong, median of the last 5 (one ping per second).
+   * Over the relay that is 4 legs (me → room → peer → room → me) plus the time the peer's page takes to answer.
+   */
   rtt = 0;
   pongs = 0;
+  private rttSeries = new LatencySeries(120);
+  private pingsSent: number[] = [];
+  private pingsAnswered = new Set<number>();
   kind: LinkKind = 'peer';
   private link: Link | null = null;
   private hostHandle: HostHandle | null = null;
@@ -114,7 +121,29 @@ export class NetSession {
     this.setStatus('connected');
     this.sendHello();
     this.stopPing();
-    this.pingTimer = setInterval(() => this.send({ t: 'ping', at: performance.now() }), 2000);
+    this.rttSeries = new LatencySeries(120); this.pingsSent = []; this.pingsAnswered.clear(); this.rtt = 0;
+    this.pingTimer = setInterval(() => {
+      const at = performance.now();
+      this.pingsSent.push(at);
+      if (this.pingsSent.length > 120) this.pingsSent.shift();
+      this.send({ t: 'ping', at });
+    }, 1000);
+  }
+
+  /**
+   * Connection quality: player ↔ player RTT (p50 / p95 / jitter), share of pings without an answer after 3 s
+   * (TCP / WebSocket does not lose packets — a loss there shows up as a stall), and for the relay the RTT to the
+   * room server alone (me → Cloudflare → me), which tells the network part from the other player's part.
+   */
+  stats(): { kind: LinkKind; rtt: ReturnType<LatencySeries['summary']>; lossPct: number; relay: ReturnType<LatencySeries['summary']> | null } {
+    const now = performance.now();
+    const due = this.pingsSent.filter((t) => now - t > 3000);
+    const lost = due.filter((t) => !this.pingsAnswered.has(t)).length;
+    return {
+      kind: this.kind, rtt: this.rttSeries.summary(),
+      lossPct: due.length ? Math.round((lost / due.length) * 1000) / 10 : 0,
+      relay: (this.link as { relayStats?: () => ReturnType<LatencySeries['summary']> } | null)?.relayStats?.() ?? null,
+    };
   }
 
   private receive(m: NetMsg): void {
@@ -126,7 +155,15 @@ export class NetSession {
         if (m.v !== PROTOCOL_VERSION) { this.error = 'Hai bên dùng phiên bản game khác nhau — cập nhật rồi thử lại'; this.leave(); return; }
         break;
       case 'ping': this.send({ t: 'pong', at: m.at }); return;
-      case 'pong': this.rtt = Math.round(performance.now() - m.at); this.pongs++; return;
+      case 'pong': {
+        if (typeof m.at !== 'number') return;
+        this.pingsAnswered.add(m.at);
+        if (this.pingsAnswered.size > 240) this.pingsAnswered.delete(this.pingsAnswered.values().next().value!);
+        this.rttSeries.add(performance.now() - m.at);
+        this.rtt = this.recentMedian();
+        this.pongs++;
+        return;
+      }
       case 'bye': this.error = m.reason ?? 'Đối thủ đã rời phòng'; this.leave(true); return;
     }
     for (const l of [...this.listeners]) l(m);
@@ -134,6 +171,12 @@ export class NetSession {
 
   send(m: NetMsg): void {
     this.link?.send(m);
+  }
+
+  /** median of the last 5 RTT samples: steady enough for the HUD, still reacts within a few seconds */
+  private recentMedian(): number {
+    const s = this.rttSeries.recent(5).sort((a, b) => a - b);
+    return Math.round(s[Math.floor(s.length / 2)] ?? 0);
   }
 
   /** Test hook: drop the connection as if the network failed (relay links reconnect to the same room). */

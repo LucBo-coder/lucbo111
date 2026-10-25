@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { CoopMirror, coopSession, type CoopSnapshot } from '../net/coop';
+import { applyCoopDelta, CoopMirror, coopSession, obstacleSig, type CoopSnapshot, type CoopWire } from '../net/coop';
+import { LatencySeries } from '../net/netStats';
 import { applyCoopLoot, type CoopLoot } from '../net/coopRewards';
 import { net } from '../net/session';
 import type { DuelMon } from '../net/protocol';
@@ -44,6 +45,18 @@ export class CoopGuestScene extends Phaser.Scene {
   ended = false;
   private lootLine = '';
   private lootUntil = 0;
+  /** the last complete snapshot (deltas apply to it), the obstacle version we hold, and whether we need a keyframe */
+  private full: CoopSnapshot | null = null;
+  private haveObs = '';
+  private needKey = false;
+  private trees: Phaser.GameObjects.Image[] = [];
+  private treesFor = '';
+  /** when each input left (by seq), input → acknowledgement latency, and the gap between snapshots */
+  private inputAt = new Map<number, number>();
+  readonly inputLag = new LatencySeries(120);
+  readonly snapGap = new LatencySeries(120);
+  /** how long the host held our last input before the snapshot that acknowledged it (its tick + batching) */
+  readonly hostHold = new LatencySeries(120);
 
   constructor() { super('CoopGuest'); }
   init(d: { party: DuelMon[]; returnTo?: 'adventure' | 'menu' }): void {
@@ -51,6 +64,7 @@ export class CoopGuestScene extends Phaser.Scene {
     this.mirror = null; this.snapshot = null; this.seq = 0; this.sent = this.joined = this.receivedAt = 0;
     this.command = 'auto'; this.target = undefined; this.ended = false; this.notice = ''; this.runHeld = false; this.scenery = [];
     this.joystick.x = this.joystick.y = 0; this.lootLine = ''; this.lootUntil = 0; this.map = null;
+    this.full = null; this.haveObs = ''; this.needKey = false; this.trees = []; this.treesFor = ''; this.inputAt.clear();
   }
   create(): void {
     coopSession.active = true;
@@ -71,27 +85,47 @@ export class CoopGuestScene extends Phaser.Scene {
     this.offStatus = net.onStatus(() => { if (!net.connected) this.end('Đã mất kết nối với chủ phòng.'); });
     this.events.once('shutdown', () => {
       this.scene.stop('CoopGuestUI');
-      this.off?.(); this.offStatus?.(); this.renderer_?.destroy(); this.chunks?.destroyAll();
+      this.off?.(); this.offStatus?.(); this.renderer_?.destroy(); this.chunks?.destroyAll(); this.trees = [];
       this.renderer_ = null; this.chunks = null; this.map = null;
     });
   }
-  private receive(s: CoopSnapshot): void {
-    if (this.ended || !s.guest?.length) return;
+  private receive(wire: CoopWire): void {
+    if (this.ended || !wire) return;
+    const s = this.complete(wire);
+    if (!s || !s.guest?.length) return;
     if (this.snapshot?.epoch === s.epoch && s.n <= this.snapshot.n) return;
+    const now = performance.now();
+    if (typeof s.ack === 'number') {
+      // input → acknowledged snapshot: network both ways + the host's tick (what the player feels)
+      const at = this.inputAt.get(s.ack);
+      if (at !== undefined) { this.inputLag.add(now - at); for (const k of this.inputAt.keys()) if (k <= s.ack) this.inputAt.delete(k); }
+    }
+    if (typeof s.hold === 'number') this.hostHold.add(s.hold);
+    if (this.receivedAt) this.snapGap.add(now - this.receivedAt);
     const changed = !this.snapshot || this.snapshot.epoch !== s.epoch;
     if (changed) {
       this.renderer_?.destroy(); this.chunks?.destroyAll(); this.scenery.forEach(o => o.destroy()); this.scenery = [];
+      this.trees.forEach(o => o.destroy()); this.trees = []; this.treesFor = '';
       this.mirror = new CoopMirror(s.map); this.mirror.apply(s);
       const w = this.mirror.world;
       this.renderer_ = new WorldRenderer(this, w, { banner: () => {} }, saveStore.data.settings.quality);
       this.map = s.map.kind === 'region' ? new ValleyMap(regionDef(s.map.id)) : s.map.kind === 'dungeon' ? new DungeonMap(dungeonDef(s.map.id)) : null;
       this.chunks = this.map ? new ChunkView(this, this.map, { onLoad: r => this.decorate(r), onUnload: () => {} }) : null;
+      const map = this.map;
+      // the host's feet-area wall test (AdventureScene terrain.blocksMove), for predicting our own trainer
+      const solidPx = (x: number, y: number) => !!map && map.solidAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX));
+      this.mirror.blocked = map ? (x, y) => solidPx(x, y + 6) || solidPx(x - 10, y + 8) || solidPx(x + 10, y + 8) : undefined;
       if (!this.map) {
         this.scenery.push(this.add.tileSprite(0, 0, s.map.width, s.map.height, 'grass').setOrigin(0).setTileScale(2).setDepth(-10));
-        for (const o of s.obstacles) this.scenery.push(this.add.image(o.x, o.y + o.r * 0.4, 'tree').setOrigin(0.5, 0.92).setScale(3 * o.r / 26).setDepth(o.y));
       }
       this.cameras.main.setBounds(0, 0, s.map.width, s.map.height).startFollow(this.renderer_.trainerSprite(), true, 0.15, 0.15);
     } else this.mirror!.apply(s);
+    // survivor trees: drawn once per obstacle version (the list may arrive after the first keyframe)
+    if (!this.map && s.obstacles.length && this.treesFor !== (s.obsSig ?? '')) {
+      this.trees.forEach(o => o.destroy());
+      this.trees = s.obstacles.map(o => this.add.image(o.x, o.y + o.r * 0.4, 'tree').setOrigin(0.5, 0.92).setScale(3 * o.r / 26).setDepth(o.y));
+      this.treesFor = s.obsSig ?? '';
+    }
     if (this.map instanceof DungeonMap && s.map.doors) {
       const [d, q] = s.map.doors;
       if (this.map.doorOpen('D') !== d || this.map.doorOpen('Q') !== q) {
@@ -100,6 +134,20 @@ export class CoopGuestScene extends Phaser.Scene {
     }
     this.snapshot = s; this.receivedAt = performance.now();
     this.renderer_!.handle(s.events);
+  }
+  /** Keyframe or delta → complete snapshot (null while waiting for a usable keyframe). */
+  private complete(w: CoopWire): CoopSnapshot | null {
+    if ('d' in w) {
+      const s = applyCoopDelta(this.full, w);
+      if (!s) { this.needKey = true; return null; }
+      this.full = s; return s;
+    }
+    let s: CoopSnapshot = w;
+    if (w.noObs) s = { ...w, obstacles: this.full && this.full.obsSig === w.obsSig ? this.full.obstacles : [] };
+    else this.haveObs = obstacleSig(s.obstacles);
+    if (w.noObs && !s.obstacles.length) this.haveObs = '';
+    this.full = s; this.needKey = false;
+    return s;
   }
   /** Host shared a drop: apply it to this player's own save immediately (progress survives a disconnect). */
   private receiveLoot(loot: CoopLoot): void {
@@ -123,14 +171,18 @@ export class CoopGuestScene extends Phaser.Scene {
   update(_t: number, delta: number): void {
     if (this.ended) return;
     const now = performance.now();
-    if (now - this.joined >= 1000) { net.send({ t: 'coopJoin', party: this.party, avatar: saveStore.avatar }); this.joined = now; }
+    if (now - this.joined >= 1000) { net.send({ t: 'coopJoin', party: this.party, avatar: saveStore.avatar, obs: this.haveObs, need: this.needKey }); this.joined = now; }
     if (!this.snapshot || !this.mirror) return;
     music.play(this.mirror.world.enemies.some(e => e.kind === 'boss') ? 'boss' : 'battle');
     const k = this.keys;
     if (now - this.sent >= 66) {
       const x = (k.D.isDown || k.RIGHT.isDown ? 1 : 0) - (k.A.isDown || k.LEFT.isDown ? 1 : 0);
       const y = (k.S.isDown || k.DOWN.isDown ? 1 : 0) - (k.W.isDown || k.UP.isDown ? 1 : 0);
-      net.send({ t: 'coopInput', epoch: this.snapshot.epoch, seq: ++this.seq, x: x || this.joystick.x, y: y || this.joystick.y, run: k.SHIFT.isDown || this.runHeld, command: this.command, target: this.target });
+      const ix = x || this.joystick.x, iy = y || this.joystick.y, run = k.SHIFT.isDown || this.runHeld;
+      net.send({ t: 'coopInput', epoch: this.snapshot.epoch, seq: ++this.seq, x: ix, y: iy, run, command: this.command, target: this.target });
+      this.mirror.input(this.seq, ix, iy, run, now);
+      this.inputAt.set(this.seq, now);
+      if (this.inputAt.size > 120) this.inputAt.delete(this.inputAt.keys().next().value!);
       this.sent = now;
     }
     this.chunks?.update(this.cameras.main.worldView);
@@ -140,6 +192,8 @@ export class CoopGuestScene extends Phaser.Scene {
   }
   // ── used by the HUD (CoopGuestUI) ──
   private end(reason: string): void { this.ended = true; this.notice = `${reason}\nNhấn Rời co-op để quay về.`; }
+  /** game-side latency for the stats overlay (ms) */
+  netStats() { return { inputToAck: this.inputLag.summary(), snapshotGap: this.snapGap.summary(), hostHold: this.hostHold.summary() }; }
   waitedMs(): number { return performance.now() - this.startedAt; }
   lootText(): string { return this.time.now < this.lootUntil ? this.lootLine : ''; }
   setCommand(c: AllyCommand): void { this.command = c; this.target = undefined; }

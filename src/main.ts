@@ -33,6 +33,7 @@ async function boot(): Promise<void> {
     scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene, CoopGuestUI, ServerScene, OnlineHubScene],
   });
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
+  if (new URLSearchParams(location.search).has('netstats')) void import('./net/netOverlay').then(m => m.startNetOverlay());
 }
 
 void boot();

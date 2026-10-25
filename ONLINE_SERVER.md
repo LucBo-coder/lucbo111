@@ -18,6 +18,12 @@ Trình duyệt ── wss://…/room/<MÃ>?role=host|guest ──▶ Worker (ki�
 - **Vị trí**: Durable Object được tạo gần người chơi (`locationHint` apac → Singapore / Hong Kong). Độ trễ phụ thuộc nhà mạng định tuyến `workers.dev` qua châu Á (~70–150 ms) hay châu Âu (~300–450 ms); muốn ổn định hơn cần tên miền riêng (không bắt buộc).
 - **Chọn đường kết nối** (thêm vào URL game): `?net=peer` dùng WebRTC cũ, `?net=local` hai tab cùng trình duyệt (thử nghiệm), `?cloud=wss://máy-chủ-khác` dùng Worker khác. Build tay: `VITE_CLOUD_URL=wss://… npm run build`.
 
+### Độ trễ co-op / PvP
+
+- **Ping hiển thị** = người chơi ↔ người chơi: ping → relay → máy bên kia → relay → về (4 chặng) cộng thời gian trang bên kia trả lời; trung vị 5 lần đo (1 lần/s). Thêm `?netstats` vào URL để xem p50 / p95 / jitter, % ping không được trả lời sau 3 s, **relay** (chỉ mình ↔ máy chủ Cloudflare, phần mạng), và với khách co-op: *input → host* (độ trễ cảm nhận), *host giữ input* (tick + nhịp gửi 100 ms của chủ phòng), *giữa 2 snapshot*.
+- Đồng bộ co-op: keyframe mỗi 10 snapshot (1 s), giữa đó là delta; vật cản tĩnh chỉ gửi khi khách báo chưa có (`coopJoin.obs`), khách lỡ delta thì xin keyframe (`need`). Snapshot / input / ping không chờ gộp 50 ms.
+- Đo (2 trình duyệt trên cùng máy + cùng nhà mạng, qua relay thật, 20 quái, 40 s / lượt): chủ phòng gửi lên 270–278 → 30–32 kB/s; snapshot trung bình ~29 000 → ~3 300 ký tự; ping p50 241–395 → 139–234 ms, p95 439–1463 → 154–528 ms. Độ trễ còn lại chủ yếu là định tuyến nhà mạng tới `workers.dev` (thay đổi giữa HKG / SIN / NRT / châu Âu theo giờ). Chưa đo được hai mạng khác nhau thật — dùng `?netstats` trên hai máy để đo.
+
 ### Giới hạn gói Free (ước tính)
 
 100 000 request/ngày (mỗi WebSocket = 1 request, tin nhắn đến tính 20 tin = 1 request), 13 000 GB-s thời gian Durable Object/ngày, 100 000 dòng SQLite ghi/ngày, 5 GB lưu trữ. Với nhịp gửi của game (~20 tin/s mỗi người, gộp 50 ms) đủ khoảng 14 giờ-phòng hoặc ~55 giờ-người Thế giới online mỗi ngày. Hết hạn mức thì kết nối bị từ chối tới 0h UTC; không phát sinh phí.

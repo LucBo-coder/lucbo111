@@ -1,5 +1,6 @@
 import type { NetMsg } from './protocol';
 import { cloudBase } from './cloud';
+import { LatencySeries } from './netStats';
 
 // Two-player links. 'relay' = WebSocket through the Cloudflare backend (one Durable Object per room code relays
 // the messages; works on every network). 'peer' = WebRTC through PeerJS (direct browser-to-browser; fails behind
@@ -203,11 +204,18 @@ async function peerJoin(code: string, timeoutMs: number): Promise<Link> {
 
 // ───────────────────────────── Cloudflare relay (WebSocket) ─────────────────────────────
 
-interface RelayFrame { r?: 'ready' | 'peer' | 'gone' | 'error'; token?: string; on?: boolean; reason?: string; code?: string; message?: string; m?: NetMsg[] }
+interface RelayFrame { r?: 'ready' | 'peer' | 'gone' | 'error'; token?: string; on?: boolean; reason?: string; code?: string; message?: string; m?: NetMsg[]; pp?: number }
 type RelayError = Error & { code?: string };
 
 /** Outgoing messages are batched per window: one WebSocket frame instead of one per message (Free-plan budget). */
 const FLUSH_MS = 50;
+/**
+ * Messages whose delay is felt (co-op snapshots / inputs, duel state, ping) leave at once, taking whatever is queued
+ * with them; the rest waits for the batch window. Each of these already has its own fixed rate (≤ 15 / s).
+ */
+const URGENT = new Set<NetMsg['t']>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'act', 'pos']);
+/** relay-only round trip (me → room server → me), measured every 2 s */
+const ECHO_MS = 2000;
 /** reconnect delays (≈ 40 s in total, inside the room's 60 s grace period) */
 const RETRY_MS = [500, 1000, 2000, 4000, 8000, 8000, 8000, 8000];
 const MAX_QUEUE = 400;
@@ -221,6 +229,8 @@ class RelaySocket {
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private retries = 0;
   private done = false;
+  private echoTimer: ReturnType<typeof setInterval> | null = null;
+  readonly echo = new LatencySeries(60);
   onFrame: (f: RelayFrame) => void = () => {};
   onLost: (reason: string) => void = () => {};
 
@@ -242,6 +252,7 @@ class RelaySocket {
       ws.onmessage = (e) => {
         let f: RelayFrame;
         try { f = JSON.parse(String(e.data)); } catch { return; }
+        if (typeof f.pp === 'number') { this.echo.add(performance.now() - f.pp); return; }
         if (f.r === 'ready') {
           ready = true;
           clearTimeout(timer);
@@ -249,6 +260,7 @@ class RelaySocket {
           this.retries = 0;
           resolve();
           this.flush();
+          this.echoTimer ??= setInterval(() => { if (this.ws?.readyState === WebSocket.OPEN) this.ws.send(`{"p":${performance.now()}}`); }, ECHO_MS);
           return;
         }
         if (f.r === 'error' && !ready) {
@@ -280,14 +292,21 @@ class RelaySocket {
   private lost(reason: string): void {
     if (this.done) return;
     this.done = true;
+    this.stopEcho();
     this.onLost(reason);
+  }
+
+  private stopEcho(): void {
+    if (this.echoTimer) clearInterval(this.echoTimer);
+    this.echoTimer = null;
   }
 
   send(m: NetMsg): void {
     if (this.done) return;
     this.queue.push(m);
     if (this.queue.length > MAX_QUEUE) this.queue.splice(0, this.queue.length - MAX_QUEUE);
-    this.flushTimer ??= setTimeout(() => this.flush(), FLUSH_MS);
+    if (URGENT.has(m.t)) this.flush();
+    else this.flushTimer ??= setTimeout(() => this.flush(), FLUSH_MS);
   }
 
   private flush(): void {
@@ -307,6 +326,7 @@ class RelaySocket {
   close(): void {
     if (this.done) return;
     this.done = true;
+    this.stopEcho();
     this.flush();
     const ws = this.ws;
     this.ws = null;
@@ -332,6 +352,10 @@ class RelayLink implements Link {
   }
   simulateDrop(): void {
     this.sock.simulateDrop();
+  }
+  /** RTT to the room server alone (p50 / p95 / jitter) */
+  relayStats() {
+    return this.sock.echo.summary();
   }
   close(): void {
     if (this.closed) return;
