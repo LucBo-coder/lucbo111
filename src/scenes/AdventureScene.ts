@@ -230,6 +230,9 @@ export class AdventureScene extends Phaser.Scene {
     this.env = new EnvironmentController(this);
     this.applyParty();
     for (const a of this.world.allies) { a.x = this.world.trainer.x + 20; a.y = this.world.trainer.y + 20; }
+    // the trainer (local + shared by online peers) wears the avatar chosen in the device profile
+    this.world.trainer.avatar = saveStore.avatar;
+    net.setProfile(saveStore.playerName, saveStore.avatar);
 
     this.renderer_ = new WorldRenderer(this, this.world, {
       banner: (t, c) => this.ui?.banner(t, c),

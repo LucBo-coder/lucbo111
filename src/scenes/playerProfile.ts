@@ -105,7 +105,11 @@ export function openPlayerProfile(scene: Phaser.Scene, onChanged?: () => void): 
       const zone = add(scene.add.zone(tx, ty, tileW, tileH).setOrigin(0).setInteractive({ useHandCursor: true }));
       zone.on('pointerup', () => {
         if (a.id === saveStore.avatar) return;
-        void saveStore.setAvatar(a.id).then(build);
+        void saveStore.setAvatar(a.id).then((id) => {
+          // tell the other player immediately, so our trainer changes on their screen too
+          net.setAvatar(id);
+          build();
+        });
       });
     });
 

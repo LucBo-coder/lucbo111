@@ -2,11 +2,14 @@ import Phaser from 'phaser';
 import type { AdventureScene } from '../scenes/AdventureScene';
 import { DuelHandshake, DuelStart, net } from '../net/session';
 import { monFromOwned, RULESETS } from '../net/duel';
-import type { NetMsg } from '../net/protocol';
+import type { LeadAnim, NetMsg } from '../net/protocol';
 import type { DuelSceneData } from '../scenes/DuelScene';
 import { gameModes } from '../systems/gameMode';
 import { shinyKey } from '../render/lazyCreatures';
 import { fitScale } from '../render/spriteRegistry';
+import { avatarTextureKey } from '../core/avatars';
+import { creatureFootAnchor, sheetKey } from '../render/animation';
+import { unitAnim } from '../render/WorldRenderer';
 import { POKEMON } from '../core/data';
 import { audio } from '../systems/audio';
 
@@ -17,7 +20,7 @@ import { audio } from '../systems/audio';
 const SEND_EVERY = 100; // ms
 const CHALLENGE_TIMEOUT = 20_000;
 
-interface Remote { region: string; x: number; y: number; facing: number; lead: string | null; leadShiny: boolean; moving: boolean; busy: boolean; at: number }
+interface Remote { region: string; x: number; y: number; facing: number; lead: string | null; leadShiny: boolean; leadAnim: LeadAnim; moving: boolean; busy: boolean; at: number }
 
 export class OnlinePresence {
   private remote: Remote | null = null;
@@ -26,7 +29,11 @@ export class OnlinePresence {
   x = 0;
   y = 0;
   private body: Phaser.GameObjects.Sprite | null = null;
-  private pet: Phaser.GameObjects.Image | null = null;
+  private pet: Phaser.GameObjects.Sprite | null = null;
+  /** base art key the pet sprite was created for (sheet swaps when the lead or its shiny state changes) */
+  private petKey = '';
+  /** sprite sheet currently shown for the remote trainer's avatar */
+  private bodySheet = '';
   private tag: Phaser.GameObjects.Text | null = null;
   private lastSent = 0;
   private off: () => void;
@@ -52,6 +59,7 @@ export class OnlinePresence {
   private hide(): void {
     this.body?.destroy(); this.pet?.destroy(); this.tag?.destroy();
     this.body = this.pet = this.tag = null;
+    this.bodySheet = ''; this.petKey = '';
     this.scene.interactables.delete('remote-player');
   }
 
@@ -67,7 +75,11 @@ export class OnlinePresence {
     if (now - this.lastSent >= SEND_EVERY) {
       this.lastSent = now;
       const lead = a.state.party()[0];
-      net.send({ t: 'pos', region: a.mapKind === 'valley' ? a.regionDef.id : 'dungeon', x: Math.round(t.x), y: Math.round(t.y), facing: t.facing, lead: lead?.species ?? null, leadShiny: !!lead?.shiny, moving: Math.hypot(t.vx, t.vy) > 5, busy: a.modal });
+      // The lead Pokémon is the first party member that is still standing on the field.
+      const unit = lead ? a.world.allies.find((u) => u.ownerUid === lead.uid && !u.fainted) ?? a.world.allies.find((u) => u.ownerUid === lead.uid) : undefined;
+      const anim = unit ? unitAnim(unit, Math.hypot(unit.vx, unit.vy) > 12) : 'idle';
+      const leadAnim: LeadAnim = anim === 'walk' || anim === 'attack' || anim === 'cast' ? anim : 'idle';
+      net.send({ t: 'pos', region: a.mapKind === 'valley' ? a.regionDef.id : 'dungeon', x: Math.round(t.x), y: Math.round(t.y), facing: t.facing, lead: lead?.species ?? null, leadShiny: !!lead?.shiny, leadAnim, moving: Math.hypot(t.vx, t.vy) > 5, busy: a.modal });
     }
     if (this.pendingChallenge && now - this.pendingChallenge.at > CHALLENGE_TIMEOUT) {
       this.pendingChallenge = null;
@@ -82,20 +94,45 @@ export class OnlinePresence {
     const k = Math.min(1, Math.max(0, (now - r.at) / SEND_EVERY));
     this.x = p.x + (r.x - p.x) * k; this.y = p.y + (r.y - p.y) * k;
     const sc = this.scene;
+    // The peer wears the avatar chosen in their profile; the hello sync keeps this live.
+    const avatar = avatarTextureKey(net.peerAvatar);
+    const avatarSheet = sheetKey(avatar);
+    const bodySheet = sc.textures.exists(avatarSheet) ? avatarSheet : 'trainer_sheet';
+    const bodyKey = bodySheet === avatarSheet ? avatar : 'trainer';
     if (!this.body) {
-      this.body = sc.add.sprite(0, 0, 'trainer_sheet', 0).setScale(3).setTint(0xffb0b0);
+      this.body = sc.add.sprite(0, 0, bodySheet, 0).setScale(3);
+      this.body.setOrigin(0.5, creatureFootAnchor(bodyKey).y);
+      this.bodySheet = bodySheet;
       this.tag = sc.add.text(0, 0, '', { fontFamily: '"VT323", monospace', fontSize: '20px', color: '#ffe080', stroke: '#000', strokeThickness: 4 }).setOrigin(0.5, 1);
+    } else if (this.bodySheet !== bodySheet) {
+      this.body.setTexture(bodySheet, 0);
+      this.body.setOrigin(0.5, creatureFootAnchor(bodyKey).y);
+      this.bodySheet = bodySheet;
     }
     this.body.setPosition(this.x, this.y).setFlipX(r.facing < 0).setDepth(this.y);
-    if (sc.anims.exists('trainer:walk') && r.moving) { if (this.body.anims.currentAnim?.key !== 'trainer:walk') this.body.play('trainer:walk'); }
-    else this.body.stop();
-    this.tag!.setText(net.peerName + (r.busy ? ' …' : '')).setPosition(this.x, this.y - 40).setDepth(9100);
-    // lead Pokémon walking beside the trainer
+    const bodyAnim = `${bodyKey}:${r.moving ? 'walk' : 'idle'}`;
+    if (sc.anims.exists(bodyAnim)) {
+      if (this.body.anims.currentAnim?.key !== bodyAnim) this.body.play(bodyAnim);
+    } else this.body.stop();
+    this.tag!.setText(net.peerName + (r.busy ? ' …' : '')).setPosition(this.x, this.y - 46).setDepth(9100);
+    // lead Pokémon walking beside the trainer, playing the animation their owner reports
     const key = r.lead ? (r.leadShiny ? shinyKey(r.lead) : r.lead) : null;
     if (key && sc.textures.exists(key)) {
-      if (!this.pet || this.pet.texture.key !== key) { this.pet?.destroy(); this.pet = sc.add.image(0, 0, key); }
-      this.pet.setScale(fitScale(sc, key, 48)).setPosition(this.x - r.facing * 40, this.y + 8 + Math.sin(now * 0.01) * (r.moving ? 2 : 0.5)).setDepth(this.y + 8);
-    } else { this.pet?.destroy(); this.pet = null; }
+      const sheet = sc.textures.exists(sheetKey(key)) ? sheetKey(key) : '';
+      if (!this.pet || this.petKey !== key) {
+        this.pet?.destroy();
+        this.pet = sc.add.sprite(0, 0, sheet || key);
+        this.pet.setOrigin(0.5, creatureFootAnchor(key).y);
+        this.petKey = key;
+      }
+      const petAnim = `${key}:${r.leadAnim}`;
+      if (sheet && sc.anims.exists(petAnim)) {
+        if (this.pet.anims.currentAnim?.key !== petAnim) this.pet.play(petAnim);
+      } else this.pet.stop();
+      const scale = fitScale(sc, key, 48);
+      const bob = Math.sin(now * 0.01) * (r.moving ? 2 : 0.5);
+      this.pet.setScale(scale).setPosition(this.x - r.facing * 40, this.y + 2 + bob).setDepth(this.y + 8);
+    } else { this.pet?.destroy(); this.pet = null; this.petKey = ''; }
     // walking up to the other player offers a challenge (E)
     sc.interactables.set('remote-player', { kind: 'remote', id: 'remote-player', x: this.x, y: this.y, label: `Thách đấu ${net.peerName}`, obj: { kind: 'npc', id: 'remote-player', x: 0, y: 0 }, sprite: null as never });
   }
@@ -118,7 +155,8 @@ export class OnlinePresence {
 
   private receive(m: NetMsg): void {
     if (m.t === 'pos') {
-      const r: Remote = { region: String(m.region), x: Number(m.x) || 0, y: Number(m.y) || 0, facing: m.facing < 0 ? -1 : 1, lead: typeof m.lead === 'string' && POKEMON.has(m.lead) ? m.lead : null, leadShiny: !!m.leadShiny, moving: !!m.moving, busy: !!m.busy, at: performance.now() };
+      const leadAnim: LeadAnim = m.leadAnim === 'walk' || m.leadAnim === 'attack' || m.leadAnim === 'cast' ? m.leadAnim : 'idle';
+      const r: Remote = { region: String(m.region), x: Number(m.x) || 0, y: Number(m.y) || 0, facing: m.facing < 0 ? -1 : 1, lead: typeof m.lead === 'string' && POKEMON.has(m.lead) ? m.lead : null, leadShiny: !!m.leadShiny, leadAnim, moving: !!m.moving, busy: !!m.busy, at: performance.now() };
       this.prev = this.remote && this.remote.region === r.region ? { ...this.remote, x: this.x || this.remote.x, y: this.y || this.remote.y } : r;
       this.remote = r;
     } else if (m.t === 'challenge') void this.onChallenged();

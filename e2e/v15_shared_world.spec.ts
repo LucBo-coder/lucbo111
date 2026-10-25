@@ -8,12 +8,13 @@ const ev = <T = unknown>(page: Page, fn: string) => page.evaluate(fn) as Promise
 const inAdventure = (page: Page) => page.waitForFunction(() => (window as Win).__adv?.world && !(window as Win).__adv.modal && (window as Win).__phaser.scene.isActive('AdvUI'), undefined, { timeout: 20_000 });
 const dialogueOpen = (page: Page) => ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`);
 
-async function start(page: Page, slot: number, name: string, team: string[]) {
+async function start(page: Page, slot: number, name: string, avatar: string, team: string[]) {
   await page.goto('/?debug&net=local');
   await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true, ${slot})`);
   await inAdventure(page);
-  await ev(page, `(() => { const a = window.__adv; ${JSON.stringify(team)}.forEach(s => a.state.addPokemon(s, 30, 'gift')); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e6; window.__net.myName = '${name}'; })()`);
+  await ev(page, `(() => { const a = window.__adv; ${JSON.stringify(team)}.forEach(s => a.state.addPokemon(s, 30, 'gift')); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e6;
+    window.__save.profile.avatar = '${avatar}'; window.__net.myAvatar = '${avatar}'; window.__adv.world.trainer.avatar = '${avatar}'; window.__net.myName = '${name}'; })()`);
 }
 
 test('shared open world: see each other, challenge with E, duel, back to the world', async ({ browser }, info) => {
@@ -22,8 +23,8 @@ test('shared open world: see each other, challenge with E, duel, back to the wor
   const a = await ctx.newPage(), b = await ctx.newPage();
   const errors: string[] = [];
   for (const p of [a, b]) p.on('pageerror', (e) => errors.push(String(e)));
-  await start(a, 1, 'An', ['charmander', 'pidgey']);
-  await start(b, 2, 'Bình', ['squirtle', 'rattata']);
+  await start(a, 1, 'An', 'ninja', ['charmander', 'pidgey']);
+  await start(b, 2, 'Bình', 'lass', ['squirtle', 'rattata']);
 
   const code = await ev<string>(a, `window.__net.host('local')`);
   await ev(b, `window.__net.join('${code}', 'local')`);
@@ -40,6 +41,17 @@ test('shared open world: see each other, challenge with E, duel, back to the wor
   const seen = await ev<{ x: number; y: number }>(a, `({ x: window.__adv.presence.x, y: window.__adv.presence.y })`);
   expect(Math.hypot(seen.x - (pa.x + 60), seen.y - pa.y)).toBeLessThan(30);
   expect(await ev(a, `window.__adv.nearest?.kind`)).toBe('remote');
+  // each side draws the other player with the avatar they picked (not the generic trainer sprite)
+  await a.waitForFunction(() => (window as Win).__adv.presence.body?.texture.key === 'avt-lass_sheet', undefined, { timeout: 8000 });
+  await b.waitForFunction(() => (window as Win).__adv.presence.body?.texture.key === 'avt-ninja_sheet', undefined, { timeout: 8000 });
+  // B's lead casting is animated on A's screen in the shared world
+  expect(await ev<string>(a, `window.__adv.presence.pet?.texture.key`)).toContain('squirtle');
+  await ev(b, `(() => { const u = window.__adv.world.allies[0]; u.animCast = 5; u.lastSkill = 'water_gun'; })()`);
+  await a.waitForFunction(() => {
+    const p = (window as Win).__adv.presence;
+    return p.remote?.leadAnim === 'cast' && p.pet?.anims?.currentAnim?.key?.endsWith(':cast');
+  }, undefined, { timeout: 8000 });
+  await ev(b, `(() => { const u = window.__adv.world.allies[0]; u.animCast = 0; })()`);
   await a.screenshot({ path: info.outputPath('1-shared-world.png') });
 
   // A presses E → confirm → B is asked → accepts
@@ -59,6 +71,15 @@ test('shared open world: see each other, challenge with E, duel, back to the wor
   // real levels from the adventure party
   expect(await ev(a, `window.__duel.world.allies.map(u => u.defId + u.level)`)).toEqual(['charmander30', 'pidgey30']);
   expect(await ev(b, `window.__duel.world.allies.map(u => u.defId + u.level)`)).toEqual(['squirtle30', 'rattata30']);
+  // in the arena both trainers keep the avatar the other player saw in the open world
+  await a.waitForFunction(() => {
+    const d = (window as Win).__duel, v = d.renderer_.views;
+    return v.get(d.world.trainer.id)?.body.texture.key === 'avt-ninja_sheet' && v.get(d.world.rival.trainer.id)?.body.texture.key === 'avt-lass_sheet';
+  }, undefined, { timeout: 8000 });
+  await b.waitForFunction(() => {
+    const d = (window as Win).__duel, v = d.renderer_.views;
+    return v.get(d.world.trainer.id)?.body.texture.key === 'avt-lass_sheet' && v.get(d.world.rival.trainer.id)?.body.texture.key === 'avt-ninja_sheet';
+  }, undefined, { timeout: 8000 });
   await a.waitForTimeout(4500);
   await a.screenshot({ path: info.outputPath('3-world-duel.png') });
 

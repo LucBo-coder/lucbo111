@@ -1267,7 +1267,7 @@ export class AdventureUI extends Phaser.Scene {
     const r = await a.say('Chơi online cùng bạn', ['Hai người cùng đi trong thế giới mở (mỗi người giữ Pokémon hoang dã, nhiệm vụ, đồ của mình) và thách đấu nhau bằng cách lại gần rồi nhấn E.', 'Kết nối trực tiếp qua WebRTC; người tạo phòng đọc mã cho bạn mình.'],
       [{ label: 'Tạo phòng', value: 'host' }, { label: 'Vào phòng bằng mã', value: 'join' }, { label: 'Hủy', value: 'no' }]);
     const kind = defaultLinkKind();
-    net.setName(saveStore.playerName);
+    net.setProfile(saveStore.playerName, saveStore.avatar);
     try {
       if (r === 'host') {
         const code = await net.host(kind);

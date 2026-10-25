@@ -104,6 +104,8 @@ export interface Unit {
   team: Team;
   kind: 'trainer' | 'pokemon' | 'enemy' | 'boss';
   defId: string;
+  /** Profile avatar id for player trainers (online appearance); NPC trainers leave it unset. */
+  avatar?: string;
   name: string;
   types: PokeType[];
   role: Role | null;

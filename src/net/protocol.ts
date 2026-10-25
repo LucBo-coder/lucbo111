@@ -39,6 +39,9 @@ export interface DuelInput {
   run: boolean;
 }
 
+/** Animation the remote lead Pokémon is showing right now (shared open world). */
+export type LeadAnim = 'idle' | 'walk' | 'attack' | 'cast';
+
 export type DuelAction =
   | { a: 'cmd'; cmd: AllyCommand; target?: number }
   | { a: 'switch'; out: number | null; inc: number | null }
@@ -79,12 +82,12 @@ export interface Snapshot {
 }
 
 export type NetMsg =
-  | { t: 'coopJoin'; party: DuelMon[] }
+  | { t: 'coopJoin'; party: DuelMon[]; avatar?: string }
   | { t: 'coopInput'; epoch: string; seq: number; x: number; y: number; run: boolean; command: AllyCommand; target?: number }
   | { t: 'coopSnap'; s: CoopSnapshot }
   | { t: 'coopLoot'; reward: CoopLoot }
   | { t: 'coopEnd'; reason: string }
-  | { t: 'hello'; v: number; name: string; game: string }
+  | { t: 'hello'; v: number; name: string; avatar?: string; game: string }
   | { t: 'ping'; at: number }
   | { t: 'pong'; at: number }
   | { t: 'bye'; reason?: string }
@@ -99,6 +102,6 @@ export type NetMsg =
   | { t: 'snap'; s: Snapshot; ev: unknown[] }
   | { t: 'rematch' }
   // shared world (presence)
-  | { t: 'pos'; region: string; x: number; y: number; facing: number; lead: string | null; leadShiny: boolean; moving: boolean; busy: boolean }
+  | { t: 'pos'; region: string; x: number; y: number; facing: number; lead: string | null; leadShiny: boolean; leadAnim?: LeadAnim; moving: boolean; busy: boolean }
   | { t: 'challenge'; rules: DuelRules }
   | { t: 'challengeReply'; accept: boolean };

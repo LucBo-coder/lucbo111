@@ -80,6 +80,10 @@ export class DuelScene extends Phaser.Scene {
       for (const list of b.order) for (const u of list) this.byId.set(u.id, u);
     }
     (window as unknown as { __duel: DuelScene }).__duel = this;
+    // Keep the profile current and wear it in the arena; the opponent's trainer uses the avatar they announced.
+    net.setProfile(saveStore.playerName, saveStore.avatar);
+    this.world.trainer.avatar = saveStore.avatar;
+    if (this.role !== 'practice' && this.world.rival) this.world.rival.trainer.avatar = net.peerAvatar;
 
     // arena map: paved ground + stone pillars (obstacles for both the host simulation and the drawing)
     this.map = new ValleyMap(arenaJson as unknown as RegionDef);
@@ -95,8 +99,11 @@ export class DuelScene extends Phaser.Scene {
     this.renderer_ = new WorldRenderer(this, this.world, {
       banner: (t, c) => this.ui()?.banner(t, c),
       decorate: (u, v) => {
-        // the opponent's trainer wears red so both players read the arena the same way
-        if (u.kind === 'trainer') v.body.setTint(u === this.world.trainer ? 0xffffff : 0xff9090);
+        // Red shadow marks the opponent so both players read the arena the same way without recolouring the avatar.
+        if (u.kind === 'trainer') {
+          if (u === this.world.trainer) v.shadow.clearTint();
+          else v.shadow.setTint(0xff9090);
+        }
       },
     }, saveStore.data.settings.quality);
     this.chunks = new ChunkView(this, map, { onLoad: (r) => this.onChunkLoad(r), onUnload: () => {} });

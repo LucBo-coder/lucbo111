@@ -1,4 +1,5 @@
 import { GAME_VERSION } from '../version';
+import { cleanAvatarId, DEFAULT_AVATAR } from '../core/avatars';
 import type { DuelMon, DuelRules, NetMsg, RosterUnit } from './protocol';
 import { PROTOCOL_VERSION } from './protocol';
 import { hostRoom, HostHandle, joinRoom, Link, LinkKind, defaultLinkKind } from './transport';
@@ -25,7 +26,10 @@ export class NetSession {
   code = '';
   error = '';
   myName = 'Huấn luyện viên';
+  /** Avatar chosen in the device profile, sent with every hello so the other player draws us correctly. */
+  myAvatar = DEFAULT_AVATAR;
   peerName = '';
+  peerAvatar = DEFAULT_AVATAR;
   /** round-trip time (ms), updated every 2 s; `pongs` counts the answers received */
   rtt = 0;
   pongs = 0;
@@ -43,7 +47,24 @@ export class NetSession {
   /** Updates the local display name; if a link is already open, tells the peer so their labels update live. */
   setName(name: string): void {
     this.myName = name;
-    if (this.connected) this.send({ t: 'hello', v: PROTOCOL_VERSION, name, game: GAME_VERSION });
+    this.sendHello();
+  }
+
+  /** Updates the local avatar and announces it live (the peer redraws our trainer). */
+  setAvatar(raw: string): void {
+    this.myAvatar = cleanAvatarId(raw);
+    this.sendHello();
+  }
+
+  /** Name + avatar in one hello (used when a scene opens and restores the device profile). */
+  setProfile(name: string, avatar: string): void {
+    this.myName = name;
+    this.myAvatar = cleanAvatarId(avatar);
+    this.sendHello();
+  }
+
+  private sendHello(): void {
+    if (this.connected) this.send({ t: 'hello', v: PROTOCOL_VERSION, name: this.myName, avatar: this.myAvatar, game: GAME_VERSION });
   }
 
   /** Creates a room; resolves with its code once it is open (the guest may join any time later). */
@@ -91,7 +112,7 @@ export class NetSession {
       this.setStatus('closed');
     };
     this.setStatus('connected');
-    this.send({ t: 'hello', v: PROTOCOL_VERSION, name: this.myName, game: GAME_VERSION });
+    this.sendHello();
     this.stopPing();
     this.pingTimer = setInterval(() => this.send({ t: 'ping', at: performance.now() }), 2000);
   }
@@ -101,6 +122,7 @@ export class NetSession {
     switch (m.t) {
       case 'hello':
         this.peerName = String(m.name ?? '').slice(0, 24) || 'Đối thủ';
+        this.peerAvatar = cleanAvatarId(m.avatar);
         if (m.v !== PROTOCOL_VERSION) { this.error = 'Hai bên dùng phiên bản game khác nhau — cập nhật rồi thử lại'; this.leave(); return; }
         break;
       case 'ping': this.send({ t: 'pong', at: m.at }); return;
@@ -134,6 +156,7 @@ export class NetSession {
     this.role = null;
     this.code = '';
     this.peerName = '';
+    this.peerAvatar = DEFAULT_AVATAR;
     if (!keepError) this.error = '';
     this.setStatus(keepError ? 'closed' : 'idle');
   }

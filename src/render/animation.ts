@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { AVATARS, avatarTextureKey } from '../core/avatars';
 import type { Palette } from './pixelArt';
 import { REGISTRY } from './spriteRegistry';
 
@@ -133,11 +134,14 @@ export function creatureFootAnchor(key: string): { x: number; y: number } {
   let a = footCache.get(key);
   if (a) return a;
   const def = REGISTRY[key];
-  if (!def) return { x: 0.5, y: 0.5 }; // not cached: a lazily registered drawing may appear later
-  const f = frameSize(def.rows);
-  let bottom = def.rows.length;
-  while (bottom > 0 && !/[^.]/.test(def.rows[bottom - 1])) bottom--;
-  a = { x: 0.5, y: (f - PAD - def.rows.length + bottom + (def.outline ? 1 : 0)) / f };
+  const avatar = !def && key.startsWith('avt-') ? AVATARS.find((x) => avatarTextureKey(x.id) === key) : undefined;
+  const rows = def?.rows ?? avatar?.rows;
+  if (!rows) return { x: 0.5, y: 0.5 }; // not cached: a lazily registered drawing may appear later
+  const outline = def ? def.outline : true;
+  const f = frameSize(rows);
+  let bottom = rows.length;
+  while (bottom > 0 && !/[^.]/.test(rows[bottom - 1])) bottom--;
+  a = { x: 0.5, y: (f - PAD - rows.length + bottom + (outline ? 1 : 0)) / f };
   footCache.set(key, a);
   return a;
 }
@@ -152,20 +156,30 @@ export function buildCreatureAnimations(scene: Phaser.Scene, eager: (key: string
 /** 14-frame derived sheet + idle/walk/attack/cast/hit/faint animations for one creature. */
 export function buildCreatureSheet(scene: Phaser.Scene, key: string): void {
   const def = REGISTRY[key];
+  if (!def) return;
+  buildGridSheet(scene, key, def.rows, def.pal, def.outline);
+}
+
+/** Animated sheets for the profile avatars (same derived walk/cast frames as creatures). */
+export function buildAvatarSheets(scene: Phaser.Scene): void {
+  for (const a of AVATARS) buildGridSheet(scene, avatarTextureKey(a.id), a.rows, a.pal, true);
+}
+
+function buildGridSheet(scene: Phaser.Scene, key: string, rows: string[], pal: Palette, outline: boolean): void {
   const sk = sheetKey(key);
-  if (!def || scene.textures.exists(sk)) return;
-  const frames = deriveFrames(def.rows);
-  const F = frameSize(def.rows);
-  const W = Math.max(...def.rows.map((r) => r.length)), H = def.rows.length;
+  if (scene.textures.exists(sk)) return;
+  const frames = deriveFrames(rows);
+  const F = frameSize(rows);
+  const W = Math.max(...rows.map((r) => r.length)), H = rows.length;
   // centre horizontally, bottom-align so feet sit at the same spot for every size
   const ox = Math.floor((F - W) / 2), oy = F - PAD - H;
   const tex = scene.textures.createCanvas(sk, F * frames.length, F)!;
   const ctx = tex.getContext();
-  frames.forEach((f, i) => drawGrid(ctx, f.grid, def.pal, i * F + ox + f.dx, oy + f.dy, f.opts, def.outline));
-  void W; void H;
+  frames.forEach((f, i) => drawGrid(ctx, f.grid, pal, i * F + ox + f.dx, oy + f.dy, f.opts, outline));
   tex.refresh();
   for (let i = 0; i < frames.length; i++) tex.add(i, 0, i * F, 0, F, F);
   for (const [name, a] of Object.entries(ANIMS)) {
+    if (scene.anims.exists(`${key}:${name}`)) continue;
     scene.anims.create({
       key: `${key}:${name}`,
       frames: a.frames.map((f) => ({ key: sk, frame: f })),

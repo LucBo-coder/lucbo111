@@ -50,6 +50,7 @@ export class CoopGuestScene extends Phaser.Scene {
   }
   create(): void {
     coopSession.active = true;
+    net.setProfile(saveStore.playerName, saveStore.avatar);
     (window as unknown as { __coopGuest: CoopGuestScene }).__coopGuest = this;
     this.cameras.main.setBackgroundColor(0x1a3a1c);
     this.hud = text(this, 16, 14, 'Đang chờ chủ phòng…', 20, '#ffffff').setScrollFactor(0).setDepth(10000);
@@ -131,7 +132,7 @@ export class CoopGuestScene extends Phaser.Scene {
   update(_t: number, delta: number): void {
     if (this.ended) return;
     const now = performance.now();
-    if (now - this.joined >= 1000) { net.send({ t: 'coopJoin', party: this.party }); this.joined = now; }
+    if (now - this.joined >= 1000) { net.send({ t: 'coopJoin', party: this.party, avatar: saveStore.avatar }); this.joined = now; }
     if (!this.snapshot || !this.mirror) {
       if (this.time.now > 15000) this.hud.setText('Chưa nhận được trận co-op. Kiểm tra chủ phòng đã chọn co-op.\nNhấn Rời co-op để quay về.');
       return;

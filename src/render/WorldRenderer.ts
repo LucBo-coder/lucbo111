@@ -3,6 +3,7 @@ import { PmdAnim, pmdAnimKey, pmdDir, pmdHas, pmdReady, pumpPmd } from './pmdPac
 import { groundPose, pmdFootAnchor, visualProfile } from './overworldVisual';
 import { createGroundSprite } from './groundSprite';
 import { SKILLS } from '../core/data';
+import { avatarTextureKey } from '../core/avatars';
 import type { Unit, World, WorldEvent } from '../core/world';
 import { audio } from '../systems/audio';
 import { FONT } from '../scenes/ui';
@@ -64,6 +65,16 @@ interface DmgText {
 }
 
 const MELEE_KINDS = new Set(['melee', 'dash']);
+
+/** Animation a unit is showing right now (also relayed for the remote player's lead in the shared world). */
+export function unitAnim(u: Unit, moving: boolean): AnimName {
+  if (u.fainted) return 'faint';
+  if (u.hitFlash > 0.04 && u.kind !== 'boss') return 'hit';
+  const melee = MELEE_KINDS.has(SKILLS.get(u.lastSkill)?.kind ?? '');
+  if (u.dash) return 'attack';
+  if (u.castSlot >= 0 || u.animCast > 0) return melee ? 'attack' : 'cast';
+  return moving ? 'walk' : 'idle';
+}
 
 export class WorldRenderer {
   readonly views = new Map<number, UnitView>();
@@ -186,23 +197,19 @@ export class WorldRenderer {
     this.updateTexts(delta);
   }
 
-  private pickAnim(u: Unit, moving: boolean): AnimName {
-    if (u.fainted) return 'faint';
-    if (u.hitFlash > 0.04 && u.kind !== 'boss') return 'hit';
-    const melee = MELEE_KINDS.has(SKILLS.get(u.lastSkill)?.kind ?? '');
-    if (u.dash) return 'attack';
-    if (u.castSlot >= 0 || u.animCast > 0) return melee ? 'attack' : 'cast';
-    return moving ? 'walk' : 'idle';
-  }
-
   syncUnit(u: Unit): UnitView {
     let v = this.views.get(u.id);
     const isBoss = u.kind === 'boss';
     const bdef = u.boss?.def;
     // the hand-drawn segmented Onix is only used without the official sprite pack
     const segmented = isBoss && bdef!.sprite === 'onix' && !officialPack.active;
+    // Player trainers wear the avatar chosen in the device profile; NPC trainers keep the generic sprite.
+    const avatarKey = !isBoss && u.kind === 'trainer' && u.avatar ? avatarTextureKey(u.avatar) : '';
+    const avatarSheet = avatarKey ? sheetKey(avatarKey) : '';
     // a boss in an alternate form (Mega Rayquaza) is drawn as that species
-    const key = isBoss ? (segmented ? 'onix_head' : u.boss!.form ?? bdef!.sprite) : u.shiny ? shinyKey(u.defId) : u.defId;
+    const key = isBoss ? (segmented ? 'onix_head' : u.boss!.form ?? bdef!.sprite)
+      : avatarSheet && this.scene.textures.exists(avatarSheet) ? avatarKey
+      : u.shiny ? shinyKey(u.defId) : u.defId;
     // PMD animation pack (personal): real 8-direction animations once the species' sheets are loaded
     const species = isBoss ? u.boss!.form ?? bdef!.sprite : u.defId;
     const pmdOn = !segmented && pmdReady(species, !!u.shiny);
@@ -229,7 +236,7 @@ export class WorldRenderer {
     const moving = Math.abs(u.vx) + Math.abs(u.vy) > 12;
 
     // Animation state machine (only (re)plays when the state changes)
-    const anim = this.pickAnim(u, moving);
+    const anim = unitAnim(u, moving);
     if (pmdOn) {
       // Stable state: the AI's velocity jitters every frame, which used to restart the animation ~10×/s.
       // Moving ↔ standing and the facing row both have hysteresis, and a turn keeps the frame in progress.

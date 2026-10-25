@@ -45,7 +45,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   create(): void {
-    net.setName(saveStore.playerName);
+    net.setProfile(saveStore.playerName, saveStore.avatar);
     (window as unknown as { __lobby: LobbyScene }).__lobby = this;
     if (this.view === 'room') this.openHandshake();
     this.offStatus = net.onStatus(() => this.rebuild());
@@ -273,7 +273,12 @@ export class LobbyScene extends Phaser.Scene {
 
     // right: the opponent
     y = top + 12 * s;
-    text(this, rx + 14 * s, y, practice ? 'Đối thủ: Máy — một đội thuê khác của bạn' : `Đối thủ: ${net.peerName || '—'}`, 20 * s, '#ffffff');
+    const peerName = practice ? 'Đối thủ: Máy — một đội thuê khác của bạn' : `Đối thủ: ${net.peerName || '—'}`;
+    text(this, rx + 14 * s, y, peerName, 20 * s, '#ffffff').setWordWrapWidth(colW - 90 * s);
+    if (!practice) {
+      const peerAvatar = avatarTextureKey(net.peerAvatar);
+      if (this.textures.exists(peerAvatar)) this.add.image(rx + colW - 34 * s, y + 18 * s, peerAvatar).setScale(fitScale(this, peerAvatar, 34 * s));
+    }
     y += 34 * s;
     if (!practice && this.hs) {
       const th = this.hs.theirs ?? [];

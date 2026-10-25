@@ -40,7 +40,7 @@ export class MenuScene extends Phaser.Scene {
 
   create(): void {
     this.view = 'home';
-    net.setName(saveStore.playerName);
+    net.setProfile(saveStore.playerName, saveStore.avatar);
     this.build();
     this.scale.on('resize', this.rebuild, this);
     this.events.once('shutdown', () => this.scale.off('resize', this.rebuild, this));

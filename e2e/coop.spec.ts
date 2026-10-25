@@ -32,6 +32,9 @@ test('co-op menus, shared combat, revival, map travel and safe guest exit', asyn
   const errors: string[] = [];
   for (const p of [a, b]) p.on('pageerror', e => errors.push(String(e)));
   await start(a, 1); await start(b, 2);
+  // two devices would have their own profile: override before the room is created
+  await ev(a, `(() => { window.__save.profile.avatar = 'ninja'; window.__net.myAvatar = 'ninja'; window.__adv.world.trainer.avatar = 'ninja'; })()`);
+  await ev(b, `(() => { window.__save.profile.avatar = 'lass'; window.__net.myAvatar = 'lass'; window.__adv.world.trainer.avatar = 'lass'; })()`);
   const before = await ev(b, 'JSON.stringify(window.__adv.state.save.collection)');
   for (const p of [a, b]) {
     await ev(p, `window.__adv.ui.openMenu('settings')`);
@@ -48,6 +51,15 @@ test('co-op menus, shared combat, revival, map travel and safe guest exit', asyn
   await ev(a, 'window.__adv.ui.closeMenu()');
   await a.waitForFunction(() => !!(window as Win).__adv.world.companion);
   expect(await ev(a, 'window.__adv.world.companion.allies[0].defId')).toBe('pikachu');
+  // Both sides see the other player's chosen avatar (and their own) on the animated sheets.
+  await a.waitForFunction(() => {
+    const w = (window as Win).__adv.world, v = (window as Win).__adv.renderer_.views;
+    return w.companion && v.get(w.trainer.id)?.body.texture.key === 'avt-ninja_sheet' && v.get(w.companion.trainer.id)?.body.texture.key === 'avt-lass_sheet';
+  }, undefined, { timeout: 8000 });
+  expect(await ev(a, `window.__adv.world.companion.trainer.avatar`)).toBe('lass');
+  expect(await ev(b, `(() => { const g = window.__coopGuest, m = g.mirror?.world, v = g.renderer_.views;
+    return { own: v.get(m.trainer.id)?.body.texture.key, peer: v.get(m.companion.trainer.id)?.body.texture.key, peerAvatar: m.companion.trainer.avatar }; })()`))
+    .toEqual({ own: 'avt-lass_sheet', peer: 'avt-ninja_sheet', peerAvatar: 'ninja' });
   // Remote movement is simulated by host and comes back in snapshots.
   const x = await ev<number>(a, 'window.__adv.world.companion.trainer.x');
   await b.keyboard.down('d'); await b.waitForTimeout(600); await b.keyboard.up('d');
@@ -64,6 +76,17 @@ test('co-op menus, shared combat, revival, map travel and safe guest exit', asyn
   const id = await ev<number>(a, `(() => { const w = window.__adv.world; const e = w.spawnWild('snorlax', 30, w.trainer.x + 100, w.trainer.y, {hostile: true, hpMult: 10}); w.setCommand('attack', e); w.setCommand('attack', e, w.companion); return e.id; })()`);
   await b.waitForFunction(id => (window as Win).__coopGuest.snapshot.enemies.some((e: any) => e.id === id), id);
   await a.waitForFunction(() => (window as Win).__adv.world.allies[0].damageDealt > 0 && (window as Win).__adv.world.companion.allies[0].damageDealt > 0, undefined, { timeout: 15000 });
+  // Cast/attack pose travels both ways: each client animates the other side's units, not just its own.
+  const castIds = await ev<number[]>(a, `(() => { const w = window.__adv.world; const ids = [];
+    window.__castTimer = setInterval(() => { for (const u of [w.allies[0], w.companion?.allies[0]]) if (u) { u.animCast = 5; u.lastSkill = 'water_gun'; u.castSlot = -1; u.hitFlash = 0; u.iframes = 10; } }, 50);
+    for (const u of [w.allies[0], w.companion?.allies[0]]) if (u) ids.push(u.id);
+    return ids; })()`);
+  // derived sheets use ':cast', the optional PMD pack uses ':Shoot:' — either proves the shared cast state is drawn
+  await a.waitForFunction(`(ids) => ids.every(id => { const v = window.__adv.renderer_.views.get(id); const a = v && v.anim;
+    return !!a && (/:(cast|attack)$/.test(a) || /:(Shoot|Attack):/.test(a)); })`, castIds, { timeout: 8000 });
+  await b.waitForFunction(`(ids) => ids.every(id => { const v = window.__coopGuest.renderer_.views.get(id); const a = v && v.anim;
+    return !!a && (/:(cast|attack)$/.test(a) || /:(Shoot|Attack):/.test(a)); })`, castIds, { timeout: 8000 });
+  await ev(a, `clearInterval(window.__castTimer)`);
   await ev(a, `(() => { const w = window.__adv.world; w.applyDamage(w.enemies.find(e => e.id === ${id}), 1e9, w.companion.allies[0]); })()`);
   await b.waitForFunction(id => !(window as Win).__coopGuest.snapshot.enemies.some((e: any) => e.id === id), id);
   // Downed trainer is revived while the host stands nearby.

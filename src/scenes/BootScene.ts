@@ -6,7 +6,7 @@ import { POKEMON, SKILLS, validateData } from '../core/data';
 import { ITEM_DEFS } from '../core/evolution';
 import { buildIcons } from '../render/icons';
 import { installLazyCreatures, registerOfficialLazy } from '../render/lazyCreatures';
-import { buildCreatureAnimations } from '../render/animation';
+import { buildAvatarSheets, buildCreatureAnimations } from '../render/animation';
 import { REGISTRY, loadOfficialIndex, officialPack, preloadOfficialSmall, preloadIcyEthics, registerIcyEthics, registerPlaceholders, registerProcedural } from '../render/spriteRegistry';
 import { generateTextures } from '../render/pixelArt';
 import { buildTileset, buildWorldProps, preloadIcyTiles } from '../render/tileset';
@@ -62,6 +62,7 @@ export class BootScene extends Phaser.Scene {
     const icons = buildIcons(this, SKILLS.values(), [...ITEM_DEFS.values()]);
     console.info(`[assets] icons: 18 types, ${icons.skills} skills (${icons.bespoke} hand-drawn), items, statuses`);
     buildCreatureAnimations(this, eager);
+    buildAvatarSheets(this);
     buildTileset(this, missingAssets);
     buildWorldProps(this);
     this.scene.start('Menu');

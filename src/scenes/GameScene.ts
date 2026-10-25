@@ -61,6 +61,8 @@ export class GameScene extends Phaser.Scene {
       starterHeld: owned?.held ?? null, starterInd: owned ? individualOf(owned) : null, upgrades: saveStore.data.permanentUpgrades,
     });
     (window as unknown as { __game: GameScene }).__game = this; // e2e/debug hook
+    this.world.trainer.avatar = saveStore.avatar;
+    net.setProfile(saveStore.playerName, saveStore.avatar);
 
     this.buildMap();
     this.renderer_ = new WorldRenderer(this, this.world, { banner: (t, c) => this.ui.banner(t, c) }, saveStore.data.settings.quality);

@@ -1,5 +1,6 @@
 import { getSkill } from '../core/data';
 import { World, type Unit, type WorldEvent, type WorldState } from '../core/world';
+import { cleanAvatarId } from '../core/avatars';
 import { RULESETS, validateParty, shareableEvents } from './duel';
 import { net } from './session';
 import type { NetMsg } from './protocol';
@@ -12,7 +13,7 @@ export interface CoopMap {
   height: number;
   doors?: [boolean, boolean];
 }
-const UNIT_FIELDS = ['id', 'team', 'kind', 'defId', 'name', 'types', 'x', 'y', 'vx', 'vy', 'radius', 'facing', 'level', 'maxHp', 'hp', 'energy', 'maxEnergy', 'castSlot', 'castT', 'shield', 'alive', 'fainted', 'hitFlash', 'iframes', 'elite', 'animCast', 'lastSkill', 'shiny', 'alpha', 'hostile', 'captured', 'megaFrom'] as const;
+const UNIT_FIELDS = ['id', 'team', 'kind', 'defId', 'avatar', 'name', 'types', 'x', 'y', 'vx', 'vy', 'radius', 'facing', 'level', 'maxHp', 'hp', 'energy', 'maxEnergy', 'castSlot', 'castT', 'shield', 'alive', 'fainted', 'hitFlash', 'iframes', 'elite', 'animCast', 'lastSkill', 'shiny', 'alpha', 'hostile', 'captured', 'megaFrom'] as const;
 type VisualUnit = Pick<Unit, typeof UNIT_FIELDS[number]> & { boss: Unit['boss']; statuses: Unit['statuses'] };
 export interface CoopSnapshot {
   epoch: string; n: number; map: CoopMap; time: number; state: WorldState; paused: boolean;
@@ -60,16 +61,23 @@ export class CoopHost {
   private receive(m: NetMsg): void {
     if (!coopSession.active || net.role !== 'host') return;
     const w = this.world;
-    if (m.t === 'coopJoin' && !w.companion) {
-      if (validateParty(m.party, RULESETS.open).length) { net.send({ t: 'coopEnd', reason: 'Đội Pokémon không hợp lệ' }); return; }
-      const side = w.addCompanion();
-      for (const p of m.party.slice(0, 3)) w.addPokemon(p.species, {
-        companion: true, level: w.mode === 'survivor' ? w.level + 4 : p.level,
-        held: p.held, shiny: p.shiny, ind: p.ivs && p.nature ? { ivs: p.ivs, nature: p.nature, evs: p.evs } : null,
-      });
-      side.trainer.name = net.peerName || 'Đồng đội';
-      this.seq = -1;
-      this.lastInput = performance.now();
+    if (m.t === 'coopJoin') {
+      if (!w.companion) {
+        if (validateParty(m.party, RULESETS.open).length) { net.send({ t: 'coopEnd', reason: 'Đội Pokémon không hợp lệ' }); return; }
+        const side = w.addCompanion();
+        for (const p of m.party.slice(0, 3)) w.addPokemon(p.species, {
+          companion: true, level: w.mode === 'survivor' ? w.level + 4 : p.level,
+          held: p.held, shiny: p.shiny, ind: p.ivs && p.nature ? { ivs: p.ivs, nature: p.nature, evs: p.evs } : null,
+        });
+        side.trainer.name = net.peerName || 'Đồng đội';
+        side.trainer.avatar = cleanAvatarId(m.avatar ?? net.peerAvatar);
+        this.seq = -1;
+        this.lastInput = performance.now();
+      } else {
+        // the guest re-sends coopJoin every second: keep the lab/avatar in step with its live profile
+        w.companion.trainer.name = net.peerName || 'Đồng đội';
+        w.companion.trainer.avatar = cleanAvatarId(m.avatar ?? net.peerAvatar);
+      }
     } else if (m.t === 'coopInput' && w.companion && m.epoch === this.epoch) {
       if (!Number.isSafeInteger(m.seq) || m.seq <= this.seq || !Number.isFinite(m.x) || !Number.isFinite(m.y)) return;
       this.seq = m.seq; this.lastInput = performance.now();
