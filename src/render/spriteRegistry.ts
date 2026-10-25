@@ -146,6 +146,8 @@ export const NPC_TRAINER_ART: Record<string, string> = {
   'cm-youngster': 'bugcatcher', 'cm-fisherman': 'fisherman', 'cm-forest-trainer': 'camper',
   'ag-guide': 'beauty', 'ag-researcher': 'scientist', 'ag-boatman': 'rancher', 'ag-islander': 'picnicker',
   'ag-climber': 'hiker', 'ag-boater': 'acetrainerf', 'ag-diver': 'veteran',
+  'ct-guide': 'beauty', 'ct-boatwoman': 'picnicker', 'ct-merchant': 'gentleman', 'ct-ranger': 'pokemonranger', 'ct-gardener': 'rancher',
+  'ct-vendor': 'lass', 'ct-farmer': 'rancher', 'ct-birder': 'birdkeeper', 'ct-student': 'psychic',
 };
 export const AMBUSH_TRAINER_ART = ['acetrainer', 'acetrainerf', 'blackbelt', 'beauty', 'veteran', 'cyclist', 'skier'];
 

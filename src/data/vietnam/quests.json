@@ -768,5 +768,354 @@
   "requires": [
    "vn-ag-1"
   ]
+ },
+ {
+  "id": "vn-ct-1",
+  "kind": "main",
+  "title": "Tây Đô bên dòng Hậu",
+  "giver": "ct-guide",
+  "description": "Tới Cần Thơ, kích hoạt Trung tâm Pokémon và hỏi chuyện Cô Út chèo đò ở bờ sông Hậu.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-can-tho-center",
+    "count": 1,
+    "text": "Kích hoạt Trung tâm Pokémon Ninh Kiều",
+    "marker": {
+     "x": 81,
+     "y": 65,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-boatwoman",
+    "count": 1,
+    "text": "Gặp Cô Út chèo đò (bờ sông Hậu, phía bắc bến)",
+    "marker": {
+     "x": 94,
+     "y": 46,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 400,
+   "reputation": 10,
+   "flags": [
+    "landmark:ninh-kieu"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Bạn từ An Giang xuống hả? Dạo này ghe xuồng trên sông Hậu hay bị sóng lạ đánh chòng chành.",
+    "Cô Út chèo đò ở bờ sông phía bắc bến biết rõ nhất đó."
+   ],
+   "complete": [
+    "Sóng nổi lên mà trời lặng gió... Lạ lắm. Bạn xuống chợ nổi Cái Răng hỏi bạn hàng thử xem."
+   ]
+  },
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:an-giang"
+  ]
+ },
+ {
+  "id": "vn-ct-2",
+  "kind": "main",
+  "title": "Chợ nổi Cái Răng",
+  "giver": "ct-boatwoman",
+  "description": "Xuống chợ nổi hỏi chuyện các chủ ghe về con sóng lạ trên sông Hậu.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ct-cai-rang",
+    "count": 1,
+    "text": "Tới Chợ nổi Cái Răng (qua cầu phía đông nam bến)",
+    "marker": {
+     "x": 108,
+     "y": 84,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-merchant",
+    "count": 1,
+    "text": "Hỏi Chủ ghe Tư Hiền",
+    "marker": {
+     "x": 118,
+     "y": 88,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ct-vendor",
+    "count": 1,
+    "text": "Đánh bại Tiểu thương Hạnh để nghe chuyện",
+    "marker": {
+     "x": 114,
+     "y": 94,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 3
+   },
+   "worldExp": 600,
+   "reputation": 20,
+   "flags": [
+    "landmark:cai-rang"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Bạn hàng chợ nổi đi sông từ tờ mờ sáng, ai cũng thấy chuyện lạ. Xuống đó hỏi thử."
+   ],
+   "complete": [
+    "Bóng cá khổng lồ quanh Cồn Sơn... vậy là Chúa Sông Hậu thức giấc rồi! (truyền thuyết trong game)"
+   ]
+  },
+  "requires": [
+   "vn-ct-1"
+  ]
+ },
+ {
+  "id": "vn-ct-3",
+  "kind": "main",
+  "title": "Chúa Sông Hậu",
+  "giver": "ct-merchant",
+  "description": "Đi đò ra Cồn Sơn, làm dịu Whiscash — Chúa Sông Hậu (sinh vật giả tưởng của game).",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ct-con-son",
+    "count": 1,
+    "text": "Đi đò ra Cồn Sơn (bến đò bờ sông Hậu)",
+    "marker": {
+     "x": 96,
+     "y": 40,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "whiscash",
+    "count": 1,
+    "text": "Đánh bại Whiscash — Chúa Sông Hậu",
+    "marker": {
+     "x": 106,
+     "y": 10,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-boatwoman",
+    "count": 1,
+    "text": "Báo tin cho Cô Út chèo đò",
+    "marker": {
+     "x": 94,
+     "y": 46,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1200,
+   "reputation": 40
+  },
+  "dialogue": {
+   "offer": [
+    "Cô Út có đò ra Cồn Sơn. Bạn ra đó làm dịu Chúa Sông Hậu giùm bà con nghen!"
+   ],
+   "complete": [
+    "Sông yên rồi! Ghe xuồng lại đi chợ được. Cảm ơn bạn nhiều lắm!"
+   ]
+  },
+  "requires": [
+   "vn-ct-2"
+  ]
+ },
+ {
+  "id": "vn-ct-rescue",
+  "kind": "side",
+  "title": "Giải cứu vườn cò",
+  "giver": "ct-ranger",
+  "description": "Đàn Ekans bò vào vườn cò, vây một chú Ducklett đang làm tổ.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ct-stork-ducklett",
+    "count": 1,
+    "text": "Giải cứu Ducklett (phía đông trạm vườn cò)",
+    "marker": {
+     "x": 42,
+     "y": 10,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-ranger",
+    "count": 1,
+    "text": "Báo cho Cán bộ vườn cò Lâm",
+    "marker": {
+     "x": 22,
+     "y": 24,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sharp-beak": 1,
+    "greatball": 3
+   },
+   "worldExp": 500,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có đàn Ekans bò vào vườn, vây tổ của một chú Ducklett! Bạn giúp tôi đuổi chúng đi."
+   ],
+   "complete": [
+    "Tổ chim an toàn rồi. Vườn cò cảm ơn bạn!"
+   ]
+  },
+  "requires": [
+   "vn-ct-1"
+  ]
+ },
+ {
+  "id": "vn-ct-board-1",
+  "kind": "side",
+  "title": "Bảng: Trái ngọt miệt vườn",
+  "giver": "ct-board",
+  "description": "Ông Sáu nhà vườn muốn biết Pokémon nào hay ghé vườn trái cây.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "cherubi",
+    "count": 1,
+    "text": "Thu phục Cherubi (miệt vườn)",
+    "marker": {
+     "x": 40,
+     "y": 100,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "capture",
+    "target": "sunkern",
+    "count": 1,
+    "text": "Thu phục Sunkern (đồng lúa)",
+    "marker": {
+     "x": 30,
+     "y": 50,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-gardener",
+    "count": 1,
+    "text": "Kể cho Ông Sáu nhà vườn",
+    "marker": {
+     "x": 36,
+     "y": 96,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 2,
+    "leaf-stone": 1
+   },
+   "worldExp": 400,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng nhiệm vụ] Ông Sáu ở miệt vườn Phong Điền nhờ ghi lại Pokémon ghé vườn và đồng lúa."
+   ],
+   "complete": [
+    "Trời đất, Pokémon cũng biết chọn trái ngon!"
+   ]
+  },
+  "requires": [
+   "vn-ct-1"
+  ]
+ },
+ {
+  "id": "vn-ct-board-2",
+  "kind": "trainer",
+  "title": "Bảng: Cao thủ Tây Đô",
+  "giver": "ct-board",
+  "description": "Đánh bại ba huấn luyện viên mạnh của Cần Thơ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ct-farmer",
+    "count": 1,
+    "text": "Đánh bại Nông dân Tư (miệt vườn)",
+    "marker": {
+     "x": 26,
+     "y": 86,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ct-birder",
+    "count": 1,
+    "text": "Đánh bại Nhà điểu học Thảo (vườn cò)",
+    "marker": {
+     "x": 14,
+     "y": 12,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ct-student",
+    "count": 1,
+    "text": "Đánh bại Sinh viên Tâm (đồng lúa)",
+    "marker": {
+     "x": 58,
+     "y": 62,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "life-orb": 1
+   },
+   "worldExp": 800,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng nhiệm vụ] Ai thắng cả ba cao thủ — ngoài vườn, trong vườn cò và trên đồng — sẽ có thưởng."
+   ],
+   "complete": [
+    "Cao thủ Tây Đô là đây!"
+   ]
+  },
+  "requires": [
+   "vn-ct-1"
+  ]
  }
 ]

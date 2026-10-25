@@ -610,5 +610,59 @@
    "power": 0.3,
    "blink": true
   }
+ },
+ {
+  "id": "whiscash",
+  "name": "Whiscash Chúa Sông Hậu",
+  "types": [
+   "water",
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 110,
+   "atk": 78,
+   "def": 73,
+   "spa": 76,
+   "spd": 71,
+   "spe": 60
+  },
+  "hpMult": 26,
+  "moveSpeed": 75,
+  "radius": 32,
+  "contactPower": 38,
+  "segments": 0,
+  "skills": [
+   "muddy_water",
+   "mud_bomb"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "wooper",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Sông Hậu cuộn sóng — Chúa Sông Hậu nổi giận!",
+  "exp": 110,
+  "sprite": "whiscash",
+  "ai": "legendary",
+  "scale": 3.6,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "water_pulse",
+   "volley": "mud_bomb",
+   "nova": "bulldoze",
+   "field": "muddy_water",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "surf",
+   "ultimateName": "Sóng Dữ Sông Hậu",
+   "ultimateStyle": "safe",
+   "power": 0.3
+  }
  }
 ]

@@ -10,7 +10,7 @@ import vnQuests from '../src/data/vietnam/quests.json';
 import type { QuestDef } from '../src/core/quests';
 import { defaultSave, migrate, newAdventure } from '../src/systems/saveSchema';
 
-const VN = ['ca-mau', 'an-giang'];
+const VN = ['ca-mau', 'an-giang', 'can-tho'];
 const quests = vnQuests as unknown as QuestDef[];
 
 describe('Vietnam Odyssey mode', () => {
@@ -47,13 +47,13 @@ describe('Vietnam Odyssey mode', () => {
     expect(water).toBeGreaterThan(200); // sea at the southern tip
   });
 
-  it('spawns: Lv1–18, no Ice types in the tropical provinces, never legendaries', () => {
+  it('spawns: Lv1–18 (Cần Thơ ≤ 26), no Ice types in the tropical provinces, never legendaries', () => {
     for (const r of [...REGIONS.values()].filter((x) => x.id.startsWith('vn-'))) {
       const pool = eligible({ biome: r.biome, night: false, weather: 'clear' } as never, r);
       expect(pool.length, r.id).toBeGreaterThan(8);
       expect(pool.some((e) => POKEMON.get(e.id)?.types.includes('ice')), r.id).toBe(false);
       expect(pool.every((e) => !e.legendary && !e.mythical)).toBe(true);
-      expect(r.level[1]).toBeLessThanOrEqual(18);
+      expect(r.level[1]).toBeLessThanOrEqual(r.id.startsWith('vn-ct-') ? 26 : 18);
     }
   });
 
@@ -104,7 +104,7 @@ describe('Vietnam Odyssey mode', () => {
 
 describe('Vietnam Odyssey: no progression deadlock', () => {
   it('a boss gate never depends on a reward of the quest that asks for that boss', () => {
-    for (const id of ['ca-mau', 'an-giang']) {
+    for (const id of VN) {
       const wb = REGION_DEFS[id].worldBoss!;
       const q = quests.find((x) => x.objectives.some((o) => o.type === 'boss' && o.target === wb.id))!;
       for (const f of wb.requires ?? []) expect(q.rewards.flags ?? [], `${id} ${f}`).not.toContain(f);
@@ -121,7 +121,7 @@ describe('Vietnam Odyssey: rendering', () => {
   it('Mekong maps use green ground, dirt paths, mangrove / melaleuca trees — never another theme\'s tiles', async () => {
     const { EX, TOWN } = await import('../src/core/map/tiles');
     const foreign = new Set<number>([EX.sanctum, EX.sanctum2, EX.snow, EX.snow2, EX.ash, EX.ash2, EX.ruin, EX.ruin2]);
-    for (const id of ['ca-mau', 'an-giang']) {
+    for (const id of VN) {
       const m = new ValleyMap(REGION_DEFS[id]);
       const used = new Set<number>();
       for (let y = 0; y < m.heightTiles; y += 2) for (let x = 0; x < m.widthTiles; x += 2) {

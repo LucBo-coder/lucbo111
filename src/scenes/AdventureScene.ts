@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { passportPages, stampVisit } from '../adventure/passport';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
@@ -198,6 +199,7 @@ export class AdventureScene extends Phaser.Scene {
     this.mapDef = regionDef(this.mapKind === 'dungeon' ? dDef.region ?? 'starter-valley' : adv.region);
     this.map = this.mapKind === 'dungeon' ? new DungeonMap(dDef) : new ValleyMap(this.regionDef);
     this.state.currentRegion = this.regionDef.id;
+    if (this.mapKind !== 'dungeon') stampVisit(adv, this.regionDef.id);
     const map = this.map;
     const solidPx = (x: number, y: number) => map.solidAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX));
     this.world = new World({
@@ -210,6 +212,7 @@ export class AdventureScene extends Phaser.Scene {
       },
     });
     (window as unknown as { __adv: AdventureScene }).__adv = this;
+    (window as unknown as { __passport: typeof passportPages }).__passport = passportPages;
 
     // Position: dungeon start, saved position, or region spawn
     const region = this.regionDef;
@@ -656,6 +659,7 @@ export class AdventureScene extends Phaser.Scene {
     kb.on('keydown-G', guard(() => this.tryMega()));
     kb.on('keydown-TAB', () => this.ui?.toggleMenu('party'));
     kb.on('keydown-M', () => this.ui?.toggleMenu('map'));
+    kb.on('keydown-P', () => { if (this.state.adv.campaign === 'vietnam') this.ui?.toggleMenu('passport'); });
     kb.on('keydown-J', () => this.ui?.toggleMenu('quests'));
     kb.on('keydown-V', () => this.ui?.toggleMenu('events'));
     kb.on('keydown-I', () => this.ui?.toggleMenu('bag'));
@@ -814,6 +818,7 @@ export class AdventureScene extends Phaser.Scene {
           audio.play('levelup');
         }
       }
+      for (const uid of this.state.gainEvs(alive, e.defId)) this.refreshIndividual(uid);
       this.questEvent({ type: 'defeat', target: e.defId });
       if (e.boss) this.questEvent({ type: 'boss', target: e.defId });
     }
@@ -1122,6 +1127,18 @@ export class AdventureScene extends Phaser.Scene {
     }
     this.persist();
     return true;
+  }
+
+  /** Field unit of a collection member picks up its new individual (EVs). */
+  private refreshIndividual(uid: string): void {
+    const p = this.state.owned(uid), ally = this.world.allies.find((a) => a.ownerUid === uid);
+    if (p && ally) this.world.setIndividual(ally, individualOf(p));
+  }
+
+  useEvItem(uid: string, itemId: string): number {
+    const applied = this.state.useEvItem(uid, itemId);
+    if (applied) { this.refreshIndividual(uid); this.persist(); audio.play('heal'); }
+    return applied;
   }
 
   unequipItem(uid: string): boolean {

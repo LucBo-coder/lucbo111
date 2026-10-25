@@ -17,7 +17,7 @@ import { applyPermanent } from './permanentUpgrades';
 import { isAquatic } from './encounters';
 import { COMBO_COOLDOWN, ComboDef, findCombo, partySynergy, SynergyState } from './synergy';
 import { updateWild, WildState } from './wildAI';
-import { ITEM_DEFS, ItemDef } from './evolution';
+import { evolutionsOf, ITEM_DEFS, ItemDef } from './evolution';
 import { BossPhaseManager, phaseConfigFor, PhaseSnapshot } from './bossPhases';
 import { RayState, rayAirborne, rayCancel, rayquazaThink } from './bosses/rayquaza';
 
@@ -186,6 +186,11 @@ export interface Unit {
   /** Held item id + its combat effect (adventure equipment) */
   heldId: string | null;
   held: ItemDef['effect'] | null;
+  /** Held-item timers (s): Life Orb recoil / Rocky Helmet throttle / Choice idle, Sitrus Berry regrowth */
+  heldCd: number;
+  berryCd: number;
+  /** Choice items: skill the holder is locked into until it has no target */
+  choiceLock: string | null;
   /** While Mega Evolved: the species to revert to */
   megaFrom: string | null;
 }
@@ -392,7 +397,7 @@ export class World {
       dash: null, statuses: [], shield: 0, shieldT: 0, alive: true, fainted: false, reviveT: 0, hitFlash: 0,
       contactCd: 0, iframes: 0, elite: false, exp: 0, slotIndex: 0, animCast: 0, lastSkill: '', damageDealt: 0, boss: null,
       ownerUid: null, wild: null, hostile: true, captured: false, noCapture: false, tag: null, lastX: 0, lastY: 0, sturdyCd: 0,
-      heldId: null, held: null, megaFrom: null, ind: null, flinchImmuneT: 0, envSlow: 0, aquatic: false, aiState: 'idle', aiStateT: 0, shiny: false, rarity: null, alpha: false,
+      heldId: null, held: null, heldCd: 0, berryCd: 0, choiceLock: null, megaFrom: null, ind: null, flinchImmuneT: 0, envSlow: 0, aquatic: false, aiState: 'idle', aiStateT: 0, shiny: false, rarity: null, alpha: false,
       ...partial,
     };
     u.lastX = u.x; u.lastY = u.y;
@@ -435,10 +440,26 @@ export class World {
     return u;
   }
 
+  /** New IVs / nature / EVs of a party member (EV training): stats recomputed, HP ratio kept. */
+  setIndividual(u: Unit, ind: Individual | null): void {
+    u.ind = ind;
+    if (u.kind === 'pokemon') this.refreshAllyStats(u);
+  }
+
   setHeld(u: Unit, itemId: string | null): void {
     const def = itemId ? ITEM_DEFS.get(itemId) : undefined;
     u.heldId = def ? def.id : null;
     u.held = def?.effect ?? null;
+    u.choiceLock = null;
+  }
+
+  /** Held items that forbid a skill: Choice lock, Assault Vest (no status moves). */
+  private heldBlocks(u: Unit, s: SkillDef): boolean {
+    const h = u.held;
+    if (!h) return false;
+    if (h.type === 'choice') return u.choiceLock !== null && s.id !== u.choiceLock;
+    if (h.type === 'assaultVest') return s.power <= 0;
+    return false;
   }
 
   /**
@@ -831,6 +852,8 @@ export class World {
     if (u.sturdyCd > 0) u.sturdyCd -= dt;
     if (u.shieldT > 0 && (u.shieldT -= dt) <= 0) u.shield = 0;
     if (u.held?.type === 'regen' && u.hp > 0 && u.hp < u.maxHp) u.hp = Math.min(u.maxHp, u.hp + u.maxHp * (u.held.value ?? 0) * dt);
+    if (u.heldCd > 0) u.heldCd -= dt;
+    if (u.berryCd > 0) u.berryCd -= dt;
   }
 
   private bestEff(u: Unit, e: Unit): number {
@@ -846,7 +869,8 @@ export class World {
     if (cmd === 'follow' || cmd === 'retreat') {
       // Not engaging, but defensive skills (heal/shield) are still allowed
       u.target = null;
-      const defensive = u.skills.map((s, i) => ({ s, i })).filter(({ s }) => s.def.kind === 'heal' || s.def.kind === 'shield');
+      u.choiceLock = null;
+      const defensive = u.skills.map((s, i) => ({ s, i })).filter(({ s }) => (s.def.kind === 'heal' || s.def.kind === 'shield') && !this.heldBlocks(u, s.def));
       const choice = chooseSkill(defensive.map(({ s }) => ({ def: s.def, cooldownLeft: s.cd })), this.selectorContext(u));
       if (choice) this.beginCast(u, defensive[choice.slot].i);
       return;
@@ -881,8 +905,13 @@ export class World {
       if (score > bestScore) { bestScore = score; best = e; }
     }
     u.target = best;
+    // Choice lock ends 1.5 s after the last target (heldCd doubles as that idle timer for Choice items)
+    if (u.held?.type === 'choice') {
+      if (best) u.heldCd = 1.5;
+      else if (u.heldCd <= 0) u.choiceLock = null;
+    }
 
-    const choice = chooseSkill(u.skills.map((s) => ({ def: s.def, cooldownLeft: s.cd })), this.selectorContext(u), 1 + this.mods.areaMult);
+    const choice = chooseSkill(u.skills.map((s) => ({ def: s.def, cooldownLeft: this.heldBlocks(u, s.def) ? Infinity : s.cd })), this.selectorContext(u), 1 + this.mods.areaMult);
     if (choice) this.beginCast(u, choice.slot);
   }
 
@@ -1570,8 +1599,10 @@ export class World {
     if (u.team === 'ally') {
       if (u.energy < def.energyCost) return;
       u.energy -= def.energyCost;
-      const cdr = Math.min(0.6, this.mods.cdr + 0.04 * (slot.level - 1) + (u.held?.type === 'cdr' ? u.held.value ?? 0 : 0));
+      const heldCdr = u.held?.type === 'cdr' ? u.held.value ?? 0 : u.held?.type === 'choice' && !u.held.category ? 0.15 : 0;
+      const cdr = Math.min(0.6, this.mods.cdr + 0.04 * (slot.level - 1) + heldCdr);
       slot.cd = def.cooldown * (1 - cdr);
+      if (u.held?.type === 'choice' && def.power > 0 && !u.choiceLock) u.choiceLock = def.id;
     } else slot.cd = (def.cooldown / (this.mode === 'survivor' ? curves.aggression(this.time) : 1)) * (u.alpha ? 0.7 : 1);
     slot.cdMax = slot.cd;
     if (u.team === 'ally' || !u.castTarget) u.castTarget = u.target;
@@ -1883,6 +1914,11 @@ export class World {
     if (dst.passive?.kind === 'contactStatus' && dst.passive.status && (s.kind === 'melee' || s.kind === 'dash') && src.team !== dst.team && this.rng.chance(dst.passive.status.chance)) {
       this.applyStatus(src, dst.passive.status, dst);
     }
+    // Rocky Helmet: contact attackers take a fraction of their own max HP
+    if (dst.held?.type === 'rockyHelmet' && (s.kind === 'melee' || s.kind === 'dash') && src.team !== dst.team && dst.heldCd <= 0 && src.alive && !src.fainted) {
+      dst.heldCd = 1;
+      this.applyDamage(src, src.maxHp * (src.kind === 'boss' ? 1 / 30 : dst.held.value ?? 1 / 6), dst, false, 1, true);
+    }
     if (s.power > 0) {
       let modifier = mult * (1 + slot.powerBonus);
       if (src.team === 'ally' && src.kind === 'pokemon') modifier *= 1 + this.mods.dmgMult;
@@ -1907,6 +1943,11 @@ export class World {
       if (he?.type === 'typeBoost' && he.pokeType === s.type) modifier *= he.mult ?? 1.2;
       if (he?.type === 'categoryBoost' && he.category === s.category) modifier *= he.mult ?? 1.1;
       if (he?.type === 'superEffective' && effectiveness(s.type, dst.types) > 1) modifier *= he.mult ?? 1.2;
+      if (he?.type === 'lifeOrb') modifier *= he.mult ?? 1.3;
+      if (he?.type === 'choice' && he.category === s.category) modifier *= he.mult ?? 1.5;
+      const dh = dst.held;
+      if (dh?.type === 'assaultVest' && s.category === 'special') modifier /= dh.mult ?? 1.5;
+      if (dh?.type === 'eviolite' && canStillEvolve(dst.defId)) modifier /= dh.mult ?? 1.5;
       // Ally pokemon can't one-shot the trainer etc. — enemy damage to the trainer is scaled slightly down for readability
       if (dst.kind === 'trainer') modifier *= 0.8;
       else if (dst.kind === 'pokemon') modifier *= 0.7;
@@ -1927,6 +1968,14 @@ export class World {
         critRoll: this.rng.next(), critRate: crit, varianceRoll: this.rng.next(), modifier,
       });
       this.applyDamage(dst, res.amount, src, res.crit, res.effectiveness);
+      if (he?.type === 'lifeOrb' && res.amount > 0 && src.heldCd <= 0 && !src.fainted) {
+        src.heldCd = 0.6;
+        const recoil = Math.min(src.hp - 1, src.maxHp * (he.value ?? 0.1));
+        if (recoil > 0) {
+          src.hp -= recoil;
+          this.emit({ t: 'dmg', x: src.x, y: src.y - src.radius, amount: Math.round(recoil), crit: false, eff: 1, victimTeam: src.team });
+        }
+      }
       if (combo) this.comboEffects(src, dst, combo, res.amount, s.type);
       // per-type impact where the hit lands (projectiles already emit `<vfx>_hit`)
       if (res.amount > 0 && s.kind !== 'projectile' && this.impactBudget-- > 0) this.emit({ t: 'vfx', name: 'impact_type', x: dst.x, y: dst.y - dst.radius * 0.3, r: 18 + Math.min(14, s.power / 8), type: s.type });
@@ -1965,7 +2014,16 @@ export class World {
       const next = pm.damage(dst.hp, dst.maxHp, dmg);
       dmg = dst.hp - next;
     }
+    const wasFull = dst.hp >= dst.maxHp;
     dst.hp -= dmg;
+    if (dst.hp <= 0 && dst.held?.type === 'sash' && wasFull && dst.maxHp > 1) {
+      dst.hp = 1;
+      this.emit({ t: 'banner', text: `${dst.name} trụ lại nhờ Focus Sash!`, color: '#ffb080' });
+    }
+    if (dst.hp > 0 && dst.held?.type === 'sitrus' && dst.berryCd <= 0 && dst.hp < dst.maxHp * 0.5) {
+      dst.berryCd = 45;
+      this.heal(dst, dst.maxHp * (dst.held.value ?? 0.25));
+    }
     if (dst.hp <= 0 && dst.held?.type === 'focus' && dst.hp + dmg > 1 && this.rng.chance(dst.held.value ?? 0)) {
       dst.hp = 1;
       this.emit({ t: 'banner', text: `${dst.name} trụ lại nhờ Focus Band!`, color: '#ffb080' });
@@ -2096,7 +2154,8 @@ export class World {
 
   /** Slow status combined with move-speed passives (Chlorophyll). */
   speedFactor(u: Unit): number {
-    return this.slowFactor(u) * (u.passive?.kind === 'moveSpeed' ? 1 + (u.passive.value ?? 0) : 1);
+    const scarf = u.held?.type === 'choice' && !u.held.category ? 1 + (u.held.value ?? 0) : 1;
+    return this.slowFactor(u) * scarf * (u.passive?.kind === 'moveSpeed' ? 1 + (u.passive.value ?? 0) : 1);
   }
 
   private updateStatuses(dt: number): void {
@@ -2321,3 +2380,11 @@ function CONTACT_SKILL(e: Unit): SkillDef {
 }
 
 
+
+const EVOLVES = new Map<string, boolean>();
+/** Eviolite: the species has at least one evolution the game supports. */
+function canStillEvolve(defId: string): boolean {
+  let v = EVOLVES.get(defId);
+  if (v === undefined) EVOLVES.set(defId, (v = evolutionsOf(defId).some((e) => !e.unsupported)));
+  return v;
+}

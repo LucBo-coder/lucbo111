@@ -54,6 +54,8 @@ export interface OwnedPokemon {
   /** Individual values 0..31 (fixed for life, kept through evolution) */
   ivs?: Stats;
   nature?: string;
+  /** Effort values earned in Adventure battles / vitamins (core/ev.ts); absent = all 0 */
+  evs?: Stats;
   /** 0..255, starts at the species' base happiness */
   friendship?: number;
   nickname?: string;
@@ -93,7 +95,7 @@ export function ensureIndividual(p: OwnedPokemon): OwnedPokemon {
 
 export function individualOf(p: OwnedPokemon): Individual {
   ensureIndividual(p);
-  return { ivs: p.ivs!, nature: p.nature! };
+  return { ivs: p.ivs!, nature: p.nature!, evs: p.evs };
 }
 
 /** Main-series style friendship gain (smaller as it grows). */

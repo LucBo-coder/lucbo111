@@ -579,7 +579,7 @@
    },
    "money": 2500,
    "flag": "badge:an-giang",
-   "message": "Nhận Huy hiệu Bảy Núi (An Giang)! Tuyến tới Cần Thơ sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Bảy Núi (An Giang)! Đường tới Cần Thơ đã mở (cổng phía đông nam thị trấn)."
   }
  },
  "portals": [
@@ -615,13 +615,13 @@
    "name": "Đường tới Cần Thơ",
    "x": 124,
    "y": 100,
-   "to": "an-giang",
-   "toX": 120,
-   "toY": 100,
+   "to": "can-tho",
+   "toX": 8,
+   "toY": 60,
    "requires": [
-    "vn:can-tho-open"
+    "badge:an-giang"
    ],
-   "hint": "Đường tới Cần Thơ đang được xây dựng (chưa có trong phiên bản này)."
+   "hint": "Đường tới Cần Thơ bị chặn... Hãy mở phong ấn Đền Cổ Thất Sơn và nhận Huy hiệu Bảy Núi."
   }
  ],
  "rivers": [

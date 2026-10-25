@@ -185,7 +185,10 @@ export class ValleyMap implements MapProvider {
       for (let i = 0; i < 10; i++) {
         const a = (i / 10) * Math.PI * 2;
         if (Math.abs(a - Math.PI * 0.25) < 0.4) continue;
-        this.add({ kind: 'pillar', id: `grove-${i}`, x: Math.round(wb.x + Math.cos(a) * 8), y: Math.round(wb.y + Math.sin(a) * 8), tile: DUNGEON.pillar, collideR: 16 });
+        const px = Math.round(wb.x + Math.cos(a) * 8), py = Math.round(wb.y + Math.sin(a) * 8);
+        // an arena on a small island (Cồn Sơn) keeps only the stones that stand on land
+        if (this.terrainAt(px, py) === T.Water) continue;
+        this.add({ kind: 'pillar', id: `grove-${i}`, x: px, y: py, tile: DUNGEON.pillar, collideR: 16 });
       }
     }
     // Legendary shrines: smaller stone rings, gap towards `gap` (radians)

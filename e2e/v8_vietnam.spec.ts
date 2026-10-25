@@ -181,9 +181,14 @@ test('An Giang: rescue, temple seal puzzle, temple guardian, ferry to Phú Quố
   await page.waitForTimeout(1200);
   expect(await ev<string>(page, `window.__adv.areaName`)).toBe('Đảo Phú Quốc');
   await page.screenshot({ path: info.outputPath('8-phu-quoc.png') });
-  // the map tab shows the journey passport with both badges
-  await page.keyboard.press('m');
+  // the Passport tab (P) stamps both provinces and both badges
+  const pages = await ev<{ id: string; visited: boolean; badge: boolean; firstVisit: number }[]>(page,
+    `window.__passport(window.__adv.state.adv, window.__adv.state.quests.defs.map(d => d.id)).map(p => ({ id: p.def.id, visited: p.visited, badge: p.badge, firstVisit: p.firstVisit }))`);
+  for (const id of ['ca-mau', 'an-giang']) expect(pages.find((p) => p.id === id)).toMatchObject({ visited: true, badge: true });
+  expect(pages.find((p) => p.id === 'an-giang')!.firstVisit).toBeGreaterThan(0);
+  await page.keyboard.press('p');
   await page.waitForTimeout(600);
+  expect(await ev(page, `window.__phaser.scene.getScene('AdvUI').menuTab`)).toBe('passport');
   await page.screenshot({ path: info.outputPath('9-passport.png') });
   expect(errors).toEqual([]);
 });

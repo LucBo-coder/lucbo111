@@ -78,6 +78,7 @@ Trạng thái: `[x]` xong & đã kiểm chứng (build + test) · `[~]` có nề
 - [~] VFX riêng từng chiêu: theo dạng đòn × hệ + tên hiệu ứng riêng cho các chiêu tiêu biểu; chưa có hiệu ứng vẽ riêng cho cả 434 chiêu
 - [x] Thanh EXP động trên HUD; tuyết; sông & cầu ở vùng mới (0.7.0)
 - [ ] Đo hiệu năng trên thiết bị thật (xem PHASE F)
+- [x] Tách bundle (0.12.0): code 453 KB / dữ liệu game / dữ liệu PokéAPI / Phaser thành 4 chunk — tải song song, bản cập nhật chỉ sửa code không làm tải lại dữ liệu (tổng dung lượng không đổi; tải lười dữ liệu cần refactor nạp đồng bộ)
 
 ## 0.6.0 — Master Prompt V3
 - [x] Sprint 1 — đồng bộ & kiểm tra 493 loài (không trùng id, không Gen 5+, chuỗi tiến hóa hợp lệ, type/move hợp lệ)
@@ -111,11 +112,14 @@ Trạng thái theo V6: IMPLEMENTED+TESTED · PARTIAL · DATA ONLY · NOT IMPLEME
 - [x] IMPLEMENTED+TESTED — Cà Mau chơi trọn (starter, bắt, nhiệm vụ, HLV, boss khu vực, huy hiệu, lưu/tải, cổng tiếp theo)
 - [x] IMPLEMENTED+TESTED — An Giang (giải cứu, câu đố đền, boss, đảo + phà, 3 HLV, 6 nhiệm vụ)
 - [x] IMPLEMENTED+TESTED — boss khu vực / starter / giải cứu / câu đố / đảo / loại trừ hệ theo dữ liệu; Hộ chiếu (cơ bản, trong tab Bản đồ)
-- [ ] NOT IMPLEMENTED — 32 tỉnh còn lại (đợi kiểm nghiệm Cà Mau + An Giang), Fly/phà liên tỉnh
-- [ ] NOT IMPLEMENTED — National Dex Gen 5–9 (dữ liệu hiện Gen 1–4 + Mega Gen 1 + Mega Rayquaza), Z-Move, Dynamax/Gigantamax, Tera, Primal, EV
+- [x] IMPLEMENTED+TESTED — Cần Thơ (0.12.0): Bến Ninh Kiều, Chợ nổi Cái Răng, miệt vườn, đồng lúa, vườn cò, Cồn Sơn (đò), 6 nhiệm vụ, 4 HLV, boss Whiscash — Chúa Sông Hậu, Huy hiệu Sông Hậu
+- [ ] NOT IMPLEMENTED — 31 tỉnh còn lại (tiếp theo: Vĩnh Long — cổng đã có, đang khóa), Fly/phà liên tỉnh
+- [x] National Dex Gen 5–9 — xong ở 0.11.0 (1025 loài)
+- [x] IMPLEMENTED+TESTED — EV (0.12.0): yield PokéAPI 1025 loài, 252/510, Power item, Macho Brace, 6 vitamin, 6 berry giảm EV, hiển thị chi tiết Pokémon
+- [ ] NOT IMPLEMENTED — Z-Move, Dynamax/Gigantamax, Tera, Primal
 - [ ] NOT IMPLEMENTED — Survivor Equipment (Core/Armor/Relic), Crafting, Battle Rulesets, LegendaryQuestManager 7 giai đoạn, Regional Festivals
-- [~] PARTIAL — Held items: 18 món có hiệu ứng thật từ 0.3.0; chưa có Life Orb / Choice / Assault Vest / Rocky Helmet / Eviolite / Sitrus / Focus Sash
-- [~] PARTIAL — Hộ chiếu: huy hiệu + địa danh; chưa có màn riêng, chưa ghi tỉnh đã đến / hầm ngục
+- [x] IMPLEMENTED+TESTED — Held items: thêm Life Orb / Choice Band·Specs·Scarf / Assault Vest / Rocky Helmet / Eviolite / Sitrus / Focus Sash (0.12.0)
+- [x] IMPLEMENTED+TESTED — Hộ chiếu: tab riêng (phím P), dấu "ĐÃ ĐẾN" + ngày đến lần đầu, khu vực / nhiệm vụ / HLV / rương / trạm / câu đố / giải cứu / boss / địa danh / huy hiệu từng tỉnh (0.12.0)
 
 ## 0.9.0 — Mở rộng bản đồ, nội dung, màn hình chính, UI ✅
 - [x] Đầm Lầy Sương Mù (Lv22–32) + Bờ Biển San Hô (Lv26–38): bản đồ, theme, tile, biome, nhạc, cổng theo cốt truyện
@@ -143,6 +147,7 @@ Trạng thái theo V6: IMPLEMENTED+TESTED · PARTIAL · DATA ONLY · NOT IMPLEME
 
 ## Hạn chế đã biết (trung thực)
 - Animation là khung **dẫn xuất** từ 1 bản vẽ, chưa phải vẽ tay.
-- 6 bản đồ chơi được (Thung Lũng, Đầm Lầy, Bờ Biển, Núi Tuyết, Núi Lửa, Thánh Địa) + 4 hầm ngục.
+- 6 bản đồ chơi được ở chế độ cổ điển (Thung Lũng, Đầm Lầy, Bờ Biển, Núi Tuyết, Núi Lửa, Thánh Địa) + 4 hầm ngục; Việt Nam Odyssey có 3 tỉnh (Cà Mau, An Giang, Cần Thơ).
+- e2e `overworld_visual` (phím F8) thỉnh thoảng lỗi khi chạy song song 3 worker; chạy riêng thì qua (đã thử 3/3).
 - OpenGameArt/itch.io: mới xác nhận truy cập, chưa thẩm định từng asset nên **chưa dùng**.
 - FPS đo trong e2e là WebGL phần mềm (headless); chỉ số tin cậy là `sim ms`/`frame ms` và số chunk/object/heap.

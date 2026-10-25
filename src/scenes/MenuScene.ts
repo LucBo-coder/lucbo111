@@ -15,7 +15,7 @@ import { regionDef } from '../core/map/regionDefs';
 import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
 
 /** Shown on the title screen (keep in step with CHANGELOG). */
-export const GAME_VERSION = '0.11.1';
+export const GAME_VERSION = '0.12.0';
 
 type View = 'home' | 'survivor' | 'settings' | 'credits' | 'slots' | 'confirm' | 'upgrades';
 /** what the Load Game screen is opened for */

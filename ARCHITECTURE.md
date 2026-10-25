@@ -87,12 +87,14 @@ src/
     wildAI.ts              máy trạng thái hệ sinh thái hoang dã (gọi lại skill selector/cast của World)
     capture.ts             công thức bắt Gen III/IV
     progression.ts         EXP vĩnh viễn theo growth rate PokéAPI, OwnedPokemon
+    ev.ts                  EV (Effort Values): yield PokéAPI, giới hạn 252/510, Power item, vitamin/berry
     quests.ts              QuestManager (mục tiêu tuần tự, điều kiện, phần thưởng)
     map/                   MapProvider: valley.ts (terrain thủ tục + layout JSON), dungeonMap.ts (ASCII), tiles.ts, noise.ts
   adventure/               logic phiêu lưu thuần (có unit test)
     AdventureState.ts      Collection, đội hình, túi, nhiệm vụ, cấp thế giới, khám phá
     SpawnManager.ts        spawn theo sinh cảnh/giờ/thời tiết, giới hạn mật độ, despawn
     DungeonController.ts   waves → hazard → puzzle → boss → reward
+    passport.ts            Hộ chiếu Việt Nam Odyssey: trang từng tỉnh tính từ save (cờ, rương, khu, nhiệm vụ, ngày đến)
   render/
     WorldRenderer.ts       render DÙNG CHUNG (sprite + animation, đạn, telegraph, thanh máu, số sát thương)
     animation.ts           atlas 14 khung/loài từ bản vẽ gốc

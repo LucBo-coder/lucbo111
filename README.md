@@ -10,8 +10,9 @@ Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + build production vào dist/
-npm test           # 229 unit test (Vitest)
+npm test           # 260 unit test (Vitest)
 node scripts/sync-pokeapi.mjs   # đồng bộ lại dữ liệu PokéAPI (151 loài Gen 1 + bổ sung)
+node scripts/sync-ev-yield.mjs  # đồng bộ EV yield của 1025 loài từ PokéAPI → src/data/pokeapi/ev-yield.json
 node scripts/build-dex.mjs      # sinh src/data/dex/* (493 loài, kỹ năng, sinh thái, boss huyền thoại) từ cache PokéAPI
 node scripts/fetch-official-sprites.mjs   # (TÙY CHỌN, CHỈ DÙNG CÁ NHÂN) tải sprite Pokémon (thường + Shiny), vật phẩm (PokeAPI) và huấn luyện viên (Pokémon Showdown) vào public/assets/official/
 npm run e2e        # Playwright (dùng Microsoft Edge đã cài sẵn), cần build trước

@@ -6,6 +6,7 @@ import swampJson from '../../data/world/misty-swamp.json';
 import coastJson from '../../data/world/coral-coast.json';
 import caMauJson from '../../data/vietnam/ca-mau.json';
 import anGiangJson from '../../data/vietnam/an-giang.json';
+import canThoJson from '../../data/vietnam/can-tho.json';
 import type { RegionDef } from './valley';
 
 // Every overworld map of the game. The valley is the hub; the other regions are reached through portals.
@@ -19,6 +20,7 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   // Vietnam Odyssey mode (separate campaign)
   'ca-mau': caMauJson as unknown as RegionDef,
   'an-giang': anGiangJson as unknown as RegionDef,
+  'can-tho': canThoJson as unknown as RegionDef,
 };
 
 export function regionDef(id: string | null | undefined): RegionDef {

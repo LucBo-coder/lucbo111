@@ -5,7 +5,8 @@ import { addExp, addFriendship, individualOf, makeOwned, OwnedPokemon } from '..
 import { availableEvolutions, EvoContext, evolutionsOf, evaluate, ITEM_DEFS } from '../core/evolution';
 import { unlockedSkills } from '../core/learnset';
 import { legendQuests } from '../core/legends';
-import { calcStats } from '../core/stats';
+import { calcStats, StatKey } from '../core/stats';
+import { applyEvGain, addEv, evGain, zeroEvs } from '../core/ev';
 import { QuestDef, QuestEvent, QuestManager, QuestRewards } from '../core/quests';
 import { AdventureSave, Difficulty, newAdventure, registerCaught, SaveData } from '../systems/saveSchema';
 
@@ -18,7 +19,7 @@ export interface EvoEnv {
   raining?: boolean;
 }
 
-export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 'heal' | 'held' | 'stone' | 'key' }> = {
+export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 'heal' | 'held' | 'stone' | 'key' | 'ev' }> = {
   pokeball: { name: 'Poké Ball', desc: 'Bóng thu phục cơ bản (×1.0).', kind: 'ball' },
   greatball: { name: 'Great Ball', desc: 'Tỉ lệ thu phục cao hơn (×1.5).', kind: 'ball' },
   ultraball: { name: 'Ultra Ball', desc: 'Tỉ lệ thu phục rất cao (×2.0).', kind: 'ball' },
@@ -32,7 +33,7 @@ export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 
   oranberry: { name: 'Oran Berry', desc: 'Hồi 40 HP cho huấn luyện viên và 20% cho đội.', kind: 'heal' },
 };
 // Held items, evolution stones, Mega Stones and the Key Stone come from items.json
-for (const it of ITEM_DEFS.values()) ITEMS[it.id] = { name: it.name, desc: it.desc, kind: it.kind === 'held' || it.kind === 'megaStone' ? 'held' : it.kind === 'evoStone' ? 'stone' : 'key' } as never;
+for (const it of ITEM_DEFS.values()) ITEMS[it.id] = { name: it.name, desc: it.desc, kind: it.kind === 'held' || it.kind === 'megaStone' ? 'held' : it.kind === 'evoStone' ? 'stone' : it.kind === 'evItem' ? 'ev' : 'key' } as never;
 export const SHOP: { id: string; price: number }[] = [
   { id: 'pokeball', price: 200 }, { id: 'greatball', price: 600 }, { id: 'ultraball', price: 1200 },
   { id: 'netball', price: 1000 }, { id: 'duskball', price: 1000 }, { id: 'quickball', price: 1000 }, { id: 'timerball', price: 1000 }, { id: 'luxuryball', price: 1000 },
@@ -42,6 +43,12 @@ export const SHOP: { id: string; price: number }[] = [
   { id: 'fire-stone', price: 2100 }, { id: 'water-stone', price: 2100 }, { id: 'moon-stone', price: 2100 }, { id: 'linking-cord', price: 3000 },
   { id: 'scope-lens', price: 1200 }, { id: 'quick-claw', price: 1200 }, { id: 'leftovers', price: 2000 }, { id: 'charizardite-y', price: 9000 },
   { id: 'metal-coat', price: 2000 }, { id: 'kings-rock', price: 2000 }, { id: 'dragon-scale', price: 2000 },
+  { id: 'sitrus-berry', price: 800 }, { id: 'focus-sash', price: 2500 }, { id: 'rocky-helmet', price: 3000 }, { id: 'assault-vest', price: 3500 }, { id: 'eviolite', price: 3500 },
+  { id: 'life-orb', price: 4000 }, { id: 'choice-band', price: 4000 }, { id: 'choice-specs', price: 4000 }, { id: 'choice-scarf', price: 4000 },
+  // EV training: vitamins, EV-reducing berries, Power items
+  ...['hp-up', 'protein', 'iron', 'calcium', 'zinc', 'carbos'].map((id) => ({ id, price: 1500 })),
+  ...['pomeg-berry', 'kelpsy-berry', 'qualot-berry', 'hondew-berry', 'grepa-berry', 'tamato-berry'].map((id) => ({ id, price: 400 })),
+  ...['power-weight', 'power-bracer', 'power-belt', 'power-lens', 'power-band', 'power-anklet', 'macho-brace'].map((id) => ({ id, price: 3000 })),
   // Gen 1 Mega Stones without a world source yet are sold (expensive)
   ...['beedrillite', 'alakazite', 'slowbronite', 'gengarite', 'kangaskhanite', 'pinsirite', 'gyaradosite', 'aerodactylite', 'mewtwonite-x', 'mewtwonite-y'].map((id) => ({ id, price: 12000 })),
 ];
@@ -124,6 +131,29 @@ export class AdventureState {
       if (levels > 0) out.push({ uid, levels, level: p.level });
     }
     return out;
+  }
+
+  /** EVs for the party members that took part in beating `species` (Power items / Macho Brace included). Returns who changed. */
+  gainEvs(uids: string[], species: string): string[] {
+    const changed: string[] = [];
+    for (const uid of uids) {
+      const p = this.owned(uid);
+      if (!p) continue;
+      const added = applyEvGain((p.evs ??= zeroEvs()), evGain(species, p.held));
+      if (Object.keys(added).length) changed.push(uid);
+    }
+    return changed;
+  }
+
+  /** Vitamin (+10) or EV-reducing berry (−10, + friendship). Consumed only when it changes something. */
+  useEvItem(uid: string, itemId: string): number {
+    const p = this.owned(uid), ev = ITEM_DEFS.get(itemId)?.ev;
+    if (!p || !ev || this.item(itemId) <= 0) return 0;
+    const applied = addEv((p.evs ??= zeroEvs()), ev.stat as StatKey, ev.amount);
+    if (!applied) return 0;
+    this.consume(itemId);
+    if (ev.amount < 0) addFriendship(p, 'item');
+    return applied;
   }
 
   // ───────────────────────────── money & shop ─────────────────────────────

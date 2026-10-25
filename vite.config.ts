@@ -6,7 +6,18 @@ export default defineConfig({
   build: {
     target: 'es2020',
     chunkSizeWarningLimit: 2000,
-    rollupOptions: { output: { manualChunks: { phaser: ['phaser'] } } },
+    rollupOptions: {
+      output: {
+        // engine / game data / code in separate files: they download in parallel, and a code-only
+        // release keeps the (big, rarely changing) data chunks cached in the browser
+        manualChunks(id: string) {
+          if (id.includes('node_modules/phaser')) return 'phaser';
+          if (id.includes('/src/data/pokeapi/')) return 'data-pokeapi';
+          if ((id.includes('/src/data/') && id.endsWith('.json')) || id.endsWith('pmdGround.json')) return 'data-game';
+          return undefined;
+        },
+      },
+    },
   },
   test: {
     include: ['tests/**/*.test.ts'],

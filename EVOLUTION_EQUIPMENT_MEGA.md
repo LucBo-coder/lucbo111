@@ -32,6 +32,8 @@ Chuỗi có thể tiến hóa: Bulbasaur→Ivysaur(16)→Venusaur(32) · Charman
 | Tăng hệ | Charcoal, Mystic Water, Miracle Seed, Magnet, Sharp Beak, Silver Powder, Poison Barb, Soft Sand, Hard Stone, Black Glasses | kỹ năng hệ tương ứng +20% |
 | Loại đòn | Muscle Band / Wise Glasses | vật lý / đặc biệt +10% |
 | Khác | Expert Belt (+20% khi siêu hiệu quả), Scope Lens (+10% chí mạng), Quick Claw (−12% hồi chiêu), Leftovers (hồi 1.2% HP/s), Shell Bell (hút 12% sát thương), Focus Band (20% trụ 1 HP) | |
+| Cạnh tranh (0.12.0) | Life Orb (+30%, mất 10% HP mỗi đòn trúng, tối đa 1 lần/0,6 s, không tự gục) · Choice Band/Specs (+50% vật lý/đặc biệt) · Choice Scarf (+50% tốc chạy, −15% hồi chiêu) — cả 3 khóa vào chiêu tấn công đầu tiên tới khi hết giao tranh (1,5 s không mục tiêu) · Assault Vest (sát thương đặc biệt nhận ÷1,5, cấm chiêu hỗ trợ) · Rocky Helmet (kẻ cận chiến mất 1/6 HP tối đa, boss 1/30, 1 lần/giây) · Eviolite (÷1,5 sát thương nhận nếu loài còn tiến hóa) · Sitrus Berry (dưới 50% HP hồi 25%, mọc lại sau 45 s) · Focus Sash (đầy HP → trụ 1 HP) | |
+| Luyện EV (0.12.0) | Power Weight/Bracer/Belt/Lens/Band/Anklet (+8 EV chỉ số tương ứng mỗi lần hạ), Macho Brace (×2 EV) | không ảnh hưởng chiến đấu |
 | Mega Stone | Charizardite X/Y, Blastoisinite, Venusaurite, Pidgeotite | điều kiện Mega |
 Nguồn: rương (mỗi rương có 1 trang bị), cửa hàng **Chú Lâm** (mua bằng xu), Boss, nhiệm vụ, thưởng hầm ngục lần đầu. Tên & mô tả gốc lấy từ PokéAPI `/item`.
 

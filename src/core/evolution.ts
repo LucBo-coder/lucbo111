@@ -22,11 +22,13 @@ const SPECIES = (cache as unknown as { species: Record<string, { evolutions: Evo
 export interface ItemDef {
   id: string;
   name: string;
-  kind: 'held' | 'evoStone' | 'megaStone' | 'key';
+  kind: 'held' | 'evoStone' | 'megaStone' | 'key' | 'evItem';
   price: number;
   color: string;
   desc: string;
-  effect?: { type: 'typeBoost' | 'categoryBoost' | 'superEffective' | 'crit' | 'cdr' | 'regen' | 'drain' | 'focus' | 'flinch'; pokeType?: string; category?: string; mult?: number; value?: number };
+  effect?: { type: 'typeBoost' | 'categoryBoost' | 'superEffective' | 'crit' | 'cdr' | 'regen' | 'drain' | 'focus' | 'flinch' | 'lifeOrb' | 'choice' | 'assaultVest' | 'rockyHelmet' | 'eviolite' | 'sitrus' | 'sash' | 'evPower'; pokeType?: string; category?: string; mult?: number; value?: number; stat?: string };
+  /** Vitamins (+) and EV-reducing berries (−) */
+  ev?: { stat: string; amount: number };
   megaFor?: string;
   form?: string;
 }

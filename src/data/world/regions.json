@@ -481,5 +481,143 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-ct-orchard",
+  "name": "Miệt vườn Phong Điền",
+  "areas": [
+   "ct-orchard"
+  ],
+  "biome": "forest",
+  "level": [
+   16,
+   20
+  ],
+  "elite": [
+   22,
+   24
+  ],
+  "boss": null,
+  "recommended": 20,
+  "danger": 2,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ct-cai-rang",
+  "name": "Chợ nổi Cái Răng",
+  "areas": [
+   "ct-cai-rang"
+  ],
+  "biome": "lake",
+  "level": [
+   17,
+   21
+  ],
+  "elite": [
+   23,
+   25
+  ],
+  "boss": null,
+  "recommended": 21,
+  "danger": 2,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ct-fields",
+  "name": "Đồng lúa Thới Lai",
+  "areas": [
+   "ct-fields"
+  ],
+  "biome": "meadow",
+  "level": [
+   18,
+   22
+  ],
+  "elite": [
+   24,
+   26
+  ],
+  "boss": null,
+  "recommended": 22,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ct-song-hau",
+  "name": "Bờ Sông Hậu",
+  "areas": [
+   "ct-song-hau"
+  ],
+  "biome": "lake",
+  "level": [
+   19,
+   23
+  ],
+  "elite": [
+   25,
+   27
+  ],
+  "boss": null,
+  "recommended": 23,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ct-con-son",
+  "name": "Cồn Sơn",
+  "areas": [
+   "ct-con-son"
+  ],
+  "biome": "coast",
+  "level": [
+   20,
+   24
+  ],
+  "elite": [
+   26,
+   28
+  ],
+  "boss": null,
+  "recommended": 24,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ct-bang-lang",
+  "name": "Vườn cò Bằng Lăng",
+  "areas": [
+   "ct-bang-lang"
+  ],
+  "biome": "forest",
+  "level": [
+   20,
+   24
+  ],
+  "elite": [
+   26,
+   28
+  ],
+  "boss": null,
+  "recommended": 24,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

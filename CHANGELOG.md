@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.12.0] — 2026-10-25 — Cần Thơ, EV, Hộ chiếu, 9 trang bị mới, tách bundle
+
+### Việt Nam Odyssey: Cần Thơ (Lv16–26)
+- Cổng An Giang → Cần Thơ mở bằng **Huy hiệu Bảy Núi** (trước đây là cổng khóa "chưa có").
+- Bản đồ: **Bến Ninh Kiều** (nơi sông Cần Thơ đổ ra sông Hậu — Trung tâm, cửa hàng, Bảng nhiệm vụ), **Bờ Sông Hậu**, **Cồn Sơn** (cồn giữa sông, đi bằng đò 2 chiều), **Chợ nổi Cái Răng** (qua cầu bắc sông Cần Thơ), **Miệt vườn Phong Điền** (kênh rạch), **Đồng lúa Thới Lai**, **Vườn cò Bằng Lăng**. Biển tên chỉ ghi thông tin chắc chắn (cây bẹo ở chợ nổi, Cầu Cần Thơ khánh thành 2010…); boss và truyền thuyết ghi rõ là giả tưởng.
+- 6 nhiệm vụ: chuỗi chính *Tây Đô bên dòng Hậu → Chợ nổi Cái Răng → Chúa Sông Hậu*, *Giải cứu vườn cò* (Ducklett bị Ekans/Arbok vây), 2 nhiệm vụ Bảng (*Trái ngọt miệt vườn*, *Cao thủ Tây Đô*). 7 NPC, 4 huấn luyện viên (không có cá trong đội), 3 rương, 2 trạm.
+- **Boss khu vực Whiscash — Chúa Sông Hậu** (3 phase, Sóng Dữ Sông Hậu, không bắt được), mở sau khi thắng Tiểu thương Hạnh → **Huy hiệu Sông Hậu**. Cân bằng: đội Cỏ Lv22–24 hạ trong 28 s, đội không khắc hệ trong 42 s (Claydol: 42 s).
+- Hộ chiếu ghi 2 địa danh: Bến Ninh Kiều, Chợ nổi Cái Răng. Cổng tiếp theo (Vĩnh Long) có nhưng đang khóa.
+- Vòng cột đá của boss khu vực không còn đặt cột xuống nước (đảo nhỏ như Cồn Sơn).
+
+### Hộ chiếu hành trình (tab riêng, phím P — chỉ ở Việt Nam Odyssey)
+- Mỗi tỉnh một trang: dấu đỏ **ĐÃ ĐẾN** + ngày đến lần đầu, khu vực / nhiệm vụ / huấn luyện viên / rương / trạm / câu đố / giải cứu đã xong trên tổng, boss khu vực, địa danh, huy hiệu, % hoàn thành. Tỉnh chưa mở ghi điều kiện mở.
+- Ngày đến lưu trong `AdventureSave.visited` (trường tùy chọn, không đổi SAVE_VERSION); save cũ vẫn tính "đã đến" từ bản đồ đã khám phá.
+
+### EV (Effort Values)
+- Công thức chỉ số gốc có EV: `floor(EV/4)` trong số hạng cơ bản; tối đa **252 / chỉ số, 510 tổng**.
+- Hạ Pokémon (hoang dã, HLV, boss) → mọi Pokémon trong đội đang ra trận nhận **EV yield thật của loài đó** (PokéAPI `stats[].effort`, 1025 loài, `scripts/sync-ev-yield.mjs`).
+- **Power Weight / Bracer / Belt / Lens / Band / Anklet** (+8 EV chỉ số tương ứng mỗi lần hạ), **Macho Brace** (×2). Không có phạt tốc độ như bản gốc (game thời gian thực: Pokémon đi theo sẽ bị tụt lại).
+- 6 vitamin (+10) và 6 berry giảm EV (−10, tăng thân thiết) dùng từ Túi đồ; không mất vật phẩm nếu không có tác dụng.
+- Chi tiết Pokémon hiện dãy EV + tổng. EV giữ qua tiến hóa, lưu trong Bộ sưu tập; save cũ = 0 EV (chỉ số không đổi). Pokémon khởi đầu Sinh tồn dùng cá thể của bản trong Bộ sưu tập nên mang cả EV (như IV/Tính cách).
+
+### 9 trang bị mới (cửa hàng + rương)
+- Life Orb, Choice Band / Specs / Scarf (khóa vào chiêu tấn công đầu tiên tới khi hết giao tranh), Assault Vest, Rocky Helmet, Eviolite, Sitrus Berry, Focus Sash — hiệu ứng thật trong combat engine, chuyển sang thời gian thực (xem EVOLUTION_EQUIPMENT_MEGA.md).
+
+### Tách bundle
+- Trước: 1 file code + dữ liệu 3,25 MB. Nay: code **453 KB** (gzip 157 KB), dữ liệu game 1,0 MB, dữ liệu PokéAPI 1,8 MB, Phaser 1,5 MB — tải song song, bản cập nhật chỉ sửa code không bắt tải lại dữ liệu. Tổng dung lượng không giảm (dữ liệu vẫn nạp đồng bộ khi khởi động).
+
+### Tests
+- 260 unit (mới: `v12_held`, `v12_passport`, `v13_can_tho`, `v14_ev`), e2e mới `v13_can_tho` (chơi thật từ cổng An Giang tới huy hiệu + Hộ chiếu), `v14_ev` (vitamin qua hội thoại, Power item trong trận thật, lưu/tải); `v8_vietnam` kiểm tra tab Hộ chiếu.
+
 ## [0.11.1] — 2026-10-24 — Sửa tốc độ hoạt ảnh PMD
 
 ### Fixed

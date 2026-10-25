@@ -13,10 +13,12 @@ import { evolutionsOf, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions 
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
 import { REGION_DEFS } from '../core/map/regionDefs';
+import { passportPages, ProvincePage, VN_PROVINCES } from '../adventure/passport';
 import { LEGENDS } from '../core/legends';
 import { EVENT_DEFS } from '../core/worldEvents';
 import { individualOf } from '../core/progression';
-import { Individual, NATURES, STAT_KEYS } from '../core/stats';
+import { Individual, NATURES, STAT_KEYS, StatKey } from '../core/stats';
+import { EV_MAX_STAT, EV_MAX_TOTAL, evTotal } from '../core/ev';
 import { moveAssets } from '../render/moveAssets';
 import { loadFront, loadShinyFront, shinyKey } from '../render/lazyCreatures';
 import { calcStats } from '../core/stats';
@@ -49,7 +51,7 @@ const EVENT_HINT: Record<string, string> = {
   weather: 'Thời tiết thay đổi Pokémon xuất hiện & sức mạnh đòn', ambush: 'Đánh bại cả đội của huấn luyện viên', treasure: 'Hạ Pokémon canh giữ rồi mở rương (E)', distortion: 'Hạ 5 Pokémon trong vùng biến dạng',
 };
 const REGION_NAMES: Record<string, string> = Object.fromEntries([...ENC_REGIONS.values()].map((r) => [r.id, r.name]));
-type MenuTab = 'party' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'settings';
+type MenuTab = 'party' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'passport' | 'settings';
 const TABS: { id: MenuTab; label: string; key: string }[] = [
   { id: 'party', label: 'Đội hình', key: 'Tab' },
   { id: 'dex', label: 'Pokédex', key: 'X' },
@@ -57,6 +59,7 @@ const TABS: { id: MenuTab; label: string; key: string }[] = [
   { id: 'quests', label: 'Nhiệm vụ', key: 'J' },
   { id: 'events', label: 'Sự kiện', key: 'V' },
   { id: 'map', label: 'Bản đồ', key: 'M' },
+  { id: 'passport', label: 'Hộ chiếu', key: 'P' },
   { id: 'settings', label: 'Cài đặt', key: 'Esc' },
 ];
 // Overworld maps (valley hub + regions behind portals); unlock = the valley portal's story flags
@@ -65,13 +68,7 @@ const REGIONS = [
   ...(REGION_DEFS['starter-valley'].portals ?? []).map((p) => ({ id: p.to, name: REGION_DEFS[p.to]?.name ?? p.to, need: p.requires ?? [], hint: p.hint ?? '' })),
 ];
 // Vietnam Odyssey provinces (playable so far + the next one on the route)
-const VN_REGIONS = [
-  { id: 'ca-mau', name: 'Cà Mau', need: [] as string[], hint: '' },
-  { id: 'an-giang', name: 'An Giang', need: ['badge:ca-mau'], hint: 'Cần Huy hiệu Rừng Tràm (Cà Mau)' },
-  { id: 'can-tho', name: 'Cần Thơ', need: ['vn:can-tho-open'], hint: 'chưa có trong phiên bản này' },
-];
-const VN_BADGES: Record<string, string> = { 'badge:ca-mau': 'Rừng Tràm (Cà Mau)', 'badge:an-giang': 'Bảy Núi (An Giang)' };
-const VN_LANDMARKS: Record<string, string> = { 'landmark:mui-ca-mau': 'Mũi Cà Mau', 'landmark:phu-quoc': 'Đảo Phú Quốc' };
+const VN_REGIONS = VN_PROVINCES.map((p) => REGION_DEFS[p.id] ? p : { ...p, need: ['vn:not-in-this-version'], hint: 'chưa có trong phiên bản này' });
 const SPECIES = { ...(cache.species as unknown as Record<string, SpeciesData>), ...(fakemon as unknown as Record<string, SpeciesData>) };
 const MOVES = (cache as unknown as { moves: Record<string, { power: number | null; accuracy: number | null; shortEffect: string }> }).moves;
 
@@ -99,6 +96,7 @@ export class AdventureUI extends Phaser.Scene {
   private dexPage = 0;
   private partyPage = 0;
   private bagPage = 0;
+  private passportPage = 0;
 
   constructor() {
     super('AdvUI');
@@ -782,8 +780,9 @@ export class AdventureUI extends Phaser.Scene {
     const pw = Math.min(W - 16, 1040 * s), ph = Math.min(H - 16, 640 * s);
     const x0 = (W - pw) / 2, y0 = (H - ph) / 2;
     c.add(panel(this, x0, y0, pw, ph, COLORS.panelEdge, 0x161a28, 0.97));
-    const tw = (pw - 70 * s) / TABS.length;
-    TABS.forEach((t, i) => {
+    const tabs = this.tabs();
+    const tw = (pw - 70 * s) / tabs.length;
+    tabs.forEach((t, i) => {
       const b = button(this, x0 + 10 * s + tw / 2 + i * tw, y0 + 26 * s, tw - 6 * s, 36 * s, t.label, () => this.openMenu(t.id), t.id === tab ? 0x4a5a8a : 0x262c44);
       c.add(b.container);
     });
@@ -795,6 +794,7 @@ export class AdventureUI extends Phaser.Scene {
       case 'bag': this.buildBag(c, body); break;
       case 'quests': this.buildQuests(c, body); break;
       case 'map': this.buildMap(c, body); break;
+      case 'passport': this.buildPassport(c, body); break;
       case 'events': this.buildEvents(c, body); break;
       case 'settings': this.buildSettings(c, body); break;
     }
@@ -871,6 +871,8 @@ export class AdventureUI extends Phaser.Scene {
       c.add(text(this, r.x + 120 * s, y, `${v}`, 15 * s));
       bar(g, r.x + 160 * s, y + 6 * s, 120 * s, 5 * s, b / 150, b > 80 ? 0x50e060 : b > 50 ? 0xf0d030 : 0xf08040);
     });
+    const evs = ind.evs;
+    c.add(text(this, r.x + 300 * s, r.y + 196 * s, `EV ${STAT_KEYS.map((k) => evs?.[k] ?? 0).join('/')}  ·  tổng ${evs ? evTotal(evs) : 0}/${EV_MAX_TOTAL}`, 13 * s, '#ffd8a0'));
     c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Đặc tính: ${def.passive.name}\n${def.passive.description}\nAbility (PokéAPI): ${(api?.abilities ?? []).map((a) => a.name + (a.hidden ? '*' : '')).join(', ')}`, 14 * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
     def.skills.forEach((id, i) => {
       const sk = getSkill(id), mv = MOVES[id];
@@ -927,6 +929,19 @@ export class AdventureUI extends Phaser.Scene {
     this.closeMenu();
     const r = await this.adv.say(ITEM_DEFS.get(itemId)!.name, ['Cho Pokémon nào cầm?'], [...st.save.collection.map((c) => ({ label: `${POKEMON.get(c.species)!.name} Lv${c.level}${c.held ? ` (đang cầm ${ITEM_DEFS.get(c.held)?.name})` : ''}`, value: c.uid })), { label: 'Hủy', value: 'no' }]);
     if (r && r !== 'no') this.adv.equipItem(r, itemId);
+    this.openMenu('bag');
+  }
+
+  private async pickEvTarget(itemId: string): Promise<void> {
+    const st = this.adv.state, def = ITEM_DEFS.get(itemId)!, stat = def.ev!.stat as StatKey;
+    this.closeMenu();
+    const r = await this.adv.say(def.name, [def.desc, 'Dùng cho Pokémon nào?'], [...st.save.collection.map((c) => ({
+      label: `${POKEMON.get(c.species)!.name} Lv${c.level} — EV ${STAT_VI[stat]} ${c.evs?.[stat] ?? 0}/${EV_MAX_STAT} (tổng ${c.evs ? evTotal(c.evs) : 0}/${EV_MAX_TOTAL})`, value: c.uid,
+    })), { label: 'Hủy', value: 'no' }]);
+    if (r && r !== 'no') {
+      const p = st.owned(r)!, applied = this.adv.useEvItem(r, itemId);
+      this.banner(applied ? `${POKEMON.get(p.species)!.name}: EV ${STAT_VI[stat]} ${applied > 0 ? '+' : ''}${applied}` : 'Không có tác dụng (EV đã ở giới hạn 0 / 252 / 510)', applied ? '#80ff90' : '#ff9080');
+    }
     this.openMenu('bag');
   }
 
@@ -1041,6 +1056,7 @@ export class AdventureUI extends Phaser.Scene {
       else if (it.kind === 'heal') { label = 'Dùng'; fn = () => { this.adv.useItem(id); this.openMenu('bag'); }; }
       else if (it.kind === 'stone') { label = 'Dùng'; fn = () => { this.closeMenu(); void this.adv.useStone(id); }; }
       else if (it.kind === 'held') { label = 'Trang bị'; fn = () => void this.pickEquipTarget(id); }
+      else if (it.kind === 'ev') { label = 'Dùng'; fn = () => void this.pickEvTarget(id); }
       if (fn) c.add(button(this, x + cw - 62 * s, y + rh / 2, 110 * s, 32 * s, label, fn).container);
     });
     if (pages > 1) {
@@ -1163,12 +1179,7 @@ export class AdventureUI extends Phaser.Scene {
     c.add(text(this, sx, r.y + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%\nCấp thế giới: ${st.worldLevel}\nDanh tiếng: ${st.adv.reputation}\nTrạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}\nThời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
     const vn = st.adv.campaign === 'vietnam';
     c.add(text(this, sx, r.y + 170 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080'));
-    if (vn) {
-      // Journey Passport: badges and landmarks of the Vietnam Odyssey save
-      const badges = Object.entries(VN_BADGES).filter(([f]) => st.hasFlag(f)).map(([, n]) => n);
-      const marks = Object.entries(VN_LANDMARKS).filter(([f]) => st.hasFlag(f)).map(([, n]) => n);
-      c.add(text(this, sx, r.y + 196 * s + VN_REGIONS.length * 40 * s, `HỘ CHIẾU\nHuy hiệu (${badges.length}): ${badges.join(', ') || '—'}\nĐịa danh (${marks.length}): ${marks.join(', ') || '—'}`, 14 * s, '#f0d0a0').setWordWrapWidth(side - 10 * s));
-    }
+    if (vn) c.add(button(this, sx + 110 * s, r.y + 216 * s + VN_REGIONS.length * 40 * s, 200 * s, 34 * s, 'Mở Hộ chiếu (P)', () => this.openMenu('passport'), 0x7a3a2a).container);
     (vn ? VN_REGIONS : REGIONS).forEach((rg, i) => {
       const unlocked = rg.need.every((f) => st.hasFlag(f));
       const cur = rg.id === a.regionDef.id;
@@ -1178,6 +1189,66 @@ export class AdventureUI extends Phaser.Scene {
       c.add(text(this, sx + 14 * s, r.y + 214 * s + i * 40 * s, status, 13 * s, COLORS.dim).setWordWrapWidth(side - 20 * s));
     });
     c.add(text(this, r.x + 8 * s, r.y + vh - 22 * s, 'Kéo để di chuyển · cuộn/nút để thu phóng · chạm trạm xanh để dịch chuyển', 14 * s, COLORS.dim));
+  }
+
+  /** Menu tabs of this save: the Passport only exists in the Vietnam Odyssey. */
+  private tabs(): typeof TABS {
+    return this.adv.state.adv.campaign === 'vietnam' ? TABS : TABS.filter((t) => t.id !== 'passport');
+  }
+
+  private buildPassport(c: Phaser.GameObjects.Container, r: Rect): void {
+    const s = this.s, st = this.adv.state;
+    const pages = passportPages(st.adv, st.quests.defs.map((d) => d.id));
+    const visited = pages.filter((p) => p.visited).length, badges = pages.filter((p) => p.badge).length;
+    c.add(text(this, r.x, r.y, 'HỘ CHIẾU HÀNH TRÌNH VIỆT NAM', 22 * s, '#ffe080'));
+    c.add(text(this, r.x, r.y + 30 * s, `Tỉnh đã đến: ${visited}/${pages.filter((p) => p.playable).length} · Huy hiệu: ${badges} · Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
+    const per = 3, total = Math.max(1, Math.ceil(pages.length / per));
+    this.passportPage = Math.min(this.passportPage, total - 1);
+    const shown = pages.slice(this.passportPage * per, this.passportPage * per + per);
+    const top = r.y + 62 * s, ch = r.h - 62 * s - (total > 1 ? 44 * s : 4 * s), gap = 12 * s;
+    const cw = (r.w - gap * (per - 1)) / per;
+    shown.forEach((p, i) => this.passportCard(c, { x: r.x + i * (cw + gap), y: top, w: cw, h: ch }, p));
+    if (total > 1) {
+      c.add(button(this, r.x + 60 * s, r.y + r.h - 18 * s, 100 * s, 30 * s, '◀', () => { this.passportPage = (this.passportPage + total - 1) % total; this.openMenu('passport'); }).container);
+      c.add(text(this, r.x + r.w / 2, r.y + r.h - 18 * s, `${this.passportPage + 1}/${total}`, 16 * s, COLORS.dim).setOrigin(0.5));
+      c.add(button(this, r.x + r.w - 60 * s, r.y + r.h - 18 * s, 100 * s, 30 * s, '▶', () => { this.passportPage = (this.passportPage + 1) % total; this.openMenu('passport'); }).container);
+    }
+  }
+
+  private passportCard(c: Phaser.GameObjects.Container, r: Rect, p: ProvincePage): void {
+    const s = this.s, live = p.visited;
+    c.add(panel(this, r.x, r.y, r.w, r.h, live ? 0xc08040 : 0x3a4058, live ? 0x2a2218 : 0x161a26, 0.98));
+    c.add(text(this, r.x + 14 * s, r.y + 12 * s, p.def.name.toUpperCase(), 22 * s, live ? '#ffe0a0' : COLORS.dim));
+    // stamp: red circle with the first-visit date, or why the province is still closed
+    const sx = r.x + r.w - 50 * s, sy = r.y + 46 * s, g = this.add.graphics();
+    c.add(g);
+    if (live) {
+      g.lineStyle(3 * s, 0xd03030, 0.9).strokeCircle(sx, sy, 34 * s).lineStyle(1.5 * s, 0xd03030, 0.9).strokeCircle(sx, sy, 28 * s);
+      const d = p.firstVisit ? new Date(p.firstVisit) : null;
+      c.add(text(this, sx, sy - 8 * s, 'ĐÃ ĐẾN', 13 * s, '#ff6060').setOrigin(0.5).setAngle(-12));
+      c.add(text(this, sx, sy + 9 * s, d ? `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}` : '—', 11 * s, '#ff8080').setOrigin(0.5).setAngle(-12));
+    } else c.add(text(this, r.x + 14 * s, r.y + 44 * s, !p.playable ? 'Chưa có trong phiên bản này' : p.unlocked ? 'Đường đã mở — chưa đặt chân tới' : `Khóa · ${p.def.hint}`, 14 * s, COLORS.dim).setWordWrapWidth(r.w - 28 * s));
+    if (!p.playable) return;
+    const line = (label: string, n: { done: number; total: number }) => n.total ? `${n.done >= n.total ? '☑' : '☐'} ${label}: ${n.done}/${n.total}` : '';
+    const rows = [
+      line('Khu vực', p.areas), line('Nhiệm vụ', p.quests), line('Huấn luyện viên', p.trainers), line('Rương', p.chests),
+      line('Trạm dịch chuyển', p.waypoints), line('Câu đố', p.puzzles), line('Giải cứu', p.rescues),
+      p.boss ? `${p.boss.defeated ? '☑' : '☐'} Boss: ${p.boss.name}` : '',
+      ...p.landmarks.map((l) => `${l.got ? '★' : '☆'} ${l.name}`),
+    ].filter(Boolean);
+    c.add(text(this, r.x + 14 * s, r.y + 90 * s, rows.join('\n'), 15 * s, live ? '#e8dcc0' : COLORS.dim).setLineSpacing(5 * s).setWordWrapWidth(r.w - 24 * s));
+    const by = r.y + r.h - 64 * s;
+    if (p.def.badge) {
+      const bg = this.add.graphics();
+      c.add(bg);
+      bg.fillStyle(p.badge ? 0xf0c040 : 0x2a2e40, 1).fillCircle(r.x + 28 * s, by + 8 * s, 12 * s);
+      bg.lineStyle(2 * s, p.badge ? 0xfff0a0 : 0x4a5068, 1).strokeCircle(r.x + 28 * s, by + 8 * s, 12 * s);
+      c.add(text(this, r.x + 48 * s, by, p.badge ? p.def.badge.name : `${p.def.badge.name} (chưa có)`, 15 * s, p.badge ? '#ffe080' : COLORS.dim));
+    }
+    const bw = r.w - 28 * s, pg = this.add.graphics();
+    c.add(pg);
+    pg.fillStyle(0x10121a, 1).fillRect(r.x + 14 * s, by + 30 * s, bw, 10 * s).fillStyle(0xd0a040, 1).fillRect(r.x + 14 * s, by + 30 * s, bw * p.completion / 100, 10 * s);
+    c.add(text(this, r.x + r.w - 14 * s, by + 44 * s, `Hoàn thành ${p.completion}%`, 13 * s, '#d0c090').setOrigin(1, 0));
   }
 
   private zoomMap(f: number): void {

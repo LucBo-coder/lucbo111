@@ -53,6 +53,8 @@ export interface AdventureSave {
   bossFights: Record<string, BossFightSave>;
   /** Party members currently recalled into their Poké Ball (not on the field) */
   recalled: string[];
+  /** Vietnam Odyssey passport: Date.now() of the first visit of each province */
+  visited?: Record<string, number>;
 }
 
 /**
@@ -163,7 +165,7 @@ export function newAdventure(campaign: Campaign = 'classic'): AdventureSave {
   return {
     started: false, campaign, region: CAMPAIGN_START[campaign].region, party: [], pos: { x: -1, y: -1 }, lastWaypoint: CAMPAIGN_START[campaign].waypoint, waypoints: [],
     quests: {}, flags: [], discovered: [], chests: [], areas: [], worldExp: 0, reputation: 0, dungeons: {}, clock: 8 * 60, playTime: 0, bossDefeatedAt: {},
-    events: newEventSave(), legends: {}, legendHp: {}, eggs: [], discoveredBy: {}, bossFights: {}, recalled: [],
+    events: newEventSave(), legends: {}, legendHp: {}, eggs: [], discoveredBy: {}, bossFights: {}, recalled: [], visited: {},
   };
 }
 

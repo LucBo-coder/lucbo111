@@ -228,6 +228,116 @@
   "desc": "20% trụ lại với 1 HP trước đòn chí tử."
  },
  {
+  "id": "life-orb",
+  "name": "Life Orb",
+  "kind": "held",
+  "price": 4000,
+  "color": "#c040c0",
+  "effect": {
+   "type": "lifeOrb",
+   "mult": 1.3,
+   "value": 0.1
+  },
+  "desc": "Mọi đòn +30% sát thương; mỗi lần ra đòn trúng mất 10% HP tối đa (tối đa 1 lần / 0,6 s, không tự gục)."
+ },
+ {
+  "id": "choice-band",
+  "name": "Choice Band",
+  "kind": "held",
+  "price": 4000,
+  "color": "#e0a030",
+  "effect": {
+   "type": "choice",
+   "category": "physical",
+   "mult": 1.5
+  },
+  "desc": "Đòn vật lý +50% sát thương, nhưng chỉ dùng mãi chiêu tấn công đầu tiên cho tới khi hết giao tranh."
+ },
+ {
+  "id": "choice-specs",
+  "name": "Choice Specs",
+  "kind": "held",
+  "price": 4000,
+  "color": "#4080e0",
+  "effect": {
+   "type": "choice",
+   "category": "special",
+   "mult": 1.5
+  },
+  "desc": "Đòn đặc biệt +50% sát thương, nhưng chỉ dùng mãi chiêu tấn công đầu tiên cho tới khi hết giao tranh."
+ },
+ {
+  "id": "choice-scarf",
+  "name": "Choice Scarf",
+  "kind": "held",
+  "price": 4000,
+  "color": "#e05090",
+  "effect": {
+   "type": "choice",
+   "value": 0.5
+  },
+  "desc": "Tốc độ di chuyển +50% và hồi chiêu nhanh hơn 15%, nhưng chỉ dùng mãi chiêu tấn công đầu tiên cho tới khi hết giao tranh."
+ },
+ {
+  "id": "assault-vest",
+  "name": "Assault Vest",
+  "kind": "held",
+  "price": 3500,
+  "color": "#a03030",
+  "effect": {
+   "type": "assaultVest",
+   "mult": 1.5
+  },
+  "desc": "Phòng thủ đặc biệt ×1,5 (nhận ít hơn 1/3 sát thương đặc biệt), nhưng không dùng được chiêu hỗ trợ (hồi máu, khiên, tăng/giảm chỉ số)."
+ },
+ {
+  "id": "rocky-helmet",
+  "name": "Rocky Helmet",
+  "kind": "held",
+  "price": 3000,
+  "color": "#808890",
+  "effect": {
+   "type": "rockyHelmet",
+   "value": 0.1667
+  },
+  "desc": "Kẻ đánh cận chiến / lao vào nhận sát thương bằng 1/6 HP tối đa của nó (boss: 1/30), tối đa 1 lần / giây."
+ },
+ {
+  "id": "eviolite",
+  "name": "Eviolite",
+  "kind": "held",
+  "price": 3500,
+  "color": "#b080e0",
+  "effect": {
+   "type": "eviolite",
+   "mult": 1.5
+  },
+  "desc": "Pokémon còn tiến hóa được: Phòng thủ và Phòng thủ đặc biệt ×1,5. Không tác dụng với loài đã tiến hóa cuối."
+ },
+ {
+  "id": "sitrus-berry",
+  "name": "Sitrus Berry",
+  "kind": "held",
+  "price": 800,
+  "color": "#f0d040",
+  "effect": {
+   "type": "sitrus",
+   "value": 0.25
+  },
+  "desc": "Khi HP dưới 50%: hồi 25% HP tối đa. Không mất vật phẩm: quả mọc lại sau 45 s."
+ },
+ {
+  "id": "focus-sash",
+  "name": "Focus Sash",
+  "kind": "held",
+  "price": 2500,
+  "color": "#f07040",
+  "effect": {
+   "type": "sash"
+  },
+  "desc": "Khi đang đầy HP, một đòn chí tử chỉ để lại 1 HP."
+ },
+ {
   "id": "thunder-stone",
   "name": "Thunder Stone",
   "kind": "evoStone",
@@ -483,5 +593,239 @@
    "mult": 1.2
   },
   "desc": "Kỹ năng hệ Băng +20%."
+ },
+ {
+  "id": "hp-up",
+  "name": "HP Up",
+  "kind": "evItem",
+  "price": 1500,
+  "color": "#e05050",
+  "ev": {
+   "stat": "hp",
+   "amount": 10
+  },
+  "desc": "+10 EV HP (tối đa 252 mỗi chỉ số, 510 tổng)."
+ },
+ {
+  "id": "protein",
+  "name": "Protein",
+  "kind": "evItem",
+  "price": 1500,
+  "color": "#e09040",
+  "ev": {
+   "stat": "atk",
+   "amount": 10
+  },
+  "desc": "+10 EV Tấn công (tối đa 252 mỗi chỉ số, 510 tổng)."
+ },
+ {
+  "id": "iron",
+  "name": "Iron",
+  "kind": "evItem",
+  "price": 1500,
+  "color": "#d0c040",
+  "ev": {
+   "stat": "def",
+   "amount": 10
+  },
+  "desc": "+10 EV Phòng thủ (tối đa 252 mỗi chỉ số, 510 tổng)."
+ },
+ {
+  "id": "calcium",
+  "name": "Calcium",
+  "kind": "evItem",
+  "price": 1500,
+  "color": "#5080e0",
+  "ev": {
+   "stat": "spa",
+   "amount": 10
+  },
+  "desc": "+10 EV Tấn công ĐB (tối đa 252 mỗi chỉ số, 510 tổng)."
+ },
+ {
+  "id": "zinc",
+  "name": "Zinc",
+  "kind": "evItem",
+  "price": 1500,
+  "color": "#50c070",
+  "ev": {
+   "stat": "spd",
+   "amount": 10
+  },
+  "desc": "+10 EV Phòng thủ ĐB (tối đa 252 mỗi chỉ số, 510 tổng)."
+ },
+ {
+  "id": "carbos",
+  "name": "Carbos",
+  "kind": "evItem",
+  "price": 1500,
+  "color": "#d060c0",
+  "ev": {
+   "stat": "spe",
+   "amount": 10
+  },
+  "desc": "+10 EV Tốc độ (tối đa 252 mỗi chỉ số, 510 tổng)."
+ },
+ {
+  "id": "pomeg-berry",
+  "name": "Pomeg Berry",
+  "kind": "evItem",
+  "price": 400,
+  "color": "#e04040",
+  "ev": {
+   "stat": "hp",
+   "amount": -10
+  },
+  "desc": "−10 EV HP và tăng thân thiết."
+ },
+ {
+  "id": "kelpsy-berry",
+  "name": "Kelpsy Berry",
+  "kind": "evItem",
+  "price": 400,
+  "color": "#4080e0",
+  "ev": {
+   "stat": "atk",
+   "amount": -10
+  },
+  "desc": "−10 EV Tấn công và tăng thân thiết."
+ },
+ {
+  "id": "qualot-berry",
+  "name": "Qualot Berry",
+  "kind": "evItem",
+  "price": 400,
+  "color": "#f0d040",
+  "ev": {
+   "stat": "def",
+   "amount": -10
+  },
+  "desc": "−10 EV Phòng thủ và tăng thân thiết."
+ },
+ {
+  "id": "hondew-berry",
+  "name": "Hondew Berry",
+  "kind": "evItem",
+  "price": 400,
+  "color": "#60c060",
+  "ev": {
+   "stat": "spa",
+   "amount": -10
+  },
+  "desc": "−10 EV Tấn công ĐB và tăng thân thiết."
+ },
+ {
+  "id": "grepa-berry",
+  "name": "Grepa Berry",
+  "kind": "evItem",
+  "price": 400,
+  "color": "#f0f0a0",
+  "ev": {
+   "stat": "spd",
+   "amount": -10
+  },
+  "desc": "−10 EV Phòng thủ ĐB và tăng thân thiết."
+ },
+ {
+  "id": "tamato-berry",
+  "name": "Tamato Berry",
+  "kind": "evItem",
+  "price": 400,
+  "color": "#e03030",
+  "ev": {
+   "stat": "spe",
+   "amount": -10
+  },
+  "desc": "−10 EV Tốc độ và tăng thân thiết."
+ },
+ {
+  "id": "power-weight",
+  "name": "Power Weight",
+  "kind": "held",
+  "price": 3000,
+  "color": "#c08040",
+  "effect": {
+   "type": "evPower",
+   "stat": "hp",
+   "value": 8
+  },
+  "desc": "Mỗi lần hạ Pokémon: thêm +8 EV HP cho Pokémon cầm (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "power-bracer",
+  "name": "Power Bracer",
+  "kind": "held",
+  "price": 3000,
+  "color": "#c06040",
+  "effect": {
+   "type": "evPower",
+   "stat": "atk",
+   "value": 8
+  },
+  "desc": "Mỗi lần hạ Pokémon: thêm +8 EV Tấn công cho Pokémon cầm (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "power-belt",
+  "name": "Power Belt",
+  "kind": "held",
+  "price": 3000,
+  "color": "#a0a040",
+  "effect": {
+   "type": "evPower",
+   "stat": "def",
+   "value": 8
+  },
+  "desc": "Mỗi lần hạ Pokémon: thêm +8 EV Phòng thủ cho Pokémon cầm (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "power-lens",
+  "name": "Power Lens",
+  "kind": "held",
+  "price": 3000,
+  "color": "#6080c0",
+  "effect": {
+   "type": "evPower",
+   "stat": "spa",
+   "value": 8
+  },
+  "desc": "Mỗi lần hạ Pokémon: thêm +8 EV Tấn công ĐB cho Pokémon cầm (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "power-band",
+  "name": "Power Band",
+  "kind": "held",
+  "price": 3000,
+  "color": "#60a080",
+  "effect": {
+   "type": "evPower",
+   "stat": "spd",
+   "value": 8
+  },
+  "desc": "Mỗi lần hạ Pokémon: thêm +8 EV Phòng thủ ĐB cho Pokémon cầm (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "power-anklet",
+  "name": "Power Anklet",
+  "kind": "held",
+  "price": 3000,
+  "color": "#c060a0",
+  "effect": {
+   "type": "evPower",
+   "stat": "spe",
+   "value": 8
+  },
+  "desc": "Mỗi lần hạ Pokémon: thêm +8 EV Tốc độ cho Pokémon cầm (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "macho-brace",
+  "name": "Macho Brace",
+  "kind": "held",
+  "price": 3000,
+  "color": "#b0b0b0",
+  "effect": {
+   "type": "evPower",
+   "mult": 2
+  },
+  "desc": "Nhân đôi EV nhận được khi hạ Pokémon (không ảnh hưởng chiến đấu)."
  }
 ]

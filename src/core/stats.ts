@@ -12,10 +12,11 @@ export interface Stats {
 export type StatKey = keyof Stats;
 export const STAT_KEYS: StatKey[] = ['hp', 'atk', 'def', 'spa', 'spd', 'spe'];
 
-/** Per-individual modifiers. EVs are not used in this game (documented in GAMEPLAY_AUDIT.md). */
+/** Per-individual modifiers: IVs + nature (fixed), EVs (earned in battle — core/ev.ts). */
 export interface Individual {
   ivs: Stats;
   nature: string;
+  evs?: Stats;
 }
 
 /** The 25 natures: +10% / -10% (neutral natures have neither). */
@@ -40,13 +41,13 @@ export function natureMult(nature: string | undefined, stat: StatKey): number {
   return n.plus === stat ? 1.1 : n.minus === stat ? 0.9 : 1;
 }
 
-/** Main-series stat formula (EV = 0): floor((floor((2B + IV) · L / 100) + 5) · Nature). */
-export function calcStat(base: number, level: number, iv = 0, nature = 1): number {
-  return Math.floor((Math.floor(((2 * base + iv) * level) / 100) + 5) * nature);
+/** Main-series stat formula: floor((floor((2B + IV + floor(EV / 4)) · L / 100) + 5) · Nature). */
+export function calcStat(base: number, level: number, iv = 0, nature = 1, ev = 0): number {
+  return Math.floor((Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + 5) * nature);
 }
 
-export function calcHp(base: number, level: number, iv = 0): number {
-  return Math.floor(((2 * base + iv) * level) / 100) + level + 10;
+export function calcHp(base: number, level: number, iv = 0, ev = 0): number {
+  return Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + level + 10;
 }
 
 /**
@@ -55,14 +56,15 @@ export function calcHp(base: number, level: number, iv = 0): number {
  */
 export function calcStats(base: BaseStats, level: number, ind?: Individual | null): Stats {
   const iv = (k: StatKey) => ind?.ivs[k] ?? 0;
+  const ev = (k: StatKey) => ind?.evs?.[k] ?? 0;
   const nm = (k: StatKey) => natureMult(ind?.nature, k);
   return {
-    hp: calcHp(base.hp, level, iv('hp')),
-    atk: calcStat(base.atk, level, iv('atk'), nm('atk')),
-    def: calcStat(base.def, level, iv('def'), nm('def')),
-    spa: calcStat(base.spa, level, iv('spa'), nm('spa')),
-    spd: calcStat(base.spd, level, iv('spd'), nm('spd')),
-    spe: calcStat(base.spe, level, iv('spe'), nm('spe')),
+    hp: calcHp(base.hp, level, iv('hp'), ev('hp')),
+    atk: calcStat(base.atk, level, iv('atk'), nm('atk'), ev('atk')),
+    def: calcStat(base.def, level, iv('def'), nm('def'), ev('def')),
+    spa: calcStat(base.spa, level, iv('spa'), nm('spa'), ev('spa')),
+    spd: calcStat(base.spd, level, iv('spd'), nm('spd'), ev('spd')),
+    spe: calcStat(base.spe, level, iv('spe'), nm('spe'), ev('spe')),
   };
 }
 

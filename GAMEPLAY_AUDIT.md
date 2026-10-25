@@ -50,6 +50,7 @@ Không hệ thống nào cần viết lại toàn bộ. Combat engine được m
 |---|---|---|
 | Tiến hóa đủ điều kiện | ✅ `EvolutionRuleEngine` | `tests/v2_progression.test.ts` |
 | Friendship, IV, Nature | ✅ | `tests/v2_progression.test.ts` |
+| EV (Effort Values) — 0.12.0 | ✅ yield PokéAPI, 252/510, Power item, vitamin/berry | `tests/v14_ev.test.ts`, `e2e/v14_ev.spec.ts` |
 | Mở khóa chiêu theo cấp | ✅ (Phiêu lưu) | `tests/v2_progression.test.ts` |
 | Accuracy, 6 trạng thái mới | ✅ | `tests/v2_combat.test.ts` |
 | AI state machine | ✅ | `tests/v2_combat.test.ts` |
