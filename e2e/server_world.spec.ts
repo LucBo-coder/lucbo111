@@ -56,12 +56,14 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
       await page.getByRole('button', { name: 'Tôi đã lưu mã', exact: true }).click();
     }
     await expect.poll(() => a.evaluate(() => (window as any).__phaser.scene.getScene('ServerWorld').remotes.size)).toBe(1);
+    // the in-world menu is a drawer with tabs (Đội / Sự kiện / Bạn bè / Chat / Khác)
+    await a.getByRole('tab', { name: 'Chat', exact: true }).click(); await b.getByRole('tab', { name: 'Chat', exact: true }).click();
     await a.getByLabel('Tin nhắn', { exact: true }).fill('Xin chào Cà Mau!');
     await a.getByRole('button', { name: 'Gửi', exact: true }).click();
     await expect(b.getByRole('log')).toContainText('Xin chào Cà Mau!');
     // Exercise actual movement input, then walk over passable tiles to the shared boss.
     await a.bringToFront();
-    await a.locator('canvas').click({ position: { x: 800, y: 350 } });
+    await a.locator('#game canvas').click({ position: { x: 800, y: 350 } });
     const startX = await a.evaluate(() => (window as any).__phaser.scene.getScene('ServerWorld').player.x);
     await a.keyboard.down('d'); await a.waitForTimeout(300); await a.keyboard.up('d');
     await expect.poll(() => a.evaluate(() => (window as any).__phaser.scene.getScene('ServerWorld').player.x)).toBeGreaterThan(startX + 10);
@@ -76,7 +78,7 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
     const pcPos = await a.evaluate(() => { const t = (window as any).__phaser.scene.getScene('ServerWorld').map.pcTerminalTiles()[0]; return { x: t.x * 48, y: t.y * 48 }; });
     await walkTo(a, pcPos, 100);
     await expect(a.locator('[data-nearby]')).toContainText('Máy PC');
-    await a.locator('canvas').focus();
+    await a.locator('#game canvas').focus();
     await a.keyboard.press('e');
     await expect(a.getByRole('dialog', { name: 'Máy PC Pokémon' })).toBeVisible();
     await a.getByLabel('Tìm Pokémon', { exact: true }).fill('pid');
@@ -87,11 +89,11 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
     await expect(a.locator('[data-pc-detail]')).toContainText('Trong đội');
     await a.keyboard.press('Escape');
     await expect(a.getByRole('dialog', { name: 'Máy PC Pokémon' })).toBeHidden();
-    await a.getByText('Đội Pokémon & PC', { exact: true }).click();
+    await a.getByRole('tab', { name: 'Đội', exact: true }).click();
     await expect(a.locator('[data-roster]')).toContainText('pidgey · Lv4 · Đội');
     await a.setViewportSize({ width: 390, height: 844 });
     await a.screenshot({ path: info.outputPath('online-mobile.png') });
-    expect(await a.locator('.server-panel').evaluate((el) => el.getBoundingClientRect().right)).toBeLessThanOrEqual(390);
+    expect(await a.locator('.sw-drawer').evaluate((el) => el.getBoundingClientRect().right)).toBeLessThanOrEqual(390);
     // Candy dialog: type → quantity → preview → confirm; the server applies it.
     await a.getByRole('button', { name: 'Dùng kẹo', exact: true }).first().click();
     await a.getByLabel('Loại kẹo', { exact: true }).selectOption('rare-candy');
@@ -114,15 +116,15 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
     await a.getByRole('button', { name: 'Gọi ra', exact: true }).first().click();
     await expect.poll(remotePet).toBe(true);
     // emote is shown above the trainer on the other client
-    await a.getByText('Biểu cảm', { exact: true }).click();
+    await a.getByRole('tab', { name: 'Khác', exact: true }).click();
     await a.getByRole('button', { name: '👋 Vẫy', exact: true }).click();
     await expect.poll(() => b.evaluate(() => {
       const r = [...(window as any).__phaser.scene.getScene('ServerWorld').remotes.values()][0] as any;
       return r?.bubble.visible && r.bubble.text;
     })).toContain('Chào');
     // party: invite by username → invitation card on the other client → accept
-    await a.getByText('Bạn bè & nhóm', { exact: true }).click();
-    await b.getByText('Bạn bè & nhóm', { exact: true }).click();
+    await a.getByRole('tab', { name: 'Bạn bè', exact: true }).click();
+    await b.getByRole('tab', { name: 'Bạn bè', exact: true }).click();
     await a.getByRole('button', { name: 'Tạo nhóm', exact: true }).click();
     await a.getByLabel('Tên đăng nhập của bạn', { exact: true }).fill('binh_' + suffix);
     await a.getByRole('button', { name: 'Mời vào nhóm', exact: true }).click();
@@ -135,12 +137,16 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
     await expect(a.locator('[data-play]')).toBeVisible();
     await expect.poll(() => b.evaluate(() => (window as any).__phaser.scene.getScene('ServerWorld').remotes.size)).toBe(1);
     await a.screenshot({ path: info.outputPath('online-world.png') });
+    await a.getByRole('tab', { name: 'Khác', exact: true }).click();
     await a.getByRole('button', { name: 'Đăng xuất', exact: true }).click();
     await a.getByLabel('Tên đăng nhập', { exact: true }).fill('an_' + suffix);
     await a.getByLabel('Mật khẩu', { exact: true }).fill('secret123');
     await a.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
     await expect(a.locator('[data-play]')).toBeVisible();
-    await a.getByText('Đội Pokémon & PC', { exact: true }).click();
+    // on a phone the menu starts closed so the map is visible
+    await expect(a.locator('.sw-drawer')).toBeHidden();
+    await a.getByRole('button', { name: '☰ Menu', exact: true }).click();
+    await a.getByRole('tab', { name: 'Đội', exact: true }).click();
     await expect(a.locator('[data-roster]')).toContainText('charmander · Lv6');
     await expect(a.locator('[data-roster]')).toContainText('pidgey · Lv4 · Đội');
     await a.getByRole('button', { name: '◀ Quay lại', exact: true }).click();
