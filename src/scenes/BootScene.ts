@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
-import { loadPmdIndex, pmdPack } from '../render/pmdPack';
+import { loadPmdIndex, pmdPack, setPmdAlias } from '../render/pmdPack';
 import { music } from '../systems/music';
 import { preloadBossUi } from '../ui/BossHUDController';
 import { POKEMON, SKILLS, validateData } from '../core/data';
 import { ITEM_DEFS } from '../core/evolution';
+import { CANDY_DEFS } from '../core/candy';
 import { buildIcons } from '../render/icons';
 import { installLazyCreatures, registerOfficialLazy } from '../render/lazyCreatures';
 import { buildAvatarSheets, buildCreatureAnimations } from '../render/animation';
@@ -42,6 +43,7 @@ export class BootScene extends Phaser.Scene {
     console.info(`[assets] IcyEthics sprites converted: ${icy.join(', ') || 'none'}`);
     // Optional personal-use PMD animation pack (SpriteCollab, CC BY-NC 4.0; scripts/import-pmd-sprites.py): on unless switched off
     if (await loadPmdIndex()) pmdPack.active = save.settings.pmdSprites !== false;
+    for (const p of POKEMON.values()) if (p.mega) setPmdAlias(p.id, p.mega.base);
     // Optional personal-use official sprite pack (never bundled; see scripts/fetch-official-sprites.mjs)
     const idx = await loadOfficialIndex();
     officialPack.available = !!idx;
@@ -59,7 +61,8 @@ export class BootScene extends Phaser.Scene {
     const eager = (k: string) => REGISTRY[k]?.source !== 'placeholder' && REGISTRY[k]?.source !== 'official';
     installLazyCreatures(this, Object.keys(REGISTRY).filter((k) => !eager(k)));
     generateTextures(this, eager);
-    const icons = buildIcons(this, SKILLS.values(), [...ITEM_DEFS.values()]);
+    const candies = CANDY_DEFS.map((c) => ({ id: c.id, kind: 'candy', color: '#' + c.color.toString(16).padStart(6, '0') }));
+    const icons = buildIcons(this, SKILLS.values(), [...ITEM_DEFS.values(), ...candies]);
     console.info(`[assets] icons: 18 types, ${icons.skills} skills (${icons.bespoke} hand-drawn), items, statuses`);
     buildCreatureAnimations(this, eager);
     buildAvatarSheets(this);

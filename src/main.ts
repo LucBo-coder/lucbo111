@@ -28,9 +28,9 @@ async function boot(): Promise<void> {
     backgroundColor: '#14161f',
     pixelArt: true,
     roundPixels: true,
-    // phones render at DPR× (sharp text); the canvas is shown at the CSS size of the window
+    // high-DPI screens render at DPR× (sharp text); the canvas is shown at the CSS size of the window
     scale: DPR > 1
-      ? { mode: Phaser.Scale.NONE, width: innerWidth * DPR, height: innerHeight * DPR, zoom: 1 / DPR }
+      ? { mode: Phaser.Scale.NONE, width: Math.round(innerWidth * DPR), height: Math.round(innerHeight * DPR), zoom: 1 / DPR }
       : { mode: Phaser.Scale.RESIZE, width: innerWidth, height: innerHeight },
     input: { activePointers: 3 },
     fps: { target: 60, forceSetTimeOut: false },
@@ -38,7 +38,7 @@ async function boot(): Promise<void> {
   });
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
   if (DPR > 1) {
-    const fit = () => game.scale.resize(innerWidth * DPR, innerHeight * DPR);
+    const fit = () => game.scale.resize(Math.round(innerWidth * DPR), Math.round(innerHeight * DPR));
     addEventListener('resize', fit);
     addEventListener('orientationchange', () => setTimeout(fit, 150));
   }

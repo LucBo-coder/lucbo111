@@ -1,0 +1,1660 @@
+[
+ {
+  "id": "ampharos-mega",
+  "name": "Mega Ampharos",
+  "types": [
+   "electric",
+   "dragon"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 90,
+   "atk": 95,
+   "def": 105,
+   "spa": 165,
+   "spd": 110,
+   "spe": 45
+  },
+  "moveSpeed": 187,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "thunder_shock",
+   "thunder",
+   "thunder_punch",
+   "growl"
+  ],
+  "passive": {
+   "id": "mold-breaker",
+   "name": "Mold Breaker",
+   "description": "Mô phỏng phá phòng thủ: Kỹ năng hệ Điện +20%.",
+   "kind": "typeBoost",
+   "type": "electric",
+   "mult": 1.2
+  },
+  "evolution": null,
+  "sprite": "ampharos-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "electric",
+   "aura": "electric"
+  },
+  "generated": true,
+  "mega": {
+   "base": "ampharos",
+   "stone": "ampharosite"
+  }
+ },
+ {
+  "id": "steelix-mega",
+  "name": "Mega Steelix",
+  "types": [
+   "steel",
+   "ground"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 75,
+   "atk": 125,
+   "def": 230,
+   "spa": 55,
+   "spd": 95,
+   "spe": 30
+  },
+  "moveSpeed": 178,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 24,
+  "skills": [
+   "crunch",
+   "iron_tail",
+   "double_edge",
+   "harden"
+  ],
+  "passive": {
+   "id": "sand-force",
+   "name": "Sand Force",
+   "description": "Mô phỏng bão cát: Kỹ năng hệ Đất +30%.",
+   "kind": "typeBoost",
+   "type": "ground",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "steelix-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "steel",
+   "aura": "steel"
+  },
+  "generated": true,
+  "mega": {
+   "base": "steelix",
+   "stone": "steelixite"
+  }
+ },
+ {
+  "id": "scizor-mega",
+  "name": "Mega Scizor",
+  "types": [
+   "bug",
+   "steel"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 70,
+   "atk": 150,
+   "def": 140,
+   "spa": 65,
+   "spd": 100,
+   "spe": 75
+  },
+  "moveSpeed": 205,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 22,
+  "skills": [
+   "metal_claw",
+   "slash",
+   "fury_cutter",
+   "iron_defense"
+  ],
+  "passive": {
+   "id": "technician",
+   "name": "Technician",
+   "description": "Đòn cận chiến và lao +30%.",
+   "kind": "meleeBoost",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "scizor-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "bug",
+   "aura": "bug"
+  },
+  "generated": true,
+  "mega": {
+   "base": "scizor",
+   "stone": "scizorite"
+  }
+ },
+ {
+  "id": "heracross-mega",
+  "name": "Mega Heracross",
+  "types": [
+   "bug",
+   "fighting"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 80,
+   "atk": 185,
+   "def": 115,
+   "spa": 40,
+   "spd": 105,
+   "spe": 75
+  },
+  "moveSpeed": 205,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "counter",
+   "megahorn",
+   "take_down",
+   "leer"
+  ],
+  "passive": {
+   "id": "skill-link",
+   "name": "Skill Link",
+   "description": "Đòn cận chiến và lao +30%.",
+   "kind": "meleeBoost",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "heracross-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "bug",
+   "aura": "bug"
+  },
+  "generated": true,
+  "mega": {
+   "base": "heracross",
+   "stone": "heracronite"
+  }
+ },
+ {
+  "id": "houndoom-mega",
+  "name": "Mega Houndoom",
+  "types": [
+   "dark",
+   "fire"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 75,
+   "atk": 90,
+   "def": 90,
+   "spa": 140,
+   "spd": 90,
+   "spe": 115
+  },
+  "moveSpeed": 229,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "crunch",
+   "flamethrower",
+   "ember",
+   "leer"
+  ],
+  "passive": {
+   "id": "solar-power",
+   "name": "Solar Power",
+   "description": "Mô phỏng nắng gắt: Kỹ năng hệ Lửa +30%.",
+   "kind": "typeBoost",
+   "type": "fire",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "houndoom-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dark",
+   "aura": "dark"
+  },
+  "generated": true,
+  "mega": {
+   "base": "houndoom",
+   "stone": "houndoominite"
+  }
+ },
+ {
+  "id": "tyranitar-mega",
+  "name": "Mega Tyranitar",
+  "types": [
+   "rock",
+   "dark"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 100,
+   "atk": 164,
+   "def": 150,
+   "spa": 95,
+   "spd": 120,
+   "spe": 71
+  },
+  "moveSpeed": 203,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 23,
+  "skills": [
+   "crunch",
+   "hyper_beam",
+   "thrash",
+   "leer"
+  ],
+  "passive": {
+   "id": "sand-stream",
+   "name": "Sand Stream",
+   "description": "Mô phỏng bão cát: Kỹ năng hệ Đá +30%.",
+   "kind": "typeBoost",
+   "type": "rock",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "tyranitar-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "rock",
+   "aura": "rock"
+  },
+  "generated": true,
+  "mega": {
+   "base": "tyranitar",
+   "stone": "tyranitarite"
+  }
+ },
+ {
+  "id": "sceptile-mega",
+  "name": "Mega Sceptile",
+  "types": [
+   "grass",
+   "dragon"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 75,
+   "spa": 145,
+   "spd": 85,
+   "spe": 145
+  },
+  "moveSpeed": 247,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 22,
+  "skills": [
+   "absorb",
+   "leaf_blade",
+   "slam",
+   "agility"
+  ],
+  "passive": {
+   "id": "lightning-rod",
+   "name": "Lightning Rod",
+   "description": "Giảm 75% sát thương Điện.",
+   "kind": "typeResist",
+   "types": [
+    "electric"
+   ],
+   "mult": 0.25
+  },
+  "evolution": null,
+  "sprite": "sceptile-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  },
+  "generated": true,
+  "mega": {
+   "base": "sceptile",
+   "stone": "sceptilite"
+  }
+ },
+ {
+  "id": "blaziken-mega",
+  "name": "Mega Blaziken",
+  "types": [
+   "fire",
+   "fighting"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 80,
+   "atk": 160,
+   "def": 80,
+   "spa": 130,
+   "spd": 80,
+   "spe": 100
+  },
+  "moveSpeed": 220,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 23,
+  "skills": [
+   "slash",
+   "blaze_kick",
+   "sky_uppercut",
+   "bulk_up"
+  ],
+  "passive": {
+   "id": "speed-boost",
+   "name": "Speed Boost",
+   "description": "Mô phỏng tăng tốc liên tục: +10% chí mạng.",
+   "kind": "critBonus",
+   "value": 0.1
+  },
+  "evolution": null,
+  "sprite": "blaziken-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fire",
+   "aura": "fire"
+  },
+  "generated": true,
+  "mega": {
+   "base": "blaziken",
+   "stone": "blazikenite"
+  }
+ },
+ {
+  "id": "swampert-mega",
+  "name": "Mega Swampert",
+  "types": [
+   "water",
+   "ground"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 100,
+   "atk": 150,
+   "def": 110,
+   "spa": 95,
+   "spd": 110,
+   "spe": 70
+  },
+  "moveSpeed": 202,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "earthquake",
+   "muddy_water",
+   "take_down",
+   "growl"
+  ],
+  "passive": {
+   "id": "swift-swim",
+   "name": "Swift Swim",
+   "description": "Mô phỏng bơi nhanh trong mưa: Kỹ năng hệ Nước +30%.",
+   "kind": "typeBoost",
+   "type": "water",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "swampert-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  },
+  "generated": true,
+  "mega": {
+   "base": "swampert",
+   "stone": "swampertite"
+  }
+ },
+ {
+  "id": "gardevoir-mega",
+  "name": "Mega Gardevoir",
+  "types": [
+   "psychic",
+   "fairy"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 68,
+   "atk": 85,
+   "def": 65,
+   "spa": 165,
+   "spd": 135,
+   "spe": 100
+  },
+  "moveSpeed": 220,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "confusion",
+   "future_sight",
+   "double_team",
+   "dream_eater"
+  ],
+  "passive": {
+   "id": "pixilate",
+   "name": "Pixilate",
+   "description": "Mô phỏng Pixilate: Kỹ năng hệ Tiên +30%.",
+   "kind": "typeBoost",
+   "type": "fairy",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "gardevoir-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "psychic",
+   "aura": "psychic"
+  },
+  "generated": true,
+  "mega": {
+   "base": "gardevoir",
+   "stone": "gardevoirite"
+  }
+ },
+ {
+  "id": "sableye-mega",
+  "name": "Mega Sableye",
+  "types": [
+   "dark",
+   "ghost"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 50,
+   "atk": 85,
+   "def": 125,
+   "spa": 85,
+   "spd": 115,
+   "spe": 20
+  },
+  "moveSpeed": 172,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 17,
+  "skills": [
+   "night_shade",
+   "shadow_ball",
+   "knock_off",
+   "leer"
+  ],
+  "passive": {
+   "id": "magic-bounce",
+   "name": "Magic Bounce",
+   "description": "Mô phỏng phản chiếu: miễn nhiễm mọi hiệu ứng trạng thái.",
+   "kind": "statusImmune",
+   "immune": [
+    "burn",
+    "poison",
+    "badPoison",
+    "paralysis",
+    "sleep",
+    "freeze",
+    "confusion",
+    "flinch"
+   ]
+  },
+  "evolution": null,
+  "sprite": "sableye-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dark",
+   "aura": "dark"
+  },
+  "generated": true,
+  "mega": {
+   "base": "sableye",
+   "stone": "sablenite"
+  }
+ },
+ {
+  "id": "mawile-mega",
+  "name": "Mega Mawile",
+  "types": [
+   "steel",
+   "fairy"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 50,
+   "atk": 105,
+   "def": 125,
+   "spa": 55,
+   "spd": 95,
+   "spe": 50
+  },
+  "moveSpeed": 190,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 17,
+  "skills": [
+   "crunch",
+   "bite",
+   "vice_grip",
+   "swallow"
+  ],
+  "passive": {
+   "id": "huge-power",
+   "name": "Huge Power",
+   "description": "Mô phỏng: cận chiến +50%.",
+   "kind": "meleeBoost",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "mawile-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "steel",
+   "aura": "steel"
+  },
+  "generated": true,
+  "mega": {
+   "base": "mawile",
+   "stone": "mawilite"
+  }
+ },
+ {
+  "id": "aggron-mega",
+  "name": "Mega Aggron",
+  "types": [
+   "steel"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 70,
+   "atk": 140,
+   "def": 230,
+   "spa": 60,
+   "spd": 80,
+   "spe": 50
+  },
+  "moveSpeed": 190,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 23,
+  "skills": [
+   "metal_claw",
+   "iron_tail",
+   "double_edge",
+   "harden"
+  ],
+  "passive": {
+   "id": "filter",
+   "name": "Filter",
+   "description": "Chịu được đòn chí tử với 1 HP (hồi 30 giây).",
+   "kind": "sturdy",
+   "value": 30
+  },
+  "evolution": null,
+  "sprite": "aggron-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "steel",
+   "aura": "steel"
+  },
+  "generated": true,
+  "mega": {
+   "base": "aggron",
+   "stone": "aggronite"
+  }
+ },
+ {
+  "id": "medicham-mega",
+  "name": "Mega Medicham",
+  "types": [
+   "fighting",
+   "psychic"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 60,
+   "atk": 100,
+   "def": 85,
+   "spa": 80,
+   "spd": 85,
+   "spe": 100
+  },
+  "moveSpeed": 220,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 20,
+  "skills": [
+   "confusion",
+   "high_jump_kick",
+   "fire_punch",
+   "recover"
+  ],
+  "passive": {
+   "id": "pure-power",
+   "name": "Pure Power",
+   "description": "Mô phỏng: cận chiến +50%.",
+   "kind": "meleeBoost",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "medicham-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fighting",
+   "aura": "fighting"
+  },
+  "generated": true,
+  "mega": {
+   "base": "medicham",
+   "stone": "medichamite"
+  }
+ },
+ {
+  "id": "manectric-mega",
+  "name": "Mega Manectric",
+  "types": [
+   "electric"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 70,
+   "atk": 75,
+   "def": 80,
+   "spa": 135,
+   "spd": 80,
+   "spe": 135
+  },
+  "moveSpeed": 241,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "bite",
+   "thunder",
+   "spark",
+   "charge"
+  ],
+  "passive": {
+   "id": "intimidate",
+   "name": "Intimidate",
+   "description": "Mô phỏng: kẻ đánh cận chiến bị giảm sức chống chịu.",
+   "kind": "contactStatus",
+   "status": {
+    "kind": "defDown",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.2
+   }
+  },
+  "evolution": null,
+  "sprite": "manectric-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "electric",
+   "aura": "electric"
+  },
+  "generated": true,
+  "mega": {
+   "base": "manectric",
+   "stone": "manectite"
+  }
+ },
+ {
+  "id": "sharpedo-mega",
+  "name": "Mega Sharpedo",
+  "types": [
+   "water",
+   "dark"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 70,
+   "atk": 140,
+   "def": 70,
+   "spa": 110,
+   "spd": 65,
+   "spe": 105
+  },
+  "moveSpeed": 223,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 22,
+  "skills": [
+   "crunch",
+   "skull_bash",
+   "slash",
+   "agility"
+  ],
+  "passive": {
+   "id": "strong-jaw",
+   "name": "Strong Jaw",
+   "description": "Đòn cận chiến và lao +30%.",
+   "kind": "meleeBoost",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "sharpedo-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  },
+  "generated": true,
+  "mega": {
+   "base": "sharpedo",
+   "stone": "sharpedonite"
+  }
+ },
+ {
+  "id": "camerupt-mega",
+  "name": "Mega Camerupt",
+  "types": [
+   "fire",
+   "ground"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 70,
+   "atk": 120,
+   "def": 100,
+   "spa": 145,
+   "spd": 105,
+   "spe": 20
+  },
+  "moveSpeed": 172,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 23,
+  "skills": [
+   "earthquake",
+   "eruption",
+   "fissure",
+   "amnesia"
+  ],
+  "passive": {
+   "id": "sheer-force",
+   "name": "Sheer Force",
+   "description": "Mô phỏng sức mạnh thô: Kỹ năng hệ Lửa +30%.",
+   "kind": "typeBoost",
+   "type": "fire",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "camerupt-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fire",
+   "aura": "fire"
+  },
+  "generated": true,
+  "mega": {
+   "base": "camerupt",
+   "stone": "cameruptite"
+  }
+ },
+ {
+  "id": "altaria-mega",
+  "name": "Mega Altaria",
+  "types": [
+   "dragon",
+   "fairy"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 75,
+   "atk": 110,
+   "def": 110,
+   "spa": 110,
+   "spd": 105,
+   "spe": 80
+  },
+  "moveSpeed": 208,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 19,
+  "skills": [
+   "peck",
+   "sky_attack",
+   "take_down",
+   "dragon_dance"
+  ],
+  "passive": {
+   "id": "pixilate",
+   "name": "Pixilate",
+   "description": "Mô phỏng Pixilate: Kỹ năng hệ Tiên +30%.",
+   "kind": "typeBoost",
+   "type": "fairy",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "altaria-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dragon",
+   "aura": "dragon"
+  },
+  "generated": true,
+  "mega": {
+   "base": "altaria",
+   "stone": "altarianite"
+  }
+ },
+ {
+  "id": "banette-mega",
+  "name": "Mega Banette",
+  "types": [
+   "ghost"
+  ],
+  "rarity": "legendary",
+  "role": "fighter",
+  "baseStats": {
+   "hp": 64,
+   "atk": 165,
+   "def": 75,
+   "spa": 93,
+   "spd": 83,
+   "spe": 75
+  },
+  "moveSpeed": 205,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 19,
+  "skills": [
+   "night_shade",
+   "shadow_ball",
+   "knock_off",
+   "screech"
+  ],
+  "passive": {
+   "id": "prankster",
+   "name": "Prankster",
+   "description": "Mô phỏng ra đòn trước: +8% chí mạng.",
+   "kind": "critBonus",
+   "value": 0.08
+  },
+  "evolution": null,
+  "sprite": "banette-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "ghost",
+   "aura": "ghost"
+  },
+  "generated": true,
+  "mega": {
+   "base": "banette",
+   "stone": "banettite"
+  }
+ },
+ {
+  "id": "absol-mega",
+  "name": "Mega Absol",
+  "types": [
+   "dark"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 65,
+   "atk": 150,
+   "def": 60,
+   "spa": 115,
+   "spd": 60,
+   "spe": 115
+  },
+  "moveSpeed": 229,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 20,
+  "skills": [
+   "bite",
+   "future_sight",
+   "razor_wind",
+   "double_team"
+  ],
+  "passive": {
+   "id": "magic-bounce",
+   "name": "Magic Bounce",
+   "description": "Mô phỏng phản chiếu: miễn nhiễm mọi hiệu ứng trạng thái.",
+   "kind": "statusImmune",
+   "immune": [
+    "burn",
+    "poison",
+    "badPoison",
+    "paralysis",
+    "sleep",
+    "freeze",
+    "confusion",
+    "flinch"
+   ]
+  },
+  "evolution": null,
+  "sprite": "absol-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dark",
+   "aura": "dark"
+  },
+  "generated": true,
+  "mega": {
+   "base": "absol",
+   "stone": "absolite"
+  }
+ },
+ {
+  "id": "glalie-mega",
+  "name": "Mega Glalie",
+  "types": [
+   "ice"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 80,
+   "atk": 120,
+   "def": 80,
+   "spa": 120,
+   "spd": 80,
+   "spe": 100
+  },
+  "moveSpeed": 220,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 21,
+  "skills": [
+   "icy_wind",
+   "sheer_cold",
+   "crunch",
+   "double_team"
+  ],
+  "passive": {
+   "id": "refrigerate",
+   "name": "Refrigerate",
+   "description": "Mô phỏng Refrigerate: Kỹ năng hệ Băng +30%.",
+   "kind": "typeBoost",
+   "type": "ice",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "glalie-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "ice",
+   "aura": "ice"
+  },
+  "generated": true,
+  "mega": {
+   "base": "glalie",
+   "stone": "glalitite"
+  }
+ },
+ {
+  "id": "salamence-mega",
+  "name": "Mega Salamence",
+  "types": [
+   "dragon",
+   "flying"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 95,
+   "atk": 145,
+   "def": 130,
+   "spa": 120,
+   "spd": 90,
+   "spe": 120
+  },
+  "moveSpeed": 232,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 21,
+  "skills": [
+   "dragon_claw",
+   "fly",
+   "double_edge",
+   "leer"
+  ],
+  "passive": {
+   "id": "aerilate",
+   "name": "Aerilate",
+   "description": "Kỹ năng hệ Bay +30%.",
+   "kind": "typeBoost",
+   "type": "flying",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "salamence-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dragon",
+   "aura": "dragon"
+  },
+  "generated": true,
+  "mega": {
+   "base": "salamence",
+   "stone": "salamencite"
+  }
+ },
+ {
+  "id": "metagross-mega",
+  "name": "Mega Metagross",
+  "types": [
+   "steel",
+   "psychic"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 80,
+   "atk": 145,
+   "def": 150,
+   "spa": 105,
+   "spd": 110,
+   "spe": 110
+  },
+  "moveSpeed": 226,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 21,
+  "skills": [
+   "confusion",
+   "hyper_beam",
+   "psychic",
+   "iron_defense"
+  ],
+  "passive": {
+   "id": "tough-claws",
+   "name": "Tough Claws",
+   "description": "Đòn cận chiến và lao +30%.",
+   "kind": "meleeBoost",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "metagross-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "steel",
+   "aura": "steel"
+  },
+  "generated": true,
+  "mega": {
+   "base": "metagross",
+   "stone": "metagrossite"
+  }
+ },
+ {
+  "id": "latias-mega",
+  "name": "Mega Latias",
+  "types": [
+   "dragon",
+   "psychic"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 80,
+   "atk": 100,
+   "def": 120,
+   "spa": 140,
+   "spd": 150,
+   "spe": 110
+  },
+  "moveSpeed": 226,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 21,
+  "skills": [
+   "psywave",
+   "mist_ball",
+   "dragon_breath",
+   "recover"
+  ],
+  "passive": {
+   "id": "levitate",
+   "name": "Levitate",
+   "description": "Mô phỏng bay lơ lửng: giảm 75% sát thương Đất.",
+   "kind": "typeResist",
+   "types": [
+    "ground"
+   ],
+   "mult": 0.25
+  },
+  "evolution": null,
+  "sprite": "latias-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dragon",
+   "aura": "dragon"
+  },
+  "generated": true,
+  "mega": {
+   "base": "latias",
+   "stone": "latiasite"
+  }
+ },
+ {
+  "id": "latios-mega",
+  "name": "Mega Latios",
+  "types": [
+   "dragon",
+   "psychic"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 80,
+   "atk": 130,
+   "def": 100,
+   "spa": 160,
+   "spd": 120,
+   "spe": 110
+  },
+  "moveSpeed": 226,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 23,
+  "skills": [
+   "psywave",
+   "luster_purge",
+   "dragon_breath",
+   "recover"
+  ],
+  "passive": {
+   "id": "levitate",
+   "name": "Levitate",
+   "description": "Mô phỏng bay lơ lửng: giảm 75% sát thương Đất.",
+   "kind": "typeResist",
+   "types": [
+    "ground"
+   ],
+   "mult": 0.25
+  },
+  "evolution": null,
+  "sprite": "latios-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dragon",
+   "aura": "dragon"
+  },
+  "generated": true,
+  "mega": {
+   "base": "latios",
+   "stone": "latiosite"
+  }
+ },
+ {
+  "id": "lopunny-mega",
+  "name": "Mega Lopunny",
+  "types": [
+   "normal",
+   "fighting"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 65,
+   "atk": 136,
+   "def": 94,
+   "spa": 54,
+   "spd": 96,
+   "spe": 135
+  },
+  "moveSpeed": 241,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 20,
+  "skills": [
+   "return",
+   "dizzy_punch",
+   "jump_kick",
+   "defense_curl"
+  ],
+  "passive": {
+   "id": "scrappy",
+   "name": "Scrappy",
+   "description": "Mô phỏng đánh xuyên hệ Ma: cận chiến +25%.",
+   "kind": "meleeBoost",
+   "mult": 1.25
+  },
+  "evolution": null,
+  "sprite": "lopunny-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  },
+  "generated": true,
+  "mega": {
+   "base": "lopunny",
+   "stone": "lopunnite"
+  }
+ },
+ {
+  "id": "garchomp-mega",
+  "name": "Mega Garchomp",
+  "types": [
+   "dragon",
+   "ground"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 108,
+   "atk": 170,
+   "def": 115,
+   "spa": 120,
+   "spd": 95,
+   "spe": 92
+  },
+  "moveSpeed": 215,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 23,
+  "skills": [
+   "dragon_claw",
+   "dragon_rush",
+   "dig",
+   "sand_attack"
+  ],
+  "passive": {
+   "id": "sand-force",
+   "name": "Sand Force",
+   "description": "Mô phỏng bão cát: Kỹ năng hệ Đất +30%.",
+   "kind": "typeBoost",
+   "type": "ground",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "garchomp-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "dragon",
+   "aura": "dragon"
+  },
+  "generated": true,
+  "mega": {
+   "base": "garchomp",
+   "stone": "garchompite"
+  }
+ },
+ {
+  "id": "lucario-mega",
+  "name": "Mega Lucario",
+  "types": [
+   "fighting",
+   "steel"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 70,
+   "atk": 145,
+   "def": 88,
+   "spa": 140,
+   "spd": 70,
+   "spe": 112
+  },
+  "moveSpeed": 227,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 20,
+  "skills": [
+   "metal_claw",
+   "close_combat",
+   "aura_sphere",
+   "swords_dance"
+  ],
+  "passive": {
+   "id": "adaptability",
+   "name": "Adaptability",
+   "description": "Mô phỏng STAB mạnh hơn: kỹ năng hệ Giác Đấu +33%.",
+   "kind": "typeBoost",
+   "type": "fighting",
+   "mult": 1.33
+  },
+  "evolution": null,
+  "sprite": "lucario-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "fighting",
+   "aura": "fighting"
+  },
+  "generated": true,
+  "mega": {
+   "base": "lucario",
+   "stone": "lucarionite"
+  }
+ },
+ {
+  "id": "abomasnow-mega",
+  "name": "Mega Abomasnow",
+  "types": [
+   "grass",
+   "ice"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 90,
+   "atk": 132,
+   "def": 105,
+   "spa": 132,
+   "spd": 105,
+   "spe": 30
+  },
+  "moveSpeed": 178,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 24,
+  "skills": [
+   "icy_wind",
+   "wood_hammer",
+   "sheer_cold",
+   "leer"
+  ],
+  "passive": {
+   "id": "snow-warning",
+   "name": "Snow Warning",
+   "description": "Mô phỏng bão tuyết: Kỹ năng hệ Băng +30%.",
+   "kind": "typeBoost",
+   "type": "ice",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "abomasnow-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "grass",
+   "aura": "grass"
+  },
+  "generated": true,
+  "mega": {
+   "base": "abomasnow",
+   "stone": "abomasite"
+  }
+ },
+ {
+  "id": "gallade-mega",
+  "name": "Mega Gallade",
+  "types": [
+   "psychic",
+   "fighting"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 68,
+   "atk": 165,
+   "def": 95,
+   "spa": 65,
+   "spd": 115,
+   "spe": 110
+  },
+  "moveSpeed": 226,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 21,
+  "skills": [
+   "confusion",
+   "close_combat",
+   "psycho_cut",
+   "double_team"
+  ],
+  "passive": {
+   "id": "inner-focus",
+   "name": "Inner Focus",
+   "description": "Không bao giờ khựng.",
+   "kind": "statusImmune",
+   "immune": [
+    "flinch"
+   ]
+  },
+  "evolution": null,
+  "sprite": "gallade-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "psychic",
+   "aura": "psychic"
+  },
+  "generated": true,
+  "mega": {
+   "base": "gallade",
+   "stone": "galladite"
+  }
+ },
+ {
+  "id": "audino-mega",
+  "name": "Mega Audino",
+  "types": [
+   "normal",
+   "fairy"
+  ],
+  "rarity": "legendary",
+  "role": "tank",
+  "baseStats": {
+   "hp": 103,
+   "atk": 60,
+   "def": 126,
+   "spa": 80,
+   "spd": 126,
+   "spe": 50
+  },
+  "moveSpeed": 190,
+  "attackRange": 58,
+  "critRate": 0.05,
+  "radius": 19,
+  "skills": [
+   "pound",
+   "last_resort",
+   "double_edge",
+   "growl"
+  ],
+  "passive": {
+   "id": "healer",
+   "name": "Healer",
+   "description": "Mô phỏng chữa lành: không giữ trạng thái chính.",
+   "kind": "statusImmune",
+   "immune": [
+    "burn",
+    "poison",
+    "badPoison",
+    "paralysis",
+    "sleep",
+    "freeze"
+   ]
+  },
+  "evolution": null,
+  "sprite": "audino-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "normal",
+   "aura": "normal"
+  },
+  "generated": true,
+  "mega": {
+   "base": "audino",
+   "stone": "audinite"
+  }
+ },
+ {
+  "id": "diancie-mega",
+  "name": "Mega Diancie",
+  "types": [
+   "rock",
+   "fairy"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 50,
+   "atk": 160,
+   "def": 110,
+   "spa": 160,
+   "spd": 110,
+   "spe": 110
+  },
+  "moveSpeed": 226,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 18,
+  "skills": [
+   "rock_throw",
+   "stone_edge",
+   "moonblast",
+   "harden"
+  ],
+  "passive": {
+   "id": "magic-bounce",
+   "name": "Magic Bounce",
+   "description": "Mô phỏng phản chiếu: miễn nhiễm mọi hiệu ứng trạng thái.",
+   "kind": "statusImmune",
+   "immune": [
+    "burn",
+    "poison",
+    "badPoison",
+    "paralysis",
+    "sleep",
+    "freeze",
+    "confusion",
+    "flinch"
+   ]
+  },
+  "evolution": null,
+  "sprite": "diancie-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "rock",
+   "aura": "rock"
+  },
+  "generated": true,
+  "mega": {
+   "base": "diancie",
+   "stone": "diancite"
+  }
+ }
+]

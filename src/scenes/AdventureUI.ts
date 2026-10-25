@@ -35,6 +35,7 @@ import type { QualitySetting } from '../systems/saveSchema';
 import { AdventureScene, COMMANDS } from './AdventureScene';
 import { askText, button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
 import { net } from '../net/session';
+import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
 
 const STAT_VI: Record<string, string> = { hp: 'HP', atk: 'Công', def: 'Thủ', spa: 'Công ĐB', spd: 'Thủ ĐB', spe: 'Tốc' };
@@ -49,11 +50,12 @@ const WEATHER_LABEL: Record<string, string> = {
 };
 const BIOME_VI: Record<string, string> = { meadow: 'Đồng cỏ', forest: 'Rừng', lake: 'Hồ', rocky: 'Đồi đá', ruins: 'Tàn tích', farm: 'Nông trại', snow: 'Vùng tuyết', volcano: 'Núi lửa' };
 const LEGEND_KIND_VI: Record<string, string> = { shrine: 'Điện thờ', roaming: 'Lang thang', gift: 'Gặp gỡ đặc biệt', egg: 'Nở từ trứng' };
-const EVENT_COLOR: Record<string, number> = { outbreak: 0xffe060, alpha: 0xff6050, migration: 0x80d0ff, weather: 0xa0b0ff, ambush: 0xffa060, treasure: 0xffd080, distortion: 0xd080ff };
+const EVENT_COLOR: Record<string, number> = { outbreak: 0xffe060, alpha: 0xff6050, migration: 0x80d0ff, weather: 0xa0b0ff, ambush: 0xffa060, treasure: 0xffd080, distortion: 0xd080ff, merchant: 0x60e0a0, meteor: 0xfff0a0 };
 const EVENT_NAME: Record<string, string> = Object.fromEntries(Object.entries(EVENT_DEFS).map(([k, v]) => [k, v.name]));
 const EVENT_HINT: Record<string, string> = {
   outbreak: 'Đánh bại / thu phục 6 con cùng loài', alpha: 'Pokémon cực mạnh — hạ gục hoặc thu phục (khó bắt gấp đôi)', migration: 'Đàn Pokémon hiếm đang di chuyển — đuổi theo!',
   weather: 'Thời tiết thay đổi Pokémon xuất hiện & sức mạnh đòn', ambush: 'Đánh bại cả đội của huấn luyện viên', treasure: 'Hạ Pokémon canh giữ rồi mở rương (E)', distortion: 'Hạ 5 Pokémon trong vùng biến dạng',
+  merchant: 'Tìm thương nhân (E) — hàng hiếm giảm 30%, số lượng có hạn', meteor: 'Nhặt các mảnh sao rơi (E) trước khi chúng tắt',
 };
 const REGION_NAMES: Record<string, string> = Object.fromEntries([...ENC_REGIONS.values()].map((r) => [r.id, r.name]));
 type MenuTab = 'party' | 'pc' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'passport' | 'settings';
@@ -90,6 +92,8 @@ export class AdventureUI extends Phaser.Scene {
   private banners: Phaser.GameObjects.Text[] = [];
   private dialogueLayer: Phaser.GameObjects.Container | null = null;
   private menu: Phaser.GameObjects.Container | null = null;
+  /** the open Poké Mart / merchant window */
+  shop: ShopWindow | null = null;
   private menuTab: MenuTab | null = null;
   private joy: { id: number; bx: number; by: number; x: number; y: number } | null = null;
   private joyG!: Phaser.GameObjects.Graphics;
@@ -787,11 +791,30 @@ export class AdventureUI extends Phaser.Scene {
 
   toggleMenu(tab: MenuTab): void {
     if (this.dialogueLayer) return;
+    if (this.shop) { this.shop.close(); return; } // Esc / menu keys first leave the shop
     if (this.menu && this.menuTab === tab) this.closeMenu();
     else this.openMenu(tab);
   }
 
+  /** Opens the shop window; resolves when the player leaves it. */
+  openShop(opts: ShopOptions): Promise<void> {
+    if (this.dialogueLayer) return Promise.resolve();
+    this.shop?.close();
+    this.closeMenu();
+    this.joy = null;
+    this.adv.modal = true;
+    return new Promise((done) => {
+      const a = this.adv;
+      this.shop = new ShopWindow({ scene: this, state: a.state, persist: () => a.persist(), banner: (m, col) => this.banner(m, col) }, opts, () => {
+        this.shop = null;
+        a.modal = false;
+        done();
+      });
+    });
+  }
+
   closeMenu(): void {
+    this.shop?.close();
     this.menu?.destroy();
     this.menu = null;
     this.menuTab = null;
@@ -800,6 +823,7 @@ export class AdventureUI extends Phaser.Scene {
 
   openMenu(tab: MenuTab): void {
     if (this.dialogueLayer) return;
+    this.shop?.close();
     this.menu?.destroy();
     this.joy = null;
     this.adv.modal = true;

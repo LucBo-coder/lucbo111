@@ -1,5 +1,18 @@
 # Changelog
 
+## Chưa phát hành — Cửa hàng mới, đá Mega & sự kiện
+
+- **Cửa hàng hoàn chỉnh** (Phiêu lưu, Chú Lâm): thay danh sách chọn bằng cửa sổ riêng chia 8 kệ theo chức năng — Bóng · Hồi phục · Kẹo EXP · Tiến hóa · Đá Mega · Chiến đấu · Tăng hệ · Huấn luyện. Mỗi món có ảnh, giá, số đang có; bảng chi tiết hiện mô tả, Pokémon dùng được ("Dùng cho: Onix → Steelix (cầm + Dây Liên Kết)"), dạng Mega và trạng thái Vòng Mega.
+- **Mua nhiều cùng lúc**: chọn số lượng −/+ hoặc nhanh ×1 / ×5 / ×10 / Tối đa, thấy tổng tiền và tiền còn lại trước khi mua; mua trọn gói hoặc không mua (không trừ nửa chừng), tối đa 999 mỗi món. Phím: Enter mua, ←/→ đổi số lượng, PageUp/PageDown đổi trang, Esc đóng. Điện thoại: tab 2 hàng, danh sách trên – chi tiết dưới.
+- **Đá tiến hóa mở rộng**: Ice / Sun / Shiny / Dusk / Dawn Stone, táo Tart / Sweet / Syrupy, ấm Cracked / Chipped, chén trà, Metal Alloy, Galarica Cuff / Wreath, Black Augurite, Peat Block, giáp Auspicious / Malicious, Scroll of Darkness / Waters; vật phẩm cầm tiến hóa Protector, Electirizer, Magmarizer, Up-Grade, Dubious Disc, Razor Claw / Fang, Prism Scale, Reaper Cloth, Deep Sea Tooth / Scale, Sachet, Whipped Dream, Oval Stone (kèm hiệu ứng khi cầm). Dawn Stone tiến hóa đúng Kirlia → Gallade, Snorunt → Froslass.
+- **32 đá Mega mới** (Ampharos, Steelix, Scizor, Heracross, Houndoom, Tyranitar, Sceptile, Blaziken, Swampert, Gardevoir, Sableye, Mawile, Aggron, Medicham, Manectric, Sharpedo, Camerupt, Altaria, Banette, Absol, Glalie, Salamence, Metagross, Latias, Latios, Lopunny, Garchomp, Lucario, Abomasnow, Gallade, Audino, Diancie) và 32 dạng Mega tương ứng với chỉ số / hệ đúng PokéAPI. Dạng Mega chưa có sprite riêng dùng sprite của loài gốc.
+- **Ảnh vật phẩm**: biểu tượng pixel mới cho táo, chén, giáp, cuộn giấy, đĩa, móng vuốt, vảy, quả mọng, lọ thuốc, kẹo EXP và mảnh sao.
+- **Sự kiện mới**:
+  - *Thương nhân lưu động* (nhỏ, 4 phút): dừng chân ở một vùng với 6 món hiếm giảm 30% (2 đá Mega, 2 vật phẩm tiến hóa, kẹo, bóng / đồ chiến đấu), mỗi món có hạn; bán hết → quà 2 Ultra Ball. Thời gian dừng khi đang mua.
+  - *Mưa sao băng* (lớn, ~3 phút): 5 mảnh sao rơi quanh một vùng, nhặt bằng E; nhặt đủ → 1 đá tiến hóa ngẫu nhiên + 1500 xu, 30% thêm đá Mega; hết giờ → mỗi mảnh đã nhặt bán 250 xu. Clefairy, Minior, Lunatone, Solrock, Staryu… xuất hiện nhiều hơn.
+- **Chữ trên máy tính rõ hơn**: canvas vẽ theo đúng tỉ lệ màn hình (Windows 125% / 150% → 1.25× / 1.5×, tối đa 2×, giới hạn ~4,2 triệu điểm ảnh) thay vì 1× rồi bị trình duyệt phóng to mờ; zoom thế giới chọn theo lưới pixel sau khi nhân tỉ lệ nên ô pixel vẫn đều. Chữ nút không còn bị giới hạn 28 px trên màn dày.
+- Test: `tests/v18_shop.test.ts` (kệ hàng, mua số lượng, đá / Mega mới hợp lệ, hàng thương nhân), `e2e/v18_events.spec.ts` (thương nhân, mưa sao băng), e2e cửa hàng mới trong `e2e/evolution.spec.ts`.
+
 ## Chưa phát hành — Bản đồ, huyền thoại & giao diện điện thoại
 
 - **Phân bố lại đền huyền thoại** (Phiêu lưu): Thung Lũng Khởi Nguyên không còn giữ 25 đền; 17 đền chuyển về vùng hợp chủ đề, tối đa 8 đền mỗi bản đồ.
@@ -9,7 +22,7 @@
 - **Bản đồ đầy đặn hơn**: mỗi vùng chủ đề có thêm NPC, huấn luyện viên, rương, biển chỉ đường, đạo cụ, đường đi và trạm dịch chuyển thứ hai; Thánh Địa có hiền giả, nhà thiên văn và Nhà vô địch; Cà Mau / An Giang / Cần Thơ mỗi tỉnh thêm NPC, 2 huấn luyện viên, đạo cụ, biển và rương. Thời tiết theo vùng (bão tuyết trên núi, nắng nóng ở núi lửa).
 - Sửa: rương Hồ Băng nằm giữa sông, rương miệng núi lửa nằm trong dung nham, Chú làm vườn Cần Thơ đứng trên ô chặn.
 - **Bảng tên**: Pokémon đối thủ hiện tên + cấp (α Alpha, ★ tinh anh, ✦ shiny); NPC và huấn luyện viên có tên dưới chân (⚔ cam = chưa đấu, ✓ xám = đã thắng).
-- **Giao diện điện thoại**: canvas vẽ ở 2× trên điện thoại / máy tính bảng màn hình dày nên chữ nét thay vì bị phóng to mờ (máy tính giữ nguyên 1×). Màn dọc: menu chiếm cả màn hình, tab 2 hàng, chữ lớn hơn, danh sách nằm trên – chi tiết nằm dưới (Đội hình, PC, Pokédex, Nhiệm vụ có phân trang), Túi đồ 1 cột, Bản đồ có thông tin bên dưới, Hộ chiếu 1 thẻ/trang; HUD dời đồng hồ và tên khu vực để không đè thanh HP.
+- **Giao diện điện thoại**: canvas vẽ ở 2× trên điện thoại / máy tính bảng màn hình dày nên chữ nét thay vì bị phóng to mờ. Màn dọc: menu chiếm cả màn hình, tab 2 hàng, chữ lớn hơn, danh sách nằm trên – chi tiết nằm dưới (Đội hình, PC, Pokédex, Nhiệm vụ có phân trang), Túi đồ 1 cột, Bản đồ có thông tin bên dưới, Hộ chiếu 1 thẻ/trang; HUD dời đồng hồ và tên khu vực để không đè thanh HP.
 - Test: `tests/v17_maps.test.ts` (phân bố đền, vật thể đứng trên nền đi được, đội hình huấn luyện viên hợp lệ).
 
 ## Chưa phát hành — Multiplayer qua Cloudflare

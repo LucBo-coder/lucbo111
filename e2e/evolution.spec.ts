@@ -43,18 +43,30 @@ test('shop, level-up evolution prompt, equipment and Mega Evolution', async ({ p
   const errors = errorsOf(page);
   await startAdventure(page);
 
-  // Shop: talk with E, buy item #1 (Poké Ball) with the number key
+  // Shop: talk with E → shop window with shelves; pick Poké Ball, set the quantity, buy with Enter
   await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('charmander', 15, 'starter'); a.applyParty(); a.state.earn(1000); a.world.teleport(93.5*48, 103.5*48); })()`);
   await page.waitForTimeout(500);
-  await page.keyboard.press('e');
-  await waitChoices(page);
-  await page.keyboard.press('1');
-  await page.waitForTimeout(300);
+  for (let i = 0; i < 20 && !(await ev<boolean>(page, `!!window.__adv.ui.shop`)); i++) {
+    await page.keyboard.press('e');
+    await page.waitForTimeout(250);
+  }
+  expect(await ev(page, `window.__adv.ui.shop.categories().length`)).toBeGreaterThanOrEqual(8);
+  await ev(page, `window.__adv.ui.shop.select('pokeball')`);
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(200);
   expect(await ev(page, `window.__adv.state.item('pokeball')`)).toBe(1);
   expect(await ev(page, `window.__adv.state.money`)).toBe(800);
-  await waitChoices(page);
-  await page.keyboard.press('Escape'); // leave the shop (Escape cancels a choice menu)
+  // bulk buy: + twice → 3 Poké Balls for 600
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowRight');
+  expect(await ev(page, `window.__adv.ui.shop.qty`)).toBe(3);
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(200);
+  expect(await ev(page, `window.__adv.state.item('pokeball')`)).toBe(4);
+  expect(await ev(page, `window.__adv.state.money`)).toBe(200);
+  await page.keyboard.press('Escape'); // leave the shop
   await page.waitForTimeout(300);
+  expect(await ev(page, `!window.__adv.ui.shop && !window.__adv.modal`)).toBe(true);
   expect(await dialogueOpen(page)).toBe(false);
 
   // Level-up → evolution prompt appears out of combat → accept with "1" → animation → Charmeleon

@@ -7,7 +7,8 @@ import { net } from '../net/session';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
-import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, SHOP, STARTERS } from '../adventure/AdventureState';
+import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
+import { shopCatalogue } from '../core/shop';
 import { canMega, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
 import { DungeonController } from '../adventure/DungeonController';
 import { SpawnManager } from '../adventure/SpawnManager';
@@ -346,7 +347,7 @@ export class AdventureScene extends Phaser.Scene {
 
   private applyZoom(): void {
     const { width, height } = this.scale;
-    this.cameras.main.setZoom(DPR * pixelPerfectZoom(Math.min(width, height) / DPR / 620, 0.6, 1.6));
+    this.cameras.main.setZoom(pixelPerfectZoom(Math.min(width, height) / 620, 0.6 * DPR, 1.6 * DPR));
     if (this.dark?.active) this.dark.setSize(width * 4, height * 4);
   }
 
@@ -657,17 +658,25 @@ export class AdventureScene extends Phaser.Scene {
   // ───────────────────────────── event chests ─────────────────────────────
 
   addEventChest(uid: number, x: number, y: number): void {
-    const id = 'evchest-' + uid;
     const sprite = this.add.image(x, y, 'ow_tiles', DUNGEON.chestClosed).setScale(SCALE).setDepth(y);
-    const tx = Math.floor(x / TILE_PX), ty = Math.floor(y / TILE_PX);
-    this.interactables.set(id, { kind: 'chest', id, x, y, label: 'Mở rương báu', obj: { kind: 'chest', id, x: tx, y: ty, data: { event: uid } }, sprite });
+    this.addEventObject('evchest-' + uid, x, y, 'Mở rương báu', { event: uid }, sprite);
   }
 
   removeEventChest(uid: number): void {
-    const it = this.interactables.get('evchest-' + uid);
+    this.removeEventObject('evchest-' + uid);
+  }
+
+  /** Something an event puts in the world that the player uses with E (merchant, star shard…). `data.action` routes it. */
+  addEventObject(id: string, x: number, y: number, label: string, data: Record<string, unknown>, sprite: Phaser.GameObjects.Image): void {
+    const tx = Math.floor(x / TILE_PX), ty = Math.floor(y / TILE_PX);
+    this.interactables.set(id, { kind: 'chest', id, x, y, label, obj: { kind: 'chest', id, x: tx, y: ty, data }, sprite });
+  }
+
+  removeEventObject(id: string): void {
+    const it = this.interactables.get(id);
     it?.sprite?.destroy(); it?.marker?.destroy();
-    this.interactables.delete('evchest-' + uid);
-    if (this.nearest?.id === 'evchest-' + uid) this.nearest = null;
+    this.interactables.delete(id);
+    if (this.nearest?.id === id) this.nearest = null;
   }
 
   isNight(): boolean {
@@ -1058,8 +1067,9 @@ export class AdventureScene extends Phaser.Scene {
       case 'npc': return this.talk(it);
       case 'sign': return void (await this.say('Bảng gỗ', (it.obj.data as { text: string[] }).text));
       case 'chest': {
-        const evUid = (it.obj.data as { event?: number } | undefined)?.event;
-        if (evUid != null) { if (this.worldEvents?.openTreasure(evUid)) audio.play('victory'); return; }
+        const ed = it.obj.data as { event?: number; action?: string; i?: number } | undefined;
+        if (ed?.event != null && ed.action) return this.worldEvents?.useObject(ed.event, ed.action, ed.i ?? 0);
+        if (ed?.event != null) { if (this.worldEvents?.openTreasure(ed.event)) audio.play('victory'); return; }
         return this.openChest(it);
       }
       case 'building': return this.ui.openMenu('pc');
@@ -1134,20 +1144,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private async shop(name: string): Promise<void> {
-    for (;;) {
-      const choices: DialogueChoice[] = SHOP.map((it) => ({
-        label: `${ITEMS[it.id]?.name ?? it.id} — ${it.price} xu (đang có ${this.state.item(it.id)})`, value: it.id, disabled: this.state.money < it.price,
-      }));
-      choices.push({ label: 'Rời đi', value: 'leave' });
-      const r = await this.say(name, [`Chào cháu! Cháu đang có ${this.state.money} xu. Cần mua gì nào?`], choices, this.portraitOf('shopkeeper'));
-      if (!r || r === 'leave') return;
-      const it = SHOP.find((x) => x.id === r)!;
-      if (this.state.buy(it.id, it.price)) {
-        audio.play('gem');
-        this.ui.banner(`Đã mua ${ITEMS[it.id]?.name ?? it.id} (-${it.price} xu)`, '#ffe066');
-        this.persist();
-      }
-    }
+    await this.ui.openShop({ title: name, greeting: 'Chào cháu! Cửa hàng chia theo từng kệ — chọn món, chọn số lượng rồi bấm Mua.', offers: shopCatalogue() });
   }
 
   // ───────────────────────────── evolution ─────────────────────────────

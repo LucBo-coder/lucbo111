@@ -124,7 +124,7 @@ export class GameScene extends Phaser.Scene {
 
   private applyZoom(): void {
     const { width, height } = this.scale;
-    this.cameras.main.setZoom(DPR * pixelPerfectZoom(Math.min(width, height) / DPR / 640, 0.6, 1.5));
+    this.cameras.main.setZoom(pixelPerfectZoom(Math.min(width, height) / 640, 0.6 * DPR, 1.5 * DPR));
   }
 
   private buildMap(): void {

@@ -14,6 +14,7 @@ import {
   placeInPc, removeFromPc,
 } from '../core/pc';
 import { AdventureSave, Difficulty, newAdventure, registerCaught, SaveData } from '../systems/saveSchema';
+import { MAX_STACK, shopCatalogue } from '../core/shop';
 
 // Adventure progression wrapper around the shared save. No Phaser here (unit-tested).
 
@@ -41,26 +42,8 @@ export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 
 for (const it of ITEM_DEFS.values()) ITEMS[it.id] = { name: it.name, desc: it.desc, kind: it.kind === 'held' || it.kind === 'megaStone' ? 'held' : it.kind === 'evoStone' ? 'stone' : it.kind === 'evItem' ? 'ev' : 'key' } as never;
 // Exp. Candy / Rare Candy (V7). Their use is validated by AdventureState.useCandy / the server.
 for (const c of CANDY_DEFS) ITEMS[c.id] = { name: c.name, desc: c.desc, kind: 'candy' };
-export const SHOP: { id: string; price: number }[] = [
-  { id: 'pokeball', price: 200 }, { id: 'greatball', price: 600 }, { id: 'ultraball', price: 1200 },
-  { id: 'netball', price: 1000 }, { id: 'duskball', price: 1000 }, { id: 'quickball', price: 1000 }, { id: 'timerball', price: 1000 }, { id: 'luxuryball', price: 1000 },
-  { id: 'potion', price: 300 }, { id: 'superpotion', price: 700 }, { id: 'oranberry', price: 150 },
-  { id: 'exp-candy-xs', price: 300 }, { id: 'exp-candy-s', price: 1_200 }, { id: 'exp-candy-m', price: 4_000 },
-  { id: 'exp-candy-l', price: 12_000 }, { id: 'exp-candy-xl', price: 30_000 }, { id: 'rare-candy', price: 10_000 },
-  { id: 'thunder-stone', price: 2100 }, { id: 'leaf-stone', price: 2100 },
-  { id: 'charcoal', price: 600 }, { id: 'mystic-water', price: 600 }, { id: 'miracle-seed', price: 600 }, { id: 'magnet', price: 600 },
-  { id: 'fire-stone', price: 2100 }, { id: 'water-stone', price: 2100 }, { id: 'moon-stone', price: 2100 }, { id: 'linking-cord', price: 3000 },
-  { id: 'scope-lens', price: 1200 }, { id: 'quick-claw', price: 1200 }, { id: 'leftovers', price: 2000 }, { id: 'charizardite-y', price: 9000 },
-  { id: 'metal-coat', price: 2000 }, { id: 'kings-rock', price: 2000 }, { id: 'dragon-scale', price: 2000 },
-  { id: 'sitrus-berry', price: 800 }, { id: 'focus-sash', price: 2500 }, { id: 'rocky-helmet', price: 3000 }, { id: 'assault-vest', price: 3500 }, { id: 'eviolite', price: 3500 },
-  { id: 'life-orb', price: 4000 }, { id: 'choice-band', price: 4000 }, { id: 'choice-specs', price: 4000 }, { id: 'choice-scarf', price: 4000 },
-  // EV training: vitamins, EV-reducing berries, Power items
-  ...['hp-up', 'protein', 'iron', 'calcium', 'zinc', 'carbos'].map((id) => ({ id, price: 1500 })),
-  ...['pomeg-berry', 'kelpsy-berry', 'qualot-berry', 'hondew-berry', 'grepa-berry', 'tamato-berry'].map((id) => ({ id, price: 400 })),
-  ...['power-weight', 'power-bracer', 'power-belt', 'power-lens', 'power-band', 'power-anklet', 'macho-brace'].map((id) => ({ id, price: 3000 })),
-  // Gen 1 Mega Stones without a world source yet are sold (expensive)
-  ...['beedrillite', 'alakazite', 'slowbronite', 'gengarite', 'kangaskhanite', 'pinsirite', 'gyaradosite', 'aerodactylite', 'mewtwonite-x', 'mewtwonite-y'].map((id) => ({ id, price: 12000 })),
-];
+/** Everything the Poké Mart sells (catalogue, prices and shelves live in core/shop.ts). */
+export const SHOP: { id: string; price: number }[] = shopCatalogue().map(({ id, price }) => ({ id, price }));
 export const HEAL_POWER: Record<string, { party: number; trainer: number }> = {
   potion: { party: 0.4, trainer: 0.25 },
   superpotion: { party: 0.75, trainer: 0.5 },
@@ -389,10 +372,12 @@ export class AdventureState {
     this.save.currency += Math.max(0, Math.round(v));
   }
 
-  buy(id: string, price: number): boolean {
-    if (this.save.currency < price) return false;
-    this.save.currency -= price;
-    this.addItems({ [id]: 1 });
+  /** Buys `qty` of an item at `price` each (all or nothing; stacks stop at MAX_STACK). */
+  buy(id: string, price: number, qty = 1): boolean {
+    qty = Math.floor(qty);
+    if (qty < 1 || price < 0 || this.save.currency < price * qty || this.item(id) + qty > MAX_STACK) return false;
+    this.save.currency -= price * qty;
+    this.addItems({ [id]: qty });
     return true;
   }
 

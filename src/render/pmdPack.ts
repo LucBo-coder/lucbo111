@@ -30,11 +30,18 @@ export async function loadPmdIndex(): Promise<boolean> {
   }
 }
 
+/** Forms drawn with another species' sheets (Mega forms without their own art use the base species). */
+const alias = new Map<string, string>();
+export function setPmdAlias(form: string, base: string): void {
+  alias.set(form, base);
+}
+const res = (species: string) => (index[species] ? species : alias.get(species) ?? species);
+
 export function hasPmd(species: string): boolean {
-  return pmdPack.active && !!index[species];
+  return pmdPack.active && !!index[res(species)];
 }
 
-const id = (species: string, shiny: boolean) => species + (shiny && index[species]?.shiny ? ':s' : '');
+const id = (species: string, shiny: boolean) => { const s = res(species); return s + (shiny && index[s]?.shiny ? ':s' : ''); };
 export const pmdSheetKey = (species: string, shiny: boolean, anim: PmdAnim) => `pmd:${id(species, shiny)}:${anim}`;
 export const pmdAnimKey = (species: string, shiny: boolean, anim: PmdAnim, dir: number) => `${pmdSheetKey(species, shiny, anim)}:${dir}`;
 
@@ -50,11 +57,11 @@ export function pmdReady(species: string, shiny: boolean): boolean {
 
 /** The animations this species really has (missing ones fall back, e.g. Shoot → Attack). */
 export function pmdHas(species: string, anim: PmdAnim): boolean {
-  return !!index[species]?.anims[anim];
+  return !!index[res(species)]?.anims[anim];
 }
 
 export function pmdMeta(species: string, anim: PmdAnim): AnimMeta | undefined {
-  return index[species]?.anims[anim];
+  return index[res(species)]?.anims[anim];
 }
 
 /** Starts loading queued species (call once per frame from a scene that renders units). */

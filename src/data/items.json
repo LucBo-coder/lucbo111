@@ -827,5 +827,695 @@
    "mult": 2
   },
   "desc": "Nhân đôi EV nhận được khi hạ Pokémon (không ảnh hưởng chiến đấu)."
+ },
+ {
+  "id": "ice-stone",
+  "name": "Ice Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#a8e0f8",
+  "desc": "Đá tiến hóa: Eevee → Glaceon, Vulpix/Sandshrew (Alola), Darumaka (Galar), Crabrawler, Cetoddle."
+ },
+ {
+  "id": "sun-stone",
+  "name": "Sun Stone",
+  "kind": "evoStone",
+  "price": 2100,
+  "color": "#f8a030",
+  "desc": "Đá tiến hóa: Gloom → Bellossom, Sunkern → Sunflora, Cottonee, Petilil, Helioptile."
+ },
+ {
+  "id": "shiny-stone",
+  "name": "Shiny Stone",
+  "kind": "evoStone",
+  "price": 2600,
+  "color": "#f0ecd0",
+  "desc": "Đá tiến hóa: Togetic → Togekiss, Roselia → Roserade, Minccino, Floette."
+ },
+ {
+  "id": "dusk-stone",
+  "name": "Dusk Stone",
+  "kind": "evoStone",
+  "price": 2600,
+  "color": "#5a4878",
+  "desc": "Đá tiến hóa: Murkrow → Honchkrow, Misdreavus → Mismagius, Lampent → Chandelure, Doublade → Aegislash."
+ },
+ {
+  "id": "dawn-stone",
+  "name": "Dawn Stone",
+  "kind": "evoStone",
+  "price": 2600,
+  "color": "#70c8f0",
+  "desc": "Đá tiến hóa: Kirlia → Gallade, Snorunt → Froslass."
+ },
+ {
+  "id": "tart-apple",
+  "name": "Tart Apple (Táo chua)",
+  "kind": "evoStone",
+  "price": 2500,
+  "color": "#e06040",
+  "desc": "Dùng cho Applin → Flapple.",
+  "icon": "apple"
+ },
+ {
+  "id": "sweet-apple",
+  "name": "Sweet Apple (Táo ngọt)",
+  "kind": "evoStone",
+  "price": 2500,
+  "color": "#f0c040",
+  "desc": "Dùng cho Applin → Appletun.",
+  "icon": "apple"
+ },
+ {
+  "id": "syrupy-apple",
+  "name": "Syrupy Apple (Táo mật)",
+  "kind": "evoStone",
+  "price": 2500,
+  "color": "#c06030",
+  "desc": "Dùng cho Applin → Dipplin.",
+  "icon": "apple"
+ },
+ {
+  "id": "cracked-pot",
+  "name": "Cracked Pot (Ấm nứt)",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#b08060",
+  "desc": "Dùng cho Sinistea → Polteageist.",
+  "icon": "cup"
+ },
+ {
+  "id": "chipped-pot",
+  "name": "Chipped Pot (Ấm sứt)",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#d0b090",
+  "desc": "Dùng cho Sinistea → Polteageist (ấm hàng thật).",
+  "icon": "cup"
+ },
+ {
+  "id": "unremarkable-teacup",
+  "name": "Unremarkable Teacup",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#90a080",
+  "desc": "Dùng cho Poltchageist → Sinistcha.",
+  "icon": "cup"
+ },
+ {
+  "id": "masterpiece-teacup",
+  "name": "Masterpiece Teacup",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#c0d080",
+  "desc": "Dùng cho Poltchageist → Sinistcha (bản kiệt tác).",
+  "icon": "cup"
+ },
+ {
+  "id": "metal-alloy",
+  "name": "Metal Alloy (Hợp kim)",
+  "kind": "evoStone",
+  "price": 4000,
+  "color": "#8890a8",
+  "desc": "Dùng cho Duraludon → Archaludon."
+ },
+ {
+  "id": "galarica-cuff",
+  "name": "Galarica Cuff",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#a07040",
+  "desc": "Dùng cho Slowpoke (Galar) → Slowbro (Galar).",
+  "icon": "cup"
+ },
+ {
+  "id": "galarica-wreath",
+  "name": "Galarica Wreath",
+  "kind": "evoStone",
+  "price": 3000,
+  "color": "#80a040",
+  "desc": "Dùng cho Slowpoke (Galar) → Slowking (Galar).",
+  "icon": "cup"
+ },
+ {
+  "id": "black-augurite",
+  "name": "Black Augurite",
+  "kind": "evoStone",
+  "price": 3500,
+  "color": "#303038",
+  "desc": "Dùng cho Scyther → Kleavor."
+ },
+ {
+  "id": "peat-block",
+  "name": "Peat Block (Khối than bùn)",
+  "kind": "evoStone",
+  "price": 3500,
+  "color": "#5a4030",
+  "desc": "Dùng cho Ursaring → Ursaluna (đêm trăng tròn)."
+ },
+ {
+  "id": "auspicious-armor",
+  "name": "Auspicious Armor (Giáp cát tường)",
+  "kind": "evoStone",
+  "price": 4000,
+  "color": "#f0c050",
+  "desc": "Dùng cho Charcadet → Armarouge.",
+  "icon": "armor"
+ },
+ {
+  "id": "malicious-armor",
+  "name": "Malicious Armor (Giáp hắc ám)",
+  "kind": "evoStone",
+  "price": 4000,
+  "color": "#7040a0",
+  "desc": "Dùng cho Charcadet → Ceruledge.",
+  "icon": "armor"
+ },
+ {
+  "id": "scroll-of-darkness",
+  "name": "Scroll of Darkness",
+  "kind": "evoStone",
+  "price": 5000,
+  "color": "#403048",
+  "desc": "Dùng cho Kubfu → Urshifu (Nhất Kích).",
+  "icon": "scroll"
+ },
+ {
+  "id": "scroll-of-waters",
+  "name": "Scroll of Waters",
+  "kind": "evoStone",
+  "price": 5000,
+  "color": "#4080c0",
+  "desc": "Dùng cho Kubfu → Urshifu (Liên Kích).",
+  "icon": "scroll"
+ },
+ {
+  "id": "protector",
+  "name": "Protector",
+  "kind": "held",
+  "price": 2500,
+  "color": "#a07050",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "rock",
+   "mult": 1.1
+  },
+  "desc": "Kỹ năng hệ Đá +10%. Rhydon cầm khi dùng Linking Cord: Rhyperior.",
+  "icon": "armor"
+ },
+ {
+  "id": "electirizer",
+  "name": "Electirizer",
+  "kind": "held",
+  "price": 2500,
+  "color": "#f0d040",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "electric",
+   "mult": 1.1
+  },
+  "desc": "Kỹ năng hệ Điện +10%. Electabuzz cầm khi dùng Linking Cord: Electivire.",
+  "icon": "disc"
+ },
+ {
+  "id": "magmarizer",
+  "name": "Magmarizer",
+  "kind": "held",
+  "price": 2500,
+  "color": "#e05030",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "fire",
+   "mult": 1.1
+  },
+  "desc": "Kỹ năng hệ Lửa +10%. Magmar cầm khi dùng Linking Cord: Magmortar.",
+  "icon": "disc"
+ },
+ {
+  "id": "up-grade",
+  "name": "Up-Grade",
+  "kind": "held",
+  "price": 2500,
+  "color": "#4090e0",
+  "effect": {
+   "type": "cdr",
+   "value": 0.05
+  },
+  "desc": "Giảm 5% hồi chiêu. Porygon cầm khi dùng Linking Cord: Porygon2.",
+  "icon": "disc"
+ },
+ {
+  "id": "dubious-disc",
+  "name": "Dubious Disc",
+  "kind": "held",
+  "price": 3000,
+  "color": "#c050c0",
+  "effect": {
+   "type": "crit",
+   "value": 0.05
+  },
+  "desc": "+5% chí mạng. Porygon2 cầm khi dùng Linking Cord: Porygon-Z.",
+  "icon": "disc"
+ },
+ {
+  "id": "razor-claw",
+  "name": "Razor Claw",
+  "kind": "held",
+  "price": 2500,
+  "color": "#d0d0e0",
+  "effect": {
+   "type": "crit",
+   "value": 0.06
+  },
+  "desc": "+6% chí mạng. Sneasel cầm và lên cấp vào ban đêm: Weavile.",
+  "icon": "claw"
+ },
+ {
+  "id": "razor-fang",
+  "name": "Razor Fang",
+  "kind": "held",
+  "price": 2500,
+  "color": "#e8e8f0",
+  "effect": {
+   "type": "flinch",
+   "value": 0.06
+  },
+  "desc": "6% làm mục tiêu khựng. Gligar cầm và lên cấp vào ban đêm: Gliscor.",
+  "icon": "claw"
+ },
+ {
+  "id": "prism-scale",
+  "name": "Prism Scale",
+  "kind": "held",
+  "price": 2500,
+  "color": "#f0a0d0",
+  "effect": {
+   "type": "regen",
+   "value": 0.004
+  },
+  "desc": "Hồi 0.4% HP mỗi giây. Feebas cầm khi dùng Linking Cord: Milotic.",
+  "icon": "scale"
+ },
+ {
+  "id": "reaper-cloth",
+  "name": "Reaper Cloth",
+  "kind": "held",
+  "price": 2500,
+  "color": "#504060",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "ghost",
+   "mult": 1.1
+  },
+  "desc": "Kỹ năng hệ Ma +10%. Dusclops cầm khi dùng Linking Cord: Dusknoir.",
+  "icon": "scroll"
+ },
+ {
+  "id": "deep-sea-tooth",
+  "name": "Deep Sea Tooth",
+  "kind": "held",
+  "price": 2500,
+  "color": "#e0e0f0",
+  "effect": {
+   "type": "categoryBoost",
+   "category": "special",
+   "mult": 1.06
+  },
+  "desc": "Đòn đặc biệt +6%. Clamperl cầm khi dùng Linking Cord: Huntail.",
+  "icon": "claw"
+ },
+ {
+  "id": "deep-sea-scale",
+  "name": "Deep Sea Scale",
+  "kind": "held",
+  "price": 2500,
+  "color": "#f0a0b0",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "water",
+   "mult": 1.08
+  },
+  "desc": "Kỹ năng hệ Nước +8%. Clamperl cầm khi dùng Linking Cord: Gorebyss.",
+  "icon": "scale"
+ },
+ {
+  "id": "sachet",
+  "name": "Sachet (Túi thơm)",
+  "kind": "held",
+  "price": 2500,
+  "color": "#f0b0d0",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "fairy",
+   "mult": 1.1
+  },
+  "desc": "Kỹ năng hệ Tiên +10%. Spritzee cầm khi dùng Linking Cord: Aromatisse.",
+  "icon": "berry"
+ },
+ {
+  "id": "whipped-dream",
+  "name": "Whipped Dream (Kem bông)",
+  "kind": "held",
+  "price": 2500,
+  "color": "#f8e0f0",
+  "effect": {
+   "type": "typeBoost",
+   "pokeType": "fairy",
+   "mult": 1.1
+  },
+  "desc": "Kỹ năng hệ Tiên +10%. Swirlix cầm khi dùng Linking Cord: Slurpuff.",
+  "icon": "berry"
+ },
+ {
+  "id": "oval-stone",
+  "name": "Oval Stone (Đá bầu dục)",
+  "kind": "held",
+  "price": 1800,
+  "color": "#f0f0e0",
+  "effect": {
+   "type": "regen",
+   "value": 0.004
+  },
+  "desc": "Hồi 0.4% HP mỗi giây. Happiny cầm và lên cấp ban ngày: Chansey."
+ },
+ {
+  "id": "ampharosite",
+  "name": "Ampharosite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#f0d040",
+  "megaFor": "ampharos",
+  "form": "ampharos-mega",
+  "desc": "Ampharos cầm đá này có thể Mega Tiến Hóa thành Mega Ampharos (cần Vòng Mega)."
+ },
+ {
+  "id": "steelixite",
+  "name": "Steelixite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#a0a8b8",
+  "megaFor": "steelix",
+  "form": "steelix-mega",
+  "desc": "Steelix cầm đá này có thể Mega Tiến Hóa thành Mega Steelix (cần Vòng Mega)."
+ },
+ {
+  "id": "scizorite",
+  "name": "Scizorite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#d04040",
+  "megaFor": "scizor",
+  "form": "scizor-mega",
+  "desc": "Scizor cầm đá này có thể Mega Tiến Hóa thành Mega Scizor (cần Vòng Mega)."
+ },
+ {
+  "id": "heracronite",
+  "name": "Heracronite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#4060c0",
+  "megaFor": "heracross",
+  "form": "heracross-mega",
+  "desc": "Heracross cầm đá này có thể Mega Tiến Hóa thành Mega Heracross (cần Vòng Mega)."
+ },
+ {
+  "id": "houndoominite",
+  "name": "Houndoominite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#e06030",
+  "megaFor": "houndoom",
+  "form": "houndoom-mega",
+  "desc": "Houndoom cầm đá này có thể Mega Tiến Hóa thành Mega Houndoom (cần Vòng Mega)."
+ },
+ {
+  "id": "tyranitarite",
+  "name": "Tyranitarite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#60a060",
+  "megaFor": "tyranitar",
+  "form": "tyranitar-mega",
+  "desc": "Tyranitar cầm đá này có thể Mega Tiến Hóa thành Mega Tyranitar (cần Vòng Mega)."
+ },
+ {
+  "id": "sceptilite",
+  "name": "Sceptilite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#40b050",
+  "megaFor": "sceptile",
+  "form": "sceptile-mega",
+  "desc": "Sceptile cầm đá này có thể Mega Tiến Hóa thành Mega Sceptile (cần Vòng Mega)."
+ },
+ {
+  "id": "blazikenite",
+  "name": "Blazikenite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#e05030",
+  "megaFor": "blaziken",
+  "form": "blaziken-mega",
+  "desc": "Blaziken cầm đá này có thể Mega Tiến Hóa thành Mega Blaziken (cần Vòng Mega)."
+ },
+ {
+  "id": "swampertite",
+  "name": "Swampertite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#4080e0",
+  "megaFor": "swampert",
+  "form": "swampert-mega",
+  "desc": "Swampert cầm đá này có thể Mega Tiến Hóa thành Mega Swampert (cần Vòng Mega)."
+ },
+ {
+  "id": "gardevoirite",
+  "name": "Gardevoirite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#70d080",
+  "megaFor": "gardevoir",
+  "form": "gardevoir-mega",
+  "desc": "Gardevoir cầm đá này có thể Mega Tiến Hóa thành Mega Gardevoir (cần Vòng Mega)."
+ },
+ {
+  "id": "sablenite",
+  "name": "Sablenite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#8050c0",
+  "megaFor": "sableye",
+  "form": "sableye-mega",
+  "desc": "Sableye cầm đá này có thể Mega Tiến Hóa thành Mega Sableye (cần Vòng Mega)."
+ },
+ {
+  "id": "mawilite",
+  "name": "Mawilite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#e0a0c0",
+  "megaFor": "mawile",
+  "form": "mawile-mega",
+  "desc": "Mawile cầm đá này có thể Mega Tiến Hóa thành Mega Mawile (cần Vòng Mega)."
+ },
+ {
+  "id": "aggronite",
+  "name": "Aggronite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#9098a8",
+  "megaFor": "aggron",
+  "form": "aggron-mega",
+  "desc": "Aggron cầm đá này có thể Mega Tiến Hóa thành Mega Aggron (cần Vòng Mega)."
+ },
+ {
+  "id": "medichamite",
+  "name": "Medichamite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#e05070",
+  "megaFor": "medicham",
+  "form": "medicham-mega",
+  "desc": "Medicham cầm đá này có thể Mega Tiến Hóa thành Mega Medicham (cần Vòng Mega)."
+ },
+ {
+  "id": "manectite",
+  "name": "Manectite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#f0e050",
+  "megaFor": "manectric",
+  "form": "manectric-mega",
+  "desc": "Manectric cầm đá này có thể Mega Tiến Hóa thành Mega Manectric (cần Vòng Mega)."
+ },
+ {
+  "id": "sharpedonite",
+  "name": "Sharpedonite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#4060a0",
+  "megaFor": "sharpedo",
+  "form": "sharpedo-mega",
+  "desc": "Sharpedo cầm đá này có thể Mega Tiến Hóa thành Mega Sharpedo (cần Vòng Mega)."
+ },
+ {
+  "id": "cameruptite",
+  "name": "Cameruptite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#c06040",
+  "megaFor": "camerupt",
+  "form": "camerupt-mega",
+  "desc": "Camerupt cầm đá này có thể Mega Tiến Hóa thành Mega Camerupt (cần Vòng Mega)."
+ },
+ {
+  "id": "altarianite",
+  "name": "Altarianite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#80c0f0",
+  "megaFor": "altaria",
+  "form": "altaria-mega",
+  "desc": "Altaria cầm đá này có thể Mega Tiến Hóa thành Mega Altaria (cần Vòng Mega)."
+ },
+ {
+  "id": "banettite",
+  "name": "Banettite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#606070",
+  "megaFor": "banette",
+  "form": "banette-mega",
+  "desc": "Banette cầm đá này có thể Mega Tiến Hóa thành Mega Banette (cần Vòng Mega)."
+ },
+ {
+  "id": "absolite",
+  "name": "Absolite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#d0d0e0",
+  "megaFor": "absol",
+  "form": "absol-mega",
+  "desc": "Absol cầm đá này có thể Mega Tiến Hóa thành Mega Absol (cần Vòng Mega)."
+ },
+ {
+  "id": "glalitite",
+  "name": "Glalitite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#80d0f0",
+  "megaFor": "glalie",
+  "form": "glalie-mega",
+  "desc": "Glalie cầm đá này có thể Mega Tiến Hóa thành Mega Glalie (cần Vòng Mega)."
+ },
+ {
+  "id": "salamencite",
+  "name": "Salamencite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#4070d0",
+  "megaFor": "salamence",
+  "form": "salamence-mega",
+  "desc": "Salamence cầm đá này có thể Mega Tiến Hóa thành Mega Salamence (cần Vòng Mega)."
+ },
+ {
+  "id": "metagrossite",
+  "name": "Metagrossite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#5080c0",
+  "megaFor": "metagross",
+  "form": "metagross-mega",
+  "desc": "Metagross cầm đá này có thể Mega Tiến Hóa thành Mega Metagross (cần Vòng Mega)."
+ },
+ {
+  "id": "latiasite",
+  "name": "Latiasite",
+  "kind": "megaStone",
+  "price": 20000,
+  "color": "#e06070",
+  "megaFor": "latias",
+  "form": "latias-mega",
+  "desc": "Latias cầm đá này có thể Mega Tiến Hóa thành Mega Latias (cần Vòng Mega)."
+ },
+ {
+  "id": "latiosite",
+  "name": "Latiosite",
+  "kind": "megaStone",
+  "price": 20000,
+  "color": "#5070e0",
+  "megaFor": "latios",
+  "form": "latios-mega",
+  "desc": "Latios cầm đá này có thể Mega Tiến Hóa thành Mega Latios (cần Vòng Mega)."
+ },
+ {
+  "id": "lopunnite",
+  "name": "Lopunnite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#c09060",
+  "megaFor": "lopunny",
+  "form": "lopunny-mega",
+  "desc": "Lopunny cầm đá này có thể Mega Tiến Hóa thành Mega Lopunny (cần Vòng Mega)."
+ },
+ {
+  "id": "garchompite",
+  "name": "Garchompite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#4060a0",
+  "megaFor": "garchomp",
+  "form": "garchomp-mega",
+  "desc": "Garchomp cầm đá này có thể Mega Tiến Hóa thành Mega Garchomp (cần Vòng Mega)."
+ },
+ {
+  "id": "lucarionite",
+  "name": "Lucarionite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#4080d0",
+  "megaFor": "lucario",
+  "form": "lucario-mega",
+  "desc": "Lucario cầm đá này có thể Mega Tiến Hóa thành Mega Lucario (cần Vòng Mega)."
+ },
+ {
+  "id": "abomasite",
+  "name": "Abomasite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#a0e0c0",
+  "megaFor": "abomasnow",
+  "form": "abomasnow-mega",
+  "desc": "Abomasnow cầm đá này có thể Mega Tiến Hóa thành Mega Abomasnow (cần Vòng Mega)."
+ },
+ {
+  "id": "galladite",
+  "name": "Galladite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#60c080",
+  "megaFor": "gallade",
+  "form": "gallade-mega",
+  "desc": "Gallade cầm đá này có thể Mega Tiến Hóa thành Mega Gallade (cần Vòng Mega)."
+ },
+ {
+  "id": "audinite",
+  "name": "Audinite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#f0b0c0",
+  "megaFor": "audino",
+  "form": "audino-mega",
+  "desc": "Audino cầm đá này có thể Mega Tiến Hóa thành Mega Audino (cần Vòng Mega)."
+ },
+ {
+  "id": "diancite",
+  "name": "Diancite",
+  "kind": "megaStone",
+  "price": 20000,
+  "color": "#f0a0d0",
+  "megaFor": "diancie",
+  "form": "diancie-mega",
+  "desc": "Diancie cầm đá này có thể Mega Tiến Hóa thành Mega Diancie (cần Vòng Mega)."
  }
 ]

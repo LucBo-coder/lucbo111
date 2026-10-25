@@ -5,11 +5,16 @@ import { Rarity } from '../core/types';
 export const FONT = '"VT323", monospace';
 
 /**
- * Canvas pixels per CSS pixel. Phones / tablets with a dense screen render at 2× so the pixel font stays sharp
- * instead of being upscaled from a CSS-pixel canvas; desktops keep 1 (no huge canvas on big retina monitors, no
- * uneven pixels at 125 % scaling). Layout formulas work in CSS pixels through `uiScale` / `cssWidth`.
+ * Canvas pixels per CSS pixel: the screen's devicePixelRatio (up to 2, on a 0.25 grid) so text is drawn at the
+ * real resolution instead of being upscaled by the browser — phones at 2×, Windows laptops at 125 % / 150 %
+ * scaling at 1.25 / 1.5. Capped so the canvas stays under ~4.2 M pixels on big high-DPI monitors.
+ * Layout formulas work in CSS pixels through `uiScale`; world cameras pick their zoom with `worldZoom`.
  */
-export const DPR = typeof window !== 'undefined' && (window.devicePixelRatio || 1) >= 2 && Math.min(screen.width, screen.height) <= 1024 ? 2 : 1;
+export const DPR = (() => {
+  if (typeof window === 'undefined') return 1;
+  const budget = Math.sqrt(4_200_000 / Math.max(1, screen.width * screen.height));
+  return Math.max(1, Math.floor(Math.min(2, window.devicePixelRatio || 1, budget) * 4) / 4);
+})();
 
 /** A layout scale computed from the CSS size of the screen, returned in canvas pixels. */
 export function uiScale(W: number, H: number, f: (cssW: number, cssH: number) => number): number {
@@ -96,7 +101,7 @@ export function button(scene: Phaser.Scene, x: number, y: number, w: number, h: 
     g.lineStyle(1, 0x000000, 0.4).lineBetween(-w / 2 + 3, h / 2 - 3.5 + dy, w / 2 - 3, h / 2 - 3.5 + dy);
     t.setY(dy);
   };
-  const t = text(scene, 0, 0, label, Math.min(28, h * 0.55)).setOrigin(0.5);
+  const t = text(scene, 0, 0, label, Math.min(28 * DPR, h * 0.55)).setOrigin(0.5);
   draw('idle');
   const zone = scene.add.zone(0, 0, w, h).setInteractive({ useHandCursor: true });
   zone.on('pointerover', () => { draw('hover'); scene.tweens.add({ targets: c, scale: 1.04, duration: 90 }); });

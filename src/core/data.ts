@@ -4,6 +4,7 @@ import enemiesJson from '../data/enemies.json';
 import bossesJson from '../data/bosses.json';
 import upgradesJson from '../data/upgrades.json';
 import dexPokemon from '../data/dex/pokemon.json';
+import dexMegas from '../data/dex/megas.json';
 import dexSkills from '../data/dex/skills.json';
 import legendBossesJson from '../data/dex/legend-bosses.json';
 import { BossDef, EnemyDef, PokemonDef, POKE_TYPES, Rarity, SkillDef } from './types';
@@ -41,7 +42,8 @@ function indexById<T extends { id: string }>(list: T[], label: string): Map<stri
 
 // Hand-tuned data first; the National Dex generator (scripts/build-dex.mjs) only fills species/moves not defined by hand.
 export const SKILLS = indexById([...(skillsJson as SkillDef[]), ...(dexSkills as SkillDef[])], 'skill');
-export const POKEMON = indexById([...(pokemonJson as PokemonDef[]), ...(dexPokemon as PokemonDef[])], 'pokemon');
+// Gen 2–6 Mega forms (hand-entered stats, see data/dex/megas.json) — their stones are in items.json
+export const POKEMON = indexById([...(pokemonJson as PokemonDef[]), ...(dexPokemon as PokemonDef[]), ...(dexMegas as unknown as PokemonDef[])], 'pokemon');
 export const ENEMIES = indexById(enemiesJson as EnemyDef[], 'enemy');
 // hand-tuned bosses first, then the generated Gen 1–4 legendaries (scripts/build-dex.mjs)
 export const BOSSES = indexById([...(bossesJson as BossDef[]), ...(legendBossesJson as unknown as BossDef[]).filter((b) => !(bossesJson as BossDef[]).some((h) => h.id === b.id))], 'boss');

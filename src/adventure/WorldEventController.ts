@@ -8,6 +8,8 @@ import { ITEMS } from './AdventureState';
 import { AMBUSH_TRAINER_ART, officialPack } from '../render/spriteRegistry';
 import type { EventSpawnInfo } from './SpawnManager';
 import type { AdventureScene } from '../scenes/AdventureScene';
+import { MerchantOffer, merchantStock, shopCatalogue } from '../core/shop';
+import { audio } from '../systems/audio';
 
 // Gameplay of the random world events (Master Prompt V3 §VI). The director decides *when*; this class makes each
 // event real: spawns, movement, hazards, chests, goals, rewards, map markers and cleanup.
@@ -23,6 +25,9 @@ const ANOMALY_BY_BIOME: Record<string, (keyof typeof ANOMALIES)[]> = {
   meadow: ['thunderstorm', 'heatwave'], ruins: ['mysticFog', 'heatwave'], farm: ['heatwave', 'heavyRain'],
 };
 const AMBUSH_NAMES = ['Kỳ Phong', 'Lam Anh', 'Hắc Vũ', 'Bạch Tuyết', 'Thiết Sơn'];
+const METEOR_STONES = ['moon-stone', 'shiny-stone', 'dusk-stone', 'dawn-stone', 'sun-stone', 'ice-stone'];
+/** Pokémon drawn by a meteor shower (only those of the region's level range appear). */
+const METEOR_SPECIES = ['cleffa', 'clefairy', 'minior', 'lunatone', 'solrock', 'staryu', 'elgyem', 'bronzor', 'beldum'];
 
 export interface EventView {
   uid: number;
@@ -46,6 +51,8 @@ export class WorldEventController {
   /** Ambush trainers' sprites + name tags (removed with the event) */
   private props = new Map<number, Phaser.GameObjects.GameObject[]>();
   private distortT = 0;
+  /** uid of the merchant whose shop window is open */
+  private merchantOpen: number | null = null;
 
   constructor(private scene: AdventureScene) {
     this.director = new WorldEventDirector(scene.state.adv.events, scene.world.rng);
@@ -183,7 +190,76 @@ export class WorldEventController {
         this.announce(`${def.name} mở ra ở ${region.name}! Pokémon cổ đại & hiếm xuất hiện, cấp cao hơn.`, '#d090ff');
         break;
       }
+      case 'merchant': {
+        const rng = this.world.rng;
+        const stock = merchantStock(<T,>(l: T[]) => rng.pick(l), (a, b) => rng.int(a, b));
+        if (!stock.length) return this.abort(ev);
+        ev.data.stock = stock;
+        const art = 'otrainer-gentleman';
+        const spr = officialPack.active && this.scene.textures.exists(art)
+          ? this.scene.add.image(p.x, p.y + 20, art).setOrigin(0.5, 0.85).setDepth(p.y)
+          : this.scene.add.image(p.x, p.y, 'ow_tiles', DUNGEON.npc.wizard).setScale(SCALE).setDepth(p.y).setTint(0xc0ffd0);
+        this.scene.addEventObject('evmerchant-' + ev.uid, p.x, p.y, 'Mua hàng hiếm', { event: ev.uid, action: 'merchant' }, spr);
+        const tag = this.scene.add.text(p.x, p.y + 30, '$ Thương nhân Lữ Khách', { fontFamily: 'VT323, monospace', fontSize: '18px', color: '#80ffb0', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(p.y + 1);
+        this.props.set(ev.uid, [tag]);
+        this.announce(`${def.name} dừng chân ở ${region.name}: ${stock.length} món hàng hiếm giảm 30%, chỉ trong ${Math.round(def.duration / 60)} phút!`, '#80ffb0');
+        break;
+      }
+      case 'meteor': {
+        const rng = this.world.rng;
+        const shards: { x: number; y: number }[] = [];
+        for (let i = 0; i < 120 && shards.length < 5; i++) {
+          const a = rng.range(0, Math.PI * 2), d = rng.range(90, 380);
+          const x = p.x + Math.cos(a) * d, y = p.y + Math.sin(a) * d;
+          if (this.scene.map.solidAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX)) || this.world.blocked(x, y, 20)) continue;
+          if (shards.some((q) => Math.hypot(q.x - x, q.y - y) < 80)) continue;
+          shards.push({ x, y });
+        }
+        if (shards.length < 3) return this.abort(ev);
+        ev.goal = shards.length;
+        ev.data.shards = shards;
+        ev.data.left = shards.map((_, i) => i);
+        shards.forEach((q, i) => {
+          const spr = this.scene.add.image(q.x, q.y, 'item-star-shard').setScale(SCALE).setDepth(q.y);
+          this.scene.tweens.add({ targets: spr, alpha: 0.5, scale: SCALE * 1.15, yoyo: true, repeat: -1, duration: 650 });
+          this.scene.addEventObject(`evshard-${ev.uid}-${i}`, q.x, q.y, 'Nhặt mảnh sao', { event: ev.uid, action: 'shard', i }, spr);
+        });
+        this.scene.cameras.main.flash(350, 255, 248, 200);
+        this.announce(`${def.name} trên ${region.name}! ${shards.length} mảnh sao vừa rơi xuống — nhặt hết trước khi chúng tắt.`, '#fff0a0');
+        break;
+      }
     }
+  }
+
+  /** E on an event object: the merchant's stall or a star shard. */
+  useObject(uid: number, action: string, i: number): void {
+    const ev = this.director.active.find((e) => e.uid === uid);
+    if (!ev) return;
+    if (action === 'merchant') { void this.openMerchant(ev); return; }
+    if (action === 'shard') {
+      const left = ev.data.left as number[];
+      if (!left.includes(i)) return;
+      left.splice(left.indexOf(i), 1);
+      this.scene.removeEventObject(`evshard-${uid}-${i}`);
+      const q = (ev.data.shards as { x: number; y: number }[])[i];
+      this.scene.renderer_.vfx.emit('fairy', q.x, q.y, 10);
+      audio.play('gem');
+      ev.progress++;
+      this.scene.ui.banner(`Mảnh sao ${ev.progress}/${ev.goal}`, '#fff0a0');
+      if (ev.progress >= ev.goal) this.end(ev, true);
+    }
+  }
+
+  private async openMerchant(ev: ActiveEvent): Promise<void> {
+    const stock = ev.data.stock as MerchantOffer[];
+    this.merchantOpen = ev.uid;
+    await this.scene.ui.openShop({
+      title: 'Thương nhân lưu động', shelves: false, offers: stock,
+      greeting: 'Hàng hiếm từ phương xa, giảm 30% — mỗi món chỉ có vài cái. Ta sắp lên đường rồi đấy!',
+      onBought: () => { ev.progress = stock.filter((o) => o.stock <= 0).length; },
+    });
+    this.merchantOpen = null;
+    if (this.director.active.includes(ev) && stock.every((o) => o.stock <= 0)) this.end(ev, true);
   }
 
   private abort(ev: ActiveEvent): void {
@@ -229,6 +305,15 @@ export class WorldEventController {
             this.world.addHazard(x, y, 60, 1.1, 50, 'electric', Math.max(8, this.currentRegion()?.level[1] ?? 10), { kind: 'paralysis', chance: 0.3, duration: 2, magnitude: 0.5 });
             this.scene.cameras.main.flash(120, 255, 255, 220);
           }
+        }
+        break;
+      }
+      case 'meteor': {
+        // shards twinkle so they can be spotted from afar
+        for (const i of ev.data.left as number[]) {
+          if (Math.random() > dt * 1.5) continue;
+          const q = (ev.data.shards as { x: number; y: number }[])[i];
+          this.scene.renderer_.vfx.emit('fairy', q.x, q.y - 10, 1);
         }
         break;
       }
@@ -298,13 +383,32 @@ export class WorldEventController {
         case 'ambush': st.earn(700 + (region?.danger ?? 1) * 200); st.addItems({ superpotion: 1 }); lines.push(`+${700 + (region?.danger ?? 1) * 200} xu`, '+1 Super Potion'); break;
         case 'treasure': st.addItems({ [ev.data.loot as string]: 1, ultraball: 3 }); st.earn(1200); lines.push(`+1 ${ITEMS[ev.data.loot as string]?.name ?? ev.data.loot}`, '+3 Ultra Ball', '+1200 xu (cổ vật)'); break;
         case 'distortion': st.addItems({ 'moon-stone': 1, ultraball: 2 }); st.earn(1500); lines.push('+1 Moon Stone', '+2 Ultra Ball', '+1500 xu'); break;
+        case 'merchant': st.addItems({ ultraball: 2 }); lines.push('Thương nhân bán hết hàng', '+2 Ultra Ball (quà cảm ơn)'); break;
+        case 'meteor': {
+          const stone = this.world.rng.pick(METEOR_STONES);
+          st.addItems({ [stone]: 1 }); st.earn(1500); lines.push(`+1 ${ITEMS[stone]?.name ?? stone}`, '+1500 xu');
+          if (this.world.rng.chance(0.3)) {
+            const mega = this.world.rng.pick(shopCatalogue().filter((e) => e.category === 'mega')).id;
+            st.addItems({ [mega]: 1 }); lines.push(`+1 ${ITEMS[mega]?.name ?? mega} (hiếm!)`);
+          }
+          break;
+        }
         default: break;
       }
-      st.addWorldExp(ev.type === 'weather' || ev.type === 'migration' ? 60 : 150);
+      st.addWorldExp(ev.type === 'weather' || ev.type === 'migration' || ev.type === 'merchant' ? 60 : 150);
       const items = Object.fromEntries(Object.entries(st.save.inventory).map(([id, qty]) => [id, qty - (beforeItems[id] ?? 0)]).filter(([, qty]) => Number(qty) > 0));
       this.scene.coopHost?.grant({ currency: st.save.currency - beforeMoney, items, note: EVENT_DEFS[ev.type].name });
     }
+    let partial = '';
+    if (!completed && ev.type === 'meteor' && ev.progress > 0) {
+      // shards picked before the shower ended still sell for something
+      st.earn(ev.progress * 250);
+      partial = ` — ${ev.progress} mảnh sao bán được ${ev.progress * 250} xu`;
+      this.scene.coopHost?.grant({ currency: ev.progress * 250, items: {}, note: EVENT_DEFS[ev.type].name });
+    }
+    if (ev.type === 'merchant' && this.merchantOpen === ev.uid) this.scene.ui.shop?.close();
     this.director.finish(ev, completed ? 'completed' : 'expired');
+    this.removeObjects(ev);
     // cleanup: everything the event spawned goes away with it (captured ones are already in the collection)
     for (const u of this.units.get(ev.uid) ?? []) if (u.alive && !u.captured) this.world.removeEnemy(u);
     this.units.delete(ev.uid);
@@ -314,7 +418,7 @@ export class WorldEventController {
     this.props.delete(ev.uid);
     const name = EVENT_DEFS[ev.type].name;
     if (completed && lines.length) this.scene.ui.questComplete(`${name}: hoàn thành!`, lines);
-    else this.scene.ui.banner(`${name} ở ${region?.name ?? ''} đã kết thúc`, '#c0c8e0');
+    else this.scene.ui.banner(`${name} ở ${region?.name ?? ''} đã kết thúc${partial}`, '#c0c8e0');
     this.scene.persist();
   }
 
@@ -322,11 +426,18 @@ export class WorldEventController {
   cleanupAll(): void {
     for (const [, us] of this.units) for (const u of us) if (u.alive && !u.captured) this.world.removeEnemy(u);
     this.units.clear();
-    for (const ev of this.director.active) if (ev.type === 'treasure') this.scene.removeEventChest(ev.uid);
+    for (const ev of this.director.active) { if (ev.type === 'treasure') this.scene.removeEventChest(ev.uid); this.removeObjects(ev); }
+    if (this.merchantOpen !== null) this.scene.ui.shop?.close();
     for (const [, os] of this.props) for (const o of os) o.destroy();
     this.props.clear();
     this.director.cleanupAll();
     this.world.weatherMods = {};
+  }
+
+  /** Merchant stall / remaining star shards leave the world with their event. */
+  private removeObjects(ev: ActiveEvent): void {
+    if (ev.type === 'merchant') this.scene.removeEventObject('evmerchant-' + ev.uid);
+    if (ev.type === 'meteor') for (const i of (ev.data.left as number[] | undefined) ?? []) this.scene.removeEventObject(`evshard-${ev.uid}-${i}`);
   }
 
   // ───────────────────────────── queries for spawning / UI ─────────────────────────────
@@ -340,6 +451,7 @@ export class WorldEventController {
       if (ev.region !== region?.id) continue;
       if (ev.type === 'outbreak') { info.boosted!.push({ species: ev.data.species as string, mult: 6 }); info.extraCap! += 4; info.shinyRate = SHINY_OUTBREAK; }
       if (ev.type === 'weather' && ev.data.kind) info.boosted!.push({ species: 'castform', mult: 4 });
+      if (ev.type === 'meteor') for (const sp of METEOR_SPECIES) if (ECOLOGY.has(sp)) info.boosted!.push({ species: sp, mult: 5 });
     }
     return info;
   }

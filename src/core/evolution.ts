@@ -31,6 +31,8 @@ export interface ItemDef {
   ev?: { stat: string; amount: number };
   megaFor?: string;
   form?: string;
+  /** pixel icon shape when it differs from the kind's default (apple, cup, armor, scroll, disc, claw, scale, berry) */
+  icon?: string;
 }
 export const ITEM_DEFS = new Map((itemsJson as ItemDef[]).map((i) => [i.id, i]));
 
@@ -96,7 +98,9 @@ const EVALUATORS: Evaluator[] = [
     applies: (r) => r.relativeStats != null, ok: (r, c) => !!c.stats && Math.sign(c.stats.atk - c.stats.def) === r.relativeStats,
     text: (r) => (r.relativeStats! > 0 ? 'Tấn công > Phòng thủ' : r.relativeStats! < 0 ? 'Tấn công < Phòng thủ' : 'Tấn công = Phòng thủ'),
   },
-  { applies: (r) => r.gender != null, unsupported: () => 'Cần giới tính (game chưa có giới tính)', ok: () => false, text: () => 'giới tính' },
+  // no genders in this game: a gendered *item* evolution (Dawn Stone: Kirlia → Gallade, Snorunt → Froslass) works for any
+  // individual; gendered level-up branches (Combee, Burmy…) stay unsupported
+  { applies: (r) => r.gender != null && r.trigger !== 'use-item', unsupported: () => 'Cần giới tính (game chưa có giới tính)', ok: () => false, text: () => 'giới tính' },
   { applies: (r) => !!r.tradeSpecies, unsupported: () => 'Cần trao đổi với một loài cụ thể', ok: () => false, text: () => 'trao đổi đặc biệt' },
 ];
 

@@ -135,6 +135,8 @@ const ITEM_ART: Record<string, { pal: Record<string, string>; rows: string[] }> 
   superpotion: { pal: { k: '#303040', p: '#f08030', w: '#ffffff', g: '#c0c8d8' }, rows: ['...gggg...', '...kwwk...', '...kwwk...', '..kppppk..', '.kpwppppk.', '.kpwppppk.', '.kppppppk.', '.kppppppk.', '..kkkkkk..', '..........'] },
   oranberry: { pal: { g: '#40a040', b: '#4060e0', w: '#c0d0ff', k: '#203080' }, rows: ['....g.....', '...gg.....', '..kbbbk...', '.kbbbbbk..', 'kbwbbbbbk.', 'kbbbbbbbk.', 'kbbbbbbbk.', '.kbbbbbk..', '..kkkkk...', '..........'] },
   'linking-cord': { pal: { b: '#8a5a20', y: '#e0b060' }, rows: ['..bbbb....', '.by..yb...', 'by....yb..', 'by.....b..', '.by...yb..', '..bbybb...', '....by....', '....by.bb.', '.....yyyb.', '......bb..'] },
+  // star shard of the meteor-shower event (world pickup, not an inventory item)
+  'star-shard': { pal: { k: '#806020', y: '#ffe060', l: '#fff8c0', w: '#ffffff' }, rows: ['....kk....', '....kyk...', '...kyyk...', 'kkkkylykkk', 'kyyywlyyyk', '.kyylwyyk.', '..kyyyyk..', '.kyykkyyk.', '.kyk..kyk.', '.kk....kk.'] },
   'key-stone': { pal: { k: '#404050', r: '#ff4060', y: '#ffe040', g: '#60ff80', b: '#40a0ff', w: '#ffffff' }, rows: ['...kkkk...', '..kryybk..', '.krwyygbk.', '.kryyggbk.', '.krygggbk.', '.kbgggbbk.', '..kbbbbk..', '...kkkk...', '..........', '..........'] },
 };
 
@@ -221,10 +223,29 @@ export function drawSkillIcon(scene: Phaser.Scene, s: SkillDef): string {
   return key;
 }
 
-function drawItemIcon(scene: Phaser.Scene, id: string, color: string, kind: string, pokeType?: string): void {
+/** 10×10 item shapes shared by many items (palette: k outline, c colour, l light, d dark, w white, g green, b brown). */
+export const ITEM_SHAPE: Record<string, string[]> = {
+  apple: ['.....gb...', '....gb....', '..kkkbkk..', '.kcclcclk.', 'kccwlccclk', 'kcclcccdck', 'kcccccddck', '.kcccddck.', '..kkkkkk..', '..........'],
+  cup: ['..........', '..kkkkkk..', '.kwlllllk.', '.kcccccckk', '.kcccccckk', '.kccccccck', '..kcccck..', '.kkkkkkkk.', '.kddddddk.', '..kkkkkk..'],
+  armor: ['.kkk..kkk.', 'kclckkclck', 'kccclwccck', 'kcccllccck', '.kccccdck.', '.kccccdck.', '..kccdck..', '..kcdddk..', '...kkkk...', '..........'],
+  scroll: ['.kkkkkkkk.', 'kddkwwwwkk', 'kddkllllkk', '.kkcccccck', '..kclllcck', '..kcccccck', '..kclllcck', '.kkcccccck', 'kddkkkkkkk', '.kkk......'],
+  disc: ['...kkkk...', '..kllllk..', '.klcccclk.', 'klcckkcclk', 'klckwwkclk', 'kcckwwkcck', 'kccckkccdk', '.kccccddk.', '..kddddk..', '...kkkk...'],
+  claw: ['......kk..', '.....kwk..', '....kwlk..', '...kwlk..k', '..kllk..kw', '.kllk..kwk', '.kcck.kwlk', 'kccckkllk.', 'kddccccck.', '.kkkkkkk..'],
+  scale: ['....kk....', '...kwlk...', '..kwllck..', '.kwlccclk.', '.klcccclk.', 'klccccccdk', 'kcccccccdk', '.kccccddk.', '..kcddk...', '...kkk....'],
+  berry: ['....gg....', '...gbg....', '..kkkbkk..', '.kcwlccck.', 'kcwlcccdck', 'kclcccccdk', 'kcccccccdk', '.kcccccdk.', '..kkkkkk..', '..........'],
+  bottle: ['...kkkk...', '...kbbk...', '..kkkkkk..', '..kwlllk..', '.kwlccclk.', '.klcccccK.', '.kcwwwwck.', '.kcwccwck.', '.kccccddk.', '..kkkkkk..'],
+  candy: ['..........', 'kk......kk', 'kck.kk.kck', 'kcckllkkck', '.kcklwlkk.', '.kkcllck..', 'kckkcckcck', 'kck.kk.kck', 'kk......kk', '..........'],
+};
+
+function drawItemIcon(scene: Phaser.Scene, id: string, color: string, kind: string, pokeType?: string, icon?: string): void {
   const art = ITEM_ART[id];
   canvasTex(scene, 'item-' + id, 10, 10, (ctx) => {
     if (art) { drawRows(ctx, art.rows, art.pal); return; }
+    const shape = icon ?? (kind === 'candy' ? 'candy' : kind === 'evItem' ? (id.endsWith('-berry') ? 'berry' : 'bottle') : null);
+    if (shape && ITEM_SHAPE[shape]) {
+      drawRows(ctx, ITEM_SHAPE[shape].map((r) => r.replace(/K/g, 'k')), { k: shade(color, 0.35), c: color, l: shade(color, 1.35), d: shade(color, 0.7), w: '#ffffff', g: '#58b048', b: '#7a5030' });
+      return;
+    }
     if (kind === 'evoStone') {
       // faceted gem
       drawRows(ctx, ['...kkkk...', '..kllllk..', '.klwlllck.', 'kllwllccck', 'klllllccck', '.kllcccck.', '..kcccck..', '...kkkk...', '..........', '..........'],
@@ -253,12 +274,12 @@ function drawProjectile(scene: Phaser.Scene, t: PokeType): void {
 }
 
 /** Builds every icon texture. Called once from BootScene after the data is loaded. */
-export function buildIcons(scene: Phaser.Scene, skills: Iterable<SkillDef>, items: Iterable<{ id: string; color: string; kind: string; effect?: { pokeType?: string } }>): { skills: number; bespoke: number } {
+export function buildIcons(scene: Phaser.Scene, skills: Iterable<SkillDef>, items: Iterable<{ id: string; color: string; kind: string; icon?: string; effect?: { pokeType?: string } }>): { skills: number; bespoke: number } {
   for (const t of ALL_TYPES) { drawTypeIcon(scene, t); drawProjectile(scene, t); }
   for (const k of Object.keys(STATUS_ICON) as StatusKind[]) drawStatusIcon(scene, k);
   let n = 0, bespoke = 0;
   for (const s of skills) { drawSkillIcon(scene, s); n++; if (BESPOKE[s.id]) bespoke++; }
-  for (const it of items) drawItemIcon(scene, it.id, it.color, it.kind, it.effect?.pokeType);
+  for (const it of items) drawItemIcon(scene, it.id, it.color, it.kind, it.effect?.pokeType, it.icon);
   for (const id of Object.keys(ITEM_ART)) drawItemIcon(scene, id, '#ffffff', 'art');
   return { skills: n, bespoke };
 }

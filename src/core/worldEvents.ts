@@ -9,7 +9,7 @@ import type { PokeType } from './types';
 //  • every event has a duration and ends (expired / completed / cleaned up); history and cooldowns are saved,
 //    active events are not (they end when the game is saved & reloaded — documented Save/Load policy).
 
-export type EventType = 'outbreak' | 'alpha' | 'migration' | 'weather' | 'ambush' | 'treasure' | 'distortion';
+export type EventType = 'outbreak' | 'alpha' | 'migration' | 'weather' | 'ambush' | 'treasure' | 'distortion' | 'merchant' | 'meteor';
 
 export interface EventDef {
   name: string;
@@ -31,6 +31,9 @@ export const EVENT_DEFS: Record<EventType, EventDef> = {
   migration: { name: 'Di cư hiếm', major: true, duration: 200, cooldown: 1200, chance: 0.45, priority: 3 },
   weather: { name: 'Thời tiết dị thường', major: true, duration: 180, cooldown: 900, chance: 0.5, priority: 2 },
   distortion: { name: 'Vùng biến dạng', major: true, duration: 180, cooldown: 1500, chance: 0.3, priority: 5 },
+  // 0.18: a travelling merchant sells rare goods at a discount; a meteor shower scatters star shards to collect
+  merchant: { name: 'Thương nhân lưu động', major: false, duration: 240, cooldown: 720, chance: 0.35, priority: 2 },
+  meteor: { name: 'Mưa sao băng', major: true, duration: 200, cooldown: 1200, chance: 0.4, priority: 4 },
 };
 export const MINOR_CHECK = 300;
 export const MAJOR_CHECK = 900;
