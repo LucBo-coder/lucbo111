@@ -1,8 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
+
+/** E2E_NET=cloud=<ws url> runs this spec through the Cloudflare room relay instead of BroadcastChannel */
+const NET_KIND = process.env.E2E_NET ? 'relay' : 'local';
 type Win = Record<string, any>;
 const ev = <T = unknown>(p: Page, fn: string) => p.evaluate(fn) as Promise<T>;
 async function start(p: Page, slot: number, campaign = 'classic') {
-  await p.goto('/?debug&net=local');
+  await p.goto(`/?debug&${process.env.E2E_NET || 'net=local'}`);
   await p.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(p, `void window.__phaser.scene.getScene('Menu').startAdventure(true, ${slot}, '${campaign}')`);
   await p.waitForFunction(() => (window as Win).__adv?.world && (window as Win).__phaser.scene.isActive('AdvUI'));
@@ -120,9 +123,9 @@ for (const mode of ['survivor', 'vietnam']) test(`co-op supports ${mode} and dis
     await a.waitForFunction(() => (window as Win).__phaser.scene.isActive('UI'));
   }
   const host = mode === 'survivor' ? 'window.__game' : 'window.__adv';
-  const code = await ev<string>(a, `window.__net.host('local')`);
+  const code = await ev<string>(a, `window.__net.host('${NET_KIND}')`);
   await ev(a, `${host}.startCoopHost()`);
-  await ev(b, `window.__net.join('${code}', 'local')`);
+  await ev(b, `window.__net.join('${code}', '${NET_KIND}')`);
   await ev(b, `window.__modes.start(window.__adv, 'online', {entry: 'CoopGuest', party: [{species:'squirtle', level:30}], returnTo:'adventure'})`);
   await b.waitForFunction(() => !!(window as Win).__coopGuest?.snapshot, undefined, { timeout: 15000 });
   expect(await ev(b, 'window.__coopGuest.snapshot.map.id')).toBe(mode === 'survivor' ? 'survivor' : 'ca-mau');

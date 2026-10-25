@@ -1,7 +1,7 @@
 import { createHash, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import type { SaveData } from '../src/systems/saveSchema';
 import type { ServerAccount } from '../src/net/serverProtocol';
-import type { Db } from './db';
+import type { SqlDb as Db } from './sql';
 import { activePokemon, readSave, seedSave } from './playerSave';
 
 const SCRYPT_KEYLEN = 64;

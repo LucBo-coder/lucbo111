@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+/** E2E_NET=cloud=<ws url> runs this spec through the Cloudflare room relay instead of BroadcastChannel */
+const NET_KIND = process.env.E2E_NET ? 'relay' : 'local';
+
 // Online duel between two real game pages of the same browser (BroadcastChannel transport, `?net=local`):
 // lobby → room code → join → teams → ready → host-authoritative duel mirrored on the guest → orders from
 // the guest reach the host → switch → forfeit → both results recorded. Plus the practice duel.
@@ -8,7 +11,7 @@ type Win = Record<string, any>; // eslint-disable-line @typescript-eslint/no-exp
 const ev = <T = unknown>(page: Page, fn: string) => page.evaluate(fn) as Promise<T>;
 
 async function openLobby(page: Page, name: string) {
-  await page.goto('/?debug&net=local');
+  await page.goto(`/?debug&${process.env.E2E_NET || 'net=local'}`);
   await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(page, `window.__modes.start(window.__phaser.scene.getScene('Menu'), 'online')`);
   await page.waitForFunction(() => (window as Win).__phaser.scene.isActive('Lobby'));
@@ -25,10 +28,10 @@ test('online duel: room code, teams, host simulation mirrored on the guest, gues
   await openLobby(host, 'An');
   await openLobby(guest, 'Bình');
 
-  const code = await ev<string>(host, `window.__lobby.createRoom('local')`);
+  const code = await ev<string>(host, `window.__lobby.createRoom('${NET_KIND}')`);
   expect(code).toMatch(/^[A-Z0-9]{6}$/);
   await host.screenshot({ path: info.outputPath('1-host-room.png') });
-  expect(await ev(guest, `window.__lobby.joinRoom('${code}', 'local')`)).toBe(true);
+  expect(await ev(guest, `window.__lobby.joinRoom('${code}', '${NET_KIND}')`)).toBe(true);
   await host.waitForFunction(() => (window as Win).__net.connected && (window as Win).__net.peerName === 'Bình');
   expect(await ev(guest, `window.__net.peerName`)).toBe('An');
 
@@ -51,10 +54,12 @@ test('online duel: room code, teams, host simulation mirrored on the guest, gues
   // the host runs the simulation: keep its tab in front (a background tab's game loop is throttled)
   await host.bringToFront();
   await host.waitForFunction(() => (window as Win).__duel.world.allies.some((u: Win) => u.hp < u.maxHp) && (window as Win).__duel.world.rival.allies.some((u: Win) => u.hp < u.maxHp), undefined, { timeout: 30_000 });
-  await guest.waitForTimeout(400);
-  const hpHost = await ev<number[]>(host, `window.__duel.world.rival.allies.map(u => u.hp)`);
-  const hpGuest = await ev<number[]>(guest, `window.__duel.world.allies.map(u => u.hp)`);
-  hpHost.forEach((h, i) => expect(Math.abs(h - hpGuest[i])).toBeLessThan(Math.max(80, h * 0.35)));
+  // the guest draws the host's snapshots, one network trip behind: compare until they agree (instant on one machine)
+  await expect.poll(async () => {
+    const hpHost = await ev<number[]>(host, `window.__duel.world.rival.allies.map(u => u.hp)`);
+    const hpGuest = await ev<number[]>(guest, `window.__duel.world.allies.map(u => u.hp)`);
+    return hpHost.every((h, i) => Math.abs(h - hpGuest[i]) < Math.max(80, h * 0.35));
+  }, { timeout: 10_000, intervals: [400, 200] }).toBe(true);
   await host.screenshot({ path: info.outputPath('3-host-duel.png') });
   await guest.screenshot({ path: info.outputPath('4-guest-duel.png') });
 

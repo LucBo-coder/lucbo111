@@ -1543,7 +1543,7 @@ export class AdventureUI extends Phaser.Scene {
     this.closeMenu();
     const a = this.adv;
     if (net.connected || net.status === 'hosting') { coopSession.active = false; net.leave(); a.coopHost?.destroy(); a.coopHost = null; a.presence?.destroy(); a.presence = null; this.banner('Đã rời phòng online', '#c0c8e0'); return; }
-    const r = await a.say('Chơi online cùng bạn', ['Hai người cùng đi trong thế giới mở (mỗi người giữ Pokémon hoang dã, nhiệm vụ, đồ của mình) và thách đấu nhau bằng cách lại gần rồi nhấn E.', 'Kết nối trực tiếp qua WebRTC; người tạo phòng đọc mã cho bạn mình.'],
+    const r = await a.say('Chơi online cùng bạn', ['Hai người cùng đi trong thế giới mở (mỗi người giữ Pokémon hoang dã, nhiệm vụ, đồ của mình) và thách đấu nhau bằng cách lại gần rồi nhấn E.', defaultLinkKind() === 'relay' ? 'Kết nối qua máy chủ online; người tạo phòng đọc mã cho bạn mình.' : 'Kết nối trực tiếp qua WebRTC; người tạo phòng đọc mã cho bạn mình.'],
       [{ label: 'Tạo phòng', value: 'host' }, { label: 'Vào phòng bằng mã', value: 'join' }, { label: 'Hủy', value: 'no' }]);
     const kind = defaultLinkKind();
     net.setProfile(saveStore.playerName, saveStore.avatar);

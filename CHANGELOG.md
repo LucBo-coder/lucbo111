@@ -1,5 +1,14 @@
 # Changelog
 
+## Chưa phát hành — Multiplayer qua Cloudflare
+
+- **Sửa lỗi "Hết thời gian chờ — mạng chặn kết nối trực tiếp (WebRTC)"**: PeerJS chỉ có STUN, không có TURN, nên mạng 4G / công ty (NAT đối xứng) không nối được. Mọi chế độ online giờ mặc định đi qua máy chủ Cloudflare `wss://pokemon-server.pokemon-server.workers.dev` (Workers + Durable Objects, gói Free): PvP, co-op Sinh tồn / Phiêu lưu / Việt Nam Odyssey, thế giới mở chung + thách đấu, và Thế giới online (tài khoản).
+- Phòng theo mã (mỗi mã một Durable Object, WebSocket Hibernation): giữ chỗ 60 s khi rớt mạng, tự kết nối lại bằng token, gửi bù tin nhắn bị lỡ; giao thức game giữ nguyên (relay chỉ chuyển tiếp, chủ phòng vẫn kiểm tra như trước).
+- Thế giới online chạy cùng mã `server/world.ts` trên SQLite của Durable Object; máy chủ Node (`npm run server`) vẫn dùng được như cũ.
+- Bảo vệ: chỉ nhận trang GitHub Pages + localhost, giới hạn mở kết nối theo IP, giới hạn kích thước / tần suất khung tin.
+- `?net=peer` dùng lại WebRTC, `?net=local` (thử trong một trình duyệt), `?cloud=wss://…` chọn máy chủ khác. Gameplay, UI, save không đổi.
+- Test: `scripts/cloud-room-test.mjs` (19 kiểm tra relay), `e2e/relay_reconnect.spec.ts`; các e2e co-op/PvP/thế giới chung chạy được qua relay (`E2E_NET=cloud=…`), e2e Thế giới online chạy được với máy chủ thật (`SERVER_WS=…`).
+
 ## 0.14.0 — Sảnh Online, thử thách co-op & server tài khoản
 
 - Sảnh **Chơi online** chung: tạo/vào phòng co-op Sinh tồn, Phiêu lưu, Việt Nam Odyssey; chọn ô lưu và Pokémon khởi đầu; truy cập PvP hoặc Thế giới online.

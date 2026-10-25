@@ -4,7 +4,7 @@ async function open(page: Page) {
   await page.goto('/');
   await page.waitForFunction(() => (window as any).__phaser?.scene.isActive('Menu'));
   await page.evaluate(() => { (window as any).__phaser.scene.getScene('Menu').scene.start('ServerWorld'); });
-  await page.getByLabel('Máy chủ', { exact: true }).fill('ws://127.0.0.1:8789/ws');
+  await page.getByLabel('Máy chủ', { exact: true }).fill(process.env.SERVER_WS || 'ws://127.0.0.1:8789/ws');
 }
 
 /** Walks the real movement code along a BFS path over passable tiles until within `radius` of the goal. */
@@ -105,10 +105,11 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
       return r?.pet.visible;
     });
     await a.getByRole('button', { name: 'Thu hồi', exact: true }).click();
-    await expect.poll(remotePet).toBe(false);
-    // the server enforces the switch cooldown, not only the UI
+    // the server enforces the switch cooldown, not only the UI: summon again as soon as our own recall is confirmed
+    // (waiting for the other client first could outlast the 1.5 s cooldown over a real network)
     await a.getByRole('button', { name: 'Gọi ra', exact: true }).first().click();
     await expect(a.locator('[data-status]')).toContainText('rồi mới đổi Pokémon');
+    await expect.poll(remotePet).toBe(false);
     await a.waitForTimeout(1600);
     await a.getByRole('button', { name: 'Gọi ra', exact: true }).first().click();
     await expect.poll(remotePet).toBe(true);

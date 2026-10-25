@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 async function hub(page: Page, slot: string) {
-  await page.goto('/?net=local&debug');
+  await page.goto(`/?debug&${process.env.E2E_NET || 'net=local'}`);
   await page.waitForFunction(() => (window as any).__phaser?.scene.isActive('Menu'));
   await page.evaluate(() => { (window as any).__modes.start((window as any).__phaser.scene.getScene('Menu'), 'online', { entry: 'OnlineHub' }); });
   await page.locator('[data-slot]').selectOption(slot);

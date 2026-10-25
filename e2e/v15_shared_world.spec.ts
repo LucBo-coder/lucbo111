@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+/** E2E_NET=cloud=<ws url> runs this spec through the Cloudflare room relay instead of BroadcastChannel */
+const NET_KIND = process.env.E2E_NET ? 'relay' : 'local';
+
 // Shared open world: two players (two pages, two save slots) in the same online session see each other
 // walking on the same map, one walks up and challenges with E, the other accepts, both duel, both return.
 
@@ -9,7 +12,7 @@ const inAdventure = (page: Page) => page.waitForFunction(() => (window as Win)._
 const dialogueOpen = (page: Page) => ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`);
 
 async function start(page: Page, slot: number, name: string, avatar: string, team: string[]) {
-  await page.goto('/?debug&net=local');
+  await page.goto(`/?debug&${process.env.E2E_NET || 'net=local'}`);
   await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true, ${slot})`);
   await inAdventure(page);
@@ -26,8 +29,8 @@ test('shared open world: see each other, challenge with E, duel, back to the wor
   await start(a, 1, 'An', 'ninja', ['charmander', 'pidgey']);
   await start(b, 2, 'Bình', 'lass', ['squirtle', 'rattata']);
 
-  const code = await ev<string>(a, `window.__net.host('local')`);
-  await ev(b, `window.__net.join('${code}', 'local')`);
+  const code = await ev<string>(a, `window.__net.host('${NET_KIND}')`);
+  await ev(b, `window.__net.join('${code}', '${NET_KIND}')`);
   await a.waitForFunction(() => (window as Win).__net.connected);
   await ev(a, `window.__adv.startPresence()`);
   await ev(b, `window.__adv.startPresence()`);
@@ -37,9 +40,11 @@ test('shared open world: see each other, challenge with E, duel, back to the wor
   await ev(b, `window.__adv.world.teleport(${pa.x + 60}, ${pa.y})`);
   await a.waitForFunction(() => (window as Win).__adv.presence?.visible() && (window as Win).__adv.interactables.has('remote-player'), undefined, { timeout: 10_000 });
   await b.waitForFunction(() => (window as Win).__adv.presence?.visible(), undefined, { timeout: 10_000 });
-  await a.waitForTimeout(600);
-  const seen = await ev<{ x: number; y: number }>(a, `({ x: window.__adv.presence.x, y: window.__adv.presence.y })`);
-  expect(Math.hypot(seen.x - (pa.x + 60), seen.y - pa.y)).toBeLessThan(30);
+  // (over a real network the position arrives after the round trip: poll instead of a fixed wait)
+  await expect.poll(async () => {
+    const seen = await ev<{ x: number; y: number }>(a, `({ x: window.__adv.presence.x, y: window.__adv.presence.y })`);
+    return Math.hypot(seen.x - (pa.x + 60), seen.y - pa.y);
+  }, { timeout: 8000 }).toBeLessThan(30);
   expect(await ev(a, `window.__adv.nearest?.kind`)).toBe('remote');
   // each side draws the other player with the avatar they picked (not the generic trainer sprite)
   await a.waitForFunction(() => (window as Win).__adv.presence.body?.texture.key === 'avt-lass_sheet', undefined, { timeout: 8000 });
@@ -55,12 +60,12 @@ test('shared open world: see each other, challenge with E, duel, back to the wor
   await a.screenshot({ path: info.outputPath('1-shared-world.png') });
 
   // A presses E → confirm → B is asked → accepts
-  for (let i = 0; i < 12 && !(await ev<boolean>(b, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) {
+  for (let i = 0; i < 40 && !(await ev<boolean>(b, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) {
     await a.keyboard.press((await dialogueOpen(a)) && i % 2 ? '1' : 'e');
     await a.waitForTimeout(250);
   }
   await b.screenshot({ path: info.outputPath('2-challenged.png') });
-  for (let i = 0; i < 12 && !(await ev<boolean>(b, `window.__phaser.scene.isActive('Duel')`)); i++) {
+  for (let i = 0; i < 40 && !(await ev<boolean>(b, `window.__phaser.scene.isActive('Duel')`)); i++) {
     await b.keyboard.press(i % 2 ? '1' : 'e');
     await b.waitForTimeout(250);
   }

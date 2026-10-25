@@ -3,7 +3,7 @@ import type { Stats } from '../core/stats';
 import type { CoopSnapshot } from './coop';
 import type { CoopLoot } from './coopRewards';
 
-// Wire protocol of online play (PeerJS data channel or BroadcastChannel). JSON messages, one `t` tag each.
+// Wire protocol of online play (Cloudflare relay, PeerJS data channel or BroadcastChannel). JSON messages, one `t` tag each.
 // The host is authoritative: it runs the duel simulation; the guest sends inputs and draws snapshots.
 
 export const PROTOCOL_VERSION = 2;

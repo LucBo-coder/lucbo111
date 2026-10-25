@@ -1,6 +1,49 @@
 # Thế giới online
 
-Từ menu chính chọn **Thế giới online**. Chế độ này dùng tài khoản và dữ liệu trên máy chủ riêng; các ô lưu offline và PvP/Co-op PeerJS vẫn độc lập (e2e kiểm tra localStorage không đổi).
+Từ menu chính chọn **Thế giới online**. Chế độ này dùng tài khoản và dữ liệu trên máy chủ riêng; các ô lưu offline và phòng PvP/Co-op vẫn độc lập (e2e kiểm tra localStorage không đổi).
+
+## Máy chủ Cloudflare (mặc định)
+
+Bản GitHub Pages dùng sẵn máy chủ `wss://pokemon-server.pokemon-server.workers.dev` (Cloudflare Workers + Durable Objects, gói **Free**). Không cần cấu hình gì: mở game, vào **Chơi online** hoặc **Thế giới online**.
+
+```
+Trình duyệt ── wss://…/room/<MÃ>?role=host|guest ──▶ Worker (kiểm tra Origin, giới hạn IP) ──▶ RoomDO (1 / mã phòng)
+           └─ wss://…/ws ─────────────────────────▶ Worker ─────────────────────────────────▶ WorldDO (SQLite)
+```
+
+- **Phòng PvP / co-op / thế giới mở chung** (`RoomDO`, mã nguồn `pokemon-server/src/room.ts`): chuyển tiếp nguyên văn tin nhắn của giao thức game (`src/net/protocol.ts`) giữa chủ phòng và khách — không phải Socket.IO, chỉ WebSocket JSON. Chủ phòng vẫn là bên kiểm tra luật như khi dùng WebRTC. Mã đã có chủ → `TAKEN` (client tự tạo mã khác); không có phòng → `NOT_FOUND`; đủ 2 người → `FULL`.
+- **Rớt mạng**: chỗ được giữ 60 s. Client tự nối lại (0,5 → 8 s, khoảng 40 s) bằng token, máy chủ gửi bù tối đa 400 tin bị lỡ; bên kia thấy `{r:'peer',on:false}` rồi `on:true`. Thoát hẳn (`{"bye":1}`) hoặc quá hạn → phòng bị xóa. Phòng không hoạt động 6 h tự đóng.
+- **Thế giới online** (`WorldDO`): chạy đúng `server/world.ts` (cùng mã với máy chủ Node) trên SQLite của Durable Object; cùng migration `server/migrations/*.sql`. Đồng hồ thế giới (sự kiện, Alpha) chỉ chạy khi có người online; vị trí lưu mỗi 10 s.
+- **Bảo vệ**: chỉ nhận Origin `https://lucbo-coder.github.io` và localhost (`ALLOWED_ORIGINS`); 60 lần mở kết nối / phút / IP; khung tin ≤ 1 MB (phòng) / 16 KB (thế giới); ≤ 160 khung / 4 s mỗi người; token kết nối lại ngẫu nhiên. Thế giới online do máy chủ quyết định mọi chỉ số (xem *Kiến trúc*).
+- **Vị trí**: Durable Object được tạo gần người chơi (`locationHint` apac → Singapore / Hong Kong). Độ trễ phụ thuộc nhà mạng định tuyến `workers.dev` qua châu Á (~70–150 ms) hay châu Âu (~300–450 ms); muốn ổn định hơn cần tên miền riêng (không bắt buộc).
+- **Chọn đường kết nối** (thêm vào URL game): `?net=peer` dùng WebRTC cũ, `?net=local` hai tab cùng trình duyệt (thử nghiệm), `?cloud=wss://máy-chủ-khác` dùng Worker khác. Build tay: `VITE_CLOUD_URL=wss://… npm run build`.
+
+### Giới hạn gói Free (ước tính)
+
+100 000 request/ngày (mỗi WebSocket = 1 request, tin nhắn đến tính 20 tin = 1 request), 13 000 GB-s thời gian Durable Object/ngày, 100 000 dòng SQLite ghi/ngày, 5 GB lưu trữ. Với nhịp gửi của game (~20 tin/s mỗi người, gộp 50 ms) đủ khoảng 14 giờ-phòng hoặc ~55 giờ-người Thế giới online mỗi ngày. Hết hạn mức thì kết nối bị từ chối tới 0h UTC; không phát sinh phí.
+
+### Triển khai / cập nhật máy chủ
+
+Mã máy chủ ở `C:\Users\pc\Documents\Pokemon-Cloudflare\pokemon-server` và **import trực tiếp** `server/world.ts` của repo này qua alias `@game` (`../../../pokemon-survivor`) — giữ hai thư mục đúng vị trí đó.
+
+```powershell
+cd C:\Users\pc\Documents\Pokemon-Cloudflare\pokemon-server
+npx wrangler login      # một lần
+npx wrangler deploy
+npx wrangler tail       # xem log trực tiếp
+```
+
+Kiểm tra: `https://pokemon-server.pokemon-server.workers.dev/healthz?where=1` (`edge` = trạm Cloudflare bạn đang đi qua, `world.colo` = nơi WorldDO chạy). Chạy thử cục bộ: `npx wrangler dev --port 8790`, rồi mở game với `?cloud=ws://127.0.0.1:8790`.
+
+GitHub Pages: chỉ cần `git push` lên `main` — workflow tự build với địa chỉ mặc định trong `src/net/cloud.ts`. Đổi máy chủ: sửa `CLOUD_URL_DEFAULT` hoặc đặt biến repo `SERVER_URL` (chỉ cho Thế giới online).
+
+Kiểm thử với máy chủ thật:
+
+```powershell
+node scripts/cloud-room-test.mjs wss://pokemon-server.pokemon-server.workers.dev
+$env:E2E_NET="cloud=wss://pokemon-server.pokemon-server.workers.dev"; npx playwright test e2e/coop.spec.ts e2e/online_modes.spec.ts e2e/v15_online.spec.ts e2e/v15_shared_world.spec.ts e2e/relay_reconnect.spec.ts
+$env:SERVER_WS="wss://pokemon-server.pokemon-server.workers.dev/ws"; npm.cmd run e2e:server
+```
 
 ## Chạy trên máy tính
 
@@ -23,7 +66,7 @@ Mở `http://localhost:5173`, chọn **Thế giới online**, dùng địa chỉ
 Game không tìm thấy máy chủ ở địa chỉ trong ô **Máy chủ**. Thông báo hiện địa chỉ đã thử.
 
 - **Chưa chạy máy chủ**: mở terminal trong thư mục game, chạy `npm.cmd run server`, chờ dòng `[server] ready`, thử lại. Kiểm tra nhanh: mở `http://localhost:8787/healthz` phải thấy `"ok":true`.
-- **Chơi bản GitHub Pages**: GitHub Pages chỉ chứa file tĩnh, **không chạy được máy chủ**. Nếu chưa cấu hình máy chủ công khai, ô Máy chủ mặc định là `ws://localhost:8787/ws` (máy chủ chạy trên chính máy tính của bạn — Chrome/Edge/Firefox cho phép trang HTTPS kết nối `ws://localhost`). Bạn bè ở máy khác cần một máy chủ Internet có `wss://` (xem *Triển khai Internet*).
+- **Chơi bản GitHub Pages**: ô Máy chủ mặc định là máy chủ Cloudflare `wss://pokemon-server.pokemon-server.workers.dev/ws`; kiểm tra `…/healthz`. Nếu bạn tự đặt địa chỉ khác, có thể dùng `ws://localhost:8787/ws` (máy chủ chạy trên chính máy tính của bạn — Chrome/Edge/Firefox cho phép trang HTTPS kết nối `ws://localhost`). Bạn bè ở máy khác cần một máy chủ Internet có `wss://` (xem *Triển khai Internet*).
 - Các bản cũ lưu địa chỉ `wss://<trang>.github.io:8787/ws` (không bao giờ trả lời); bản mới tự bỏ địa chỉ đó.
 
 ### Thử nhiều người trên cùng máy / cùng mạng
@@ -43,7 +86,7 @@ game.example.com {
 }
 ```
 
-Biến môi trường: xem `server/.env.example` (không chứa bí mật). Sao lưu file SQLite thường xuyên. Chưa có máy chủ Internet nào được triển khai sẵn.
+Biến môi trường: xem `server/.env.example` (không chứa bí mật). Sao lưu file SQLite thường xuyên. Máy chủ Internet mặc định là bản Cloudflare ở trên; mẫu này dành cho ai muốn tự chạy máy chủ Node.
 
 Để bản GitHub Pages tự điền địa chỉ máy chủ: trong repo GitHub → *Settings → Secrets and variables → Actions → Variables*, tạo biến `SERVER_URL` = `wss://game.example.com/ws`. Workflow deploy truyền nó vào build qua `VITE_SERVER_URL`. Build tay: `VITE_SERVER_URL=wss://game.example.com/ws npm run build`.
 

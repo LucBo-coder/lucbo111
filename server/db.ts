@@ -3,6 +3,7 @@ import type { DatabaseSync as SqliteDatabase } from 'node:sqlite';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { SqlDb } from './sql';
 
 // SQLite is the single source of truth. Migrations are plain SQL files applied once, in filename order.
 // We keep the canonical SaveData as JSON (same schema as the browser save, so the client can adopt it
@@ -12,9 +13,10 @@ const MIGRATIONS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '
 // Runtime load also supports tooling whose built-in module list predates node:sqlite.
 const { DatabaseSync } = createRequire(import.meta.url)('node:sqlite') as typeof import('node:sqlite');
 
-export type Row = Record<string, unknown>;
+export type { Row } from './sql';
+type Row = import('./sql').Row;
 
-export class Db {
+export class Db implements SqlDb {
   readonly raw: SqliteDatabase;
   constructor(readonly file: string) {
     if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });

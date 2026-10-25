@@ -136,6 +136,11 @@ export class NetSession {
     this.link?.send(m);
   }
 
+  /** Test hook: drop the connection as if the network failed (relay links reconnect to the same room). */
+  simulateDrop(): void {
+    (this.link as { simulateDrop?: () => void } | null)?.simulateDrop?.();
+  }
+
   /** Subscribe to messages; returns the unsubscribe function. */
   on(cb: (m: NetMsg) => void): () => void {
     this.listeners.add(cb);

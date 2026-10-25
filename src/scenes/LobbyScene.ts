@@ -223,7 +223,8 @@ export class LobbyScene extends Phaser.Scene {
     button(this, bx, y0 + 248 * s, bw, 54 * s, '⚔ Luyện tập với máy', () => this.go('practice'), 0x6a4a2a);
     const hist = (r2?.history ?? []).slice(0, 5).map((h) => `${h.result === 'win' ? 'Thắng' : h.result === 'loss' ? 'Thua' : 'Hòa'} · ${h.opp}${h.online ? '' : ' (luyện tập)'} · ${new Date(h.at).toLocaleDateString('vi-VN')}`);
     text(this, x0 + 20 * s, y0 + 300 * s,
-      'Kết nối trực tiếp giữa hai trình duyệt (WebRTC, qua máy chủ mai mối công cộng của PeerJS). Một số mạng (4G, mạng công ty) có thể chặn kết nối trực tiếp.\n' +
+      (defaultLinkKind() === 'relay' ? 'Kết nối qua máy chủ online (Cloudflare): chạy được trên mọi mạng, tự kết nối lại khi rớt mạng.\n'
+        : 'Kết nối trực tiếp giữa hai trình duyệt (WebRTC, qua máy chủ mai mối công cộng của PeerJS). Một số mạng (4G, mạng công ty) có thể chặn kết nối trực tiếp.\n') +
       'Chủ phòng chạy trận đấu; đội và cá thể (IV/EV/tính cách/trang bị) lấy từ Bộ sưu tập của ô lưu đang mở.\n' +
       'Chơi cùng nhau trong thế giới mở: Phiêu lưu → Cài đặt → "Chơi online cùng bạn".' + (hist.length ? '\n\nGần đây:\n' + hist.join('\n') : ''),
       15 * s, COLORS.dim).setWordWrapWidth(pw - 40 * s);

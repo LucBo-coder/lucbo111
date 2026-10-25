@@ -1,6 +1,6 @@
 import { AdventureState } from '../src/adventure/AdventureState';
 import type { ActionType, ServerMsg } from '../src/net/serverProtocol';
-import type { Db } from './db';
+import type { SqlDb as Db } from './sql';
 import { readSave, writeSave } from './playerSave';
 
 // Everything that changes a player's canonical save goes through here:

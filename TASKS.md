@@ -154,7 +154,9 @@ Mốc First Playable (Phần XVII), kiểm bằng server thật + client độc 
 - [x] IMPLEMENTED+TESTED — Engine hai phe, công bằng đã đo (47–54 % đấu gương), tất định
 - [x] Luyện tập với máy (offline)
 - [~] PARTIAL — Bảng xếp hạng: chỉ thành tích của từng ô lưu (không có server nên không có bảng chung)
-- [ ] NOT IMPLEMENTED — TURN relay (một số mạng 4G / công ty chặn WebRTC trực tiếp); quan sát trận (khán giả); trao đổi Pokémon; > 2 người cùng phòng
+- [x] IMPLEMENTED+TESTED — Relay qua Cloudflare Workers + Durable Objects (thay WebRTC mặc định, chạy được sau 4G / mạng công ty): phòng PvP/co-op/thế giới chung theo mã, tự kết nối lại + gửi bù, Thế giới online chạy trên Durable Object SQLite; e2e hai trình duyệt trên bản triển khai thật (ONLINE_SERVER.md → *Máy chủ Cloudflare*)
+- [ ] NOT IMPLEMENTED — quan sát trận (khán giả); trao đổi Pokémon; > 2 người cùng phòng
+- [ ] NOT TESTED — điện thoại 4G thật qua relay (đã thử trình duyệt desktop; độ trễ phụ thuộc định tuyến của nhà mạng tới workers.dev)
 - [ ] Chống gian lận đầy đủ cần server (P2P chỉ kiểm tra được dữ liệu hợp lệ, không chứng minh được quyền sở hữu)
 
 ## PHASE E — World expansion

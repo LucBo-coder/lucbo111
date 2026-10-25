@@ -1,4 +1,5 @@
 import { SERVER_PROTOCOL, type ClientMsg, type ServerMsg } from './serverProtocol';
+import { cloudBase } from './cloud';
 
 /** Errors after which reconnecting would be wrong (another tab took over, logout, ban). */
 const FINAL_ERRORS = new Set(['SESSION_REPLACED', 'LOGGED_OUT', 'BANNED', 'AUTH_REQUIRED', 'BAD_TOKEN', 'EXPIRED_TOKEN']);
@@ -140,17 +141,28 @@ function unreachable(endpoint: URL, what: string): string {
  */
 export function defaultEndpoint(saved: string | null): string {
   const host = location.hostname || 'localhost';
-  const configured = (import.meta.env.VITE_SERVER_URL as string | undefined)?.trim();
+  const configured = configuredServer();
   const own = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${host}:8787/ws`;
-  const fallback = configured || (isPrivateHost(host) ? own : 'ws://localhost:8787/ws');
-  // older builds saved "<static host>:8787", which can never answer: drop it
-  if (saved && !(saved === own && !isPrivateHost(host))) return saved;
+  const fallback = configured || (isPrivateHost(host) ? own : LOCAL_SERVER);
+  // older builds saved "<static host>:8787" (can never answer) or the local fallback: a configured server replaces them
+  const stale = !isPrivateHost(host) && (saved === own || (!!configured && saved === LOCAL_SERVER));
+  if (saved && !stale) return saved;
   return fallback;
 }
 
 /** True when nobody configured a server for this (static) build: the login form explains how to get one. */
 export function needsServerHint(): boolean {
-  return !import.meta.env.VITE_SERVER_URL && !isPrivateHost(location.hostname || 'localhost');
+  return !configuredServer() && !isPrivateHost(location.hostname || 'localhost');
+}
+
+const LOCAL_SERVER = 'ws://localhost:8787/ws';
+
+/** VITE_SERVER_URL, else the Cloudflare backend's world socket. */
+function configuredServer(): string {
+  const explicit = (import.meta.env?.VITE_SERVER_URL as string | undefined)?.trim();
+  if (explicit) return explicit;
+  const cloud = cloudBase();
+  return cloud ? `${cloud}/ws` : '';
 }
 
 let sequence = 0;

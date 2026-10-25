@@ -1,10 +1,13 @@
 import type { NetMsg } from './protocol';
+import { cloudBase } from './cloud';
 
-// Two-player links. 'peer' = WebRTC through PeerJS (the public PeerJS broker only exchanges the connection
-// offer; game data then flows directly between the two browsers). 'local' = BroadcastChannel between tabs
-// of the same browser (offline play on one machine, and the e2e tests).
+// Two-player links. 'relay' = WebSocket through the Cloudflare backend (one Durable Object per room code relays
+// the messages; works on every network). 'peer' = WebRTC through PeerJS (direct browser-to-browser; fails behind
+// symmetric NAT — 4G, company networks — because there is no TURN server: the "hết thời gian chờ" timeout).
+// 'local' = BroadcastChannel between tabs of the same browser (offline play on one machine, and the e2e tests).
+// Whatever the link, the host stays authoritative and the messages are the same.
 
-export type LinkKind = 'peer' | 'local';
+export type LinkKind = 'relay' | 'peer' | 'local';
 
 export interface Link {
   readonly kind: LinkKind;
@@ -35,9 +38,14 @@ export function normalizeCode(raw: string): string {
   return raw.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
 }
 
-/** Which transport the page uses: `?net=local` forces BroadcastChannel (tests, same-machine play). */
+/**
+ * Which transport the page uses: `?net=local` forces BroadcastChannel (tests, same-machine play), `?net=peer` forces
+ * WebRTC; otherwise the Cloudflare relay when a backend is configured, else WebRTC.
+ */
 export function defaultLinkKind(): LinkKind {
-  return new URLSearchParams(location.search).get('net') === 'local' ? 'local' : 'peer';
+  const forced = new URLSearchParams(location.search).get('net');
+  if (forced === 'local' || forced === 'peer') return forced;
+  return cloudBase() ? 'relay' : 'peer';
 }
 
 // ───────────────────────────── BroadcastChannel ─────────────────────────────
@@ -193,14 +201,185 @@ async function peerJoin(code: string, timeoutMs: number): Promise<Link> {
   });
 }
 
+// ───────────────────────────── Cloudflare relay (WebSocket) ─────────────────────────────
+
+interface RelayFrame { r?: 'ready' | 'peer' | 'gone' | 'error'; token?: string; on?: boolean; reason?: string; code?: string; message?: string; m?: NetMsg[] }
+type RelayError = Error & { code?: string };
+
+/** Outgoing messages are batched per window: one WebSocket frame instead of one per message (Free-plan budget). */
+const FLUSH_MS = 50;
+/** reconnect delays (≈ 40 s in total, inside the room's 60 s grace period) */
+const RETRY_MS = [500, 1000, 2000, 4000, 8000, 8000, 8000, 8000];
+const MAX_QUEUE = 400;
+const OPEN_TIMEOUT_MS = 10_000;
+
+/** One room socket: same slot after a drop (reconnect token), queued + batched sends. */
+class RelaySocket {
+  private ws: WebSocket | null = null;
+  private token = '';
+  private queue: NetMsg[] = [];
+  private flushTimer: ReturnType<typeof setTimeout> | null = null;
+  private retries = 0;
+  private done = false;
+  onFrame: (f: RelayFrame) => void = () => {};
+  onLost: (reason: string) => void = () => {};
+
+  constructor(private base: string, readonly code: string, readonly role: 'host' | 'guest') {}
+
+  /** Opens the socket; resolves on `ready`, rejects with the room's error (`code` set) or a network error. */
+  open(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let ws: WebSocket;
+      try {
+        ws = new WebSocket(`${this.base}/room/${this.code}?role=${this.role}${this.token ? `&token=${this.token}` : ''}`);
+      } catch {
+        reject(new Error('Địa chỉ máy chủ online không hợp lệ'));
+        return;
+      }
+      this.ws = ws;
+      let ready = false;
+      const timer = setTimeout(() => { if (!ready) { reject(new Error('Hết thời gian chờ máy chủ online — kiểm tra mạng rồi thử lại')); ws.close(); } }, OPEN_TIMEOUT_MS);
+      ws.onmessage = (e) => {
+        let f: RelayFrame;
+        try { f = JSON.parse(String(e.data)); } catch { return; }
+        if (f.r === 'ready') {
+          ready = true;
+          clearTimeout(timer);
+          this.token = f.token ?? this.token;
+          this.retries = 0;
+          resolve();
+          this.flush();
+          return;
+        }
+        if (f.r === 'error' && !ready) {
+          clearTimeout(timer);
+          reject(Object.assign(new Error(f.message ?? 'Lỗi phòng'), { code: f.code }));
+          return;
+        }
+        this.onFrame(f);
+      };
+      ws.onclose = () => {
+        clearTimeout(timer);
+        if (this.ws !== ws) return;
+        this.ws = null;
+        if (!ready) reject(new Error('Không kết nối được máy chủ online — kiểm tra mạng rồi thử lại'));
+        else if (!this.done) this.reconnect();
+      };
+    });
+  }
+
+  private reconnect(): void {
+    if (this.done) return;
+    if (this.retries >= RETRY_MS.length) { this.lost('Mất kết nối tới máy chủ online'); return; }
+    setTimeout(() => {
+      if (this.done) return;
+      this.open().catch((e: RelayError) => { if (e.code) this.lost(e.message); else this.reconnect(); });
+    }, RETRY_MS[this.retries++]);
+  }
+
+  private lost(reason: string): void {
+    if (this.done) return;
+    this.done = true;
+    this.onLost(reason);
+  }
+
+  send(m: NetMsg): void {
+    if (this.done) return;
+    this.queue.push(m);
+    if (this.queue.length > MAX_QUEUE) this.queue.splice(0, this.queue.length - MAX_QUEUE);
+    this.flushTimer ??= setTimeout(() => this.flush(), FLUSH_MS);
+  }
+
+  private flush(): void {
+    if (this.flushTimer) clearTimeout(this.flushTimer);
+    this.flushTimer = null;
+    if (!this.queue.length || this.ws?.readyState !== WebSocket.OPEN) return;
+    this.ws.send(JSON.stringify({ m: this.queue }));
+    this.queue = [];
+  }
+
+  /** Test hook: drop the socket as if the network failed (the socket reconnects with its token). */
+  simulateDrop(): void {
+    this.ws?.close();
+  }
+
+  /** Leaves for good: the room tells the other player and closes. */
+  close(): void {
+    if (this.done) return;
+    this.done = true;
+    this.flush();
+    const ws = this.ws;
+    this.ws = null;
+    if (ws?.readyState === WebSocket.OPEN) { ws.send('{"bye":1}'); setTimeout(() => ws.close(), 100); } else ws?.close();
+  }
+}
+
+class RelayLink implements Link {
+  readonly kind = 'relay';
+  onMessage: (m: NetMsg) => void = () => {};
+  onClose: (reason: string) => void = () => {};
+  private closed = false;
+  constructor(private sock: RelaySocket) {
+    sock.onFrame = (f) => {
+      if (this.closed) return;
+      if (Array.isArray(f.m)) for (const m of f.m) this.onMessage(m);
+      else if (f.r === 'gone') this.shut(f.reason ?? 'Đối thủ đã rời phòng');
+    };
+    sock.onLost = (reason) => this.shut(reason);
+  }
+  send(m: NetMsg): void {
+    if (!this.closed) this.sock.send(m);
+  }
+  simulateDrop(): void {
+    this.sock.simulateDrop();
+  }
+  close(): void {
+    if (this.closed) return;
+    this.sock.close();
+    this.shut('Đã rời phòng');
+  }
+  private shut(reason: string): void {
+    if (this.closed) return;
+    this.closed = true;
+    this.onClose(reason);
+  }
+}
+
+async function relayHost(base: string): Promise<HostHandle> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const sock = new RelaySocket(base, newRoomCode(), 'host');
+    try {
+      await sock.open();
+    } catch (e) {
+      if ((e as RelayError).code === 'TAKEN') continue; // code collision: try another
+      throw e;
+    }
+    let taken = false;
+    // the room says "peer on" once the guest has joined
+    const guest = new Promise<Link>((resolve) => {
+      sock.onFrame = (f) => { if (f.r === 'peer' && f.on && !taken) { taken = true; resolve(new RelayLink(sock)); } };
+    });
+    return { code: sock.code, guest, close: () => { if (!taken) sock.close(); } };
+  }
+  throw new Error('Không tạo được mã phòng, thử lại');
+}
+
+async function relayJoin(base: string, code: string): Promise<Link> {
+  const sock = new RelaySocket(base, code, 'guest');
+  await sock.open();
+  return new RelayLink(sock);
+}
+
 // ───────────────────────────── API ─────────────────────────────
 
 export function hostRoom(kind: LinkKind = defaultLinkKind()): Promise<HostHandle> {
-  return kind === 'local' ? Promise.resolve(localHost(newRoomCode())) : peerHost();
+  if (kind === 'local') return Promise.resolve(localHost(newRoomCode()));
+  return kind === 'relay' ? relayHost(cloudBase()) : peerHost();
 }
 
 export function joinRoom(code: string, kind: LinkKind = defaultLinkKind(), timeoutMs = 15_000): Promise<Link> {
   const c = normalizeCode(code);
   if (c.length !== 6) return Promise.reject(new Error('Mã phòng gồm 6 ký tự'));
-  return kind === 'local' ? localJoin(c, Math.min(timeoutMs, 4000)) : peerJoin(c, timeoutMs);
+  if (kind === 'local') return localJoin(c, Math.min(timeoutMs, 4000));
+  return kind === 'relay' ? relayJoin(cloudBase(), c) : peerJoin(c, timeoutMs);
 }

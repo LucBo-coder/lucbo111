@@ -3,7 +3,7 @@ import { POKEMON } from '../src/core/data';
 import { TILE_PX } from '../src/core/map/tiles';
 import { defaultSave, migrate, newAdventure, SaveData } from '../src/systems/saveSchema';
 import type { OwnedPokemon } from '../src/core/progression';
-import type { Db } from './db';
+import type { SqlDb as Db } from './sql';
 
 export const STARTERS = ['bulbasaur', 'charmander', 'squirtle', 'pikachu', 'eevee'] as const;
 
