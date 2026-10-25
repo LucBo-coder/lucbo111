@@ -3,8 +3,6 @@ dist
 test-results
 playwright-report
 
-# Personal-use official sprite pack (never commit or distribute)
-public/assets/official/
-
-# Personal-use PMD (SpriteCollab, CC BY-NC 4.0) animation pack (never commit or distribute)
-public/assets/pmd/
+# NOTE: sprite packs below are intentionally NOT ignored anymore — the user chose to
+# publish them to GitHub Pages for personal mobile play (PMD: CC BY-NC 4.0, see
+# public/assets/pmd/CREDITS.md; official sprites: personal-use).
