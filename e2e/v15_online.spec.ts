@@ -57,15 +57,17 @@ test('online duel: room code, teams, host simulation mirrored on the guest, gues
   await guest.screenshot({ path: info.outputPath('4-guest-duel.png') });
 
   // orders from the guest reach the host simulation
+  // keyboard input goes to the focused page; a background tab also throttles its game loop
+  await guest.bringToFront();
   await guest.keyboard.press('5'); // retreat
   await host.waitForFunction(() => (window as Win).__duel.world.rival.command === 'retreat', undefined, { timeout: 5000 });
   await guest.keyboard.press('Backquote');
   await host.waitForFunction(() => (window as Win).__duel.world.rival.command === 'auto', undefined, { timeout: 5000 });
   // the guest moves its trainer
   const tx0 = await ev<number>(host, `window.__duel.world.rival.trainer.x`);
-  await guest.keyboard.down('a'); await guest.waitForTimeout(700); await guest.keyboard.up('a');
+  await guest.keyboard.down('a'); await guest.waitForTimeout(1000); await guest.keyboard.up('a');
   // (the guest sees a mirrored arena: pressing "left" moves it left on its screen = right in the host's world)
-  await host.waitForFunction((x) => (window as Win).__duel.world.rival.trainer.x > x + 40, tx0, { timeout: 5000 });
+  await host.waitForFunction((x) => (window as Win).__duel.world.rival.trainer.x > x + 40, tx0, { timeout: 10_000 });
   // switch: bench member 1 comes in
   await ev(guest, `window.__duel.switchIn(0)`);
   await host.waitForFunction(() => (window as Win).__duel.world.rival.allies.some((u: Win) => u.defId === 'gardevoir'), undefined, { timeout: 5000 });
