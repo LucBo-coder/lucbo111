@@ -344,6 +344,8 @@ export class World {
   readonly home: Side;
   /** PvP: the opponent's side */
   rival: Side | null = null;
+  /** Second player in PvE; shares enemies, but owns movement, orders and party. */
+  companion: Side | null = null;
   duel: DuelState | null = null;
   enemies: Unit[] = [];
   projectiles: Projectile[] = [];
@@ -472,6 +474,12 @@ export class World {
     return t;
   }
 
+  /** A render-only unit for network snapshots; never stepped by the guest. */
+  visualUnit(data: Partial<Unit>): Unit {
+    return this.blankUnit({ team: 'ally', kind: 'pokemon', defId: '', name: '', level: 1,
+      base: { hp: 50, atk: 50, def: 50, spa: 50, spd: 50, spe: 50 }, ...data });
+  }
+
   private refreshTrainerStats(t: Unit, frac = t.hp / t.maxHp): void {
     t.level = 4 + this.level;
     t.stats = calcStats(t.base, t.level);
@@ -479,13 +487,13 @@ export class World {
     t.hp = Math.max(1, Math.round(t.maxHp * frac));
   }
 
-  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; shiny?: boolean } = {}): Unit {
+  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; companion?: boolean; shiny?: boolean } = {}): Unit {
     const def = POKEMON.get(defId);
     if (!def) throw new Error('Unknown pokemon ' + defId);
-    const side = opts.rival && this.rival ? this.rival : this.home;
+    const side = opts.companion && this.companion ? this.companion : opts.rival && this.rival ? this.rival : this.home;
     const angle = side.allies.length * 1.1;
     const u = this.blankUnit({
-      team: side === this.home ? 'ally' : 'enemy', kind: 'pokemon', shiny: !!opts.shiny, defId, name: def.name, types: [...def.types], role: def.role,
+      team: side === this.rival ? 'enemy' : 'ally', kind: 'pokemon', shiny: !!opts.shiny, defId, name: def.name, types: [...def.types], role: def.role,
       base: def.baseStats, level: opts.level ?? 4 + this.level, radius: def.radius, moveSpeed: def.moveSpeed, ownerUid: opts.uid ?? null,
       attackRange: def.attackRange, critRate: def.critRate, passive: def.passive,
       x: side.trainer.x + this.mirror(side) * Math.cos(angle) * 50, y: side.trainer.y + Math.sin(angle) * 50,
@@ -566,6 +574,7 @@ export class World {
 
   /** The player side a unit belongs to (wild Pokémon, trainers' enemies and bosses: none). */
   sideOf(u: Unit): Side | null {
+    if (this.companion && (u === this.companion.trainer || this.companion.allies.includes(u))) return this.companion;
     if (u.team === 'ally') return this.home;
     return this.rival && (u.kind === 'pokemon' || u.kind === 'trainer') ? this.rival : null;
   }
@@ -701,11 +710,9 @@ export class World {
 
   /** Full heal (waypoint / Pokémon Center / blackout respawn). */
   healParty(): void {
-    this.trainer.hp = this.trainer.maxHp;
-    for (const a of this.allies) {
+    for (const a of this.friendlyUnits()) {
       a.fainted = false; a.hp = a.maxHp; a.statuses.length = 0; a.energy = a.maxEnergy;
     }
-    this.trainer.statuses.length = 0;
   }
 
   respawnTrainer(x: number, y: number): void {
@@ -886,8 +893,10 @@ export class World {
 
     if (this.rival) this.stepDuelSides(dt);
     else {
-      this.updateTrainer(this.home, dt);
-      for (const a of this.allies) this.updateAlly(a, this.home, dt);
+      for (const side of this.sides()) {
+        this.updateTrainer(side, dt);
+        for (const a of side.allies) this.updateAlly(a, side, dt);
+      }
     }
     for (const e of this.enemies) if (e.alive) this.updateEnemy(e, dt);
     this.separateEnemies();
@@ -903,7 +912,7 @@ export class World {
     this.cleanup();
     if (this.duel && this.checkDuel(dt)) return;
 
-    if (this.trainer.hp <= 0) {
+    if (this.trainer.hp <= 0 && (!this.companion || this.companion.trainer.hp <= 0)) {
       this.trainer.hp = 0;
       this.state = 'gameover';
       this.emit({ t: 'sfx', name: 'gameover' });
@@ -949,7 +958,33 @@ export class World {
 
   /** Every player side (home first). */
   sides(): Side[] {
-    return this.rival ? [this.home, this.rival] : [this.home];
+    return this.rival ? [this.home, this.rival] : this.companion ? [this.home, this.companion] : [this.home];
+  }
+
+  /** Attach a teammate without changing PvP targeting rules or the host's party. */
+  addCompanion(): Side {
+    if (this.rival) throw new Error('Co-op is unavailable during a duel');
+    if (this.companion) return this.companion;
+    const trainer = this.makeTrainer();
+    trainer.x = trainer.lastX = this.trainer.x;
+    trainer.y = trainer.lastY = this.trainer.y;
+    trainer.reviveT = 3;
+    return this.companion = newSide(trainer);
+  }
+
+  removeCompanion(): void {
+    if (!this.companion) return;
+    const removed = new Set([this.companion.trainer, ...this.companion.allies]);
+    for (const u of removed) u.alive = false;
+    for (const u of [...this.enemies, ...this.allies]) {
+      if (u.target && removed.has(u.target)) u.target = null;
+      if (u.castTarget && removed.has(u.castTarget)) u.castTarget = null;
+      if (u.wild?.lastAttacker && removed.has(u.wild.lastAttacker)) u.wild.lastAttacker = null;
+      if (u.wild?.threat && removed.has(u.wild.threat)) u.wild.threat = null;
+    }
+    this.projectiles = this.projectiles.filter(p => !p.owner || !removed.has(p.owner));
+    this.zones = this.zones.filter(z => !removed.has(z.owner));
+    this.companion = null;
   }
 
   /** PvP: a side with no Pokémon standing loses; at the time limit the larger remaining HP share wins. */
@@ -982,6 +1017,7 @@ export class World {
 
   private updateTrainer(side: Side, dt: number): void {
     const t = side.trainer;
+    if (this.companion && t.hp <= 0) { t.hp = 0; t.vx = t.vy = 0; return; }
     let ix = side.input.x, iy = side.input.y;
     const len = Math.hypot(ix, iy);
     if (len > 1) { ix /= len; iy /= len; }
@@ -1162,9 +1198,11 @@ export class World {
   }
 
   countAllies(x: number, y: number, r: number): number {
-    let n = dist2(this.trainer, x, y) <= r * r ? 1 : 0;
-    for (const a of this.allies) if (!a.fainted && dist2(a, x, y) <= r * r) n++;
-    return n;
+    return this.friendlyUnits().filter(a => a.hp > 0 && !a.fainted && dist2(a, x, y) <= r * r).length;
+  }
+
+  friendlyUnits(): Unit[] {
+    return this.companion ? [this.trainer, ...this.allies, this.companion.trainer, ...this.companion.allies] : [this.trainer, ...this.allies];
   }
 
   private allyMove(u: Unit, side: Side, dt: number): void {
@@ -1355,10 +1393,10 @@ export class World {
     let best: Unit = this.trainer;
     // Melee units focus the trainer; ranged units shoot whatever is closest
     const trainerBias = e.behavior === 'ranged' ? 1 : 0.85;
-    let bestD = Math.hypot(this.trainer.x - e.x, this.trainer.y - e.y) * trainerBias;
-    for (const a of this.allies) {
-      if (a.fainted) continue;
-      let d = Math.hypot(a.x - e.x, a.y - e.y);
+    let bestD = this.trainer.hp > 0 ? Math.hypot(this.trainer.x - e.x, this.trainer.y - e.y) * trainerBias : Infinity;
+    for (const a of this.friendlyUnits()) {
+      if (a.fainted || a.hp <= 0) continue;
+      let d = Math.hypot(a.x - e.x, a.y - e.y) * (a.kind === 'trainer' ? trainerBias : 1);
       if (this.hasStatus(a, 'taunt') && d < 260) d *= 0.2;
       if (d < bestD) { bestD = d; best = a; }
     }
@@ -1401,7 +1439,7 @@ export class World {
       }
     }
     // Allies shouldn't sit inside enemies either
-    for (const a of this.allies) {
+    for (const a of this.sides().flatMap(s => s.allies)) {
       if (a.fainted || a.dash) continue;
       this.scratch.length = 0;
       for (const o of this.grid.query(a.x, a.y, a.radius + 40, this.scratch)) {
@@ -1540,7 +1578,8 @@ export class World {
     b.lastSkill = s.def.id;
     switch (s.def.id) {
       case 'rock_throw': {
-        const targets = [this.trainer, ...this.allies.filter((a) => !a.fainted)];
+        const targets = this.friendlyUnits().filter(a => !a.fainted && a.hp > 0);
+        if (!targets.length) break;
         const n = st.phase === 2 ? 6 : 3;
         for (let i = 0; i < n; i++) {
           const tg = targets[i % targets.length];
@@ -1615,7 +1654,8 @@ export class World {
     if (st.patternT > 0) return;
     st.patternT = 1.6 * fast;
     b.animCast = 0.6;
-    const live = [this.trainer, ...this.allies.filter((a) => !a.fainted)];
+    const live = this.friendlyUnits().filter(a => !a.fainted && a.hp > 0);
+    if (!live.length) return;
     const roll = this.rng.next();
     if (st.phase === 3 && b.lastSkill !== 'ultimate' && roll < 0.4) { this.legendUltimate(b, L); return; }
     if (d < 170 && roll < 0.5) {
@@ -1666,7 +1706,7 @@ export class World {
     }
     if (L.ultimateStyle === 'timestop') {
       // Dialga: time nearly stops for the player's side, then a delayed storm falls
-      for (const a of [this.trainer, ...this.allies]) if (!a.fainted) this.applyStatus(a, { kind: 'slow', chance: 1, duration: 3, magnitude: 0.7 }, b);
+      for (const a of this.friendlyUnits()) if (!a.fainted && a.hp > 0) this.applyStatus(a, { kind: 'slow', chance: 1, duration: 3, magnitude: 0.7 }, b);
       this.emit({ t: 'banner', text: 'Thời gian ngưng đọng!', color: '#a0c8ff' });
       this.ultimateStorm(b, L, pw, 1.4);
       st.patternT = 5;
@@ -1696,7 +1736,7 @@ export class World {
     } else if (style === 'storm') {
       // Staggered strikes: on every target, then scattered over the arena
       const slot = this.bossSlot(b, L.ultimate, { power: 95 * pw, radius: 75, kind: 'aoe' }, 'ult-storm');
-      const live = [this.trainer, ...this.allies.filter((a) => !a.fainted)];
+      const live = this.friendlyUnits().filter(a => !a.fainted && a.hp > 0);
       for (let i = 0; i < 16; i++) {
         let x: number, y: number;
         if (i < live.length * 2) { const tg = live[i % live.length]; x = tg.x + tg.vx * 0.6; y = tg.y + tg.vy * 0.6; }
@@ -1734,7 +1774,7 @@ export class World {
   private ultimateStorm(b: Unit, L: NonNullable<BossDef['legend']>, pw: number, delay0: number): void {
     const st = b.boss!;
     const slot = this.bossSlot(b, L.ultimate, { power: 95 * pw, radius: 75, kind: 'aoe' }, 'ult-storm');
-    const live = [this.trainer, ...this.allies.filter((a) => !a.fainted)];
+    const live = this.friendlyUnits().filter(a => !a.fainted && a.hp > 0);
     for (let i = 0; i < 16; i++) {
       let x: number, y: number;
       if (i < live.length * 2) { const tg = live[i % live.length]; x = tg.x + tg.vx * 0.6; y = tg.y + tg.vy * 0.6; }
@@ -1768,7 +1808,8 @@ export class World {
     const fast = st.phase === 1 ? 1 : st.phase === 2 ? 0.8 : 0.65;
     st.patternT = 1.7 * fast;
     b.animCast = 0.6;
-    const live = [this.trainer, ...this.allies.filter((a) => !a.fainted)];
+    const live = this.friendlyUnits().filter(a => !a.fainted && a.hp > 0);
+    if (!live.length) return;
     const roll = this.rng.next();
     if (st.phase === 3 && (b.lastSkill !== 'sunburst' && roll < 0.4)) {
       // Arena-wide sun blast with three shade circles (the only safe ground)
@@ -2011,8 +2052,7 @@ export class World {
       return out;
     }
     if (team === 'ally') return this.grid.query(x, y, r, out);
-    if (dist2(this.trainer, x, y) <= r2) out.push(this.trainer);
-    for (const a of this.allies) if (!a.fainted && dist2(a, x, y) <= r2) out.push(a);
+    for (const a of this.friendlyUnits()) if (a.hp > 0 && !a.fainted && dist2(a, x, y) <= r2) out.push(a);
     return out;
   }
 
@@ -2451,10 +2491,11 @@ export class World {
   }
 
   private updateGems(dt: number): void {
-    const t = this.trainer;
     const magnet = 115 * (1 + this.mods.magnet);
     for (const g of this.gems) {
       if (!g.active) continue;
+      const t = this.companion && this.companion.trainer.hp > 0 && (this.trainer.hp <= 0 || dist2(this.companion.trainer, g.x, g.y) < dist2(this.trainer, g.x, g.y)) ? this.companion.trainer : this.trainer;
+      if (t.hp <= 0) continue;
       const dx = t.x - g.x, dy = t.y - g.y, d = Math.hypot(dx, dy);
       if (!g.pulled && d < magnet) g.pulled = true;
       if (g.pulled) {
@@ -2481,12 +2522,13 @@ export class World {
       this.level++;
       this.expNext = expToNext(this.level);
       this.pendingLevelUps++;
-      for (const a of this.allies) {
+      for (const a of this.sides().flatMap(s => s.allies)) {
         a.level = 4 + this.level;
         this.refreshAllyStats(a);
         if (!a.fainted) a.hp = Math.min(a.maxHp, a.hp + Math.round(a.maxHp * 0.1));
       }
       this.refreshTrainerStats(this.trainer);
+      if (this.companion) this.refreshTrainerStats(this.companion.trainer);
       this.emit({ t: 'levelup', level: this.level });
       this.emit({ t: 'sfx', name: 'levelup' });
     }
@@ -2517,8 +2559,10 @@ export class World {
         const cfg = UPGRADES.stats.find((s) => s.stat === o.stat)!;
         this.mods[o.stat] = Math.min(cfg.cap, Math.round((this.mods[o.stat] + o.value) * 100) / 100);
         if (o.stat === 'hpMult') {
-          for (const a of this.allies) this.refreshAllyStats(a);
-          this.refreshTrainerStats(this.trainer);
+          for (const side of this.sides()) {
+            for (const a of side.allies) this.refreshAllyStats(a);
+            this.refreshTrainerStats(side.trainer);
+          }
         }
         break;
       }

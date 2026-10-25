@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { coopSession } from '../net/coop';
+import { net } from '../net/session';
 
 // GameModeManager: the single place that starts/stops mode scenes so Survivor and Adventure
 // never run at the same time or leak each other's systems.
@@ -8,7 +10,7 @@ export type GameMode = 'survivor' | 'adventure' | 'online';
 const MODE_SCENES: Record<GameMode, string[]> = {
   survivor: ['Game', 'UI', 'Result'],
   adventure: ['Adventure', 'AdvUI'],
-  online: ['Lobby', 'Duel', 'DuelUI'],
+  online: ['Lobby', 'Duel', 'DuelUI', 'CoopGuest'],
 };
 
 class GameModeManager {
@@ -30,6 +32,7 @@ class GameModeManager {
   }
 
   toMenu(scene: Phaser.Scene): void {
+    if (coopSession.active) { coopSession.active = false; net.leave(); }
     this.stopAll(scene);
     this.current = null;
     scene.scene.start('Menu');

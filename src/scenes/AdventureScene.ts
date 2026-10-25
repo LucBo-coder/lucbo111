@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { CoopHost, coopSession } from '../net/coop';
 import { passportPages, stampVisit } from '../adventure/passport';
 import { OnlinePresence } from '../adventure/OnlinePresence';
 import { net } from '../net/session';
@@ -287,12 +288,26 @@ export class AdventureScene extends Phaser.Scene {
 
   /** Shared open world with the other player of the online session (see OnlinePresence). */
   presence: OnlinePresence | null = null;
+  coopHost: CoopHost | null = null;
+  startCoopHost(): void {
+    coopSession.active = true;
+    this.presence?.destroy(); this.presence = null;
+    this.coopHost?.destroy();
+    this.coopHost = new CoopHost(this.world, () => ({
+      kind: this.mapKind === 'dungeon' ? 'dungeon' : 'region',
+      id: this.mapKind === 'dungeon' ? this.dungeonId : this.regionDef.id,
+      width: this.world.width, height: this.world.height,
+      doors: this.map instanceof DungeonMap ? [this.map.doorOpen('D'), this.map.doorOpen('Q')] : undefined,
+    }));
+  }
   startPresence(): void {
+    if (coopSession.active) { if (net.role === 'host') this.startCoopHost(); return; }
     this.presence?.destroy();
     this.presence = new OnlinePresence(this);
   }
 
   private shutdown(): void {
+    this.coopHost?.destroy(); this.coopHost = null;
     this.presence?.destroy();
     this.presence = null;
     // events never outlive the scene (timers, spawned units, weather override, chests)
@@ -310,6 +325,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private onBlur(): void {
+    if (coopSession.active) return;
     if (!this.modal) this.ui?.openMenu('settings');
   }
 
@@ -755,6 +771,7 @@ export class AdventureScene extends Phaser.Scene {
     }
 
     const events = w.drainEvents();
+    this.coopHost?.update(performance.now(), this.modal, events);
     this.handleGameplayEvents(events);
     this.renderer_.handle(events);
     this.renderer_.render(delta);
@@ -1389,6 +1406,7 @@ export class AdventureScene extends Phaser.Scene {
     this.ui.banner('Nhận được: ' + Object.entries(c.items).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`).join(', '), '#ffe066');
     this.state.addWorldExp(40);
     this.questEvent({ type: 'collect', target: c.id });
+    this.coopHost?.grant({ items: { ...c.items }, currency: 150, note: 'Rương báu' });
     this.persist();
   }
 
@@ -1505,6 +1523,7 @@ export class AdventureScene extends Phaser.Scene {
     const extra = firstClear ? dd.difficulties[this.difficulty].firstClear ?? {} : {};
     const lines = this.state.grant({ items: { ...r.items, ...extra }, worldExp: r.worldExp, reputation: r.reputation });
     this.state.earn(r.exp);
+    this.coopHost?.grant({ items: { ...r.items, ...extra }, currency: r.exp, note: 'Phần thưởng hầm ngục' });
     if (firstClear && Object.keys(extra).length) lines.push('(Thưởng hoàn thành lần đầu)');
     const alive = this.world.allies.filter((a) => a.ownerUid).map((a) => a.ownerUid!);
     for (const up of this.state.gainExp(alive, r.exp)) {
@@ -1762,6 +1781,7 @@ export class AdventureScene extends Phaser.Scene {
       this.state.addWorldExp(30);
       this.tweens.add({ targets: fx.ball, alpha: 0, duration: 600, delay: 400, onComplete: () => fx.ball.destroy() });
       this.questEvent({ type: 'capture', target: u.defId });
+      this.coopHost?.grant({ pokemon: { species: u.defId, level: u.level, shiny: u.shiny, ball: fx.ballId }, note: 'Bắt Pokémon' });
       this.persist();
     } else {
       this.world.endCapture(u, false);

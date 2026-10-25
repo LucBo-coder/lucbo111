@@ -9,6 +9,7 @@ import { AdventureUI } from './scenes/AdventureUI';
 import { LobbyScene } from './scenes/LobbyScene';
 import { DuelScene } from './scenes/DuelScene';
 import { DuelUI } from './scenes/DuelUI';
+import { CoopGuestScene } from './scenes/CoopGuestScene';
 
 async function boot(): Promise<void> {
   // Wait (briefly) for the pixel font so canvas text doesn't render in a fallback font
@@ -26,7 +27,7 @@ async function boot(): Promise<void> {
     scale: { mode: Phaser.Scale.RESIZE, width: window.innerWidth, height: window.innerHeight },
     input: { activePointers: 3 },
     fps: { target: 60, forceSetTimeOut: false },
-    scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI],
+    scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene],
   });
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
 }

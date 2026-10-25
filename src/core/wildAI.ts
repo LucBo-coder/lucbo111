@@ -40,9 +40,9 @@ const LOD_TICK = 0.4;
 
 function nearestThreat(world: World, e: Unit): { u: Unit; d: number } {
   let best = world.trainer;
-  let bd = Math.hypot(best.x - e.x, best.y - e.y);
-  for (const a of world.allies) {
-    if (a.fainted) continue;
+  let bd = best.hp > 0 ? Math.hypot(best.x - e.x, best.y - e.y) : Infinity;
+  for (const a of world.friendlyUnits()) {
+    if (a.fainted || a.hp <= 0) continue;
     const d = Math.hypot(a.x - e.x, a.y - e.y);
     if (d < bd) { bd = d; best = a; }
   }
@@ -149,7 +149,7 @@ export function updateWild(world: World, e: Unit, dtIn: number): void {
       const dHome = Math.hypot(e.x - w.homeX, e.y - w.homeY);
       const dT = Math.hypot(tg.x - e.x, tg.y - e.y);
       if (dHome > w.leash || dT > w.aggroR * 3.2) { w.calmT += dt; } else w.calmT = 0;
-      if (w.calmT > 2.5 || world.trainer.hp <= 0) { set(w, 'return', 0); e.hostile = false; break; }
+      if (w.calmT > 2.5 || (world.trainer.hp <= 0 && (!world.companion || world.companion.trainer.hp <= 0))) { set(w, 'return', 0); e.hostile = false; break; }
 
       const maxRange = Math.max(...e.skills.map((s) => (s.def.power > 0 || s.def.kind === 'debuff' ? s.def.range : 0)), 50);
       const ranged = e.role === 'marksman' || e.role === 'mage' || e.role === 'support';

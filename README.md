@@ -8,11 +8,15 @@ Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.
 
 **Online** (0.13.0): menu chính → *⚔ Đấu online* — tạo phòng / vào bằng mã 6 ký tự, đấu đội thời gian thực; hoặc trong Phiêu lưu → Cài đặt → *Chơi online cùng bạn* để đi chung thế giới và thách đấu nhau. Kết nối WebRTC trực tiếp giữa hai trình duyệt (PeerJS), không cần server riêng. Thêm `?net=local` để chơi 2 tab trên cùng máy.
 
+**Co-op PvE (2 người)**: Sinh tồn → Esc → *Co-op cùng bạn*; Phiêu lưu / Việt Nam Odyssey → Cài đặt → *Co-op: cùng đánh quái*. Chủ phòng tạo mã, khách chọn tham gia bằng mã. Cả hai cùng đánh quái và boss; khách theo chủ phòng khi chuyển vùng hoặc vào hầm ngục. Khách mang tối đa 3 Pokémon, điều khiển WASD/Shift hoặc kéo bên trái màn hình, chạm quái để tập trung tấn công, phím \` và 1–5 để ra lệnh. Đứng gần người bị gục 3 giây để cứu; đi cách chủ phòng quá 900 px sẽ được đưa về cạnh họ.
+
+Chủ phòng xử lý mô phỏng và tương tác cốt truyện, chọn nâng cấp Sinh tồn. **Chiến lợi phẩm được chia cho cả hai**: Pokémon hoang dã chủ phòng bắt được, đồ trong rương, phần thưởng hầm ngục và xu cuối lượt Sinh tồn đều được cộng vào ô lưu riêng của khách (hiện trên HUD khách). Nhiệm vụ, cờ cốt truyện và huy hiệu vẫn chỉ thuộc chủ phòng để không phá tiến trình chiến dịch của khách; khách không mất Pokémon/HP vì chuyến hỗ trợ. Tham gia từ Sinh tồn kết thúc lượt riêng đang chơi. Hai máy cần cùng phiên bản giao thức; co-op dùng giao thức v2.
+
 ```bash
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + build production vào dist/
-npm test           # 278 unit test (Vitest)
+npm test           # unit tests (Vitest)
 node scripts/sync-pokeapi.mjs   # đồng bộ lại dữ liệu PokéAPI (151 loài Gen 1 + bổ sung)
 node scripts/sync-ev-yield.mjs  # đồng bộ EV yield của 1025 loài từ PokéAPI → src/data/pokeapi/ev-yield.json
 node scripts/build-dex.mjs      # sinh src/data/dex/* (493 loài, kỹ năng, sinh thái, boss huyền thoại) từ cache PokéAPI

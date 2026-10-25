@@ -1,10 +1,12 @@
 import type { AllyCommand } from '../core/world';
 import type { Stats } from '../core/stats';
+import type { CoopSnapshot } from './coop';
+import type { CoopLoot } from './coopRewards';
 
 // Wire protocol of online play (PeerJS data channel or BroadcastChannel). JSON messages, one `t` tag each.
 // The host is authoritative: it runs the duel simulation; the guest sends inputs and draws snapshots.
 
-export const PROTOCOL_VERSION = 1;
+export const PROTOCOL_VERSION = 2;
 
 /** One party member as sent over the wire (from the player's Collection, or a rental). */
 export interface DuelMon {
@@ -77,6 +79,11 @@ export interface Snapshot {
 }
 
 export type NetMsg =
+  | { t: 'coopJoin'; party: DuelMon[] }
+  | { t: 'coopInput'; epoch: string; seq: number; x: number; y: number; run: boolean; command: AllyCommand; target?: number }
+  | { t: 'coopSnap'; s: CoopSnapshot }
+  | { t: 'coopLoot'; reward: CoopLoot }
+  | { t: 'coopEnd'; reason: string }
   | { t: 'hello'; v: number; name: string; game: string }
   | { t: 'ping'; at: number }
   | { t: 'pong'; at: number }

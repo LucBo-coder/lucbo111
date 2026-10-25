@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { openCoopMenu } from './coopMenu';
+import { net } from '../net/session';
 import { music } from '../systems/music';
 import { POKEMON } from '../core/data';
 import { Offer } from '../core/upgrades';
@@ -392,6 +394,7 @@ export class UIScene extends Phaser.Scene {
       fps.setLabel(`Hiện FPS: ${saveStore.data.settings.showFps ? 'BẬT' : 'TẮT'}`);
     });
     c.add(fps.container);
+    c.add(button(this, W / 2, by - bh - 12 * s, bw, bh, net.code ? `Co-op: ${net.code}` : 'Co-op cùng bạn', () => openCoopMenu(this, this.game_), 0x2f5a6a).container);
     c.add(button(this, W / 2, by + (bh + 14 * s) * 3, bw, bh, '✖ Bỏ cuộc', () => gameModes.toMenu(this), 0x6a2f2f).container);
     this.pauseLayer = c;
   }

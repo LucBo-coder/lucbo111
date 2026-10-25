@@ -150,7 +150,7 @@ function begin(w: World, b: Unit, id: RaySkill, t: Unit): RayAct {
 function stepAct(w: World, b: Unit, a: RayAct): boolean {
   const st = b.boss!, rs = st.ray!;
   const since = w.time - a.stepAt;
-  const live = [w.trainer, ...w.allies.filter((x) => !x.fainted)];
+  const live = w.friendlyUnits().filter(x => !x.fainted && x.hp > 0);
   const tg = w.trainer;
   switch (a.id) {
     case 'dragon_dance':

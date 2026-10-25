@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { CoopHost, coopSession } from '../net/coop';
+import { net } from '../net/session';
 import { music } from '../systems/music';
 import { individualOf, makeOwned } from '../core/progression';
 import { playableSpecies } from '../core/data';
@@ -23,6 +25,12 @@ export interface PerfStats {
 
 /** SURVIVOR mode. Run-only data (levels, cards, mods) lives in its World and is never saved. */
 export class GameScene extends Phaser.Scene {
+  coopHost: CoopHost | null = null;
+  startCoopHost(): void {
+    coopSession.active = true;
+    this.coopHost?.destroy();
+    this.coopHost = new CoopHost(this.world, () => ({ kind: 'survivor', id: 'survivor', width: this.world.width, height: this.world.height }));
+  }
   world!: World;
   starter = 'charmander';
   paused = false;
@@ -79,7 +87,9 @@ export class GameScene extends Phaser.Scene {
     this.game.events.on('blur', this.onBlur, this);
 
     this.scene.launch('UI', { game: this });
+    if (coopSession.active && net.role === 'host') this.startCoopHost();
     this.events.once('shutdown', () => {
+      this.coopHost?.destroy(); this.coopHost = null;
       this.scale.off('resize', this.applyZoom, this);
       this.game.events.off('blur', this.onBlur, this);
       this.renderer_.destroy();
@@ -87,6 +97,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private onBlur(): void {
+    if (coopSession.active) return;
     if (!this.ended && this.world.state === 'playing') this.setPaused(true);
   }
 
@@ -161,7 +172,9 @@ export class GameScene extends Phaser.Scene {
       simMs = performance.now() - s0;
     }
 
-    this.renderer_.handle(w.drainEvents());
+    const events = w.drainEvents();
+    this.coopHost?.update(performance.now(), this.paused, events);
+    this.renderer_.handle(events);
     this.renderer_.render(delta);
 
     if ((w.state === 'gameover' || w.state === 'victory') && !this.ended) this.endRun();
@@ -175,6 +188,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   private endRun(): void {
+    if (coopSession.active) {
+      const w = this.world;
+      // the guest played support: pay a share of the run's earnings into its own save
+      this.coopHost?.grant({ currency: Math.max(10, Math.floor(w.kills / 10) + w.level * 2 + w.bossesDefeated * 50), note: 'Thưởng hỗ trợ sinh tồn' });
+      net.send({ t: 'coopEnd', reason: this.world.state === 'victory' ? 'Cả đội đã chiến thắng!' : 'Lượt sinh tồn đã kết thúc.' });
+    }
     this.ended = true;
     const w = this.world;
     const summary: RunSummary = {

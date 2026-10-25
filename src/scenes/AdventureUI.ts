@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { openCoopMenu } from './coopMenu';
+import { coopSession } from '../net/coop';
 import { music } from '../systems/music';
 import { BossHUDController } from '../ui/BossHUDController';
 import cache from '../data/pokeapi/pokeapi-cache.json';
@@ -363,7 +365,7 @@ export class AdventureUI extends Phaser.Scene {
     this.texts.cmd.setText(`Lệnh đội: ${cmd.label}${w.commandTarget ? ' → ' + w.commandTarget.name : ''}   (\` 1-5)`).setPosition(16 * s, H - 54 * s);
 
     // Online session (shared open world)
-    this.texts.online.setText(net.status === 'hosting' ? `ONLINE · Phòng ${net.code} — chờ bạn vào (Cài đặt → Chơi online)` : net.connected ? `ONLINE · Đang chơi cùng ${net.peerName} · ${net.rtt} ms${a.presence?.visible() ? '' : ' · ở vùng khác'}` : '');
+    this.texts.online.setText(net.status === 'hosting' ? `ONLINE · Phòng ${net.code} — chờ bạn vào` : net.connected ? `${coopSession.active ? 'CO-OP' : 'ONLINE'} · Đang chơi cùng ${net.peerName} · ${net.rtt} ms${coopSession.active || a.presence?.visible() ? '' : ' · ở vùng khác'}` : '');
 
     // Interaction prompt
     const n = a.nearest;
@@ -1261,7 +1263,7 @@ export class AdventureUI extends Phaser.Scene {
   async onlineMenu(): Promise<void> {
     this.closeMenu();
     const a = this.adv;
-    if (net.connected || net.status === 'hosting') { net.leave(); a.presence?.destroy(); a.presence = null; this.banner('Đã rời phòng online', '#c0c8e0'); return; }
+    if (net.connected || net.status === 'hosting') { coopSession.active = false; net.leave(); a.coopHost?.destroy(); a.coopHost = null; a.presence?.destroy(); a.presence = null; this.banner('Đã rời phòng online', '#c0c8e0'); return; }
     const r = await a.say('Chơi online cùng bạn', ['Hai người cùng đi trong thế giới mở (mỗi người giữ Pokémon hoang dã, nhiệm vụ, đồ của mình) và thách đấu nhau bằng cách lại gần rồi nhấn E.', 'Kết nối trực tiếp qua WebRTC; người tạo phòng đọc mã cho bạn mình.'],
       [{ label: 'Tạo phòng', value: 'host' }, { label: 'Vào phòng bằng mã', value: 'join' }, { label: 'Hủy', value: 'no' }]);
     const kind = defaultLinkKind();
@@ -1322,7 +1324,8 @@ export class AdventureUI extends Phaser.Scene {
     }
     c.add(button(this, r.x + 160 * s, r.y + 240 * s, 300 * s, 40 * s, 'Lưu game', () => { this.adv.persist(); this.banner('Đã lưu', '#80ff90'); }).container);
     c.add(button(this, r.x + 160 * s, r.y + 290 * s, 300 * s, 40 * s, 'Lưu & về menu chính', () => { this.closeMenu(); this.adv.exitToMenu(); }, 0x6a2f2f).container);
-    c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Rời phòng (${net.peerName})` : net.status === 'hosting' ? `Hủy phòng ${net.code}` : 'Chơi online cùng bạn', () => void this.onlineMenu(), 0x2f5a6a).container);
+    c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', () => openCoopMenu(this, this.adv), 0x2f5a6a).container);
+    c.add(button(this, r.x + 160 * s, r.y + 388 * s, 300 * s, 36 * s, 'Đi chung / thách đấu PvP', () => void this.onlineMenu(), 0x3a3a5a).container);
     c.add(text(this, r.x + 340 * s, r.y + 130 * s,
       'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\n` 1-5 lệnh đội: Tự do / Tấn công / Bảo vệ /\n   Đi theo / Giữ vị trí / Rút lui\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
   }

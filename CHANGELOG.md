@@ -1,5 +1,13 @@
 # Changelog
 
+## Chưa phát hành — co-op PvE
+- Phòng co-op 2 người trong Sinh tồn, Phiêu lưu, Việt Nam Odyssey và hầm ngục; tách khỏi chế độ đi chung/PvP cũ.
+- Đồng minh có nhân vật, đội Pokémon và lệnh riêng; dùng chung quái, boss và HP do chủ phòng mô phỏng. Cứu đồng đội bằng cách đứng gần 3 giây.
+- Khách xem snapshot có nội suy, gửi input có số thứ tự; dừng di chuyển khi input quá hạn, dọn đội khi mất kết nối, theo bản đồ chủ phòng khi chuyển cảnh.
+- **Chia chiến lợi phẩm cho khách** (message `coopLoot`): Pokémon hoang dã chủ phòng bắt được, đồ trong rương, phần thưởng hầm ngục và xu cuối lượt Sinh tồn được cộng vào **ô lưu riêng của khách**; hiện trên HUD khách. Dữ liệu được làm sạch trước khi ghi (chỉ item đã biết, cấp 1–100, trần số lượng/xu). Nhiệm vụ, cờ cốt truyện, huy hiệu và legendary vẫn thuộc chủ phòng — không phá tiến trình chiến dịch của khách.
+- Giao thức online v2 (thêm `coopLoot`, tương thích ngược); bổ sung kiểm tra logic và kiểm tra hai trình duyệt.
+- Test mới: 5 unit cho `applyCoopLoot` (làm sạch dữ liệu, trần cấp/số lượng, cộng dồn), 1 unit cho `CoopHost.grant`; e2e co-op kiểm tra save khách nhận đúng phần thưởng và không đổi gì khác.
+
 ## [0.13.0] — 2026-10-25 — Chơi online: thách đấu người chơi, đi chung thế giới mở; engine chiến đấu hai phe
 
 ### Đấu online (menu chính → ⚔ Đấu online)

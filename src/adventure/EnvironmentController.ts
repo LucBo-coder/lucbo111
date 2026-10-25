@@ -23,7 +23,7 @@ export class EnvironmentController {
   /** Player side currently on the field. */
   private side(): Unit[] {
     const w = this.scene.world;
-    return [w.trainer, ...w.allies.filter((a) => !a.fainted)];
+    return w.friendlyUnits().filter(a => !a.fainted && a.hp > 0);
   }
 
   private terrainUnder(u: Unit): number {
