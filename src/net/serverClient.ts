@@ -22,7 +22,7 @@ export class ServerClient {
     this.close();
     const endpoint = new URL(url);
     if (!['ws:', 'wss:'].includes(endpoint.protocol)) throw new Error('Địa chỉ phải bắt đầu bằng ws:// hoặc wss://.');
-    if (location.protocol === 'https:' && endpoint.protocol !== 'wss:') throw new Error('Trang HTTPS cần máy chủ wss://.');
+    if (location.protocol === 'https:' && endpoint.protocol !== 'wss:' && !isLocalHost(endpoint.hostname)) throw new Error('Trang HTTPS cần máy chủ wss:// (hoặc ws://localhost).');
     this.url = url;
     this.final = false;
     this.open(endpoint, auth);
@@ -33,7 +33,7 @@ export class ServerClient {
     this.status(this.reconnecting ? `Mất kết nối — đang kết nối lại (lần ${this.retries})…` : 'Đang kết nối…');
     this.timer = setTimeout(() => {
       if (this.socket !== socket) return;
-      this.drop(socket, 'Kết nối quá hạn. Kiểm tra địa chỉ máy chủ rồi thử lại.');
+      this.drop(socket, unreachable(endpoint, 'Kết nối quá hạn'));
     }, 12_000);
     socket.onopen = () => socket.send(JSON.stringify(auth));
     socket.onmessage = (event) => {
@@ -61,7 +61,7 @@ export class ServerClient {
     };
     socket.onerror = () => {
       if (this.socket !== socket) return;
-      this.drop(socket, 'Không kết nối được máy chủ. Kiểm tra địa chỉ và thử lại.');
+      this.drop(socket, unreachable(endpoint, 'Không kết nối được máy chủ'));
     };
     socket.onclose = () => {
       if (this.socket !== socket) return;
@@ -121,6 +121,36 @@ export class ServerClient {
     this.retries = 0;
     this.close();
   }
+}
+
+const isLocalHost = (host: string) => host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
+const isPrivateHost = (host: string) => isLocalHost(host) || /^(10|192\.168|172\.(1[6-9]|2\d|3[01]))\./.test(host) || host.endsWith('.local');
+
+function unreachable(endpoint: URL, what: string): string {
+  const hint = isLocalHost(endpoint.hostname)
+    ? 'Máy chủ chưa chạy? Mở terminal trong thư mục game và chạy: npm run server'
+    : 'Kiểm tra máy chủ đang chạy, địa chỉ / cổng đúng và tường lửa cho phép kết nối.';
+  return `${what}: ${endpoint.href}\n${hint}`;
+}
+
+/**
+ * Server address shown in the login form. Order: the last address the player used, the build-time VITE_SERVER_URL,
+ * then the page's own host when it is a local / LAN dev server. A static host (GitHub Pages) cannot run the game
+ * server, so there the fallback is a server on this computer (browsers allow ws://localhost from HTTPS pages).
+ */
+export function defaultEndpoint(saved: string | null): string {
+  const host = location.hostname || 'localhost';
+  const configured = (import.meta.env.VITE_SERVER_URL as string | undefined)?.trim();
+  const own = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${host}:8787/ws`;
+  const fallback = configured || (isPrivateHost(host) ? own : 'ws://localhost:8787/ws');
+  // older builds saved "<static host>:8787", which can never answer: drop it
+  if (saved && !(saved === own && !isPrivateHost(host))) return saved;
+  return fallback;
+}
+
+/** True when nobody configured a server for this (static) build: the login form explains how to get one. */
+export function needsServerHint(): boolean {
+  return !import.meta.env.VITE_SERVER_URL && !isPrivateHost(location.hostname || 'localhost');
 }
 
 let sequence = 0;

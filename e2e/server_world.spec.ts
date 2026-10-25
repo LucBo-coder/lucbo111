@@ -145,8 +145,8 @@ test('two accounts: presence, chat, PC/candy and reconnect preserve offline save
     await a.getByRole('button', { name: '◀ Quay lại', exact: true }).click();
     await expect(a.locator('.server-world')).toHaveCount(0);
     await expect.poll(() => b.evaluate(() => (window as any).__phaser.scene.getScene('ServerWorld').remotes.size)).toBe(0);
-    const after = await a.evaluate(() => { const copy = { ...localStorage }; delete copy['survivor.server.endpoint']; return JSON.stringify(copy); });
-    const before = JSON.parse(offline); delete before['survivor.server.endpoint'];
+    const after = await a.evaluate(() => { const copy = { ...localStorage }; delete copy['survivor.server.endpoint']; delete copy['survivor.server.username']; return JSON.stringify(copy); });
+    const before = JSON.parse(offline); delete before['survivor.server.endpoint']; delete before['survivor.server.username'];
     expect(JSON.parse(after)).toEqual(before);
     expect(errors).toEqual([]);
   } finally { await a.close(); await b.close(); }

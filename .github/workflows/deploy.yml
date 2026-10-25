@@ -26,6 +26,10 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+        env:
+          # Public game server for the online world (repository variable SERVER_URL, e.g. wss://game.example.com/ws).
+          # Empty: the online world connects to a server on the player's own computer (ws://localhost:8787/ws).
+          VITE_SERVER_URL: ${{ vars.SERVER_URL }}
       - run: npm run server:typecheck
       - run: npm test
 

@@ -6,7 +6,7 @@ import { regionDef } from '../core/map/regionDefs';
 import { ValleyMap } from '../core/map/valley';
 import { TILE_PX, SCALE } from '../core/map/tiles';
 import { ChunkView } from '../render/ChunkView';
-import { ServerClient, actionId } from '../net/serverClient';
+import { ServerClient, actionId, defaultEndpoint, needsServerHint } from '../net/serverClient';
 import type {
   ActionType, EmoteKind, ServerAccount, ServerAlphaView, ServerEventIncoming, ServerEventView, ServerFriend, ServerMsg,
   ServerPartyView, ServerPlayerView,
@@ -90,6 +90,7 @@ export class ServerScene extends Phaser.Scene {
         <p data-status role="status">Cà Mau · Cùng khám phá, cùng săn Alpha</p>
         <form data-auth>
           <label>Máy chủ<input name="endpoint" aria-label="Máy chủ" required></label>
+          <p class="server-card server-incoming" data-server-hint hidden>Bản web này không kèm máy chủ online. Chạy máy chủ trên máy tính (<b>npm run server</b> trong thư mục game) rồi giữ địa chỉ ws://localhost:8787/ws, hoặc nhập địa chỉ wss:// của máy chủ bạn bè đã dựng.</p>
           <label>Tên đăng nhập<input name="username" aria-label="Tên đăng nhập" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" minlength="3" maxlength="20" required></label>
           <label>Mật khẩu<input name="password" aria-label="Mật khẩu" type="password" autocomplete="current-password" minlength="6" maxlength="128" required></label>
           <label>Pokémon khởi đầu<select name="starter"><option value="charmander">Charmander</option><option value="squirtle">Squirtle</option><option value="bulbasaur">Bulbasaur</option><option value="pikachu">Pikachu</option><option value="eevee">Eevee</option></select></label>
@@ -142,8 +143,11 @@ export class ServerScene extends Phaser.Scene {
     document.body.append(this.root);
     const form = this.el<HTMLFormElement>('[data-auth]');
     const endpoint = form.elements.namedItem('endpoint') as HTMLInputElement;
-    endpoint.value = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.hostname || 'localhost'}:8787/ws`;
-    try { endpoint.value = localStorage.getItem('survivor.server.endpoint') || endpoint.value; } catch { /* storage disabled */ }
+    let saved: string | null = null;
+    try { saved = localStorage.getItem('survivor.server.endpoint'); } catch { /* storage disabled */ }
+    endpoint.value = defaultEndpoint(saved);
+    if (needsServerHint()) this.el('[data-server-hint]').hidden = false;
+    try { (form.elements.namedItem('username') as HTMLInputElement).value = localStorage.getItem('survivor.server.username') ?? ''; } catch { /* optional */ }
     this.client = new ServerClient((msg) => this.receive(msg), (message) => {
       this.el('[data-status]').textContent = message;
       if (!this.client.ready && !this.client.reconnecting) {
@@ -157,7 +161,7 @@ export class ServerScene extends Phaser.Scene {
       const t = (event.submitter as HTMLButtonElement)?.value === 'register' ? 'register' : 'login';
       try {
         this.client.connect(endpoint.value.trim(), { t, username: String(data.get('username')), password: String(data.get('password')), ...(t === 'register' ? { starter: String(data.get('starter')) } : {}) });
-        try { localStorage.setItem('survivor.server.endpoint', endpoint.value.trim()); } catch { /* optional */ }
+        try { localStorage.setItem('survivor.server.endpoint', endpoint.value.trim()); localStorage.setItem('survivor.server.username', String(data.get('username')).trim()); } catch { /* optional */ }
       } catch (e) { this.el('[data-status]').textContent = (e as Error).message; }
     };
     this.el('[data-recover]').onclick = () => {

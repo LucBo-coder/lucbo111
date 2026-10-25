@@ -18,6 +18,14 @@ npm.cmd run dev
 
 Mở `http://localhost:5173`, chọn **Thế giới online**, dùng địa chỉ `ws://localhost:8787/ws`, tạo tài khoản (tên 3–20 chữ/số/underscore, mật khẩu 6–128 ký tự). Mỗi người dùng tài khoản riêng. Dữ liệu nằm trong `server/data/game.db`; khởi động lại server vẫn giữ tài khoản và tiến trình.
 
+### Lỗi "Kết nối quá hạn" / "Không kết nối được máy chủ"
+
+Game không tìm thấy máy chủ ở địa chỉ trong ô **Máy chủ**. Thông báo hiện địa chỉ đã thử.
+
+- **Chưa chạy máy chủ**: mở terminal trong thư mục game, chạy `npm.cmd run server`, chờ dòng `[server] ready`, thử lại. Kiểm tra nhanh: mở `http://localhost:8787/healthz` phải thấy `"ok":true`.
+- **Chơi bản GitHub Pages**: GitHub Pages chỉ chứa file tĩnh, **không chạy được máy chủ**. Nếu chưa cấu hình máy chủ công khai, ô Máy chủ mặc định là `ws://localhost:8787/ws` (máy chủ chạy trên chính máy tính của bạn — Chrome/Edge/Firefox cho phép trang HTTPS kết nối `ws://localhost`). Bạn bè ở máy khác cần một máy chủ Internet có `wss://` (xem *Triển khai Internet*).
+- Các bản cũ lưu địa chỉ `wss://<trang>.github.io:8787/ws` (không bao giờ trả lời); bản mới tự bỏ địa chỉ đó.
+
 ### Thử nhiều người trên cùng máy / cùng mạng
 
 - Cùng máy: mở hai cửa sổ trình duyệt (hoặc một cửa sổ ẩn danh), đăng ký hai tài khoản khác nhau.
@@ -36,6 +44,8 @@ game.example.com {
 ```
 
 Biến môi trường: xem `server/.env.example` (không chứa bí mật). Sao lưu file SQLite thường xuyên. Chưa có máy chủ Internet nào được triển khai sẵn.
+
+Để bản GitHub Pages tự điền địa chỉ máy chủ: trong repo GitHub → *Settings → Secrets and variables → Actions → Variables*, tạo biến `SERVER_URL` = `wss://game.example.com/ws`. Workflow deploy truyền nó vào build qua `VITE_SERVER_URL`. Build tay: `VITE_SERVER_URL=wss://game.example.com/ws npm run build`.
 
 ## Phần có thể chơi
 
