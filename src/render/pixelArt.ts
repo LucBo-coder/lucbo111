@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { AVATARS, avatarTextureKey } from '../core/avatars';
 import { REGISTRY } from './spriteRegistry';
 
 // All art is generated at boot from tiny pixel maps, so the game has zero binary assets.
@@ -361,6 +362,8 @@ function seeded(seed: number) {
 
 export function generateTextures(scene: Phaser.Scene, eager: (key: string) => boolean = () => true): void {
   for (const [key, s] of Object.entries(REGISTRY)) if (eager(key)) drawGridTexture(scene, key, s.rows, s.pal, s.outline);
+  // profile avatars: always available (they are tiny and used by the lobby)
+  for (const a of AVATARS) drawGridTexture(scene, avatarTextureKey(a.id), a.rows, a.pal, true);
   for (const [key, s] of Object.entries(ICONS)) drawMap(scene, 'icon_' + key, s.rows, s.pal);
 
   // Onix body segment: shaded boulder

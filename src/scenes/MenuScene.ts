@@ -6,6 +6,7 @@ import { attributionLines } from '../systems/assets';
 import { audio } from '../systems/audio';
 import { gameModes } from '../systems/gameMode';
 import { saveStore, SLOT_COUNT } from '../systems/save';
+import { avatarTextureKey } from '../core/avatars';
 import { fitScale, officialPack } from '../render/spriteRegistry';
 import { playableSpecies } from '../core/data';
 import { Campaign, newAdventure, QualitySetting, SlotSummary, starterEntry, survivorPool } from '../systems/saveSchema';
@@ -13,7 +14,8 @@ import { ITEM_DEFS } from '../core/evolution';
 import { buyUpgrade, nextCost, PERM_UPGRADES, upgradeLevel } from '../core/permanentUpgrades';
 import { regionDef } from '../core/map/regionDefs';
 import { net } from '../net/session';
-import { askText, button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
+import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge } from './ui';
+import { openPlayerProfile } from './playerProfile';
 
 import { GAME_VERSION } from '../version';
 export { GAME_VERSION };
@@ -82,13 +84,9 @@ export class MenuScene extends Phaser.Scene {
     gameModes.start(this, 'adventure', { map: 'valley' });
   }
 
-  /** Main-lobby rename (also used by e2e). Stored device-wide and mirrored to the active slot. */
-  async editPlayerName(): Promise<void> {
-    const v = await askText(this, 'Tên người chơi (bạn bè sẽ thấy khi online)', saveStore.playerName, 16);
-    if (v == null) return;
-    const name = await saveStore.setPlayerName(v);
-    net.setName(name);
-    this.rebuild();
+  /** Main-lobby profile editor: avatar picker + rename. Both are stored device-wide. */
+  openProfile(): void {
+    openPlayerProfile(this, () => this.rebuild());
   }
 
   /** Opens the slot screen (Load Game / New Game). */
@@ -206,22 +204,30 @@ export class MenuScene extends Phaser.Scene {
     text(this, x + cw / 2, y + 186 * s, o.stats, 15 * s, o.statColor).setOrigin(0.5, 0).setWordWrapWidth(cw - 32 * s).setAlign('center');
   }
 
-  /** Main-lobby player card: avatar, name, current-save summary and the rename action. */
+  /** Main-lobby player card: avatar, name, current-save summary and the profile action. */
   private buildPlayerBar(x: number, y: number, w: number, h: number, s: number, portrait: boolean): void {
     const sv = saveStore.data;
     panel(this, x, y, w, h, 0xffcc33, 0x232a3e);
-    // avatar: trainer sprite inside a gold ring
+    // avatar: the chosen profile drawing inside a gold ring; tapping it opens the profile editor
     const r = Math.min(22 * s, h / 2 - 5 * s), ax = x + 10 * s + r, ay = y + h / 2;
     const av = this.add.graphics();
     av.fillStyle(0x0c0f1a, 1).fillCircle(ax, ay, r);
     av.lineStyle(2 * s, 0xffd040, 1).strokeCircle(ax, ay, r);
     av.lineStyle(1 * s, 0xffffff, 0.18).strokeCircle(ax, ay, r - 3 * s);
-    if (this.textures.exists('trainer_sheet')) {
-      const tr = this.add.image(ax, ay - 1 * s, 'trainer_sheet', 0).setScale(2.2 * s);
+    const avatar = avatarTextureKey(saveStore.avatar);
+    if (this.textures.exists(avatar)) {
+      const tr = this.add.image(ax, ay - 1 * s, avatar).setScale(fitScale(this, avatar, 36 * s));
       this.tweens.add({ targets: tr, y: tr.y - 2 * s, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
     }
+    // small pencil badge so the avatar reads as editable
+    const bx = ax + r * 0.72, by = ay + r * 0.72;
+    const badge = this.add.graphics();
+    badge.fillStyle(0x0c0f1a, 1).fillCircle(bx, by, 8 * s);
+    badge.lineStyle(1.5 * s, 0xffd040, 1).strokeCircle(bx, by, 8 * s);
+    text(this, bx, by - 0.5 * s, '✎', 11 * s, '#ffe680').setOrigin(0.5);
+    this.add.zone(ax, ay, r * 2 + 6 * s, r * 2 + 6 * s).setInteractive({ useHandCursor: true }).on('pointerup', () => this.openProfile());
     const bw = Math.min(132 * s, w * 0.34), bh = Math.min(36 * s, h - 18 * s);
-    button(this, x + w - 10 * s - bw / 2, ay, bw, bh, '✎ Đổi tên', () => void this.editPlayerName(), 0x3a4260);
+    button(this, x + w - 10 * s - bw / 2, ay, bw, bh, '✎ Hồ sơ', () => this.openProfile(), 0x3a4260);
     const nx = x + 16 * s + r * 2 + 10 * s;
     const tw = w - (nx - x) - bw - 24 * s;
     text(this, nx, y + 6 * s, saveStore.playerName, 25 * s, '#ffe680').setWordWrapWidth(tw);
@@ -277,7 +283,9 @@ export class MenuScene extends Phaser.Scene {
       stats: started ? `Ô ${saveStore.slot} · ${sv.collection.length} Pokémon · Pokédex ${sv.pokedex.caught.length} · ${fmtTime(adv!.playTime)}` : vnSlot ? `Ô ${saveStore.slot} đang chơi Việt Nam Odyssey` : `Ô ${saveStore.slot} · chưa bắt đầu hành trình`, statColor: '#a0d8e8',
       art: () => {
         for (let i = 0; i < 5; i++) this.add.image(b.x + cw / 2 + (i - 2) * 50 * s, b.y + 96 * s, 'ow_tiles', [4, 16, 104, 16, 28][i]).setScale(3 * s);
-        const tr = this.add.image(b.x + cw / 2, b.y + 98 * s, 'trainer_sheet', 0).setScale(3 * s);
+        const avatarKey = avatarTextureKey(saveStore.avatar);
+        const trKey = this.textures.exists(avatarKey) ? avatarKey : 'trainer_sheet';
+        const tr = this.add.image(b.x + cw / 2, b.y + 98 * s, trKey, 0).setScale(fitScale(this, trKey, 58 * s));
         this.tweens.add({ targets: tr, y: tr.y - 4 * s, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
       },
     });

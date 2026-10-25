@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { cleanPlayerName, DEFAULT_PLAYER_NAME, PLAYER_NAME_MAX, saveStore } from '../src/systems/save';
+import { cleanAvatarId, DEFAULT_AVATAR } from '../src/core/avatars';
 import { defaultSave, newAdventure } from '../src/systems/saveSchema';
 
 // The profile lives in the `meta` record (device-wide), not in a slot — the key property is that a
@@ -10,6 +11,7 @@ beforeEach(async () => {
   await saveStore.load();
   await saveStore.newGame(1);
   await saveStore.setPlayerName(DEFAULT_PLAYER_NAME);
+  await saveStore.setAvatar(DEFAULT_AVATAR);
 });
 
 describe('player profile', () => {
@@ -40,6 +42,40 @@ describe('player profile', () => {
     expect(saveStore.playerName).toBe('Bo Hồng');
   });
 
+  it('keeps the chosen avatar across new games, slots and reloads', async () => {
+    expect(saveStore.avatar).toBe(DEFAULT_AVATAR);
+    expect(await saveStore.setAvatar('scientist')).toBe('scientist');
+    expect(saveStore.profile.avatar).toBe('scientist');
+
+    // a new game or another slot never wipes the device profile
+    await saveStore.newGame(2);
+    expect(saveStore.avatar).toBe('scientist');
+    await saveStore.loadSlot(1);
+    expect(saveStore.avatar).toBe('scientist');
+
+    // renaming keeps the avatar
+    await saveStore.setPlayerName('Minh');
+    expect(saveStore.avatar).toBe('scientist');
+
+    await saveStore.load();
+    expect(saveStore.avatar).toBe('scientist');
+    expect(saveStore.playerName).toBe('Minh');
+  });
+
+  it('choosing an avatar does not fill an empty save slot', async () => {
+    await saveStore.setAvatar('lass');
+    expect(await saveStore.listSlots()).toEqual([null, null, null]);
+  });
+
+  it('falls back to the classic trainer for unknown avatars', async () => {
+    expect(cleanAvatarId('../../evil')).toBe(DEFAULT_AVATAR);
+    expect(cleanAvatarId('')).toBe(DEFAULT_AVATAR);
+    expect(cleanAvatarId(null)).toBe(DEFAULT_AVATAR);
+    expect(cleanAvatarId(42)).toBe(DEFAULT_AVATAR);
+    await saveStore.setAvatar('không-có');
+    expect(saveStore.avatar).toBe(DEFAULT_AVATAR);
+  });
+
   it('mirrors the name into a progressed slot', async () => {
     await saveStore.setPlayerName('Minh');
     const d = defaultSave();
@@ -64,10 +100,20 @@ describe('player profile', () => {
     await saveStore.load();
     expect(saveStore.playerName).toBe('Tên Cũ');
     expect(saveStore.data.playerName).toBe('Tên Cũ');
+    // no avatar in the old profile → classic trainer
+    expect(saveStore.avatar).toBe(DEFAULT_AVATAR);
 
     // the next write stores it as the device profile, so switching slots keeps it
     await saveStore.save();
     await saveStore.newGame(3);
     expect(saveStore.playerName).toBe('Tên Cũ');
+  });
+
+  it('reads an existing avatar from meta', async () => {
+    const mem = (saveStore as unknown as Internals).mem;
+    mem.set('meta', { activeSlot: 1, settings: defaultSave().settings, profile: { name: 'Lan', avatar: 'ninja' }, legacyMigrated: true });
+    await saveStore.load();
+    expect(saveStore.playerName).toBe('Lan');
+    expect(saveStore.avatar).toBe('ninja');
   });
 });

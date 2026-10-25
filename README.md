@@ -8,7 +8,7 @@ Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.
 
 **Online** (0.13.0): menu chính → *⚔ Đấu online* — tạo phòng / vào bằng mã 6 ký tự, đấu đội thời gian thực; hoặc trong Phiêu lưu → Cài đặt → *Chơi online cùng bạn* để đi chung thế giới và thách đấu nhau. Kết nối WebRTC trực tiếp giữa hai trình duyệt (PeerJS), không cần server riêng. Thêm `?net=local` để chơi 2 tab trên cùng máy.
 
-**Hồ sơ người chơi**: thẻ ở sảnh chính hiển thị avatar huấn luyện viên, tên, ô lưu, số Pokémon/Pokédex/xu và thành tích; bấm *✎ Đổi tên* để đặt tên 1–16 ký tự. Tên lưu theo thiết bị nên không mất khi chơi mới hay đổi ô lưu, và là tên bạn bè thấy khi đấu online / co-op. Sảnh đấu online dùng chung hồ sơ này.
+**Hồ sơ người chơi**: thẻ ở sảnh chính hiển thị avatar, tên, ô lưu, số Pokémon/Pokédex/xu và thành tích; bấm *✎ Hồ sơ* (hoặc chạm avatar) để chọn một trong **8 avatar pixel** và đặt tên 1–16 ký tự. Avatar + tên lưu theo thiết bị nên không mất khi chơi mới hay đổi ô lưu; tên là thứ bạn bè thấy khi đấu online / co-op. Sảnh đấu online dùng chung hồ sơ này. Avatar chỉ đổi ảnh hồ sơ, nhân vật trong thế giới mở giữ nguyên.
 
 **Co-op PvE (2 người)**: Sinh tồn → Esc → *Co-op cùng bạn*; Phiêu lưu / Việt Nam Odyssey → Cài đặt → *Co-op: cùng đánh quái*. Chủ phòng tạo mã, khách chọn tham gia bằng mã. Cả hai cùng đánh quái và boss; khách theo chủ phòng khi chuyển vùng hoặc vào hầm ngục. Khách mang tối đa 3 Pokémon, điều khiển WASD/Shift hoặc kéo bên trái màn hình, chạm quái để tập trung tấn công, phím \` và 1–5 để ra lệnh. Đứng gần người bị gục 3 giây để cứu; đi cách chủ phòng quá 900 px sẽ được đưa về cạnh họ.
 

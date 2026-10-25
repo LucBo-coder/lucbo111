@@ -3,11 +3,12 @@
 ## Chưa phát hành — hồ sơ người chơi & co-op PvE
 
 ### Sảnh chính / hồ sơ người chơi
-- **Thẻ người chơi trong sảnh chính**: avatar huấn luyện viên, tên, ô lưu đang dùng, số Pokémon, Pokédex, số xu, thời gian chơi và thành tích PvP (bản ngang); bản dọc rút gọn để vừa màn hình điện thoại.
-- **Đặt tên người chơi** ngay từ sảnh chính (nút *✎ Đổi tên*, bàn phím HTML nên dùng tốt trên điện thoại): 1–16 ký tự, tự cắt khoảng trắng / ký tự điều khiển, tên rỗng quay về “Huấn luyện viên”. Tên lưu **theo thiết bị** (`meta.profile`) nên không mất khi chơi mới, đổi ô lưu hay xóa ô; save cũ có `playerName` được tự động chuyển lên hồ sơ thiết bị.
-- Tên được đồng bộ vào `net.myName` khi mở sảnh, tạo/vào phòng đấu, co-op và thế giới mở — bạn bè thấy đúng tên này; đổi tên khi đang trong phòng sẽ gửi `hello` để đối phương cập nhật ngay. Sảnh đấu online cũng có thẻ hồ sơ (avatar + tên + thành tích) và nút đổi tên dùng chung một nguồn.
+- **Thẻ người chơi trong sảnh chính**: avatar đã chọn, tên, ô lưu đang dùng, số Pokémon, Pokédex, số xu, thời gian chơi và thành tích PvP (bản ngang); bản dọc rút gọn để vừa màn hình điện thoại.
+- **Đặt tên người chơi** trong hồ sơ (nút *✎ Hồ sơ* → *✎ Đổi tên*, bàn phím HTML nên dùng tốt trên điện thoại): 1–16 ký tự, tự cắt khoảng trắng / ký tự điều khiển, tên rỗng quay về “Huấn luyện viên”. Tên lưu **theo thiết bị** (`meta.profile`) nên không mất khi chơi mới, đổi ô lưu hay xóa ô; save cũ có `playerName` được tự động chuyển lên hồ sơ thiết bị.
+- **8 avatar pixel tự vẽ**: huấn luyện viên, cô bé, nhà leo núi, nhà nghiên cứu, kiểm lâm, bơi lội, cựu binh và ninja. Mở *✎ Hồ sơ* (hoặc chạm thẳng vào avatar ở thẻ người chơi), chọn trong lưới 4×2 trên máy ngang / 2×4 trên điện thoại dọc; ô đang dùng có viền vàng và dấu ✓. Avatar lưu cùng hồ sơ thiết bị (`profile.avatar`), tự làm sạch id lạ về avatar cổ điển, nên không mất khi chơi mới/đổi ô/tải lại. Ảnh cũng đổi theo ở thẻ hồ sơ sảnh online và hình minh họa thẻ Phiêu lưu; nhân vật trong thế giới mở vẫn dùng sprite riêng.
+- Tên được đồng bộ vào `net.myName` khi mở sảnh, tạo/vào phòng đấu, co-op và thế giới mở — bạn bè thấy đúng tên này; đổi tên khi đang trong phòng sẽ gửi `hello` để đối phương cập nhật ngay. Sảnh đấu online dùng chung hồ sơ (avatar + tên + thành tích) và cùng trình chọn avatar.
 - Sửa nội dung bảng co-op còn ghi “phần thưởng thuộc chủ phòng” thành đúng hành vi chia chiến lợi phẩm hiện tại.
-- Test mới: 4 unit cho hồ sơ (làm sạch tên, giữ tên qua chơi mới/đổi ô/tải lại, chuyển tên từ save cũ) và 2 e2e (đổi tên trong sảnh chính + tải lại; thẻ hồ sơ vừa khung dọc 390×844).
+- Test mới: 8 unit cho hồ sơ (làm sạch tên/avatar, giữ cả hai qua chơi mới/đổi ô/tải lại, chuyển từ save cũ, chọn avatar không tạo ô lưu rỗng) + 3 unit kiểm tra lưới pixel avatar; 2 e2e (đổi tên + chọn avatar trong sảnh chính rồi tải lại; thẻ hồ sơ và trình chọn avatar vừa khung dọc 390×844).
 
 ### Co-op PvE
 - Phòng co-op 2 người trong Sinh tồn, Phiêu lưu, Việt Nam Odyssey và hầm ngục; tách khỏi chế độ đi chung/PvP cũ.

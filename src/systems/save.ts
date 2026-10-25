@@ -1,3 +1,4 @@
+import { cleanAvatarId, DEFAULT_AVATAR } from '../core/avatars';
 import { defaultSave, freshSave, isEmptySave, migrate, SaveData, slotSummary, SlotSummary } from './saveSchema';
 
 const DB_NAME = 'pokemon-survivor';
@@ -11,8 +12,8 @@ const slotKey = (n: number) => `slot-${n}`;
 export const PLAYER_NAME_MAX = 16;
 export const DEFAULT_PLAYER_NAME = 'Huấn luyện viên';
 
-/** Player identity shown to other players online. Device-wide, so it survives new games and empty slots. */
-export interface PlayerProfile { name: string }
+/** Player identity shown in the lobby and online. Device-wide, so it survives new games and empty slots. */
+export interface PlayerProfile { name: string; avatar: string }
 
 /** Single-line, trimmed, control characters removed; an empty result falls back to the default name. */
 export function cleanPlayerName(raw: unknown): string {
@@ -41,8 +42,8 @@ class SaveStore {
   data: SaveData = defaultSave();
   /** active slot (1-based) */
   slot = 1;
-  /** Player identity shared by every slot (name survives NEW GAME; older saves migrate their slot name). */
-  profile: PlayerProfile = { name: DEFAULT_PLAYER_NAME };
+  /** Player identity shared by every slot (name + avatar survive NEW GAME; older saves migrate their slot name). */
+  profile: PlayerProfile = { name: DEFAULT_PLAYER_NAME, avatar: DEFAULT_AVATAR };
   private db: IDBDatabase | null = null;
   /** memory fallback when IndexedDB is unavailable */
   private mem = new Map<string, unknown>();
@@ -59,6 +60,18 @@ class SaveStore {
     this.data.playerName = name;
     await this.save();
     return name;
+  }
+
+  /** Avatar id used by the profile cards — always one of the known drawings. */
+  get avatar(): string {
+    return cleanAvatarId(this.profile.avatar);
+  }
+
+  async setAvatar(raw: string): Promise<string> {
+    const avatar = cleanAvatarId(raw);
+    this.profile = { ...this.profile, avatar };
+    await this.save();
+    return avatar;
   }
 
   private async get(key: string): Promise<unknown> {
@@ -112,8 +125,8 @@ class SaveStore {
       const settings = { ...defaultSave().settings, ...meta.settings };
       this.data = raw ? migrate(raw) : freshSave(settings);
       this.data.settings = settings;
-      // migrate the name stored in older per-slot saves to the device profile
-      this.profile = { name: cleanPlayerName(meta.profile?.name ?? this.data.playerName) };
+      // migrate the name stored in older per-slot saves to the device profile (avatar defaults to the classic trainer)
+      this.profile = { name: cleanPlayerName(meta.profile?.name ?? this.data.playerName), avatar: cleanAvatarId(meta.profile?.avatar) };
       this.data.playerName = this.profile.name;
     } catch (e) {
       console.warn('[save] load failed, starting empty', e);
