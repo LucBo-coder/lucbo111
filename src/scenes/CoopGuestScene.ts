@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { applyCoopDelta, CoopMirror, coopSession, obstacleSig, type CoopSnapshot, type CoopWire } from '../net/coop';
 import { LatencySeries } from '../net/netStats';
-import { applyCoopLoot, type CoopLoot } from '../net/coopRewards';
+import { applyCoopLoot, lootSeen, markLootSeen, type CoopLoot } from '../net/coopRewards';
 import { net } from '../net/session';
 import type { DuelMon } from '../net/protocol';
 import { WorldRenderer, SCALE } from '../render/WorldRenderer';
@@ -80,7 +80,7 @@ export class CoopGuestScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-ESC', () => this.exit());
     this.off = net.on(m => {
       if (m.t === 'coopSnap') this.receive(m.s);
-      if (m.t === 'coopLoot') this.receiveLoot(m.reward);
+      if (m.t === 'coopLoot') this.receiveLoot(m.reward, m.id);
       if (m.t === 'coopEnd') this.end(m.reason);
     });
     this.offStatus = net.onStatus(() => { if (!net.connected) this.end('Đã mất kết nối với chủ phòng.'); });
@@ -151,10 +151,13 @@ export class CoopGuestScene extends Phaser.Scene {
     return s;
   }
   /** Host shared a drop: apply it to this player's own save immediately (progress survives a disconnect). */
-  private receiveLoot(loot: CoopLoot): void {
+  private receiveLoot(loot: CoopLoot, id?: string): void {
     if (this.ended) return;
+    // a grant re-sent after a relay drop: already in this save → only acknowledge again
+    if (id && lootSeen(saveStore.data, id)) { net.send({ t: 'coopLootAck', id }); return; }
     const lines = applyCoopLoot(saveStore.data, loot);
-    if (!lines.length) return;
+    if (id) { markLootSeen(saveStore.data, id); net.send({ t: 'coopLootAck', id }); }
+    if (!lines.length) { if (id) void saveStore.save(); return; }
     void saveStore.save();
     this.lootLine = `🎁 ${loot.note ? loot.note + ': ' : ''}${lines.join(' · ')}`;
     this.lootUntil = this.time.now + 6000;

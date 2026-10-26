@@ -155,6 +155,8 @@ export class AdventureScene extends Phaser.Scene {
   private sway: Phaser.Tweens.Tween[] = [];
   /** World positions of PC terminals (Pokémon Center / town lab). PC access is gated by proximity. */
   private pcTerminals: { x: number; y: number }[] = [];
+  /** NPCs that walk around their spot (data `wander`); dropped when their chunk unloads */
+  private walkers: { it: Interactable; img: Phaser.GameObjects.Image; homeX: number; homeY: number; r: number; tx: number; ty: number; wait: number }[] = [];
 
   constructor() {
     super('Adventure');
@@ -484,9 +486,14 @@ export class AdventureScene extends Phaser.Scene {
           const s = add(art
             ? this.add.image(px + TILE_PX / 2, py + TILE_PX * 0.95, art).setOrigin(0.5, 0.85).setScale(1).setDepth(py + TILE_PX / 2)
             : this.add.image(px + TILE_PX / 2, py + TILE_PX / 2, 'ow_tiles', NPC_FRAME[d.sprite] ?? DUNGEON.npc.villager).setScale(SCALE).setDepth(py + TILE_PX / 2));
-          this.tweens.add({ targets: s, y: s.y - 3, duration: 700 + (o.x % 5) * 80, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
-          this.world.addObstacle({ x: s.x, y: s.y + 6, r: 14, kind: 'prop', tag });
+          const wander = o.kind === 'npc' ? (o.data as { wander?: number }).wander ?? 0 : 0;
+          // walkers have no static obstacle (it would stay behind); everyone else bobs in place
+          if (!wander) {
+            this.tweens.add({ targets: s, y: s.y - 3, duration: 700 + (o.x % 5) * 80, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+            this.world.addObstacle({ x: s.x, y: s.y + 6, r: 14, kind: 'prop', tag });
+          }
           const it = this.addInteractable(o, s.x, s.y + 24, o.kind === 'trainer' ? 'Thách đấu' : 'Nói chuyện', s);
+          if (wander) this.walkers.push({ it, img: s, homeX: s.x, homeY: s.y, r: wander * TILE_PX, tx: s.x, ty: s.y, wait: 1 + (o.x % 3) });
           it.marker = add(this.add.text(s.x, s.y - 44, '', { fontFamily: '"VT323", monospace', fontSize: '34px', color: '#ffe040', stroke: '#000', strokeThickness: 5 }).setOrigin(0.5).setDepth(9100));
           // name under the feet, sized for the camera zoom (readable on phones); trainers: orange, grey once beaten
           const zoom = this.cameras.main.zoom || 1;
@@ -763,6 +770,9 @@ export class AdventureScene extends Phaser.Scene {
     kb.on('keydown-R', guard(() => this.cycleBall()));
     kb.on('keydown-H', guard(() => this.quickHeal()));
     kb.on('keydown-G', guard(() => this.tryMega()));
+    // Active skills: Q = the focused Pokémon uses its best ready skill now · T = focus the next Pokémon on the field
+    kb.on('keydown-Q', guard(() => this.manualSkill('best')));
+    kb.on('keydown-T', guard(() => this.cycleFocus()));
     kb.on('keydown-TAB', () => this.ui?.toggleMenu('party'));
     kb.on('keydown-M', () => this.ui?.toggleMenu('map'));
     kb.on('keydown-P', () => { if (this.state.adv.campaign === 'vietnam') this.ui?.toggleMenu('passport'); });
@@ -786,6 +796,67 @@ export class AdventureScene extends Phaser.Scene {
       kb.on('keydown-N', () => { this.state.adv.clock = (this.state.adv.clock + 180) % 1440; });
       kb.on('keydown-L', () => { this.state.addItems({ pokeball: 10, greatball: 5, potion: 5 }); this.ui?.banner('DEBUG: +items', '#fff'); });
     }
+  }
+
+  // ───────────────────────────── active skills ─────────────────────────────
+
+  /** Party member the skill bar controls (uid); falls back to the first Pokémon on the field. */
+  private focusUid: string | null = null;
+  /** Skill slots kept for the player, per Pokémon (uid → bitmask) — survives summon / recall / evolution */
+  private reservedSlots = new Map<string, number>();
+
+  focusAlly(): Unit | null {
+    const field = this.world.allies.filter((a) => a.ownerUid != null);
+    return field.find((a) => a.ownerUid === this.focusUid && !a.fainted) ?? field.find((a) => !a.fainted) ?? field[0] ?? null;
+  }
+
+  cycleFocus(): void {
+    const field = this.world.allies.filter((a) => a.ownerUid != null && !a.fainted);
+    if (field.length < 2) return;
+    const cur = this.focusAlly();
+    const next = field[(field.indexOf(cur!) + 1) % field.length];
+    this.focusUid = next.ownerUid;
+    this.ui?.banner(`Điều khiển: ${next.name}`, '#a0d8ff');
+  }
+
+  isReserved(u: Unit, slot: number): boolean {
+    return !!(u.reserved & (1 << slot));
+  }
+
+  /** Keeps a skill for the player (the AI stops using it) or hands it back to the AI. */
+  toggleReserved(slot: number): void {
+    const u = this.focusAlly();
+    if (!u || u.ownerUid == null || slot >= u.skills.length) return;
+    const on = !this.isReserved(u, slot);
+    this.world.setReserved(u, slot, on);
+    this.reservedSlots.set(u.ownerUid, u.reserved);
+    this.ui?.banner(on ? `Giữ ${u.skills[slot].def.name} cho bạn tự dùng` : `${u.skills[slot].def.name}: trả lại cho AI`, '#a0d8ff');
+  }
+
+  /** Units are rebuilt on summon / evolution: re-apply the kept slots. */
+  private syncReserved(): void {
+    for (const a of this.world.allies) {
+      if (a.ownerUid == null) continue;
+      const m = this.reservedSlots.get(a.ownerUid) ?? 0;
+      a.reserved = m & ((1 << a.skills.length) - 1);
+    }
+  }
+
+  manualSkill(slot: number | 'best'): void {
+    const u = this.focusAlly();
+    if (!u) return;
+    const r = this.world.requestSkill(u, slot);
+    const name = typeof slot === 'number' ? u.skills[slot]?.def.name ?? '' : '';
+    const msg: Partial<Record<typeof r, string>> = {
+      cooldown: `${name || 'Mọi chiêu'} đang hồi`,
+      energy: `${u.name} không đủ năng lượng`,
+      noTarget: 'Không có mục tiêu trong tầm',
+      immune: 'Mục tiêu miễn nhiễm chiêu này',
+      global: 'Chờ một chút trước lệnh kế tiếp',
+      fainted: `${u.name} đã kiệt sức`,
+      blocked: `${name} đang bị khóa (vật phẩm cầm)`,
+    };
+    if (msg[r]) { this.ui?.banner(msg[r]!, '#ffb0a0'); audio.play('click'); }
   }
 
   command(cmd: AllyCommand): void {
@@ -848,6 +919,7 @@ export class AdventureScene extends Phaser.Scene {
     }
 
     const events = w.drainEvents();
+    this.syncReserved();
     this.coopHost?.update(performance.now(), this.modal, events);
     this.handleGameplayEvents(events);
     this.renderer_.handle(events);
@@ -859,6 +931,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateAtmosphere(dt);
     this.updateExploration();
     this.presence?.update(performance.now());
+    this.updateWalkers(dt);
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
@@ -894,6 +967,11 @@ export class AdventureScene extends Phaser.Scene {
         const ally = this.world.allies.find((a) => a.id === e.id);
         const owned = ally?.ownerUid ? this.state.owned(ally.ownerUid) : null;
         if (owned) addFriendship(owned, 'faint');
+        continue;
+      }
+      if (e.t === 'manual') {
+        const u = this.world.allies.find((a) => a.id === e.id);
+        if (u && e.ok) this.renderer_.vfx.ring(u.x, u.y, 46, 0x80d0ff, 260);
         continue;
       }
       if (e.t === 'bossWeakenedExpired') { if (this.legendCap?.unit.id === e.id) this.legendFlee('hồi sức'); continue; }
@@ -1014,6 +1092,42 @@ export class AdventureScene extends Phaser.Scene {
         }
         this.questEvent({ type: 'explore', target: area.id });
       }
+    }
+  }
+
+  /**
+   * Villagers with a `wander` radius stroll between random open spots around home by day, pause in between,
+   * stop while the player stands next to them (or talks to them) and go back home at night.
+   */
+  private updateWalkers(dt: number): void {
+    if (!this.walkers.length) return;
+    const t = this.world.trainer;
+    const night = this.isNight();
+    this.walkers = this.walkers.filter((w) => w.img.active);
+    for (const w of this.walkers) {
+      const img = w.img;
+      const near = Math.hypot(t.x - img.x, t.y - img.y) < 90 || this.talkingTo === w.it.id;
+      if (near) { img.setFlipX(t.x < img.x); continue; }
+      if (night) { w.tx = w.homeX; w.ty = w.homeY; }
+      const dx = w.tx - img.x, dy = w.ty - img.y, d = Math.hypot(dx, dy);
+      if (d < 2) {
+        if ((w.wait -= dt) > 0 || night) continue;
+        // next stop: a random open tile inside the radius (a few tries, else stay)
+        for (let k = 0; k < 6; k++) {
+          const a = Math.random() * Math.PI * 2, rr = Math.random() * w.r;
+          const nx = w.homeX + Math.cos(a) * rr, ny = w.homeY + Math.sin(a) * rr;
+          if (!this.map.solidAt(Math.floor(nx / TILE_PX), Math.floor((ny + 10) / TILE_PX))) { w.tx = nx; w.ty = ny; break; }
+        }
+        w.wait = 1.5 + Math.random() * 3;
+        continue;
+      }
+      const step = Math.min(d, 42 * dt);
+      const nx = img.x + (dx / d) * step, ny = img.y + (dy / d) * step;
+      if (this.map.solidAt(Math.floor(nx / TILE_PX), Math.floor((ny + 10) / TILE_PX))) { w.tx = img.x; w.ty = img.y; continue; }
+      img.setPosition(nx, ny).setDepth(ny).setFlipX(dx < 0);
+      w.it.x = nx; w.it.y = ny + 24;
+      w.it.marker?.setX(nx);
+      w.it.nameTag?.setPosition(nx, ny + TILE_PX / 2 + 4);
     }
   }
 
@@ -1139,7 +1253,16 @@ export class AdventureScene extends Phaser.Scene {
       }
       return;
     }
-    // 3) progress hint or idle chatter
+    // 3) Pokémon Center nurse: full heal (party, Pokémon in their balls, trainer)
+    if ((npc as { role?: string }).role === 'nurse') {
+      this.world.healParty();
+      this.summons?.healRecalled();
+      this.renderer_.vfx.named('heal', this.world.trainer.x, this.world.trainer.y);
+      audio.play('heal');
+      await say([...npc.lines, 'Xong rồi! Đội của em đã khỏe hẳn. Hẹn gặp lại nhé!']);
+      return;
+    }
+    // 4) progress hint or idle chatter
     const active = qs.forGiver(npc.id).find((q) => qs.states[q.id].status === 'active');
     await say(active?.dialogue.progress ?? npc.lines);
   }

@@ -1,5 +1,15 @@
 # Changelog
 
+## Chưa phát hành — V20: Kỹ năng chủ động, Trại Huấn Luyện, phần thưởng co-op tin cậy
+
+- **Kỹ năng chủ động** (Phiêu lưu / Việt Nam Odyssey): **Q** = Pokémon đang điều khiển dùng chiêu tốt nhất ngay, click / chạm ô trên **thanh kỹ năng** mới = dùng đúng chiêu đó, chuột phải / nhấn giữ = giữ chiêu cho mình (AI không dùng), **T** = đổi Pokémon điều khiển. Cùng luật với AI (hồi chiêu, năng lượng, Choice / Assault Vest, miễn nhiễm) + hồi chiêu chung 1,2 s chống spam; ngoài tầm thì Pokémon tự đi tới đúng tầm (chờ tối đa 3 s). Thanh 4 ô có icon, thời gian hồi, năng lượng, trạng thái chờ / niệm / giữ; điện thoại dọc đặt ở góc trái dưới. Sinh tồn, PvP, khách co-op, Thế giới online không đổi.
+- **Thung Lũng Khởi Nguyên**: tòa **Trung tâm Pokémon** (máy PC + y tá Chị Mai hồi phục cả đội), **bảng nhiệm vụ** làng (2 nhiệm vụ), 2 biển hướng dẫn ở cổng bắc, **dân làng đi lại** (ban ngày đi dạo, dừng khi bạn tới gần, đêm về chỗ — dữ liệu `wander`).
+- **Trại Huấn Luyện** (khu mới phía tây làng): rào, 2 cổng nối đường làng và đường đồng cỏ, bia tập; Thầy Khang + 3 học viên (phòng thủ, tốc độ, hệ đặc biệt); chuỗi 3 nhiệm vụ *Phá phòng ngự → Né và rút → Tốt nghiệp*, tốt nghiệp mở rương trại.
+- **Sửa: phần thưởng co-op có thể mất khi rớt mạng** — hàng đợi gửi 400 tin xóa tin cũ nhất nên snapshot đẩy mất `coopLoot`. Hàng đợi giờ bỏ snapshot / input / ping trước; `coopLoot` có id, khách xác nhận (`coopLootAck`), chủ phòng gửi lại tới khi được xác nhận, khách nhớ id đã nhận trong save (không cộng hai lần). Tương thích bản cũ, không đổi phiên bản giao thức.
+- Công cụ: `scripts/map-ascii.ts` (xem bản đồ dạng ký tự), `scripts/patch-starter-valley.mjs` (bản vá nội dung, chạy lại không nhân đôi).
+- Tài liệu: `GAME_AUDIT.md`, `MAP_DESIGN.md`, `GAMEPLAY_IMPROVEMENTS.md`, `TEST_REPORT.md`; cập nhật `GAME_DESIGN.md`, `TASKS.md`.
+- Test: `tests/v20_active_skills.test.ts` (9), `tests/v20_starter_valley.test.ts` (6), `tests/v20_net_reliability.test.ts` (5), `e2e/v20_starter.spec.ts` (máy tính + điện thoại dọc).
+
 ## Chưa phát hành — Ba loại tiền theo chế độ
 
 - **Mỗi chế độ một loại tiền**, không dùng chung nữa:

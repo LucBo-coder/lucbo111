@@ -1168,5 +1168,251 @@
     "Vua biển cả đây rồi!"
    ]
   }
+ },
+ {
+  "id": "q-camp-1",
+  "kind": "side",
+  "title": "Trại huấn luyện: Phá phòng ngự",
+  "giver": "camp-coach",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Thầy Khang muốn xem bạn xử lý một đội phòng thủ dày.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "camp-tank",
+    "count": 1,
+    "text": "Đánh bại Học viên Tân (đội phòng thủ)",
+    "marker": {
+     "x": 38,
+     "y": 79
+    }
+   },
+   {
+    "type": "talk",
+    "target": "camp-coach",
+    "count": 1,
+    "text": "Báo cáo với Thầy Khang",
+    "marker": {
+     "x": 49,
+     "y": 80
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "potion": 3,
+    "exp-candy-s": 2
+   },
+   "worldExp": 120,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "Đội của Tân rất trâu. Tìm chiêu khắc hệ Đá, và đừng ngại bấm Q khi chiêu mạnh vừa hồi xong."
+   ],
+   "progress": [
+    "Tân đứng ở góc tây bắc trại."
+   ],
+   "complete": [
+    "Tốt! Đánh đúng hệ thì vỏ cứng mấy cũng vỡ."
+   ]
+  }
+ },
+ {
+  "id": "q-camp-2",
+  "kind": "side",
+  "title": "Trại huấn luyện: Né và rút",
+  "giver": "camp-coach",
+  "requires": [
+   "q-camp-1"
+  ],
+  "description": "Học cách né vòng cảnh báo và dùng lệnh Rút lui.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "camp-speed",
+    "count": 1,
+    "text": "Đánh bại Học viên Linh (đội tốc độ)",
+    "marker": {
+     "x": 38,
+     "y": 87
+    }
+   },
+   {
+    "type": "talk",
+    "target": "camp-coach",
+    "count": 1,
+    "text": "Báo cáo với Thầy Khang",
+    "marker": {
+     "x": 49,
+     "y": 80
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "quick-claw": 1
+   },
+   "worldExp": 150,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "Linh đánh nhanh. Khi HLV mất máu, ra lệnh Rút lui (` rồi 5), hồi lại rồi phản công."
+   ],
+   "progress": [
+    "Linh ở góc tây nam trại."
+   ],
+   "complete": [
+    "Biết lúc nào nên lùi cũng là một kỹ năng. Cầm Quick Claw này để ra chiêu nhanh hơn."
+   ]
+  }
+ },
+ {
+  "id": "q-camp-3",
+  "kind": "side",
+  "title": "Trại huấn luyện: Tốt nghiệp",
+  "giver": "camp-coach",
+  "requires": [
+   "q-camp-2"
+  ],
+  "description": "Bài kiểm tra cuối: tập trung hỏa lực vào một mục tiêu.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "camp-mage",
+    "count": 1,
+    "text": "Đánh bại Học viên Phong (đội hệ đặc biệt)",
+    "marker": {
+     "x": 52,
+     "y": 87
+    }
+   },
+   {
+    "type": "talk",
+    "target": "camp-coach",
+    "count": 1,
+    "text": "Nhận bằng tốt nghiệp từ Thầy Khang",
+    "marker": {
+     "x": 49,
+     "y": 80
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "scope-lens": 1,
+    "exp-candy-m": 2
+   },
+   "worldExp": 250,
+   "reputation": 20,
+   "flags": [
+    "camp:graduate"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Phong có ba Pokémon. Dùng lệnh Tấn công (` rồi 2) để cả đội dồn vào một con, hạ từng con một."
+   ],
+   "progress": [
+    "Phong ở góc đông nam trại."
+   ],
+   "complete": [
+    "Chúc mừng tốt nghiệp! Rương ở góc trại giờ đã mở cho bạn."
+   ]
+  }
+ },
+ {
+  "id": "q-board-rattata",
+  "kind": "side",
+  "title": "Bảng tin: Lũ Rattata quấy phá",
+  "giver": "sv-board",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Dân làng nhờ đuổi bớt Rattata quanh đồng cỏ.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "rattata",
+    "count": 5,
+    "text": "Hạ 5 Rattata",
+    "marker": {
+     "x": 46,
+     "y": 66
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "pokeball": 5,
+    "oranberry": 2
+   },
+   "worldExp": 80,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng tin] Rattata gặm trộm lúa khắp đồng cỏ. Ai giúp được xin cảm ơn!"
+   ],
+   "progress": [
+    "[Bảng tin] Còn Rattata quanh Đồng Cỏ Gió."
+   ],
+   "complete": [
+    "[Bảng tin] Cảm ơn bạn! Phần thưởng đã được gửi kèm."
+   ]
+  }
+ },
+ {
+  "id": "q-board-camp",
+  "kind": "exploration",
+  "title": "Bảng tin: Thăm Trại Huấn Luyện",
+  "giver": "sv-board",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Trại Huấn Luyện phía tây làng đang nhận học viên mới.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "camp",
+    "count": 1,
+    "text": "Đến Trại Huấn Luyện",
+    "marker": {
+     "x": 45,
+     "y": 83
+    }
+   },
+   {
+    "type": "talk",
+    "target": "camp-coach",
+    "count": 1,
+    "text": "Gặp Thầy Khang",
+    "marker": {
+     "x": 49,
+     "y": 80
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "potion": 2
+   },
+   "worldExp": 60
+  },
+  "dialogue": {
+   "offer": [
+    "[Bảng tin] Trại Huấn Luyện phía tây làng nhận học viên mới. Hỏi Thầy Khang nhé!"
+   ],
+   "progress": [
+    "[Bảng tin] Trại ở phía tây, theo đường đất từ cổng bắc làng."
+   ],
+   "complete": [
+    "Chào học viên mới! Khi nào sẵn sàng thì nhận bài học đầu tiên."
+   ]
+  }
  }
 ]

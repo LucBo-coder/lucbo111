@@ -219,6 +219,22 @@ const ECHO_MS = 2000;
 /** reconnect delays (≈ 40 s in total, inside the room's 60 s grace period) */
 const RETRY_MS = [500, 1000, 2000, 4000, 8000, 8000, 8000, 8000];
 const MAX_QUEUE = 400;
+/** Superseded by the next one of their kind: dropped first when the outgoing queue overflows during a drop */
+const EPHEMERAL = new Set<NetMsg['t']>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'pos']);
+
+/**
+ * Keeps an outgoing queue within `max` while the socket is down. Oldest ephemeral messages (snapshots, inputs, pings,
+ * positions) go first, so one-off messages (loot, joins, chat, lobby) survive a long drop; only a queue made of
+ * one-off messages loses its oldest.
+ */
+export function trimQueue(queue: NetMsg[], max = MAX_QUEUE): void {
+  let excess = queue.length - max;
+  if (excess <= 0) return;
+  for (let i = 0; i < queue.length && excess > 0;) {
+    if (EPHEMERAL.has(queue[i].t)) { queue.splice(i, 1); excess--; } else i++;
+  }
+  if (excess > 0) queue.splice(0, excess);
+}
 const OPEN_TIMEOUT_MS = 10_000;
 
 /** One room socket: same slot after a drop (reconnect token), queued + batched sends. */
@@ -304,7 +320,7 @@ class RelaySocket {
   send(m: NetMsg): void {
     if (this.done) return;
     this.queue.push(m);
-    if (this.queue.length > MAX_QUEUE) this.queue.splice(0, this.queue.length - MAX_QUEUE);
+    trimQueue(this.queue);
     if (URGENT.has(m.t)) this.flush();
     else this.flushTimer ??= setTimeout(() => this.flush(), FLUSH_MS);
   }

@@ -159,6 +159,8 @@ export const NPC_TRAINER_ART: Record<string, string> = {
   'cm-fisher-ut': 'fisherman', 'cm-ranger-uminh': 'pokemonranger', 'cm-dried-fish': 'lass', 'cm-kid-fish': 'youngster', 'cm-boatman': 'camper',
   'ag-monk-cam': 'sage', 'ag-sugar-palm': 'picnicker', 'ag-rock-hiker': 'hiker', 'ag-wetland-girl': 'lass',
   'ct-orchard-owner': 'rancher', 'ct-ferry-girl': 'picnicker', 'ct-rice-farmer': 'rancher', 'ct-market-boy': 'youngster',
+  // V20 Starter Valley: village guide, flower seller, Training Camp coach + students
+  'sv-guide': 'camper', 'sv-granny': 'sage', 'camp-coach': 'veteran', 'camp-tank': 'hiker', 'camp-speed': 'lass', 'camp-mage': 'psychic',
 };
 export const AMBUSH_TRAINER_ART = ['acetrainer', 'acetrainerf', 'blackbelt', 'beauty', 'veteran', 'cyclist', 'skier'];
 

@@ -115,6 +115,21 @@
    ]
   },
   {
+   "id": "camp",
+   "name": "Trại Huấn Luyện",
+   "rect": [
+    33,
+    75,
+    57,
+    91
+   ],
+   "habitat": "village",
+   "level": [
+    5,
+    9
+   ]
+  },
+  {
    "id": "meadow",
    "name": "Đồng Cỏ Gió",
    "rect": [
@@ -252,6 +267,36 @@
      18
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     80,
+     83
+    ],
+    [
+     57,
+     83
+    ],
+    [
+     46,
+     83
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     45,
+     66
+    ],
+    [
+     45,
+     83
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -310,6 +355,17 @@
    "roof": "grey",
    "wall": "wood",
    "door": 1
+  },
+  {
+   "id": "sv-center",
+   "name": "Trung tâm Pokémon",
+   "x": 91,
+   "y": 85,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
   }
  ],
  "fences": [
@@ -342,6 +398,42 @@
    106,
    58,
    112
+  ],
+  [
+   33,
+   75,
+   43,
+   75
+  ],
+  [
+   47,
+   75,
+   57,
+   75
+  ],
+  [
+   33,
+   91,
+   57,
+   91
+  ],
+  [
+   33,
+   75,
+   33,
+   91
+  ],
+  [
+   57,
+   75,
+   57,
+   81
+  ],
+  [
+   57,
+   85,
+   57,
+   91
   ]
  ],
  "props": [
@@ -379,6 +471,36 @@
    "kind": "bucket",
    "x": 82,
    "y": 101
+  },
+  {
+   "kind": "target",
+   "x": 50,
+   "y": 77
+  },
+  {
+   "kind": "target",
+   "x": 53,
+   "y": 77
+  },
+  {
+   "kind": "target",
+   "x": 36,
+   "y": 77
+  },
+  {
+   "kind": "log",
+   "x": 44,
+   "y": 89
+  },
+  {
+   "kind": "haystack",
+   "x": 55,
+   "y": 89
+  },
+  {
+   "kind": "bucket",
+   "x": 47,
+   "y": 80
   }
  ],
  "signs": [
@@ -421,6 +543,32 @@
     "Đồng Cỏ Gió",
     "Pokémon hoang dã thường ẩn trong bụi cỏ cao."
    ]
+  },
+  {
+   "x": 78,
+   "y": 81,
+   "text": [
+    "HƯỚNG DẪN CHIẾN ĐẤU",
+    "Pokémon tự đánh. Bạn di chuyển, né vùng đỏ và ra lệnh: ` rồi 1–5.",
+    "Q: Pokémon đang điều khiển dùng chiêu tốt nhất ngay. T: đổi Pokémon điều khiển."
+   ]
+  },
+  {
+   "x": 84,
+   "y": 81,
+   "text": [
+    "HƯỚNG DẪN KỸ NĂNG",
+    "Chạm / bấm ô chiêu dưới màn hình để dùng chiêu đó.",
+    "Chuột phải hoặc nhấn giữ ô chiêu: giữ chiêu lại cho bạn tự dùng (AI sẽ không dùng nó)."
+   ]
+  },
+  {
+   "x": 59,
+   "y": 85,
+   "text": [
+    "TRẠI HUẤN LUYỆN",
+    "Ba học viên, ba lối đánh. Thắng cả ba để tốt nghiệp."
+   ]
   }
  ],
  "npcs": [
@@ -453,7 +601,8 @@
    "y": 104,
    "lines": [
     "Em mơ ước có một bộ sưu tập Pokémon thật lớn!"
-   ]
+   ],
+   "wander": 3
   },
   {
    "id": "ranger",
@@ -479,11 +628,13 @@
    "id": "nurse",
    "name": "Chị Mai",
    "sprite": "villager",
-   "x": 87,
-   "y": 104,
+   "x": 96,
+   "y": 90,
    "lines": [
-    "Trạm dịch chuyển cũng hồi phục toàn bộ HP cho đội của em đấy!"
-   ]
+    "Chào mừng tới Trung tâm Pokémon!",
+    "Chị sẽ hồi phục toàn bộ đội của em. Máy PC ở ngay cửa nhé."
+   ],
+   "role": "nurse"
   },
   {
    "id": "shopkeeper",
@@ -493,6 +644,52 @@
    "y": 102,
    "lines": [
     "Cần gì cứ hỏi chú nhé!"
+   ]
+  },
+  {
+   "id": "sv-board",
+   "name": "Bảng nhiệm vụ",
+   "sprite": "board",
+   "x": 76,
+   "y": 99,
+   "lines": [
+    "Bảng nhiệm vụ của làng.",
+    "Hôm nay chưa có yêu cầu mới."
+   ]
+  },
+  {
+   "id": "sv-guide",
+   "name": "Anh Tuấn",
+   "sprite": "villager",
+   "x": 77,
+   "y": 109,
+   "wander": 3,
+   "lines": [
+    "Muốn bắt Pokémon à? Đánh cho nó yếu đi trước, rồi nhắm và ném bóng (phím F, điện thoại: nút ◓).",
+    "Con số % hiện trên mục tiêu là tỉ lệ bắt thật. Pokémon đang ngủ hoặc bị trạng thái thì dễ bắt hơn."
+   ]
+  },
+  {
+   "id": "sv-granny",
+   "name": "Bà Tư bán hoa",
+   "sprite": "elder",
+   "x": 86,
+   "y": 111,
+   "wander": 4,
+   "lines": [
+    "Ban đêm lũ Pokémon ngày đi ngủ, còn Zubat với Oddish lại ra kiếm ăn.",
+    "Đứng trước trạm dịch chuyển là đội của cháu được hồi phục đấy."
+   ]
+  },
+  {
+   "id": "camp-coach",
+   "name": "Thầy Khang (Trại Huấn Luyện)",
+   "sprite": "wizard",
+   "x": 49,
+   "y": 80,
+   "lines": [
+    "Mỗi Pokémon có vai trò: Tank giữ địch, Fighter áp sát, Assassin săn con yếu, Marksman bắn xa, Mage đánh diện rộng, Support hồi máu.",
+    "Tự đánh không có nghĩa là không cần chỉ huy. Chọn đúng lúc bấm Q, đúng chiêu và đúng lệnh mới là huấn luyện viên giỏi."
    ]
   }
  ],
@@ -528,6 +725,106 @@
      "potion": 1
     },
     "exp": 120
+   }
+  },
+  {
+   "id": "camp-tank",
+   "name": "Học viên Tân",
+   "sprite": "youngster",
+   "x": 38,
+   "y": 79,
+   "team": [
+    [
+     "geodude",
+     7
+    ],
+    [
+     "shellder",
+     8
+    ]
+   ],
+   "challenge": [
+    "Đội của tôi toàn đá với vỏ cứng! Thử xem bạn có xuyên thủng được không!"
+   ],
+   "win": [
+    "Hệ Nước và Cỏ khắc Đá... bạn chọn chiêu khéo thật."
+   ],
+   "lose": [
+    "Phòng thủ là tấn công tốt nhất! Về hồi phục rồi thử lại nhé."
+   ],
+   "rewards": {
+    "items": {
+     "potion": 2
+    },
+    "exp": 160
+   }
+  },
+  {
+   "id": "camp-speed",
+   "name": "Học viên Linh",
+   "sprite": "girl",
+   "x": 38,
+   "y": 87,
+   "team": [
+    [
+     "zubat",
+     8
+    ],
+    [
+     "mankey",
+     9
+    ]
+   ],
+   "challenge": [
+    "Nhanh như gió! Nếu không né được vòng đỏ thì bạn thua chắc."
+   ],
+   "win": [
+    "Bạn né giỏi quá, lại còn biết lúc nào nên rút lui."
+   ],
+   "lose": [
+    "Chậm quá! Đứng yên trong vùng cảnh báo là ăn đòn đấy."
+   ],
+   "rewards": {
+    "items": {
+     "greatball": 2
+    },
+    "exp": 200
+   }
+  },
+  {
+   "id": "camp-mage",
+   "name": "Học viên Phong",
+   "sprite": "youngster",
+   "x": 52,
+   "y": 87,
+   "team": [
+    [
+     "oddish",
+     9
+    ],
+    [
+     "magnemite",
+     9
+    ],
+    [
+     "growlithe",
+     10
+    ]
+   ],
+   "challenge": [
+    "Đội hệ đặc biệt của tôi đánh cả đám một lúc. Bạn có tách được đội hình không?"
+   ],
+   "win": [
+    "Tập trung một mục tiêu bằng lệnh Tấn công... đúng là thủ khoa!"
+   ],
+   "lose": [
+    "Chiêu diện rộng mạnh lắm khi các bạn đứng dồn một chỗ!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 1
+    },
+    "exp": 260
    }
   }
  ],
@@ -604,6 +901,16 @@
     "thunder-stone": 1
    },
    "requiresFlag": "puzzle:rune-ruins"
+  },
+  {
+   "id": "chest-camp",
+   "x": 35,
+   "y": 89,
+   "items": {
+    "exp-candy-s": 3,
+    "muscle-band": 1
+   },
+   "requiresFlag": "camp:graduate"
   }
  ],
  "waypoints": [

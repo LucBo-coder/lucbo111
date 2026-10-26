@@ -43,7 +43,7 @@ describe('co-op PvE world', () => {
     vi.spyOn(net, 'send').mockImplementation((m: NetMsg) => { sent.push(m); });
     const host = new CoopHost(w, () => map);
     host.grant({ currency: 150, items: { potion: 2 }, note: 'Rương báu' });
-    expect(sent).toEqual([{ t: 'coopLoot', reward: { currency: 150, items: { potion: 2 }, note: 'Rương báu', wallet: 'adventure' } }]);
+    expect(sent).toEqual([{ t: 'coopLoot', reward: { currency: 150, items: { potion: 2 }, note: 'Rương báu', wallet: 'adventure' }, id: `${host.epoch}:1` }]);
     w.removeCompanion();
     host.grant({ currency: 10 });
     expect(sent).toHaveLength(1);

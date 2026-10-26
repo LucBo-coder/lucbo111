@@ -132,6 +132,12 @@ export interface Unit {
   target: Unit | null;
   aiTimer: number;
   castSlot: number;
+  /** Active skill (player-triggered): slot waiting to be cast, seconds left in the queue window, its target */
+  queuedSlot: number;
+  queuedT: number;
+  queuedTarget: Unit | null;
+  /** Bitmask of skill slots the AI must not use (kept for the player to trigger) */
+  reserved: number;
   castT: number;
   castTarget: Unit | null;
   castX: number;
@@ -275,7 +281,9 @@ export type WorldEvent =
   | { t: 'bossWeakened'; id: number; defId: string; level: number; x: number; y: number; tag: string | null }
   | { t: 'bossWeakenedExpired'; id: number; defId: string }
   /** Survivor Elemental Combo went off */
-  | { t: 'combo'; name: string; x: number; y: number; type: PokeType };
+  | { t: 'combo'; name: string; x: number; y: number; type: PokeType }
+  /** A player-triggered (active) skill was cast, or its request ran out / became invalid (ok: false) */
+  | { t: 'manual'; id: number; skill: string; ok: boolean };
 
 export type WorldState = 'playing' | 'levelup' | 'gameover' | 'victory' | 'duelOver';
 
@@ -300,6 +308,8 @@ export interface Side {
   autoSendT: number;
   /** Duel: Mega Evolution used (once per duel) */
   megaUsed: boolean;
+  /** Seconds until the side's trainer may trigger another active skill (anti-spam global cooldown) */
+  manualCd: number;
 }
 
 export interface DuelState {
@@ -311,7 +321,13 @@ export interface DuelState {
 }
 
 export const DUEL_SWITCH_CD = 4;
+/** Active skills: global cooldown between two player-triggered casts of one side, and how long a request waits */
+export const ACTIVE_SKILL_GCD = 1.2;
+export const ACTIVE_SKILL_WINDOW = 3;
+export type ActiveSkillResult = 'cast' | 'queued' | 'cooldown' | 'energy' | 'noTarget' | 'immune' | 'global' | 'fainted' | 'blocked';
 const DUEL_AUTO_SEND = 1.2;
+/** Skill kinds aimed at the caster's own side: an active cast needs no opponent */
+const SELF_KINDS: ReadonlySet<string> = new Set(['heal', 'shield', 'buff']);
 
 export interface WorldOptions {
   /** Survivor: starting Pokémon. Adventure: optional (party is added by the scene) */
@@ -454,7 +470,7 @@ export class World {
       id: this.nextId++, types: [], role: null, behavior: null,
       x: 0, y: 0, vx: 0, vy: 0, radius: 14, facing: 1, stats, maxHp: stats.hp, hp: stats.hp,
       energy: 60, maxEnergy: 100, critRate: 0.05, moveSpeed: 100, attackRange: 50, contactPower: 0,
-      skills: [], passive: null, target: null, aiTimer: 0, castSlot: -1, castT: 0, castTarget: null, castX: 0, castY: 0,
+      skills: [], passive: null, target: null, aiTimer: 0, castSlot: -1, queuedSlot: -1, queuedT: 0, queuedTarget: null, reserved: 0, castT: 0, castTarget: null, castX: 0, castY: 0,
       dash: null, statuses: [], shield: 0, shieldT: 0, alive: true, fainted: false, reviveT: 0, hitFlash: 0,
       contactCd: 0, iframes: 0, elite: false, exp: 0, slotIndex: 0, animCast: 0, lastSkill: '', damageDealt: 0, boss: null,
       ownerUid: null, wild: null, hostile: true, captured: false, noCapture: false, tag: null, lastX: 0, lastY: 0, sturdyCd: 0,
@@ -881,6 +897,7 @@ export class World {
       for (const s of spawns) this.placeSpawn(s);
     }
     for (const side of this.sides()) {
+      if (side.manualCd > 0) side.manualCd -= dt;
       const ct = side.commandTarget;
       if (ct && (!ct.alive || ct.captured || ct.fainted)) { side.command = 'auto'; side.commandTarget = null; }
     }
@@ -1074,6 +1091,7 @@ export class World {
     if (this.incapacitated(u)) { nextAiState(u, 'stunned', dt); return null; }
     if (u.dash) { nextAiState(u, 'attack', dt); return 'dash'; }
     if (u.castSlot >= 0) { nextAiState(u, 'cast', dt); this.updateCast(u, dt); return null; }
+    if (u.queuedSlot >= 0 && this.runQueued(u, dt)) return null;
 
     u.aiTimer -= dt;
     if (u.aiTimer <= 0) {
@@ -1145,15 +1163,111 @@ export class World {
       if (e === u.target) score += 45;
       if (score > bestScore) { bestScore = score; best = e; }
     }
-    u.target = best;
+    u.target = u.queuedSlot >= 0 && this.validFoe(u.queuedTarget) ? u.queuedTarget : best;
     // Choice lock ends 1.5 s after the last target (heldCd doubles as that idle timer for Choice items)
     if (u.held?.type === 'choice') {
       if (best) u.heldCd = 1.5;
       else if (u.heldCd <= 0) u.choiceLock = null;
     }
 
-    const choice = chooseSkill(u.skills.map((s) => ({ def: s.def, cooldownLeft: this.heldBlocks(u, s.def) ? Infinity : s.cd })), this.selectorContext(u), 1 + this.mods.areaMult);
+    // A queued active skill or a slot reserved for the player is never spent by the AI
+    if (u.queuedSlot >= 0) return;
+    const choice = chooseSkill(u.skills.map((s, i) => ({ def: s.def, cooldownLeft: this.heldBlocks(u, s.def) || (u.reserved & (1 << i)) ? Infinity : s.cd })), this.selectorContext(u), 1 + this.mods.areaMult);
     if (choice) this.beginCast(u, choice.slot);
+  }
+
+  // ───────────────────────────── active skills ─────────────────────────────
+
+  private validFoe(e: Unit | null): e is Unit {
+    return !!e && e.alive && !e.captured && !e.fainted && e.hostile;
+  }
+
+  /** Target for a player-triggered skill: the commanded target, the current one, else the nearest hostile opponent. */
+  private manualTarget(u: Unit, side: Side): Unit | null {
+    if (this.validFoe(side.commandTarget)) return side.commandTarget;
+    if (this.validFoe(u.target)) return u.target;
+    this.candBuf.length = 0;
+    let best: Unit | null = null, bd = Infinity;
+    for (const e of this.queryOpponents(side, u.x, u.y, this.mode === 'adventure' ? 420 : ALLY_DETECT, this.candBuf)) {
+      if (!this.validFoe(e)) continue;
+      const d = dist2(e, u.x, u.y);
+      if (d < bd) { bd = d; best = e; }
+    }
+    return best;
+  }
+
+  /** Marks a skill slot as kept for the player (the AI stops using it) or gives it back to the AI. */
+  setReserved(u: Unit, slotIdx: number, on: boolean): void {
+    if (slotIdx < 0 || slotIdx >= u.skills.length) return;
+    u.reserved = on ? u.reserved | (1 << slotIdx) : u.reserved & ~(1 << slotIdx);
+  }
+
+  /**
+   * The player asks a party member to use a skill now (`'best'` = the AI picks which one, the player picks when).
+   * Same rules as an AI cast (cooldown, energy, held-item locks, range, type immunity) plus a short global
+   * cooldown per side so manual casts cannot be spammed. A unit that is busy or out of range queues the
+   * request for ACTIVE_SKILL_WINDOW seconds and walks to its target meanwhile.
+   */
+  requestSkill(u: Unit, slot: number | 'best', side: Side = this.sideOf(u) ?? this.home): ActiveSkillResult {
+    if (u.kind !== 'pokemon' || u.fainted || !u.alive) return 'fainted';
+    if (side.manualCd > 0) return 'global';
+    const tg = this.manualTarget(u, side);
+    let idx: number;
+    if (slot === 'best') {
+      const ready = u.skills.map((s) => ({ def: s.def, cooldownLeft: this.heldBlocks(u, s.def) ? Infinity : s.cd }));
+      if (!ready.some((r) => r.cooldownLeft <= 0)) return 'cooldown';
+      if (!ready.some((r) => r.cooldownLeft <= 0 && u.energy >= r.def.energyCost)) return 'energy';
+      // Choose as if the target were in reach: range is solved by walking to it
+      const prev = u.target;
+      u.target = tg;
+      const ctx = this.selectorContext(u);
+      if (ctx.target) ctx.target.dist = 0;
+      const pick = chooseSkill(ready, ctx, 1 + this.mods.areaMult);
+      u.target = prev;
+      if (!pick) return tg ? 'immune' : 'noTarget';
+      idx = pick.slot;
+    } else {
+      idx = slot;
+      const s = u.skills[idx];
+      if (!s || this.heldBlocks(u, s.def)) return 'blocked';
+      if (s.cd > 0) return 'cooldown';
+      if (u.energy < s.def.energyCost) return 'energy';
+    }
+    const def = u.skills[idx].def;
+    const self = SELF_KINDS.has(def.kind);
+    if (!self) {
+      if (!tg) return 'noTarget';
+      if (def.power > 0 && effectiveness(def.type, tg.types) === 0) return 'immune';
+    }
+    side.manualCd = ACTIVE_SKILL_GCD;
+    u.queuedSlot = idx;
+    u.queuedT = ACTIVE_SKILL_WINDOW;
+    u.queuedTarget = self ? null : tg;
+    if (u.queuedTarget) u.target = u.queuedTarget;
+    const busy = u.castSlot >= 0 || !!u.dash || this.incapacitated(u);
+    if (!busy && this.runQueued(u, 0)) return 'cast';
+    return 'queued';
+  }
+
+  /** Fires the queued active skill once its target is in range; true when the request was used up this step. */
+  private runQueued(u: Unit, dt: number): boolean {
+    const slot = u.skills[u.queuedSlot];
+    const tg = u.queuedTarget;
+    const self = !!slot && SELF_KINDS.has(slot.def.kind);
+    const expired = (u.queuedT -= dt) <= 0;
+    if (!slot || expired || (!self && !this.validFoe(tg)) || slot.cd > 0 || u.energy < slot.def.energyCost || this.heldBlocks(u, slot.def)) {
+      if (slot) this.emit({ t: 'manual', id: u.id, skill: slot.def.id, ok: false });
+      u.queuedSlot = -1; u.queuedTarget = null;
+      return false;
+    }
+    if (tg && Math.hypot(tg.x - u.x, tg.y - u.y) > slot.def.range + tg.radius) return false;
+    const idx = u.queuedSlot;
+    u.queuedSlot = -1; u.queuedTarget = null;
+    if (tg) u.target = tg;
+    this.beginCast(u, idx);
+    // Full paralysis spends the request without casting (the skill keeps a short retry cooldown)
+    this.emit({ t: 'manual', id: u.id, skill: slot.def.id, ok: u.castSlot === idx });
+    return true;
   }
 
   selectorContext(u: Unit): SelectorContext {
@@ -1224,7 +1338,14 @@ export class World {
       // Position by what the *current* kit can reach: an early Adventure kit may only have a melee move
       // even for a ranged role (e.g. Bulbasaur Lv5 = Vine Whip only).
       const reach = Math.min(u.attackRange, this.kitReach(u));
-      switch (u.role) {
+      const queued = u.queuedSlot >= 0 && t === u.queuedTarget ? u.skills[u.queuedSlot] : undefined;
+      // A queued active skill walks the Pokémon into that skill's range, whatever its role prefers
+      switch (queued ? 'queued' : u.role) {
+        case 'queued': {
+          const want = Math.max(20, queued!.def.range * 0.8) + t.radius;
+          gx = t.x + (dx / d) * Math.min(d, want); gy = t.y + (dy / d) * Math.min(d, want);
+          break;
+        }
         case 'tank':
         case 'fighter': {
           const want = Math.min(closeR, u.attackRange) * 0.7 + t.radius;
@@ -1268,8 +1389,8 @@ export class World {
     const ml = Math.hypot(mx, my);
     if (ml > 1) { mx /= ml; my /= ml; } else { mx = 0; my = 0; }
 
-    // Kiting for fragile roles
-    if (u.role === 'mage' || u.role === 'marksman' || u.role === 'support') {
+    // Kiting for fragile roles (not while walking in for a queued active skill)
+    if ((u.role === 'mage' || u.role === 'marksman' || u.role === 'support') && u.queuedSlot < 0) {
       this.scratch.length = 0;
       const near = this.queryOpponents(side, u.x, u.y, 75, this.scratch);
       if (near.length) {
@@ -2655,7 +2776,7 @@ export class World {
 }
 
 function newSide(trainer: Unit): Side {
-  return { trainer, allies: [], command: 'auto', commandTarget: null, holdX: 0, holdY: 0, input: { x: 0, y: 0 }, run: false, bench: [], switchCd: 0, autoSendT: DUEL_AUTO_SEND, megaUsed: false };
+  return { trainer, allies: [], command: 'auto', commandTarget: null, holdX: 0, holdY: 0, input: { x: 0, y: 0 }, run: false, bench: [], switchCd: 0, autoSendT: DUEL_AUTO_SEND, megaUsed: false, manualCd: 0 };
 }
 
 function clamp(v: number, a: number, b: number): number {

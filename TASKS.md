@@ -159,6 +159,21 @@ Mốc First Playable (Phần XVII), kiểm bằng server thật + client độc 
 - [ ] NOT TESTED — điện thoại 4G thật qua relay (đã thử trình duyệt desktop; độ trễ phụ thuộc định tuyến của nhà mạng tới workers.dev)
 - [ ] Chống gian lận đầy đủ cần server (P2P chỉ kiểm tra được dữ liệu hợp lệ, không chứng minh được quyền sở hữu)
 
+## V20 — Master Prompt "Complete Game Improvement" (nhánh `improve/complete-game-v1`)
+Trạng thái: `[x]` đã làm + build + unit + e2e · `[~]` một phần · `[ ]` chưa làm. Báo cáo: `GAME_AUDIT.md`, `TEST_REPORT.md`.
+
+| ID | Mục tiêu | File đã sửa | Trạng thái | Kiểm thử | Còn tồn tại |
+|---|---|---|---|---|---|
+| T20-0 | Audit hiện trạng | `GAME_AUDIT.md` | [x] | baseline build + 370/370 unit | — |
+| T20-1 | Kỹ năng chủ động: lõi (`requestSkill`, hàng đợi, GCD 1,2 s, giữ chiêu), UI thanh 4 ô, phím Q/T, chuột phải / nhấn giữ, cảm ứng | `src/core/world.ts`, `src/scenes/AdventureScene.ts`, `src/scenes/AdventureUI.ts` | [x] | `tests/v20_active_skills.test.ts` 9/9; e2e `v20_starter` (Q, click, chuột phải, giữ qua thả lại, chạm trên điện thoại dọc, không đè nút) | chưa có ở PvP / khách co-op / Thế giới online; giữ chiêu chưa lưu vào save |
+| T20-2 | Làng: Trung tâm Pokémon (PC), y tá hồi phục, bảng nhiệm vụ, biển hướng dẫn, NPC đi lại (`wander`) | `src/data/world/starter-valley.json`, `src/core/map/valley.ts`, `src/scenes/AdventureScene.ts`, `src/render/spriteRegistry.ts` | [x] | `v17_maps` (vật thể trên ô đi được), `v20_starter_valley`, e2e (y tá hồi đầy máu, NPC di chuyển ban ngày và quanh chỗ) | lịch NPC chỉ ngày/đêm |
+| T20-3 | Trại Huấn Luyện + chuỗi 3 nhiệm vụ + 2 nhiệm vụ bảng tin | `starter-valley.json`, `src/data/world/quests.json`, `scripts/patch-starter-valley.mjs` | [x] | `v20_starter_valley` (chuỗi từ đầu tới cuối, sai HLV không tiến triển, thưởng 1 lần, cờ mở rương); e2e (vào khu trại, nhận nhiệm vụ qua hội thoại thật) | trận với 3 học viên chưa được e2e đánh trọn (dùng chung luồng HLV đã có test) |
+| T20-4 | BUG-NET-1/2: phần thưởng co-op mất khi rớt mạng | `src/net/transport.ts`, `src/net/coop.ts`, `src/net/coopRewards.ts`, `src/net/protocol.ts`, `src/scenes/CoopGuestScene.ts`, `src/systems/saveSchema.ts`, `tests/coop.test.ts` | [x] | `tests/v20_net_reliability.test.ts` 5/5, `coop.test.ts`, `coop_rewards.test.ts` | bộ đệm máy chủ relay (repo `pokemon-server`) vẫn xóa tin cũ nhất — chưa sửa (ngoài workspace, cần triển khai) |
+| T20-5 | Tài liệu | `GAME_DESIGN.md`, `MAP_DESIGN.md`, `GAMEPLAY_IMPROVEMENTS.md`, `TEST_REPORT.md`, `CHANGELOG.md`, `TASKS.md` | [x] | — | — |
+| T20-6 | Câu cá, thu thập nguyên liệu, lối đi ẩn (Khu 2, 4) | — | [ ] | — | cần hệ thống mới |
+| T20-7 | Nâng cấp các vùng còn lại theo 10 tiêu chí (Phần 2.3) | — | [ ] | — | — |
+| T20-8 | Đo hiệu năng trên điện thoại thật | — | [ ] | — | không có thiết bị trong môi trường này |
+
 ## PHASE E — World expansion
 - [ ] Rừng Ngọc Lục Bảo (cờ mở đã có) và 5 vùng còn lại
 - [x] World Boss ngoài bản đồ (Mega Venusaur — 0.3.0)

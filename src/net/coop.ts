@@ -4,7 +4,7 @@ import { cleanAvatarId } from '../core/avatars';
 import { RULESETS, validateParty, shareableEvents } from './duel';
 import { net } from './session';
 import type { NetMsg } from './protocol';
-import type { CoopLoot } from './coopRewards';
+import { LootLedger, type CoopLoot } from './coopRewards';
 import { type Wallet, WALLETS } from '../core/wallet';
 import { CoopEventDirector, type CoopEventView } from '../core/coopEvents';
 
@@ -164,6 +164,8 @@ export class CoopHost {
         // a guest without a usable base (it reconnected or ignored deltas) asks for a keyframe
         if (m.need) this.sent = null;
       }
+    } else if (m.t === 'coopLootAck' && typeof m.id === 'string') {
+      this.loot.ack(m.id);
     } else if (m.t === 'coopInput' && w.companion && m.epoch === this.epoch) {
       if (!Number.isSafeInteger(m.seq) || m.seq <= this.seq || !Number.isFinite(m.x) || !Number.isFinite(m.y)) return;
       this.seq = m.seq; this.lastInput = performance.now();
@@ -178,7 +180,10 @@ export class CoopHost {
   /** Host → guest: share one loot/reward drop with the attached teammate. No-op when no guest is playing. */
   grant(loot: CoopLoot): void {
     if (!coopSession.active || net.role !== 'host' || !net.connected || !this.world.companion) return;
-    net.send({ t: 'coopLoot', reward: loot.currency ? { ...loot, wallet: loot.wallet ?? this.wallet } : loot });
+    const reward = loot.currency ? { ...loot, wallet: loot.wallet ?? this.wallet } : loot;
+    const id = `${this.epoch}:${++this.lootN}`;
+    this.loot.track(id, reward, performance.now());
+    net.send({ t: 'coopLoot', reward, id });
   }
 
   update(now: number, paused: boolean, events: WorldEvent[]): void {
@@ -216,6 +221,7 @@ export class CoopHost {
     }
     this.lastTick = now;
     if (!net.connected || !w.companion) return;
+    for (const r of this.loot.due(now)) net.send({ t: 'coopLoot', reward: r.loot, id: r.id });
     this.events.push(...shareableEvents(events));
     if (now - this.lastSend < 100) return;
     this.lastSend = now;
@@ -237,6 +243,9 @@ export class CoopHost {
     this.events = [];
   }
   private lastTick = 0;
+  private lootN = 0;
+  /** loot grants waiting for the guest's acknowledgement (re-sent across relay drops) */
+  readonly loot = new LootLedger();
   destroy(): void { this.off(); this.offStatus(); this.world.removeCompanion(); }
 }
 

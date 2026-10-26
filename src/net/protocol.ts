@@ -87,7 +87,9 @@ export type NetMsg =
   | { t: 'coopJoin'; party: DuelMon[]; avatar?: string; obs?: string; need?: boolean }
   | { t: 'coopInput'; epoch: string; seq: number; x: number; y: number; run: boolean; command: AllyCommand; target?: number }
   | { t: 'coopSnap'; s: CoopWire }
-  | { t: 'coopLoot'; reward: CoopLoot }
+  /** id (optional): the guest acknowledges it, the host re-sends until then and the guest applies each id once */
+  | { t: 'coopLoot'; reward: CoopLoot; id?: string }
+  | { t: 'coopLootAck'; id: string }
   | { t: 'coopEnd'; reason: string }
   | { t: 'hello'; v: number; name: string; avatar?: string; game: string }
   | { t: 'ping'; at: number }

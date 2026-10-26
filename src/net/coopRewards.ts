@@ -21,6 +21,44 @@ export interface CoopLoot {
   note?: string;
 }
 
+/** Host side: loot sent with an id stays here until the guest acknowledges it, and is re-sent meanwhile. */
+export class LootLedger {
+  private pending = new Map<string, { loot: CoopLoot; sentAt: number; firstAt: number }>();
+  /** the guest acknowledged at least one grant: only such guests get re-sends (older builds never ack) */
+  peerAcks = false;
+  constructor(readonly resendMs = 3000, readonly giveUpMs = 120_000, readonly max = 64) {}
+  track(id: string, loot: CoopLoot, now: number): void {
+    this.pending.set(id, { loot, sentAt: now, firstAt: now });
+    while (this.pending.size > this.max) this.pending.delete(this.pending.keys().next().value!);
+  }
+  ack(id: string): void {
+    this.peerAcks = true;
+    this.pending.delete(id);
+  }
+  /** Grants to send again now (each at most every `resendMs`, dropped after `giveUpMs`). */
+  due(now: number): { id: string; loot: CoopLoot }[] {
+    if (!this.peerAcks) return [];
+    const out: { id: string; loot: CoopLoot }[] = [];
+    for (const [id, p] of this.pending) {
+      if (now - p.firstAt > this.giveUpMs) { this.pending.delete(id); continue; }
+      if (now - p.sentAt >= this.resendMs) { p.sentAt = now; out.push({ id, loot: p.loot }); }
+    }
+    return out;
+  }
+  get size(): number { return this.pending.size; }
+}
+
+/** Guest side: ids already applied to this save (kept in the save, so a re-send after a reload is not paid twice). */
+const SEEN_KEEP = 200;
+export function lootSeen(save: SaveData, id: string): boolean {
+  return (save.coopLootIds ?? []).includes(id);
+}
+export function markLootSeen(save: SaveData, id: string): void {
+  const ids = (save.coopLootIds ??= []);
+  ids.push(id);
+  if (ids.length > SEEN_KEEP) ids.splice(0, ids.length - SEEN_KEEP);
+}
+
 const MAX_GRANT_CURRENCY = 100_000;
 const MAX_ITEM_QTY = 99;
 const MAX_STACK = 9999;

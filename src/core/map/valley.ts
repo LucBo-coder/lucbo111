@@ -45,7 +45,8 @@ export interface RegionDef {
   fences: number[][];
   props: { kind: string; x: number; y: number }[];
   signs: { x: number; y: number; text: string[] }[];
-  npcs: { id: string; name: string; sprite: string; x: number; y: number; lines: string[] }[];
+  /** wander: radius (tiles) the NPC walks around its spot by day · role 'nurse': talking heals the party */
+  npcs: { id: string; name: string; sprite: string; x: number; y: number; lines: string[]; wander?: number; role?: 'nurse' }[];
   trainers: { id: string; name: string; sprite: string; x: number; y: number; team: [string, number][]; challenge: string[]; win: string[]; lose: string[]; rewards: { items?: Record<string, number>; exp?: number } }[];
   /** quest: the quest that must be active (default q-rescue) · reporter: who to tell afterwards */
   rescue: { id: string; x: number; y: number; species: string; level: number; guards: [string, number][]; quest?: string; reporter?: string };

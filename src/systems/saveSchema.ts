@@ -88,6 +88,8 @@ export interface SaveData {
   currency: number;
   /** Survivor wallet ("ngọc"): runs → Permanent Upgrades */
   survivorCoins: number;
+  /** Co-op guest: ids of host loot grants already applied (a re-send after a relay drop is not paid twice) */
+  coopLootIds?: string[];
   /** Vietnam Odyssey wallet ("đồng") */
   vnCoins: number;
   achievements: string[];

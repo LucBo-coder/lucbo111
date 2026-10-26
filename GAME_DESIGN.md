@@ -56,7 +56,14 @@ Mỗi Pokémon có một **vai trò** quyết định cách chọn mục tiêu v
 Phím `` ` `` và 1–5 (điện thoại: nút **Lệnh**):
 **Tự do** · **Tấn công mục tiêu** (con dưới con trỏ / con được chạm) · **Bảo vệ HLV** · **Đi theo** (không giao chiến, vẫn hồi máu) · **Giữ vị trí** · **Rút lui**.
 
-### 2.5 Trang bị & Mega
+### 2.5 Kỹ năng chủ động (Phiêu lưu, Việt Nam Odyssey)
+Pokémon vẫn tự đánh; người chơi chọn **lúc nào** và **chiêu nào** cho Pokémon đang điều khiển:
+- **Q**: dùng chiêu tốt nhất đang sẵn sàng (AI chọn chiêu, bạn chọn thời điểm). Click / chạm một ô trên **thanh kỹ năng** để dùng đúng chiêu đó. **T** (hoặc chạm tên trên thanh): đổi Pokémon được điều khiển.
+- Chuột phải / nhấn giữ một ô: **giữ chiêu** cho mình, AI không dùng chiêu đó nữa.
+- Cùng luật với AI (hồi chiêu, năng lượng, vật phẩm khóa chiêu, miễn nhiễm hệ) + **hồi chiêu chung 1,2 s** giữa hai lệnh để không spam. Mục tiêu ngoài tầm → Pokémon tự đi tới đúng tầm trong tối đa 3 s.
+- Sinh tồn giữ tự động hoàn toàn; PvP, khách co-op và Thế giới online chưa có kỹ năng chủ động.
+
+### 2.6 Trang bị & Mega
 - Mỗi Pokémon cầm **1 vật phẩm** với hiệu ứng thật trong chiến đấu: tăng sát thương theo hệ (Charcoal, Mystic Water…), Muscle Band / Wise Glasses, Expert Belt, Scope Lens, Quick Claw, Leftovers, Shell Bell, Focus Band/Sash, Life Orb, bộ Choice (khóa chiêu), Assault Vest, Rocky Helmet, Eviolite, Sitrus Berry, đồ luyện EV (Power item, Macho Brace) và Mega Stone.
 - **Mega Tiến Hóa**: cần Vòng Mega + Pokémon dạng cuối cầm đúng Mega Stone, đang giao chiến. Phím **G** / nút **MEGA**. Kéo dài tối đa 90 giây (tự trở lại khi rời giao tranh), hồi 120 giây, mỗi lúc chỉ 1 con. Dạng Mega dùng chỉ số, hệ, đặc tính thật từ PokéAPI. Hiện có gần 50 đá Mega.
 
@@ -113,7 +120,7 @@ Bản đồ chia chunk tải động, có ngày/đêm, thời tiết (mưa, sư�
 
 | Vùng | Cấp | Điểm nhấn |
 |---|---|---|
-| Thung Lũng Khởi Nguyên | 3–13 | Làng khởi đầu, 7 khu, Hang Đá Cổ, World Boss Mega Venusaur |
+| Thung Lũng Khởi Nguyên | 3–13 | Làng khởi đầu (Trung tâm Pokémon, bảng nhiệm vụ), Trại Huấn Luyện, 8 khu, Hang Đá Cổ, World Boss Mega Venusaur |
 | Đầm Lầy Sương Mù | 22–32 | Vũng bùn độc, lối ván gỗ |
 | Bờ Biển San Hô | 26–38 | Biển, hải đăng, rạn san hô |
 | Núi Tuyết Vĩnh Hằng | 32–45 | Mặt băng trơn, bão tuyết, Hang Băng Vĩnh Cửu |
@@ -132,6 +139,10 @@ Tiếp cận / đánh yếu → chọn bóng (**R**) → ngắm & ném (**F**, �
 
 ### 5.4 Nhiệm vụ & NPC
 Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu, câu đố, hầm ngục, boss. HUD có mũi tên chỉ hướng + khoảng cách; NPC hiện `!` (có nhiệm vụ) / `?` (chờ báo cáo). Huấn luyện viên có bảng tên ⚔ (chưa đấu) / ✓ (đã thắng).
+
+### 5.4b Làng khởi đầu & Trại Huấn Luyện
+- **Trung tâm Pokémon**: y tá Chị Mai hồi phục cả đội, máy PC ở cửa. **Bảng nhiệm vụ** của làng nhận việc vặt (săn Rattata, thăm trại). Dân làng đi lại ban ngày, về chỗ ban đêm; biển ở cổng bắc hướng dẫn chiến đấu và kỹ năng chủ động.
+- **Trại Huấn Luyện** (phía tây làng): Thầy Khang và 3 học viên, mỗi người một lối đánh (phòng thủ, tốc độ, hệ đặc biệt). Chuỗi 3 bài học dạy chọn chiêu khắc hệ, né và rút lui, dồn hỏa lực bằng lệnh Tấn công; tốt nghiệp mở rương của trại.
 
 ### 5.5 Hầm ngục
 Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmortar), Tháp Thử Thách (Tyranitar, có giới hạn thời gian). Mỗi hầm: phòng sóng quái → bẫy (đá rơi / băng rơi / đá nóng) → câu đố → phòng Boss → rương. **3 độ khó** (Thường / Khó / Chuyên gia), phần thưởng lần đầu riêng.
@@ -173,7 +184,7 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 - Sảnh **Chơi online** → chọn Sinh tồn / Phiêu lưu / Việt Nam Odyssey → tạo phòng nhận mã 6 ký tự, người kia nhập mã.
 - Chủ phòng chạy mô phỏng; khách mang tối đa 3 Pokémon, có HUD riêng, dự đoán chuyển động của mình để giảm trễ.
 - Đứng gần đồng đội bị gục 3 giây để cứu; đi quá xa chủ phòng sẽ được đưa về.
-- **Chia chiến lợi phẩm**: Pokémon chủ phòng bắt được, đồ trong rương, thưởng hầm ngục và tiền cuối lượt đều cộng vào ô lưu của khách. Nhiệm vụ, cờ cốt truyện, huy hiệu chỉ thuộc chủ phòng.
+- **Chia chiến lợi phẩm**: Pokémon chủ phòng bắt được, đồ trong rương, thưởng hầm ngục và tiền cuối lượt đều cộng vào ô lưu của khách. Nhiệm vụ, cờ cốt truyện, huy hiệu chỉ thuộc chủ phòng. Mỗi phần thưởng có mã riêng: khách xác nhận, chủ phòng gửi lại khi mạng chập chờn, khách không nhận trùng.
 - **6 thử thách co-op** luân phiên (Dọn đường cùng bạn, Kề vai sát cánh, Thợ săn tinh nhuệ, Không bỏ lại ai, Tiếp sức đồng đội, Song hành diệt boss), thưởng cho cả hai.
 
 ### 7.2 PvP
@@ -217,6 +228,7 @@ Tài khoản riêng (độc lập với ô lưu offline), có mã khôi phục, 
 | Tương tác | **E** / Space | Nút **E** |
 | Ném bóng / đổi bóng | **F** (ngắm chuột) / **R** | Nút ◓ (tự nhắm) |
 | Lệnh chiến thuật | `` ` `` và 1–5 | Nút **Lệnh** |
+| Kỹ năng chủ động | **Q** chiêu tốt nhất · click ô chiêu · chuột phải = giữ chiêu · **T** đổi Pokémon | Chạm ô chiêu · nhấn giữ = giữ chiêu · chạm tên = đổi |
 | Mega | **G** | Nút **MEGA** |
 | Đổi Pokémon | Shift + 1–6 | Chạm danh sách đội |
 | Dùng thuốc | **H** | — |
