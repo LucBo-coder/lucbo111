@@ -7,7 +7,7 @@ import { unlockedSkills } from '../core/learnset';
 import { legendQuests } from '../core/legends';
 import { calcStats, StatKey } from '../core/stats';
 import { applyEvGain, addEv, evGain, zeroEvs } from '../core/ev';
-import { QuestDef, QuestEvent, QuestManager, QuestRewards } from '../core/quests';
+import { choiceFlag, QuestDef, QuestEvent, QuestManager, QuestRewards } from '../core/quests';
 import { applyCandy, CandyOutcome, CANDY_DEFS, candyDef, maxUsefulCandy } from '../core/candy';
 import {
   buildPcForCollection, firstFreePcSlot, PcLocation, PcStorage, pcHasRoom, pcLocationOf, pcUids,
@@ -565,6 +565,17 @@ export class AdventureState {
     if (!this.trackedQuest) this.trackedQuest = this.quests.active()[0]?.id ?? null;
     this.syncQuests();
     return done;
+  }
+
+  /** Picks an option at a quest's choice: sets `choice:<quest>:<option>` (follow-ups unlock). Returns the quest if that completed it. */
+  chooseQuest(id: string, option: string): QuestDef[] | null {
+    const u = this.quests.choose(id, option);
+    if (!u) return null;
+    this.setFlag(choiceFlag(id, option));
+    this.quests.refresh();
+    if (u.completed && this.trackedQuest === id) this.trackedQuest = this.quests.active()[0]?.id ?? null;
+    this.syncQuests();
+    return u.completed ? [this.quests.def(id)!] : [];
   }
 
   startQuest(id: string): boolean {

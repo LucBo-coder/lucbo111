@@ -1491,13 +1491,16 @@ export class AdventureUI extends Phaser.Scene {
     const state = qs.states[sel.id];
     c.add(text(this, dx + 16 * s, dy + 12 * s, sel.title, 26 * s));
     c.add(text(this, dx + 16 * s, dy + 46 * s, sel.description, 17 * s, '#d0d8f0').setWordWrapWidth(dw - 32 * s));
-    sel.objectives.forEach((o, i) => {
+    // only the chosen path's objectives (a choice shows what was picked)
+    const picked = qs.option(sel.id);
+    qs.pathObjectives(sel.id).forEach(({ obj: o, i }, row) => {
       const done = state.status === 'completed' || i < state.step;
       const cur = state.status === 'active' && i === state.step;
       const prog = cur && o.count > 1 ? ` (${state.progress}/${o.count})` : '';
-      c.add(text(this, dx + 24 * s, dy + 110 * s + i * 28 * s, `${done ? '☑' : cur ? '▶' : '☐'} ${o.text.replace(/\(\d+\/\d+\)/, '')}${prog}`, 18 * s, done ? '#80c080' : cur ? '#ffe080' : COLORS.dim));
+      const label = o.type === 'choose' && picked ? `${o.text} — ${picked.label}` : o.text.replace(/\(\d+\/\d+\)/, '');
+      c.add(text(this, dx + 24 * s, dy + 110 * s + row * 28 * s, `${done ? '☑' : cur ? '▶' : '☐'} ${label}${prog}`, 18 * s, done ? '#80c080' : cur ? '#ffe080' : COLORS.dim));
     });
-    const rw = sel.rewards;
+    const rw = qs.rewardsOf(sel.id);
     const rewards = [...Object.entries(rw.items ?? {}).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`), rw.worldExp ? `${rw.worldExp} EXP thế giới` : '', rw.reputation ? `${rw.reputation} danh tiếng` : '', rw.pokemon ? `${POKEMON.get(rw.pokemon.species)?.name} Lv${rw.pokemon.level}` : ''].filter(Boolean);
     c.add(text(this, dx + 16 * s, r.y + r.h - 90 * s, `Phần thưởng: ${rewards.join(', ')}`, 16 * s, '#9fe0a0').setWordWrapWidth(dw - 32 * s));
     if (state.status === 'active') c.add(button(this, dx + dw - 100 * s, r.y + r.h - 30 * s, 170 * s, 36 * s, st.trackedQuest === sel.id ? 'Đang theo dõi' : 'Theo dõi', () => { st.trackedQuest = sel.id; this.openMenu('quests'); }).container);

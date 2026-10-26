@@ -121,3 +121,7 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### Sự kiện vùng miền
 - Cùng là "bùng phát" nhưng ở Đồng Nước Nổi thì đó là Mùa cá linh về; cùng là thương nhân nhưng ở Phong Điền thì đó là sạp lễ hội trái cây. Sự kiện mang tên, lời kể, loài và hàng hóa của nơi nó xảy ra.
 - Vẫn có 30% là sự kiện thường để thế giới không đoán trước được.
+
+### Nhiệm vụ phân nhánh
+- Không phải lúc nào cũng có đáp án đúng: báo kiểm lâm về người đặt bẫy, hay tin rằng một người nghèo sẽ nghe lời khuyên? Vét một mùa cá, hay chừa cá non cho năm sau?
+- Mỗi lựa chọn dẫn tới một câu chuyện tiếp theo khác nhau — vét lưới thì năm sau nhóm khảo sát nhờ bạn đo lại đồng vắng; chừa cá non thì Bác Năm rủ bạn ra xem đồng đầy lại.

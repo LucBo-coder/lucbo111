@@ -204,6 +204,8 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 
 **Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
 
+**Nhiệm vụ phân nhánh**: mỗi tỉnh có một ngã rẽ đạo đức / đời thường (bẫy ở U Minh, lưới dày hay câu vừa đủ mùa nước nổi, phân xử bến ghe Ninh Kiều). Chọn hướng nào thì mục tiêu, phần thưởng, lời kết và nhiệm vụ nối tiếp theo hướng đó; không quay lại được. Dữ liệu: mục tiêu `choose` với `options`, mục tiêu riêng nhánh có `branch`, nhiệm vụ sau dùng `requiresFlags: ["choice:<nhiệm vụ>:<hướng>"]`.
+
 **Sự kiện vùng miền**: sự kiện thế giới (bùng phát, di cư, thời tiết, thương nhân) ở vùng có phiên bản địa phương thì 70% mang màu sắc vùng đó — Mùa cá linh về, Nước nổi tràn đồng, Triều cường, Cò về vườn, Lễ hội trái cây miệt vườn, Đêm đom đóm — với loài, thời tiết, hàng hóa và quà riêng (dữ liệu `regional-events.json`).
 
 **Bảo tồn** (sau boss mỗi tỉnh): 6 điểm phục hồi ven nước — trồng đước (Cà Mau), gỡ lưới bỏ hoang (An Giang), vớt rác sông Hậu (Cần Thơ). Sức khỏe sinh thái 0–100 của tỉnh (Suy thoái / Hồi phục / Trù phú) làm Pokémon hiếm theo điều kiện xuất hiện thường hơn (tối đa ×2); Trù phú có quà một lần.

@@ -1216,7 +1216,7 @@ export class AdventureScene extends Phaser.Scene {
       if (it.marker) {
         const giver = it.kind === 'npc' || it.kind === 'trainer' ? this.state.quests.forGiver(it.id) : [];
         const waiting = giver.some((q) => this.state.quests.states[q.id].status === 'available');
-        const talkObjective = this.state.quests.active().some((q) => { const o = this.state.quests.currentObjective(q.id); return o?.type === 'talk' && o.target === it.id; });
+        const talkObjective = this.state.quests.active().some((q) => { const o = this.state.quests.currentObjective(q.id); return (o?.type === 'talk' || o?.type === 'choose') && o.target === it.id; });
         it.marker.setText(talkObjective ? '?' : waiting ? '!' : '').setY(it.y - 68 + Math.sin(this.time.now * 0.006) * 3);
       }
     }
@@ -1258,7 +1258,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private completeQuest(q: QuestDef): void {
-    const lines = this.state.grant(q.rewards);
+    const lines = this.state.grant(this.state.quests.rewardsOf(q.id));
     this.applyParty();
     audio.play('victory');
     this.ui?.questComplete(q.title, lines);
@@ -1441,10 +1441,11 @@ export class AdventureScene extends Phaser.Scene {
     // 1) an active quest waiting for this NPC
     for (const q of qs.active()) {
       const obj = qs.currentObjective(q.id);
+      if (obj?.type === 'choose' && obj.target === npc.id) return this.questChoice(q, obj, say);
       if (obj?.type !== 'talk' || obj.target !== npc.id) continue;
       if ((q.id === 'q-main-1' || q.starter) && qs.states[q.id].step === 0) return this.starterIntro(npc.name, q, npc.id);
-      const lastStep = qs.states[q.id].step === q.objectives.length - 1;
-      await say(lastStep ? q.dialogue.complete : q.dialogue.progress ?? q.dialogue.offer);
+      const lastStep = qs.isLastStep(q.id);
+      await say(lastStep ? qs.option(q.id)?.complete ?? q.dialogue.complete : q.dialogue.progress ?? q.dialogue.offer);
       this.questEvent({ type: 'talk', target: npc.id });
       return;
     }
@@ -1474,6 +1475,21 @@ export class AdventureScene extends Phaser.Scene {
     const active = qs.forGiver(npc.id).find((q) => qs.states[q.id].status === 'active');
     const greet = active ? null : repGreeting(this.state.adv.region, this.state.adv.repBy?.[this.state.adv.region] ?? 0);
     await say(active?.dialogue.progress ?? (greet ? [greet, ...npc.lines] : npc.lines));
+  }
+
+  /** A quest's crossroads: the NPC asks, the player picks a path (or walks away and decides later). */
+  private async questChoice(q: QuestDef, obj: QuestDef['objectives'][number], say: (lines: string[], choices?: DialogueChoice[]) => Promise<string | null>): Promise<void> {
+    const opts = obj.options ?? [];
+    const r = await say(q.dialogue.progress ?? [obj.text], [...opts.map((o) => ({ label: o.label, value: o.id })), { label: 'Để tôi suy nghĩ thêm', value: '' }]);
+    const opt = opts.find((o) => o.id === r);
+    if (!opt) return;
+    const done = this.state.chooseQuest(q.id, opt.id);
+    if (!done) return;
+    audio.play('levelup');
+    this.ui.banner(`${q.title}: ${opt.label}`, '#ffd040');
+    if (opt.reply?.length) await say(opt.reply);
+    for (const d of done) this.completeQuest(d);
+    this.persist();
   }
 
   private async shop(name: string): Promise<void> {

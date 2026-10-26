@@ -170,3 +170,15 @@ Lỗi test tìm thấy: `adventure.spec.ts` xóa mọi Pokémon hung hăng rồi
 | E2E hồi quy (v18_events, v3_events, v22_conservation) | ✅ — Meteor Shower (v18) trượt 1 lần khi chạy song song, chạy lại riêng 2/2 và lặp 4 lần song song 4/4 ✅ (chập chờn do tải, không liên quan) |
 
 Ảnh đã xem: lời báo Mùa cá linh về và dòng sự kiện trên HUD, cửa sổ Sạp lễ hội trái cây (tiêu đề, lời chào, 4 món giảm giá).
+
+## V22 — đợt 10: nhiệm vụ phân nhánh
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **470/470 ✅**. Mới: `v22_branching.test.ts` (4). Sửa `v13_can_tho` (Cần Thơ 14 nhiệm vụ) |
+| E2E mới (`v22_branching.spec.ts`) | ✅ |
+| E2E hồi quy (adventure, v8_vietnam, v13_can_tho, v22_journal, v22_conservation, v22_trainer_rep, v22_regional_events) | 11/11 ✅ |
+
+Lỗi tìm thấy khi viết: hai phần thưởng trỏ tới vật phẩm không có trong game (`hyperpotion`, `diveball`) — test dữ liệu bắt được, đã đổi sang Super Potion / Great Ball. Marker "Trà Sư" ban đầu nằm ngoài khu, đã dời vào trong.
+Ảnh đã xem: hộp thoại 3 hướng + "Để tôi suy nghĩ thêm", nhật ký hiện "Phân xử chuyện bến ghe — Chia giờ…" và chỉ 2 mục tiêu của nhánh.
