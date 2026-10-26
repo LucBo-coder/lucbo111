@@ -134,3 +134,8 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### Miệt vườn Phong Điền (vùng mẫu)
 - Trước: một bãi cỏ xanh trống trơn. Giờ: đi giữa các liếp cây ăn trái và dừa, băng qua mương bằng cầu ván, hái trái ở bụi chín (Pokémon của bạn chạy đi hái phụ), ngồi bờ mương câu Barboach bằng cây cần câu tre Ông Sáu cho mượn.
 - Một bụi rậm giấu lối vào khoảng vườn bí mật; một tảng đá nứt trong vườn cò giấu hốc đá — cần Pokémon biết Cắt / Đập đá.
+
+### Đồng Nước Nổi & rừng đước (An Giang, Cà Mau)
+- Đồng Nước Nổi không còn là bãi cỏ: đi trên bờ đê giữa những ô ruộng ngập, ô nào còn lúa đứng thì có Pokémon nấp. Ngồi bờ đê thả câu, hái bông điên điển vàng, vào rừng tràm Trà Sư lấy mật ong — đủ thì mang về cho Cô Sáu làm bánh mùa nước nổi.
+- Cà Mau: lúc nước ròng lượm ốc len trên bãi bùn dưới gốc đước, đem về cho Ngư dân Tư Sáu đổi cây cần câu — giờ có cần câu ngay ở tỉnh đầu, câu trên lạch rừng đước.
+- Mỗi tỉnh thêm 2 hốc bí mật (rễ đước, bụi tràm U Minh, bụi rậm Trà Sư, tảng đá nứt Thất Sơn).

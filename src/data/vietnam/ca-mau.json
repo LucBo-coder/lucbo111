@@ -575,13 +575,35 @@
    }
   },
   {
-   "id": "chest-cm-mangrove",
+   "id": "chest-cm-mangrove-west",
    "x": 20,
    "y": 56,
    "items": {
     "greatball": 2,
     "oranberry": 3
    }
+  },
+  {
+   "id": "chest-cm-roots-nook",
+   "x": 34,
+   "y": 66,
+   "items": {
+    "oranberry": 4,
+    "netball": 2,
+    "exp-candy-xs": 3
+   },
+   "requiresFlag": "field:ca-mau:cm-roots"
+  },
+  {
+   "id": "chest-cm-uminh-nook",
+   "x": 12,
+   "y": 9,
+   "items": {
+    "greatball": 3,
+    "miracle-seed": 1,
+    "potion": 3
+   },
+   "requiresFlag": "field:ca-mau:cm-uminh-thicket"
   }
  ],
  "waypoints": [
@@ -710,6 +732,82 @@
    "y": 10,
    "wx": 100,
    "wy": 10
+  }
+ ],
+ "nodes": [
+  {
+   "id": "cm-snail-1",
+   "table": "mangrove-forage",
+   "x": 8,
+   "y": 46
+  },
+  {
+   "id": "cm-snail-2",
+   "table": "mangrove-forage",
+   "x": 24,
+   "y": 60
+  },
+  {
+   "id": "cm-snail-3",
+   "table": "mangrove-forage",
+   "x": 96,
+   "y": 63
+  },
+  {
+   "id": "cm-fish-1",
+   "table": "mangrove-fish",
+   "x": 10,
+   "y": 48
+  },
+  {
+   "id": "cm-fish-2",
+   "table": "mangrove-fish",
+   "x": 40,
+   "y": 47
+  },
+  {
+   "id": "cm-fish-3",
+   "table": "mangrove-fish",
+   "x": 81,
+   "y": 56
+  },
+  {
+   "id": "cm-honey-1",
+   "table": "melaleuca-honey",
+   "x": 41,
+   "y": 10
+  },
+  {
+   "id": "cm-honey-2",
+   "table": "melaleuca-honey",
+   "x": 108,
+   "y": 32
+  }
+ ],
+ "field": [
+  {
+   "id": "cm-roots",
+   "ability": "cut",
+   "x": 38,
+   "y": 66,
+   "nook": {
+    "cx": 34.5,
+    "cy": 66.5,
+    "r": 3,
+    "wall": "tree"
+   }
+  },
+  {
+   "id": "cm-uminh-thicket",
+   "ability": "cut",
+   "x": 16,
+   "y": 9,
+   "nook": {
+    "cx": 12.5,
+    "cy": 9.5,
+    "r": 3,
+    "wall": "tree"
+   }
   }
  ]
 }

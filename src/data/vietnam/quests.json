@@ -2587,5 +2587,128 @@
     "Trái ngọt quá! Nè, cây cần câu tre của ông. Ra bờ mương thả câu, coi chừng con Barboach nó giựt mạnh lắm nghen."
    ]
   }
+ },
+ {
+  "id": "vn-cm-rod",
+  "kind": "side",
+  "title": "Cần câu của Ngư dân Tư Sáu",
+  "giver": "cm-fisher",
+  "requires": [
+   "vn-cm-1"
+  ],
+  "description": "Ngư dân Tư Sáu có cây cần câu dư. Lượm giùm chú ít ốc len ngoài rừng đước rồi chú cho mượn.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "forage",
+    "count": 2,
+    "text": "Lượm 2 bãi ốc len trong rừng đước (0/2)",
+    "marker": {
+     "x": 24,
+     "y": 60,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-fisher",
+    "count": 1,
+    "text": "Mang ốc về cho Ngư dân Tư Sáu",
+    "marker": {
+     "x": 46,
+     "y": 97,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "netball": 2,
+    "oranberry": 3
+   },
+   "worldExp": 120,
+   "reputation": 5,
+   "flags": [
+    "tool:rod"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Nước ròng rồi, ốc len bám đầy gốc đước mà chú còn phải vá lưới.",
+    "Con lượm phụ chú vài bãi ốc, chú cho con cây cần câu dư — lạch rừng đước cá nhiều lắm."
+   ],
+   "progress": [
+    "Ốc len bám mấy bãi bùn dưới gốc đước đó con. Coi chừng con Krabby nó kẹp."
+   ],
+   "complete": [
+    "Ốc ngon quá! Cây cần câu nè con. Lạch nào trong rừng đước cũng thả câu được, ruộng nước nổi An Giang cũng vậy."
+   ]
+  }
+ },
+ {
+  "id": "vn-ag-flood-harvest",
+  "kind": "side",
+  "title": "Mùa nước nổi của Cô Sáu",
+  "giver": "ag-sugar-palm",
+  "requires": [
+   "vn-ag-1"
+  ],
+  "description": "Mùa nước nổi, Cô Sáu đường thốt nốt cần bông điên điển và mật ong tràm để làm bánh — và một mẻ cá đồng.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "forage",
+    "count": 3,
+    "text": "Hái bông điên điển / lấy mật ong tràm (0/3)",
+    "marker": {
+     "x": 104,
+     "y": 74,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "collect",
+    "target": "fish",
+    "count": 1,
+    "text": "Câu một mẻ trên ruộng nước nổi (0/1)",
+    "marker": {
+     "x": 110,
+     "y": 68,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-sugar-palm",
+    "count": 1,
+    "text": "Mang về cho Cô Sáu đường thốt nốt",
+    "marker": {
+     "x": 76,
+     "y": 71,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "superpotion": 2,
+    "greatball": 3
+   },
+   "worldExp": 260,
+   "reputation": 6
+  },
+  "dialogue": {
+   "offer": [
+    "Nước nổi rồi con! Bông điên điển vàng rực trên bờ ruộng, ong tràm trong Trà Sư cũng đầy bọng.",
+    "Con hái giùm cô ít bông, lấy ít mật, rồi câu một mẻ cá đồng — cô làm bánh đãi cả xóm."
+   ],
+   "progress": [
+    "Bông điên điển mọc trên bờ ruộng phía đông, bọng ong thì trong rừng tràm. Cá thì thả câu trên mấy ô ruộng ngập — chưa có cần thì hỏi Ngư dân Tư Sáu dưới Cà Mau."
+   ],
+   "complete": [
+    "Trời, đủ hết rồi! Bánh điên điển chấm mật ong tràm, thêm nồi cá kho — mùa nước nổi vậy mới vui. Cầm lấy nè con."
+   ]
+  }
  }
 ]

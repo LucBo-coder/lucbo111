@@ -216,3 +216,17 @@ Ghi chú: bản nháp đầu tiên thêm một LOD thứ hai trong `world.ts`; k
 
 Kiểm tra hiện trạng: ảnh chụp cho thấy miệt vườn là bãi cỏ trống (habitat `farm` chỉ có luống rau theo toạ độ cứng của Thung Lũng). Lỗi tìm thấy nhờ test có sẵn: rương `chest-ct-garden` nằm sát mép mương mới → dời 1 ô. Lỗi tìm thấy khi lặp test sự kiện vùng miền: ổ bùng phát ở Đồng Nước Nổi đôi khi sinh 0–3 Pokémon vì vị trí rơi vào nước → `group()` thử thêm vị trí; test cũng đổi sang tính tiến độ bằng id Pokémon của sự kiện. Lặp 12 lần song song: 12/12 ✅.
 Ảnh đã xem: miệt vườn (liếp cây, dừa, luống, mương, cầu ván), câu cá trên mương, hốc bí mật sau khi cắt bụi + thông báo rương.
+
+## V22 — đợt 14: thiết kế bản đồ (An Giang & Cà Mau theo mẫu Cần Thơ)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **494/494 ✅**. Mới: `v22_map_angiang_camau.test.ts` (10) |
+| E2E mới (`v22_map_angiang_camau.spec.ts`) | ✅ |
+| E2E hồi quy (v8_vietnam, v9_aquatic, v10_gen9, v11_pmd, v13_can_tho, v22_branching, v22_conservation, v22_field_boat, v22_journal, v22_map_cantho, v22_perf, v22_regional_events, v22_trainer_rep, overworld_visual, online_modes, coop) | 26/26 ✅ (sau khi sửa) |
+
+Kiểm tra hiện trạng: ảnh chụp cho thấy Đồng Nước Nổi là bãi cỏ trống có vài bụi cỏ cao; rừng đước Cà Mau đã có lạch và bãi bùn nhưng không có gì để làm ngoài đánh Pokémon. Lỗi dữ liệu tìm thấy: 2 rương Cà Mau trùng id.
+Lỗi tìm thấy nhờ test có sẵn: 1 biển chỉ đường, 3 điểm bảo tồn và điểm đến cổng từ Cần Thơ nằm trong ô ruộng ngập → dời lên bờ đê. Lỗi tìm thấy khi chạy hồi quy: bản đầu của "dời save cũ ra khỏi nước" kéo người chơi đang ngồi ghe lên bờ (`v22_field_boat`) → bỏ qua khi save đang trên ghe.
+`coop.spec.ts` (menu co-op, di chuyển của khách) trượt 1 lần khi chạy cùng loạt, qua khi chạy riêng và khi lặp — lỗi chập chờn về focus bàn phím giữa 2 tab, không liên quan bản đồ.
+Ảnh đã xem: ruộng ngập + bờ đê + lúa đứng, hốc rễ đước sau khi cắt (thông báo rương), hốc đá Thất Sơn + bảng hoàn thành nhiệm vụ Cô Sáu.

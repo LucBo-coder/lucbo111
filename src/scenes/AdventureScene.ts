@@ -266,8 +266,20 @@ export class AdventureScene extends Phaser.Scene {
     if (this.mapKind === 'dungeon') {
       const d = this.map as DungeonMap;
       this.world.teleport((d.start.x + 0.5) * TILE_PX, (d.start.y + 0.5) * TILE_PX);
-    } else if (adv.started && adv.pos.x > 0) this.world.teleport(adv.pos.x, adv.pos.y);
-    else this.world.teleport((region.spawn.x + 0.5) * TILE_PX, (region.spawn.y + 0.5) * TILE_PX);
+    } else if (adv.started && adv.pos.x > 0) {
+      // a save from before a map change may stand where there is now water (e.g. the paddies): nearest open tile
+      // (not when saved in a boat on the river)
+      let { x, y } = adv.pos;
+      const tx = Math.floor(x / TILE_PX), ty = Math.floor(y / TILE_PX);
+      if (!adv.boat && map.solidAt(tx, ty)) {
+        search: for (let r = 1; r <= 12; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
+          if (Math.max(Math.abs(dx), Math.abs(dy)) !== r || map.solidAt(tx + dx, ty + dy)) continue;
+          x = (tx + dx + 0.5) * TILE_PX; y = (ty + dy + 0.5) * TILE_PX;
+          break search;
+        }
+      }
+      this.world.teleport(x, y);
+    } else this.world.teleport((region.spawn.x + 0.5) * TILE_PX, (region.spawn.y + 0.5) * TILE_PX);
     adv.started = true;
     this.summons = new PokemonSummonManager(this);
     this.env = new EnvironmentController(this);

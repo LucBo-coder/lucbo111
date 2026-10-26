@@ -113,7 +113,11 @@
    "level": [
     9,
     13
-   ]
+   ],
+   "paddy": {
+    "cell": 6,
+    "rice": 0.3
+   }
   }
  ],
  "paths": [
@@ -293,8 +297,8 @@
    ]
   },
   {
-   "x": 98,
-   "y": 72,
+   "x": 99,
+   "y": 70,
    "text": [
     "↗ Núi Sam · Núi Cấm",
     "← Rừng tràm Trà Sư"
@@ -633,6 +637,28 @@
     "greatball": 2,
     "sitrus-berry": 1
    }
+  },
+  {
+   "id": "chest-ag-tra-su-nook",
+   "x": 54,
+   "y": 96,
+   "items": {
+    "sitrus-berry": 2,
+    "miracle-seed": 1,
+    "netball": 3
+   },
+   "requiresFlag": "field:an-giang:ag-thicket"
+  },
+  {
+   "id": "chest-ag-that-son-nook",
+   "x": 77,
+   "y": 30,
+   "items": {
+    "ultraball": 2,
+    "soft-sand": 1,
+    "exp-candy-s": 2
+   },
+   "requiresFlag": "field:an-giang:ag-cracked"
   }
  ],
  "waypoints": [
@@ -808,6 +834,82 @@
    "y": 65,
    "wx": 117,
    "wy": 63
+  }
+ ],
+ "nodes": [
+  {
+   "id": "ag-flower-1",
+   "table": "flood-forage",
+   "x": 104,
+   "y": 74
+  },
+  {
+   "id": "ag-flower-2",
+   "table": "flood-forage",
+   "x": 116,
+   "y": 86
+  },
+  {
+   "id": "ag-flower-3",
+   "table": "flood-forage",
+   "x": 110,
+   "y": 98
+  },
+  {
+   "id": "ag-fish-1",
+   "table": "paddy-fish",
+   "x": 110,
+   "y": 68
+  },
+  {
+   "id": "ag-fish-2",
+   "table": "paddy-fish",
+   "x": 116,
+   "y": 92
+  },
+  {
+   "id": "ag-fish-3",
+   "table": "paddy-fish",
+   "x": 118,
+   "y": 104
+  },
+  {
+   "id": "ag-honey-1",
+   "table": "melaleuca-honey",
+   "x": 64,
+   "y": 90
+  },
+  {
+   "id": "ag-honey-2",
+   "table": "melaleuca-honey",
+   "x": 80,
+   "y": 104
+  }
+ ],
+ "field": [
+  {
+   "id": "ag-thicket",
+   "ability": "cut",
+   "x": 58,
+   "y": 96,
+   "nook": {
+    "cx": 54.5,
+    "cy": 96.5,
+    "r": 3,
+    "wall": "tree"
+   }
+  },
+  {
+   "id": "ag-cracked",
+   "ability": "smash",
+   "x": 81,
+   "y": 30,
+   "nook": {
+    "cx": 77.5,
+    "cy": 30.5,
+    "r": 3,
+    "wall": "boulder"
+   }
   }
  ]
 }

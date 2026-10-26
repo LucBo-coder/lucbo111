@@ -375,8 +375,16 @@ export class ValleyMap implements MapProvider {
       case 'meadow':
         if (n > 0.55) return T.TallGrass;
         break;
-      case 'lake':
+      case 'lake': {
+        const p = area.paddy;
+        if (p) {
+          // dikes on the plot borders (and around NPCs, chests, nodes…); inside, flood water or standing rice
+          const lx = (tx - area.rect[0]) % p.cell, ly = (ty - area.rect[1]) % p.cell;
+          if (lx === 0 || ly === 0 || !this.isClear(tx, ty)) return hash2(tx, ty, 5) < 0.12 ? T.Tuft : T.Grass;
+          return this.paddyRice(area, tx, ty) ? T.TallGrass : T.Water;
+        }
         if (n > 0.7) return T.TallGrass;
+      }
         break;
     }
     const h = hash2(tx, ty, 5);
@@ -520,6 +528,12 @@ export class ValleyMap implements MapProvider {
     return (ty - area.rect[1]) % area.orchard!.period;
   }
 
+  /** Whether the paddy plot holding this tile is standing rice (not flooded). */
+  paddyRice(area: AreaDef, tx: number, ty: number): boolean {
+    const p = area.paddy!;
+    return hash2(Math.floor((tx - area.rect[0]) / p.cell), Math.floor((ty - area.rect[1]) / p.cell), 53) < p.rice;
+  }
+
   private isClear(tx: number, ty: number): boolean {
     for (const c of this.clear) if (Math.hypot(tx + 0.5 - c.x, ty + 0.5 - c.y) < c.r) return false;
     return true;
@@ -558,6 +572,11 @@ export class ValleyMap implements MapProvider {
         if (hab === 'farm' && area?.orchard) {
           const r = this.orchardRow(area, ty);
           if ((r === 2 || r === 4) && (tx + (r === 4 ? 1 : 0)) % 3 === 0) out.push(this.tree(tx, ty, 'farm'));
+          continue;
+        }
+        // paddies: the dikes stay open; now and then a palm stands in the rice
+        if (area?.paddy) {
+          if (t === T.TallGrass && h < 0.04) out.push(this.tree(tx, ty, 'coast'));
           continue;
         }
         if (hab === 'coast' && t === T.Rocky && h < 0.08) { out.push({ kind: 'boulder', id: `b-${tx}-${ty}`, x: tx + 0.5, y: ty + 0.5, collideR: 20 }); continue; }

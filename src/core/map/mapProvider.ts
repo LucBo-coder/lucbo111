@@ -31,6 +31,11 @@ export interface AreaDef {
    * crossing every `gap` tiles; between canals raised beds with two rows of fruit trees and a crop row.
    */
   orchard?: { period: number; gap: number };
+  /**
+   * Lake areas laid out as flooded paddies (Mekong "mùa nước nổi"): a grid of `cell`-tile plots, each a flooded
+   * square of water ringed by a one-tile dike you walk on; a share (`rice`) of the plots is standing rice instead.
+   */
+  paddy?: { cell: number; rice: number };
 }
 
 export interface SpawnEntry {

@@ -204,7 +204,9 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 
 **Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
 
-**Vùng mẫu Cần Thơ (V22)**: mỗi khu có bản sắc riêng — Ninh Kiều (bến, chợ), sông Hậu / Cồn Sơn (ghe, đấu trường Whiscash trên cồn), Cái Răng (chợ nổi), Bằng Lăng (rừng tràm, vườn cò, hốc đá bí mật), *Miệt vườn Phong Điền*: liếp cây ăn trái xen mương nước và cầu ván (khai báo `orchard` trong dữ liệu khu vực), bụi trái cây để hái, câu cá trên mương bằng cần câu tre của Ông Sáu, hốc bí mật sau bụi rậm. Các tỉnh khác sẽ nâng cấp theo mẫu này.
+**Vùng mẫu Cần Thơ (V22)**: mỗi khu có bản sắc riêng — Ninh Kiều (bến, chợ), sông Hậu / Cồn Sơn (ghe, đấu trường Whiscash trên cồn), Cái Răng (chợ nổi), Bằng Lăng (rừng tràm, vườn cò, hốc đá bí mật), *Miệt vườn Phong Điền*: liếp cây ăn trái xen mương nước và cầu ván (khai báo `orchard` trong dữ liệu khu vực), bụi trái cây để hái, câu cá trên mương bằng cần câu tre của Ông Sáu, hốc bí mật sau bụi rậm. An Giang và Cà Mau đã nâng cấp theo mẫu này.
+
+**An Giang (V22)**: Đồng Nước Nổi là ruộng mùa nước nổi (khai báo `paddy`: ô ruộng ngập + bờ đê, một phần ô là lúa đứng) — câu cá trên ô ngập, hái bông điên điển trên bờ đê, gỡ lưới bỏ hoang (bảo tồn) dọc bờ; Trà Sư là rừng tràm có bọng ong và hốc bí mật sau bụi rậm; Thất Sơn / Núi Sam là núi đá (hốc sau tảng đá nứt, đền cổ); Phú Quốc là đảo đi bằng phà. **Cà Mau**: rừng đước có lạch triều và bãi bùn — lượm ốc len, câu trên lạch (cần câu của Ngư dân Tư Sáu), hốc sau rễ đước; U Minh là rừng tràm có bọng ong và hốc sau bụi tràm; Mũi Cà Mau là bờ biển.
 
 **Chiến đấu Adventure (V22)**: combo nguyên tố (trạng thái + hệ đòn đánh) có giới hạn 6 s / mục tiêu; Pokémon yếu (< 30% HP, không phải tank) lùi về cạnh HLV; HLV < 50% HP thì tank / fighter bảo vệ HLV; khi yên bình, Pokémon tự hái bụi quả chín gần đó. Không áp dụng cho PvP; Survivor giữ nguyên.
 
