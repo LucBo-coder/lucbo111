@@ -1,101 +1,249 @@
-# Pokémon Survivor — Game Design
+# Pokémon Survivor — Thiết kế & Lối chơi
 
-Auto-battle roguelite 2D top-down. Người chơi **chỉ di chuyển** huấn luyện viên (HLV); đội Pokémon tự tìm mục tiêu, tự chọn kỹ năng, tự né đòn. Mục tiêu: sống sót và hạ Boss cuối ở phút 15.
+> Phiên bản 0.14.0 (+ các thay đổi chưa phát hành trong [CHANGELOG.md](CHANGELOG.md)).
+> Tài liệu này mô tả **game chơi như thế nào** và **có những chức năng gì**. Chi tiết kỹ thuật từng mảng nằm ở các tài liệu riêng (xem cuối trang).
 
-## Vòng lặp chính
-1. Chọn Pokémon khởi đầu (Charmander / Squirtle / Bulbasaur).
-2. Kẻ địch xuất hiện liên tục ngoài màn hình, ngày càng đông, nhanh, đa dạng.
-3. Pokémon tự chiến đấu → kẻ địch rơi **EXP gem** → HLV đi nhặt (bán kính nam châm).
-4. Lên cấp → game **tạm dừng**, hiện **3 thẻ nâng cấp** ngẫu nhiên có độ hiếm.
-5. Mỗi 5 phút có Boss (5:00, 10:00, 15:00 = Boss cuối). Hạ Boss cuối = chiến thắng.
-6. HLV hết HP = thua. Pokémon hết HP chỉ **kiệt sức 15s** rồi hồi sinh 50% HP.
+Pokémon Survivor là game Pokémon fan-made, 2D góc nhìn từ trên xuống, chạy trên trình duyệt (Phaser 3 + TypeScript), chơi được trên máy tính và điện thoại.
 
-## Điều khiển
-| Thiết bị | Di chuyển | Khác |
+**Ý tưởng cốt lõi:** Pokémon **tự chiến đấu theo thời gian thực**. Người chơi điều khiển huấn luyện viên (HLV): di chuyển, né đòn, ra lệnh chiến thuật, ném bóng thu phục, chọn nâng cấp — còn đội Pokémon tự tìm mục tiêu, tự chọn chiêu và tự né vùng cảnh báo.
+
+---
+
+## 1. Các chế độ chơi
+
+| Chế độ | Kiểu chơi | Thời lượng | Tiền tệ |
+|---|---|---|---|
+| **Sinh tồn** | Auto-battle roguelite, sống sót 15 phút và hạ Boss cuối | 1 lượt ~15 phút | Ngọc |
+| **Phiêu lưu** | Thế giới mở: khám phá, thu phục, nhiệm vụ, hầm ngục, huyền thoại | Chiến dịch dài | Xu |
+| **Việt Nam Odyssey** | Chiến dịch thế giới mở lấy bối cảnh miền Tây Nam Bộ | Chiến dịch dài | Đồng |
+| **Chơi online** | Co-op 2 người (cả 3 chế độ trên), PvP đấu thời gian thực | Theo phòng | Theo chế độ chủ phòng |
+| **Thế giới online** | Thế giới chung nhiều người trên máy chủ, tài khoản riêng | Liên tục | Xu (máy chủ) |
+
+Mọi chế độ dùng chung **một engine chiến đấu**, nên Pokémon, chiêu thức, trạng thái, trang bị và Mega hoạt động giống nhau ở mọi nơi.
+
+---
+
+## 2. Chiến đấu thời gian thực (dùng chung)
+
+### 2.1 Nguyên tắc
+- Mô phỏng chạy cố định 60 bước/giây, tách khỏi phần vẽ; cùng seed + cùng thao tác → cùng kết quả.
+- Sát thương theo công thức bản gốc: `((2L/5+2)·Power·A/D/50+2) × STAB 1.5 × Hệ × Chí mạng 1.5 × Ngẫu nhiên 0.85–1 × Hệ số`. Đòn vật lý dùng Atk/Def, đặc biệt dùng SpA/SpD.
+- Đủ **18 hệ** (bảng Gen 6+), Pokémon hai hệ nhân cả hai hệ số, miễn nhiễm = 0 sát thương.
+- Chiêu có **độ chính xác** (hiện "Trượt!") và tỉ lệ khựng lấy từ PokéAPI; đạn và đòn diện rộng thì né bằng vị trí.
+- Các dạng đòn: cận chiến, đạn, tia, lao, vùng tròn, hình nón, vùng đất kéo dài, khiên, hồi máu, buff/debuff.
+- Số sát thương: vàng = siêu hiệu quả, xám = kém hiệu quả, cam có `!` = chí mạng, đỏ = phe mình bị đánh.
+
+### 2.2 Trạng thái
+Bỏng, Độc, Độc nặng, Hút máu (Leech Seed), Chậm, Choáng, Ngủ (tỉnh khi bị đánh), Đóng băng (đòn Lửa làm tan), Tê liệt, Rối loạn, Khựng, Khiêu khích (kéo aggro), Tăng công, Giảm thủ. Mỗi trạng thái có thời lượng, giới hạn cộng dồn và icon pixel trên đầu. Boss và Elite kháng phần lớn sát thương theo thời gian để DoT không phá game.
+
+### 2.3 AI đồng đội
+Mỗi Pokémon có một **vai trò** quyết định cách chọn mục tiêu và đứng vị trí:
+
+| Vai trò | Mục tiêu | Di chuyển |
 |---|---|---|
-| Desktop | WASD / phím mũi tên | ESC/P tạm dừng · 1/2/3 chọn thẻ · F bật/tắt FPS |
-| Mobile | Chạm-kéo bất kỳ đâu (joystick ảo động) | Nút `II` tạm dừng · chạm thẻ |
+| Tank | Kẻ địch gần / đang đánh HLV | Lao vào cận chiến, khiên + khiêu khích |
+| Fighter | Gần bản thân | Áp sát |
+| Assassin | Máu thấp nhất, tránh Boss | Vòng ra sau, nhanh hơn |
+| Marksman | Gần nhất | Giữ tầm bắn, thả diều |
+| Mage | Cụm địch đông nhất | Giữ khoảng cách |
+| Support | Gần HLV | Đứng cạnh đồng đội yếu nhất, hồi máu |
+
+- **Chọn chiêu bằng chấm điểm**, không ngẫu nhiên: trong tầm → hết hồi chiêu → đủ năng lượng → lợi thế hệ × STAB → số địch trong vùng → đồng đội cần hồi máu → bản thân gặp nguy.
+- Luôn **ưu tiên thoát khỏi vùng cảnh báo** của địch; bám mục tiêu để không giật qua lại; dịch chuyển về HLV nếu bị kéo quá xa.
+- Máy trạng thái tường minh: nghỉ / theo / tìm / đuổi / định vị / tấn công / niệm chiêu / né / hồi phục / choáng / bỏ chạy / gục.
+
+### 2.4 Lệnh chiến thuật
+Phím `` ` `` và 1–5 (điện thoại: nút **Lệnh**):
+**Tự do** · **Tấn công mục tiêu** (con dưới con trỏ / con được chạm) · **Bảo vệ HLV** · **Đi theo** (không giao chiến, vẫn hồi máu) · **Giữ vị trí** · **Rút lui**.
+
+### 2.5 Trang bị & Mega
+- Mỗi Pokémon cầm **1 vật phẩm** với hiệu ứng thật trong chiến đấu: tăng sát thương theo hệ (Charcoal, Mystic Water…), Muscle Band / Wise Glasses, Expert Belt, Scope Lens, Quick Claw, Leftovers, Shell Bell, Focus Band/Sash, Life Orb, bộ Choice (khóa chiêu), Assault Vest, Rocky Helmet, Eviolite, Sitrus Berry, đồ luyện EV (Power item, Macho Brace) và Mega Stone.
+- **Mega Tiến Hóa**: cần Vòng Mega + Pokémon dạng cuối cầm đúng Mega Stone, đang giao chiến. Phím **G** / nút **MEGA**. Kéo dài tối đa 90 giây (tự trở lại khi rời giao tranh), hồi 120 giây, mỗi lúc chỉ 1 con. Dạng Mega dùng chỉ số, hệ, đặc tính thật từ PokéAPI. Hiện có gần 50 đá Mega.
+
+---
+
+## 3. Pokémon
+
+- **National Dex 1025 loài** (Gen 1–9) với chỉ số, hệ, đặc tính, bộ chiêu, nhóm tăng trưởng EXP và tỉ lệ bắt từ PokéAPI.
+- **Chỉ số cá thể**: IV 0–31, 25 tính cách, EV (yield chuẩn, giới hạn 252/510, luyện bằng Power item, vitamin, berry), độ thân thiết 0–255.
+- **Chiêu mở theo cấp** từ learnset (Phiêu lưu); Sinh tồn dùng bộ chiêu đầy đủ ngay từ đầu.
+- **Tiến hóa** theo luật PokéAPI: cấp, đá, vật phẩm cầm, thân thiết, ngày/đêm, địa điểm, chiêu đã biết, mưa… Trao đổi được thay bằng **Dây Liên Kết** (Linking Cord). Nhiều nhánh hợp lệ thì người chơi chọn. Có màn tiến hóa với bảng chỉ số trước → sau và chiêu mới, bỏ qua được.
+- **Shiny** 1/4096 (1/1024 khi có sự kiện Bùng phát), giữ qua tiến hóa, có Pokédex Shiny riêng.
+- **Summon / Recall**: thả Pokémon ra bằng đúng loại bóng đã bắt, thu hồi bằng tia đỏ, đổi chỗ (Shift + 1–6 hoặc chạm danh sách đội). Pokémon trong bóng không hồi máu.
+- Sprite: mặc định vẽ bằng code / bộ PMD; tùy chọn gói sprite chính thức chỉ dùng cá nhân (xem README).
+
+---
+
+## 4. Chế độ Sinh tồn
+
+### 4.1 Vòng lặp
+1. Chọn Pokémon khởi đầu từ Bộ sưu tập của ô lưu (mang theo cấp, IV, tính cách, trang bị).
+2. Kẻ địch xuất hiện liên tục ngoài màn hình, ngày càng đông, nhanh, đa dạng.
+3. Đội tự chiến đấu → kẻ địch rơi **EXP gem** → HLV đi nhặt (bán kính nam châm).
+4. Lên cấp → game tạm dừng, chọn **1 trong 3 thẻ nâng cấp**.
+5. Boss ở **5:00, 10:00, 15:00**. Hạ Boss cuối = chiến thắng.
+6. HLV hết HP = thua. Pokémon hết HP chỉ kiệt sức 15 giây rồi hồi sinh 50% HP.
+
+### 4.2 Kẻ địch & Boss
+- Rattata (bầy cận chiến), Magnemite (bắn xa, làm chậm), Geodude (trâu, chậm). **Elite**: ×4 HP, viền vàng, ×5 EXP, tỉ lệ tăng dần tới 7%.
+- **Enemy Director**: tốc độ spawn, cấp, tốc độ di chuyển và nhịp bắn tăng theo phút; mở khóa loài mới theo thời gian; **sự kiện bầy đàn** ở 2:30 / 7:30 / 12:30 (vòng vây luôn chừa khe thoát 20%).
+- **Boss Onix**: thân rắn 6 đốt, Rock Throw ngắm đón đầu, Earthquake, Body Slam lao thẳng, Rock Tomb; dưới 50% HP sang phase 2 (triệu hồi Geodude Elite, nhanh hơn). Hạ Boss: mưa EXP, hồi 50% HP đội, thẻ nâng cấp Sử Thi trở lên.
+- Bản đồ Rừng 3200×3200 px, cây có va chạm và **chặn đạn** (dùng làm chỗ nấp).
+
+### 4.3 Thẻ nâng cấp trong lượt
+Độ hiếm: Thường 62% · Hiếm 26% · Sử Thi 10% · Huyền Thoại 2%.
+- Pokémon mới gia nhập (đội tối đa 6), nâng cấp kỹ năng (tối đa cấp 5).
+- Chỉ số: Sức mạnh, Hồi chiêu, Sinh lực, Phạm vi, Chí mạng, Tốc chạy, Nam châm, Năng lượng, Đa phóng (+1 đạn, chỉ Sử Thi+).
+- **Tiến hóa** (thẻ Sử Thi khi đủ cấp; tiến hóa bằng vật phẩm mở ở Lv28) và **Mega** (thẻ Huyền Thoại từ Lv32, 1 con/lượt).
+- Mỗi thẻ hiện xem trước `hiện tại → sau khi chọn (tối đa)`. Giới hạn nằm trong `src/data/upgrades.json`.
+
+### 4.4 Synergy & combo hệ
+Đội có 2 / 3+ con cùng hệ → +10% / +20% sát thương hệ đó; đội ≥ 5 hệ → +5%. Năm combo hệ: **Hơi Nước, Vỡ Băng, Quá Tải, Cháy Lan, Kịch Độc**.
+
+### 4.5 Tiến trình ngoài lượt
+- Kết thúc lượt nhận **Ngọc** → mua **Nâng cấp vĩnh viễn** (6 dòng × 5 cấp: Sức mạnh, Sinh lực, Tập trung, Nhanh nhẹn, Nam châm, Chí mạng).
+- Sống tới 10:00 hoặc hạ 2 Boss → các loài đã chiêu mộ trong lượt được thêm vào Bộ sưu tập ở Lv5.
+
+---
+
+## 5. Chế độ Phiêu lưu (thế giới mở)
+
+### 5.1 Thế giới
+Bản đồ chia chunk tải động, có ngày/đêm, thời tiết (mưa, sương, bão tuyết, nắng nóng), cỏ cao, sông, cầu, đảo. Bảy vùng mở dần theo cốt truyện:
+
+| Vùng | Cấp | Điểm nhấn |
+|---|---|---|
+| Thung Lũng Khởi Nguyên | 3–13 | Làng khởi đầu, 7 khu, Hang Đá Cổ, World Boss Mega Venusaur |
+| Đầm Lầy Sương Mù | 22–32 | Vũng bùn độc, lối ván gỗ |
+| Bờ Biển San Hô | 26–38 | Biển, hải đăng, rạn san hô |
+| Núi Tuyết Vĩnh Hằng | 32–45 | Mặt băng trơn, bão tuyết, Hang Băng Vĩnh Cửu |
+| Vùng Đất Núi Lửa | 42–58 | Nhiệt độ gần dung nham, phun trào, Lò Dung Nham |
+| Thánh Địa | cao nhất | Tháp Thử Thách, Nhà vô địch |
+
+**Hiệu ứng môi trường** có tác động thật: băng làm chậm, bão tuyết (hệ Băng miễn), nhiệt dung nham (hệ Lửa/Nước/Đất miễn), bùn độc (hệ Độc/Thép miễn).
+
+### 5.2 Pokémon hoang dã
+- Mỗi loài có sinh cảnh, độ hiếm, khoảng cấp, giờ hoạt động, hệ số thời tiết và tính khí (nhút nhát / trung tính / hung hăng). Cá chỉ xuất hiện và bơi trong nước.
+- AI hoang dã: lang thang, ăn, ngủ (theo chu kỳ ngày/đêm), cảnh giác, bỏ chạy, đuổi đánh, quay về lãnh thổ.
+- Bảng tên trên đầu: tên + cấp, α Alpha, ★ tinh anh, ✦ shiny.
+
+### 5.3 Thu phục
+Tiếp cận / đánh yếu → chọn bóng (**R**) → ngắm & ném (**F**, điện thoại tự nhắm) → bóng bay vòng cung → lắc 0–3 lần → thành công hoặc thoát ra. Công thức Gen III/IV, giao diện ngắm hiện **% bắt thực tế**. Có Poké / Great / Ultra / Master và bóng đặc biệt Net, Dusk, Quick, Timer, Luxury. Pokémon của huấn luyện viên, hầm ngục, boss khu vực không bắt được.
+
+### 5.4 Nhiệm vụ & NPC
+Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu, câu đố, hầm ngục, boss. HUD có mũi tên chỉ hướng + khoảng cách; NPC hiện `!` (có nhiệm vụ) / `?` (chờ báo cáo). Huấn luyện viên có bảng tên ⚔ (chưa đấu) / ✓ (đã thắng).
+
+### 5.5 Hầm ngục
+Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmortar), Tháp Thử Thách (Tyranitar, có giới hạn thời gian). Mỗi hầm: phòng sóng quái → bẫy (đá rơi / băng rơi / đá nóng) → câu đố → phòng Boss → rương. **3 độ khó** (Thường / Khó / Chuyên gia), phần thưởng lần đầu riêng.
+
+### 5.6 Boss & huyền thoại
+- **World Boss Mega Venusaur Thần Rừng**: 3 phase, phase cuối phủ cả khu chỉ chừa 3 vùng bóng râm an toàn.
+- **35 huyền thoại / thần thoại Gen 1–4**: đền thờ phân bố theo chủ đề vùng (tối đa 8 đền/bản đồ) và 7 con lang thang. Chuỗi nhiệm vụ huyền thoại mở theo dữ liệu (Thần Điểu → Lugia, Tam Thú → Ho-Oh, … → Arceus).
+- Boss nhiều phase dùng chung **BossPhaseManager**: một đòn không thể bỏ qua phase, có cinematic chuyển phase, đổi dạng (ví dụ Rayquaza → Mega Rayquaza → Cuồng Nộ). Boss HUD có thanh HP, phase, cảnh báo tên chiêu kèm đếm ngược.
+- Huyền thoại bị đánh tới **WEAKENED** (4% HP) → mở **cửa sổ bắt** có giới hạn lượt ném / thời gian; bắt hụt thì nó bay đi và quay lại sau.
+
+### 5.7 Sự kiện thế giới
+Bùng phát, Pokémon Alpha, Di cư, Vùng biến dạng, kho báu, bão tuyết / sóng nhiệt, **Thương nhân lưu động** (6 món hiếm giảm 30%), **Mưa sao băng** (nhặt 5 mảnh sao đổi đá tiến hóa / đá Mega). Có thông báo, bảng đếm ngược, đánh dấu trên bản đồ nhỏ.
+
+### 5.8 Tiến trình
+Cấp thế giới (tăng cấp hoang dã), % khám phá (chunk + rương + trạm), danh tiếng, trạm dịch chuyển (dịch chuyển nhanh từ bản đồ thế giới có fog-of-war). HLV gục → tỉnh lại ở trạm cuối cùng.
+
+### 5.9 Cửa hàng
+Cửa hàng chia **8 kệ**: Bóng · Hồi phục · Kẹo EXP · Tiến hóa · Đá Mega · Chiến đấu · Tăng hệ · Huấn luyện. Mỗi món có ảnh, giá, số đang có, mô tả, Pokémon dùng được. Mua nhiều cùng lúc (×1 / ×5 / ×10 / Tối đa, hiện tổng tiền trước khi mua).
+
+---
+
+## 6. Việt Nam Odyssey
+
+Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản đồ, nhiệm vụ, khởi đầu và tiền tệ riêng. Starter: **Treecko / Torchic / Mudkip**. Không có Pokémon hệ Băng (miền Nam nhiệt đới). Địa danh chỉ dùng thông tin có thật; Pokémon, đền cổ và truyền thuyết ghi rõ là giả tưởng.
+
+| Tỉnh | Cấp | Nội dung chính | Boss khu vực → Huy hiệu |
+|---|---|---|---|
+| **Cà Mau** | 1–10 | Đất Mũi, Mũi Cà Mau, rừng ngập mặn, Rừng Tràm U Minh Hạ | Seviper — Chúa Rừng U Minh → Huy hiệu Rừng Tràm |
+| **An Giang** | 8–18 | Bảy Núi, Trà Sư, Núi Sam, Đền Cổ Thất Sơn, đảo Phú Quốc (đi phà) | Claydol — Hộ Vệ Đền Cổ → Huy hiệu Bảy Núi |
+| **Cần Thơ** | 16–26 | Bến Ninh Kiều, Chợ nổi Cái Răng, Cồn Sơn, miệt vườn Phong Điền | Whiscash — Chúa Sông Hậu → Huy hiệu Sông Hậu |
+
+**Hộ chiếu hành trình** (phím **P**): mỗi tỉnh một trang với dấu "ĐÃ ĐẾN", ngày đến, tiến độ khu vực / nhiệm vụ / rương / huấn luyện viên, địa danh và huy hiệu.
+
+---
+
+## 7. Chơi online
+
+### 7.1 Co-op PvE (2 người)
+- Sảnh **Chơi online** → chọn Sinh tồn / Phiêu lưu / Việt Nam Odyssey → tạo phòng nhận mã 6 ký tự, người kia nhập mã.
+- Chủ phòng chạy mô phỏng; khách mang tối đa 3 Pokémon, có HUD riêng, dự đoán chuyển động của mình để giảm trễ.
+- Đứng gần đồng đội bị gục 3 giây để cứu; đi quá xa chủ phòng sẽ được đưa về.
+- **Chia chiến lợi phẩm**: Pokémon chủ phòng bắt được, đồ trong rương, thưởng hầm ngục và tiền cuối lượt đều cộng vào ô lưu của khách. Nhiệm vụ, cờ cốt truyện, huy hiệu chỉ thuộc chủ phòng.
+- **6 thử thách co-op** luân phiên (Dọn đường cùng bạn, Kề vai sát cánh, Thợ săn tinh nhuệ, Không bỏ lại ai, Tiếp sức đồng đội, Song hành diệt boss), thưởng cho cả hai.
+
+### 7.2 PvP
+- Luật **Chuẩn** (Lv50, cấm huyền thoại, không trùng loài), **Tự do** (cấp thật), **Huyền thoại** (Lv50, cho phép huyền thoại). Chọn đội 6 từ Bộ sưu tập hoặc đội thuê.
+- Trận thời gian thực 3 phút: 3 con trên sân, còn lại dự bị, đổi Pokémon (Z X C, hồi 4 giây), lệnh chiến thuật, Mega 1 lần/trận. Hết giờ: bên còn nhiều % HP hơn thắng.
+- Chủ phòng kiểm tra đội của khách (IV, EV, cấp, luật). Có chế độ **Luyện tập với máy**. Lưu thành tích thắng / thua / hòa.
+- Trong thế giới mở, lại gần người kia và bấm **E** để thách đấu bằng đội hiện tại.
+
+### 7.3 Kết nối
+Mặc định qua máy chủ Cloudflare (giữ chỗ 60 giây khi rớt mạng, tự nối lại); `?net=peer` dùng WebRTC, `?net=local` thử hai tab trên một máy, `?netstats` xem ping/jitter.
+
+---
+
+## 8. Thế giới online (máy chủ)
+
+Tài khoản riêng (độc lập với ô lưu offline), có mã khôi phục, đổi mật khẩu, đăng xuất mọi thiết bị.
+- Ba vùng **Cà Mau, An Giang, Cần Thơ**, đổi vùng qua cổng (cổng huy hiệu mở theo cấp đội).
+- **Một Pokémon ngoài sân** do máy chủ quản lý (gọi ra / thu hồi / đổi có hồi chiêu); dùng kẹo EXP và tiến hóa.
+- **Alpha chung**: mọi người cùng đánh, EXP và thưởng theo đóng góp, thưởng nhóm tối đa +30%.
+- **8 sự kiện máy chủ** luân phiên mỗi 10 phút (bảo vệ rừng tràm, bão Đất Mũi, di cư Alpha, giữ dòng sông…), thông báo trước 60 giây.
+- **Máy PC** kiểu GBA (16 box × 30 ô): rút / gửi, tìm, lọc, sắp xếp, khóa, đặt biệt danh.
+- **Xã hội**: chat, nhắn riêng `/w`, bạn bè, nhóm, biểu cảm, chặn / báo cáo; kênh 30 người/vùng.
+- Máy chủ quyết định mọi chỉ số và phần thưởng. Chi tiết: [ONLINE_SERVER.md](ONLINE_SERVER.md).
+
+---
+
+## 9. Hồ sơ, lưu game & tiền tệ
+
+- **Hồ sơ thiết bị**: tên 1–16 ký tự + 1 trong 8 avatar pixel; avatar là nhân vật của bạn trong thế giới mở, co-op và PvP.
+- **3 ô lưu** độc lập (IndexedDB). Mỗi ô ghi rõ hành trình (Phiêu lưu hoặc Việt Nam); chơi mới xóa sạch ô đó. Lưu giữa trận boss giữ được HP + phase.
+- **Ba loại tiền tách riêng**: Ngọc (Sinh tồn, chỉ mua nâng cấp vĩnh viễn) · Xu (Phiêu lưu, Thế giới online) · Đồng (Việt Nam Odyssey).
+- Bộ sưu tập, Pokédex, túi đồ dùng chung giữa Sinh tồn và Phiêu lưu trong cùng ô: Pokémon bắt ở Phiêu lưu có thể chọn làm khởi đầu Sinh tồn.
+
+---
+
+## 10. Điều khiển
+
+| Hành động | Máy tính | Điện thoại |
+|---|---|---|
+| Di chuyển / chạy | WASD hoặc mũi tên · **Shift** | Kéo bất kỳ đâu (joystick ảo) · nút **Chạy** |
+| Tương tác | **E** / Space | Nút **E** |
+| Ném bóng / đổi bóng | **F** (ngắm chuột) / **R** | Nút ◓ (tự nhắm) |
+| Lệnh chiến thuật | `` ` `` và 1–5 | Nút **Lệnh** |
+| Mega | **G** | Nút **MEGA** |
+| Đổi Pokémon | Shift + 1–6 | Chạm danh sách đội |
+| Dùng thuốc | **H** | — |
+| Đội hình / Pokédex / Túi / Nhiệm vụ / Bản đồ / Hộ chiếu | Tab / X / I / J / M / P | Nút trên HUD |
+| Tạm dừng / menu | Esc (Sinh tồn: Esc / P) | Nút `II` / ≡ |
+| Chọn thẻ nâng cấp (Sinh tồn) | 1 / 2 / 3 | Chạm thẻ |
+| Thế giới online | Space / F tấn công Alpha · M menu · Enter chat | Nút trên màn hình |
 
 Game tự tạm dừng khi tab mất focus.
 
-## Chiến đấu (thời gian thực, fixed-step 60Hz)
-- Sát thương kiểu main-series: `((2L/5+2)·Power·A/D/50+2) × STAB(1.5) × Hệ × Crit(1.5) × Random(0.85–1) × Modifier`.
-- Physical dùng Atk/Def, Special dùng SpA/SpD. Đủ **18 hệ**, Pokémon hai hệ nhân cả hai hệ số. Miễn nhiễm = 0 sát thương (AI không bao giờ dùng chiêu bị miễn nhiễm).
-- Modifier gồm: nâng cấp sát thương, cấp kỹ năng, atkUp/defDown, passive Blaze/Torrent/Overgrow (+50% khi HP < 33%).
-- Số sát thương: vàng = siêu hiệu quả, xám = kém hiệu quả, cam + `!` = chí mạng, đỏ = phe ta bị đánh.
+---
 
-### Trạng thái
-`burn`, `poison`, `leech` (hút máu về người gieo), `slow`, `stun`, `taunt` (kéo aggro), `atkUp`, `defDown`. DoT tính theo %HP tối đa; Boss kháng 94%, Elite kháng 60% để DoT không phá game.
+## 11. Âm thanh & hình ảnh
 
-## Vai trò AI
-| Vai trò | Chọn mục tiêu | Di chuyển |
-|---|---|---|
-| Tank | kẻ địch gần HLV nhất / đang đánh HLV | lao vào cận chiến, Withdraw = khiên + taunt |
-| Fighter | gần bản thân | áp sát tầm cận chiến |
-| Assassin | máu thấp nhất, né Boss | vòng ra sau mục tiêu, nhanh hơn 15% |
-| Marksman | gần nhất | giữ 75% tầm bắn, thả diều |
-| Mage | cụm địch đông nhất | giữ khoảng cách, thả diều |
-| Support | gần HLV | đứng cạnh đồng đội yếu nhất, hồi máu |
+- Pixel art tỉ lệ nguyên (zoom chốt bội số để pixel đều), canvas vẽ theo độ phân giải màn hình nên chữ sắc nét trên máy tính và điện thoại.
+- Mỗi Pokémon có hoạt ảnh đi / đứng / đánh / niệm chiêu / trúng đòn / gục; VFX va chạm riêng cho 18 hệ; icon pixel cho hệ, trạng thái, kỹ năng, vật phẩm.
+- Ngày/đêm, đèn, mưa, sương, nước và cỏ động.
+- Hơn 10 bản nhạc chiptune tự sáng tác tổng hợp bằng WebAudio (theo vùng, hầm ngục, boss, boss huyền thoại).
 
-Mọi vai trò: dính chặt mục tiêu (+45 điểm) để không giật mục tiêu, cộng điểm theo lợi thế hệ, **ưu tiên tuyệt đối thoát khỏi vùng cảnh báo** của địch, dịch chuyển về HLV nếu bị kéo quá 700px.
+---
 
-### Chọn kỹ năng (utility scoring, không ngẫu nhiên)
-Theo đúng thứ tự spec: (1) mục tiêu trong tầm, (2) hết cooldown, (3) đủ năng lượng, (4) lợi thế hệ × STAB, (5) số địch trong vùng ảnh hưởng (AoE/field/đa đạn), (6) đồng đội cần hồi máu, (7) bản thân gặp nguy (khiên). Chi phí năng lượng có trọng số cơ hội. Xem `src/core/skillSelector.ts`.
+## Tài liệu liên quan
 
-## Pokémon (Phase 1)
-| Pokémon | Hệ | Vai trò | Kỹ năng |
-|---|---|---|---|
-| Charmander | Fire | Mage | Ember (đạn, burn) · Flame Burst (AoE) · Fire Spin (vùng lửa) · Scratch |
-| Squirtle | Water | Tank | Tackle · Water Gun · Withdraw (khiên+taunt) · Bubble (3 đạn, slow) |
-| Bulbasaur | Grass/Poison | Support | Vine Whip · Razor Leaf (2 đạn xuyên, crit cao) · Synthesis (hồi máu) · Leech Seed |
-
-HP Pokémon = HP công thức × 4 (để đứng được trong combat real-time); sát thương địch lên Pokémon × 0.7.
-
-## Kẻ địch
-| Địch | Hệ | Hành vi | Xuất hiện |
-|---|---|---|---|
-| Rattata | Normal | Melee bầy đàn | 0:00 |
-| Magnemite | Electric/Steel | Ranged, giữ khoảng 210px, bắn Thunder Shock (slow) | 0:50 |
-| Geodude | Rock/Ground | Tank chậm, trâu, đánh mạnh | 2:20 |
-| **Elite** (mọi loại) | — | ×4 HP, to hơn, viền vàng, +2 cấp, ×5 EXP, 50% rơi Oran Berry | tăng dần tới 7% |
-
-## Boss: Onix (Rock/Ground)
-- Thân rắn 6 đốt bám theo quỹ đạo đầu, trườn uốn lượn.
-- **Rock Throw**: 3 (phase 2: 6) vòng tròn cảnh báo 1.0s, ngắm *đón đầu* HLV và đồng đội.
-- **Earthquake**: vòng cảnh báo 230px quanh Boss 1.5s, khi HLV ở gần.
-- **Body Slam**: cảnh báo dạng đường thẳng 0.9s rồi lao 460px.
-- **Rock Tomb** (chỉ phase 2): vùng đá gây sát thương + làm chậm 4s.
-- **Phase 2** (<50% HP): banner, rung màn hình, triệu hồi 5 Geodude Elite, nhanh +25%, hồi chiêu ×0.7.
-- **Phần thưởng riêng**: mưa EXP gem, Oran Berry, hồi 50% HP đội, và **thẻ nâng cấp Sử Thi+**.
-- Boss 10:00 và 15:00 mạnh hơn theo cấp; Boss cuối ×1.5 HP.
-
-## Enemy Director — độ khó không chỉ là HP
-- Tốc độ spawn: `0.6 + 0.5m + 0.012m²` con/giây (m = phút), giới hạn `16 + 13m` (trần cứng 260–300).
-- Cấp địch `3 + 2.6m`; tốc độ di chuyển +1.8%/phút; ranged bắn nhanh hơn (aggression +4%/phút, tối đa ×1.6).
-- Mở khóa loại địch mới theo thời gian, ramp-in trọng số trong 60s.
-- Tỉ lệ Elite tăng dần.
-- **Sự kiện bầy đàn** 2:30 / 7:30 / 12:30: vòng Rattata khép lại quanh HLV, luôn chừa **khe 20%** để thoát.
-- Khi Boss sống, spawn thường giảm còn 35%.
-
-## Nâng cấp roguelite
-Độ hiếm: Thường 62% · Hiếm 26% · Sử Thi 10% · Huyền Thoại 2% (giá trị ×1 / 1.6 / 2.4 / 3.5).
-| Thẻ | Giới hạn |
+| Tài liệu | Nội dung |
 |---|---|
-| Pokémon mới (gia nhập đội) | đội tối đa 6 |
-| Nâng cấp kỹ năng (+15%×độ hiếm sức mạnh, −4% hồi chiêu/cấp) | cấp 5 |
-| Sức mạnh +8% | +80% |
-| Hồi chiêu −5% | −40% (tổng với cấp kỹ năng ≤ 60%) |
-| Sinh lực +10% | +100% |
-| Phạm vi AoE +10% | +60% |
-| Chí mạng +4% | +40% |
-| Tốc chạy +6% | +40% |
-| Nam châm +20% | +150% |
-| Năng lượng +10% | +80% |
-| Đa phóng +1 đạn (chỉ Sử Thi+) | +2 |
-Mọi giới hạn nằm trong `src/data/upgrades.json`. Khi mọi thứ đã max, thẻ dự phòng là Oran Berry (hồi 50%). Mỗi thẻ hiển thị **stat preview** (`hiện tại → sau khi chọn (tối đa)`).
-
-## Bản đồ: Forest (Phase 1)
-3200×3200px, ~95 cây có va chạm; **cây chặn đạn** (che chắn = yếu tố địa hình của Forest), hàng rào bụi ở biên. Kẻ địch đi lạc quá xa được tái định vị gần người chơi.
-
-## Cân bằng (đo bằng bot headless, `scripts/balance.test.ts`)
-Bot ngây thơ (không né đòn, chọn thẻ đầu tiên trừ khi có Pokémon mới) qua 9 run: thắng 3/9, các run thua chết ở 8:30–12:00. Người chơi thật biết né vùng cảnh báo sẽ dễ hơn — phù hợp vertical slice với 3 Pokémon.
+| [OPEN_WORLD_DESIGN.md](OPEN_WORLD_DESIGN.md) | Thiết kế chi tiết thế giới mở, sinh thái, thu phục, hầm ngục |
+| [EVOLUTION_EQUIPMENT_MEGA.md](EVOLUTION_EQUIPMENT_MEGA.md) | Luật tiến hóa, bảng trang bị, Mega, World Boss |
+| [ONLINE_SERVER.md](ONLINE_SERVER.md) | Máy chủ, giao thức, triển khai, độ trễ |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Kiến trúc mã nguồn |
+| [CHANGELOG.md](CHANGELOG.md) | Lịch sử thay đổi theo phiên bản |
