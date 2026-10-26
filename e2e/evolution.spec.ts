@@ -98,6 +98,9 @@ test('shop, level-up evolution prompt, equipment and Mega Evolution', async ({ p
   await page.keyboard.press('g');
   await page.waitForFunction(() => (window as Win).__adv.megaUnit?.defId === 'charizard-mega-x', null, { timeout: 5000 });
   expect(await ev(page, `window.__adv.megaUnit.types`)).toEqual(['fire', 'dragon']);
+  // the field sprite and the party HUD both show the Mega form (the HUD used to keep the base species)
+  await page.waitForFunction(() => (window as Win).__adv.renderer_.views.get((window as Win).__adv.megaUnit.id)?.body.texture.key.includes('charizard-mega-x'), null, { timeout: 5000 });
+  await page.waitForFunction(() => { const ui = (window as Win).__phaser.scene.getScene('AdvUI'); return Object.keys(ui.texts).some((k) => /^p\d$/.test(k) && ui.texts[k].text.startsWith('Mega Charizard X Lv40')) && ui.partyIcons.some((i: Win) => i.texture.key === 'charizard-mega-x'); }, null, { timeout: 3000 });
   await page.screenshot({ path: 'test-results/e-mega.png' });
   // combat ends → reverts after the idle timer, cooldown starts
   await ev(page, `window.__adv.world.removeEnemy(window.__foe)`);

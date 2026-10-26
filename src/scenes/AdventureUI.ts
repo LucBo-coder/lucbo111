@@ -324,14 +324,16 @@ export class AdventureUI extends Phaser.Scene {
       g.fillStyle(0x0b0d16, 0.75).fillRect(12 * s, y, hw, 36 * s);
       g.lineStyle(2, ally?.fainted ? 0x803030 : a.state.isActive(p.uid) ? 0xffcc33 : 0x3a4260, 1).strokeRect(12 * s, y, hw, 36 * s);
       let icon = this.partyIcons[i];
-      const ik = p.shiny ? shinyKey(p.species) : p.species;
+      // the unit on the field may be in another form for now (Mega Evolution): show that form, the save keeps the base
+      const species = ally?.defId ?? p.species;
+      const ik = p.shiny ? shinyKey(species) : species;
       if (!icon) { icon = this.add.image(0, 0, ik); this.partyIcons[i] = icon; }
       if (icon.texture.key !== ik) icon.setTexture(ik);
       icon.setScale(fitScale(this, ik, 34 * s));
       icon.setPosition(32 * s, y + 18 * s).setAlpha(ally?.fainted ? 0.35 : inBall ? 0.5 : 1).setDepth(4);
       const k = 'p' + i;
       if (!this.texts[k]) this.texts[k] = text(this, 0, 0, '', 15 * s);
-      this.texts[k].setText(`${POKEMON.get(p.species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : a.state.isActive(p.uid) ? '  ★ ngoài bóng' : inBall ? '  · trong bóng' : ''}`).setPosition(52 * s, y + 1 * s);
+      this.texts[k].setText(`${POKEMON.get(species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : a.state.isActive(p.uid) ? '  ★ ngoài bóng' : inBall ? '  · trong bóng' : ''}`).setPosition(52 * s, y + 1 * s);
       const bx = 52 * s, bw = hw - 112 * s;
       if (ally) bar(g, bx, y + 21 * s, bw, 6 * s, ally.hp / ally.maxHp, hpColor(ally.hp / ally.maxHp));
       else if (inBall) bar(g, bx, y + 21 * s, bw, 6 * s, p.hpFrac ?? 1, 0x8890a8); // HP kept in the ball (no healing)
