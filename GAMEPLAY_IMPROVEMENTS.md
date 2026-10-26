@@ -83,3 +83,12 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Nhiệm vụ *Chiếc ghe của cô lái đò* → có ghe. Bấm E ở bến để xuống / lên ghe (5 bến).
 - Trên ghe chỉ đi được trên nước; dòng sông đẩy ghe xuôi (mạnh nhất lúc nước ròng, yếu lúc nước lớn). HUD: "Đang đi ghe · Nước ròng — ghé một bến để lên bờ".
 - Bãi Bồi giữa sông (giả tưởng) chỉ đến được bằng ghe, có rương. Lưu giữa sông thì tải lại vẫn ở trên ghe.
+
+### Chợ nổi Cái Răng
+- Họp từ 5:00 đến 9:00 giờ trong game; 4 ghe hàng đậu sát bờ, mỗi ghe treo cây bẹo (bưởi, xoài / lá thuốc / lưới, đá xanh / hạt giống).
+- Bấm E từ bờ hoặc từ ghe để mua. Hàng mỗi phiên có hạn, hôm sau có hàng mới. Mối quen (danh tiếng Cần Thơ *Được tin cậy*) bớt 10%.
+- Giá không cao hơn Poké Mart, không bán ngược lại → không thể kiếm tiền vô hạn.
+
+### Xuồng ở Cà Mau, đò ở An Giang
+- Cà Mau: *Chiếc xuồng ba lá* (Ngư dân Út Mũi) → bến Đất Mũi ↔ bến U Minh Hạ, ngược kênh (nước ròng chèo nặng hơn).
+- An Giang: bến đò thị trấn Bảy Núi ↔ bến Đồng Nước Nổi.

@@ -165,3 +165,60 @@ test('Cần Thơ: the boat — locked, board at Ninh Kiều, paddle to the islet
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/islet.png` });
   expect(errors).toEqual([]);
 });
+
+test('Chợ nổi Cái Răng: boats at dawn, limited stock per market day, gone after 9:00', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(String(e)));
+  page.on('console', (m) => { if (m.type() === 'error' && !/fonts\.g/.test(m.text())) errors.push(m.text()); });
+  await page.goto('/?debug');
+  await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
+  await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true, 1, 'vietnam')`);
+  await ready(page, 'ca-mau');
+  await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('mudkip', 20, 'starter'); a.applyParty(); a.state.adv.clock = 12 * 60; a.travelTo('can-tho', 111, 92); })()`);
+  await ready(page, 'can-tho');
+  await page.waitForTimeout(800);
+  await ev(page, `(() => { const a = window.__adv, t = a.world.trainer; t.maxHp = t.hp = 1e6; for (const e of a.world.enemies) e.alive = false; a.state.earn(20000); })()`);
+  // midday: no market
+  expect(await ev(page, `window.__adv.interactables.has('market:fm-medicine')`)).toBe(false);
+  // dawn: the boats gather
+  await ev(page, `window.__adv.state.adv.clock = 5 * 60 + 10`);
+  await page.waitForTimeout(300);
+  expect(await ev(page, `window.__adv.interactables.has('market:fm-medicine')`)).toBe(true);
+  // from the bank, E opens the boat's shop
+  await ev(page, `window.__adv.world.teleport(110.6*${T}, 92.5*${T})`);
+  await page.waitForTimeout(400);
+  expect(await near(page)).toBe('market:fm-medicine');
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/floating-market.png` });
+  await page.keyboard.press('e');
+  await page.waitForFunction(() => !!(window as Win).__adv.ui.shop, undefined, { timeout: 5000 });
+  await ev(page, `window.__adv.ui.shop.select('superpotion')`);
+  expect(await ev(page, `window.__adv.ui.shop.maxQty()`)).toBe(3);
+  await ev(page, `window.__adv.ui.shop.setQty(99)`);
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(200);
+  expect(await ev(page, `window.__adv.state.item('superpotion')`)).toBe(3);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  // same day: sold out
+  await page.keyboard.press('e');
+  await page.waitForFunction(() => !!(window as Win).__adv.ui.shop, undefined, { timeout: 5000 });
+  await ev(page, `window.__adv.ui.shop.select('superpotion')`);
+  expect(await ev(page, `window.__adv.ui.shop.maxQty()`)).toBe(0);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  expect(await ev(page, `window.__adv.state.adv.market.bought['fm-medicine:superpotion']`)).toBe(3);
+  // 9:00: the market breaks up
+  await ev(page, `window.__adv.state.adv.clock = 9 * 60 + 1`);
+  await page.waitForTimeout(300);
+  expect(await ev(page, `window.__adv.interactables.has('market:fm-medicine')`)).toBe(false);
+  // next day at dawn: restocked
+  await ev(page, `(() => { const a = window.__adv.state.adv; a.day = (a.day ?? 0) + 1; a.clock = 5 * 60 + 5; })()`);
+  await page.waitForTimeout(300);
+  await page.keyboard.press('e');
+  await page.waitForFunction(() => !!(window as Win).__adv.ui.shop, undefined, { timeout: 5000 });
+  await ev(page, `window.__adv.ui.shop.select('superpotion')`);
+  expect(await ev(page, `window.__adv.ui.shop.maxQty()`)).toBe(3);
+  await page.keyboard.press('Escape');
+  expect(errors).toEqual([]);
+});

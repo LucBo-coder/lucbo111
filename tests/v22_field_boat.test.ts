@@ -9,6 +9,8 @@ import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { T } from '../src/core/map/tiles';
 import { ValleyMap } from '../src/core/map/valley';
 import { defaultSave, migrate } from '../src/systems/saveSchema';
+import { boatOffers, FLOATING_MARKET, marketDay, marketOpen, recordPurchase } from '../src/core/floatingMarket';
+import { shopCatalogue } from '../src/core/shop';
 
 const mon = (species: string, level: number): PartyMember => ({ species, name: POKEMON.get(species)!.name, level, types: POKEMON.get(species)!.types });
 const flags = (...f: string[]) => ({ has: (x: string) => f.includes(x) });
@@ -115,6 +117,21 @@ describe('boats on the Hậu River (Cần Thơ)', () => {
     }
   });
 
+  it('Cà Mau and An Giang docks: on the bank, over water, and connected by one waterway per province', () => {
+    for (const id of ['ca-mau', 'an-giang']) {
+      const r = REGION_DEFS[id], mm = new ValleyMap(r);
+      expect(r.docks?.length, id).toBe(2);
+      const water = flood(mm, r.docks![0].wx, r.docks![0].wy, true);
+      const land = flood(mm, r.spawn.x, r.spawn.y);
+      for (const k of r.docks!) {
+        expect(mm.terrainAt(k.wx, k.wy), `${k.id} water`).toBe(T.Water);
+        expect(water.has(k.wy * mm.widthTiles + k.wx), `${k.id} connected`).toBe(true);
+        expect(land.has(k.y * mm.widthTiles + k.x), `${k.id} on the mainland`).toBe(true);
+        expect(Math.hypot(k.wx - k.x, k.wy - k.y)).toBeLessThanOrEqual(3);
+      }
+    }
+  });
+
   it('the river islet and its chest are reachable only by boat', () => {
     const land = flood(m, d.spawn.x, d.spawn.y);
     const islet = d.docks!.find((k) => k.id === 'ct-dock-baibo')!;
@@ -150,5 +167,60 @@ describe('boats on the Hậu River (Cần Thơ)', () => {
     expect(river.requires).toEqual(['vn-ct-boat']);
     const docks = new Set(d.docks!.map((k) => 'dock:' + k.id));
     for (const o of river.objectives.filter((x) => x.type === 'explore')) expect(docks.has(o.target!)).toBe(true);
+  });
+});
+
+describe('Chợ nổi Cái Răng', () => {
+  const d = REGION_DEFS['can-tho'], m = new ValleyMap(d);
+  const ledger = (day = 3) => marketDay(undefined, day);
+
+  it('opens 5:00–9:00 only; vendor boats float on the river next to the bank', () => {
+    expect(marketOpen(4 * 60 + 59)).toBe(false);
+    expect(marketOpen(5 * 60)).toBe(true);
+    expect(marketOpen(8 * 60 + 59)).toBe(true);
+    expect(marketOpen(9 * 60)).toBe(false);
+    const land = flood(m, d.spawn.x, d.spawn.y);
+    for (const b of FLOATING_MARKET.boats) {
+      expect(m.terrainAt(b.x, b.y), b.id).toBe(T.Water);
+      // the E range (64 px) reaches the boat from a walkable bank tile next to it
+      const bank = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => land.has((b.y + dy) * m.widthTiles + b.x + dx));
+      expect(bank, `${b.id} bank`).toBe(true);
+      for (const g of b.goods) {
+        expect(ITEMS[g.id], g.id).toBeTruthy();
+        expect(g.stock).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('stock is per market day; a new day refills it; trusted traders pay 10 % less', () => {
+    const b = FLOATING_MARKET.boats.find((x) => x.id === 'fm-river')!;
+    const day = ledger();
+    recordPurchase(day, b.id, 'netball', 3);
+    const o = boatOffers(b, day, false).find((x) => x.id === 'netball')!;
+    expect(o.stock).toBe(1);
+    expect(o.price).toBe(800);
+    expect(marketDay(day, 3)).toBe(day); // same day: same ledger
+    const next = marketDay(day, 4);
+    expect(boatOffers(b, next, false).find((x) => x.id === 'netball')!.stock).toBe(4);
+    const t = boatOffers(b, next, true).find((x) => x.id === 'netball')!;
+    expect(t.price).toBe(720);
+    expect(t.was).toBe(800);
+  });
+
+  it('never sells above the Poké Mart price (no profit loop: nothing can be sold back)', () => {
+    const mart = new Map(shopCatalogue().map((e) => [e.id, e.price]));
+    for (const b of FLOATING_MARKET.boats) for (const g of b.goods) {
+      const p = mart.get(g.id);
+      if (p != null) expect(g.price, g.id).toBeLessThanOrEqual(p);
+    }
+  });
+
+  it('the market day ledger is saved', () => {
+    const st = new AdventureState(defaultSave());
+    st.adv.day = 7;
+    st.adv.market = { day: 7, bought: { 'fm-fruit:oranberry': 2 } };
+    const back = new AdventureState(migrate(JSON.parse(JSON.stringify(st.save))));
+    expect(back.adv.market).toEqual({ day: 7, bought: { 'fm-fruit:oranberry': 2 } });
+    expect(back.adv.day).toBe(7);
   });
 });

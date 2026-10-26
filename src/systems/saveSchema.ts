@@ -51,6 +51,10 @@ export interface AdventureSave {
   boulders?: Record<string, [number, number]>;
   /** Dock id while the player is out on the river in a boat (resumes in the boat after a reload) */
   boat?: string;
+  /** In-game days passed (the clock wrapped past midnight) */
+  day?: number;
+  /** Chợ nổi Cái Răng: what was bought on the current market day (limited stock per day) */
+  market?: { day: number; bought: Record<string, number> };
   /** World events: check timers, per-type cooldowns, history (active events are not saved) */
   events: EventSave;
   /** Legendary / Mythical encounter states (persistent: a caught legendary never respawns as a duplicate) */

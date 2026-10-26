@@ -90,3 +90,14 @@ Lỗi tìm được bằng e2e và đã sửa: trận HLV kết thúc ngay lúc 
 
 Sửa trong lúc test: vùng bấm E của bến chỉ tính từ giữa bến (bến dài 3 ô thì không với tới) → giờ tính từ đầu gần nhất (bờ hoặc nước).
 Ảnh đã xem: bụi cây rậm chắn lối, vòng đá + ổ trũng + rương, ghe ở bến Ninh Kiều kèm thông báo con nước, Bãi Bồi giữa sông.
+
+## V22 — đợt 3: chợ nổi, bến Cà Mau / An Giang
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build` | ✅ |
+| Unit | **432/432 ✅**. Mới trong `v22_field_boat.test.ts`: bến Cà Mau / An Giang nối thông; chợ nổi (giờ họp, vị trí ghe, kho theo ngày, giảm giá mối quen, không đắt hơn Poké Mart, lưu sổ chợ). `v13_can_tho`: Cần Thơ 10 nhiệm vụ |
+| E2E mới (chợ nổi) | ✅ — trưa không có chợ; 5:10 ghe xuất hiện; E từ bờ mở cửa hàng ghe thuốc; mua hết 3 Super Potion; cùng phiên còn 0; 9:01 tan chợ; hôm sau 5:05 có lại 3 |
+| E2E hồi quy (v22 ×4, v13_can_tho, v8_vietnam, v18_events, evolution, adventure) | 18/18 ✅ (2 luồng) |
+
+Ảnh đã xem: chợ nổi lúc 5:11 với ghe hàng, cây bẹo, tên ghe, thông báo chợ họp.

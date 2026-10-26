@@ -55,12 +55,59 @@ block = ' "docks": [' + nl + (',' + nl).join(
     f'  {{ "id": "{i}", "name": "{n}", "x": {x}, "y": {y}, "wx": {wx}, "wy": {wy} }}' for i, n, x, y, wx, wy in docks) + nl + ' ],' + nl
 s = re.sub(r' "docks": \[.*?\n \],\r?\n', '', s, flags=re.S)
 s = s.replace(' "rivers": [', block + ' "rivers": [', 1)
+old_sign = '"Chợ họp trên sông từ tờ mờ sáng. Mỗi ghe treo hàng mẫu lên cây bẹo để người mua biết ghe bán gì."]'
+s = s.replace(old_sign, '"Chợ họp trên sông từ tờ mờ sáng. Mỗi ghe treo hàng mẫu lên cây bẹo để người mua biết ghe bán gì.", "Trong game: ghe hàng đậu dọc bờ từ 5 giờ đến 9 giờ sáng, hàng mỗi phiên có hạn."]')
 open(CT, 'w', encoding='utf8', newline='').write(s)
+
+# ── Cà Mau and An Giang: boat docks on their rivers (pretty-printed map files: plain JSON round trip) ──
+for path, docks in [
+    ('src/data/vietnam/ca-mau.json', [
+        ('cm-dock-town', 'Bến xuồng Đất Mũi', 97, 89, 100, 89),
+        ('cm-dock-uminh', 'Bến xuồng U Minh Hạ', 97, 10, 100, 10),
+    ]),
+    ('src/data/vietnam/an-giang.json', [
+        ('ag-dock-town', 'Bến đò thị trấn Bảy Núi', 94, 90, 97, 90),
+        ('ag-dock-wetland', 'Bến xuồng Đồng Nước Nổi', 117, 65, 117, 63),
+    ]),
+]:
+    raw = open(path, encoding='utf8').read()
+    d = json.loads(raw)
+    d['docks'] = [{'id': i, 'name': n, 'x': x, 'y': y, 'wx': wx, 'wy': wy} for i, n, x, y, wx, wy in docks]
+    open(path, 'w', encoding='utf8', newline='\r\n' if '\r\n' in raw else '\n').write(json.dumps(d, ensure_ascii=False, indent=1) + '\n')
 
 # ── quests: the boat, then the river ──
 QV = 'src/data/vietnam/quests.json'
 q = json.load(open(QV, encoding='utf8'))
 m = lambda x, y: {'x': x, 'y': y, 'region': 'can-tho'}
+mc = lambda x, y: {'x': x, 'y': y, 'region': 'ca-mau'}
+upsert(q, {
+    'id': 'vn-cm-boat', 'kind': 'side', 'title': 'Chiếc xuồng ba lá', 'giver': 'cm-fisher-ut', 'requires': ['vn-cm-1'],
+    'description': 'Ngư dân Út Mũi có chiếc xuồng ba lá để không. Lấy giùm ông cây dầm (mái chèo) rồi ông cho mượn xuồng.',
+    'objectives': [
+        {'type': 'talk', 'target': 'cm-dried-fish', 'count': 1, 'text': 'Lấy cây dầm gửi ở sạp khô của Cô Năm', 'marker': mc(89, 91)},
+        {'type': 'talk', 'target': 'cm-fisher-ut', 'count': 1, 'text': 'Mang cây dầm về cho Ngư dân Út Mũi', 'marker': mc(50, 92)},
+    ],
+    'rewards': {'items': {'oranberry': 2}, 'worldExp': 120, 'reputation': 5, 'flags': ['vehicle:ghe']},
+    'dialogue': {
+        'offer': ['Xuồng ba lá của tui nằm không cả mùa. Cây dầm tui gửi ở sạp khô — con lấy giùm, rồi xuồng con cứ chèo.'],
+        'progress': ['Cây dầm đây, con cầm về cho ông Út nghen.', 'Sạp khô ở trong thị trấn, ai cũng biết.'],
+        'complete': ['Có dầm rồi! Xuống bến xuồng phía đông thị trấn mà đi. Ngược kênh lên là tới rừng U Minh.'],
+    },
+})
+upsert(q, {
+    'id': 'vn-cm-canal', 'kind': 'exploration', 'title': 'Ngược kênh vào U Minh', 'giver': 'cm-fisher-ut', 'requires': ['vn-cm-boat'],
+    'description': 'Chèo xuồng ngược con kênh từ Đất Mũi lên tới bến U Minh Hạ.',
+    'objectives': [
+        {'type': 'explore', 'target': 'dock:cm-dock-uminh', 'count': 1, 'text': 'Cập bến xuồng U Minh Hạ (ngược dòng)', 'marker': mc(97, 10)},
+        {'type': 'talk', 'target': 'cm-ranger-uminh', 'count': 1, 'text': 'Chào Kiểm lâm U Minh', 'marker': mc(24, 26)},
+    ],
+    'rewards': {'items': {'greatball': 3}, 'worldExp': 250, 'reputation': 10},
+    'dialogue': {
+        'offer': ['Thử chèo ngược kênh lên U Minh coi. Nước ròng thì chèo mệt lắm, chờ nước lớn mà đi.'],
+        'progress': ['Kênh chạy phía đông, cứ ngược lên hướng bắc.'],
+        'complete': ['Đi xuồng vô tới đây hả? Giỏi! Rừng tràm này đi đường thủy là đẹp nhất.'],
+    },
+})
 upsert(q, {
     'id': 'vn-ct-boat', 'kind': 'side', 'title': 'Chiếc ghe của cô lái đò', 'giver': 'ct-ferry-girl', 'requires': ['vn-ct-1'],
     'description': 'Cô lái đò Ninh Kiều có chiếc ghe cũ cần trám lại. Kiếm dầu chai ở chợ nổi rồi cô cho mượn ghe đi sông.',
@@ -88,6 +135,20 @@ upsert(q, {
         'offer': ['Giữa sông có bãi bồi mới nổi, chưa ai lên tới. Con chèo ra coi thử, rồi xuôi xuống chợ nổi luôn.'],
         'progress': ['Bãi bồi ở phía tây bắc Cồn Sơn. Muốn xuống Cái Răng thì cứ thả theo con nước.'],
         'complete': ['Giỏi! Giờ con rành sông Hậu hơn cả dân chèo đò rồi.'],
+    },
+})
+upsert(q, {
+    'id': 'vn-ct-market', 'kind': 'side', 'title': 'Phiên chợ sớm', 'giver': 'ct-merchant', 'requires': ['vn-ct-2'],
+    'description': 'Chợ nổi Cái Răng họp từ 5 giờ đến 9 giờ sáng. Ghé các ghe hàng mua đồ đi đường.',
+    'objectives': [
+        {'type': 'collect', 'target': 'market', 'count': 3, 'text': 'Mua hàng 3 lượt trên chợ nổi (5:00–9:00)', 'marker': m(109, 92)},
+        {'type': 'talk', 'target': 'ct-merchant', 'count': 1, 'text': 'Kể Chủ ghe Tư Hiền nghe phiên chợ', 'marker': m(118, 88)},
+    ],
+    'rewards': {'items': {'sitrus-berry': 1, 'netball': 2}, 'worldExp': 400, 'reputation': 10},
+    'dialogue': {
+        'offer': ['Muốn biết chợ nổi thì phải dậy sớm! Từ 5 giờ tới 9 giờ sáng, ghe nào bán gì thì treo lên cây bẹo. Con thử mua vài món coi.'],
+        'progress': ['Ghe đậu dọc bờ sông phía nam bến. Hàng mỗi phiên có hạn, hết là phải chờ phiên sau.'],
+        'complete': ['Biết nhìn cây bẹo, biết mua sớm — vậy là thành dân chợ nổi rồi đó!'],
     },
 })
 open(QV, 'w', encoding='utf8', newline='\r\n').write(json.dumps(q, ensure_ascii=False, indent=1) + '\n')

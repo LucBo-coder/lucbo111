@@ -1,0 +1,30 @@
+{
+  "region": "can-tho",
+  "name": "Chợ nổi Cái Răng",
+  "open": 300,
+  "close": 540,
+  "trustedTier": 2,
+  "trustedDiscount": 0.1,
+  "boats": [
+    {
+      "id": "fm-fruit", "name": "Ghe trái cây cô Ba", "x": 108, "y": 88, "pole": "bưởi, xoài", "color": "#f0c040",
+      "greet": "Cây bẹo treo gì là ghe bán nấy nè! Bưởi Năm Roi, xoài cát mới hái sáng nay.",
+      "goods": [{ "id": "sitrus-berry", "price": 600, "stock": 3 }, { "id": "oranberry", "price": 110, "stock": 8 }]
+    },
+    {
+      "id": "fm-medicine", "name": "Ghe thuốc ông Bảy", "x": 109, "y": 92, "pole": "lá thuốc", "color": "#70d070",
+      "greet": "Đi sông nước xa thì mang theo ít thuốc. Ông bán rẻ cho người đi đường.",
+      "goods": [{ "id": "potion", "price": 240, "stock": 6 }, { "id": "superpotion", "price": 560, "stock": 3 }]
+    },
+    {
+      "id": "fm-river", "name": "Ghe đồ nghề sông nước", "x": 110, "y": 100, "pole": "lưới, đá xanh", "color": "#60b0ff",
+      "greet": "Lưới bắt cá, đá ngọc xanh từ miệt biển — hàng hiếm, mỗi chợ chỉ vài món.",
+      "goods": [{ "id": "netball", "price": 800, "stock": 4 }, { "id": "mystic-water", "price": 500, "stock": 1 }, { "id": "water-stone", "price": 1800, "stock": 1 }]
+    },
+    {
+      "id": "fm-garden", "name": "Ghe miệt vườn Phong Điền", "x": 110, "y": 104, "pole": "hạt giống, lá", "color": "#a0e060",
+      "greet": "Hạt giống, cây con dưới miệt vườn Phong Điền chở ra. Mua sớm kẻo hết!",
+      "goods": [{ "id": "miracle-seed", "price": 500, "stock": 1 }, { "id": "leaf-stone", "price": 1800, "stock": 1 }, { "id": "exp-candy-s", "price": 1000, "stock": 2 }]
+    }
+  ]
+}

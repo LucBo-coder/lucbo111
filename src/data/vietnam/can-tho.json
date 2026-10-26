@@ -35,7 +35,7 @@
  "signs": [
   { "x": 86, "y": 70, "text": ["BẾN NINH KIỀU — CẦN THƠ", "Bến nằm nơi sông Cần Thơ đổ ra sông Hậu. Phía bắc: bờ sông Hậu · Phía đông nam: Chợ nổi Cái Răng · Phía tây nam: miệt vườn · Phía tây: đồng lúa, đường về An Giang."] },
   { "x": 92, "y": 44, "text": ["SÔNG HẬU", "Nhánh lớn của sông Mê Kông. Phía xa là Cầu Cần Thơ bắc qua sông Hậu, khánh thành năm 2010.", "Đò ra Cồn Sơn ở bến phía trước. (Chúa Sông Hậu trong game là sinh vật giả tưởng.)"] },
-  { "x": 112, "y": 86, "text": ["CHỢ NỔI CÁI RĂNG", "Chợ họp trên sông từ tờ mờ sáng. Mỗi ghe treo hàng mẫu lên cây bẹo để người mua biết ghe bán gì."] },
+  { "x": 112, "y": 86, "text": ["CHỢ NỔI CÁI RĂNG", "Chợ họp trên sông từ tờ mờ sáng. Mỗi ghe treo hàng mẫu lên cây bẹo để người mua biết ghe bán gì.", "Trong game: ghe hàng đậu dọc bờ từ 5 giờ đến 9 giờ sáng, hàng mỗi phiên có hạn."] },
   { "x": 38, "y": 90, "text": ["MIỆT VƯỜN PHONG ĐIỀN", "Vườn cây trái ven kênh rạch của Cần Thơ."] },
   { "x": 24, "y": 26, "text": ["VƯỜN CÒ BẰNG LĂNG", "Vườn cò ở Thốt Nốt, nơi đàn cò về trú ngụ. Xin giữ yên lặng!"] },
   { "x": 34, "y": 60, "text": ["↑ Vườn cò Bằng Lăng", "↓ Miệt vườn Phong Điền · → Bến Ninh Kiều"] }

@@ -1418,5 +1418,166 @@
     "Giỏi! Giờ con rành sông Hậu hơn cả dân chèo đò rồi."
    ]
   }
+ },
+ {
+  "id": "vn-ct-market",
+  "kind": "side",
+  "title": "Phiên chợ sớm",
+  "giver": "ct-merchant",
+  "requires": [
+   "vn-ct-2"
+  ],
+  "description": "Chợ nổi Cái Răng họp từ 5 giờ đến 9 giờ sáng. Ghé các ghe hàng mua đồ đi đường.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "market",
+    "count": 3,
+    "text": "Mua hàng 3 lượt trên chợ nổi (5:00–9:00)",
+    "marker": {
+     "x": 109,
+     "y": 92,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-merchant",
+    "count": 1,
+    "text": "Kể Chủ ghe Tư Hiền nghe phiên chợ",
+    "marker": {
+     "x": 118,
+     "y": 88,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 1,
+    "netball": 2
+   },
+   "worldExp": 400,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Muốn biết chợ nổi thì phải dậy sớm! Từ 5 giờ tới 9 giờ sáng, ghe nào bán gì thì treo lên cây bẹo. Con thử mua vài món coi."
+   ],
+   "progress": [
+    "Ghe đậu dọc bờ sông phía nam bến. Hàng mỗi phiên có hạn, hết là phải chờ phiên sau."
+   ],
+   "complete": [
+    "Biết nhìn cây bẹo, biết mua sớm — vậy là thành dân chợ nổi rồi đó!"
+   ]
+  }
+ },
+ {
+  "id": "vn-cm-boat",
+  "kind": "side",
+  "title": "Chiếc xuồng ba lá",
+  "giver": "cm-fisher-ut",
+  "requires": [
+   "vn-cm-1"
+  ],
+  "description": "Ngư dân Út Mũi có chiếc xuồng ba lá để không. Lấy giùm ông cây dầm (mái chèo) rồi ông cho mượn xuồng.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "cm-dried-fish",
+    "count": 1,
+    "text": "Lấy cây dầm gửi ở sạp khô của Cô Năm",
+    "marker": {
+     "x": 89,
+     "y": 91,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-fisher-ut",
+    "count": 1,
+    "text": "Mang cây dầm về cho Ngư dân Út Mũi",
+    "marker": {
+     "x": 50,
+     "y": 92,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "oranberry": 2
+   },
+   "worldExp": 120,
+   "reputation": 5,
+   "flags": [
+    "vehicle:ghe"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Xuồng ba lá của tui nằm không cả mùa. Cây dầm tui gửi ở sạp khô — con lấy giùm, rồi xuồng con cứ chèo."
+   ],
+   "progress": [
+    "Cây dầm đây, con cầm về cho ông Út nghen.",
+    "Sạp khô ở trong thị trấn, ai cũng biết."
+   ],
+   "complete": [
+    "Có dầm rồi! Xuống bến xuồng phía đông thị trấn mà đi. Ngược kênh lên là tới rừng U Minh."
+   ]
+  }
+ },
+ {
+  "id": "vn-cm-canal",
+  "kind": "exploration",
+  "title": "Ngược kênh vào U Minh",
+  "giver": "cm-fisher-ut",
+  "requires": [
+   "vn-cm-boat"
+  ],
+  "description": "Chèo xuồng ngược con kênh từ Đất Mũi lên tới bến U Minh Hạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dock:cm-dock-uminh",
+    "count": 1,
+    "text": "Cập bến xuồng U Minh Hạ (ngược dòng)",
+    "marker": {
+     "x": 97,
+     "y": 10,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-ranger-uminh",
+    "count": 1,
+    "text": "Chào Kiểm lâm U Minh",
+    "marker": {
+     "x": 24,
+     "y": 26,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 250,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thử chèo ngược kênh lên U Minh coi. Nước ròng thì chèo mệt lắm, chờ nước lớn mà đi."
+   ],
+   "progress": [
+    "Kênh chạy phía đông, cứ ngược lên hướng bắc."
+   ],
+   "complete": [
+    "Đi xuồng vô tới đây hả? Giỏi! Rừng tràm này đi đường thủy là đẹp nhất."
+   ]
+  }
  }
 ]

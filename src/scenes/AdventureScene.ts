@@ -18,7 +18,8 @@ import { BALL_ORDER, BallContext, ballMultiplier, BALLS, BallId, fleeChance, rol
 import { BOSSES, POKEMON } from '../core/data';
 import type { PokeType } from '../core/types';
 import { FIELD_MAX, HEAL_FRAC, pickLead, pickSwitch, potionsFor, rematchPrize, rematchReady, rematchTeam, REMATCH_COOLDOWN, shouldHeal } from '../core/trainerAI';
-import { repGreeting, REP_REGIONS, REP_TIERS } from '../core/reputation';
+import { regionRep, repGreeting, repTier, REP_REGIONS, REP_TIERS } from '../core/reputation';
+import { boatOffers, FLOATING_MARKET, marketDay, marketOpen, recordPurchase, type MarketBoat } from '../core/floatingMarket';
 import { canUse, currentSpeed, FIELD_ABILITIES, fieldFlag, pushTarget, riverCurrent, tideName, type Dock, type FieldDef, type PartyMember } from '../core/field';
 import { DungeonMap } from '../core/map/dungeonMap';
 import { dungeonDef } from '../core/map/dungeons';
@@ -139,6 +140,9 @@ export class AdventureScene extends Phaser.Scene {
   boating = false;
   private boatImg: Phaser.GameObjects.Image | null = null;
   private fieldViews = new Map<string, Phaser.GameObjects.GameObject[]>();
+  private marketViews: Phaser.GameObjects.GameObject[] = [];
+  private marketShown = false;
+  private marketSeen = false;
   areaName = '';
   weather: { kind: WeatherKind; t: number } = { kind: 'clear', t: 240 };
   pointerWorld = { x: 0, y: 0, at: -99999 };
@@ -268,7 +272,7 @@ export class AdventureScene extends Phaser.Scene {
       names: 'all',
     }, saveStore.data.settings.quality);
     this.chunks = new ChunkView(this, map, { onLoad: (r) => this.onChunkLoad(r), onUnload: (r) => this.onChunkUnload(r) });
-    this.boating = false; this.boatImg = null; this.fieldViews.clear();
+    this.boating = false; this.boatImg = null; this.fieldViews.clear(); this.marketViews = []; this.marketShown = false; this.marketSeen = false;
     this.buildField();
     // elemental / challenge dungeons share the cave layout: a multiply wash over the floor tiles gives each its own look
     const wash = this.mapKind === 'dungeon' ? DUNGEON_WASH[(this.map as DungeonMap).def.id] : undefined;
@@ -756,7 +760,9 @@ export class AdventureScene extends Phaser.Scene {
     const q = QUALITY_PROFILE[saveStore.data.settings.quality];
     const adv = this.state.adv;
     if (this.mapKind === 'valley' && !this.modal) {
+      const before = adv.clock;
       adv.clock = (adv.clock + dt * 2) % 1440; // 1 real second = 2 in-game minutes
+      if (adv.clock < before) adv.day = (adv.day ?? 0) + 1;
       this.weather.t -= dt;
       if (this.weather.t <= 0) {
         const r = this.world.rng.next();
@@ -842,7 +848,7 @@ export class AdventureScene extends Phaser.Scene {
       this.pointerWorld = { x: wp.x, y: wp.y, at: this.time.now };
     });
     if (new URLSearchParams(location.search).has('debug')) {
-      kb.on('keydown-N', () => { this.state.adv.clock = (this.state.adv.clock + 180) % 1440; });
+      kb.on('keydown-N', () => { const a = this.state.adv; if (a.clock + 180 >= 1440) a.day = (a.day ?? 0) + 1; a.clock = (a.clock + 180) % 1440; });
       kb.on('keydown-L', () => { this.state.addItems({ pokeball: 10, greatball: 5, potion: 5 }); this.ui?.banner('DEBUG: +items', '#fff'); });
     }
   }
@@ -973,6 +979,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateWalkers(dt);
     this.updateFishing(dt);
     this.updateBoat(dt);
+    this.updateMarket();
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
@@ -1238,6 +1245,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'portal': return this.usePortal(it.obj.data as unknown as PortalDef);
       case 'field': return this.useField(it);
       case 'dock': return this.useDock(it);
+      case 'market': return this.useMarket(it);
       case 'cave': return this.enterCave((it.obj.data as { id?: string } | undefined)?.id ?? 'ancient-cave');
       case 'trainer': return this.challenge(it);
       case 'rescue': return this.rescue(it);
@@ -2167,16 +2175,7 @@ export class AdventureScene extends Phaser.Scene {
     this.state.adv.boat = k.id;
     if (announce) this.world.teleport((k.wx + 0.5) * TILE_PX, (k.wy + 0.5) * TILE_PX);
     for (const a of this.world.allies) { a.x = t.x; a.y = t.y; a.lastX = a.x; a.lastY = a.y; }
-    if (!this.textures.exists('ghe')) {
-      // a small Mekong wooden boat (ghe): dark hull, lighter rim, painted eye at the bow
-      const g = this.make.graphics({ x: 0, y: 0 }, false);
-      g.fillStyle(0x3a2414, 1).fillPoints([{ x: 0, y: 9 }, { x: 10, y: 3 }, { x: 62, y: 3 }, { x: 72, y: 9 }, { x: 62, y: 19 }, { x: 10, y: 19 }], true);
-      g.fillStyle(0x8a5a30, 1).fillRect(10, 5, 52, 4);
-      g.fillStyle(0xb02020, 1).fillRect(60, 6, 6, 4);
-      g.fillStyle(0xffffff, 1).fillRect(62, 7, 2, 2);
-      g.generateTexture('ghe', 73, 22);
-      g.destroy();
-    }
+    this.ensureBoatTexture();
     this.boatImg?.destroy();
     this.boatImg = this.add.image(t.x, t.y + 16, 'ghe').setScale(1.6).setDepth(t.y + 1);
     if (announce) {
@@ -2213,6 +2212,64 @@ export class AdventureScene extends Phaser.Scene {
     }
     // the hull covers the trainer's feet: standing in the boat
     this.boatImg?.setPosition(t.x, t.y + 16).setDepth(t.y + 1).setFlipX(t.facing < 0);
+  }
+
+  // ───────────────────────────── Chợ nổi Cái Răng ─────────────────────────────
+
+  /** Vendor boats gather on the river from dawn (5:00) to mid-morning (9:00); reachable from the bank or by boat. */
+  private updateMarket(): void {
+    const m = FLOATING_MARKET;
+    if (this.mapKind === 'dungeon' || this.regionDef.id !== m.region) return;
+    const open = marketOpen(this.state.adv.clock);
+    if (open === this.marketShown) return;
+    this.marketShown = open;
+    for (const g of this.marketViews) g.destroy();
+    this.marketViews = [];
+    for (const b of m.boats) this.interactables.delete('market:' + b.id);
+    if (!open) { if (this.marketSeen) this.ui.banner(`${m.name} đã tan — hẹn sáng mai!`, '#a0d8ff'); return; }
+    this.ensureBoatTexture();
+    for (const b of m.boats) {
+      const x = (b.x + 0.5) * TILE_PX, y = (b.y + 0.5) * TILE_PX;
+      const boat = this.add.image(x, y + 12, 'ghe').setScale(2).setDepth(y + 13);
+      const seller = this.add.image(x - 8, y - 4, 'ow_tiles', NPC_FRAME.farmer ?? DUNGEON.npc.villager).setScale(SCALE).setDepth(y + 12);
+      // the "cây bẹo": a pole with samples of what the boat sells
+      const col = Phaser.Display.Color.HexStringToColor(b.color).color;
+      const pole = this.add.graphics().setDepth(y + 14).lineStyle(3, 0x5a3a20, 1).lineBetween(x + 22, y + 14, x + 22, y - 46)
+        .fillStyle(col, 1).fillCircle(x + 22, y - 48, 7).fillCircle(x + 15, y - 40, 6).fillCircle(x + 29, y - 38, 6);
+      this.tweens.add({ targets: [boat, seller], y: '+=3', duration: 1100 + (b.y % 4) * 120, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+      const tag = this.add.text(x, y + 28, `${b.name}\n(bẹo: ${b.pole})`, { fontFamily: '"VT323", monospace', fontSize: '17px', color: '#ffe8a0', stroke: '#000', strokeThickness: 4, align: 'center' }).setOrigin(0.5, 0).setDepth(9100);
+      this.marketViews.push(boat, seller, pole, tag);
+      this.interactables.set('market:' + b.id, {
+        kind: 'market', id: 'market:' + b.id, x, y, label: `Mua hàng: ${b.name}`, obj: { kind: 'market', id: b.id, x: b.x, y: b.y, data: b as unknown as Record<string, unknown> }, sprite: boat,
+      });
+    }
+    this.marketSeen = true;
+    this.ui.banner(`${m.name} đã họp! ${m.boats.length} ghe hàng đậu dọc bờ sông đến 9 giờ sáng.`, '#ffe8a0');
+  }
+
+  private async useMarket(it: Interactable): Promise<void> {
+    const b = it.obj.data as unknown as MarketBoat;
+    const adv = this.state.adv;
+    if (!marketOpen(adv.clock)) return;
+    const ledger = (adv.market = marketDay(adv.market, adv.day ?? 0));
+    const trusted = repTier(regionRep(adv, FLOATING_MARKET.region)) >= FLOATING_MARKET.trustedTier;
+    await this.ui.openShop({
+      title: b.name, shelves: false, offers: boatOffers(b, ledger, trusted),
+      greeting: b.greet + (trusted ? ' Mối quen nên cô chú bớt cho 10% nghen!' : ''),
+      onBought: (o, qty) => { recordPurchase(ledger, b.id, o.id, qty); this.questEvent({ type: 'collect', target: 'market', amount: 1 }); },
+    });
+  }
+
+  private ensureBoatTexture(): void {
+    if (this.textures.exists('ghe')) return;
+    // a small Mekong wooden boat (ghe): dark hull, lighter rim, the painted eye at the bow
+    const g = this.make.graphics({ x: 0, y: 0 }, false);
+    g.fillStyle(0x3a2414, 1).fillPoints([{ x: 0, y: 9 }, { x: 10, y: 3 }, { x: 62, y: 3 }, { x: 72, y: 9 }, { x: 62, y: 19 }, { x: 10, y: 19 }], true);
+    g.fillStyle(0x8a5a30, 1).fillRect(10, 5, 52, 4);
+    g.fillStyle(0xb02020, 1).fillRect(60, 6, 6, 4);
+    g.fillStyle(0xffffff, 1).fillRect(62, 7, 2, 2);
+    g.generateTexture('ghe', 73, 22);
+    g.destroy();
   }
 
   private async rescue(it: Interactable): Promise<void> {

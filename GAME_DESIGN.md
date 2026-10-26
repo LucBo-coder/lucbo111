@@ -159,7 +159,7 @@ Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu,
 ### 5.4d Năng lực khám phá & đi ghe
 - Pokémon trong đội (ra sân hay trong bóng đều được) mở đường: **Cắt cây** bụi cây rậm (Cỏ / Bọ / Thép, Lv 8+), **Đập đá** tảng đá nứt (Giác Đấu / Đá / Đất, Lv 14+), **Đẩy đá** tảng đá lớn mỗi lần một ô, ra xa người chơi (Giác Đấu / Đất / Thép, Lv 18+). Đẩy vào ổ thì lối mở.
 - Thung Lũng có 3 hốc bí mật (khoảng rừng, túi đá, vòng đá), mỗi hốc một rương.
-- **Ghe** (Việt Nam Odyssey, Cần Thơ): nhận ghe từ nhiệm vụ của cô lái đò Ninh Kiều. Xuống / lên ghe ở bến (E). Trên ghe chỉ đi trên nước; dòng sông đẩy ghe xuôi, mạnh lúc nước ròng, yếu lúc nước lớn (2 con nước mỗi ngày). Bãi Bồi giữa sông chỉ đến được bằng ghe.
+- **Ghe / xuồng** (Việt Nam Odyssey): nhận xuồng từ Ngư dân Út Mũi (Cà Mau) hoặc ghe từ cô lái đò Ninh Kiều (Cần Thơ). Bến: Cà Mau 2, An Giang 2, Cần Thơ 5. Xuống / lên ghe ở bến (E). Trên ghe chỉ đi trên nước; dòng sông đẩy ghe xuôi, mạnh lúc nước ròng, yếu lúc nước lớn (2 con nước mỗi ngày). Bãi Bồi giữa sông chỉ đến được bằng ghe.
 
 ### 5.5 Hầm ngục
 Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmortar), Tháp Thử Thách (Tyranitar, có giới hạn thời gian). Mỗi hầm: phòng sóng quái → bẫy (đá rơi / băng rơi / đá nóng) → câu đố → phòng Boss → rương. **3 độ khó** (Thường / Khó / Chuyên gia), phần thưởng lần đầu riêng.
@@ -192,6 +192,8 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 | **Cần Thơ** | 16–26 | Bến Ninh Kiều, Chợ nổi Cái Răng, Cồn Sơn, miệt vườn Phong Điền | Whiscash — Chúa Sông Hậu → Huy hiệu Sông Hậu |
 
 **Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
+
+**Chợ nổi Cái Răng** (Cần Thơ): họp 5:00–9:00 giờ trong game. 4 ghe hàng treo cây bẹo; hàng có hạn mỗi phiên, hôm sau có hàng mới; mối quen (danh tiếng *Được tin cậy*) bớt 10%.
 
 **Hộ chiếu hành trình** (phím **P**): mỗi tỉnh một trang với dấu "ĐÃ ĐẾN", ngày đến, tiến độ khu vực / nhiệm vụ / rương / huấn luyện viên, địa danh và huy hiệu.
 

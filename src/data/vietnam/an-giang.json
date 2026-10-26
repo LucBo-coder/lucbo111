@@ -791,5 +791,23 @@
     ]
    ]
   }
+ ],
+ "docks": [
+  {
+   "id": "ag-dock-town",
+   "name": "Bến đò thị trấn Bảy Núi",
+   "x": 94,
+   "y": 90,
+   "wx": 97,
+   "wy": 90
+  },
+  {
+   "id": "ag-dock-wetland",
+   "name": "Bến xuồng Đồng Nước Nổi",
+   "x": 117,
+   "y": 65,
+   "wx": 117,
+   "wy": 63
+  }
  ]
 }

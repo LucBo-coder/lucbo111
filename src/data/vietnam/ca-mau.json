@@ -693,5 +693,23 @@
     ]
    ]
   }
+ ],
+ "docks": [
+  {
+   "id": "cm-dock-town",
+   "name": "Bến xuồng Đất Mũi",
+   "x": 97,
+   "y": 89,
+   "wx": 100,
+   "wy": 89
+  },
+  {
+   "id": "cm-dock-uminh",
+   "name": "Bến xuồng U Minh Hạ",
+   "x": 97,
+   "y": 10,
+   "wx": 100,
+   "wy": 10
+  }
  ]
 }
