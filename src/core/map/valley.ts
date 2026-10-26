@@ -1,4 +1,5 @@
 import { fbm, hash2 } from './noise';
+import { nookRing, type Dock, type FieldDef } from '../field';
 import { AreaDef, MapObject, MapProvider, SpawnEntry } from './mapProvider';
 import { DUNGEON, EX, T, TOWN } from './tiles';
 
@@ -67,9 +68,13 @@ export interface RegionDef {
   /** Gates to other regions (interact with E); `requires` = story flags */
   portals?: PortalDef[];
   /** Rivers (water, lava in volcanic maps); where a path crosses one it becomes a bridge */
-  rivers?: { w: number; pts: number[][] }[];
+  rivers?: { w: number; pts: number[][]; mouth?: boolean }[];
   /** Resource nodes (fishing spots on a shore, berry bushes): `table` = id in data/world/gathering.json */
   nodes?: { id: string; table: string; x: number; y: number }[];
+  /** Field obstacles for exploration abilities (cut / smash / strength), see core/field.ts */
+  field?: FieldDef[];
+  /** Boat docks (Vietnam Odyssey rivers): land tile + the water tile the boat starts from */
+  docks?: Dock[];
 }
 
 export interface PortalDef {
@@ -103,6 +108,8 @@ export class ValleyMap implements MapProvider {
   private clear: { x: number; y: number; r: number }[] = [];
   private segs: { ax: number; ay: number; bx: number; by: number; w: number }[] = [];
   private riverSegs: { ax: number; ay: number; bx: number; by: number; w: number }[] = [];
+  /** segments of rivers that run into the lake / sea (`mouth`): their bed cuts through the beach */
+  private mouthSegs: { ax: number; ay: number; bx: number; by: number; w: number }[] = [];
 
   constructor(readonly def: RegionDef) {
     this.id = def.id;
@@ -116,6 +123,7 @@ export class ValleyMap implements MapProvider {
     }
     for (const r of def.rivers ?? []) for (let i = 0; i < r.pts.length - 1; i++) {
       this.riverSegs.push({ ax: r.pts[i][0], ay: r.pts[i][1], bx: r.pts[i + 1][0], by: r.pts[i + 1][1], w: r.w });
+      if (r.mouth) this.mouthSegs.push({ ax: r.pts[i][0], ay: r.pts[i][1], bx: r.pts[i + 1][0], by: r.pts[i + 1][1], w: r.w });
     }
     this.buildAuthored();
   }
@@ -174,6 +182,8 @@ export class ValleyMap implements MapProvider {
     for (const p of d.puzzles) p.plates.forEach(([x, y], i) => this.add({ kind: 'plate', id: `${p.id}:${i}`, x, y, data: { puzzle: p.id, index: i, label: p.labels[i] } }));
     for (const g of d.dungeons) { this.add({ kind: 'cave', id: g.id, x: g.x, y: g.y, data: { ...g } }); this.clear.push({ x: g.x, y: g.y, r: 4 }); }
     for (const n of d.nodes ?? []) { this.add({ kind: 'node', id: n.id, x: n.x, y: n.y, data: { ...n } }); this.clear.push({ x: n.x, y: n.y, r: 1 }); }
+    for (const f of d.field ?? []) this.addField(f);
+    for (const k of d.docks ?? []) { this.clear.push({ x: k.x + 0.5, y: k.y + 0.5, r: 1.5 }); }
     for (const [x, y] of d.pillars) this.add({ kind: 'pillar', id: `pillar-${x}-${y}`, x, y, tile: DUNGEON.pillar, collideR: 16 });
     const r = d.rescue;
     if (r.x >= 0) this.addRescue(r);
@@ -206,6 +216,27 @@ export class ValleyMap implements MapProvider {
         this.add({ kind: 'pillar', id: `shrine-${l.id}-${i}`, x: Math.round(l.x + Math.cos(a) * 7), y: Math.round(l.y + Math.sin(a) * 7), tile: DUNGEON.pillar, collideR: 16 });
       }
     }
+  }
+
+  /**
+   * A field obstacle: open ground around it (and its hole), and — for a hidden nook — a ring of trees / boulders with the
+   * obstacle in its only gap. The obstacle itself is drawn and collided by the scene (it can be cleared or moved).
+   */
+  private addField(f: FieldDef): void {
+    const ox = f.x + 0.5, oy = f.y + 0.5;
+    this.clear.push({ x: ox, y: oy, r: 1.6 });
+    if (f.to) this.clear.push({ x: f.to[0] + 0.5, y: f.to[1] + 0.5, r: 1 });
+    const n = f.nook;
+    if (!n) return;
+    this.clear.push({ x: n.cx, y: n.cy, r: n.r + 1.4 });
+    // a clear approach from outside the gap
+    const ux = (ox - n.cx) / n.r, uy = (oy - n.cy) / n.r;
+    for (let k = 1; k <= 3; k++) this.clear.push({ x: ox + ux * k, y: oy + uy * k, r: 1.2 });
+    nookRing(f).forEach((p, i) => {
+      const id = `nook-${f.id}-${i}`;
+      if (n.wall === 'boulder') this.add({ kind: 'boulder', id, x: p.x, y: p.y, collideR: 20 });
+      else this.add({ ...this.tree(Math.floor(p.x), Math.floor(p.y), 'forest'), id, x: p.x, y: p.y, collideR: 18 });
+    });
   }
 
   /** The valley's trapped-Pokémon rescue site (other regions have none). */
@@ -284,6 +315,7 @@ export class ValleyMap implements MapProvider {
     const theme = this.def.theme ?? 'valley';
     const lake = this.lakeValue(tx, ty);
     if (lake < 1) return theme === 'volcanic' ? T.Lava : T.Water;
+    if (lake < 1.32 && this.mouthSegs.length && this.onSegs(this.mouthSegs, tx, ty)) return theme === 'volcanic' ? T.Lava : T.Water;
     if (lake < 1.32) return theme === 'volcanic' ? T.AshRock : theme === 'frozen' ? T.Ice : theme === 'swamp' ? T.Mud : T.Sand;
     const area = this.areaAt(tx, ty);
     const [px0, py0, px1, py1] = this.def.plaza;

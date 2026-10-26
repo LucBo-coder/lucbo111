@@ -1,0 +1,31 @@
+{
+  "cut": {
+    "name": "Cắt cây",
+    "obstacle": "Bụi cây rậm",
+    "hint": "Bụi cây rậm chắn lối. Một Pokémon hệ Cỏ, Bọ hoặc Thép (Lv 8+) trong đội có thể cắt nó.",
+    "types": ["grass", "bug", "steel"],
+    "minLevel": 8
+  },
+  "smash": {
+    "name": "Đập đá",
+    "obstacle": "Tảng đá nứt",
+    "hint": "Tảng đá có vết nứt lớn. Một Pokémon hệ Giác Đấu, Đá hoặc Đất (Lv 14+) trong đội có thể đập vỡ nó.",
+    "types": ["fighting", "rock", "ground"],
+    "minLevel": 14
+  },
+  "strength": {
+    "name": "Đẩy đá",
+    "obstacle": "Tảng đá lớn",
+    "hint": "Tảng đá nặng trịch. Cần một Pokémon hệ Giác Đấu, Đất hoặc Thép (Lv 18+) trong đội để đẩy.",
+    "types": ["fighting", "ground", "steel"],
+    "minLevel": 18
+  },
+  "boat": {
+    "name": "Chèo ghe",
+    "obstacle": "Bến ghe",
+    "hint": "Cần có ghe riêng mới đi trên sông được. Hỏi người lái đò ở bến.",
+    "types": [],
+    "minLevel": 0,
+    "requiresFlag": "vehicle:ghe"
+  }
+}

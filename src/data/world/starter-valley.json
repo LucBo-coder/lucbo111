@@ -591,6 +591,18 @@
     "Đứng cạnh chỗ nước gợn sóng, bấm E (điện thoại: nút Tương tác) để thả câu.",
     "Khi phao chìm và hiện dấu \"!\", bấm lần nữa thật nhanh để kéo lên."
    ]
+  },
+  {
+   "x": 98,
+   "y": 34,
+   "text": [
+    "LỐI MÒN BỊ CHẶN",
+    "Có những lối đi chỉ Pokémon mới mở được:",
+    "bụi cây rậm — Pokémon hệ Cỏ / Bọ / Thép cắt được;",
+    "đá nứt — hệ Giác Đấu / Đá / Đất đập được;",
+    "tảng đá lớn — hệ Giác Đấu / Đất / Thép đẩy được.",
+    "Đứng cạnh rồi bấm E (điện thoại: nút Tương tác)."
+   ]
   }
  ],
  "npcs": [
@@ -944,6 +956,39 @@
     "muscle-band": 1
    },
    "requiresFlag": "camp:graduate"
+  },
+  {
+   "id": "chest-sv-glade",
+   "x": 104,
+   "y": 32,
+   "items": {
+    "miracle-seed": 1,
+    "greatball": 3,
+    "exp-candy-s": 2
+   },
+   "requiresFlag": "field:starter-valley:sv-thicket"
+  },
+  {
+   "id": "chest-sv-rockpocket",
+   "x": 150,
+   "y": 28,
+   "items": {
+    "hard-stone": 1,
+    "ultraball": 2,
+    "superpotion": 2
+   },
+   "requiresFlag": "field:starter-valley:sv-cracked"
+  },
+  {
+   "id": "chest-sv-circle",
+   "x": 25,
+   "y": 66,
+   "items": {
+    "moon-stone": 1,
+    "ultraball": 2,
+    "exp-candy-s": 2
+   },
+   "requiresFlag": "field:starter-valley:sv-boulder"
   }
  ],
  "waypoints": [
@@ -1565,6 +1610,48 @@
    "table": "meadow-forage",
    "x": 93,
    "y": 67
+  }
+ ],
+ "field": [
+  {
+   "id": "sv-thicket",
+   "ability": "cut",
+   "x": 101,
+   "y": 32,
+   "nook": {
+    "cx": 104.5,
+    "cy": 32.5,
+    "r": 3,
+    "wall": "tree"
+   }
+  },
+  {
+   "id": "sv-cracked",
+   "ability": "smash",
+   "x": 147,
+   "y": 28,
+   "nook": {
+    "cx": 150.5,
+    "cy": 28.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  },
+  {
+   "id": "sv-boulder",
+   "ability": "strength",
+   "x": 21,
+   "y": 66,
+   "to": [
+    22,
+    66
+   ],
+   "nook": {
+    "cx": 24.5,
+    "cy": 66.5,
+    "r": 3,
+    "wall": "boulder"
+   }
   }
  ]
 }

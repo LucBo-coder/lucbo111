@@ -19,6 +19,7 @@ import { BOSSES, POKEMON } from '../core/data';
 import type { PokeType } from '../core/types';
 import { FIELD_MAX, HEAL_FRAC, pickLead, pickSwitch, potionsFor, rematchPrize, rematchReady, rematchTeam, REMATCH_COOLDOWN, shouldHeal } from '../core/trainerAI';
 import { repGreeting, REP_REGIONS, REP_TIERS } from '../core/reputation';
+import { canUse, currentSpeed, FIELD_ABILITIES, fieldFlag, pushTarget, riverCurrent, tideName, type Dock, type FieldDef, type PartyMember } from '../core/field';
 import { DungeonMap } from '../core/map/dungeonMap';
 import { dungeonDef } from '../core/map/dungeons';
 import { REGION_DEFS } from '../core/map/regionDefs';
@@ -134,6 +135,10 @@ export class AdventureScene extends Phaser.Scene {
   legendCap: { unit: Unit; id: string; level: number; left: number; rule: LegendCaptureRule } | null = null;
   /** Trainer battle: fielded units, the bench (reserves / recalled, HP kept), Potions left, rematch or first fight */
   battle: TrainerBattle | null = null;
+  /** on a boat (Vietnam Odyssey rivers) */
+  boating = false;
+  private boatImg: Phaser.GameObjects.Image | null = null;
+  private fieldViews = new Map<string, Phaser.GameObjects.GameObject[]>();
   areaName = '';
   weather: { kind: WeatherKind; t: number } = { kind: 'clear', t: 240 };
   pointerWorld = { x: 0, y: 0, at: -99999 };
@@ -234,7 +239,8 @@ export class AdventureScene extends Phaser.Scene {
         // feet-area sampling so the trainer's body doesn't clip into walls
         blocksMove: (x, y) => solidPx(x, y + 6) || solidPx(x - 10, y + 8) || solidPx(x + 10, y + 8),
         blocksShot: (x, y) => map.shotSolidAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX)),
-        isWater: (x, y) => map.terrainAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX)) === T.Water,
+        // bridges span the water: boats and swimmers pass under them
+        isWater: (x, y) => { const t = map.terrainAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX)); return t === T.Water || t === T.Bridge; },
       },
     });
     (window as unknown as { __adv: AdventureScene }).__adv = this;
@@ -262,6 +268,8 @@ export class AdventureScene extends Phaser.Scene {
       names: 'all',
     }, saveStore.data.settings.quality);
     this.chunks = new ChunkView(this, map, { onLoad: (r) => this.onChunkLoad(r), onUnload: (r) => this.onChunkUnload(r) });
+    this.boating = false; this.boatImg = null; this.fieldViews.clear();
+    this.buildField();
     // elemental / challenge dungeons share the cave layout: a multiply wash over the floor tiles gives each its own look
     const wash = this.mapKind === 'dungeon' ? DUNGEON_WASH[(this.map as DungeonMap).def.id] : undefined;
     if (wash) this.add.rectangle(0, 0, map.widthTiles * TILE_PX, map.heightTiles * TILE_PX, wash, 1).setOrigin(0).setBlendMode(Phaser.BlendModes.MULTIPLY).setDepth(-99);
@@ -964,6 +972,7 @@ export class AdventureScene extends Phaser.Scene {
     this.presence?.update(performance.now());
     this.updateWalkers(dt);
     this.updateFishing(dt);
+    this.updateBoat(dt);
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
@@ -1168,7 +1177,10 @@ export class AdventureScene extends Phaser.Scene {
     let best: Interactable | null = null, bd = 64;
     for (const it of this.interactables.values()) {
       if (it.kind === 'plate') continue;
-      const d = Math.hypot(it.x - t.x, it.y - t.y);
+      // a dock answers from its bank end or its water end, whichever is closer
+      const k = it.kind === 'dock' ? it.obj.data as unknown as Dock : null;
+      const d = k ? Math.min(Math.hypot((k.x + 0.5) * TILE_PX - t.x, (k.y + 0.5) * TILE_PX - t.y), Math.hypot((k.wx + 0.5) * TILE_PX - t.x, (k.wy + 0.5) * TILE_PX - t.y))
+        : Math.hypot(it.x - t.x, it.y - t.y);
       if (d < bd) { bd = d; best = it; }
       if (it.marker) {
         const giver = it.kind === 'npc' || it.kind === 'trainer' ? this.state.quests.forGiver(it.id) : [];
@@ -1224,6 +1236,8 @@ export class AdventureScene extends Phaser.Scene {
       case 'building': return this.ui.openMenu('pc');
       case 'waypoint': return this.useWaypoint(it);
       case 'portal': return this.usePortal(it.obj.data as unknown as PortalDef);
+      case 'field': return this.useField(it);
+      case 'dock': return this.useDock(it);
       case 'cave': return this.enterCave((it.obj.data as { id?: string } | undefined)?.id ?? 'ancient-cave');
       case 'trainer': return this.challenge(it);
       case 'rescue': return this.rescue(it);
@@ -2017,6 +2031,188 @@ export class AdventureScene extends Phaser.Scene {
     this.state.lastRepGain = null;
     const name = REP_REGIONS[g.region]?.name ?? '';
     this.time.delayedCall(1600, () => this.ui.banner(`Danh tiếng ${name}: ${REP_TIERS[g.tier].name}! Nhận quà của người dân.`, '#ffd040'));
+  }
+
+  // ───────────────────────────── exploration abilities & boats ─────────────────────────────
+
+  /** Party members as the field rules see them (anyone in the party counts, on the field or in the ball). */
+  private partyMembers(): PartyMember[] {
+    const out: PartyMember[] = [];
+    for (const uid of this.state.adv.party) {
+      const p = this.state.owned(uid), d = p && POKEMON.get(p.species);
+      if (p && d) out.push({ species: p.species, name: d.name, level: p.level, types: d.types });
+    }
+    return out;
+  }
+
+  /** Field obstacles and docks are drawn by the scene, not the chunks: they can vanish (cut / smash) or move (strength). */
+  private buildField(): void {
+    if (this.mapKind === 'dungeon') return;
+    for (const f of this.regionDef.field ?? []) this.drawField(f);
+    for (const k of this.regionDef.docks ?? []) this.drawDock(k);
+    // a save made on the river resumes in the boat
+    const at = this.state.adv.boat && (this.regionDef.docks ?? []).find((k) => k.id === this.state.adv.boat);
+    const t = this.world.trainer;
+    if (at && this.map.terrainAt(Math.floor(t.x / TILE_PX), Math.floor(t.y / TILE_PX)) === T.Water) this.boardBoat(at, false);
+    else delete this.state.adv.boat;
+  }
+
+  private drawField(f: FieldDef): void {
+    for (const g of this.fieldViews.get(f.id) ?? []) g.destroy();
+    this.world.removeObstacles('field:' + f.id);
+    this.interactables.delete('field:' + f.id);
+    const views: Phaser.GameObjects.GameObject[] = [];
+    this.fieldViews.set(f.id, views);
+    const solved = this.state.hasFlag(fieldFlag(this.regionDef.id, f.id));
+    if (f.to) {
+      // the hole the boulder has to fill
+      const hx = (f.to[0] + 0.5) * TILE_PX, hy = (f.to[1] + 0.5) * TILE_PX;
+      views.push(this.add.graphics().setDepth(-40).fillStyle(0x1a140e, 0.9).fillEllipse(hx, hy + 4, 42, 28).lineStyle(3, 0x6a5a40, 1).strokeEllipse(hx, hy + 4, 42, 28));
+      if (solved) { views.push(this.add.image(hx, hy + 4, 'boulder').setScale(SCALE * 0.95).setTint(0x8a8070).setDepth(-39)); return; }
+    } else if (solved) return;
+    const [bx, by] = f.ability === 'strength' ? this.state.adv.boulders?.[f.id] ?? [f.x, f.y] : [f.x, f.y];
+    const px = (bx + 0.5) * TILE_PX, py = (by + 0.5) * TILE_PX;
+    let img: Phaser.GameObjects.Image;
+    if (f.ability === 'cut') {
+      // a thorny thicket: a squat, darker tree
+      img = this.add.image(px, py + 22, 'ow_tiles', TOWN.round).setOrigin(0.5, 1).setScale(SCALE * 0.9, SCALE * 0.75).setTint(0x6f9a52).setDepth(py + 22);
+    } else {
+      img = this.add.image(px, py + 6, 'boulder').setScale(SCALE * (f.ability === 'strength' ? 1.35 : 1.15)).setDepth(py + 6);
+      if (f.ability === 'smash') {
+        img.setTint(0xd8c8b0);
+        // the crack that says "this one breaks"
+        views.push(this.add.graphics().setDepth(py + 7).lineStyle(3, 0x2a2018, 1).beginPath()
+          .moveTo(px - 12, py - 8).lineTo(px - 2, py + 2).lineTo(px - 7, py + 12).moveTo(px - 2, py + 2).lineTo(px + 10, py - 3).strokePath());
+      }
+    }
+    views.push(img);
+    this.world.addObstacle({ x: px, y: py + 6, r: 22, kind: f.ability === 'cut' ? 'tree' : 'rock', tag: 'field:' + f.id });
+    this.interactables.set('field:' + f.id, {
+      kind: 'field', id: 'field:' + f.id, x: px, y: py + 6, label: FIELD_ABILITIES[f.ability].obstacle,
+      obj: { kind: 'field', id: f.id, x: bx, y: by, data: f as unknown as Record<string, unknown> }, sprite: img,
+    });
+  }
+
+  /** Open ground a boulder can be pushed onto: no wall / water, nothing standing there (its own collider excepted). */
+  private tileFree(tx: number, ty: number, f: FieldDef): boolean {
+    if (this.map.solidAt(tx, ty) || this.map.terrainAt(tx, ty) === T.Water) return false;
+    const cx = (tx + 0.5) * TILE_PX, cy = (ty + 0.5) * TILE_PX + 6;
+    return !this.world.obstacles.some((o) => o.tag !== 'field:' + f.id && Math.hypot(o.x - cx, o.y - cy) < o.r + 16);
+  }
+
+  private async useField(it: Interactable): Promise<void> {
+    const f = it.obj.data as unknown as FieldDef;
+    const def = FIELD_ABILITIES[f.ability];
+    const chk = canUse(f.ability, this.partyMembers(), { has: (x) => this.state.hasFlag(x) });
+    if (!chk.ok) return void (await this.say(def.obstacle, [chk.reason]));
+    const who = chk.by?.name ?? 'Bạn', t = this.world.trainer, flag = fieldFlag(this.regionDef.id, f.id);
+    if (f.ability === 'strength') {
+      const [bx, by] = this.state.adv.boulders?.[f.id] ?? [f.x, f.y];
+      const next = pushTarget(bx, by, t.x / TILE_PX, t.y / TILE_PX, (x, y) => this.tileFree(x, y, f));
+      if (!next) { this.ui.banner('Tảng đá không nhúc nhích — phía bên kia bị chặn.', '#ffb060'); return; }
+      const bs = (this.state.adv.boulders ??= {});
+      bs[f.id] = next;
+      this.renderer_.vfx.named('ground', (next[0] + 0.5) * TILE_PX, (next[1] + 0.5) * TILE_PX);
+      audio.play('whip');
+      if (f.to && next[0] === f.to[0] && next[1] === f.to[1]) {
+        this.state.setFlag(flag);
+        delete bs[f.id];
+        this.ui.banner(`${who} đẩy tảng đá lấp kín ổ — lối vào đã mở!`, '#ffe066');
+        audio.play('levelup');
+        this.questEvent({ type: 'activate', target: 'field:' + f.id });
+      } else this.ui.banner(`${who} dùng ${def.name}!`, '#e8d8b0');
+      this.drawField(f);
+      this.persist();
+      return;
+    }
+    this.state.setFlag(flag);
+    this.renderer_.vfx.named(f.ability === 'cut' ? 'grass' : 'rock', it.x, it.y - 10);
+    audio.play(f.ability === 'cut' ? 'whip' : 'levelup');
+    this.ui.banner(`${who} dùng ${def.name}! ${def.obstacle} đã được dọn.`, '#ffe066');
+    this.drawField(f);
+    this.questEvent({ type: 'activate', target: 'field:' + f.id });
+    this.persist();
+  }
+
+  private drawDock(k: Dock): void {
+    const lx = (k.x + 0.5) * TILE_PX, ly = (k.y + 0.5) * TILE_PX, wx = (k.wx + 0.5) * TILE_PX, wy = (k.wy + 0.5) * TILE_PX;
+    const g = this.add.graphics().setDepth(-30);
+    // wooden planks from the bank out over the water, two mooring posts
+    const horiz = Math.abs(wx - lx) >= Math.abs(wy - ly), n = Math.round(Math.hypot(wx - lx, wy - ly) / 11);
+    for (let i = 0; i <= n; i++) {
+      const x = lx + ((wx - lx) * i) / n, y = ly + ((wy - ly) * i) / n;
+      g.fillStyle(i % 2 ? 0x8a5a30 : 0x9c6a3a, 1);
+      if (horiz) g.fillRect(x - 4, y - 18, 9, 36); else g.fillRect(x - 18, y - 4, 36, 9);
+    }
+    g.fillStyle(0x4a3020, 1);
+    if (horiz) { g.fillRect(wx - 3, wy - 24, 6, 12); g.fillRect(wx - 3, wy + 14, 6, 12); } else { g.fillRect(wx - 24, wy - 3, 12, 6); g.fillRect(wx + 14, wy - 3, 12, 6); }
+    this.interactables.set('dock:' + k.id, {
+      kind: 'dock', id: 'dock:' + k.id, x: (lx + wx) / 2, y: (ly + wy) / 2, label: k.name,
+      obj: { kind: 'dock', id: k.id, x: k.x, y: k.y, data: k as unknown as Record<string, unknown> },
+    });
+  }
+
+  private async useDock(it: Interactable): Promise<void> {
+    const k = it.obj.data as unknown as Dock;
+    if (this.boating) return this.leaveBoat(k);
+    const chk = canUse('boat', [], { has: (x) => this.state.hasFlag(x) });
+    if (!chk.ok) return void (await this.say(k.name, [FIELD_ABILITIES.boat.hint]));
+    if (this.battle || this.inCombat()) { this.ui.banner('Đang giao chiến — chưa xuống ghe được!', '#ffb060'); return; }
+    this.boardBoat(k, true);
+  }
+
+  private boardBoat(k: Dock, announce: boolean): void {
+    const t = this.world.trainer;
+    this.boating = true;
+    this.state.adv.boat = k.id;
+    if (announce) this.world.teleport((k.wx + 0.5) * TILE_PX, (k.wy + 0.5) * TILE_PX);
+    for (const a of this.world.allies) { a.x = t.x; a.y = t.y; a.lastX = a.x; a.lastY = a.y; }
+    if (!this.textures.exists('ghe')) {
+      // a small Mekong wooden boat (ghe): dark hull, lighter rim, painted eye at the bow
+      const g = this.make.graphics({ x: 0, y: 0 }, false);
+      g.fillStyle(0x3a2414, 1).fillPoints([{ x: 0, y: 9 }, { x: 10, y: 3 }, { x: 62, y: 3 }, { x: 72, y: 9 }, { x: 62, y: 19 }, { x: 10, y: 19 }], true);
+      g.fillStyle(0x8a5a30, 1).fillRect(10, 5, 52, 4);
+      g.fillStyle(0xb02020, 1).fillRect(60, 6, 6, 4);
+      g.fillStyle(0xffffff, 1).fillRect(62, 7, 2, 2);
+      g.generateTexture('ghe', 73, 22);
+      g.destroy();
+    }
+    this.boatImg?.destroy();
+    this.boatImg = this.add.image(t.x, t.y + 16, 'ghe').setScale(1.6).setDepth(t.y + 1);
+    if (announce) {
+      this.ui.banner(`Xuống ghe — ${tideName(this.state.adv.clock)}. Ghé bến khác (E) để lên bờ.`, '#a0e0ff');
+      audio.play('bubble');
+      this.persist();
+    }
+  }
+
+  private leaveBoat(k: Dock): void {
+    const t = this.world.trainer;
+    this.boating = false;
+    delete this.state.adv.boat;
+    t.aquatic = false;
+    this.world.teleport((k.x + 0.5) * TILE_PX, (k.y + 0.5) * TILE_PX);
+    for (const a of this.world.allies) { a.aquatic = false; a.x = t.x; a.y = t.y + 20; a.lastX = a.x; a.lastY = a.y; }
+    this.boatImg?.destroy();
+    this.boatImg = null;
+    this.ui.banner(`Lên bờ: ${k.name}`, '#a0e0ff');
+    this.questEvent({ type: 'explore', target: 'dock:' + k.id });
+    this.persist();
+  }
+
+  /** On the river: everyone rides / swims, the current carries the boat downstream (faster at low tide). */
+  private updateBoat(dt: number): void {
+    if (!this.boating) return;
+    const t = this.world.trainer;
+    t.aquatic = true;
+    for (const a of this.world.allies) a.aquatic = true; // a party re-applied mid-trip swims along too
+    if (!this.modal && this.regionDef.rivers?.length) {
+      const c = riverCurrent(this.regionDef.rivers, t.x / TILE_PX, t.y / TILE_PX, currentSpeed(this.state.adv.clock));
+      const nx = t.x + c.vx * dt, ny = t.y + c.vy * dt;
+      if (this.map.terrainAt(Math.floor(nx / TILE_PX), Math.floor(ny / TILE_PX)) === T.Water) { t.x = nx; t.y = ny; }
+    }
+    // the hull covers the trainer's feet: standing in the boat
+    this.boatImg?.setPosition(t.x, t.y + 16).setDepth(t.y + 1).setFlipX(t.facing < 0);
   }
 
   private async rescue(it: Interactable): Promise<void> {

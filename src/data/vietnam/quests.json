@@ -1295,5 +1295,128 @@
     "Trái còn tươi rói! Từ nay con là mối ruột của ghe cô."
    ]
   }
+ },
+ {
+  "id": "vn-ct-boat",
+  "kind": "side",
+  "title": "Chiếc ghe của cô lái đò",
+  "giver": "ct-ferry-girl",
+  "requires": [
+   "vn-ct-1"
+  ],
+  "description": "Cô lái đò Ninh Kiều có chiếc ghe cũ cần trám lại. Kiếm dầu chai ở chợ nổi rồi cô cho mượn ghe đi sông.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "ct-merchant",
+    "count": 1,
+    "text": "Xin dầu chai ở ghe Chủ ghe Tư Hiền (Cái Răng)",
+    "marker": {
+     "x": 118,
+     "y": 88,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-ferry-girl",
+    "count": 1,
+    "text": "Mang dầu chai về cho cô lái đò Ninh Kiều",
+    "marker": {
+     "x": 74,
+     "y": 70,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "oranberry": 3
+   },
+   "worldExp": 300,
+   "reputation": 5,
+   "flags": [
+    "vehicle:ghe"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Ghe của cô bị rò, phải trám dầu chai mới đi được. Con xuống chợ nổi xin giùm cô một ít, rồi ghe này con cứ lấy mà đi."
+   ],
+   "progress": [
+    "Dầu chai đây — trám ghe cho kỹ nghen. Cô lái đò đang chờ ở bến Ninh Kiều.",
+    "Dầu chai có ở ghe Tư Hiền dưới chợ nổi Cái Răng."
+   ],
+   "complete": [
+    "Ghe kín rồi! Ra bến ghe cạnh Ninh Kiều mà xuống ghe. Nhớ: nước ròng thì sông chảy mạnh, nước lớn thì êm."
+   ]
+  }
+ },
+ {
+  "id": "vn-ct-river",
+  "kind": "exploration",
+  "title": "Xuôi dòng Hậu giang",
+  "giver": "ct-ferry-girl",
+  "requires": [
+   "vn-ct-boat"
+  ],
+  "description": "Chèo ghe ghé bãi bồi giữa sông, rồi xuôi xuống chợ nổi Cái Răng.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dock:ct-dock-baibo",
+    "count": 1,
+    "text": "Cập bến Bãi Bồi giữa sông (phía tây bắc Cồn Sơn)",
+    "marker": {
+     "x": 78,
+     "y": 13,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "dock:ct-dock-cairang",
+    "count": 1,
+    "text": "Xuôi dòng, cập bến ghe Cái Răng",
+    "marker": {
+     "x": 111,
+     "y": 96,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-ferry-girl",
+    "count": 1,
+    "text": "Kể lại chuyến đi cho cô lái đò",
+    "marker": {
+     "x": 74,
+     "y": 70,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 2,
+    "greatball": 3
+   },
+   "worldExp": 700,
+   "reputation": 15,
+   "flags": [
+    "vn:river-guide"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Giữa sông có bãi bồi mới nổi, chưa ai lên tới. Con chèo ra coi thử, rồi xuôi xuống chợ nổi luôn."
+   ],
+   "progress": [
+    "Bãi bồi ở phía tây bắc Cồn Sơn. Muốn xuống Cái Răng thì cứ thả theo con nước."
+   ],
+   "complete": [
+    "Giỏi! Giờ con rành sông Hậu hơn cả dân chèo đò rồi."
+   ]
+  }
  }
 ]

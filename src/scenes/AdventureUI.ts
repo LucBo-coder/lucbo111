@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { tideName } from '../core/field';
 import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
 import { coopSession } from '../net/coop';
@@ -415,7 +416,7 @@ export class AdventureUI extends Phaser.Scene {
     // Interaction prompt
     const n = a.nearest;
     const fish = a.fishing;
-    this.texts.prompt.setText(fish ? (fish.bit ? '[E] KÉO CÂU NGAY!' : '[E] … chờ phao chìm') : n && !a.modal ? `[E] ${n.label}` : '').setPosition(W / 2, H - 92 * s);
+    this.texts.prompt.setText(fish ? (fish.bit ? '[E] KÉO CÂU NGAY!' : '[E] … chờ phao chìm') : n && !a.modal ? `[E] ${n.kind === 'dock' && a.boating ? 'Lên bờ — ' : ''}${n.label}` : a.boating && !a.modal ? `Đang đi ghe · ${tideName(a.state.adv.clock)} — ghé một bến để lên bờ` : '').setPosition(W / 2, H - 92 * s);
 
     // Capture preview over the aimed wild Pokémon
     const target = a.modal || a.captureFx ? null : a.aimTarget(true);

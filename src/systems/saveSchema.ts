@@ -47,6 +47,10 @@ export interface AdventureSave {
   repBy?: Record<string, number>;
   /** Trainer rematches: playTime of the last win and how many rematches were won */
   rematch?: Record<string, { at: number; wins: number }>;
+  /** Strength boulders moved off their spot (tile), until they fill their hole */
+  boulders?: Record<string, [number, number]>;
+  /** Dock id while the player is out on the river in a boat (resumes in the boat after a reload) */
+  boat?: string;
   /** World events: check timers, per-type cooldowns, history (active events are not saved) */
   events: EventSave;
   /** Legendary / Mythical encounter states (persistent: a caught legendary never respawns as a duplicate) */

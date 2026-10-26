@@ -7,8 +7,13 @@
 - **Danh tiếng theo từng tỉnh / vùng** (`repBy` trong save của từng chiến dịch — Phiêu lưu và Việt Nam Odyssey không dùng chung điểm): 4 hạng *Người lạ → Quen mặt (15) → Được tin cậy (40) → Người nhà (80)*. Lên hạng nhận quà một lần (cờ `rep:<vùng>:<hạng>`, không nhận lại khi tải lại save). NPC ở Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng. Bảng Thống kê hiện hạng của vùng đang đứng.
 - **3 nhiệm vụ mở bằng danh tiếng "Được tin cậy"**: *Tuần tra rừng tràm U Minh* (Kiểm lâm U Minh, Cà Mau), *Lời nhờ của Sư cô Núi Cấm* (An Giang), *Mối hàng chợ nổi* (giao trái cây từ vườn Chú Tám cho Chủ ghe Tư Hiền, Cần Thơ).
 - Sửa trong lúc làm: trận HLV có thể kết thúc ngay khi Pokémon dự bị cuối cùng vừa được gửi ra (bắt được bằng e2e trước khi phát hành).
-- Dữ liệu mới: `src/data/world/reputation.json`. Lõi mới: `src/core/trainerAI.ts`, `src/core/reputation.ts`.
-- Test: `tests/v22_trainer_rep.test.ts` (11), `e2e/v22_trainer_rep.spec.ts`.
+- **Năng lực khám phá** (`src/core/field.ts`, `data/world/field-abilities.json`): *Cắt cây* (Pokémon hệ Cỏ / Bọ / Thép Lv 8+), *Đập đá* (Giác Đấu / Đá / Đất Lv 14+), *Đẩy đá* (Giác Đấu / Đất / Thép Lv 18+) — bất kỳ Pokémon nào trong đội đủ điều kiện đều làm được, game báo tên Pokémon. Thiếu điều kiện thì hiện gợi ý cần hệ / cấp nào.
+- **3 hốc bí mật ở Thung Lũng**: khoảng rừng sau bụi cây rậm (Rìa Rừng Ngọc), túi đá sau tảng đá nứt (Đồi Đá Xám), vòng đá ở Đồng Cỏ Gió mở bằng cách đẩy tảng đá lấp ổ. Mỗi hốc có một rương riêng, chỉ mở được sau khi dọn chướng ngại. Bảng gỗ giải thích ở lối vào khoảng rừng. Đã dọn thì giữ nguyên sau khi tải lại.
+- **Đi ghe trên sông Hậu (Cần Thơ)**: 5 bến ghe (Ninh Kiều, Cồn Sơn, Bãi Bồi giữa sông, Cái Răng, Phong Điền). Trên ghe chỉ đi được trên nước, lên bờ ở bến. **Dòng nước đẩy ghe xuôi** theo hướng sông, mạnh nhất lúc **nước ròng**, yếu lúc **nước lớn** (2 con nước mỗi ngày theo giờ trong game); HUD hiện trạng thái con nước. Lưu game giữa sông → tải lại vẫn ở trên ghe. Cửa sông Hậu giờ thông ra vùng nước Cồn Sơn (cờ dữ liệu `mouth` của sông; các bản đồ khác không đổi).
+- **Bãi Bồi giữa sông** (giả tưởng): đảo nhỏ có rương, chỉ đến được bằng ghe.
+- Nhiệm vụ: *Chiếc ghe của cô lái đò* (xin dầu chai ở chợ nổi → nhận ghe, cờ `vehicle:ghe`), *Xuôi dòng Hậu giang* (cập Bãi Bồi, xuôi xuống Cái Răng).
+- Dữ liệu mới: `src/data/world/reputation.json`, `src/data/world/field-abilities.json`, trường `field` / `docks` của vùng, `boulders` / `boat` trong save. Lõi mới: `src/core/trainerAI.ts`, `src/core/reputation.ts`, `src/core/field.ts`. Script: `scripts/patch-v22-field.py`.
+- Test: `tests/v22_trainer_rep.test.ts` (11), `tests/v22_field_boat.test.ts` (10), `e2e/v22_trainer_rep.spec.ts`, `e2e/v22_field_boat.spec.ts`.
 
 ## Chưa phát hành — V21: Kỹ năng chủ động online, câu cá & hái lượm, Rừng Ngọc Lục Bảo, sprite Mega
 

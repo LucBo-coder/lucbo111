@@ -48,7 +48,7 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
     expect(island.has(at(boatBack))).toBe(true);
     expect(island.has(at(ct.worldBoss!))).toBe(true);
     expect(island.has(at(ct.chests.find((c) => c.id === 'chest-ct-island')!))).toBe(true);
-    for (const o of [...ct.npcs, ...ct.trainers, ...ct.waypoints, ct.rescue, ...ct.chests.filter((c) => c.id !== 'chest-ct-island'), ...ct.portals!.filter((p) => p !== boatBack)])
+    for (const o of [...ct.npcs, ...ct.trainers, ...ct.waypoints, ct.rescue, ...ct.chests.filter((c) => c.id !== 'chest-ct-island' && c.id !== 'chest-ct-baibo'), ...ct.portals!.filter((p) => p !== boatBack)])
       expect(land.has(at(o)), `${'id' in o ? o.id : ''} @${o.x},${o.y}`).toBe(true);
     // the Hậu River separates them; the Cần Thơ River is crossed by a bridge on the road to the floating market
     expect(m.terrainAt(106, 24)).toBe(T.Water);
@@ -59,7 +59,7 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
 
   it('quest chain: arrival → floating market → Chúa Sông Hậu, gated by the An Giang badge', () => {
     const ids = quests.filter((q) => q.id.startsWith('vn-ct-')).map((q) => q.id);
-    expect(ids).toEqual(['vn-ct-1', 'vn-ct-2', 'vn-ct-3', 'vn-ct-rescue', 'vn-ct-board-1', 'vn-ct-board-2', 'vn-ct-rep']);
+    expect(ids).toEqual(['vn-ct-1', 'vn-ct-2', 'vn-ct-3', 'vn-ct-rescue', 'vn-ct-board-1', 'vn-ct-board-2', 'vn-ct-rep', 'vn-ct-boat', 'vn-ct-river']);
     const s = defaultSave(); s.adventure = newAdventure('vietnam');
     const st = new AdventureState(s);
     expect(st.quests.states['vn-ct-1'].status).toBe('locked');
@@ -107,7 +107,7 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
     expect(page.playable).toBe(true);
     expect(page.unlocked).toBe(true);
     expect(page.trainers.total).toBe(6);
-    expect(page.quests.total).toBe(7);
+    expect(page.quests.total).toBe(9);
     expect(page.boss?.name).toContain('Whiscash');
   });
 });

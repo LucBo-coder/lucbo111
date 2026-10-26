@@ -156,6 +156,11 @@ Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu,
 - **Bụi quả**: bấm E để hái quả mọng, thuốc, bóng, kẹo EXP; đôi khi Pokémon trốn trong bụi nhảy ra.
 - Mỗi điểm hồi lại theo thời gian chơi (câu 60–75 s, bụi 4–5 phút); dữ liệu bảng ở `data/world/gathering.json`, vị trí ở trường `nodes` của vùng.
 
+### 5.4d Năng lực khám phá & đi ghe
+- Pokémon trong đội (ra sân hay trong bóng đều được) mở đường: **Cắt cây** bụi cây rậm (Cỏ / Bọ / Thép, Lv 8+), **Đập đá** tảng đá nứt (Giác Đấu / Đá / Đất, Lv 14+), **Đẩy đá** tảng đá lớn mỗi lần một ô, ra xa người chơi (Giác Đấu / Đất / Thép, Lv 18+). Đẩy vào ổ thì lối mở.
+- Thung Lũng có 3 hốc bí mật (khoảng rừng, túi đá, vòng đá), mỗi hốc một rương.
+- **Ghe** (Việt Nam Odyssey, Cần Thơ): nhận ghe từ nhiệm vụ của cô lái đò Ninh Kiều. Xuống / lên ghe ở bến (E). Trên ghe chỉ đi trên nước; dòng sông đẩy ghe xuôi, mạnh lúc nước ròng, yếu lúc nước lớn (2 con nước mỗi ngày). Bãi Bồi giữa sông chỉ đến được bằng ghe.
+
 ### 5.5 Hầm ngục
 Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmortar), Tháp Thử Thách (Tyranitar, có giới hạn thời gian). Mỗi hầm: phòng sóng quái → bẫy (đá rơi / băng rơi / đá nóng) → câu đố → phòng Boss → rương. **3 độ khó** (Thường / Khó / Chuyên gia), phần thưởng lần đầu riêng.
 

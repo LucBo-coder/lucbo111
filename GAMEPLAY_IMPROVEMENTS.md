@@ -69,3 +69,17 @@ Thắng xong, sau 10 phút chơi HLV mời tái đấu. Đội giữ nguyên lo�
 - Người lạ → **Quen mặt** (15) → **Được tin cậy** (40) → **Người nhà** (80). Mỗi hạng tặng quà một lần (cờ `rep:<vùng>:<hạng>`).
 - NPC ở Cà Mau, An Giang, Cần Thơ đổi câu chào theo hạng.
 - Hạng *Được tin cậy* mở: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi*.
+
+### Năng lực khám phá (`src/core/field.ts`)
+| Chướng ngại | Năng lực | Ai làm được | Kết quả |
+|---|---|---|---|
+| Bụi cây rậm | Cắt cây | Pokémon hệ Cỏ / Bọ / Thép, Lv 8+ | biến mất, lối mở |
+| Tảng đá nứt | Đập đá | Giác Đấu / Đá / Đất, Lv 14+ | vỡ, lối mở |
+| Tảng đá lớn | Đẩy đá | Giác Đấu / Đất / Thép, Lv 18+ | dịch 1 ô ra xa người chơi; lấp ổ → lối mở |
+
+Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game nói rõ cần hệ / cấp nào. Thung Lũng có 3 hốc bí mật dùng các năng lực này, mỗi hốc một rương.
+
+### Đi ghe trên sông Hậu (Cần Thơ)
+- Nhiệm vụ *Chiếc ghe của cô lái đò* → có ghe. Bấm E ở bến để xuống / lên ghe (5 bến).
+- Trên ghe chỉ đi được trên nước; dòng sông đẩy ghe xuôi (mạnh nhất lúc nước ròng, yếu lúc nước lớn). HUD: "Đang đi ghe · Nước ròng — ghé một bến để lên bờ".
+- Bãi Bồi giữa sông (giả tưởng) chỉ đến được bằng ghe, có rương. Lưu giữa sông thì tải lại vẫn ở trên ghe.

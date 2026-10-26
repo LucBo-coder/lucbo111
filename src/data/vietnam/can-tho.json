@@ -24,7 +24,7 @@
  ],
  "plaza": [78, 58, 98, 74],
  "lake": { "cx": 128, "cy": 6, "rx": 66, "ry": 26 },
- "islands": [{ "cx": 106, "cy": 10, "rx": 10, "ry": 6 }],
+ "islands": [{ "cx": 106, "cy": 10, "rx": 10, "ry": 6 }, { "cx": 78, "cy": 11, "rx": 4, "ry": 3 }],
  "buildings": [
   { "id": "ct-center", "name": "Trung tâm Pokémon", "x": 78, "y": 59, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
   { "id": "ct-mart", "name": "Cửa hàng", "x": 90, "y": 59, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
@@ -61,6 +61,7 @@
  ],
  "rescue": { "id": "ct-stork-ducklett", "x": 42, "y": 10, "species": "ducklett", "level": 19, "guards": [["ekans", 19], ["ekans", 19], ["arbok", 22]], "quest": "vn-ct-rescue", "reporter": "Cán bộ vườn cò Lâm" },
  "chests": [
+  { "id": "chest-ct-baibo", "x": 78, "y": 10, "items": { "mystic-water": 1, "ultraball": 2, "netball": 3 } },
   { "id": "chest-ct-island", "x": 110, "y": 8, "items": { "ultraball": 2, "sitrus-berry": 1 } },
   { "id": "chest-ct-stork", "x": 50, "y": 6, "items": { "leaf-stone": 1, "greatball": 3 } },
   { "id": "chest-ct-garden", "x": 12, "y": 92, "items": { "superpotion": 2, "rocky-helmet": 1 } },
@@ -87,8 +88,15 @@
   { "id": "ct-boat-back", "name": "Bến đò về Ninh Kiều", "x": 108, "y": 14, "to": "can-tho", "toX": 96, "toY": 43 },
   { "id": "portal-ct-next", "name": "Đường tới Vĩnh Long", "x": 123, "y": 64, "to": "can-tho", "toX": 120, "toY": 64, "requires": ["vn:vinh-long-open"], "hint": "Đường tới Vĩnh Long chưa có trong phiên bản này." }
  ],
+ "docks": [
+  { "id": "ct-dock-ninhkieu", "name": "Bến ghe Ninh Kiều", "x": 98, "y": 46, "wx": 100, "wy": 46 },
+  { "id": "ct-dock-conson", "name": "Bến ghe Cồn Sơn", "x": 98, "y": 10, "wx": 95, "wy": 10 },
+  { "id": "ct-dock-baibo", "name": "Bến Bãi Bồi giữa sông (giả tưởng)", "x": 78, "y": 13, "wx": 78, "wy": 16 },
+  { "id": "ct-dock-cairang", "name": "Bến ghe Cái Răng", "x": 111, "y": 96, "wx": 108, "wy": 96 },
+  { "id": "ct-dock-phongdien", "name": "Bến ghe Phong Điền", "x": 44, "y": 91, "wx": 46, "wy": 91 }
+ ],
  "rivers": [
-  { "w": 4, "pts": [[98, 26], [102, 52], [106, 76], [110, 111]] },
+  { "w": 4, "pts": [[98, 26], [102, 52], [106, 76], [110, 111]], "mouth": true },
   { "w": 2, "pts": [[106, 78], [80, 84], [50, 90], [20, 100], [2, 104]] }
  ]
 }

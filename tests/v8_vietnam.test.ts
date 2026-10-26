@@ -63,6 +63,7 @@ describe('Vietnam Odyssey mode', () => {
     const trainers = new Set(d.flatMap((r) => r.trainers.map((t) => t.id)));
     const areas = new Set(d.flatMap((r) => r.areas.map((a) => a.id)));
     const wps = new Set(d.flatMap((r) => r.waypoints.map((w) => w.id)));
+    const docks = new Set(d.flatMap((r) => (r.docks ?? []).map((k) => 'dock:' + k.id)));
     const ids = new Set(quests.map((q) => q.id));
     expect(ids.size).toBe(quests.length);
     for (const q of quests) {
@@ -73,7 +74,8 @@ describe('Vietnam Odyssey mode', () => {
         if (o.type === 'talk') expect(npcs.has(t), `${q.id} ${t}`).toBe(true);
         if (o.type === 'trainer') expect(trainers.has(t), `${q.id} ${t}`).toBe(true);
         if ((o.type === 'capture' || o.type === 'defeat') && t !== '*') expect(POKEMON.has(t), `${q.id} ${t}`).toBe(true);
-        if (o.type === 'explore') expect(areas.has(t), `${q.id} ${t}`).toBe(true);
+        // explore: an area, or 'dock:<id>' = landing at a boat dock
+        if (o.type === 'explore') expect(areas.has(t) || docks.has(t), `${q.id} ${t}`).toBe(true);
         if (o.type === 'activate') expect(wps.has(t), `${q.id} ${t}`).toBe(true);
         if (o.type === 'boss') expect(BOSSES.has(t), `${q.id} ${t}`).toBe(true);
         if (o.marker) expect(VN).toContain(o.marker.region);

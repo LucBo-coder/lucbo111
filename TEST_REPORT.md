@@ -78,3 +78,15 @@ Ngày: 2026-10-26 · Nhánh `improve/complete-game-v1`.
 Lỗi tìm được bằng e2e và đã sửa: trận HLV kết thúc ngay lúc gửi Pokémon dự bị cuối cùng (đếm số Pokémon còn sống trước khi gửi ra).
 
 Ảnh đã xem: 2 Pokémon của HLV trên sân + thông báo "gửi ra"; thông báo "Thắng tái đấu … +300 đồng"; lời chào của NPC theo hạng danh tiếng.
+
+## V22 — đợt 2: năng lực khám phá & đi ghe
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build` | ✅ |
+| Unit | **427/427 ✅** (50 file). Mới: `tests/v22_field_boat.test.ts` (10). Cập nhật: `v13_can_tho` (Bãi Bồi chỉ đến bằng ghe; Cần Thơ 9 nhiệm vụ), `v8_vietnam` (mục tiêu `explore` có thể là `dock:<id>`) |
+| E2E mới `e2e/v22_field_boat.spec.ts` | 2/2 ✅ — Thung Lũng: bụi cây chặn lối, chưa có Pokémon hợp thì hiện gợi ý; Treecko cắt → đi vào → mở rương; Machop đập đá; Makuhita đẩy đá vào ổ; tải lại vẫn mở. Cần Thơ: chưa có ghe bị từ chối; xuống ghe ở Ninh Kiều; nước đẩy ghe xuôi; không lên bờ ngoài bến; lưu giữa sông → tải lại vẫn trên ghe; lên Bãi Bồi, tới rương |
+| E2E hồi quy (v22 ×2, v13_can_tho, v8_vietnam, v21_world, adventure) | 12/12 ✅ (2 luồng) |
+
+Sửa trong lúc test: vùng bấm E của bến chỉ tính từ giữa bến (bến dài 3 ô thì không với tới) → giờ tính từ đầu gần nhất (bờ hoặc nước).
+Ảnh đã xem: bụi cây rậm chắn lối, vòng đá + ổ trũng + rương, ghe ở bến Ninh Kiều kèm thông báo con nước, Bãi Bồi giữa sông.
