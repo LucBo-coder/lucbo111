@@ -125,3 +125,8 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### Nhiệm vụ phân nhánh
 - Không phải lúc nào cũng có đáp án đúng: báo kiểm lâm về người đặt bẫy, hay tin rằng một người nghèo sẽ nghe lời khuyên? Vét một mùa cá, hay chừa cá non cho năm sau?
 - Mỗi lựa chọn dẫn tới một câu chuyện tiếp theo khác nhau — vét lưới thì năm sau nhóm khảo sát nhờ bạn đo lại đồng vắng; chừa cá non thì Bác Năm rủ bạn ra xem đồng đầy lại.
+
+### Chiến đấu & bạn đồng hành
+- Gây Bỏng rồi đánh hệ Nước → *Hơi Nước*; Đóng băng rồi đánh hệ Đá / Giác đấu → *Vỡ Băng*. Phối hợp trạng thái và hệ trong đội giờ có ý nghĩa ở Adventure, nhưng mỗi mục tiêu chỉ 6 giây một lần.
+- Pokémon biết lượng sức: yếu thì lùi về cạnh bạn, bạn bị thương thì đứa khỏe lao vào đỡ.
+- Đi ngang bụi quả chín, Pokémon của bạn tự chạy tới hái giúp.

@@ -15,7 +15,7 @@ import {
 import { emptyMods, Mods, Offer, rollOffers, RunView } from './upgrades';
 import { applyPermanent } from './permanentUpgrades';
 import { isAquatic } from './encounters';
-import { COMBO_COOLDOWN, ComboDef, findCombo, partySynergy, SynergyState } from './synergy';
+import { ADVENTURE_COMBO_COOLDOWN, COMBO_COOLDOWN, ComboDef, findCombo, partySynergy, SynergyState } from './synergy';
 import { updateWild, WildState } from './wildAI';
 import { evolutionsOf, ITEM_DEFS, ItemDef } from './evolution';
 import { BossPhaseManager, phaseConfigFor, PhaseSnapshot } from './bossPhases';
@@ -178,6 +178,8 @@ export interface Unit {
   aquatic: boolean;
   /** Explicit combat state (see AI_STATES); `aiStateT` = time spent in it */
   aiState: AiState;
+  /** Adventure: a spot the Pokémon walks to when nothing needs fighting (fetching a berry bush) */
+  errand?: { x: number; y: number } | null;
   aiStateT: number;
   /** Wild Pokémon ecosystem state (adventure mode) */
   wild: WildState | null;
@@ -716,6 +718,9 @@ export class World {
     u.hostile = true;
   }
 
+  /** Adventure / Vietnam Odyssey outside PvP: elemental combos and situational ally AI. */
+  get adventureCombat(): boolean { return this.mode === 'adventure' && !this.duel; }
+
   setCommand(cmd: AllyCommand, target: Unit | null = null, side: Side = this.home): void {
     side.command = cmd;
     side.commandTarget = cmd === 'attack' ? target : null;
@@ -925,7 +930,7 @@ export class World {
       this.synergyT = 1;
       this.synergy = partySynergy(this.allies.map((a) => a.types));
       if (this.comboUntil.size > 400) for (const [id, t] of this.comboUntil) if (t < this.time) this.comboUntil.delete(id);
-    }
+    } else if (this.adventureCombat && this.comboUntil.size > 100) for (const [id, t] of this.comboUntil) if (t < this.time) this.comboUntil.delete(id);
     this.updateStatuses(dt);
     if (this.mode === 'survivor') this.updateGems(dt);
     this.cleanup();
@@ -1143,6 +1148,7 @@ export class World {
       cands.push(ct);
     }
     let best: Unit | null = null, bestScore = -Infinity;
+    const guard = this.adventureCombat && (u.role === 'tank' || u.role === 'fighter') && tr.hp < tr.maxHp * 0.5;
     const limit = Math.min(cands.length, 40);
     for (let i = 0; i < limit; i++) {
       const e = cands[i];
@@ -1160,6 +1166,8 @@ export class World {
       const eff = this.bestEff(u, e);
       if (eff === 0) continue;
       score += (eff - 1) * 70;
+      // Adventure: a hurt trainer is guarded first — front-liners turn on whatever is hitting them
+      if (guard && e.target === tr) score += 160;
       if (e === u.target) score += 45;
       if (score > bestScore) { bestScore = score; best = e; }
     }
@@ -1177,6 +1185,11 @@ export class World {
   }
 
   // ───────────────────────────── active skills ─────────────────────────────
+
+  /** Adventure: below 30% HP a non-tank ally stops pressing forward (it still fights from beside the trainer). */
+  wounded(u: Unit): boolean {
+    return this.adventureCombat && u.team === 'ally' && u.kind === 'pokemon' && u.role !== 'tank' && u.hp < u.maxHp * 0.3;
+  }
 
   private validFoe(e: Unit | null): e is Unit {
     return !!e && e.alive && !e.captured && !e.fainted && e.hostile;
@@ -1330,6 +1343,7 @@ export class World {
     const homeX = tr.x + mx0 * Math.cos(formA) * 58, homeY = tr.y + Math.sin(formA) * 48;
 
     if (side.command === 'hold' && !t) { gx = side.holdX + mx0 * Math.cos(formA) * 40; gy = side.holdY + Math.sin(formA) * 30; }
+    else if (!t && u.errand && this.adventureCombat) { gx = u.errand.x; gy = u.errand.y; }
     else if (!t) { gx = homeX; gy = homeY; }
     else {
       const dx = u.x - t.x, dy = u.y - t.y;
@@ -1383,6 +1397,8 @@ export class World {
       const leash = side.command === 'defend' ? 140 : this.duel ? 900 : 320;
       const lx = gx - ax, ly = gy - ay, ll = Math.hypot(lx, ly);
       if (ll > leash) { gx = ax + (lx / ll) * leash; gy = ay + (ly / ll) * leash; }
+      // Adventure: a badly hurt Pokémon (not the tank, not walking in for a player's skill) falls back beside the trainer
+      if (this.wounded(u) && !queued) { gx = homeX * 0.75 + gx * 0.25; gy = homeY * 0.75 + gy * 0.25; }
     }
 
     let mx = gx - u.x, my = gy - u.y;
@@ -2360,12 +2376,13 @@ export class World {
       if (dst.kind === 'trainer') modifier *= 0.8;
       else if (dst.kind === 'pokemon') modifier *= 0.7;
       // Survivor: type synergy of the party + Elemental Combos on status-afflicted targets
+      // Adventure (not PvP): the same combos with a longer per-target cooldown, no party synergy
       let combo: ComboDef | null = null;
-      if (this.mode === 'survivor' && src.team === 'ally') {
-        modifier *= 1 + (this.synergy.byType[s.type] ?? 0) + this.synergy.all;
+      if ((this.mode === 'survivor' || this.adventureCombat) && src.team === 'ally') {
+        if (this.mode === 'survivor') modifier *= 1 + (this.synergy.byType[s.type] ?? 0) + this.synergy.all;
         if ((this.comboUntil.get(dst.id) ?? -1) <= this.time && dst.statuses.length) {
           combo = findCombo(s.type, dst.statuses.map((x) => x.kind));
-          if (combo) { modifier *= combo.mult; this.comboUntil.set(dst.id, this.time + COMBO_COOLDOWN); }
+          if (combo) { modifier *= combo.mult; this.comboUntil.set(dst.id, this.time + (this.mode === 'survivor' ? COMBO_COOLDOWN : ADVENTURE_COMBO_COOLDOWN)); }
         }
       }
       const crit = src.critRate + (s.critBonus ?? 0) + (src.team === 'ally' ? this.mods.critBonus : 0) + (pv?.kind === 'critBonus' ? pv.value ?? 0 : 0) + (src.held?.type === 'crit' ? src.held.value ?? 0 : 0);

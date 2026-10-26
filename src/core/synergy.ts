@@ -60,6 +60,8 @@ export const COMBOS: ComboDef[] = [
 ];
 
 export const COMBO_COOLDOWN = 2; // s per target
+/** Adventure (not PvP): the same combos, rarer — a combo is a moment, not the damage rotation */
+export const ADVENTURE_COMBO_COOLDOWN = 6;
 
 /** The combo a hit of `type` sets off on a target with these statuses, if any. */
 export function findCombo(type: PokeType, statuses: readonly StatusKind[]): ComboDef | null {

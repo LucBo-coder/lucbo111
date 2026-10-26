@@ -110,6 +110,9 @@ interface CaptureFx {
 interface BenchMon { sp: string; lv: number; frac: number; types: PokeType[]; name: string }
 interface TrainerBattle { id: string; units: Unit[]; bench: BenchMon[]; potions: number; rematch: boolean; x: number; y: number; nextSend: number; think: number; size: number }
 
+/** A companion fetches a ripe berry bush within this distance of the trainer (px) */
+const ERRAND_RANGE = 260;
+
 export class AdventureScene extends Phaser.Scene {
   state!: AdventureState;
   map!: MapProvider;
@@ -999,6 +1002,7 @@ export class AdventureScene extends Phaser.Scene {
     this.presence?.update(performance.now());
     this.updateWalkers(dt);
     this.updateFishing(dt);
+    this.updateErrands(dt);
     this.updateBoat(dt);
     this.updateMarket();
     this.updateTerritory();
@@ -1380,6 +1384,40 @@ export class AdventureScene extends Phaser.Scene {
     if (f.bit) f.g.lineStyle(2, 0xe8f8ff, 0.8).strokeEllipse(f.wx, f.wy + 4, 30 + Math.sin(f.t * 30) * 4, 10);
     f.g.fillStyle(0xffffff, 1).fillCircle(f.wx, by, 6).fillStyle(0xe03030, 1).fillRect(f.wx - 6, by - 6, 12, 5);
     f.mark.setVisible(f.bit).setY(f.wy - 40 + Math.sin(f.t * 20) * 3);
+  }
+
+  /**
+   * Companions and the map: when all is calm, a party Pokémon runs to a ripe berry bush near the trainer and
+   * picks it (same table and refill timer as picking it by hand). Fighting, a dialogue or a boat ride calls it back.
+   */
+  private errandT = 0;
+  private updateErrands(dt: number): void {
+    if ((this.errandT -= dt) > 0) return;
+    this.errandT = 0.25;
+    const w = this.world, t = w.trainer;
+    const busy = w.allies.filter((a) => a.errand);
+    if (this.modal || this.fishing || this.boating || t.hp <= 0 || this.mapKind === 'dungeon' || this.inCombat()) { for (const a of busy) a.errand = null; return; }
+    const ripe = (id: string) => { const v = this.nodeViews.get(id); return !!v && v.tb.kind === 'forage' && nodeCooldownLeft(this.state.adv.nodes, id, v.tb, this.playNow()) <= 0; };
+    for (const a of busy) {
+      const e = a.errand!, it = [...this.interactables.values()].find((i) => i.kind === 'node' && Math.hypot(i.x - e.x, i.y - e.y) < 30);
+      if (!it || a.fainted || !ripe(it.id) || Math.hypot(t.x - e.x, t.y - e.y) > ERRAND_RANGE + 120) { a.errand = null; continue; }
+      if (Math.hypot(a.x - e.x, a.y - e.y) < 34) {
+        a.errand = null;
+        this.ui?.banner(`${a.name} hái quả giúp bạn!`, '#c0ffa0');
+        this.gather(it, this.nodeViews.get(it.id)!.tb);
+      }
+    }
+    if (w.allies.some((a) => a.errand)) return;
+    // one errand at a time: the nearest ripe bush in reach, the closest Pokémon goes
+    let best: Interactable | null = null, bd = ERRAND_RANGE;
+    for (const it of this.interactables.values()) {
+      if (it.kind !== 'node' || !ripe(it.id)) continue;
+      const d = Math.hypot(it.x - t.x, it.y - t.y);
+      if (d < bd) { bd = d; best = it; }
+    }
+    if (!best) return;
+    const helper = w.allies.filter((a) => !a.fainted && a.hp > a.maxHp * 0.3).sort((p, q) => Math.hypot(p.x - best!.x, p.y - best!.y) - Math.hypot(q.x - best!.x, q.y - best!.y))[0];
+    if (helper) helper.errand = { x: best.x, y: best.y - 16 };
   }
 
   /** A successful pick / catch: an item for the bag, or a wild Pokémon that jumps out. The node starts refilling. */

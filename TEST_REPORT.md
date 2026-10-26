@@ -182,3 +182,14 @@ Lỗi test tìm thấy: `adventure.spec.ts` xóa mọi Pokémon hung hăng rồi
 
 Lỗi tìm thấy khi viết: hai phần thưởng trỏ tới vật phẩm không có trong game (`hyperpotion`, `diveball`) — test dữ liệu bắt được, đã đổi sang Super Potion / Great Ball. Marker "Trà Sư" ban đầu nằm ngoài khu, đã dời vào trong.
 Ảnh đã xem: hộp thoại 3 hướng + "Để tôi suy nghĩ thêm", nhật ký hiện "Phân xử chuyện bến ghe — Chia giờ…" và chỉ 2 mục tiêu của nhánh.
+
+## V22 — đợt 11: chiến đấu & bạn đồng hành
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **475/475 ✅**. Mới: `v22_combat.test.ts` (5) |
+| E2E mới (`v22_combat.spec.ts`) | ✅ |
+| E2E hồi quy (smoke, online_modes, coop, adventure, v22_trainer_rep, v22_ecology, perf, v6_summon) | 18/19 ✅ khi chạy song song; `v6_summon` đạt khi chạy riêng. Lặp 4 lần song song: 3/4 trượt ở các bước đo thời gian (`busy` / `cooldown`) — **trên bản trước khi sửa cũng trượt y hệt 3/4**, nên là lỗi chập chờn có sẵn của test khi máy bị tải, không do thay đổi này |
+
+Ảnh đã xem: "Bulbasaur hái quả giúp bạn! / Hái được: Poké Ball ×1", "Hơi Nước!" trên Rattata bị Bỏng trong Adventure.
