@@ -3,7 +3,7 @@
 
 export type ObjKind =
   | 'tree' | 'boulder' | 'building' | 'prop' | 'fence' | 'sign' | 'npc' | 'trainer' | 'chest' | 'waypoint'
-  | 'plate' | 'cave' | 'rescue' | 'pillar' | 'torch' | 'door' | 'exit' | 'flower' | 'portal' | 'node' | 'field' | 'dock' | 'market' | 'clue' | 'eco';
+  | 'plate' | 'cave' | 'rescue' | 'pillar' | 'torch' | 'door' | 'exit' | 'flower' | 'portal' | 'node' | 'field' | 'dock' | 'market' | 'clue' | 'eco' | 'decal';
 
 export interface MapObject {
   kind: ObjKind;

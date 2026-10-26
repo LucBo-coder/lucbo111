@@ -480,69 +480,79 @@
  "spawns": {},
  "legendaries": [
   {
+   "id": "rayquaza",
+   "name": "Trụ Trời",
+   "x": 59,
+   "y": 19,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 576,
+   "requires": [
+    "boss:kyogre",
+    "boss:groudon"
+   ],
+   "gap": 5.82,
+   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
+   "condition": {},
+   "shrine": "rayquaza"
+  },
+  {
    "id": "articuno",
    "name": "Băng Đài Hồ Băng Lam",
-   "x": 22,
-   "y": 45,
+   "x": 19,
+   "y": 39,
    "level": 38,
    "respawn": 900,
-   "arena": 330,
+   "arena": 432,
    "requires": [
     "boss:mega-venusaur"
    ],
    "gap": 5.82,
-   "hint": "Một luồng khí lạnh buốt tỏa ra từ vòng đá bên Hồ Băng Lam... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur)."
-  },
-  {
-   "id": "uxie",
-   "name": "Hồ Trí Tuệ",
-   "x": 22,
-   "y": 9,
-   "level": 45,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:mewtwo"
-   ],
-   "gap": 0.21,
-   "hint": "Mặt hồ băng phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
-   "condition": {}
+   "hint": "Một luồng khí lạnh buốt tỏa ra từ băng đài bên Hồ Băng Lam... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur).",
+   "shrine": "articuno"
   },
   {
    "id": "regice",
    "name": "Lăng Băng Ẩn",
-   "x": 100,
-   "y": 42,
+   "x": 84,
+   "y": 76,
    "level": 42,
    "respawn": 1500,
-   "arena": 330,
+   "arena": 288,
    "requires": [
     "boss:mega-venusaur"
    ],
    "gap": 3.14,
-   "hint": "Lớp băng mỏng phủ vòng đá trên Đỉnh Bão Tuyết... Regice chỉ thức dậy trong bão tuyết.",
+   "hint": "Lớp băng mỏng phủ kín lăng đá dưới Chân Núi Tuyết... Regice chỉ thức dậy trong bão tuyết.",
    "condition": {
     "weather": [
      "blizzard"
     ]
-   }
+   },
+   "shrine": "regice"
   },
   {
-   "id": "regigigas",
-   "name": "Đền Khổng Lồ",
-   "x": 68,
-   "y": 22,
-   "level": 52,
+   "id": "jirachi",
+   "name": "Đồi Ước Nguyện",
+   "x": 24,
+   "y": 80,
+   "level": 35,
    "respawn": 1500,
    "arena": 330,
    "requires": [
-    "boss:regirock",
-    "boss:regice",
-    "boss:registeel"
+    "boss:mew"
    ],
-   "gap": 0.24,
-   "hint": "Bức tượng khổng lồ phủ tuyết không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
-   "condition": {}
+   "gap": 1.57,
+   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
+   "gift": true,
+   "condition": {
+    "time": "night",
+    "weather": [
+     "clear"
+    ],
+    "friendship": 180
+   },
+   "shrine": "jirachi"
   }
  ],
  "portals": [

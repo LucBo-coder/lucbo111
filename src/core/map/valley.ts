@@ -1,5 +1,6 @@
 import { fbm, hash2 } from './noise';
 import { nookRing, type Dock, type FieldDef } from '../field';
+import { SHRINES, shrineCells, type ShrineDef } from '../shrines';
 import { AreaDef, MapObject, MapProvider, SpawnEntry } from './mapProvider';
 import { DUNGEON, EX, T, TOWN } from './tiles';
 
@@ -27,6 +28,8 @@ export interface LegendSite {
   gift?: boolean;
   /** false = no stone ring (shares another site) */
   ring?: boolean;
+  /** Shrine layout (data/world/shrines.json) stamped around the site instead of the stone ring */
+  shrine?: string;
 }
 
 export interface RegionDef {
@@ -110,6 +113,8 @@ export class ValleyMap implements MapProvider {
   private riverSegs: { ax: number; ay: number; bx: number; by: number; w: number }[] = [];
   /** segments of rivers that run into the lake / sea (`mouth`): their bed cuts through the beach */
   private mouthSegs: { ax: number; ay: number; bx: number; by: number; w: number }[] = [];
+  /** legendary shrines stamped on the map: tile key → layout char + the shrine (terrain override, no procedural trees) */
+  private stamp = new Map<number, { ch: string; s: ShrineDef }>();
 
   constructor(readonly def: RegionDef) {
     this.id = def.id;
@@ -124,6 +129,13 @@ export class ValleyMap implements MapProvider {
     for (const r of def.rivers ?? []) for (let i = 0; i < r.pts.length - 1; i++) {
       this.riverSegs.push({ ax: r.pts[i][0], ay: r.pts[i][1], bx: r.pts[i + 1][0], by: r.pts[i + 1][1], w: r.w });
       if (r.mouth) this.mouthSegs.push({ ax: r.pts[i][0], ay: r.pts[i][1], bx: r.pts[i + 1][0], by: r.pts[i + 1][1], w: r.w });
+    }
+    for (const l of def.legendaries ?? []) {
+      const sh = l.shrine ? SHRINES.get(l.shrine) : undefined;
+      if (!sh) continue;
+      for (const c of shrineCells(sh, l.x, l.y)) {
+        if (c.tx >= 2 && c.ty >= 2 && c.tx < def.width - 2 && c.ty < def.height - 2) this.stamp.set(this.key(c.tx, c.ty), { ch: c.ch, s: sh });
+      }
     }
     this.buildAuthored();
   }
@@ -205,8 +217,9 @@ export class ValleyMap implements MapProvider {
         this.add({ kind: 'pillar', id: `grove-${i}`, x: px, y: py, tile: DUNGEON.pillar, collideR: 16 });
       }
     }
-    // Legendary shrines: smaller stone rings, gap towards `gap` (radians)
+    // Legendary shrines: the designed layout where the site has one, else a small stone ring, gap towards `gap` (radians)
     for (const l of d.legendaries ?? []) {
+      if (l.shrine && SHRINES.has(l.shrine)) { this.addShrine(l); continue; }
       if (l.ring === false) continue;
       this.clear.push({ x: l.x, y: l.y, r: 8 });
       for (let i = 0; i < 12; i++) {
@@ -215,6 +228,51 @@ export class ValleyMap implements MapProvider {
         if (da < 0.45) continue;
         this.add({ kind: 'pillar', id: `shrine-${l.id}-${i}`, x: Math.round(l.x + Math.cos(a) * 7), y: Math.round(l.y + Math.sin(a) * 7), tile: DUNGEON.pillar, collideR: 16 });
       }
+    }
+  }
+
+  /**
+   * The objects of a stamped shrine (its terrain comes from `stampTerrain`): pillars, rune stones, statues, crystals or
+   * braziers, the altar, trees of the theme, pressure plates. The altar on the arena centre has no collider (the
+   * legendary appears there).
+   */
+  private addShrine(l: LegendSite): void {
+    const sh = SHRINES.get(l.shrine!)!;
+    for (const { tx, ty, ch } of shrineCells(sh, l.x, l.y)) {
+      if (!this.stamp.has(this.key(tx, ty))) continue;
+      const id = `shrine-${l.id}-${tx}-${ty}`;
+      switch (ch) {
+        case 'O': case 'S': this.add({ kind: 'pillar', id, x: tx, y: ty, tile: DUNGEON.pillar, collideR: 16, data: { shrine: sh.id, part: ch === 'S' ? 'statue' : 'pillar' } }); break;
+        case 'o': case 'B': this.add({ kind: 'boulder', id, x: tx + 0.5, y: ty + 0.5, collideR: ch === 'B' ? 20 : 16, data: { shrine: sh.id } }); break;
+        case '*':
+          if (sh.materials.star === 'torch') this.add({ kind: 'torch', id, x: tx, y: ty, tile: DUNGEON.torch, data: { shrine: sh.id } });
+          else this.add({ kind: 'prop', id, x: tx, y: ty, tile: EX.crystal, collideR: 12, data: { shrine: sh.id, prop: 'crystal' } });
+          break;
+        case 'A': this.add({ kind: 'prop', id, x: tx, y: ty, tile: EX.portal, collideR: tx === l.x && ty === l.y ? 0 : 18, data: { shrine: sh.id, prop: 'altar' } }); break;
+        case 'T': this.add({ ...this.tree(tx, ty, this.areaAt(tx, ty)?.habitat ?? 'forest'), id }); break;
+        case '&': case '1': case '2': this.add({ kind: 'decal', id, x: tx, y: ty, tile: DUNGEON.plate, data: { shrine: sh.id, part: ch } }); break;
+      }
+    }
+  }
+
+  /** Terrain of a stamped shrine tile: walls, water, lava, the court's floor / rune lines; outer ground stays natural. */
+  private stampTerrain(ch: string, sh: ShrineDef, natural: number): number {
+    const m = sh.materials;
+    const named = (n: string | undefined, fb: number) => (n && n in T ? T[n as keyof typeof T] : fb);
+    const theme = this.def.theme ?? 'valley';
+    const ground = named(m.ground, theme === 'frozen' ? T.Snow : theme === 'volcanic' ? T.Ash : theme === 'sanctuary' ? T.Sanctum
+      : theme === 'swamp' ? T.Mud : theme === 'coast' ? T.Sand : T.Grass);
+    switch (ch) {
+      case '#': return T.Wall;
+      case '~': case '@': return T.Water;
+      case 'L': return T.Lava;
+      // steps / terraces: flagstones (the green themes' dirt path would draw grass rims inside the court)
+      case '=': case '^': return theme === 'valley' || theme === 'coast' || theme === 'mekong' ? T.Plaza : T.Path;
+      case ':': return named(m.rune, T.Sanctum);
+      case 'x': return named(m.x, T.Mud);
+      case ',': case 'T':
+        return natural === T.Water || natural === T.Lava || natural === T.Bog || natural === T.Deep || natural === T.SnowDeep ? ground : natural;
+      default: return named(m.floor, T.Ruin); // court floor, and under pillars, statues, the altar, plates
     }
   }
 
@@ -310,6 +368,12 @@ export class ValleyMap implements MapProvider {
   }
 
   private computeTerrain(tx: number, ty: number): number {
+    const st = this.stamp.get(this.key(tx, ty));
+    const natural = this.naturalTerrain(tx, ty);
+    return st ? this.stampTerrain(st.ch, st.s, natural) : natural;
+  }
+
+  private naturalTerrain(tx: number, ty: number): number {
     const W = this.widthTiles, H = this.heightTiles;
     if (tx < 2 || ty < 2 || tx >= W - 2 || ty >= H - 2) return T.Deep;
     const theme = this.def.theme ?? 'valley';
@@ -393,7 +457,7 @@ export class ValleyMap implements MapProvider {
 
   solidAt(tx: number, ty: number): boolean {
     const t = this.terrainAt(tx, ty);
-    if (t === T.Water || t === T.Lava) return true;
+    if (t === T.Water || t === T.Lava || t === T.Wall) return true;
     if (tx < 2 || ty < 2 || tx >= this.widthTiles - 2 || ty >= this.heightTiles - 2) return true;
     return this.solid.has(this.key(tx, ty));
   }
@@ -401,7 +465,7 @@ export class ValleyMap implements MapProvider {
   shotSolidAt(tx: number, ty: number): boolean {
     // Projectiles fly over water but are stopped by buildings, fences and the border
     if (tx < 2 || ty < 2 || tx >= this.widthTiles - 2 || ty >= this.heightTiles - 2) return true;
-    return this.solid.has(this.key(tx, ty));
+    return this.solid.has(this.key(tx, ty)) || this.terrainAt(tx, ty) === T.Wall;
   }
 
   habitatAt(tx: number, ty: number): string | null {
@@ -429,6 +493,8 @@ export class ValleyMap implements MapProvider {
 
   tileIndexAt(tx: number, ty: number, frame: number): number {
     const t = this.terrainAt(tx, ty);
+    // shrine walls: the top of the wall, its face where the ground in front (south) is open
+    if (t === T.Wall) return this.terrainAt(tx, ty + 1) === T.Wall ? DUNGEON.wallTop : DUNGEON.wall;
     // themed regions: the valley's green ground (border, flowers, tufts) takes the region's ground instead
     const theme = this.def.theme ?? 'valley';
     if (theme === 'swamp' && (t === T.Deep || t === T.Grass || t === T.Tuft || t === T.Flowers)) return hash2(tx, ty, 4) < 0.12 ? EX.mud : EX.swampGrass;
@@ -517,6 +583,7 @@ export class ValleyMap implements MapProvider {
       case T.Sanctum: return 0xe0d8f0;
       case T.Bog: return 0x5a4a6a;
       case T.Mud: return 0x5a4a32;
+      case T.Wall: return 0x3a3448;
       default: return this.def.theme === 'swamp' ? 0x3e6a3a : 0x4c9a48;
     }
   }
@@ -555,6 +622,7 @@ export class ValleyMap implements MapProvider {
         const t = this.terrainAt(tx, ty);
         const border = tx < 4 || ty < 4 || tx >= this.widthTiles - 4 || ty >= this.heightTiles - 4;
         const h = hash2(tx, ty, 21);
+        if (this.stamp.has(this.key(tx, ty))) continue; // shrine: its own trees / pillars only
         if (border) {
           if (h < 0.85) out.push(this.tree(tx, ty, 'forest'));
           continue;

@@ -72,12 +72,12 @@
      48
     ],
     [
-     28,
-     32
+     26,
+     43
     ],
     [
-     22,
-     18
+     20,
+     40
     ]
    ]
   },
@@ -106,8 +106,8 @@
    "w": 2,
    "pts": [
     [
-     28,
-     32
+     36,
+     48
     ],
     [
      40,
@@ -216,8 +216,8 @@
   },
   {
    "kind": "beehive",
-   "x": 20,
-   "y": 30
+   "x": 14,
+   "y": 44
   },
   {
    "kind": "bucket",
@@ -265,8 +265,8 @@
    "id": "ef-botanist",
    "name": "Cô Thảo (nhà thực vật)",
    "sprite": "girl",
-   "x": 30,
-   "y": 40,
+   "x": 42,
+   "y": 42,
    "wander": 2,
    "lines": [
     "Bụi quả trong rừng sâu ra quả quý hơn ngoài đồng cỏ.",
@@ -316,8 +316,8 @@
    "id": "ef-hiker",
    "name": "Phượt thủ Dũng",
    "sprite": "viking",
-   "x": 22,
-   "y": 22,
+   "x": 28,
+   "y": 46,
    "team": [
     [
      "exeggcute",
@@ -434,15 +434,55 @@
   {
    "id": "wp-emerald-heart",
    "name": "Trạm Lõi Rừng",
-   "x": 26,
-   "y": 30
+   "x": 32,
+   "y": 50
   }
  ],
  "puzzles": [],
  "dungeons": [],
  "pillars": [],
  "spawns": {},
- "legendaries": [],
+ "legendaries": [
+  {
+   "id": "celebi",
+   "name": "Khu Rừng Thiêng lúc bình minh",
+   "x": 23,
+   "y": 66,
+   "level": 30,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 1.57,
+   "hint": "",
+   "gift": true,
+   "condition": {
+    "time": "dawn"
+   },
+   "shrine": "celebi"
+  },
+  {
+   "id": "ho-oh",
+   "name": "Tháp Chuông Cầu Vồng",
+   "x": 20,
+   "y": 20,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 576,
+   "requires": [
+    "boss:raikou",
+    "boss:entei",
+    "boss:suicune"
+   ],
+   "gap": 1.57,
+   "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
+   "condition": {
+    "time": "day"
+   },
+   "shrine": "ho-oh"
+  }
+ ],
  "portals": [
   {
    "id": "portal-emerald-valley",

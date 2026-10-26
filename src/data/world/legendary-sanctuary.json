@@ -274,10 +274,62 @@
    "condition": {}
   },
   {
+   "id": "uxie",
+   "name": "Hồ Trí Tuệ",
+   "x": 23,
+   "y": 58,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 336,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 0.21,
+   "hint": "Mặt hồ tri thức phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+   "condition": {},
+   "shrine": "uxie"
+  },
+  {
+   "id": "regigigas",
+   "name": "Đền Khổng Lồ",
+   "x": 74,
+   "y": 56,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 480,
+   "requires": [
+    "boss:regirock",
+    "boss:regice",
+    "boss:registeel"
+   ],
+   "gap": 0.24,
+   "hint": "Bức tượng khổng lồ phủ rêu không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
+   "condition": {},
+   "shrine": "regigigas"
+  },
+  {
+   "id": "deoxys",
+   "name": "Hố Thiên Thạch",
+   "x": 14,
+   "y": 18,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 336,
+   "requires": [
+    "boss:rayquaza"
+   ],
+   "gap": 2.78,
+   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
+   "condition": {
+    "time": "night"
+   },
+   "shrine": "deoxys"
+  },
+  {
    "id": "dialga",
    "name": "Cột Thời Gian",
-   "x": 16,
-   "y": 44,
+   "x": 36,
+   "y": 11,
    "level": 55,
    "respawn": 1500,
    "arena": 330,
@@ -293,8 +345,8 @@
   {
    "id": "palkia",
    "name": "Cột Không Gian",
-   "x": 80,
-   "y": 44,
+   "x": 62,
+   "y": 11,
    "level": 55,
    "respawn": 1500,
    "arena": 330,
@@ -306,23 +358,6 @@
    "gap": 3.61,
    "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
    "condition": {}
-  },
-  {
-   "id": "deoxys",
-   "name": "Hố Thiên Thạch",
-   "x": 80,
-   "y": 14,
-   "level": 55,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:rayquaza"
-   ],
-   "gap": 2.78,
-   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
-   "condition": {
-    "time": "night"
-   }
   }
  ],
  "portals": [

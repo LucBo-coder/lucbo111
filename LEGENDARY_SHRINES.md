@@ -1380,3 +1380,53 @@ Tất cả là **ô 16 px phóng ×3**, vẽ thủ tục trong `src/render/tiles
 6. **Hiểm họa arena**: mỗi đền ≤ 2 loại, gắn vào pha boss trong `bossPhases.ts`.
 
 Tương thích save: cờ `boss:*`, trạng thái `legends[id]`, `bossDefeatedAt` giữ nguyên theo id loài → dời đền không làm mất tiến độ. Save đang đứng trong khu vực mới thành tường / nước được đặt sang ô trống gần nhất khi tải (đã có từ bản V22 trước).
+
+
+---
+
+## 7. Trạng thái triển khai
+
+### Bước 1 — dữ liệu + dựng đền: **xong**
+
+- `scripts/gen-shrines.py` → `src/data/world/shrines.json` (32 sơ đồ: id, huyền thoại, tầng, bản đồ, tâm thiết kế, ô neo, bán kính arena, cover được phép, vật liệu, các hàng ASCII). Script tự kiểm tra arena sạch và dừng nếu sai.
+- `src/core/shrines.ts` (pure): đọc sơ đồ, `shrineCell` (ô ngoài cùng là ký tự nền chỉ tính khi nằm trong elip nội tiếp hoặc sát ô đi được → biển / rừng / vách quanh đền hòa vào bản đồ thay vì thành hình vuông, nhưng tường sát sân vẫn kín), `shrineCells`, `shrineBounds`, `arenaBlockers`.
+- `valley.ts`: điểm huyền thoại có `shrine` → **đóng dấu** sơ đồ thay cho vòng 12 trụ: `#` thành địa hình mới `T.Wall` (chặn người và đạn; mặt tường khi phía nam trống), `~ @` nước, `L` dung nham, `. :` nền / rune theo vật liệu của đền, `= ^` bậc đá (Plaza ở bản đồ xanh, đá lát ở bản đồ chủ đề), `x` nền hiểm họa; vật thể: `O S` trụ / tượng, `o B` tảng đá, `*` pha lê hoặc lư lửa (có ánh sáng), `A` lõi triệu hồi (lõi nằm ở tâm arena không có va chạm), `T` cây theo chủ đề, `& 1 2` tấm nén (loại vật mới `decal`, nằm sát đất). Không mọc cây ngẫu nhiên trong đền.
+- Bán kính tiếp cận của điểm (`arena`, px) = (bán kính arena − 1) × 48 thay cho 330 px cố định.
+- 22 đền trên mặt đất đã dời tới chỗ thiết kế. Toạ độ thiết kế chỉ là ước lượng; khi ráp thật, `scripts/place-shrines.ts` tìm ô gần nhất trong cùng khu vực mà đền không đè NPC / nhà / cổng / trạm / rương / hốc bí mật / đền khác, chỗ làm lễ `P` và tâm arena đi tới được từ điểm xuất phát của bản đồ, không cắt rời thứ gì. `scripts/check-shrines.ts` kiểm tra lại toàn bộ; `scripts/place-clues.ts` dời manh mối điều tra theo đền (Rayquaza → Núi Tuyết, Regirock → Bờ Biển, Registeel → Đầm Lầy).
+
+| Huyền thoại | Bản đồ | Tâm thiết kế | Tâm thực tế | Dạng |
+|---|---|---|---|---|
+| mewtwo | starter-valley | (136, 20) | (138, 45) | đền thiết kế |
+| mew | starter-valley | (14, 34) | (17, 13) | đền thiết kế |
+| celebi | emerald-woods | (22, 68) | (23, 66) | đền thiết kế |
+| ho-oh | emerald-woods | (28, 22) | (20, 20) | đền thiết kế |
+| giratina | misty-swamp | (92, 22) | (69, 52) | đền thiết kế |
+| azelf | misty-swamp | (40, 22) | (48, 21) | đền thiết kế |
+| registeel | misty-swamp | (60, 78) | (37, 78) | đền thiết kế |
+| darkrai | misty-swamp | (14, 40) | (21, 29) | đền thiết kế |
+| kyogre | coral-coast | — | (58, 56) | vòng trụ tạm (chờ bước 5) |
+| lugia | coral-coast | (88, 20) | (88, 20) | đền thiết kế |
+| zapdos | coral-coast | (16, 78) | (16, 66) | đền thiết kế |
+| regirock | coral-coast | (30, 26) | (30, 20) | đền thiết kế |
+| rayquaza | frozen-mountains | (88, 22) | (59, 19) | đền thiết kế |
+| articuno | frozen-mountains | (22, 40) | (19, 39) | đền thiết kế |
+| regice | frozen-mountains | (84, 76) | (84, 76) | đền thiết kế |
+| jirachi | frozen-mountains | (24, 80) | (24, 80) | đền thiết kế |
+| groudon | volcanic-lands | (88, 24) | (89, 23) | đền thiết kế |
+| shaymin | volcanic-lands | (56, 80) | (66, 69) | đền thiết kế |
+| heatran | volcanic-lands | (40, 16) | (40, 16) | đền thiết kế |
+| moltres | volcanic-lands | (16, 40) | (45, 41) | đền thiết kế |
+| arceus | legendary-sanctuary | — | (48, 22) | vòng trụ tạm (chờ bước 5) |
+| uxie | legendary-sanctuary | (23, 58) | (23, 58) | đền thiết kế |
+| regigigas | legendary-sanctuary | (74, 56) | (74, 56) | đền thiết kế |
+| deoxys | legendary-sanctuary | (16, 18) | (14, 18) | đền thiết kế |
+| dialga | legendary-sanctuary | — | (36, 11) | vòng trụ tạm (chờ bước 5) |
+| palkia | legendary-sanctuary | — | (62, 11) | vòng trụ tạm (chờ bước 5) |
+
+Thay đổi so với sơ đồ ở bước 3 (đã sửa trong `gen-shrines.py`):
+- **Lugia**: đê đá nối bờ ở **phía tây** (bờ gần nhất của Rạn San Hô), không phải phía nam — phía nam toàn biển. Hàng cột bỏ khoảng trống ở hướng tây.
+- **Lăng Regi**: tường lăng dày 2 ô nhưng cổng chỉ mở 1 lớp → thêm bậc `=` ở lớp trong.
+- **Darkrai**: lối mòn có bước chéo (không đi được) → nối thành lối 4 hướng, vẫn có 2 nhánh cụt.
+- **Rayquaza**: cầu thang xoắn chưa chạm mép sơ đồ → kéo dài 1 bậc.
+- Rừng Lục Bảo chật: đường mòn chính giờ kết thúc ở bậc tháp chuông Ho-Oh, nhánh lên Thác Ngọc rẽ từ (36, 48); dời HLV Leo núi, Nhà thực vật học, Trạm Lõi Rừng và tổ ong ra ngoài đền. Thung Lũng: rương `chest-rocky` dời lên (150, 21).
+- Tạm thời (làm ở các bước sau): vách nứt `%` của Mew đang là nền đi được (bước 2 gắn Đập đá); tượng `S` dùng hình trụ; Kyogre / Dialga / Palkia / Arceus giữ vòng trụ cũ (Dialga, Palkia dời lên (36, 11) / (62, 11) để nhường chỗ Uxie và Regigigas) cho tới khi có bản đồ riêng (bước 5); Cresselia, Manaphy, điểm kích hoạt Lati / Mesprit, cổng Kyogre / Arceus chưa đặt (bước 2 / 4); vùng lang thang chưa đổi (bước 4).

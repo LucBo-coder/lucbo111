@@ -19,8 +19,8 @@
    {
     "id": "lugia-3",
     "region": "coral-coast",
-    "x": 35,
-    "y": 17,
+    "x": 77,
+    "y": 5,
     "text": "Vết cào sâu trên vách đá hướng ra biển. Chỉ một sinh vật bay được trong bão mới đậu nổi ở đây."
    }
   ]
@@ -71,8 +71,8 @@
    {
     "id": "groudon-3",
     "region": "volcanic-lands",
-    "x": 100,
-    "y": 21,
+    "x": 70,
+    "y": 5,
     "text": "Mặt đất nóng nhất vào lúc trời nắng gắt. Có thứ gì đó dưới núi lửa đang chờ ánh mặt trời."
    }
   ]
@@ -82,23 +82,23 @@
   "clues": [
    {
     "id": "rayquaza-1",
-    "region": "coral-coast",
-    "x": 13,
-    "y": 91,
+    "region": "frozen-mountains",
+    "x": 77,
+    "y": 31,
     "text": "Một mảnh vảy xanh lục rơi từ trên cao, nhẹ như lá nhưng cứng như thép."
    },
    {
     "id": "rayquaza-2",
-    "region": "coral-coast",
-    "x": 3,
-    "y": 70,
+    "region": "frozen-mountains",
+    "x": 40,
+    "y": 28,
     "text": "Gió trên đỉnh vách xoáy thành vòng tròn, như có thứ gì vừa bay ngang qua."
    },
    {
     "id": "rayquaza-3",
-    "region": "coral-coast",
-    "x": 36,
-    "y": 73,
+    "region": "frozen-mountains",
+    "x": 70,
+    "y": 5,
     "text": "Bức khắc cổ: một con rồng dài vô tận tách đôi sóng biển và mặt đất đang tranh nhau."
    }
   ]
@@ -134,23 +134,23 @@
   "clues": [
    {
     "id": "regirock-1",
-    "region": "volcanic-lands",
-    "x": 11,
-    "y": 47,
+    "region": "coral-coast",
+    "x": 42,
+    "y": 28,
     "text": "Những tảng đá đỏ xếp thành hình người, ở giữa có bảy chấm khắc sâu."
    },
    {
     "id": "regirock-2",
-    "region": "volcanic-lands",
-    "x": 3,
-    "y": 25,
+    "region": "coral-coast",
+    "x": 17,
+    "y": 26,
     "text": "Bia đá cổ: \"Kẻ được Thần Rừng công nhận sẽ đánh thức người khổng lồ đá.\""
    },
    {
     "id": "regirock-3",
-    "region": "volcanic-lands",
-    "x": 34,
-    "y": 29,
+    "region": "coral-coast",
+    "x": 30,
+    "y": 6,
     "text": "Đá vụn quanh đây mang dấu vết bị chính đá khác va vỡ — như có ai đó tự vá thân mình."
    }
   ]
@@ -160,24 +160,24 @@
   "clues": [
    {
     "id": "registeel-1",
-    "region": "coral-coast",
-    "x": 32,
-    "y": 92,
-    "text": "Một mảnh kim loại đen không gỉ dù nằm sát biển mặn."
+    "region": "misty-swamp",
+    "x": 49,
+    "y": 86,
+    "text": "Một mảnh kim loại đen không gỉ dù nằm giữa bùn đầm ẩm ướt quanh năm."
    },
    {
     "id": "registeel-2",
-    "region": "coral-coast",
-    "x": 46,
-    "y": 73,
+    "region": "misty-swamp",
+    "x": 23,
+    "y": 84,
     "text": "Ký tự khắc trên vách: \"Thép không đến từ mỏ nào — nó được rèn trong lòng đất cổ.\""
    },
    {
     "id": "registeel-3",
-    "region": "coral-coast",
-    "x": 16,
-    "y": 92,
-    "text": "Ngoài bờ đá có một vòng tròn từ tính: kim la bàn quay tít khi đến gần."
+    "region": "misty-swamp",
+    "x": 38,
+    "y": 64,
+    "text": "Bên mép đầm có một vòng tròn từ tính: kim la bàn quay tít khi đến gần."
    }
   ]
  },
@@ -253,8 +253,8 @@
    {
     "id": "darkrai-3",
     "region": "misty-swamp",
-    "x": 42,
-    "y": 4,
+    "x": 22,
+    "y": 14,
     "text": "Một chiếc lông trăng lưỡi liềm có thể xua cơn ác mộng — nhưng kẻ gây ác mộng chỉ đến khi trời tối."
    }
   ]
@@ -332,7 +332,7 @@
     "id": "suicune-3",
     "region": "coral-coast",
     "x": 32,
-    "y": 26,
+    "y": 35,
     "text": "Một làn sương mỏng trôi trên mặt nước rồi tan. Nó hay đến khi trời mưa hoặc vừa tạnh."
    }
   ]

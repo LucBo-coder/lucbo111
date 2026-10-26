@@ -230,3 +230,16 @@ Kiểm tra hiện trạng: ảnh chụp cho thấy Đồng Nước Nổi là bã
 Lỗi tìm thấy nhờ test có sẵn: 1 biển chỉ đường, 3 điểm bảo tồn và điểm đến cổng từ Cần Thơ nằm trong ô ruộng ngập → dời lên bờ đê. Lỗi tìm thấy khi chạy hồi quy: bản đầu của "dời save cũ ra khỏi nước" kéo người chơi đang ngồi ghe lên bờ (`v22_field_boat`) → bỏ qua khi save đang trên ghe.
 `coop.spec.ts` (menu co-op, di chuyển của khách) trượt 1 lần khi chạy cùng loạt, qua khi chạy riêng và khi lặp — lỗi chập chờn về focus bàn phím giữa 2 tab, không liên quan bản đồ.
 Ảnh đã xem: ruộng ngập + bờ đê + lúa đứng, hốc rễ đước sau khi cắt (thông báo rương), hốc đá Thất Sơn + bảng hoàn thành nhiệm vụ Cô Sáu.
+
+## V22 — đợt 15: đền huyền thoại, bước 1 (sơ đồ + dựng đền)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **502/502 ✅**. Mới: `v22_shrines.test.ts` (8). Cập nhật theo vị trí mới: `legendary`, `v17_maps`, `v4_regions` |
+| E2E mới (`v22_shrines.spec.ts`, 12 đền / 7 bản đồ) | ✅ |
+| E2E hồi quy (evolution, v3_events, v22_legend_clues, v4_regions, adventure, v6_rayquaza, v22_map_angiang_camau) | 17/17 ✅ (sau khi sửa toạ độ Articuno, Lugia, Rayquaza, Celebi trong test) |
+
+Lỗi sơ đồ tìm thấy khi ráp lên bản đồ (công cụ `check-shrines.ts` / `place-shrines.ts`): cổng lăng Regi chỉ mở 1 trong 2 lớp tường; lối mòn Darkrai có bước chéo; cầu thang Rayquaza không chạm mép; đê Lugia hướng ra biển → đã sửa trong `gen-shrines.py`. Bản đầu cắt góc mọi ô nền làm hở 4 góc tường lăng → chỉ cắt ô không sát sân. Toạ độ thiết kế của 13 / 22 đền đè NPC, nhà, cổng, trạm hoặc hốc bí mật → dời tới ô hợp lệ gần nhất (bảng ở `LEGENDARY_SHRINES.md` mục 7).
+2 test V7 phía server (EXP Alpha, lịch sự kiện) quá giờ 1 lần khi chạy cả bộ, qua khi chạy riêng và khi chạy lại cả bộ — do tải máy, không liên quan bản đồ.
+Ảnh đã xem: Hang Tâm Linh (Mewtwo, vành pha lê tím + lõi), Đảo Xoáy Bạc (Lugia), Tháp Chuông (Ho-Oh), Đại Điện (Groudon).

@@ -521,13 +521,16 @@ export class AdventureScene extends Phaser.Scene {
           }
           break;
         }
+        // shrine pressure plates / teleport pads: flat on the ground
+        case 'decal': add(this.add.image(px + TILE_PX / 2, py + TILE_PX / 2, 'ow_tiles', o.tile).setScale(SCALE).setDepth(-50)); break;
         case 'fence': add(this.add.image(px, py, 'ow_tiles', o.tile).setOrigin(0).setScale(SCALE).setDepth(py + TILE_PX)); break;
         case 'prop':
         case 'pillar':
         case 'sign': {
           const cx = px + (o.kind === 'pillar' || o.kind === 'prop' || o.kind === 'sign' ? TILE_PX / 2 : 0);
           add(this.add.image(cx, py + TILE_PX / 2, 'ow_tiles', o.tile).setScale(SCALE).setDepth(py + TILE_PX / 2));
-          this.world.addObstacle({ x: cx, y: py + TILE_PX / 2, r: o.collideR ?? 16, kind: o.kind === 'pillar' ? 'rock' : 'prop', tag });
+          // collideR 0: a shrine altar on the arena centre (the legendary appears on it)
+          if (o.collideR !== 0) this.world.addObstacle({ x: cx, y: py + TILE_PX / 2, r: o.collideR ?? 16, kind: o.kind === 'pillar' ? 'rock' : 'prop', tag });
           if (o.kind === 'sign') this.addInteractable(o, cx, py + TILE_PX / 2 + 20, 'Đọc');
           break;
         }

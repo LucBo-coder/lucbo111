@@ -927,8 +927,8 @@
   },
   {
    "id": "chest-rocky",
-   "x": 153,
-   "y": 41,
+   "x": 150,
+   "y": 21,
    "items": {
     "superpotion": 1,
     "ultraball": 1,
@@ -1337,141 +1337,36 @@
  },
  "legendaries": [
   {
-   "id": "zapdos",
-   "name": "Đỉnh Sấm Đồi Đá",
-   "x": 120,
-   "y": 32,
-   "level": 38,
-   "respawn": 900,
-   "arena": 330,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 2.36,
-   "hint": "Tia sét lóe lên quanh vòng đá rồi tắt ngấm... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur)."
-  },
-  {
-   "id": "moltres",
-   "name": "Đền Lửa Tàn Tích",
-   "x": 11,
-   "y": 35,
-   "level": 38,
-   "respawn": 900,
-   "arena": 330,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 0,
-   "hint": "Tro nóng vẫn còn âm ỉ giữa vòng đá... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur)."
-  },
-  {
    "id": "mewtwo",
    "name": "Vết Nứt Tâm Linh",
-   "x": 62,
-   "y": 39,
+   "x": 138,
+   "y": 45,
    "level": 46,
    "respawn": 1200,
-   "arena": 330,
+   "arena": 528,
    "requires": [
     "boss:articuno",
     "boss:zapdos",
     "boss:moltres"
    ],
    "gap": 1.57,
-   "hint": "Một áp lực tâm linh khổng lồ đẩy bạn lùi lại... Chỉ người được cả ba Thần Điểu công nhận mới vào được."
+   "hint": "Một áp lực tâm linh khổng lồ đẩy bạn lùi lại... Chỉ người được cả ba Thần Điểu công nhận mới vào được.",
+   "shrine": "mewtwo"
   },
   {
    "id": "mew",
    "name": "Đồi Hoa Huyền Bí",
-   "x": 84,
-   "y": 61,
+   "x": 17,
+   "y": 13,
    "level": 42,
    "respawn": 1200,
-   "arena": 330,
+   "arena": 240,
    "requires": [
     "boss:mewtwo"
    ],
    "gap": 4.71,
-   "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo."
-  },
-  {
-   "id": "ho-oh",
-   "name": "Tháp Chuông Cầu Vồng",
-   "x": 73,
-   "y": 10,
-   "level": 45,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:raikou",
-    "boss:entei",
-    "boss:suicune"
-   ],
-   "gap": 1.57,
-   "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
-   "condition": {
-    "time": "day"
-   }
-  },
-  {
-   "id": "celebi",
-   "name": "Khu Rừng Thiêng lúc bình minh",
-   "x": 44,
-   "y": 24,
-   "level": 30,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 1.57,
-   "hint": "",
-   "ring": false,
-   "gift": true,
-   "condition": {
-    "time": "dawn"
-   }
-  },
-  {
-   "id": "jirachi",
-   "name": "Đồi Ước Nguyện",
-   "x": 72,
-   "y": 74,
-   "level": 35,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:mew"
-   ],
-   "gap": 1.57,
-   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
-   "gift": true,
-   "condition": {
-    "time": "night",
-    "weather": [
-     "clear"
-    ],
-    "friendship": 180
-   }
-  },
-  {
-   "id": "shaymin",
-   "name": "Vườn Hoa Gracidea",
-   "x": 69,
-   "y": 54,
-   "level": 30,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:celebi"
-   ],
-   "gap": 1.57,
-   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
-   "gift": true,
-   "condition": {
-    "time": "day",
-    "friendship": 200
-   }
+   "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo.",
+   "shrine": "mew"
   }
  ],
  "portals": [

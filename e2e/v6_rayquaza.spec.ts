@@ -29,9 +29,9 @@ test('Rayquaza: HUD, 3 phases, Mega form, weakened capture, no duplicate', async
   await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true)`);
   await page.waitForFunction(() => (window as Win).__adv?.world && (window as Win).__phaser.scene.isActive('AdvUI'), undefined, { timeout: 15_000 });
-  // since 0.17 the shrine stands in its themed region: travel there first (bypasses the portal gate)
-  await ev(page, `window.__adv.travelTo('coral-coast', 14, 85)`);
-  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'coral-coast', { timeout: 15_000 });
+  // the Sky Pillar crowns the Frozen Mountains (V22 shrines): travel there first (bypasses the portal gate)
+  await ev(page, `window.__adv.travelTo('frozen-mountains', 59, 42)`);
+  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'frozen-mountains', { timeout: 15_000 });
   await ev(page, `(() => { const a = window.__adv; ['garchomp', 'metagross', 'salamence', 'tyranitar'].forEach((s) => a.state.addPokemon(s, 70, 'gift')); a.state.addItems({ ultraball: 10 }); a.selectedBall = 'ultraball'; ['boss:kyogre', 'boss:groudon'].forEach((f) => a.state.setFlag(f)); a.applyParty(); const t = a.world.trainer; t.maxHp = t.hp = 1e9; })()`);
   // walk into the Sky Pillar arena → the boss spawns there
   await ev(page, `(() => { const s = window.__adv.bossSites().find((x) => x.id === 'rayquaza'); window.__adv.world.teleport((s.x + 0.5) * 48, (s.y + 3.5) * 48); })()`);

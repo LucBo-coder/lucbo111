@@ -27,7 +27,7 @@ describe('regions beyond the valley (Frozen Mountains, Volcanic Lands, Legendary
         if (t === T.Sanctum) sanctum++;
       }
       if (id === 'frozen-mountains') expect(snow).toBeGreaterThan(500);
-      if (id === 'volcanic-lands') { expect(lava).toBeGreaterThan(20); expect(m.solidAt(82, 22)).toBe(true); }
+      if (id === 'volcanic-lands') { expect(lava).toBeGreaterThan(20); expect(m.solidAt(67, 33)).toBe(true); }
       if (id === 'legendary-sanctuary') expect(sanctum).toBeGreaterThan(300);
     }
   });

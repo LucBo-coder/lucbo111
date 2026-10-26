@@ -46,11 +46,14 @@ describe('legendary shrines across the region maps', () => {
   });
   it('themes: ice on the mountain, fire in the volcano, sea legends on the coast, creation trio in the sanctuary', () => {
     const where = (id: string) => ADVENTURE.find((m) => (REGION_DEFS[m].legendaries ?? []).some((l) => l.id === id));
-    for (const id of ['articuno', 'regice', 'uxie', 'regigigas']) expect(where(id), id).toBe('frozen-mountains');
-    for (const id of ['groudon', 'heatran', 'regirock']) expect(where(id), id).toBe('volcanic-lands');
-    for (const id of ['lugia', 'kyogre', 'rayquaza', 'registeel']) expect(where(id), id).toBe('coral-coast');
-    for (const id of ['darkrai', 'giratina', 'azelf']) expect(where(id), id).toBe('misty-swamp');
-    for (const id of ['arceus', 'dialga', 'palkia', 'deoxys']) expect(where(id), id).toBe('legendary-sanctuary');
+    // V22 shrines (LEGENDARY_SHRINES.md): Rayquaza on the highest peak, the Regi tombs spread over three maps,
+    // Ho-Oh's bell tower and Celebi's grove in Emerald Woods
+    for (const id of ['articuno', 'regice', 'rayquaza', 'jirachi']) expect(where(id), id).toBe('frozen-mountains');
+    for (const id of ['groudon', 'heatran', 'moltres', 'shaymin']) expect(where(id), id).toBe('volcanic-lands');
+    for (const id of ['lugia', 'kyogre', 'zapdos', 'regirock']) expect(where(id), id).toBe('coral-coast');
+    for (const id of ['darkrai', 'giratina', 'azelf', 'registeel']) expect(where(id), id).toBe('misty-swamp');
+    for (const id of ['arceus', 'dialga', 'palkia', 'deoxys', 'uxie', 'regigigas']) expect(where(id), id).toBe('legendary-sanctuary');
+    for (const id of ['mewtwo', 'mew']) expect(where(id), id).toBe('starter-valley');
   });
   it('every site is on one map only, its quest marker points there, and the ring stands on open ground', () => {
     const bad: string[] = [];
@@ -62,7 +65,8 @@ describe('legendary shrines across the region maps', () => {
         seen.add(l.id);
         const site = LEGENDS.get(l.id)!.site;
         if (site) expect({ x: site.x, y: site.y, region: site.region ?? 'starter-valley' }, l.id).toEqual({ x: l.x, y: l.y, region: id });
-        if (l.ring !== false && !open(m, l.x, l.y, 5)) bad.push(`${id} ${l.id} → ${JSON.stringify(nearest(m, l.x, l.y, 5))}`);
+        // designed shrines are checked by tests/v22_shrines.test.ts (their arena allows the altar / cover)
+        if (l.ring !== false && !l.shrine && !open(m, l.x, l.y, 5)) bad.push(`${id} ${l.id} → ${JSON.stringify(nearest(m, l.x, l.y, 5))}`);
       }
     }
     expect(bad).toEqual([]);

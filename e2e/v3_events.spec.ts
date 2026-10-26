@@ -115,8 +115,11 @@ test('shiny capture persists; roaming legendary keeps its HP; Celebi meeting at 
   expect(await ev<number>(page, `window.__adv.state.save.collection.filter(p => p.species === 'raikou').length`)).toBe(1);
   for (let i = 0; i < 6 && (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(200); }
 
-  // Celebi: no fight — appears at the Sacred Grove at dawn, the player invites it
-  await ev(page, `(() => { const a = window.__adv; a.state.adv.bossDefeatedAt['mega-venusaur'] = a.state.adv.playTime; a.state.adv.clock = 6 * 60; a.world.teleport(44.5*48, 27*48); })()`);
+  // Celebi: no fight — appears at its grove shrine in Emerald Woods (since the V22 shrines) at dawn, the player invites it
+  await ev(page, `window.__adv.travelTo('emerald-woods', 23, 76)`);
+  await page.waitForFunction(() => (window as Win).__adv?.map?.id === 'emerald-woods' && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), null, { timeout: 15_000 });
+  await page.waitForTimeout(500);
+  await ev(page, `(() => { const a = window.__adv; a.spawns.maxActive = 0; for (const e of a.world.enemies) e.alive = false; a.state.adv.bossDefeatedAt['mega-venusaur'] = a.state.adv.playTime; a.state.adv.clock = 6 * 60; a.world.teleport(23.5*48, 70*48); })()`);
   for (let i = 0; i < 40 && !(await ev<boolean>(page, `(() => { const d = window.__phaser.scene.getScene('AdvUI').dialogueLayer; return !!d && d.list.length > 6; })()`)); i++) {
     if (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)) await page.keyboard.press('e');
     await page.waitForTimeout(200);
@@ -132,9 +135,9 @@ test('new shrine with a weather condition: Lugia waits for rain, then fights wit
   const errors = errorsOf(page);
   await start(page);
   // since 0.17 the shrine stands in its themed region: travel there first (bypasses the portal gate)
-  await ev(page, `window.__adv.travelTo('coral-coast', 58, 15)`);
+  await ev(page, `window.__adv.travelTo('coral-coast', 66, 20)`);
   await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'coral-coast', { timeout: 15_000 });
-  await ev(page, `(() => { const a = window.__adv; ['mega-venusaur', 'articuno', 'zapdos', 'moltres'].forEach((b) => a.state.setFlag('boss:' + b)); a.weather = { kind: 'clear', t: 999 }; const t = a.world.trainer; t.maxHp = t.hp = 1e7; a.world.teleport(58.5*48, 15*48); })()`);
+  await ev(page, `(() => { const a = window.__adv; ['mega-venusaur', 'articuno', 'zapdos', 'moltres'].forEach((b) => a.state.setFlag('boss:' + b)); a.weather = { kind: 'clear', t: 999 }; const t = a.world.trainer; t.maxHp = t.hp = 1e7; a.world.teleport(88.5*48, 28*48); })()`);
   await page.waitForTimeout(2500);
   expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false); // clear sky: Lugia stays hidden
   await ev(page, `window.__adv.weather = { kind: 'rain', t: 999 }`);

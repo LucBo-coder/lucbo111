@@ -7,8 +7,8 @@
    "boss:mega-venusaur"
   ],
   "site": {
-   "x": 22,
-   "y": 45,
+   "x": 19,
+   "y": 39,
    "region": "frozen-mountains"
   },
   "name": "Băng Đài Hồ Băng Lam"
@@ -19,7 +19,12 @@
   "lore": "Thần Điểu sấm sét, chỉ xuất hiện giữa những cơn giông.",
   "requires": [
    "boss:mega-venusaur"
-  ]
+  ],
+  "site": {
+   "x": 16,
+   "y": 66,
+   "region": "coral-coast"
+  }
  },
  {
   "id": "moltres",
@@ -27,7 +32,12 @@
   "lore": "Thần Điểu lửa, mang mùa xuân đến khi bay qua.",
   "requires": [
    "boss:mega-venusaur"
-  ]
+  ],
+  "site": {
+   "x": 45,
+   "y": 41,
+   "region": "volcanic-lands"
+  }
  },
  {
   "id": "mewtwo",
@@ -37,7 +47,12 @@
    "boss:articuno",
    "boss:zapdos",
    "boss:moltres"
-  ]
+  ],
+  "site": {
+   "x": 138,
+   "y": 45,
+   "region": "starter-valley"
+  }
  },
  {
   "id": "mew",
@@ -45,7 +60,12 @@
   "lore": "Tổ tiên của mọi Pokémon, biết mọi chiêu thức.",
   "requires": [
    "boss:mewtwo"
-  ]
+  ],
+  "site": {
+   "x": 17,
+   "y": 13,
+   "region": "starter-valley"
+  }
  },
  {
   "id": "raikou",
@@ -125,8 +145,8 @@
   "lore": "Hộ thần của biển cả và ba Thần Điểu — chỉ trồi lên khi trời mưa bão.",
   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
   "site": {
-   "x": 58,
-   "y": 12,
+   "x": 88,
+   "y": 20,
    "region": "coral-coast"
   }
  },
@@ -144,8 +164,9 @@
   "lore": "Phượng hoàng cầu vồng đã hồi sinh ba thú huyền thoại.",
   "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
   "site": {
-   "x": 73,
-   "y": 10
+   "x": 20,
+   "y": 20,
+   "region": "emerald-woods"
   }
  },
  {
@@ -161,8 +182,9 @@
   "lore": "Linh hồn khu rừng du hành qua thời gian, xuất hiện lúc bình minh ở rừng thiêng.",
   "hint": "",
   "site": {
-   "x": 44,
-   "y": 24
+   "x": 23,
+   "y": 66,
+   "region": "emerald-woods"
   }
  },
  {
@@ -176,9 +198,9 @@
   "lore": "Người khổng lồ đá bị phong ấn từ thời cổ đại.",
   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
   "site": {
-   "x": 12,
-   "y": 38,
-   "region": "volcanic-lands"
+   "x": 30,
+   "y": 20,
+   "region": "coral-coast"
   }
  },
  {
@@ -195,8 +217,8 @@
   "lore": "Người khổng lồ băng ngủ say — chỉ thức dậy trong bão tuyết.",
   "hint": "Lớp băng mỏng phủ vòng đá trên Đỉnh Bão Tuyết... Regice chỉ thức dậy trong bão tuyết.",
   "site": {
-   "x": 100,
-   "y": 42,
+   "x": 84,
+   "y": 76,
    "region": "frozen-mountains"
   }
  },
@@ -211,9 +233,9 @@
   "lore": "Người khổng lồ thép cứng hơn mọi kim loại.",
   "hint": "Một khối thép lạnh ngắt nằm im dưới vách đá... cần sức mạnh đã đánh bại Thần Rừng.",
   "site": {
-   "x": 40,
-   "y": 88,
-   "region": "coral-coast"
+   "x": 37,
+   "y": 78,
+   "region": "misty-swamp"
   }
  },
  {
@@ -229,9 +251,9 @@
   "lore": "Vị thần đã kéo các lục địa — chủ nhân của ba người khổng lồ.",
   "hint": "Bức tượng khổng lồ phủ tuyết không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
   "site": {
-   "x": 68,
-   "y": 22,
-   "region": "frozen-mountains"
+   "x": 74,
+   "y": 56,
+   "region": "legendary-sanctuary"
   }
  },
  {
@@ -304,8 +326,8 @@
   "lore": "Chúa tể đất liền, tạo ra lục địa bằng dung nham.",
   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
   "site": {
-   "x": 95,
-   "y": 45,
+   "x": 89,
+   "y": 23,
    "region": "volcanic-lands"
   }
  },
@@ -321,9 +343,9 @@
   "lore": "Rồng trời đã chấm dứt cuộc chiến giữa Kyogre và Groudon.",
   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
   "site": {
-   "x": 14,
-   "y": 82,
-   "region": "coral-coast"
+   "x": 59,
+   "y": 19,
+   "region": "frozen-mountains"
   }
  },
  {
@@ -342,8 +364,9 @@
   "lore": "Pokémon ước nguyện thức dậy một tuần mỗi nghìn năm — chỉ trước người có trái tim gắn bó.",
   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
   "site": {
-   "x": 72,
-   "y": 74
+   "x": 24,
+   "y": 80,
+   "region": "frozen-mountains"
   }
  },
  {
@@ -358,8 +381,8 @@
   "lore": "Virus ngoài vũ trụ đột biến sau khi bị tia laser chiếu vào.",
   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
   "site": {
-   "x": 80,
-   "y": 14,
+   "x": 14,
+   "y": 18,
    "region": "legendary-sanctuary"
   }
  },
@@ -374,9 +397,9 @@
   "lore": "Hộ thần tri thức — nhìn vào mắt nó sẽ mất trí nhớ.",
   "hint": "Mặt hồ băng phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
   "site": {
-   "x": 22,
-   "y": 9,
-   "region": "frozen-mountains"
+   "x": 23,
+   "y": 58,
+   "region": "legendary-sanctuary"
   }
  },
  {
@@ -407,8 +430,8 @@
   "lore": "Hộ thần ý chí, giữ cân bằng thế giới.",
   "hint": "Gió thổi mạnh quanh vòng đá bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
   "site": {
-   "x": 44,
-   "y": 20,
+   "x": 48,
+   "y": 21,
    "region": "misty-swamp"
   }
  },
@@ -425,8 +448,8 @@
   "lore": "Thần thời gian — tim nó đập là thời gian trôi.",
   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
   "site": {
-   "x": 16,
-   "y": 44,
+   "x": 36,
+   "y": 11,
    "region": "legendary-sanctuary"
   }
  },
@@ -443,8 +466,8 @@
   "lore": "Thần không gian — mỗi hơi thở là một không gian mới.",
   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
   "site": {
-   "x": 80,
-   "y": 44,
+   "x": 62,
+   "y": 11,
    "region": "legendary-sanctuary"
   }
  },
@@ -461,8 +484,8 @@
   "lore": "Bị đày vào Thế Giới Đảo Ngược vì sự hung bạo — chỉ lộ diện trong bóng tối.",
   "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi Dialga và Palkia bị khuấy động.",
   "site": {
-   "x": 100,
-   "y": 12,
+   "x": 69,
+   "y": 52,
    "region": "misty-swamp"
   }
  },
@@ -481,8 +504,8 @@
   "lore": "Sống trong hang núi lửa, máu nó là dung nham sôi.",
   "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
   "site": {
-   "x": 73,
-   "y": 8,
+   "x": 40,
+   "y": 16,
    "region": "volcanic-lands"
   }
  },
@@ -515,8 +538,8 @@
   "lore": "Gieo ác mộng cho người ngủ gần nó; chỉ Cresselia mới xua tan được.",
   "hint": "Sương độc làm bạn buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
   "site": {
-   "x": 18,
-   "y": 8,
+   "x": 21,
+   "y": 29,
    "region": "misty-swamp"
   }
  },
@@ -533,8 +556,9 @@
   "lore": "Pokémon nhím hoa làm nở hoa khắp nơi — chỉ đến bên người có Pokémon thật gắn bó.",
   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
   "site": {
-   "x": 69,
-   "y": 54
+   "x": 66,
+   "y": 69,
+   "region": "volcanic-lands"
   }
  },
  {

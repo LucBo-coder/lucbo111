@@ -64,5 +64,6 @@ export const T = {
   CaveFloor: 20, CaveWall: 21, Door: 22,
   Snow: 30, SnowDeep: 31, Ice: 32, Ash: 33, AshRock: 34, Lava: 35, Sanctum: 36, Bridge: 37,
   /** toxic swamp puddle (walkable, poisons) */ Bog: 38, Mud: 39,
+  /** shrine wall / cliff (legendary shrines, solid) */ Wall: 40,
 } as const;
 export type Terrain = (typeof T)[keyof typeof T];

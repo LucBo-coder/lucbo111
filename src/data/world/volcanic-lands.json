@@ -448,28 +448,13 @@
  "spawns": {},
  "legendaries": [
   {
-   "id": "regirock",
-   "name": "Lăng Đá Đỏ",
-   "x": 12,
-   "y": 38,
-   "level": 42,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 5.61,
-   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
-   "condition": {}
-  },
-  {
    "id": "groudon",
    "name": "Đền Dung Nham",
-   "x": 95,
-   "y": 45,
+   "x": 89,
+   "y": 23,
    "level": 50,
    "respawn": 1500,
-   "arena": 330,
+   "arena": 576,
    "requires": [
     "boss:lugia",
     "boss:ho-oh"
@@ -481,16 +466,37 @@
      "heatwave",
      "clear"
     ]
-   }
+   },
+   "shrine": "groudon"
+  },
+  {
+   "id": "shaymin",
+   "name": "Vườn Hoa Gracidea",
+   "x": 66,
+   "y": 69,
+   "level": 30,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:celebi"
+   ],
+   "gap": 1.57,
+   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
+   "gift": true,
+   "condition": {
+    "time": "day",
+    "friendship": 200
+   },
+   "shrine": "shaymin"
   },
   {
    "id": "heatran",
    "name": "Miệng Núi Lửa Ngầm",
-   "x": 73,
-   "y": 8,
+   "x": 40,
+   "y": 16,
    "level": 50,
    "respawn": 1500,
-   "arena": 330,
+   "arena": 432,
    "requires": [
     "boss:groudon"
    ],
@@ -501,7 +507,23 @@
      "heatwave",
      "clear"
     ]
-   }
+   },
+   "shrine": "heatran"
+  },
+  {
+   "id": "moltres",
+   "name": "Đền Lửa Tàn Tích",
+   "x": 45,
+   "y": 41,
+   "level": 38,
+   "respawn": 900,
+   "arena": 432,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 0,
+   "hint": "Tro nóng vẫn còn âm ỉ giữa đài lửa... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
+   "shrine": "moltres"
   }
  ],
  "portals": [

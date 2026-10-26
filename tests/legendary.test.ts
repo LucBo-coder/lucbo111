@@ -92,15 +92,15 @@ describe('legendary world bosses', () => {
     expect(time).toBeGreaterThan(30);
   });
 
-  it('shrines are open ground ringed by stones, outside other landmarks', () => {
+  it('shrines are open ground at the heart of their designed shrine, outside other landmarks', () => {
     const d = valleyJson as unknown as RegionDef;
     const m = new ValleyMap(d);
-    // since 0.17 the themed regions hold their own shrines (ice on the mountain, fire in the volcano, …)
-    expect(d.legendaries!.map((l) => l.id).slice(0, 4)).toEqual(LEGENDS.slice(1));
-    expect(d.legendaries!.length).toBe(8);
+    // since 0.17 the themed regions hold their own shrines; since the V22 shrine redesign the valley keeps only
+    // Mewtwo's psychic cave (Đồi Đá Xám) and Mew's silent ruins — the birds moved to their elements' maps
+    expect(d.legendaries!.map((l) => l.id)).toEqual(['mewtwo', 'mew']);
     for (const l of d.legendaries!) {
-      if (l.ring === false) continue; // shares the Sacred Grove clearing
-      for (let dy = -5; dy <= 5; dy++) for (let dx = -5; dx <= 5; dx++) if (dx * dx + dy * dy <= 25) expect(m.solidAt(l.x + dx, l.y + dy), `${l.id} ${dx},${dy}`).toBe(false);
+      expect(l.shrine, l.id).toBe(l.id);
+      for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) if (dx * dx + dy * dy <= 9) expect(m.solidAt(l.x + dx, l.y + dy), `${l.id} ${dx},${dy}`).toBe(false);
       expect(BOSSES.has(l.id)).toBe(true);
     }
   });

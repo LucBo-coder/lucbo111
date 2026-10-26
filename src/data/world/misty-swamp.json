@@ -531,28 +531,64 @@
  "spawns": {},
  "legendaries": [
   {
+   "id": "giratina",
+   "name": "Cổng Thế Giới Đảo Ngược",
+   "x": 69,
+   "y": 52,
+   "level": 58,
+   "respawn": 1500,
+   "arena": 576,
+   "requires": [
+    "boss:dialga",
+    "boss:palkia"
+   ],
+   "gap": 2.52,
+   "hint": "Bóng của hàng cột chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi Dialga và Palkia bị khuấy động.",
+   "condition": {
+    "time": "night"
+   },
+   "shrine": "giratina"
+  },
+  {
    "id": "azelf",
    "name": "Hồ Dũng Khí",
-   "x": 44,
-   "y": 20,
+   "x": 48,
+   "y": 21,
    "level": 45,
    "respawn": 1500,
-   "arena": 330,
+   "arena": 336,
    "requires": [
     "boss:mewtwo"
    ],
    "gap": 1.93,
-   "hint": "Gió thổi mạnh quanh vòng đá bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
-   "condition": {}
+   "hint": "Gió thổi mạnh quanh ngôi đền bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
+   "condition": {},
+   "shrine": "azelf"
+  },
+  {
+   "id": "registeel",
+   "name": "Lăng Thép",
+   "x": 37,
+   "y": 78,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 288,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.7,
+   "hint": "Một khối thép lạnh ngắt nằm im trong lăng chìm giữa đầm... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {},
+   "shrine": "registeel"
   },
   {
    "id": "darkrai",
    "name": "Đảo Ác Mộng",
-   "x": 18,
-   "y": 8,
+   "x": 21,
+   "y": 29,
    "level": 52,
    "respawn": 1500,
-   "arena": 330,
+   "arena": 288,
    "requires": [
     "boss:cresselia"
    ],
@@ -560,25 +596,8 @@
    "hint": "Sương độc làm bạn buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
    "condition": {
     "time": "night"
-   }
-  },
-  {
-   "id": "giratina",
-   "name": "Cổng Thế Giới Đảo Ngược",
-   "x": 100,
-   "y": 12,
-   "level": 58,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:dialga",
-    "boss:palkia"
-   ],
-   "gap": 2.52,
-   "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi Dialga và Palkia bị khuấy động.",
-   "condition": {
-    "time": "night"
-   }
+   },
+   "shrine": "darkrai"
   }
  ],
  "portals": [

@@ -491,29 +491,6 @@
  "spawns": {},
  "legendaries": [
   {
-   "id": "lugia",
-   "name": "Đền Biển Sâu",
-   "x": 58,
-   "y": 12,
-   "level": 45,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:articuno",
-    "boss:zapdos",
-    "boss:moltres"
-   ],
-   "gap": 1.37,
-   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
-   "condition": {
-    "weather": [
-     "rain",
-     "heavyRain",
-     "thunderstorm"
-    ]
-   }
-  },
-  {
    "id": "kyogre",
    "name": "Đền Đáy Biển",
    "x": 58,
@@ -536,35 +513,59 @@
    }
   },
   {
-   "id": "rayquaza",
-   "name": "Trụ Trời",
-   "x": 14,
-   "y": 82,
-   "level": 55,
+   "id": "lugia",
+   "name": "Đền Biển Sâu",
+   "x": 88,
+   "y": 20,
+   "level": 45,
    "respawn": 1500,
-   "arena": 330,
+   "arena": 576,
    "requires": [
-    "boss:kyogre",
-    "boss:groudon"
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
    ],
-   "gap": 5.82,
-   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
-   "condition": {}
+   "gap": 1.37,
+   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+   "condition": {
+    "weather": [
+     "rain",
+     "heavyRain",
+     "thunderstorm"
+    ]
+   },
+   "shrine": "lugia"
   },
   {
-   "id": "registeel",
-   "name": "Lăng Thép",
-   "x": 40,
-   "y": 88,
-   "level": 42,
-   "respawn": 1500,
-   "arena": 330,
+   "id": "zapdos",
+   "name": "Đỉnh Sấm Đồi Đá",
+   "x": 16,
+   "y": 66,
+   "level": 38,
+   "respawn": 900,
+   "arena": 432,
    "requires": [
     "boss:mega-venusaur"
    ],
-   "gap": 5.7,
-   "hint": "Một khối thép lạnh ngắt nằm im dưới vách đá... cần sức mạnh đã đánh bại Thần Rừng.",
-   "condition": {}
+   "gap": 2.36,
+   "hint": "Tia sét lóe lên quanh cột thu lôi rồi tắt ngấm... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
+   "shrine": "zapdos"
+  },
+  {
+   "id": "regirock",
+   "name": "Lăng Đá Đỏ",
+   "x": 30,
+   "y": 20,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 288,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.61,
+   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {},
+   "shrine": "regirock"
   }
  ],
  "portals": [
