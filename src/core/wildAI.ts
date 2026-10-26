@@ -84,16 +84,18 @@ function drowsy(world: World, w: WildState): boolean {
 export function updateWild(world: World, e: Unit, dtIn: number): void {
   const w = e.wild!;
   const rng = world.rng;
-  const threat = nearestThreat(world, e);
   let dt = dtIn;
-
-  // AI level-of-detail: calm creatures far from the player think and move at a low tick rate
-  if (threat.d > LOD_DIST && !e.hostile) {
+  // AI level-of-detail: calm creatures far from the player think and move at a low tick rate. Between ticks
+  // nothing runs, not even the threat scan (it was far at the last tick; being hit makes the creature hostile).
+  if (w.lodT > 0 && !e.hostile) {
     w.lodT -= dtIn;
     if (w.lodT > 0) return;
+  }
+  const threat = nearestThreat(world, e);
+  if (threat.d > LOD_DIST && !e.hostile) {
     w.lodT = LOD_TICK;
     dt = LOD_TICK;
-  }
+  } else w.lodT = 0;
   w.t -= dt;
 
   // Getting hit always wakes a creature up and makes it react

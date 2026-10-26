@@ -193,3 +193,14 @@ Lỗi tìm thấy khi viết: hai phần thưởng trỏ tới vật phẩm khô
 | E2E hồi quy (smoke, online_modes, coop, adventure, v22_trainer_rep, v22_ecology, perf, v6_summon) | 18/19 ✅ khi chạy song song; `v6_summon` đạt khi chạy riêng. Lặp 4 lần song song: 3/4 trượt ở các bước đo thời gian (`busy` / `cooldown`) — **trên bản trước khi sửa cũng trượt y hệt 3/4**, nên là lỗi chập chờn có sẵn của test khi máy bị tải, không do thay đổi này |
 
 Ảnh đã xem: "Bulbasaur hái quả giúp bạn! / Hái được: Poké Ball ×1", "Hơi Nước!" trên Rattata bị Bỏng trong Adventure.
+
+## V22 — đợt 12: hiệu năng
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **478/478 ✅**. Mới: `v22_perf.test.ts` (3). Đối chứng: trên bản trước khi sửa, test quét mối đe dọa trượt (24 000 lần) |
+| E2E mới (`v22_perf.spec.ts`) | ✅ — census trước / sau 9 lần chuyển vùng: object 1231 → 1231, listener game 21 → 21, bàn phím 27 → 27, scale 18 → 18, timer 0 → 0, tween 514 → 514; 150 Pokémon xa: 150/150 giảm tần suất, 0,10 ms / bước |
+| E2E hồi quy (adventure, v22_ecology, v9_aquatic, v22_combat, smoke, perf, v4_regions) | 14/14 ✅ |
+
+Ghi chú: bản nháp đầu tiên thêm một LOD thứ hai trong `world.ts`; khi viết test phát hiện `wildAI.ts` đã có LOD → gỡ bản nháp (tránh hệ thống trùng) và chỉ tối ưu bản có sẵn.
