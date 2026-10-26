@@ -204,6 +204,8 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 
 **Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
 
+**Vùng mẫu Cần Thơ (V22)**: mỗi khu có bản sắc riêng — Ninh Kiều (bến, chợ), sông Hậu / Cồn Sơn (ghe, đấu trường Whiscash trên cồn), Cái Răng (chợ nổi), Bằng Lăng (rừng tràm, vườn cò, hốc đá bí mật), *Miệt vườn Phong Điền*: liếp cây ăn trái xen mương nước và cầu ván (khai báo `orchard` trong dữ liệu khu vực), bụi trái cây để hái, câu cá trên mương bằng cần câu tre của Ông Sáu, hốc bí mật sau bụi rậm. Các tỉnh khác sẽ nâng cấp theo mẫu này.
+
 **Chiến đấu Adventure (V22)**: combo nguyên tố (trạng thái + hệ đòn đánh) có giới hạn 6 s / mục tiêu; Pokémon yếu (< 30% HP, không phải tank) lùi về cạnh HLV; HLV < 50% HP thì tank / fighter bảo vệ HLV; khi yên bình, Pokémon tự hái bụi quả chín gần đó. Không áp dụng cho PvP; Survivor giữ nguyên.
 
 **Nhiệm vụ phân nhánh**: mỗi tỉnh có một ngã rẽ đạo đức / đời thường (bẫy ở U Minh, lưới dày hay câu vừa đủ mùa nước nổi, phân xử bến ghe Ninh Kiều). Chọn hướng nào thì mục tiêu, phần thưởng, lời kết và nhiệm vụ nối tiếp theo hướng đó; không quay lại được. Dữ liệu: mục tiêu `choose` với `options`, mục tiêu riêng nhánh có `branch`, nhiệm vụ sau dùng `requiresFlags: ["choice:<nhiệm vụ>:<hướng>"]`.

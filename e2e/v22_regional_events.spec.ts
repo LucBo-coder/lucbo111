@@ -28,10 +28,13 @@ test('Mekong regional events', async ({ page }) => {
   expect(o.variant).toBe('mua-ca-linh');
   expect(o.name).toBe('Mùa cá linh về');
   expect(['buizel', 'wooper', 'lotad']).toContain(o.sp);
-  expect(await ev<number>(page, `(window.__adv.worldEvents.units.get(${o.uid}) ?? []).length`)).toBeGreaterThanOrEqual(4);
+  // up to 4 around the point (spots that fall on water are skipped — the wetland has plenty), all of the variant's species
+  const herd = await ev<{ id: number; sp: string }[]>(page, `(window.__adv.worldEvents.units.get(${o.uid}) ?? []).map(u => ({ id: u.id, sp: u.defId }))`);
+  expect(herd.length).toBeGreaterThanOrEqual(3);
+  expect(herd.every((u) => u.sp === o.sp)).toBe(true);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/regev-outbreak.png` });
   const nets = await ev<number>(page, `window.__adv.state.item('netball')`);
-  await ev(page, `(() => { const w = window.__adv.worldEvents; for (let i = 0; i < 6; i++) w.onResolved(-1, '${o.sp}', ${o.x}, ${o.y}, false); })()`);
+  await ev(page, `(() => { const w = window.__adv.worldEvents; for (let i = 0; i < 6; i++) w.onResolved(${herd[0].id}, '${o.sp}', ${o.x}, ${o.y}, false); })()`);
   expect(await ev(page, `window.__adv.worldEvents.views().some(v => v.uid === ${o.uid})`)).toBe(false);
   expect(await ev<number>(page, `window.__adv.state.item('netball')`)).toBe(nets + 3);
 

@@ -448,5 +448,230 @@
     "weight": 3
    }
   ]
+ },
+ "orchard-forage": {
+  "kind": "forage",
+  "name": "Bụi trái cây miệt vườn",
+  "cooldown": 240,
+  "pokemonChance": 0.15,
+  "pokemon": [
+   {
+    "species": "cherubi",
+    "level": [
+     16,
+     19
+    ],
+    "weight": 5
+   },
+   {
+    "species": "combee",
+    "level": [
+     16,
+     19
+    ],
+    "weight": 4
+   },
+   {
+    "species": "bounsweet",
+    "level": [
+     16,
+     19
+    ],
+    "weight": 4
+   },
+   {
+    "species": "applin",
+    "level": [
+     17,
+     20
+    ],
+    "weight": 2
+   },
+   {
+    "species": "tropius",
+    "level": [
+     19,
+     21
+    ],
+    "weight": 1
+   }
+  ],
+  "items": [
+   {
+    "id": "sitrus-berry",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 30
+   },
+   {
+    "id": "oranberry",
+    "qty": [
+     2,
+     3
+    ],
+    "weight": 22
+   },
+   {
+    "id": "exp-candy-s",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 12
+   },
+   {
+    "id": "superpotion",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 10
+   },
+   {
+    "id": "pomeg-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 4
+   },
+   {
+    "id": "qualot-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 4
+   },
+   {
+    "id": "leaf-stone",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "miracle-seed",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 2
+   }
+  ]
+ },
+ "canal-fish": {
+  "kind": "fish",
+  "name": "Mương vườn",
+  "cooldown": 75,
+  "requiresFlag": "tool:rod",
+  "lockedText": [
+   "Bạn chưa có cần câu.",
+   "Ông Sáu nhà vườn ở miệt vườn Phong Điền có cây cần câu tre — ghé hỏi ông thử."
+  ],
+  "pokemonChance": 0.5,
+  "pokemon": [
+   {
+    "species": "barboach",
+    "level": [
+     15,
+     18
+    ],
+    "weight": 30
+   },
+   {
+    "species": "goldeen",
+    "level": [
+     15,
+     18
+    ],
+    "weight": 20
+   },
+   {
+    "species": "wooper",
+    "level": [
+     15,
+     18
+    ],
+    "weight": 18
+   },
+   {
+    "species": "corphish",
+    "level": [
+     15,
+     18
+    ],
+    "weight": 12
+   },
+   {
+    "species": "tympole",
+    "level": [
+     15,
+     18
+    ],
+    "weight": 10
+   },
+   {
+    "species": "basculin",
+    "level": [
+     17,
+     19
+    ],
+    "weight": 3
+   },
+   {
+    "species": "feebas",
+    "level": [
+     16,
+     18
+    ],
+    "weight": 2
+   }
+  ],
+  "items": [
+   {
+    "id": "netball",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 25
+   },
+   {
+    "id": "sitrus-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 20
+   },
+   {
+    "id": "superpotion",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 15
+   },
+   {
+    "id": "water-stone",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 4
+   },
+   {
+    "id": "mystic-water",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   }
+  ]
  }
 }

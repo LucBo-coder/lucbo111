@@ -204,3 +204,15 @@ Lỗi tìm thấy khi viết: hai phần thưởng trỏ tới vật phẩm khô
 | E2E hồi quy (adventure, v22_ecology, v9_aquatic, v22_combat, smoke, perf, v4_regions) | 14/14 ✅ |
 
 Ghi chú: bản nháp đầu tiên thêm một LOD thứ hai trong `world.ts`; khi viết test phát hiện `wildAI.ts` đã có LOD → gỡ bản nháp (tránh hệ thống trùng) và chỉ tối ưu bản có sẵn.
+
+## V22 — đợt 13: thiết kế bản đồ (Cần Thơ vùng mẫu)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **484/484 ✅**. Mới: `v22_map_cantho.test.ts` (6). Sửa `v13_can_tho` (15 nhiệm vụ), `v21_gathering` (luật phao mới: hướng tâm hồ **hoặc** ô nước gần nhất cho bờ sông / mương) |
+| E2E mới (`v22_map_cantho.spec.ts`) | ✅ |
+| E2E hồi quy (v13_can_tho, v22_field_boat, v21_world, v22_regional_events, v22_branching, v22_conservation, v8_vietnam, v22_journal, overworld_visual, v22_combat, v3_events, v18_events) | ✅ |
+
+Kiểm tra hiện trạng: ảnh chụp cho thấy miệt vườn là bãi cỏ trống (habitat `farm` chỉ có luống rau theo toạ độ cứng của Thung Lũng). Lỗi tìm thấy nhờ test có sẵn: rương `chest-ct-garden` nằm sát mép mương mới → dời 1 ô. Lỗi tìm thấy khi lặp test sự kiện vùng miền: ổ bùng phát ở Đồng Nước Nổi đôi khi sinh 0–3 Pokémon vì vị trí rơi vào nước → `group()` thử thêm vị trí; test cũng đổi sang tính tiến độ bằng id Pokémon của sự kiện. Lặp 12 lần song song: 12/12 ✅.
+Ảnh đã xem: miệt vườn (liếp cây, dừa, luống, mương, cầu ván), câu cá trên mương, hốc bí mật sau khi cắt bụi + thông báo rương.

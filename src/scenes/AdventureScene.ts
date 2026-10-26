@@ -38,7 +38,7 @@ import { RARE_RULES } from '../core/ecologyRules';
 import { modsFor, modsLabel } from '../core/dungeonMods';
 import { CONSERVATION, ecoHealth, ECO_TIERS, ecoTier, openSites, rareMult, siteFlag, sitesDone, thrivingFlag, type ConsSite } from '../core/conservation';
 import { clueFlag, cluesFound, conditionSummary, INVESTIGATION_BONUS, investigated, LEGEND_CLUES, visibleClues, type Clue } from '../core/legendClues';
-import { FISH_WAIT, FISH_WINDOW, fishOutcome, gatherTable, nodeCooldownLeft, rollGather, type GatherTable } from '../core/gathering';
+import { FISH_WAIT, FISH_WINDOW, fishOutcome, gatherTable, nearestWater, nodeCooldownLeft, rollGather, type GatherTable } from '../core/gathering';
 import { AllyCommand, STEP, Unit, World, WorldEvent } from '../core/world';
 import { createGroundSprite } from '../render/groundSprite';
 import { pixelPerfectZoom } from '../render/pixelZoom';
@@ -608,10 +608,15 @@ export class AdventureScene extends Phaser.Scene {
             this.addInteractable(o, cx, cy + 20, 'Hái quả', s);
             this.nodeViews.set(o.id, { tb, cue: [berry], wx: cx, wy: cy });
           } else {
-            // fishing spot: ripples on the water, one and a half tiles toward the lake centre
+            // fishing spot: ripples on the water, one and a half tiles toward the lake centre — or, on a river /
+            // canal bank where that is dry land, on the nearest water tile
             const lake = this.regionDef.lake;
             const dx = lake.cx - (o.x + 0.5), dy = lake.cy - (o.y + 0.5), d = Math.hypot(dx, dy) || 1;
-            const wx = cx + (dx / d) * TILE_PX * 1.5, wy = cy + (dy / d) * TILE_PX * 1.5;
+            let wx = cx + (dx / d) * TILE_PX * 1.5, wy = cy + (dy / d) * TILE_PX * 1.5;
+            if (this.map.terrainAt(Math.floor(wx / TILE_PX), Math.floor(wy / TILE_PX)) !== T.Water) {
+              const w = nearestWater(this.map, o.x, o.y, 3);
+              if (w) { wx = (w.x + 0.5) * TILE_PX; wy = (w.y + 0.5) * TILE_PX; }
+            }
             const cue = [0, 1].map((i) => {
               const ring = add(this.add.graphics({ x: wx, y: wy }).setDepth(-5));
               ring.lineStyle(3, 0xe8f8ff, 0.9).strokeEllipse(0, 0, 34, 14);
@@ -1330,7 +1335,7 @@ export class AdventureScene extends Phaser.Scene {
     if (!v) return;
     const tb = v.tb;
     if (tb.requiresFlag && !this.state.hasFlag(tb.requiresFlag)) {
-      await this.say(tb.name, ['Bạn chưa có cần câu.', 'Ông Sáu ở bờ tây Hồ Pha Lê có thể cho bạn một chiếc.']);
+      await this.say(tb.name, tb.lockedText ?? ['Bạn chưa có cần câu.', 'Ông Sáu ở bờ tây Hồ Pha Lê có thể cho bạn một chiếc.']);
       return;
     }
     const left = nodeCooldownLeft(this.state.adv.nodes, it.id, tb, this.playNow());

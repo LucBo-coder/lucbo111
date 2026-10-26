@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import valleyJson from '../src/data/world/starter-valley.json';
 import { AdventureState, ITEMS } from '../src/adventure/AdventureState';
 import { POKEMON } from '../src/core/data';
-import { FISH_WINDOW, fishOutcome, GATHER_TABLES, gatherTable, nodeCooldownLeft, rollGather } from '../src/core/gathering';
+import { FISH_WINDOW, fishOutcome, GATHER_TABLES, gatherTable, nearestWater, nodeCooldownLeft, rollGather } from '../src/core/gathering';
+import { T } from '../src/core/map/tiles';
 import { ValleyMap, type RegionDef } from '../src/core/map/valley';
 import { defaultSave, migrate } from '../src/systems/saveSchema';
 
@@ -154,8 +155,10 @@ describe('Rừng Ngọc Lục Bảo — its own map (V21)', () => {
         expect(t, `${d.id}/${n.id}`).toBeTruthy();
         expect(m.solidAt(n.x, n.y), `${d.id}/${n.id} walkable`).toBe(false);
         if (t!.kind !== 'fish') continue;
+        // 1.5 tiles toward the lake centre — or, on a river / canal bank (V22), the nearest water tile
         const dx = d.lake.cx - (n.x + 0.5), dy = d.lake.cy - (n.y + 0.5), r = Math.hypot(dx, dy);
-        expect(m.solidAt(Math.floor(n.x + 0.5 + (dx / r) * 1.5), Math.floor(n.y + 0.5 + (dy / r) * 1.5)), `${d.id}/${n.id} bobber`).toBe(true);
+        const lakeward = m.terrainAt(Math.floor(n.x + 0.5 + (dx / r) * 1.5), Math.floor(n.y + 0.5 + (dy / r) * 1.5)) === T.Water;
+        expect(lakeward || !!nearestWater(m, n.x, n.y, 3), `${d.id}/${n.id} bobber`).toBe(true);
       }
     }
   });

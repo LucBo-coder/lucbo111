@@ -354,8 +354,17 @@ export class ValleyMap implements MapProvider {
         return n > 0.56 ? T.TallGrass : T.Grass;
       case 'ruins':
         return n > 0.32 ? T.Ruin : T.Tuft;
-      case 'farm':
+      case 'farm': {
+        const o = area.orchard;
+        if (o) {
+          const r = this.orchardRow(area, ty);
+          // canal (not on the area's edges, kept off NPCs, chests, nodes…; a plank crossing every `gap` tiles)
+          if (r === 0 && ty > area.rect[1] + 1 && ty < area.rect[3] - 1 && this.isClear(tx, ty)) return tx % o.gap === Math.floor(o.gap / 2) ? T.Bridge : T.Water;
+          if (r === 3) return T.Farm;
+          return hash2(tx, ty, 5) < 0.12 ? T.Tuft : T.Grass;
+        }
         return tx > 43 && tx < 57 && ty > 99 && ty < 111 && ty % 3 !== 0 ? T.Farm : T.Grass;
+      }
       case 'rocky':
         if (n > 0.62) return T.Grass;
         return T.Rocky;
@@ -506,6 +515,11 @@ export class ValleyMap implements MapProvider {
 
   // ───────────────────────────── objects ─────────────────────────────
 
+  /** Row of an orchard area's repeating canal / bed pattern (0 = canal). */
+  orchardRow(area: AreaDef, ty: number): number {
+    return (ty - area.rect[1]) % area.orchard!.period;
+  }
+
   private isClear(tx: number, ty: number): boolean {
     for (const c of this.clear) if (Math.hypot(tx + 0.5 - c.x, ty + 0.5 - c.y) < c.r) return false;
     return true;
@@ -540,6 +554,12 @@ export class ValleyMap implements MapProvider {
           continue;
         }
         if (t === T.Bog) continue;
+        // orchard beds: two staggered rows of fruit trees, the lanes between stay walkable
+        if (hab === 'farm' && area?.orchard) {
+          const r = this.orchardRow(area, ty);
+          if ((r === 2 || r === 4) && (tx + (r === 4 ? 1 : 0)) % 3 === 0) out.push(this.tree(tx, ty, 'farm'));
+          continue;
+        }
         if (hab === 'coast' && t === T.Rocky && h < 0.08) { out.push({ kind: 'boulder', id: `b-${tx}-${ty}`, x: tx + 0.5, y: ty + 0.5, collideR: 20 }); continue; }
         const density = hab === 'mangrove' ? 0.08 : hab === 'swamp' ? 0.05 : hab === 'coast' ? (t === T.Sand ? 0.02 : 0.03) : hab === 'forest' ? (t === T.TallGrass ? 0.06 : 0.3) : hab === 'village' || hab === 'farm' ? 0 : hab === 'rocky' ? 0.03
           : hab === 'snow' ? (t === T.SnowDeep ? 0.02 : 0.06) : hab === 'volcano' ? 0.02 : hab === 'sanctuary' ? 0.015 : 0.025;

@@ -1,4 +1,5 @@
 import tablesJson from '../data/world/gathering.json';
+import { T } from './map/tiles';
 
 // Resource nodes of the overworld (data: data/world/gathering.json, placed by a region's `nodes`):
 //   fish   — a spot on a lake shore: cast, wait for the bite, press in time → an item or a wild Pokémon on the hook
@@ -14,6 +15,8 @@ export interface GatherTable {
   cooldown: number;
   /** story flag needed (the fishing rod) */
   requiresFlag?: string;
+  /** what the spot says while that flag is missing (default: where the valley's rod comes from) */
+  lockedText?: string[];
   /** chance that the result is a wild Pokémon instead of an item */
   pokemonChance: number;
   pokemon: { species: string; level: [number, number]; weight: number }[];
@@ -64,4 +67,14 @@ export function fishOutcome(biteAt: number, pressedAt: number | null): 'early' |
   if (pressedAt == null) return 'waiting';
   if (pressedAt < biteAt) return 'early';
   return pressedAt - biteAt <= FISH_WINDOW ? 'hooked' : 'late';
+}
+
+/** The closest water tile to (tx, ty) within r tiles — where a bank fishing spot's bobber lands — or null. */
+export function nearestWater(map: { terrainAt(tx: number, ty: number): number }, tx: number, ty: number, r: number): { x: number; y: number } | null {
+  let best: { x: number; y: number } | null = null, bd = Infinity;
+  for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
+    const d = dx * dx + dy * dy;
+    if (d < bd && d <= r * r && map.terrainAt(tx + dx, ty + dy) === T.Water) { bd = d; best = { x: tx + dx, y: ty + dy }; }
+  }
+  return best;
 }

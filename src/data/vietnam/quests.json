@@ -2531,5 +2531,61 @@
     "Trái lên ghe kịp hết! Viên Đá Lá này chú lượm được trong vườn, cho con."
    ]
   }
+ },
+ {
+  "id": "vn-ct-rod",
+  "kind": "side",
+  "title": "Cần câu tre của Ông Sáu",
+  "giver": "ct-gardener",
+  "requires": [
+   "vn-ct-1"
+  ],
+  "description": "Ông Sáu nhà vườn có cây cần câu tre dư. Phụ ông hái trái ngoài vườn rồi ông cho mượn.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "forage",
+    "count": 2,
+    "text": "Hái 2 bụi trái cây trong miệt vườn (0/2)",
+    "marker": {
+     "x": 44,
+     "y": 77,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-gardener",
+    "count": 1,
+    "text": "Mang trái về cho Ông Sáu",
+    "marker": {
+     "x": 37,
+     "y": 96,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "netball": 2
+   },
+   "worldExp": 200,
+   "reputation": 5,
+   "flags": [
+    "tool:rod"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Vườn ông trái chín rục mà ông già rồi, hái không xuể.",
+    "Con hái phụ ông mấy bụi, ông cho mượn cây cần câu tre — mương vườn nhiều cá lắm."
+   ],
+   "progress": [
+    "Mấy bụi trái nằm giữa mấy liếp cây đó con. Pokémon nhà con tự chạy đi hái phụ cũng được."
+   ],
+   "complete": [
+    "Trái ngọt quá! Nè, cây cần câu tre của ông. Ra bờ mương thả câu, coi chừng con Barboach nó giựt mạnh lắm nghen."
+   ]
+  }
  }
 ]

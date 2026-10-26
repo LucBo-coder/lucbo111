@@ -537,8 +537,14 @@ export class WorldEventController {
     const out: Unit[] = [];
     const floor = ECOLOGY.get(sp)?.minLevel ?? 1;
     for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2, x = c.x + Math.cos(a) * 70, y = c.y + Math.sin(a) * 50;
-      if (this.world.blocked(x, y, 16)) continue;
+      // around the point; a spot on water / a wall tries closer, farther and a little round the circle
+      let x = 0, y = 0, ok = false;
+      for (const [r, da] of [[1, 0], [0.6, 0], [1.5, 0], [1, 0.4], [0.6, -0.4], [2, 0.2]]) {
+        const a = (i / n) * Math.PI * 2 + da;
+        x = c.x + Math.cos(a) * 70 * r; y = c.y + Math.sin(a) * 50 * r;
+        if (!this.world.blocked(x, y, 16)) { ok = true; break; }
+      }
+      if (!ok) continue;
       const u = this.world.spawnWild(sp, Math.max(floor, this.world.rng.int(lv[0], lv[1])), x, y, {
         wild: makeWildState(x, y, timid ? 'timid' : 'neutral', { homeR: 90 }), hostile: false, tag: 'event:' + ev.uid,
       });

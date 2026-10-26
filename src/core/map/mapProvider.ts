@@ -26,6 +26,11 @@ export interface AreaDef {
   rect: [number, number, number, number];
   habitat: string;
   level: [number, number];
+  /**
+   * Farm areas laid out as an orchard (Mekong "miệt vườn"): every `period` rows an irrigation canal with a plank
+   * crossing every `gap` tiles; between canals raised beds with two rows of fruit trees and a crop row.
+   */
+  orchard?: { period: number; gap: number };
 }
 
 export interface SpawnEntry {

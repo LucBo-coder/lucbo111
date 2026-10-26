@@ -130,3 +130,7 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Gây Bỏng rồi đánh hệ Nước → *Hơi Nước*; Đóng băng rồi đánh hệ Đá / Giác đấu → *Vỡ Băng*. Phối hợp trạng thái và hệ trong đội giờ có ý nghĩa ở Adventure, nhưng mỗi mục tiêu chỉ 6 giây một lần.
 - Pokémon biết lượng sức: yếu thì lùi về cạnh bạn, bạn bị thương thì đứa khỏe lao vào đỡ.
 - Đi ngang bụi quả chín, Pokémon của bạn tự chạy tới hái giúp.
+
+### Miệt vườn Phong Điền (vùng mẫu)
+- Trước: một bãi cỏ xanh trống trơn. Giờ: đi giữa các liếp cây ăn trái và dừa, băng qua mương bằng cầu ván, hái trái ở bụi chín (Pokémon của bạn chạy đi hái phụ), ngồi bờ mương câu Barboach bằng cây cần câu tre Ông Sáu cho mượn.
+- Một bụi rậm giấu lối vào khoảng vườn bí mật; một tảng đá nứt trong vườn cò giấu hốc đá — cần Pokémon biết Cắt / Đập đá.
