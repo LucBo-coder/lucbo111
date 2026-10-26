@@ -101,3 +101,38 @@ Sửa trong lúc test: vùng bấm E của bến chỉ tính từ giữa bến (
 | E2E hồi quy (v22 ×4, v13_can_tho, v8_vietnam, v18_events, evolution, adventure) | 18/18 ✅ (2 luồng) |
 
 Ảnh đã xem: chợ nổi lúc 5:11 với ghe hàng, cây bẹo, tên ghe, thông báo chợ họp.
+
+## V22 — đợt 4: sinh thái (đàn, lãnh thổ, điều kiện hiếm)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **442/442 ✅**. Mới: `v22_ecology.test.ts` (10) — dữ liệu hợp lệ; đàn 2–3 con, đầu đàn Mightyena chỉ khi đàn đủ cấp; đánh 1 con → cả đàn hung hăng, đàn nhút nhát tản ra còn đầu đàn đánh; đầu đàn gục → đàn bỏ chạy; Tauros ngoài lãnh thổ không phản ứng, bước vào → cảnh báo → tấn công, ra xa → thôi đuổi; điều kiện hiếm theo giờ / thời tiết / vùng / nước, tỉ lệ ≈ cấu hình; spawner: đàn có chung id, ≤ 14 Pokémon; đêm sương trong rừng sinh Misdreavus |
+| E2E mới (`v22_ecology.spec.ts`) | ✅ — vòng đỏ lãnh thổ khi cảnh báo, Tauros lao vào rồi bỏ đuổi, vòng tắt; đàn Poochyena + Mightyena đầu đàn đứng sát nhau, đánh 1 con cả đàn hung hăng; Pokémon hiếm báo một lần (không trùng thông báo "Pokémon hiếm"), `ecoSeen` ghi nhận |
+| E2E hồi quy (v22 ×3, v13_can_tho, v8_vietnam, v18_events, adventure, v9_aquatic, v4_regions, perf, evolution, v3_events, overworld_visual) | 28/28 ✅ (2 luồng) |
+
+Ảnh đã xem: vòng lãnh thổ quanh Tauros, đàn Poochyena với Mightyena, thông báo điều kiện hiếm.
+Lỗi tìm thấy và sửa: Pokémon dưới nước có thể sinh nhiều con trong một nhịp, vượt giới hạn tổng (bị test giới hạn mới bắt được); thông báo trùng khi Pokémon hiếm xuất hiện.
+
+## V22 — đợt 5: Hầm ngục 2.0
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **450/450 ✅**. Mới: `v22_dungeon2.test.ts` (8) — biến thể cố định theo ngày / độ khó, không trùng, đổi theo ngày; thưởng nhân hệ số, Mạch quặng thêm đồ, bảng gốc không bị sửa; Bầy đàn +2, Tinh anh +1, Địa chấn nhiều đá hơn ≥ 1,4×; bẫy đúng chỗ (sàn trống, xa cửa / phiến đá / nhau), nổ một lần; 4 hầm đều có vách nứt + rương bí mật, vách chắn đến khi đập, rương một lần mỗi lượt; Flash theo hệ / cấp |
+| E2E mới (`v22_dungeon2.spec.ts`) | ✅ — ngày 4 Thường = Hang tối; không có Flash: lớp tối 0,93, HUD hiện "Hang tối"; bẫy nổ; bấm E ở vách nứt với Geodude Lv 20 → vách mở, đi bộ vào, mở rương +2 Great Ball, bấm lại không nhận thêm; vào lại với Pikachu Lv 12 → "Pikachu dùng Flash", lớp tối < 0,8 |
+| E2E hồi quy (v6_dungeons, adventure, coop, smoke, v22 ecology / field_boat / dungeon2) | 16/16 ✅ |
+
+Ghi chú: một lần chạy unit khi máy đang chạy e2e song song có 10 test server timeout; chạy lại riêng 26/26 và toàn bộ 450/450 đều qua.
+Ảnh đã xem: hang tối với vòng sáng quanh người chơi, rương bí mật trong phòng vừa mở, hang sáng nhờ Pikachu.
+
+## V22 — đợt 6: điều tra huyền thoại
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **454/454 ✅**. Mới: `v22_legend_clues.test.ts` (4) — 13 × 3 manh mối, id không trùng; mọi manh mối trên đất khô, không đè vật thể, đi tới được (BFS từ điểm xuất phát của bản đồ); chỉ hiện khi đã mở khóa và chưa bắt, mất đi khi đã đọc; hoàn tất sau 3; tóm tắt điều kiện |
+| E2E mới (`v22_legend_clues.spec.ts`) | ✅ — Bờ San Hô: Lugia chưa mở → 0 manh mối; mở → 3; bấm E từng cái (thật), hộp thoại "Manh mối về Lugia: 3/3" + điều kiện; cửa sổ thu phục 6 lượt (5 + 1); đi lại vùng → không hiện lại |
+| E2E hồi quy (v22 ×5, v6_rayquaza, v7_regions, v4_regions, v13_can_tho, v8_vietnam, adventure, v6_dungeons, evolution, v18_events) | 25/25 ✅ |
+
+Ảnh đã xem: đốm sáng manh mối ở bìa rừng dừa (đã tăng độ sáng sau lần xem đầu vì quá mờ), hộp thoại hoàn tất.

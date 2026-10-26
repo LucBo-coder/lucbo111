@@ -1,0 +1,66 @@
+{
+  "packs": [
+    { "species": "poochyena", "size": [2, 3], "leader": "mightyena" },
+    { "species": "mareep", "size": [2, 4], "leader": "flaaffy" },
+    { "species": "doduo", "size": [2, 3], "leader": "dodrio" },
+    { "species": "zubat", "size": [2, 4] },
+    { "species": "spearow", "size": [2, 3], "leader": "fearow" },
+    { "species": "starly", "size": [2, 4], "leader": "staravia" },
+    { "species": "combee", "size": [2, 4], "leader": "vespiquen" },
+    { "species": "mankey", "size": [2, 3], "leader": "primeape" },
+    { "species": "houndour", "size": [2, 3], "leader": "houndoom" },
+    { "species": "murkrow", "size": [2, 3], "leader": "honchkrow" },
+    { "species": "wingull", "size": [2, 3], "leader": "pelipper" },
+    { "species": "lotad", "size": [2, 3] },
+    { "species": "ducklett", "size": [2, 3] },
+    { "species": "sentret", "size": [2, 3], "leader": "furret" }
+  ],
+  "territorial": [
+    { "species": "tauros", "radius": 230 },
+    { "species": "heracross", "radius": 190 },
+    { "species": "pinsir", "radius": 190 },
+    { "species": "scyther", "radius": 210 },
+    { "species": "kangaskhan", "radius": 210 },
+    { "species": "gligar", "radius": 170 },
+    { "species": "skarmory", "radius": 230 },
+    { "species": "gible", "radius": 170 },
+    { "species": "seviper", "radius": 180 },
+    { "species": "zangoose", "radius": 180 },
+    { "species": "teddiursa", "radius": 150 },
+    { "species": "phanpy", "radius": 150 }
+  ],
+  "rare": [
+    {
+      "id": "absol-storm", "species": "absol", "biomes": ["rocky", "sanctuary"], "time": "night", "weather": ["thunderstorm", "heavyRain"], "chance": 0.08,
+      "hint": "Absol chỉ hiện trên vùng đá vào những đêm giông bão."
+    },
+    {
+      "id": "misdreavus-fog", "species": "misdreavus", "biomes": ["ruins", "swamp", "forest"], "time": "night", "weather": ["fog", "mysticFog"], "chance": 0.07,
+      "hint": "Đêm sương mù dày, Misdreavus lảng vảng quanh phế tích và đầm lầy."
+    },
+    {
+      "id": "chatot-dawn", "species": "chatot", "biomes": ["forest", "meadow"], "hours": [300, 480], "weather": ["clear"], "chance": 0.05,
+      "hint": "Chatot hót vào lúc rạng sáng, khi trời quang."
+    },
+    {
+      "id": "tropius-rain", "species": "tropius", "biomes": ["forest"], "time": "day", "weather": ["rain", "heavyRain"], "chance": 0.05,
+      "hint": "Tropius xuống tán rừng tránh mưa vào ban ngày."
+    },
+    {
+      "id": "relicanth-dawn", "species": "relicanth", "biomes": ["lake", "coast"], "aquatic": true, "hours": [240, 420], "chance": 0.05,
+      "hint": "Relicanth — cá cổ — nổi lên mặt nước lúc tờ mờ sáng."
+    },
+    {
+      "id": "seviper-uminh", "species": "seviper", "regions": ["vn-cm-uminh", "vn-cm-mangrove"], "time": "night", "weather": ["rain", "heavyRain", "fog"], "chance": 0.06,
+      "hint": "Rừng tràm U Minh: đêm mưa hay sương, Seviper rời hang đi săn."
+    },
+    {
+      "id": "sableye-thatson", "species": "sableye", "regions": ["vn-ag-that-son", "vn-ag-nui-sam", "vn-ag-temple"], "time": "night", "weather": ["fog", "mysticFog", "clear"], "chance": 0.05,
+      "hint": "Bảy Núi về khuya, đá quý trong hang lấp lánh — là mắt của Sableye."
+    },
+    {
+      "id": "zangoose-fields", "species": "zangoose", "regions": ["vn-ct-fields", "vn-ct-orchard"], "time": "day", "weather": ["clear", "heatwave"], "chance": 0.05,
+      "hint": "Ngày nắng gắt trên đồng ruộng Cần Thơ, Zangoose ra săn rắn."
+    }
+  ]
+}

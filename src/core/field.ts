@@ -4,7 +4,7 @@
 import abilitiesJson from '../data/world/field-abilities.json';
 import type { PokeType } from './types';
 
-export type FieldAbility = 'cut' | 'smash' | 'strength' | 'boat';
+export type FieldAbility = 'cut' | 'smash' | 'strength' | 'boat' | 'flash';
 export interface FieldAbilityDef { name: string; obstacle: string; hint: string; types: PokeType[]; minLevel: number; requiresFlag?: string }
 export const FIELD_ABILITIES = abilitiesJson as unknown as Record<FieldAbility, FieldAbilityDef>;
 

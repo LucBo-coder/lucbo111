@@ -1,4 +1,5 @@
-import { Biome, regionOfArea, rollEncounter, SHINY_BASE, SpawnContext, WeatherKind } from '../core/encounters';
+import { Biome, EncounterRoll, RegionDef, regionOfArea, rollEncounter, SHINY_BASE, SpawnContext, WeatherKind } from '../core/encounters';
+import { PACK_SPREAD, planPack, rollRare, territoryOf } from '../core/ecologyRules';
 import { MapProvider, SpawnEntry } from '../core/map/mapProvider';
 import { T, TILE_PX } from '../core/map/tiles';
 import { makeWildState } from '../core/wildAI';
@@ -9,6 +10,8 @@ import type { Unit, World } from '../core/world';
 // rarity tier → species → level → shiny). Dungeons keep their authored tables.
 // Density caps: global, per chunk-sized neighbourhood, per region, plus a separate budget for event spawns.
 // Calm wild Pokémon that drift far from the player are despawned (memory + CPU bound).
+// Ecology rules (core/ecologyRules): rare-condition species are rolled first, pack species arrive with their group,
+// territorial species guard the ground around where they spawned.
 
 /** What active world events contribute to spawning right now. */
 export interface EventSpawnInfo {
@@ -27,12 +30,16 @@ export interface SpawnOptions {
   levelBonus?: () => number;
   isNight: () => boolean;
   weather: () => WeatherKind;
+  /** In-game clock in minutes (rare spawns tied to an hour window) */
+  clock?: () => number;
   events?: () => EventSpawnInfo;
   /** Returns false for tiles outside loaded chunks */
   loaded: (tx: number, ty: number) => boolean;
   /** True if a world point is currently on screen (spawns never pop in visibly) */
   onScreen?: (x: number, y: number) => boolean;
   onSpawn?: (u: Unit) => void;
+  /** A rare-condition spawn (rule id from ecology-rules.json) */
+  onRare?: (u: Unit, rule: string) => void;
 }
 
 const MIN_DIST = 380;
@@ -48,6 +55,8 @@ export class SpawnManager {
   private readonly maxActive: number;
   spawned = 0;
   shinySpawned = 0;
+  rareSpawned = 0;
+  private packSeq = 0;
 
   constructor(private world: World, private map: MapProvider, private o: SpawnOptions) {
     this.maxActive = o.maxActive ?? 14;
@@ -91,7 +100,7 @@ export class SpawnManager {
       if (!this.o.loaded(tx, ty)) continue;
       if (this.o.onScreen?.(x, y)) continue;
       // open water (not the shore): fish & sea creatures only
-      if (this.map.kind === 'overworld' && this.isOpenWater(tx, ty)) { this.spawnInWater(x, y, tx, ty, wild, ev); continue; }
+      if (this.map.kind === 'overworld' && this.isOpenWater(tx, ty)) { if (this.spawnInWater(x, y, tx, ty, wild, ev)) return; continue; } // one spawn per tick, water included
       if (this.map.solidAt(tx, ty) || this.world.blocked(x, y, 18)) continue;
       const habitat = this.map.habitatAt(tx, ty);
       if (!habitat) continue;
@@ -107,14 +116,13 @@ export class SpawnManager {
         const ctx: SpawnContext = {
           biome: BIOME_OF_HABITAT[habitat] ?? region.biome, extraBiomes: ev.extraBiomes, night: this.o.isNight(), weather: this.o.weather(), boosted: ev.boosted,
         };
-        const roll = rollEncounter(this.world.rng, ctx, region, { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE });
+        const opts = { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE, clock: this.o.clock?.() };
+        const rare = rollRare(this.world.rng, ctx, region, opts);
+        const roll = rare ?? rollEncounter(this.world.rng, ctx, region, opts);
         if (!roll) continue;
-        const u = this.world.spawnWild(roll.species, roll.level, x, y, { wild: makeWildState(x, y, roll.temperament, {}), hostile: false });
-        u.shiny = roll.shiny;
-        u.rarity = roll.rarity;
-        this.spawned++;
-        if (roll.shiny) this.shinySpawned++;
-        this.o.onSpawn?.(u);
+        const u = this.spawnRolled(roll, x, y, { rare: rare?.rule });
+        if (rare) { this.rareSpawned++; this.o.onRare?.(u, rare.rule); }
+        else this.spawnPack(u, roll, region, wild.length);
         return;
       }
       // dungeons / unmapped areas: authored tables
@@ -132,6 +140,48 @@ export class SpawnManager {
     }
   }
 
+  /** One ecology spawn (territory from the rules), counted and announced. */
+  private spawnRolled(roll: EncounterRoll, x: number, y: number, extra: { pack?: number; leader?: boolean; follow?: Unit; rare?: string } = {}): Unit {
+    const w = makeWildState(x, y, roll.temperament, { territory: territoryOf(roll.species) || undefined });
+    if (extra.rare) w.rare = extra.rare;
+    if (extra.pack) { w.pack = extra.pack; w.leader = !!extra.leader; w.follow = extra.follow ?? null; }
+    const u = this.world.spawnWild(roll.species, roll.level, x, y, { wild: w, hostile: false });
+    u.shiny = roll.shiny;
+    u.rarity = roll.rarity;
+    this.spawned++;
+    if (roll.shiny) this.shinySpawned++;
+    this.o.onSpawn?.(u);
+    return u;
+  }
+
+  /** A pack species arrives with its group: same home, followers keep close to the leader. Respects the global cap. */
+  private spawnPack(first: Unit, roll: EncounterRoll, region: RegionDef, wildCount: number): void {
+    const plan = planPack(this.world.rng, roll, region);
+    if (!plan.length) return;
+    const room = this.maxActive - wildCount - 1; // the group never pushes past the global cap
+    const members = plan.slice(0, Math.max(0, room));
+    if (!members.length) return;
+    const pack = ++this.packSeq;
+    const fw = first.wild!;
+    fw.pack = pack;
+    let leader: Unit | null = null;
+    for (const m of members) {
+      let px = first.x, py = first.y;
+      for (let k = 0; k < 6; k++) {
+        const a = this.world.rng.range(0, Math.PI * 2), d = this.world.rng.range(PACK_SPREAD * 0.5, PACK_SPREAD);
+        const cx = first.x + Math.cos(a) * d, cy = first.y + Math.sin(a) * d;
+        if (!this.map.solidAt(Math.floor(cx / TILE_PX), Math.floor(cy / TILE_PX)) && !this.world.blocked(cx, cy, 18)) { px = cx; py = cy; break; }
+      }
+      const r: EncounterRoll = { species: m.species, level: m.level, rarity: m.leader && m.species !== roll.species ? 'uncommon' : roll.rarity, shiny: this.world.rng.next() < SHINY_BASE, temperament: roll.temperament };
+      const u = this.spawnRolled(r, px, py, { pack, leader: m.leader, follow: leader ?? undefined });
+      if (m.leader) leader = u;
+    }
+    if (leader) {
+      fw.follow = leader;
+      for (const e of this.world.enemies) if (e.wild?.pack === pack && e !== leader && !e.wild.follow) e.wild.follow = leader;
+    }
+  }
+
   /** Water tile mostly surrounded by water (≥ 6 of 8 neighbours) — narrow canals count, a single wet tile does not. */
   private isOpenWater(tx: number, ty: number): boolean {
     if (this.map.terrainAt(tx, ty) !== T.Water) return false;
@@ -141,21 +191,26 @@ export class SpawnManager {
   }
 
   /** An aquatic spawn: the area's sea (coast) or fresh-water (everything else) pool, aquatic species only. */
-  private spawnInWater(x: number, y: number, tx: number, ty: number, wild: Unit[], ev: EventSpawnInfo): void {
+  private spawnInWater(x: number, y: number, tx: number, ty: number, wild: Unit[], ev: EventSpawnInfo): boolean {
     const area = this.map.areaAt(tx, ty);
     const region = regionOfArea(area?.id);
-    if (!region) return;
-    if (wild.filter((w) => w.aquatic && Math.hypot(w.x - x, w.y - y) < 400).length >= 2) return;
+    if (!region) return false;
+    if (wild.filter((w) => w.aquatic && Math.hypot(w.x - x, w.y - y) < 400).length >= 2) return false;
     const ctx: SpawnContext = {
       biome: area?.habitat === 'coast' || region.biome === 'coast' ? 'coast' : 'lake', aquatic: true, extraBiomes: ev.extraBiomes,
       night: this.o.isNight(), weather: this.o.weather(), boosted: ev.boosted,
     };
-    const roll = rollEncounter(this.world.rng, ctx, region, { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE });
-    if (!roll) return;
+    const opts = { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE, clock: this.o.clock?.() };
+    const rare = rollRare(this.world.rng, ctx, region, opts);
+    const roll = rare ?? rollEncounter(this.world.rng, ctx, region, opts);
+    if (!roll) return false;
     const cx = (tx + 0.5) * TILE_PX, cy = (ty + 0.5) * TILE_PX;
-    const u = this.world.spawnWild(roll.species, roll.level, cx, cy, { wild: makeWildState(cx, cy, roll.temperament, { homeR: 70 }), hostile: false });
+    const u = this.world.spawnWild(roll.species, roll.level, cx, cy, { wild: { ...makeWildState(cx, cy, roll.temperament, { homeR: 70 }), ...(rare ? { rare: rare.rule } : {}) }, hostile: false });
     u.shiny = roll.shiny;
+    u.rarity = roll.rarity;
+    if (rare) { this.rareSpawned++; this.o.onSpawn?.(u); this.o.onRare?.(u, rare.rule); }
     void x; void y;
+    return true;
   }
 
 }

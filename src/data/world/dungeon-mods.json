@@ -1,0 +1,20 @@
+{
+  "mods": [
+    {
+      "id": "dark", "name": "Hang tối", "reward": 0.25,
+      "desc": "Đuốc tắt hết, chỉ thấy quanh mình. Một Pokémon dùng được Flash (hệ Điện, Lửa hoặc Tiên, Lv 10+) sẽ soi sáng cả hang."
+    },
+    { "id": "swarm", "name": "Bầy đàn", "reward": 0.2, "extraPerWave": 2, "desc": "Mỗi đợt có thêm 2 kẻ địch." },
+    { "id": "quake", "name": "Địa chấn", "reward": 0.15, "hazardMult": 0.6, "desc": "Đá rơi ở hành lang dày gần gấp đôi." },
+    { "id": "elite", "name": "Tinh anh", "reward": 0.25, "elitesPerWave": 1, "desc": "Đợt nào cũng có một kẻ địch tinh anh." },
+    { "id": "traps", "name": "Bẫy ngầm", "reward": 0.15, "traps": 5, "desc": "Thêm 5 bẫy dưới sàn phòng đánh và phòng câu đố." },
+    { "id": "rich", "name": "Mạch quặng", "reward": 0, "bonusItems": { "exp-candy-s": 1, "duskball": 2 }, "desc": "Rương phần thưởng có thêm kẹo kinh nghiệm và Dusk Ball." }
+  ],
+  "count": { "normal": [1, 1], "hard": [1, 2], "expert": [2, 2] },
+  "traps": { "normal": 2, "hard": 4, "expert": 6 },
+  "secret": {
+    "normal": { "greatball": 2, "oranberry": 2 },
+    "hard": { "ultraball": 1, "superpotion": 1, "exp-candy-s": 1 },
+    "expert": { "ultraball": 2, "superpotion": 2, "exp-candy-s": 2 }
+  }
+}

@@ -135,6 +135,9 @@ Bản đồ chia chunk tải động, có ngày/đêm, thời tiết (mưa, sư�
 ### 5.2 Pokémon hoang dã
 - Mỗi loài có sinh cảnh, độ hiếm, khoảng cấp, giờ hoạt động, hệ số thời tiết và tính khí (nhút nhát / trung tính / hung hăng). Cá chỉ xuất hiện và bơi trong nước.
 - AI hoang dã: lang thang, ăn, ngủ (theo chu kỳ ngày/đêm), cảnh giác, bỏ chạy, đuổi đánh, quay về lãnh thổ.
+- **Đàn** (`ecology-rules.json → packs`): một số loài đi thành nhóm 2–4 con với một con đầu đàn (dạng tiến hóa khi cấp cho phép). Đánh một con là cả đàn phản ứng; đầu đàn gục thì đàn tan.
+- **Lãnh thổ** (`territorial`): loài giữ lãnh thổ cảnh báo (vòng đỏ) khi người chơi bước vào, rồi tấn công; ra khỏi vùng thì thôi đuổi.
+- **Điều kiện hiếm** (`rare`): loài chỉ xuất hiện khi đúng sinh cảnh / vùng + giờ + thời tiết; xuất hiện thì có thông báo gợi ý, ghi vào save.
 - Bảng tên trên đầu: tên + cấp, α Alpha, ★ tinh anh, ✦ shiny.
 
 ### 5.3 Thu phục
@@ -163,12 +166,18 @@ Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu,
 
 ### 5.5 Hầm ngục
 Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmortar), Tháp Thử Thách (Tyranitar, có giới hạn thời gian). Mỗi hầm: phòng sóng quái → bẫy (đá rơi / băng rơi / đá nóng) → câu đố → phòng Boss → rương. **3 độ khó** (Thường / Khó / Chuyên gia), phần thưởng lần đầu riêng.
+- **Biến thể theo ngày** (`dungeon-mods.json`): 1–2 biến thể mỗi ngày trong game cho từng hầm và độ khó — Hang tối, Bầy đàn, Địa chấn, Tinh anh, Bẫy ngầm, Mạch quặng. Biến thể khó hơn thì EXP nhiều hơn. Xem trước ở cửa hang.
+- **Flash**: Pokémon hệ Điện / Lửa / Tiên Lv 10+ trong đội soi sáng hang tối.
+- **Bẫy sàn** trong phòng đánh và phòng câu đố (2 / 4 / 6 theo độ khó), mỗi bẫy kích hoạt một lần.
+- **Phòng bí mật** sau vách đá nứt cạnh phòng câu đố (cần *Đập đá*), có rương mỗi lượt.
 
 ### 5.6 Boss & huyền thoại
 - **World Boss Mega Venusaur Thần Rừng**: 3 phase, phase cuối phủ cả khu chỉ chừa 3 vùng bóng râm an toàn.
 - **35 huyền thoại / thần thoại Gen 1–4**: đền thờ phân bố theo chủ đề vùng (tối đa 8 đền/bản đồ) và 7 con lang thang. Chuỗi nhiệm vụ huyền thoại mở theo dữ liệu (Thần Điểu → Lugia, Tam Thú → Ho-Oh, … → Arceus).
 - Boss nhiều phase dùng chung **BossPhaseManager**: một đòn không thể bỏ qua phase, có cinematic chuyển phase, đổi dạng (ví dụ Rayquaza → Mega Rayquaza → Cuồng Nộ). Boss HUD có thanh HP, phase, cảnh báo tên chiêu kèm đếm ngược.
 - Huyền thoại bị đánh tới **WEAKENED** (4% HP) → mở **cửa sổ bắt** có giới hạn lượt ném / thời gian; bắt hụt thì nó bay đi và quay lại sau.
+
+- **Điều tra huyền thoại**: 13 huyền thoại có 3 manh mối rải trên bản đồ (hiện sau khi mở khóa theo cốt truyện). Đủ manh mối → biết điều kiện xuất hiện, thêm 1 lượt ném khi thu phục. Cửa sổ thu phục (WEAKENED) lưu trong save, tải lại không làm mới số lượt.
 
 ### 5.7 Sự kiện thế giới
 Bùng phát, Pokémon Alpha, Di cư, Vùng biến dạng, kho báu, bão tuyết / sóng nhiệt, **Thương nhân lưu động** (6 món hiếm giảm 30%), **Mưa sao băng** (nhặt 5 mảnh sao đổi đá tiến hóa / đá Mega). Có thông báo, bảng đếm ngược, đánh dấu trên bản đồ nhỏ.

@@ -55,6 +55,8 @@ export interface AdventureSave {
   day?: number;
   /** Chợ nổi Cái Răng: what was bought on the current market day (limited stock per day) */
   market?: { day: number; bought: Record<string, number> };
+  /** Rare ecology conditions met so far (rule ids from ecology-rules.json) */
+  ecoSeen?: string[];
   /** World events: check timers, per-type cooldowns, history (active events are not saved) */
   events: EventSave;
   /** Legendary / Mythical encounter states (persistent: a caught legendary never respawns as a duplicate) */

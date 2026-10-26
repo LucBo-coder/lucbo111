@@ -1,0 +1,340 @@
+[
+ {
+  "legend": "lugia",
+  "clues": [
+   {
+    "id": "lugia-1",
+    "region": "coral-coast",
+    "x": 61,
+    "y": 3,
+    "text": "Một chiếc lông vũ bạc to bằng cánh tay mắc trên bãi đá, vẫn còn ướt nước biển."
+   },
+   {
+    "id": "lugia-2",
+    "region": "coral-coast",
+    "x": 69,
+    "y": 24,
+    "text": "Ngư dân khắc trên tảng đá: \"Bão về thì đừng ra khơi — có thứ gì to lớn bơi dưới sóng.\""
+   },
+   {
+    "id": "lugia-3",
+    "region": "coral-coast",
+    "x": 35,
+    "y": 17,
+    "text": "Vết cào sâu trên vách đá hướng ra biển. Chỉ một sinh vật bay được trong bão mới đậu nổi ở đây."
+   }
+  ]
+ },
+ {
+  "legend": "kyogre",
+  "clues": [
+   {
+    "id": "kyogre-1",
+    "region": "coral-coast",
+    "x": 67,
+    "y": 53,
+    "text": "Vỏ sò cổ xếp thành hình vòng tròn, mặt trong ánh lên vân xanh như đường gân."
+   },
+   {
+    "id": "kyogre-2",
+    "region": "coral-coast",
+    "x": 54,
+    "y": 72,
+    "text": "Mực nước ở đây từng dâng cao quá đầu người — vạch nước cũ còn hằn trên đá."
+   },
+   {
+    "id": "kyogre-3",
+    "region": "coral-coast",
+    "x": 41,
+    "y": 39,
+    "text": "Trong cơn mưa, biển phía nam sôi lên dù trời lạnh. Kẻ ngủ dưới đáy biển chỉ thức khi trời đổ mưa."
+   }
+  ]
+ },
+ {
+  "legend": "groudon",
+  "clues": [
+   {
+    "id": "groudon-1",
+    "region": "volcanic-lands",
+    "x": 98,
+    "y": 54,
+    "text": "Đá ở đây nứt toác, mép vết nứt bóng như thủy tinh — đã từng tan chảy."
+   },
+   {
+    "id": "groudon-2",
+    "region": "volcanic-lands",
+    "x": 80,
+    "y": 50,
+    "text": "Dấu chân khổng lồ in trên lớp tro cứng, mỗi dấu dài bằng ba người nằm."
+   },
+   {
+    "id": "groudon-3",
+    "region": "volcanic-lands",
+    "x": 100,
+    "y": 21,
+    "text": "Mặt đất nóng nhất vào lúc trời nắng gắt. Có thứ gì đó dưới núi lửa đang chờ ánh mặt trời."
+   }
+  ]
+ },
+ {
+  "legend": "rayquaza",
+  "clues": [
+   {
+    "id": "rayquaza-1",
+    "region": "coral-coast",
+    "x": 13,
+    "y": 91,
+    "text": "Một mảnh vảy xanh lục rơi từ trên cao, nhẹ như lá nhưng cứng như thép."
+   },
+   {
+    "id": "rayquaza-2",
+    "region": "coral-coast",
+    "x": 3,
+    "y": 70,
+    "text": "Gió trên đỉnh vách xoáy thành vòng tròn, như có thứ gì vừa bay ngang qua."
+   },
+   {
+    "id": "rayquaza-3",
+    "region": "coral-coast",
+    "x": 36,
+    "y": 73,
+    "text": "Bức khắc cổ: một con rồng dài vô tận tách đôi sóng biển và mặt đất đang tranh nhau."
+   }
+  ]
+ },
+ {
+  "legend": "regice",
+  "clues": [
+   {
+    "id": "regice-1",
+    "region": "frozen-mountains",
+    "x": 108,
+    "y": 45,
+    "text": "Một khối băng không tan dù đặt dưới nắng, bề mặt khắc những chấm tròn xếp hàng."
+   },
+   {
+    "id": "regice-2",
+    "region": "frozen-mountains",
+    "x": 96,
+    "y": 58,
+    "text": "Các chấm trên đá xếp thành chữ cổ: \"Gió tuyết là tiếng gọi.\""
+   },
+   {
+    "id": "regice-3",
+    "region": "frozen-mountains",
+    "x": 83,
+    "y": 25,
+    "text": "Vòng đá trên đỉnh phủ băng dày nhất vào ngày bão tuyết — như có thứ gì đang thở ra hơi lạnh."
+   }
+  ]
+ },
+ {
+  "legend": "regirock",
+  "clues": [
+   {
+    "id": "regirock-1",
+    "region": "volcanic-lands",
+    "x": 11,
+    "y": 47,
+    "text": "Những tảng đá đỏ xếp thành hình người, ở giữa có bảy chấm khắc sâu."
+   },
+   {
+    "id": "regirock-2",
+    "region": "volcanic-lands",
+    "x": 3,
+    "y": 25,
+    "text": "Bia đá cổ: \"Kẻ được Thần Rừng công nhận sẽ đánh thức người khổng lồ đá.\""
+   },
+   {
+    "id": "regirock-3",
+    "region": "volcanic-lands",
+    "x": 34,
+    "y": 29,
+    "text": "Đá vụn quanh đây mang dấu vết bị chính đá khác va vỡ — như có ai đó tự vá thân mình."
+   }
+  ]
+ },
+ {
+  "legend": "registeel",
+  "clues": [
+   {
+    "id": "registeel-1",
+    "region": "coral-coast",
+    "x": 32,
+    "y": 92,
+    "text": "Một mảnh kim loại đen không gỉ dù nằm sát biển mặn."
+   },
+   {
+    "id": "registeel-2",
+    "region": "coral-coast",
+    "x": 46,
+    "y": 73,
+    "text": "Ký tự khắc trên vách: \"Thép không đến từ mỏ nào — nó được rèn trong lòng đất cổ.\""
+   },
+   {
+    "id": "registeel-3",
+    "region": "coral-coast",
+    "x": 16,
+    "y": 92,
+    "text": "Ngoài bờ đá có một vòng tròn từ tính: kim la bàn quay tít khi đến gần."
+   }
+  ]
+ },
+ {
+  "legend": "heatran",
+  "clues": [
+   {
+    "id": "heatran-1",
+    "region": "volcanic-lands",
+    "x": 69,
+    "y": 16,
+    "text": "Một vết bỏng hình bàn chân bám ngược trên trần hang đá."
+   },
+   {
+    "id": "heatran-2",
+    "region": "volcanic-lands",
+    "x": 57,
+    "y": 11,
+    "text": "Khí lưu huỳnh phun mạnh nhất vào lúc trời nắng gắt."
+   },
+   {
+    "id": "heatran-3",
+    "region": "volcanic-lands",
+    "x": 97,
+    "y": 4,
+    "text": "Đá nóng chảy chảy ngược lên dốc — có thứ gì đó đang bò trên miệng núi lửa."
+   }
+  ]
+ },
+ {
+  "legend": "giratina",
+  "clues": [
+   {
+    "id": "giratina-1",
+    "region": "misty-swamp",
+    "x": 99,
+    "y": 21,
+    "text": "Cái bóng của cây khô này chỉ về phía mặt trời, ngược với mọi cái bóng khác."
+   },
+   {
+    "id": "giratina-2",
+    "region": "misty-swamp",
+    "x": 108,
+    "y": 26,
+    "text": "Trong đêm, mặt hồ đầm phản chiếu một thế giới lộn ngược."
+   },
+   {
+    "id": "giratina-3",
+    "region": "misty-swamp",
+    "x": 106,
+    "y": 35,
+    "text": "Bùn ở đây nổi bong bóng lạnh băng vào ban đêm, như có cánh cửa mở ra từ bên dưới."
+   }
+  ]
+ },
+ {
+  "legend": "darkrai",
+  "clues": [
+   {
+    "id": "darkrai-1",
+    "region": "misty-swamp",
+    "x": 25,
+    "y": 14,
+    "text": "Người đi qua đầm lầy kể cùng một giấc mơ: một bóng đen với chiếc khăn đỏ."
+   },
+   {
+    "id": "darkrai-2",
+    "region": "misty-swamp",
+    "x": 3,
+    "y": 13,
+    "text": "Hoa ở đây khép lại cả ban ngày, như đang ngủ một giấc không yên."
+   },
+   {
+    "id": "darkrai-3",
+    "region": "misty-swamp",
+    "x": 42,
+    "y": 4,
+    "text": "Một chiếc lông trăng lưỡi liềm có thể xua cơn ác mộng — nhưng kẻ gây ác mộng chỉ đến khi trời tối."
+   }
+  ]
+ },
+ {
+  "legend": "raikou",
+  "clues": [
+   {
+    "id": "raikou-1",
+    "region": "starter-valley",
+    "x": 61,
+    "y": 72,
+    "text": "Thân cây cháy sém thành vệt dài, như bị sét đánh ngang chứ không phải từ trên xuống."
+   },
+   {
+    "id": "raikou-2",
+    "region": "starter-valley",
+    "x": 49,
+    "y": 109,
+    "text": "Bò trong trang trại hoảng loạn mỗi lần có sấm. Ai đó thấy một bóng vàng chạy nhanh hơn tia chớp."
+   },
+   {
+    "id": "raikou-3",
+    "region": "starter-valley",
+    "x": 132,
+    "y": 24,
+    "text": "Dấu chân dẫn qua đồng cỏ rồi biến mất giữa chừng. Nó chỉ xuất hiện khi trời có giông hoặc mưa."
+   }
+  ]
+ },
+ {
+  "legend": "entei",
+  "clues": [
+   {
+    "id": "entei-1",
+    "region": "starter-valley",
+    "x": 138,
+    "y": 24,
+    "text": "Tro còn ấm trong một vòng tròn cháy hoàn hảo, giữa không có củi."
+   },
+   {
+    "id": "entei-2",
+    "region": "starter-valley",
+    "x": 18,
+    "y": 37,
+    "text": "Người dân kể về một con thú lửa chạy qua thì núi lửa phun."
+   },
+   {
+    "id": "entei-3",
+    "region": "starter-valley",
+    "x": 66,
+    "y": 27,
+    "text": "Dấu chân in sâu, cỏ quanh đó khô quắt. Nó lang thang khi trời nắng nóng hoặc quang đãng."
+   }
+  ]
+ },
+ {
+  "legend": "suicune",
+  "clues": [
+   {
+    "id": "suicune-1",
+    "region": "starter-valley",
+    "x": 130,
+    "y": 82,
+    "text": "Nước ở vũng này trong vắt dù xung quanh toàn bùn."
+   },
+   {
+    "id": "suicune-2",
+    "region": "frozen-mountains",
+    "x": 52,
+    "y": 76,
+    "text": "Gió bắc thổi mạnh, nước trên hồ gợn sóng thành hình dải lụa."
+   },
+   {
+    "id": "suicune-3",
+    "region": "coral-coast",
+    "x": 32,
+    "y": 26,
+    "text": "Một làn sương mỏng trôi trên mặt nước rồi tan. Nó hay đến khi trời mưa hoặc vừa tạnh."
+   }
+  ]
+ }
+]

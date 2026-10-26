@@ -20,6 +20,7 @@ import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounter
 import { REGION_DEFS } from '../core/map/regionDefs';
 import { passportPages, ProvincePage, VN_PROVINCES } from '../adventure/passport';
 import { LEGENDS } from '../core/legends';
+import { cluesFound, conditionSummary, INVESTIGATION_BONUS, investigated, LEGEND_CLUES } from '../core/legendClues';
 import { EVENT_DEFS } from '../core/worldEvents';
 import { individualOf } from '../core/progression';
 import { Individual, NATURES, STAT_KEYS, StatKey } from '../core/stats';
@@ -357,7 +358,7 @@ export class AdventureUI extends Phaser.Scene {
     const wx = WEATHER_LABEL[wk] ?? (night ? 'Đêm' : 'Nắng');
     this.texts.clock.setText(a.mapKind === 'dungeon' ? a.map.name : `${String(Math.floor(c / 60)).padStart(2, '0')}:${String(Math.floor(c % 60)).padStart(2, '0')}  ${wx}`);
     const tl = a.dungeon?.timeLeft;
-    this.texts.area.setText(a.mapKind === 'dungeon' ? `Phase: ${phaseLabel(a.dungeon?.phase)}${tl != null ? `  ·  ⏱ ${Math.floor(tl / 60)}:${String(Math.floor(tl % 60)).padStart(2, '0')}` : ''}` : a.areaName).setColor(tl != null && tl < 30 ? '#ff7050' : COLORS.dim);
+    this.texts.area.setText(a.mapKind === 'dungeon' ? `Phase: ${phaseLabel(a.dungeon?.phase)}${a.dungeon?.mods.length ? ` · ${a.dungeon.mods.map((m) => m.name).join(', ')}` : ''}${tl != null ? `  ·  ⏱ ${Math.floor(tl / 60)}:${String(Math.floor(tl % 60)).padStart(2, '0')}` : ''}` : a.areaName).setColor(tl != null && tl < 30 ? '#ff7050' : COLORS.dim);
 
     // Quest tracker
     const qid = a.state.trackedQuest;
@@ -1374,7 +1375,7 @@ export class AdventureUI extends Phaser.Scene {
         : eco.method === 'event' ? 'Chỉ qua sự kiện (bùng phát / thời tiết dị thường / vùng biến dạng)' : eco.method === 'wild' ? 'Hoang dã' : 'Tiến hóa';
       const prefer = Object.entries(eco.weather).filter(([, v]) => (v ?? 1) > 1).map(([k]) => WEATHER_LABEL[k] ?? k).join(', ');
       const info = leg
-        ? `Huyền thoại · ${method}${leg.time ? ' · ' + (leg.time === 'night' ? 'ban đêm' : leg.time === 'dawn' ? 'bình minh' : 'ban ngày') : ''}${caught.has(sel.name) ? '\n' + leg.lore : ''}`
+        ? `Huyền thoại · ${method}${leg.time ? ' · ' + (leg.time === 'night' ? 'ban đêm' : leg.time === 'dawn' ? 'bình minh' : 'ban ngày') : ''}${investigationLine(sel.name, (f) => this.adv.state.hasFlag(f))}${caught.has(sel.name) ? '\n' + leg.lore : ''}`
         : `Môi trường: ${eco.biomes.map((b) => BIOME_VI[b] ?? b).join(', ')} · Độ hiếm: ${RARITY_LABEL[eco.rarity]} · ${eco.time === 'night' ? 'Ban đêm' : 'Mọi lúc'}${prefer ? ' · Ưa: ' + prefer : ''}\nCách gặp: ${method}${eco.minLevel > 1 ? ` (từ Lv${eco.minLevel})` : ''}${sv.pokedex.shiny?.includes(sel.name) ? '  ·  ✦ Đã bắt Shiny' : ''}`;
       c.add(text(this, dx + 16 * s, dy + 322 * s, info, 14 * s, '#f0d8ff').setWordWrapWidth(dw - 32 * s));
     }
@@ -1719,6 +1720,14 @@ function phaseLabel(p?: string): string {
 function heap(): string {
   const m = (performance as unknown as { memory?: { usedJSHeapSize: number } }).memory;
   return m ? ` | heap ${(m.usedJSHeapSize / 1048576).toFixed(0)}MB` : '';
+}
+
+/** "\nĐiều tra: 2/3 manh mối" — or the revealed conditions once the investigation is complete. */
+function investigationLine(legend: string, has: (f: string) => boolean): string {
+  const all = LEGEND_CLUES.get(legend);
+  if (!all) return '';
+  const l = LEGENDS.get(legend);
+  return investigated(legend, has) && l ? `\nĐiều tra xong — xuất hiện ${conditionSummary(l)} · +${INVESTIGATION_BONUS} lượt ném` : `\nĐiều tra: ${cluesFound(legend, has)}/${all.length} manh mối`;
 }
 
 /** "\nCà Mau: Quen mặt (22, còn 18)" for the region the player is in (empty where no table exists). */

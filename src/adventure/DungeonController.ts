@@ -1,3 +1,4 @@
+import { DungeonMod, placeTraps, scaleReward, secretLoot, trapCount } from '../core/dungeonMods';
 import { DungeonDef, DungeonMap } from '../core/map/dungeonMap';
 import { TILE_PX } from '../core/map/tiles';
 import { makeWildState } from '../core/wildAI';
@@ -8,6 +9,8 @@ import type { PokeType } from '../core/types';
 // Dungeon run state machine on top of the shared combat World:
 //   entrance → waves (doors lock, 3 waves, elites in the last) → hazard corridor (falling rocks)
 //   → rune-plate puzzle (memorise the lit order) → boss room (door locks, Onix) → reward chest → exit.
+// Dungeon 2.0: the variant of the day (core/dungeonMods) changes waves / hazards / light and scales the reward;
+// floor traps in the wave and puzzle rooms; a secret room behind a cracked wall (Rock Smash) with its own chest.
 
 export type DungeonPhase = 'entrance' | 'waves' | 'hazard' | 'puzzle' | 'bossWait' | 'boss' | 'reward' | 'done';
 
@@ -17,6 +20,8 @@ export interface DungeonHooks {
   bossDefeated(): void;
   /** Challenge time ran out */
   timeUp?(): void;
+  /** A floor trap went off (index into `traps`) */
+  trapSprung?(i: number): void;
 }
 
 export class DungeonController {
@@ -29,6 +34,9 @@ export class DungeonController {
   progress = 0;
   boss: Unit | null = null;
   chestOpened = false;
+  /** Floor traps: armed until the trainer steps on one */
+  readonly traps: { x: number; y: number; armed: boolean }[];
+  secretTaken = false;
   private t = 0;
   private hazardT = 0;
   private demoStep = -1;
@@ -38,11 +46,18 @@ export class DungeonController {
   timeLeft: number | null = null;
   private get hazardType(): PokeType { return this.map.def.hazardType ?? 'rock'; }
 
-  constructor(private world: World, readonly map: DungeonMap, readonly difficulty: Difficulty, private hooks: DungeonHooks) {
+  constructor(private world: World, readonly map: DungeonMap, readonly difficulty: Difficulty, private hooks: DungeonHooks, readonly mods: readonly DungeonMod[] = [], seed = 1) {
     this.cfg = map.def.difficulties[difficulty];
     this.timeLeft = this.cfg.timeLimit ?? null;
     map.setDoor('D', true);
     map.setDoor('Q', false);
+    map.setDoor('k', false);
+    const r = map.def.rooms;
+    this.traps = placeTraps(map.def.rows, [r.wave, r.puzzle], trapCount(difficulty, mods), seed).map((p) => ({ ...p, armed: true }));
+  }
+
+  has(mod: DungeonMod['id']): boolean {
+    return this.mods.some((m) => m.id === mod);
   }
 
   private trainerTile(): { tx: number; ty: number } {
@@ -65,10 +80,11 @@ export class DungeonController {
     const [x0, y0, x1] = this.map.def.rooms.wave;
     const list = this.map.def.waves[i];
     const last = i === this.map.def.waves.length - 1;
-    let eliteLeft = last ? this.cfg.elites : 0;
+    let eliteLeft = (last ? this.cfg.elites : 0) + this.mods.reduce((s, m) => s + (m.elitesPerWave ?? 0), 0);
+    const extra = this.mods.reduce((s, m) => s + (m.extraPerWave ?? 0), 0);
     this.waveUnits = [];
-    for (const [species, count] of list) {
-      for (let k = 0; k < count; k++) {
+    for (const [j, [species, count]] of list.entries()) {
+      for (let k = 0; k < count + (j === 0 ? extra : 0); k++) {
         const tx = this.world.rng.int(x0 + 1, x1 - 1), ty = this.world.rng.int(y0 + 1, y0 + 4);
         const p = this.center(tx, ty);
         this.waveUnits.push(this.spawn(species, this.cfg.level + i, p.x, p.y, eliteLeft-- > 0));
@@ -86,6 +102,7 @@ export class DungeonController {
       this.timeLeft -= dt;
       if (this.timeLeft <= 0) { this.timeLeft = 0; this.phase = 'done'; this.hooks.timeUp?.(); return; }
     }
+    this.updateTraps();
     switch (this.phase) {
       case 'entrance':
         if (room === 'wave' && ty < this.map.def.rooms.wave[3] - 1) {
@@ -115,7 +132,7 @@ export class DungeonController {
         if (room === 'hazard') {
           this.hazardT -= dt;
           if (this.hazardT <= 0) {
-            this.hazardT = this.cfg.hazardEvery;
+            this.hazardT = this.cfg.hazardEvery * this.mods.reduce((k, m) => k * (m.hazardMult ?? 1), 1);
             const tr = this.world.trainer;
             this.world.addHazard(tr.x + tr.vx * 0.6, tr.y + tr.vy * 0.6, 60, 1.0, 45, this.hazardType, this.cfg.level, this.map.def.hazardStatus);
             const [x0, y0, x1, y1] = this.map.def.rooms.hazard;
@@ -153,6 +170,32 @@ export class DungeonController {
         }
         break;
     }
+  }
+
+  private updateTraps(): void {
+    const tr = this.world.trainer;
+    for (const [i, p] of this.traps.entries()) {
+      if (!p.armed || Math.hypot((p.x + 0.5) * TILE_PX - tr.x, (p.y + 0.5) * TILE_PX - tr.y) > 22) continue;
+      // a click underfoot, then the trap fires where the trainer stood: half a second to jump clear
+      p.armed = false;
+      this.world.addHazard((p.x + 0.5) * TILE_PX, (p.y + 0.5) * TILE_PX, 58, 0.55, 40, this.hazardType, this.cfg.level, this.map.def.hazardStatus);
+      this.hooks.trapSprung?.(i);
+    }
+  }
+
+  /** Rock Smash on the cracked wall: the secret room opens for the rest of this run. */
+  openSecret(): boolean {
+    if (!this.map.crack || this.map.doorOpen('k')) return false;
+    this.map.setDoor('k', true);
+    this.hooks.doorsChanged();
+    return true;
+  }
+
+  /** The secret room's chest: once per run. */
+  takeSecret(): Record<string, number> | null {
+    if (!this.map.doorOpen('k') || this.secretTaken) return null;
+    this.secretTaken = true;
+    return secretLoot(this.difficulty);
   }
 
   private startDemo(): void {
@@ -205,6 +248,6 @@ export class DungeonController {
     if (this.phase !== 'reward' || this.chestOpened) return null;
     this.chestOpened = true;
     this.phase = 'done';
-    return this.cfg.rewards;
+    return scaleReward(this.cfg.rewards, this.mods);
   }
 }

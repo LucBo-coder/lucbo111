@@ -27,5 +27,12 @@
     "types": [],
     "minLevel": 0,
     "requiresFlag": "vehicle:ghe"
+  },
+  "flash": {
+    "name": "Flash",
+    "obstacle": "Hang tối",
+    "hint": "Hang tối om. Một Pokémon hệ Điện, Lửa hoặc Tiên (Lv 10+) trong đội có thể dùng Flash soi sáng.",
+    "types": ["electric", "fire", "fairy"],
+    "minLevel": 10
   }
 }

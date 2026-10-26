@@ -92,3 +92,18 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### Xuồng ở Cà Mau, đò ở An Giang
 - Cà Mau: *Chiếc xuồng ba lá* (Ngư dân Út Mũi) → bến Đất Mũi ↔ bến U Minh Hạ, ngược kênh (nước ròng chèo nặng hơn).
 - An Giang: bến đò thị trấn Bảy Núi ↔ bến Đồng Nước Nổi.
+
+### Sinh thái: đàn, lãnh thổ, điều kiện hiếm
+- Đàn Poochyena / Mareep / Doduo / Zubat… đi cùng nhau, theo con đầu đàn. Đánh một con là cả đàn xông vào — cần tính trước khi lao vào bụi cỏ. Hạ con đầu đàn thì đàn tan.
+- Tauros, Scyther, Kangaskhan, Skarmory… giữ lãnh thổ: bước vào thì vòng đỏ hiện lên cảnh báo, còn đứng đó là bị húc. Muốn đi qua thì vòng ra ngoài, muốn bắt thì chuẩn bị đánh.
+- Có những loài chỉ xuất hiện khi trời đất hội đủ điều kiện: Absol đêm giông, Misdreavus đêm sương, Chatot lúc rạng sáng… ở Việt Nam có Seviper rừng U Minh đêm mưa, Sableye Bảy Núi về khuya, Zangoose đồng ruộng Cần Thơ ngày nắng.
+
+### Hầm ngục 2.0
+- Mỗi ngày trong game, mỗi hầm có biến thể riêng: hang tối, bầy đàn, địa chấn, tinh anh, bẫy ngầm hoặc mạch quặng. Cửa hang báo trước để chọn ngày / độ khó / đội hình. Biến thể khó hơn thì thưởng EXP cao hơn.
+- Hang tối: không có Pokémon biết Flash thì chỉ thấy quanh mình — mang theo Pokémon hệ Điện, Lửa hoặc Tiên.
+- Bẫy sàn ẩn dưới vết nứt mờ; giẫm phải thì có nửa giây để né.
+- Vách đá nứt cạnh phòng câu đố dẫn vào phòng bí mật có rương — lý do để mang theo Pokémon biết Đập đá.
+
+### Điều tra huyền thoại
+- Khi một huyền thoại đã mở khóa, các vùng của nó xuất hiện những đốm sáng mờ: lông vũ bạc của Lugia, vết cháy hình tròn của Entei, bia khắc chấm của bộ ba Regi…
+- Đọc đủ 3 dấu vết thì biết chính xác khi nào nó xuất hiện, và hiểu nó đủ để có thêm một lượt ném bóng.

@@ -20,7 +20,7 @@ import type { PokeType } from '../core/types';
 import { FIELD_MAX, HEAL_FRAC, pickLead, pickSwitch, potionsFor, rematchPrize, rematchReady, rematchTeam, REMATCH_COOLDOWN, shouldHeal } from '../core/trainerAI';
 import { regionRep, repGreeting, repTier, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { boatOffers, FLOATING_MARKET, marketDay, marketOpen, recordPurchase, type MarketBoat } from '../core/floatingMarket';
-import { canUse, currentSpeed, FIELD_ABILITIES, fieldFlag, pushTarget, riverCurrent, tideName, type Dock, type FieldDef, type PartyMember } from '../core/field';
+import { canUse, currentSpeed, FIELD_ABILITIES, fieldFlag, fieldUser, pushTarget, riverCurrent, tideName, type Dock, type FieldDef, type PartyMember } from '../core/field';
 import { DungeonMap } from '../core/map/dungeonMap';
 import { dungeonDef } from '../core/map/dungeons';
 import { REGION_DEFS } from '../core/map/regionDefs';
@@ -34,6 +34,9 @@ import { addFriendship, captureRateOf, expYield, individualOf } from '../core/pr
 import { legendRule, legendThrowChance, LegendCaptureRule } from '../core/legendCapture';
 import { QuestDef } from '../core/quests';
 import { makeWildState } from '../core/wildAI';
+import { RARE_RULES } from '../core/ecologyRules';
+import { modsFor, modsLabel } from '../core/dungeonMods';
+import { clueFlag, cluesFound, conditionSummary, INVESTIGATION_BONUS, investigated, LEGEND_CLUES, visibleClues, type Clue } from '../core/legendClues';
 import { FISH_WAIT, FISH_WINDOW, fishOutcome, gatherTable, nodeCooldownLeft, rollGather, type GatherTable } from '../core/gathering';
 import { AllyCommand, STEP, Unit, World, WorldEvent } from '../core/world';
 import { createGroundSprite } from '../render/groundSprite';
@@ -143,6 +146,10 @@ export class AdventureScene extends Phaser.Scene {
   private marketViews: Phaser.GameObjects.GameObject[] = [];
   private marketShown = false;
   private marketSeen = false;
+  private territoryG: Phaser.GameObjects.Graphics | null = null;
+  /** Dungeon 2.0: a party Pokémon lit the dark cave with Flash */
+  private flashLit = false;
+  private trapViews: Phaser.GameObjects.Graphics[] = [];
   areaName = '';
   weather: { kind: WeatherKind; t: number } = { kind: 'clear', t: 240 };
   pointerWorld = { x: 0, y: 0, at: -99999 };
@@ -272,7 +279,7 @@ export class AdventureScene extends Phaser.Scene {
       names: 'all',
     }, saveStore.data.settings.quality);
     this.chunks = new ChunkView(this, map, { onLoad: (r) => this.onChunkLoad(r), onUnload: (r) => this.onChunkUnload(r) });
-    this.boating = false; this.boatImg = null; this.fieldViews.clear(); this.marketViews = []; this.marketShown = false; this.marketSeen = false;
+    this.boating = false; this.boatImg = null; this.fieldViews.clear(); this.marketViews = []; this.marketShown = false; this.marketSeen = false; this.territoryG = null; this.flashLit = false; this.trapViews = [];
     this.buildField();
     // elemental / challenge dungeons share the cave layout: a multiply wash over the floor tiles gives each its own look
     const wash = this.mapKind === 'dungeon' ? DUNGEON_WASH[(this.map as DungeonMap).def.id] : undefined;
@@ -296,6 +303,7 @@ export class AdventureScene extends Phaser.Scene {
         levelBonus: () => Math.floor((this.state.worldLevel - 1) / 2),
         isNight: () => this.isNight(),
         weather: () => this.effectiveWeather(),
+        clock: () => this.state.adv.clock,
         events: () => this.worldEvents?.spawnInfo() ?? {},
         loaded: (tx, ty) => this.chunks.isLoadedTile(tx, ty),
         onScreen: (x, y) => { const v = this.cameras.main.worldView; return x > v.x - 60 && x < v.right + 60 && y > v.y - 60 && y < v.bottom + 60; },
@@ -303,7 +311,14 @@ export class AdventureScene extends Phaser.Scene {
           if (!this.state.save.pokedex.seen.includes(u.defId)) this.state.save.pokedex.seen.push(u.defId);
           // rare alerts never reveal the exact position
           if (u.shiny) this.ui?.eventAlert('Có thứ gì đó lấp lánh gần đây...', '#fff0a0');
-          else if (u.rarity === 'ultra' || u.rarity === 'epic') this.ui?.eventAlert('Một Pokémon hiếm vừa xuất hiện quanh đây!', '#e0b0ff');
+          else if ((u.rarity === 'ultra' || u.rarity === 'epic') && !u.wild?.rare) this.ui?.eventAlert('Một Pokémon hiếm vừa xuất hiện quanh đây!', '#e0b0ff');
+        },
+        onRare: (_u, rule) => {
+          const adv = this.state.adv;
+          const seen = (adv.ecoSeen ??= []);
+          if (!seen.includes(rule)) seen.push(rule);
+          const r = RARE_RULES.find((x) => x.id === rule);
+          this.ui?.eventAlert(`Điều kiện hiếm hội tụ… ${r?.hint ?? ''}`, '#c0f0ff');
         },
       });
     } else {
@@ -312,7 +327,9 @@ export class AdventureScene extends Phaser.Scene {
         doorsChanged: () => this.chunks.refreshTiles(),
         bossDefeated: () => this.onDungeonBossDefeated(),
         timeUp: () => { this.ui.banner('Hết giờ! Thử thách thất bại — bị đưa ra ngoài.', '#ff7050'); this.time.delayedCall(1500, () => this.leaveDungeon(false)); },
-      });
+        trapSprung: (i) => this.onTrap(i),
+      }, modsFor(this.dungeonId, this.state.adv.day ?? 0, this.difficulty), (this.state.adv.day ?? 0) * 7919 + this.dungeonId.length);
+      this.buildDungeonExtras();
     }
 
     this.buildAtmosphere();
@@ -748,7 +765,7 @@ export class AdventureScene extends Phaser.Scene {
 
   /** 0 = full day, 1 = deep night (smooth dusk/dawn) */
   darkness(): number {
-    if (this.mapKind === 'dungeon') return 0.62;
+    if (this.mapKind === 'dungeon') return this.dungeon?.has('dark') && !this.flashLit ? 0.93 : 0.62;
     const h = this.state.adv.clock / 60;
     if (h >= 7 && h < 17) return 0;
     if (h >= 17 && h < 19.5) return ((h - 17) / 2.5) * 0.58;
@@ -781,13 +798,15 @@ export class AdventureScene extends Phaser.Scene {
     const foggy = wk === 'fog' || wk === 'mysticFog';
     const dk = this.darkness() + (wk === 'thunderstorm' ? 0.25 : wet ? 0.15 : foggy ? 0.06 : 0);
     const col = this.mapKind === 'dungeon' ? (this.map as DungeonMap).def.tint ?? 0x2a1830 : this.state.adv.clock / 60 > 16 && this.state.adv.clock / 60 < 20 ? 0x603060 : 0x101848;
-    this.dark.setFillStyle(col, Math.min(0.75, dk));
+    const pitch = this.mapKind === 'dungeon' && !!this.dungeon?.has('dark') && !this.flashLit;
+    this.dark.setFillStyle(col, pitch ? 0.93 : Math.min(0.75, dk));
     // Lights only matter once it's actually dark (dusk onward)
     const lightA = dk < 0.2 ? 0 : Math.min(1, (dk - 0.2) * 2.2);
     const now = this.time.now;
     for (const l of this.lamps) l.img.setAlpha(lightA * (l.flicker ? 0.55 + Math.sin(now * 0.013 + l.x) * 0.08 : 0.5));
     const t = this.world.trainer;
-    this.trainerLight.setPosition(t.x, t.y).setAlpha(lightA * 0.4).setVisible(q.lights);
+    // a pitch-dark cave: the trainer's own small circle of light is all there is
+    this.trainerLight.setPosition(t.x, t.y).setAlpha(pitch ? 0.85 : lightA * 0.4).setScale(pitch ? 9 : 6).setVisible(q.lights || pitch);
     if (this.rain) {
       const raining = wet && q.weather > 0 && this.regionDef.theme !== 'frozen';
       const qty = Math.max(1, Math.round((wk === 'rain' ? 3 : 6) * q.weather));
@@ -980,6 +999,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateFishing(dt);
     this.updateBoat(dt);
     this.updateMarket();
+    this.updateTerritory();
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
@@ -1070,6 +1090,8 @@ export class AdventureScene extends Phaser.Scene {
       return;
     }
     const rule = legendRule(id);
+    // a finished investigation: knowing its habits buys one more throw
+    if (investigated(id, (f) => this.state.hasFlag(f))) rule.maxAttempts += INVESTIGATION_BONUS;
     u.noCapture = false;
     this.legendCap = { unit: u, id, level, left: rule.maxAttempts, rule };
     this.ui.eventAlert(`${u.name} kiệt sức! Ném bóng (F) để thu phục — ${rule.maxAttempts} lượt, ${rule.window}s${rule.balls ? ' · chỉ ' + rule.balls.map((b) => ITEMS[b]?.name ?? b).join(', ') : ''}`, '#80ff90');
@@ -1199,6 +1221,22 @@ export class AdventureScene extends Phaser.Scene {
     this.nearest = best;
   }
 
+  /** A territorial Pokémon that is warning (or chasing) shows the ground it guards as a red ring. */
+  private updateTerritory(): void {
+    let g = this.territoryG;
+    let any = false;
+    for (const e of this.world.enemies) {
+      const w = e.wild;
+      if (!e.alive || !w?.territory || e.fainted || !(w.mode === 'alert' || ((w.mode === 'chase' || w.mode === 'attack') && e.hostile))) continue;
+      if (!g) g = this.territoryG = this.add.graphics().setDepth(-5);
+      if (!any) { g.clear(); any = true; }
+      const pulse = 0.35 + 0.25 * Math.sin(this.time.now * 0.01);
+      g.lineStyle(3, 0xff5040, pulse).strokeCircle(w.homeX, w.homeY, w.territory);
+      g.fillStyle(0xff3020, 0.06).fillCircle(w.homeX, w.homeY, w.territory);
+    }
+    if (!any) g?.clear();
+  }
+
   private decorate(u: Unit, v: { body: Phaser.GameObjects.Sprite; deco: Phaser.GameObjects.Image | null }): void {
     if (!u.wild || u.fainted) { v.deco?.setVisible(false); return; }
     const m = u.wild.mode;
@@ -1231,6 +1269,8 @@ export class AdventureScene extends Phaser.Scene {
     if (this.fishing) return this.reel();
     const it = this.nearest;
     if (!it || this.modal) return;
+    if (it.id === 'dungeon-crack') return this.useCrack(it);
+    if (it.id === 'dungeon-secret') return this.openSecretChest(it);
     switch (it.kind) {
       case 'npc': return this.talk(it);
       case 'sign': return void (await this.say('Bảng gỗ', (it.obj.data as { text: string[] }).text));
@@ -1244,6 +1284,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'waypoint': return this.useWaypoint(it);
       case 'portal': return this.usePortal(it.obj.data as unknown as PortalDef);
       case 'field': return this.useField(it);
+      case 'clue': return this.useClue(it);
       case 'dock': return this.useDock(it);
       case 'market': return this.useMarket(it);
       case 'cave': return this.enterCave((it.obj.data as { id?: string } | undefined)?.id ?? 'ancient-cave');
@@ -1841,7 +1882,10 @@ export class AdventureScene extends Phaser.Scene {
     });
     choices.push({ label: 'Quay lại', value: 'no' });
     const timed = (d: string) => def.difficulties[d]?.timeLimit;
-    const r = await this.say(def.name, [...(def.intro ?? ['Không khí lạnh lẽo phả ra từ cửa hang...']), timed('normal') ? `Giới hạn: ${timed('normal')}s / ${timed('hard')}s / ${timed('expert')}s. Chọn độ khó:` : 'Chọn độ khó:'], choices);
+    // the variant of the day (Dungeon 2.0): same all day, a new one tomorrow
+    const day = this.state.adv.day ?? 0;
+    const today = (['normal', 'hard', 'expert'] as Difficulty[]).map((d) => `${def.difficulties[d].label}: ${modsLabel(modsFor(def.id, day, d))}`).join('\n');
+    const r = await this.say(def.name, [...(def.intro ?? ['Không khí lạnh lẽo phả ra từ cửa hang...']), `Biến thể hôm nay:\n${today}`, timed('normal') ? `Giới hạn: ${timed('normal')}s / ${timed('hard')}s / ${timed('expert')}s. Chọn độ khó:` : 'Chọn độ khó:'], choices);
     if (!r || r === 'no') return;
     this.persist();
     this.cameras.main.fadeOut(400);
@@ -1883,6 +1927,7 @@ export class AdventureScene extends Phaser.Scene {
       if (ally) this.world.setAllyLevel(ally, up.level);
     }
     lines.push(`+${r.exp} EXP cho mỗi Pokémon`);
+    if (this.dungeon?.mods.length) lines.push(`Biến thể: ${modsLabel(this.dungeon.mods)}`);
     this.state.markDungeon(this.map.id, this.difficulty);
     this.ui.questComplete(`Hoàn thành ${this.map.name} (${dd.difficulties[this.difficulty].label})`, lines);
     const d = this.map as DungeonMap;
@@ -1890,6 +1935,71 @@ export class AdventureScene extends Phaser.Scene {
     const portal = this.add.image(ex, ey, 'waypoint').setOrigin(0.5, 1).setScale(SCALE).setTint(0xffa060).setDepth(ey);
     this.interactables.set('dungeon-exit', { kind: 'exit', id: 'dungeon-exit', x: ex, y: ey + 14, label: 'Rời hang', obj: { kind: 'exit', id: 'dungeon-exit', x: d.bossExit.x, y: d.bossExit.y }, sprite: portal });
     this.persist();
+  }
+
+  // ───────────────────────────── Dungeon 2.0 ─────────────────────────────
+
+  /** Variant banner, Flash in a dark cave, floor-trap marks, the cracked wall of the secret room. */
+  private buildDungeonExtras(): void {
+    const dg = this.dungeon!, d = this.map as DungeonMap;
+    if (dg.mods.length) this.time.delayedCall(900, () => this.ui?.banner(`Biến thể: ${modsLabel(dg.mods)}`, '#c0a0ff'));
+    if (dg.has('dark')) {
+      const by = fieldUser('flash', this.partyMembers());
+      this.flashLit = !!by;
+      this.time.delayedCall(2200, () => this.ui?.banner(by ? `${by.name} dùng Flash! Cả hang sáng lên.` : 'Hang tối om… cần một Pokémon biết Flash (hệ Điện / Lửa / Tiên Lv 10+).', by ? '#ffe066' : '#a0a0c0'));
+    }
+    // traps: a faint crack in the floor — easy to miss in the heat of a fight
+    this.trapViews = dg.traps.map((p) => {
+      const x = (p.x + 0.5) * TILE_PX, y = (p.y + 0.5) * TILE_PX;
+      return this.add.graphics().setDepth(-20).lineStyle(2, 0x1a1410, 0.55).beginPath()
+        .moveTo(x - 12, y - 6).lineTo(x - 2, y + 1).lineTo(x + 11, y - 4).moveTo(x - 2, y + 1).lineTo(x + 3, y + 11).strokePath()
+        .fillStyle(0x2a2018, 0.25).fillCircle(x, y, 9);
+    });
+    if (d.crack) {
+      const px = (d.crack.x + 0.5) * TILE_PX, py = (d.crack.y + 0.5) * TILE_PX;
+      const img = this.add.image(px, py + 6, 'boulder').setScale(SCALE * 1.15).setTint(0xb8a890).setDepth(py + 6);
+      const crackG = this.add.graphics().setDepth(py + 7).lineStyle(3, 0x2a2018, 1).beginPath()
+        .moveTo(px - 12, py - 8).lineTo(px - 2, py + 2).lineTo(px - 7, py + 12).moveTo(px - 2, py + 2).lineTo(px + 10, py - 3).strokePath();
+      const obj: MapObject = { kind: 'field', id: 'dungeon-crack', x: d.crack.x, y: d.crack.y, data: { views: [img, crackG] } as unknown as MapObject['data'] };
+      this.interactables.set('dungeon-crack', { kind: 'field', id: 'dungeon-crack', x: px + 30, y: py, label: 'Vách đá nứt', obj, sprite: img });
+    }
+    if (d.secretChest) {
+      const cx = (d.secretChest.x + 0.5) * TILE_PX, cy = (d.secretChest.y + 0.5) * TILE_PX;
+      const chest = this.add.image(cx, cy, 'ow_tiles', DUNGEON.chestClosed).setScale(SCALE).setDepth(cy);
+      this.interactables.set('dungeon-secret', { kind: 'chest', id: 'dungeon-secret', x: cx, y: cy + 20, label: 'Mở rương bí mật', obj: { kind: 'chest', id: 'dungeon-secret', x: d.secretChest.x, y: d.secretChest.y }, sprite: chest });
+    }
+  }
+
+  private onTrap(i: number): void {
+    const g = this.trapViews[i];
+    const p = this.dungeon?.traps[i];
+    if (g && p) g.clear().fillStyle(0x0a0806, 0.6).fillCircle((p.x + 0.5) * TILE_PX, (p.y + 0.5) * TILE_PX, 14);
+    audio.play('hurt');
+    this.ui.banner('Cạch! Bẫy dưới sàn — tránh ra mau!', '#ff9050');
+  }
+
+  private async useCrack(it: Interactable): Promise<void> {
+    const chk = canUse('smash', this.partyMembers(), { has: (x) => this.state.hasFlag(x) });
+    if (!chk.ok) return void (await this.say('Vách đá nứt', ['Một mảng vách có vết nứt lớn, phía sau vọng ra tiếng gió.', chk.reason]));
+    if (!this.dungeon?.openSecret()) return;
+    for (const v of (it.obj.data as unknown as { views: Phaser.GameObjects.GameObject[] }).views) v.destroy();
+    this.interactables.delete('dungeon-crack');
+    if (this.nearest?.id === 'dungeon-crack') this.nearest = null;
+    this.renderer_.vfx.named('rock', it.x - 30, it.y);
+    audio.play('levelup');
+    this.ui.banner(`${chk.by?.name ?? 'Bạn'} dùng ${FIELD_ABILITIES.smash.name}! Lộ ra một gian phòng bí mật.`, '#ffe066');
+  }
+
+  private openSecretChest(it: Interactable): void {
+    const loot = this.dungeon?.takeSecret();
+    if (!loot) return;
+    (it.sprite as Phaser.GameObjects.Image | undefined)?.setFrame(DUNGEON.chestOpen);
+    this.interactables.delete('dungeon-secret');
+    if (this.nearest?.id === 'dungeon-secret') this.nearest = null;
+    const lines = this.state.grant({ items: loot });
+    this.coopHost?.grant({ items: loot, currency: 0, note: 'Rương bí mật' });
+    audio.play('victory');
+    this.ui.questComplete('Rương bí mật', lines);
   }
 
   leaveDungeon(completed: boolean): void {
@@ -2058,11 +2168,47 @@ export class AdventureScene extends Phaser.Scene {
     if (this.mapKind === 'dungeon') return;
     for (const f of this.regionDef.field ?? []) this.drawField(f);
     for (const k of this.regionDef.docks ?? []) this.drawDock(k);
+    this.buildClues();
     // a save made on the river resumes in the boat
     const at = this.state.adv.boat && (this.regionDef.docks ?? []).find((k) => k.id === this.state.adv.boat);
     const t = this.world.trainer;
     if (at && this.map.terrainAt(Math.floor(t.x / TILE_PX), Math.floor(t.y / TILE_PX)) === T.Water) this.boardBoat(at, false);
     else delete this.state.adv.boat;
+  }
+
+  /** Legendary investigation: a faint glimmer on the ground for each clue not yet found (unlocked legends only). */
+  private buildClues(): void {
+    const adv = this.state.adv;
+    for (const c of visibleClues(this.regionDef.id, { hasFlag: (f) => this.state.hasFlag(f), caught: (l) => adv.legends[l] === 'caught' })) {
+      const x = (c.x + 0.5) * TILE_PX, y = (c.y + 0.5) * TILE_PX;
+      const glow = this.add.image(x, y, 'glow').setTint(0xc8f0ff).setBlendMode(Phaser.BlendModes.ADD).setScale(2.2).setAlpha(0.9).setDepth(y - 2);
+      this.tweens.add({ targets: glow, alpha: 0.35, scale: 1.5, duration: 1100, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+      const obj: MapObject = { kind: 'clue', id: 'clue:' + c.id, x: c.x, y: c.y, data: c as unknown as MapObject['data'] };
+      this.interactables.set('clue:' + c.id, { kind: 'clue', id: 'clue:' + c.id, x, y, label: 'Xem dấu vết lạ', obj, sprite: glow });
+    }
+  }
+
+  private async useClue(it: Interactable): Promise<void> {
+    const c = it.obj.data as unknown as Clue & { legend: string };
+    if (this.state.hasFlag(clueFlag(c.id))) return;
+    this.state.setFlag(clueFlag(c.id));
+    this.tweens.killTweensOf(it.sprite!);
+    it.sprite?.destroy();
+    this.interactables.delete(it.id);
+    if (this.nearest?.id === it.id) this.nearest = null;
+    const has = (f: string) => this.state.hasFlag(f);
+    const n = cluesFound(c.legend, has), total = LEGEND_CLUES.get(c.legend)?.length ?? 3;
+    const name = this.speciesName(c.legend);
+    audio.play('gem');
+    this.questEvent({ type: 'explore', target: 'clue:' + c.legend });
+    const lines = [c.text, `Manh mối về ${name}: ${n}/${total}.`];
+    if (investigated(c.legend, has)) {
+      const l = LEGENDS.get(c.legend)!;
+      lines.push(`Điều tra hoàn tất! ${name} xuất hiện ${conditionSummary(l)}${l.kind === 'roaming' ? ' — lang thang ở các vùng của nó' : ''}.`, `Hiểu rõ ${name}: khi thu phục được thêm ${INVESTIGATION_BONUS} lượt ném.`);
+      this.state.addReputation(5);
+    }
+    this.persist();
+    await this.say('Dấu vết lạ', lines);
   }
 
   private drawField(f: FieldDef): void {

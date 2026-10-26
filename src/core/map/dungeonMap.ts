@@ -47,6 +47,9 @@ export class DungeonMap implements MapProvider {
   bossExit = { x: 0, y: 0 };
   bossSpawn = { x: 0, y: 0 };
   chest = { x: 0, y: 0 };
+  /** Dungeon 2.0: cracked wall into the secret room (Rock Smash) and the chest inside (null when the layout has none) */
+  crack: { x: number; y: number } | null = null;
+  secretChest: { x: number; y: number } | null = null;
   private openDoors = new Set<string>();
 
   constructor(readonly def: DungeonDef) {
@@ -61,6 +64,8 @@ export class DungeonMap implements MapProvider {
       if (c === 'X') this.bossExit = { x, y };
       if (c === 'b') this.bossSpawn = { x, y };
       if (c === 'c') this.chest = { x, y };
+      if (c === 'k') this.crack = { x, y };
+      if (c === 'g') this.secretChest = { x, y };
     }));
   }
 
@@ -68,13 +73,13 @@ export class DungeonMap implements MapProvider {
     return this.def.rows[ty]?.[tx] ?? '#';
   }
 
-  /** Doors are grouped by letter: 'D' (wave room) and 'Q' (puzzle/boss). */
-  setDoor(letter: 'D' | 'Q', open: boolean): void {
+  /** Doors are grouped by letter: 'D' (wave room), 'Q' (puzzle/boss) and 'k' (the cracked wall of the secret room). */
+  setDoor(letter: 'D' | 'Q' | 'k', open: boolean): void {
     if (open) this.openDoors.add(letter);
     else this.openDoors.delete(letter);
   }
 
-  doorOpen(letter: 'D' | 'Q'): boolean {
+  doorOpen(letter: 'D' | 'Q' | 'k'): boolean {
     return this.openDoors.has(letter);
   }
 
@@ -82,6 +87,7 @@ export class DungeonMap implements MapProvider {
     const c = this.ch(tx, ty);
     if (c === '#' || c === 't') return T.CaveWall;
     if (c === 'D' || c === 'Q') return this.openDoors.has(c) ? T.CaveFloor : T.Door;
+    if (c === 'k') return this.openDoors.has(c) ? T.CaveFloor : T.CaveWall;
     return T.CaveFloor;
   }
 
@@ -106,6 +112,7 @@ export class DungeonMap implements MapProvider {
       return below !== '#' && below !== 't' ? DUNGEON.wall : DUNGEON.wallTop2;
     }
     if (c === 'D' || c === 'Q') return this.openDoors.has(c) ? DUNGEON.floor : DUNGEON.doorClosed;
+    if (c === 'k' && !this.openDoors.has(c)) return DUNGEON.wallTop2;
     const h = hash2(tx, ty, 2);
     const fl = this.def.floor ? EX[this.def.floor] + Math.floor(hash2(tx, ty, 7) * 4) : DUNGEON.floor;
     if (c === 'H') return h < 0.25 ? DUNGEON.rubble2 : h < 0.5 ? DUNGEON.rubble1 : fl;
