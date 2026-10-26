@@ -1,0 +1,48 @@
+{
+  "tiers": [
+    { "at": 0, "name": "Người lạ" },
+    { "at": 15, "name": "Quen mặt" },
+    { "at": 40, "name": "Được tin cậy" },
+    { "at": 80, "name": "Người nhà" }
+  ],
+  "regions": {
+    "ca-mau": {
+      "name": "Cà Mau",
+      "rewards": { "1": { "oranberry": 3, "greatball": 2 }, "2": { "superpotion": 3, "netball": 2 }, "3": { "ultraball": 3, "miracle-seed": 1 } },
+      "greet": {
+        "0": "Người ở đâu tới vậy? Rừng ngập mặn này lạ lắm, đi đứng cẩn thận nghen.",
+        "1": "A, con là người hay ghé xóm mình đó hả? Ngồi chơi uống miếng nước.",
+        "2": "Kiểm lâm U Minh nói con giúp rừng nhiều lắm. Cả xóm biết ơn con.",
+        "3": "Người nhà mình về rồi! Cà Mau lúc nào cũng có chỗ cho con."
+      }
+    },
+    "an-giang": {
+      "name": "An Giang",
+      "rewards": { "1": { "potion": 3, "greatball": 2 }, "2": { "superpotion": 3, "hard-stone": 1 }, "3": { "ultraball": 3, "moon-stone": 1 } },
+      "greet": {
+        "0": "Khách lạ lên Bảy Núi hả? Đường núi dốc, nhớ mang theo nước.",
+        "1": "Thấy con mấy lần rồi. Leo núi Cấm quen chân chưa?",
+        "2": "Các thầy trên núi nhắc tới con hoài — người giữ đền cổ tin con đó.",
+        "3": "Con như người Thất Sơn rồi. Đường lên đền cổ, cứ tự nhiên."
+      }
+    },
+    "can-tho": {
+      "name": "Cần Thơ",
+      "rewards": { "1": { "sitrus-berry": 2, "greatball": 2 }, "2": { "superpotion": 3, "netball": 2 }, "3": { "ultraball": 3, "mystic-water": 1 } },
+      "greet": {
+        "0": "Ghé chợ nổi lần đầu hả? Nhìn cây bẹo là biết ghe bán gì đó.",
+        "1": "Mối quen chợ nổi nè! Hôm nay mua gì, cô bớt cho.",
+        "2": "Bến Ninh Kiều ai cũng biết tên con. Có hàng mới là cô để dành.",
+        "3": "Người Tây Đô mình đây rồi! Sông Hậu hiền lại cũng nhờ con."
+      }
+    },
+    "starter-valley": {
+      "name": "Thung Lũng Khởi Nguyên",
+      "rewards": { "1": { "potion": 3 }, "2": { "greatball": 3 }, "3": { "ultraball": 2 } }
+    },
+    "emerald-woods": {
+      "name": "Rừng Ngọc Lục Bảo",
+      "rewards": { "1": { "oranberry": 3 }, "2": { "greatball": 3 }, "3": { "ultraball": 2 } }
+    }
+  }
+}

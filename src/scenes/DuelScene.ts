@@ -4,10 +4,11 @@ import { ValleyMap, RegionDef } from '../core/map/valley';
 import { TILE_PX, T } from '../core/map/tiles';
 import { ChunkView, ChunkRecord } from '../render/ChunkView';
 import { SCALE, WorldRenderer } from '../render/WorldRenderer';
-import { AllyCommand, Side, STEP, Unit, World, WorldEvent } from '../core/world';
+import { ActiveSkillResult, AllyCommand, Side, STEP, Unit, World, WorldEvent } from '../core/world';
 import { buildDuel, DuelMirror, packSnapshot, RULESETS, shareableEvents } from '../net/duel';
 import type { DuelAction, DuelInput, NetMsg } from '../net/protocol';
 import { DuelStart, net } from '../net/session';
+import { remoteSlot, skillFailText } from '../net/skillWire';
 import { music } from '../systems/music';
 import { audio } from '../systems/audio';
 import { saveStore } from '../systems/save';
@@ -67,7 +68,7 @@ export class DuelScene extends Phaser.Scene {
     this.start = d.start;
     this.returnTo = d.returnTo;
     this.acc = 0; this.snapN = 0; this.evBuf = []; this.lastInput = ''; this.inputSeq = 0; this.aiT = 1;
-    this.ended = null; this.mirror = null; this.byId.clear(); this.countdown = 3; this.joystick = { x: 0, y: 0 };
+    this.ended = null; this.mirror = null; this.byId.clear(); this.countdown = 3; this.focusId = null; this.joystick = { x: 0, y: 0 };
   }
 
   create(): void {
@@ -122,6 +123,8 @@ export class DuelScene extends Phaser.Scene {
     kb.on('keydown-Z', () => this.switchIn(0));
     kb.on('keydown-X', () => this.switchIn(1));
     kb.on('keydown-C', () => this.switchIn(2));
+    kb.on('keydown-Q', () => this.manualSkill('best'));
+    kb.on('keydown-T', () => this.cycleFocus());
     // click / tap an opposing Pokémon: everyone attacks it
     this.input.on('pointerup', (p: Phaser.Input.Pointer) => {
       if (this.ended) return;
@@ -246,6 +249,10 @@ export class DuelScene extends Phaser.Scene {
         r.input = { x: clamp(m.input.x), y: clamp(m.input.y) };
         r.run = !!m.input.run;
       } else if (m.t === 'act') this.apply(r, m.act, (id) => this.byId.get(id));
+    } else if (this.role === 'guest' && m.t === 'skillRes') {
+      const u = this.mirror!.unit(m.unit);
+      const msg = u && skillFailText(m.r, u.name, typeof m.slot === 'number' ? u.skills[m.slot]?.def.name ?? '' : '');
+      if (msg) { this.ui()?.banner(msg, '#ffb0a0'); audio.play('click'); }
     } else if (this.role === 'guest' && m.t === 'snap') {
       this.mirror!.push(m.s, performance.now());
       this.renderer_.handle(this.mirror!.flipEvents((m.ev ?? []) as WorldEvent[]));
@@ -299,6 +306,51 @@ export class DuelScene extends Phaser.Scene {
     this.finish('loss', 'Bạn đã đầu hàng');
   }
 
+  // ───────────────────────────── active skills ─────────────────────────────
+
+  /** my Pokémon the skill bar commands (local unit id) */
+  private focusId: number | null = null;
+
+  focusAlly(): Unit | null {
+    const field = this.mine.allies;
+    return field.find((a) => a.id === this.focusId && !a.fainted) ?? field.find((a) => !a.fainted) ?? null;
+  }
+
+  cycleFocus(): void {
+    const field = this.mine.allies.filter((a) => !a.fainted);
+    if (field.length < 2) return;
+    const next = field[(field.indexOf(this.focusAlly()!) + 1) % field.length];
+    this.focusId = next.id;
+    this.ui()?.banner(`Điều khiển: ${next.name}`, '#a0d8ff');
+  }
+
+  /** Cast now (host / practice) or ask the host (guest: it answers only when the skill does not go off). */
+  manualSkill(slot: number | 'best'): void {
+    const u = this.focusAlly();
+    if (!u || this.ended || this.countdown > 0) return;
+    this.act({ a: 'skill', unit: this.netId(u), slot });
+  }
+
+  private skillFeedback(u: Unit, slot: number | 'best', r: ActiveSkillResult): void {
+    const msg = skillFailText(r, u.name, typeof slot === 'number' ? u.skills[slot]?.def.name ?? '' : '');
+    if (msg) { this.ui()?.banner(msg, '#ffb0a0'); audio.play('click'); }
+  }
+
+  isReserved(u: Unit, slot: number): boolean {
+    return !!(u.reserved & (1 << slot));
+  }
+
+  /** Keeps a skill for the player for the rest of the duel (the AI stops using it), or hands it back. */
+  toggleReserved(slot: number): void {
+    const u = this.focusAlly();
+    if (!u || slot >= u.skills.length || this.ended) return;
+    const on = !this.isReserved(u, slot);
+    const mask = on ? u.reserved | (1 << slot) : u.reserved & ~(1 << slot);
+    u.reserved = mask; // shown at once; on a guest the next snapshot confirms it
+    this.act({ a: 'reserve', unit: this.netId(u), mask });
+    this.ui()?.banner(on ? `Giữ ${u.skills[slot].def.name} cho bạn tự dùng` : `${u.skills[slot].def.name}: trả lại cho AI`, '#a0d8ff');
+  }
+
   private netId(u: Unit): number {
     return this.role === 'guest' ? this.mirror!.hostId(u) ?? -1 : u.id;
   }
@@ -326,6 +378,21 @@ export class DuelScene extends Phaser.Scene {
         break;
       }
       case 'mega': { const u = unit(a.unit); if (u) w.duelMega(side, u); break; }
+      case 'skill': {
+        const u = unit(a.unit);
+        const slot = u && side.allies.includes(u) ? remoteSlot(u, a.slot) : null;
+        if (!u || slot == null) return;
+        const r = w.requestSkill(u, slot, side);
+        if (side === w.home) this.skillFeedback(u, slot, r);
+        else if (r !== 'cast' && r !== 'queued') net.send({ t: 'skillRes', r, unit: u.id, slot });
+        break;
+      }
+      case 'reserve': {
+        const u = unit(a.unit);
+        if (!u || !side.allies.includes(u) || !Number.isInteger(a.mask)) return;
+        for (let i = 0; i < u.skills.length; i++) w.setReserved(u, i, !!(a.mask & (1 << i)));
+        break;
+      }
       case 'forfeit':
         if (side === w.rival && !this.ended) { w.duel!.winner = 'home'; w.state = 'duelOver'; this.sendSnapshot(); this.finish('win', 'Đối thủ đã đầu hàng'); }
         break;

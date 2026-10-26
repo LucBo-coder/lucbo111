@@ -43,7 +43,6 @@ export class BootScene extends Phaser.Scene {
     console.info(`[assets] IcyEthics sprites converted: ${icy.join(', ') || 'none'}`);
     // Optional personal-use PMD animation pack (SpriteCollab, CC BY-NC 4.0; scripts/import-pmd-sprites.py): on unless switched off
     if (await loadPmdIndex()) pmdPack.active = save.settings.pmdSprites !== false;
-    for (const p of POKEMON.values()) if (p.mega) setPmdAlias(p.id, p.mega.base);
     // Optional personal-use official sprite pack (never bundled; see scripts/fetch-official-sprites.mjs)
     const idx = await loadOfficialIndex();
     officialPack.available = !!idx;
@@ -55,6 +54,10 @@ export class BootScene extends Phaser.Scene {
       if (preloadOfficialSmall(this, idx) > 0) await new Promise<void>((res) => { this.load.once('complete', () => res()); this.load.start(); });
       console.info(`[assets] official sprite pack (on demand): ${idx.icons.length} icons, ${idx.front.length} front sprites`);
     }
+    // Mega forms without their own PMD sheets (scripts/fetch-pmd-megas.py): the Mega's official art when the pack has it
+    // (its real look), otherwise the base species' animated sheets
+    const officialArt = new Set(officialPack.active && idx ? [...idx.icons, ...idx.front] : []);
+    for (const p of POKEMON.values()) if (p.mega && !officialArt.has(p.id)) setPmdAlias(p.id, p.mega.base);
     const ph = registerPlaceholders([...POKEMON.values()]);
     if (ph) console.info(`[assets] placeholder sprites for ${ph} species without art`);
     // Hand-drawn / IcyEthics art is built now; placeholder & official-pack creatures on first use

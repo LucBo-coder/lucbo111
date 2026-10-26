@@ -68,6 +68,8 @@ export interface RegionDef {
   portals?: PortalDef[];
   /** Rivers (water, lava in volcanic maps); where a path crosses one it becomes a bridge */
   rivers?: { w: number; pts: number[][] }[];
+  /** Resource nodes (fishing spots on a shore, berry bushes): `table` = id in data/world/gathering.json */
+  nodes?: { id: string; table: string; x: number; y: number }[];
 }
 
 export interface PortalDef {
@@ -171,6 +173,7 @@ export class ValleyMap implements MapProvider {
     for (const w of d.waypoints) { this.add({ kind: 'waypoint', id: w.id, x: w.x, y: w.y, collideR: 14, data: { ...w } }); this.clear.push({ x: w.x, y: w.y, r: 3 }); }
     for (const p of d.puzzles) p.plates.forEach(([x, y], i) => this.add({ kind: 'plate', id: `${p.id}:${i}`, x, y, data: { puzzle: p.id, index: i, label: p.labels[i] } }));
     for (const g of d.dungeons) { this.add({ kind: 'cave', id: g.id, x: g.x, y: g.y, data: { ...g } }); this.clear.push({ x: g.x, y: g.y, r: 4 }); }
+    for (const n of d.nodes ?? []) { this.add({ kind: 'node', id: n.id, x: n.x, y: n.y, data: { ...n } }); this.clear.push({ x: n.x, y: n.y, r: 1 }); }
     for (const [x, y] of d.pillars) this.add({ kind: 'pillar', id: `pillar-${x}-${y}`, x, y, tile: DUNGEON.pillar, collideR: 16 });
     const r = d.rescue;
     if (r.x >= 0) this.addRescue(r);

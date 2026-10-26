@@ -1,0 +1,452 @@
+{
+ "lake-fish": {
+  "kind": "fish",
+  "name": "Chỗ câu cá",
+  "cooldown": 60,
+  "requiresFlag": "tool:rod",
+  "pokemonChance": 0.45,
+  "pokemon": [
+   {
+    "species": "magikarp",
+    "level": [
+     5,
+     8
+    ],
+    "weight": 45
+   },
+   {
+    "species": "goldeen",
+    "level": [
+     6,
+     9
+    ],
+    "weight": 22
+   },
+   {
+    "species": "poliwag",
+    "level": [
+     6,
+     9
+    ],
+    "weight": 15
+   },
+   {
+    "species": "psyduck",
+    "level": [
+     7,
+     10
+    ],
+    "weight": 8
+   },
+   {
+    "species": "horsea",
+    "level": [
+     7,
+     10
+    ],
+    "weight": 6
+   },
+   {
+    "species": "feebas",
+    "level": [
+     8,
+     10
+    ],
+    "weight": 2
+   }
+  ],
+  "items": [
+   {
+    "id": "oranberry",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 30
+   },
+   {
+    "id": "pokeball",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 22
+   },
+   {
+    "id": "potion",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 20
+   },
+   {
+    "id": "netball",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 14
+   },
+   {
+    "id": "water-stone",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "deep-sea-scale",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "prism-scale",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 2
+   }
+  ]
+ },
+ "meadow-forage": {
+  "kind": "forage",
+  "name": "Bụi quả mọng",
+  "cooldown": 240,
+  "pokemonChance": 0.12,
+  "pokemon": [
+   {
+    "species": "caterpie",
+    "level": [
+     3,
+     5
+    ],
+    "weight": 5
+   },
+   {
+    "species": "pidgey",
+    "level": [
+     3,
+     6
+    ],
+    "weight": 4
+   },
+   {
+    "species": "oddish",
+    "level": [
+     4,
+     6
+    ],
+    "weight": 2
+   }
+  ],
+  "items": [
+   {
+    "id": "oranberry",
+    "qty": [
+     1,
+     3
+    ],
+    "weight": 40
+   },
+   {
+    "id": "sitrus-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 12
+   },
+   {
+    "id": "potion",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 14
+   },
+   {
+    "id": "pokeball",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 10
+   },
+   {
+    "id": "exp-candy-xs",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 8
+   },
+   {
+    "id": "pomeg-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "kelpsy-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "qualot-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "hondew-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "grepa-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "tamato-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "leaf-stone",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 1
+   }
+  ]
+ },
+ "forest-forage": {
+  "kind": "forage",
+  "name": "Bụi quả rừng",
+  "cooldown": 300,
+  "pokemonChance": 0.18,
+  "pokemon": [
+   {
+    "species": "paras",
+    "level": [
+     12,
+     15
+    ],
+    "weight": 5
+   },
+   {
+    "species": "venonat",
+    "level": [
+     12,
+     15
+    ],
+    "weight": 4
+   },
+   {
+    "species": "bellsprout",
+    "level": [
+     12,
+     15
+    ],
+    "weight": 3
+   },
+   {
+    "species": "pinsir",
+    "level": [
+     15,
+     17
+    ],
+    "weight": 1
+   }
+  ],
+  "items": [
+   {
+    "id": "sitrus-berry",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 30
+   },
+   {
+    "id": "oranberry",
+    "qty": [
+     2,
+     3
+    ],
+    "weight": 20
+   },
+   {
+    "id": "superpotion",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 12
+   },
+   {
+    "id": "exp-candy-s",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 12
+   },
+   {
+    "id": "greatball",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 10
+   },
+   {
+    "id": "leaf-stone",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "miracle-seed",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 2
+   }
+  ]
+ },
+ "falls-fish": {
+  "kind": "fish",
+  "name": "Chỗ câu cá",
+  "cooldown": 75,
+  "requiresFlag": "tool:rod",
+  "pokemonChance": 0.5,
+  "pokemon": [
+   {
+    "species": "magikarp",
+    "level": [
+     12,
+     15
+    ],
+    "weight": 30
+   },
+   {
+    "species": "goldeen",
+    "level": [
+     13,
+     16
+    ],
+    "weight": 25
+   },
+   {
+    "species": "poliwhirl",
+    "level": [
+     15,
+     17
+    ],
+    "weight": 12
+   },
+   {
+    "species": "seaking",
+    "level": [
+     16,
+     18
+    ],
+    "weight": 8
+   },
+   {
+    "species": "golduck",
+    "level": [
+     16,
+     18
+    ],
+    "weight": 5
+   },
+   {
+    "species": "feebas",
+    "level": [
+     14,
+     16
+    ],
+    "weight": 3
+   }
+  ],
+  "items": [
+   {
+    "id": "netball",
+    "qty": [
+     1,
+     2
+    ],
+    "weight": 25
+   },
+   {
+    "id": "sitrus-berry",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 20
+   },
+   {
+    "id": "superpotion",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 15
+   },
+   {
+    "id": "water-stone",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 4
+   },
+   {
+    "id": "mystic-water",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   },
+   {
+    "id": "prism-scale",
+    "qty": [
+     1,
+     1
+    ],
+    "weight": 3
+   }
+  ]
+ }
+}

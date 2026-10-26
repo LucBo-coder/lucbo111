@@ -7,6 +7,7 @@ import { bar, hpColor } from '../render/WorldRenderer';
 import { audio } from '../systems/audio';
 import type { CoopGuestScene } from './CoopGuestScene';
 import { button, COLORS, panel, text, DPR, uiScale } from './ui';
+import { SkillBar } from '../ui/SkillBar';
 
 /** Short labels so six (seven on touch) buttons fit a 390 px wide phone. */
 const COMMAND_BUTTONS: { id: AllyCommand; label: string }[] = [
@@ -33,6 +34,9 @@ export class CoopGuestUI extends Phaser.Scene {
   private miniFrame?: Phaser.GameObjects.Graphics;
   private touch = false;
   private joy: { id: number; bx: number; by: number; x: number; y: number } | null = null;
+  private skillBar!: SkillBar;
+  /** top edge of the skill bar (toasts on phones sit above it) */
+  private skillTop = 0;
 
   constructor() { super('CoopGuestUI'); }
   init(d: { guest: CoopGuestScene }): void { this.guest = d.guest; this.joy = null; this.miniKey = ''; }
@@ -77,7 +81,8 @@ export class CoopGuestUI extends Phaser.Scene {
     // never below 13 px: VT323 is unreadable smaller than that on a phone
     const T = (k: string, size: number, color: string = COLORS.text) => (this.t[k] = text(this, 0, 0, '', Math.max(13, size * s), color));
     T('hp', 16); T('room', 15, COLORS.dim); T('mate', 15); T('challenge', 14, '#ffe680'); T('state', 22, '#ffffff');
-    T('loot', 17, '#ffe066'); T('boss', 18, '#ffb0a0'); T('help', 14, COLORS.dim); T('wait', 22);
+    T('loot', 17, '#ffe066'); T('boss', 18, '#ffb0a0'); T('help', 14, COLORS.dim); T('wait', 22); T('hint', 16, '#ffd0c0');
+    this.t.hint.setOrigin(0.5, 1).setStroke('#000', 4);
     for (let i = 0; i < 3; i++) T('p' + i, 14);
     this.t.state.setOrigin(0.5).setAlign('center');
     this.t.loot.setOrigin(0.5, 1).setAlign('center');
@@ -106,6 +111,20 @@ export class CoopGuestUI extends Phaser.Scene {
       b.container.setDepth(20);
       this.cmdBoxes.push({ id: it.id, box, view: b.container });
     });
+    // active skills (the host casts them): tap = use now · right-click / long-press = keep it for yourself
+    const gs = this.guest;
+    this.skillBar = new SkillBar(this, {
+      focusAlly: () => gs.focusAlly(),
+      manualSkill: (j) => gs.manualSkill(j),
+      cycleFocus: () => gs.cycleFocus(),
+      globalCd: () => gs.mirror?.world.home.manualCd ?? 0,
+      toggleReserved: (j) => gs.toggleReserved(j),
+      isReserved: (u, j) => gs.isReserved(u, j),
+    }, this.touch);
+    const barW = 4 * Math.round(46 * s) + 3 * Math.round(6 * s);
+    this.skillTop = H - bh - 10 * s - 120 * s;
+    // phones: right edge (the left half is the joystick); wide screens: centred above the command bar
+    this.skillBar.build(s, narrow ? { x: W - gap - barW, y: this.skillTop } : { centerX: W / 2, y: this.skillTop });
     this.joyG = this.add.graphics().setDepth(50);
   }
 
@@ -179,7 +198,8 @@ export class CoopGuestUI extends Phaser.Scene {
         for (let i = 0; i < 8; i++) g.fillStyle(0xffe680, ((i + Math.floor(a)) % 8) / 8).fillCircle(W / 2 + Math.cos(i * Math.PI / 4) * 14 * s, b.y - 40 * s + Math.sin(i * Math.PI / 4) * 14 * s, 3 * s);
       }
     } else this.t.wait.setVisible(false);
-    if (waiting) { this.t.state.setText(''); this.t.loot.setText(''); this.drawCommands(); return; }
+    this.skillBar.draw(g, waiting || !!notice);
+    if (waiting) { this.t.state.setText(''); this.t.loot.setText(''); this.t.hint.setText(''); this.drawCommands(); return; }
 
     // ── left: own trainer + party ──
     const L = this.left, hw = L.w, t = w.trainer;
@@ -235,7 +255,8 @@ export class CoopGuestUI extends Phaser.Scene {
     const boss = w.enemies.find((e) => e.boss && e.alive);
     // phones: just above the command bar (the top edge is full); wide screens: top centre between the columns
     this.t.loot.setText(loot);
-    this.t.loot.setPosition(W / 2, W / DPR < 700 ? barTop - (boss ? 60 : 24) * s : 12 * s + this.t.loot.height);
+    this.t.loot.setPosition(W / 2, W / DPR < 700 ? this.skillTop - 24 * s : 12 * s + this.t.loot.height);
+    this.t.hint.setText(gs.hintText()).setPosition(W / 2, this.skillTop - (W / DPR < 700 && loot ? 70 : 26) * s);
     if (loot) {
       const b = this.t.loot.getBounds();
       g.fillStyle(0x2a2008, 0.85).fillRect(b.x - 10 * s, b.y - 6 * s, b.width + 20 * s, b.height + 12 * s);
@@ -255,7 +276,7 @@ export class CoopGuestUI extends Phaser.Scene {
       const sx = (target.x - cam.worldView.x) * cam.zoom, sy = (target.y - cam.worldView.y) * cam.zoom;
       g.lineStyle(2, 0xff6050, 0.9).strokeCircle(sx, sy, (target.radius + 12) * cam.zoom);
     }
-    this.t.help.setText(this.touch ? '' : 'WASD di chuyển · Shift chạy · ` 1–5 lệnh đội · Nhấp quái để tấn công').setPosition(this.left.x, barTop - (boss ? 64 : 26) * s);
+    this.t.help.setText(this.touch ? '' : 'WASD di chuyển · Shift chạy · ` 1–5 lệnh đội · Nhấp quái để tấn công · Q chiêu · T đổi Pokémon').setPosition(this.left.x, barTop - (boss ? 64 : 26) * s);
     this.drawCommands();
   }
 

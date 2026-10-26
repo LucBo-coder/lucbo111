@@ -11,7 +11,8 @@ import { regionDef } from '../core/map/regionDefs';
 import { DungeonMap } from '../core/map/dungeonMap';
 import { dungeonDef } from '../core/map/dungeons';
 import { TILE_PX, DUNGEON } from '../core/map/tiles';
-import { type AllyCommand } from '../core/world';
+import { type AllyCommand, type Unit } from '../core/world';
+import { skillFailText } from '../net/skillWire';
 import { saveStore } from '../systems/save';
 import { gameModes } from '../systems/gameMode';
 import { music } from '../systems/music';
@@ -58,6 +59,10 @@ export class CoopGuestScene extends Phaser.Scene {
   readonly snapGap = new LatencySeries(120);
   /** how long the host held our last input before the snapshot that acknowledged it (its tick + batching) */
   readonly hostHold = new LatencySeries(120);
+  /** own Pokémon the skill bar commands (host unit id), and a short message for the HUD */
+  private focusId: number | null = null;
+  private hintLine = '';
+  private hintUntil = 0;
 
   constructor() { super('CoopGuest'); }
   init(d: { party: DuelMon[]; returnTo?: 'adventure' | 'menu' }): void {
@@ -66,6 +71,7 @@ export class CoopGuestScene extends Phaser.Scene {
     this.command = 'auto'; this.target = undefined; this.ended = false; this.notice = ''; this.runHeld = false; this.scenery = [];
     this.joystick.x = this.joystick.y = 0; this.lootLine = ''; this.lootUntil = 0; this.map = null;
     this.full = null; this.haveObs = ''; this.needKey = false; this.trees = []; this.treesFor = ''; this.inputAt.clear();
+    this.focusId = null; this.hintLine = ''; this.hintUntil = 0;
   }
   create(): void {
     coopSession.active = true;
@@ -78,10 +84,17 @@ export class CoopGuestScene extends Phaser.Scene {
     const commands: AllyCommand[] = ['auto', 'attack', 'defend', 'follow', 'hold', 'retreat'];
     ['BACKTICK', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].forEach((key, i) => this.input.keyboard!.on('keydown-' + key, () => this.setCommand(commands[i])));
     this.input.keyboard!.on('keydown-ESC', () => this.exit());
+    this.input.keyboard!.on('keydown-Q', () => this.manualSkill('best'));
+    this.input.keyboard!.on('keydown-T', () => this.cycleFocus());
     this.off = net.on(m => {
       if (m.t === 'coopSnap') this.receive(m.s);
       if (m.t === 'coopLoot') this.receiveLoot(m.reward, m.id);
       if (m.t === 'coopEnd') this.end(m.reason);
+      if (m.t === 'skillRes') {
+        const u = this.mirror?.world.allies.find((a) => a.id === m.unit);
+        const msg = u && skillFailText(m.r, u.name, typeof m.slot === 'number' ? u.skills[m.slot]?.def.name ?? '' : '');
+        if (msg) this.hint(msg);
+      }
     });
     this.offStatus = net.onStatus(() => { if (!net.connected) this.end('Đã mất kết nối với chủ phòng.'); });
     this.events.once('shutdown', () => {
@@ -200,6 +213,34 @@ export class CoopGuestScene extends Phaser.Scene {
   netStats() { return { inputToAck: this.inputLag.summary(), snapshotGap: this.snapGap.summary(), hostHold: this.hostHold.summary() }; }
   waitedMs(): number { return performance.now() - this.startedAt; }
   lootText(): string { return this.time.now < this.lootUntil ? this.lootLine : ''; }
+  hintText(): string { return this.time.now < this.hintUntil ? this.hintLine : ''; }
+  private hint(t: string): void { this.hintLine = t; this.hintUntil = this.time.now + 2200; }
+  // ── active skills: the host casts them (it runs the world); the bar shows the state it sends back ──
+  focusAlly(): Unit | null {
+    const field = this.mirror?.world.allies ?? [];
+    return field.find((a) => a.id === this.focusId && !a.fainted && a.alive) ?? field.find((a) => !a.fainted && a.alive) ?? null;
+  }
+  cycleFocus(): void {
+    const field = (this.mirror?.world.allies ?? []).filter((a) => !a.fainted && a.alive);
+    if (field.length < 2) return;
+    const next = field[(field.indexOf(this.focusAlly()!) + 1) % field.length];
+    this.focusId = next.id;
+    this.hint(`Điều khiển: ${next.name}`);
+  }
+  manualSkill(slot: number | 'best'): void {
+    const u = this.focusAlly();
+    if (!u || !this.snapshot || this.ended) return;
+    net.send({ t: 'coopSkill', epoch: this.snapshot.epoch, unit: u.id, slot });
+  }
+  isReserved(u: Unit, slot: number): boolean { return !!(u.reserved & (1 << slot)); }
+  toggleReserved(slot: number): void {
+    const u = this.focusAlly();
+    if (!u || !this.snapshot || slot >= u.skills.length) return;
+    const on = !this.isReserved(u, slot);
+    u.reserved = on ? u.reserved | (1 << slot) : u.reserved & ~(1 << slot); // the next snapshot confirms it
+    net.send({ t: 'coopReserve', epoch: this.snapshot.epoch, unit: u.id, mask: u.reserved });
+    this.hint(on ? `Giữ ${u.skills[slot].def.name} cho bạn tự dùng` : `${u.skills[slot].def.name}: trả lại cho AI`);
+  }
   setCommand(c: AllyCommand): void { this.command = c; this.target = undefined; }
   toggleRun(): void { this.runHeld = !this.runHeld; }
   targetUnit() { return this.target == null ? undefined : this.mirror?.world.enemies.find(e => e.id === this.target && e.alive); }

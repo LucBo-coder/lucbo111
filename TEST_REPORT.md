@@ -43,3 +43,38 @@ Spec mới `e2e/v20_starter.spec.ts`:
 - Co-op qua máy chủ Cloudflare thật với rớt mạng thật: logic gửi lại / chống trùng được test bằng unit (giả lập mất tin) và e2e co-op chạy qua `?net=local`; chưa chạy `e2e/relay_reconnect.spec.ts` với relay triển khai.
 - E2E chưa đánh trọn trận với 3 học viên trại (luồng thách đấu HLV dùng chung đã có e2e ở `adventure.spec.ts`).
 - Thế giới online (`server_v7`, 14 test unit với client `ws` thật) qua trong bộ unit; không chạy `e2e:server`.
+
+---
+
+# TEST REPORT — V21
+
+Ngày: 2026-10-26 · cùng nhánh / máy.
+
+| | Kết quả |
+|---|---|
+| `npm run build` | ✅ |
+| Unit (Vitest) | **406/406 ✅** (48 file; mới: `v21_remote_skills` 7, `v21_gathering` 9) |
+| E2E hồi quy (14 spec, 2 worker): adventure, coop, v6_summon, evolution, v8_vietnam, v18_events, v20_starter, smoke, online_modes, v15_online, v4_regions, overworld_visual, v21_world, v21_mega_sprites | lần đầu 30/33 — 2 lỗi do `e2e/v20_starter.spec.ts` đọc biến nội bộ cũ của thanh kỹ năng (đã cập nhật sang `skillBar.bounds` / `skillBar.zones`), 1 lỗi chập chờn ở bước đọc chữ nhắc câu cá (đổi sang chờ chữ nhắc). Sau sửa: `v20_starter` + `v21_world` **3/3 lần qua** với 3 worker. |
+| Máy chủ relay | `tsc --noEmit` ✅, `wrangler deploy --dry-run` ✅, thử `trimBuffer` (400 tin: giữ phần thưởng đầu hàng đợi + snapshot mới nhất) ✅. **Chưa triển khai.** |
+
+Ảnh đã xem bằng mắt: câu cá (phao, dấu "!", nhắc "[E] KÉO CÂU NGAY!"), Rừng Ngọc Lục Bảo (cổng về, đường mòn), thanh kỹ năng trong PvP luyện tập, 4 dạng Mega (Charizard X, Mewtwo Y — hoạt ảnh PMD riêng; Venusaur, Scizor — ảnh chính thức).
+
+Chưa kiểm chứng: thanh kỹ năng của khách co-op trên điện thoại thật (unit + e2e co-op cũ qua, chưa chụp ảnh HUD khách); PvP thật giữa hai máy qua Cloudflare (logic test bằng unit với tin qua JSON); máy chủ relay sau triển khai.
+
+---
+
+# TEST REPORT — V22 (AI huấn luyện viên, tái đấu, danh tiếng theo tỉnh)
+
+Ngày: 2026-10-26 · Nhánh `improve/complete-game-v1`.
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build` | ✅ |
+| Unit (Vitest) | **417/417 ✅** (49 file). Mới: `tests/v22_trainer_rep.test.ts` (11). Cập nhật: `tests/v13_can_tho.test.ts` (Cần Thơ thêm nhiệm vụ `vn-ct-rep`: 6 → 7) |
+| E2E mới `e2e/v22_trainer_rep.spec.ts` | ✅ — Cà Mau: HLV 3 Pokémon ra 2 + 1 dự bị; dự bị ra sau khi 2 con gục; thắng lần đầu → cờ `beat:`, +5 danh tiếng Cà Mau; tái đấu bị từ chối khi chưa hồi; sau 10 phút chơi tái đấu cấp cao hơn, nhận tiền, không lặp vật phẩm; hạng *Được tin cậy* → NPC chào theo hạng; tải lại trang → danh tiếng, số lần tái đấu còn nguyên |
+| E2E hồi quy có trận HLV (v8_vietnam, v13_can_tho, v20_starter, v21_world, v22) | 8/8 ✅ |
+| E2E toàn bộ (3 luồng) | 48 qua, 5 lỗi, 1 bỏ qua. Cả 5 (`online_modes`, `v15_shared_world`, `v20_starter:22`, `v21_world:107`, `v6_summon`) **chạy lại riêng (2 luồng): 8/8 ✅** — lỗi do máy quá tải (WebGL phần mềm, 3 trình duyệt cùng lúc): hết thời gian chờ hoặc giá trị theo thời gian thực |
+
+Lỗi tìm được bằng e2e và đã sửa: trận HLV kết thúc ngay lúc gửi Pokémon dự bị cuối cùng (đếm số Pokémon còn sống trước khi gửi ra).
+
+Ảnh đã xem: 2 Pokémon của HLV trên sân + thông báo "gửi ra"; thông báo "Thắng tái đấu … +300 đồng"; lời chào của NPC theo hạng danh tiếng.

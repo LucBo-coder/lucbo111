@@ -58,7 +58,7 @@ test('active skills, nurse, walking villagers and the Training Camp', async ({ p
   // slot 2 kept for the player (otherwise the AI may spend it in the frames before the click)
   await ev(page, `(() => { const a = window.__adv, u = a.focusAlly(); if (!a.isReserved(u, 1)) a.toggleReserved(1); for (const s of u.skills) s.cd = 0; u.energy = u.maxEnergy; u.castSlot = -1; a.world.home.manualCd = 0; })()`);
   await page.waitForTimeout(100);
-  const bar = await ev<{ x: number; y: number; sq: number; gap: number }>(page, `window.__phaser.scene.getScene('AdvUI').skillBar`);
+  const bar = await ev<{ x: number; y: number; sq: number; gap: number }>(page, `window.__phaser.scene.getScene('AdvUI').skillBar.bounds`);
   const slot1 = await toPage(page, bar.x + bar.sq + bar.gap + bar.sq / 2, bar.y + bar.sq / 2);
   await page.mouse.click(slot1.x, slot1.y);
   await page.waitForTimeout(120);
@@ -147,9 +147,9 @@ test.describe('phone portrait', () => {
     await page.waitForTimeout(400);
     // no interactive HUD element overlaps the bar
     const overlap = await ev<string[]>(page, `(() => {
-      const ui = window.__phaser.scene.getScene('AdvUI'), b = ui.skillBar, w = 4 * b.sq + 3 * b.gap;
+      const ui = window.__phaser.scene.getScene('AdvUI'), b = ui.skillBar.bounds, w = 4 * b.sq + 3 * b.gap;
       const bar = new Phaser.Geom.Rectangle(b.x, b.y, w, b.sq);
-      const zones = new Set(ui.skillSlots.map(s => s.zone));
+      const zones = new Set(ui.skillBar.zones);
       const hits = [];
       for (const o of ui.children.list) {
         if (zones.has(o) || !o.input?.enabled || !o.getBounds) continue;
@@ -163,7 +163,7 @@ test.describe('phone portrait', () => {
     await page.waitForTimeout(300);
     await ev(page, `(() => { const a = window.__adv, u = a.focusAlly(); if (!a.isReserved(u, 0)) a.toggleReserved(0); for (const s of u.skills) s.cd = 0; u.energy = u.maxEnergy; u.castSlot = -1; a.world.home.manualCd = 0; })()`);
     await page.waitForTimeout(100);
-    const bar = await ev<{ x: number; y: number; sq: number }>(page, `window.__phaser.scene.getScene('AdvUI').skillBar`);
+    const bar = await ev<{ x: number; y: number; sq: number }>(page, `window.__phaser.scene.getScene('AdvUI').skillBar.bounds`);
     const p = await toPage(page, bar.x + bar.sq / 2, bar.y + bar.sq / 2);
     await page.touchscreen.tap(p.x, p.y);
     await page.waitForTimeout(150);

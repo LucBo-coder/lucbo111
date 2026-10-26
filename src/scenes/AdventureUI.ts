@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
 import { coopSession } from '../net/coop';
 import { music } from '../systems/music';
@@ -38,7 +39,7 @@ import { net } from '../net/session';
 import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
 import { WALLETS } from '../core/wallet';
-import { ACTIVE_SKILL_GCD } from '../core/world';
+import { SkillBar } from '../ui/SkillBar';
 
 const STAT_VI: Record<string, string> = { hp: 'HP', atk: 'Công', def: 'Thủ', spa: 'Công ĐB', spd: 'Thủ ĐB', spe: 'Tốc' };
 
@@ -111,8 +112,7 @@ export class AdventureUI extends Phaser.Scene {
   /** the HUD is laid out for a portrait phone */
   private portraitHud = false;
   /** Active-skill bar (focused Pokémon's 4 skills) */
-  private skillSlots: { zone: Phaser.GameObjects.Zone; icon: Phaser.GameObjects.Image; label: Phaser.GameObjects.Text }[] = [];
-  private skillBar = { x: 0, y: 0, sq: 0, gap: 0 };
+  private skillBar!: SkillBar;
   /** the open menu is laid out for a portrait phone (stacked columns) */
   private portraitMenu = false;
   private bagPage = 0;
@@ -242,69 +242,18 @@ export class AdventureUI extends Phaser.Scene {
         b.container.setAlpha(0.85);
       }
     }
-    this.buildSkillBar(W, H, s);
+    // active skills: tap / click a slot = use it now · right-click or long-press = keep it for the player
+    this.skillBar = new SkillBar(this, {
+      focusAlly: () => this.adv.focusAlly(),
+      manualSkill: (j) => this.adv.manualSkill(j),
+      cycleFocus: () => this.adv.cycleFocus(),
+      globalCd: () => this.adv.world.home.manualCd,
+      toggleReserved: (j) => this.adv.toggleReserved(j),
+      isReserved: (u, j) => this.adv.isReserved(u, j),
+    }, this.touch);
+    const y0 = Math.round(H - 160 * s);
+    this.skillBar.build(s, this.portraitHud ? { x: Math.round(16 * s), y: y0 } : { centerX: W / 2, y: y0 });
     this.joyG = this.add.graphics().setDepth(50);
-  }
-
-  /** Active skills: tap / click a slot = use it now · right-click or long-press = keep it for the player (AI stops using it). */
-  private buildSkillBar(W: number, H: number, s: number): void {
-    this.input.mouse?.disableContextMenu();
-    const sq = Math.round(46 * s), gap = Math.round(6 * s), barW = 4 * sq + 3 * gap;
-    const x0 = this.portraitHud ? Math.round(16 * s) : Math.round(W / 2 - barW / 2), y0 = Math.round(H - 160 * s);
-    this.skillBar = { x: x0, y: y0, sq, gap };
-    this.skillSlots = [];
-    for (let j = 0; j < 4; j++) {
-      const x = x0 + j * (sq + gap);
-      const zone = this.add.zone(x, y0, sq, sq).setOrigin(0).setInteractive({ useHandCursor: true });
-      let downAt = 0, handled = false;
-      zone.on('pointerdown', (p: Phaser.Input.Pointer) => {
-        audio.unlock();
-        downAt = this.time.now; handled = false;
-        if (p.rightButtonDown()) { handled = true; this.adv.toggleReserved(j); }
-      });
-      zone.on('pointerup', () => {
-        if (handled) return;
-        handled = true;
-        if (this.time.now - downAt > 450) this.adv.toggleReserved(j);
-        else this.adv.manualSkill(j);
-      });
-      const icon = this.add.image(x + sq / 2, y0 + sq / 2 - 5 * s, 'item_held').setVisible(false).setDepth(3);
-      const label = text(this, x + sq / 2, y0 + sq - 1 * s, '', 11 * s, '#ffffff').setOrigin(0.5, 1).setDepth(3);
-      this.skillSlots.push({ zone, icon, label });
-    }
-    const head = text(this, x0, y0 - 4 * s, '', 14 * s, '#a0d8ff').setOrigin(0, 1).setInteractive({ useHandCursor: true });
-    head.on('pointerup', () => this.adv.cycleFocus());
-    this.texts.skillHead = head;
-  }
-
-  private drawSkillBar(g: Phaser.GameObjects.Graphics): void {
-    const a = this.adv, s = this.s, sb = this.skillBar;
-    const u = this.menu || this.dialogueLayer ? null : a.focusAlly();
-    const barW = 4 * sb.sq + 3 * sb.gap;
-    this.skillSlots.forEach((slot, j) => {
-      const sl = u?.skills[j];
-      if (slot.zone.input) slot.zone.input.enabled = !!sl;
-      if (!u || !sl) { slot.icon.setVisible(false); slot.label.setText(''); return; }
-      const x = sb.x + j * (sb.sq + sb.gap), y = sb.y;
-      const affordable = u.energy >= sl.def.energyCost;
-      g.fillStyle(0x000000, 0.72).fillRect(x - 2, y - 2, sb.sq + 4, sb.sq + 4);
-      g.fillStyle(TYPE_COLOR[sl.def.type] ?? 0x888888, affordable ? 0.85 : 0.3).fillRect(x, y, sb.sq, sb.sq);
-      const ik = moveAssets(sl.def).icon;
-      if (slot.icon.texture.key !== ik) slot.icon.setTexture(ik);
-      slot.icon.setVisible(true).setScale(Math.max(1, Math.round(2.5 * s))).setAlpha(affordable ? 1 : 0.5);
-      const frac = sl.cd > 0 && sl.cdMax ? Phaser.Math.Clamp(sl.cd / sl.cdMax, 0, 1) : 0;
-      if (frac > 0) g.fillStyle(0x000000, 0.62).fillRect(x, y, sb.sq, sb.sq * frac);
-      slot.label.setText(sl.cd > 0 ? `${Math.ceil(sl.cd)}s` : sl.def.name.length > 9 ? sl.def.name.slice(0, 8) + '…' : sl.def.name);
-      const queued = u.queuedSlot === j, casting = u.castSlot === j, kept = a.isReserved(u, j);
-      g.lineStyle(queued || casting ? 3 : 2, queued ? 0x80d0ff : casting ? 0xffffff : kept ? 0xffcc33 : 0x1a1e2c, 1).strokeRect(x, y, sb.sq, sb.sq);
-      // kept for the player: a gold corner tag
-      if (kept) g.fillStyle(0xffcc33, 1).fillTriangle(x + sb.sq - 12 * s, y, x + sb.sq, y, x + sb.sq, y + 12 * s);
-    });
-    if (!u) { this.texts.skillHead?.setText(''); return; }
-    bar(g, sb.x, sb.y + sb.sq + 4 * s, barW, 5 * s, u.energy / u.maxEnergy, 0x60c0ff);
-    const gcd = a.world.home.manualCd;
-    if (gcd > 0) g.fillStyle(0xffffff, 0.5).fillRect(sb.x, sb.y - 3 * s, barW * Math.min(1, gcd / ACTIVE_SKILL_GCD), 2 * s);
-    this.texts.skillHead?.setText(this.touch ? `${u.name}  ⇄` : `${u.name}  ·  [Q] chiêu tốt nhất  ·  [T] đổi Pokémon`);
   }
 
   private ensureMapTexture(): string {
@@ -451,7 +400,7 @@ export class AdventureUI extends Phaser.Scene {
       this.setMegaText(a.state.item('key-stone') > 0 ? (ready ? '[G] MEGA sẵn sàng' : a.megaCd > 0 ? `MEGA hồi ${Math.ceil(a.megaCd)}s` : '') : '', mx + 5 * s, my);
     }
     this.texts.money?.setText(`${a.state.money} ${a.state.unit}`);
-    this.drawSkillBar(g);
+    this.skillBar.draw(g, !!(this.menu || this.dialogueLayer));
 
     // Items + command
     const ball = a.selectedBall;
@@ -465,7 +414,8 @@ export class AdventureUI extends Phaser.Scene {
 
     // Interaction prompt
     const n = a.nearest;
-    this.texts.prompt.setText(n && !a.modal ? `[E] ${n.label}` : '').setPosition(W / 2, H - 92 * s);
+    const fish = a.fishing;
+    this.texts.prompt.setText(fish ? (fish.bit ? '[E] KÉO CÂU NGAY!' : '[E] … chờ phao chìm') : n && !a.modal ? `[E] ${n.label}` : '').setPosition(W / 2, H - 92 * s);
 
     // Capture preview over the aimed wild Pokémon
     const target = a.modal || a.captureFx ? null : a.aimTarget(true);
@@ -1602,7 +1552,7 @@ export class AdventureUI extends Phaser.Scene {
     c.add(button(this, sx + 120 * s, sy + 20 * s, 70 * s, 34 * s, '−', () => this.zoomMap(0.8)).container);
     c.add(button(this, sx + 200 * s, sy + 20 * s, 70 * s, 34 * s, '⌖', () => { this.mapView = { zoom: 1, ox: 0, oy: 0 }; this.openMenu('map'); }).container);
     const tot = a.totals();
-    c.add(text(this, sx, sy + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%\nCấp thế giới: ${st.worldLevel}\nDanh tiếng: ${st.adv.reputation}\nTrạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}\nThời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
+    c.add(text(this, sx, sy + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%\nCấp thế giới: ${st.worldLevel}\nDanh tiếng: ${st.adv.reputation}${repLine(st.adv)}\nTrạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}\nThời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
     const vn = st.adv.campaign === 'vietnam';
     c.add(text(this, sx, sy + 170 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080'));
     const rowH = (this.portraitMenu ? 52 : 40) * s; // a wrapped hint takes two lines
@@ -1768,4 +1718,12 @@ function phaseLabel(p?: string): string {
 function heap(): string {
   const m = (performance as unknown as { memory?: { usedJSHeapSize: number } }).memory;
   return m ? ` | heap ${(m.usedJSHeapSize / 1048576).toFixed(0)}MB` : '';
+}
+
+/** "\nCà Mau: Quen mặt (22, còn 18)" for the region the player is in (empty where no table exists). */
+function repLine(adv: { region: string; reputation: number; repBy?: Record<string, number>; flags: string[] }): string {
+  const r = REP_REGIONS[adv.region];
+  if (!r) return '';
+  const pts = regionRep(adv, adv.region), next = nextTierIn(pts);
+  return `\n${r.name}: ${REP_TIERS[repTier(pts)].name} (${pts}${next != null ? `, còn ${next}` : ''})`;
 }

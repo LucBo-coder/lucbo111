@@ -1,4 +1,4 @@
-import type { AllyCommand } from '../core/world';
+import type { ActiveSkillResult, AllyCommand } from '../core/world';
 import type { Stats } from '../core/stats';
 import type { CoopWire } from './coop';
 import type { CoopLoot } from './coopRewards';
@@ -6,7 +6,11 @@ import type { CoopLoot } from './coopRewards';
 // Wire protocol of online play (Cloudflare relay, PeerJS data channel or BroadcastChannel). JSON messages, one `t` tag each.
 // The host is authoritative: it runs the duel simulation; the guest sends inputs and draws snapshots.
 
-/** 3: co-op snapshots as keyframes + deltas, input acks */
+/**
+ * 3: co-op snapshots as keyframes + deltas, input acks.
+ * Later additions are optional and ignored by older builds, so they keep the version: active skills (`act` skill /
+ * reserve, `coopSkill`, `coopReserve`, `skillRes`, snapshot `skl` / `gcd`).
+ */
 export const PROTOCOL_VERSION = 3;
 
 /** One party member as sent over the wire (from the player's Collection, or a rental). */
@@ -47,7 +51,14 @@ export type DuelAction =
   | { a: 'cmd'; cmd: AllyCommand; target?: number }
   | { a: 'switch'; out: number | null; inc: number | null }
   | { a: 'mega'; unit: number }
+  /** active skill: slot index or the AI's best pick, cast now (or after walking into range) */
+  | { a: 'skill'; unit: number; slot: number | 'best' }
+  /** skill slots kept for the player (bitmask): the AI stops using them */
+  | { a: 'reserve'; unit: number; mask: number }
   | { a: 'forfeit' };
+
+/** Skill bar state of one Pokémon the receiving player commands: [unit id, kept-slot mask, queued slot, skill ids, cooldowns, full cooldowns]. */
+export type SkillWire = [number, number, number, string[], number[], number[]];
 
 /** Roster entry sent once at the start: snapshot units only carry their id. */
 export interface RosterUnit {
@@ -80,6 +91,9 @@ export interface Snapshot {
   /** per side: command, switch cooldown, mega used */
   sides: [AllyCommand, number, boolean][];
   winner: 'home' | 'rival' | 'draw' | null;
+  /** the guest's Pokémon on the field (host ids) and the guest side's global skill cooldown */
+  skl?: SkillWire[];
+  gcd?: number;
 }
 
 export type NetMsg =
@@ -90,6 +104,10 @@ export type NetMsg =
   /** id (optional): the guest acknowledges it, the host re-sends until then and the guest applies each id once */
   | { t: 'coopLoot'; reward: CoopLoot; id?: string }
   | { t: 'coopLootAck'; id: string }
+  | { t: 'coopSkill'; epoch: string; unit: number; slot: number | 'best' }
+  | { t: 'coopReserve'; epoch: string; unit: number; mask: number }
+  /** host → guest: why a requested active skill did not go off (duel and co-op) */
+  | { t: 'skillRes'; r: ActiveSkillResult; unit: number; slot: number | 'best' }
   | { t: 'coopEnd'; reason: string }
   | { t: 'hello'; v: number; name: string; avatar?: string; game: string }
   | { t: 'ping'; at: number }

@@ -56,12 +56,14 @@ Mỗi Pokémon có một **vai trò** quyết định cách chọn mục tiêu v
 Phím `` ` `` và 1–5 (điện thoại: nút **Lệnh**):
 **Tự do** · **Tấn công mục tiêu** (con dưới con trỏ / con được chạm) · **Bảo vệ HLV** · **Đi theo** (không giao chiến, vẫn hồi máu) · **Giữ vị trí** · **Rút lui**.
 
-### 2.5 Kỹ năng chủ động (Phiêu lưu, Việt Nam Odyssey)
+### 2.5 Kỹ năng chủ động (Phiêu lưu, Việt Nam Odyssey, PvP, co-op)
 Pokémon vẫn tự đánh; người chơi chọn **lúc nào** và **chiêu nào** cho Pokémon đang điều khiển:
 - **Q**: dùng chiêu tốt nhất đang sẵn sàng (AI chọn chiêu, bạn chọn thời điểm). Click / chạm một ô trên **thanh kỹ năng** để dùng đúng chiêu đó. **T** (hoặc chạm tên trên thanh): đổi Pokémon được điều khiển.
 - Chuột phải / nhấn giữ một ô: **giữ chiêu** cho mình, AI không dùng chiêu đó nữa.
 - Cùng luật với AI (hồi chiêu, năng lượng, vật phẩm khóa chiêu, miễn nhiễm hệ) + **hồi chiêu chung 1,2 s** giữa hai lệnh để không spam. Mục tiêu ngoài tầm → Pokémon tự đi tới đúng tầm trong tối đa 3 s.
-- Sinh tồn giữ tự động hoàn toàn; PvP, khách co-op và Thế giới online chưa có kỹ năng chủ động.
+- Ô đã giữ được lưu theo từng Pokémon trong save (còn sau khi tải lại, học chiêu mới, tiến hóa).
+- **PvP** và **khách co-op** có cùng thanh kỹ năng và phím Q / T: lệnh gửi tới chủ phòng, chủ phòng quyết định theo cùng luật và báo lại khi chiêu không ra.
+- Sinh tồn giữ tự động hoàn toàn; Thế giới online chưa có kỹ năng chủ động.
 
 ### 2.6 Trang bị & Mega
 - Mỗi Pokémon cầm **1 vật phẩm** với hiệu ứng thật trong chiến đấu: tăng sát thương theo hệ (Charcoal, Mystic Water…), Muscle Band / Wise Glasses, Expert Belt, Scope Lens, Quick Claw, Leftovers, Shell Bell, Focus Band/Sash, Life Orb, bộ Choice (khóa chiêu), Assault Vest, Rocky Helmet, Eviolite, Sitrus Berry, đồ luyện EV (Power item, Macho Brace) và Mega Stone.
@@ -120,7 +122,8 @@ Bản đồ chia chunk tải động, có ngày/đêm, thời tiết (mưa, sư�
 
 | Vùng | Cấp | Điểm nhấn |
 |---|---|---|
-| Thung Lũng Khởi Nguyên | 3–13 | Làng khởi đầu (Trung tâm Pokémon, bảng nhiệm vụ), Trại Huấn Luyện, 8 khu, Hang Đá Cổ, World Boss Mega Venusaur |
+| Thung Lũng Khởi Nguyên | 3–13 | Làng khởi đầu (Trung tâm Pokémon, bảng nhiệm vụ), Trại Huấn Luyện, 8 khu, câu cá ở Hồ Pha Lê, bụi quả ở Đồng Cỏ Gió, Hang Đá Cổ, World Boss Mega Venusaur |
+| Rừng Ngọc Lục Bảo | 12–19 | Rừng sâu sau Rìa Rừng Ngọc (mở sau Hang Đá Cổ): Lõi Rừng, Suối Lục Bảo, Chòi Kiểm Lâm, câu cá & bụi quả rừng |
 | Đầm Lầy Sương Mù | 22–32 | Vũng bùn độc, lối ván gỗ |
 | Bờ Biển San Hô | 26–38 | Biển, hải đăng, rạn san hô |
 | Núi Tuyết Vĩnh Hằng | 32–45 | Mặt băng trơn, bão tuyết, Hang Băng Vĩnh Cửu |
@@ -140,9 +143,18 @@ Tiếp cận / đánh yếu → chọn bóng (**R**) → ngắm & ném (**F**, �
 ### 5.4 Nhiệm vụ & NPC
 Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu, câu đố, hầm ngục, boss. HUD có mũi tên chỉ hướng + khoảng cách; NPC hiện `!` (có nhiệm vụ) / `?` (chờ báo cáo). Huấn luyện viên có bảng tên ⚔ (chưa đấu) / ✓ (đã thắng).
 
+**Trận huấn luyện viên** (`core/trainerAI.ts`): tối đa 2 Pokémon trên sân, còn lại dự bị. Pokémon gục → HLV gửi dự bị hợp hệ nhất với Pokémon bạn đang điều khiển. Pokémon yếu hệ còn dưới 50% HP bị gọi về, đổi lấy Pokémon kháng hệ (HP được giữ). 1–2 Potion, dùng dưới 30% HP. **Tái đấu** sau 10 phút chơi: cấp theo đội bạn (tối đa +15 so với đội gốc, +2 mỗi lần thắng lại), thưởng tiền, không lặp vật phẩm.
+
+**Danh tiếng theo vùng** (`core/reputation.ts`, `data/world/reputation.json`): điểm danh tiếng từ nhiệm vụ / HLV cộng vào vùng đang đứng. Hạng *Người lạ / Quen mặt 15 / Được tin cậy 40 / Người nhà 80*; mỗi hạng tặng quà một lần và đặt cờ `rep:<vùng>:<hạng>` để mở nhiệm vụ. Mỗi chiến dịch giữ điểm riêng.
+
 ### 5.4b Làng khởi đầu & Trại Huấn Luyện
 - **Trung tâm Pokémon**: y tá Chị Mai hồi phục cả đội, máy PC ở cửa. **Bảng nhiệm vụ** của làng nhận việc vặt (săn Rattata, thăm trại). Dân làng đi lại ban ngày, về chỗ ban đêm; biển ở cổng bắc hướng dẫn chiến đấu và kỹ năng chủ động.
 - **Trại Huấn Luyện** (phía tây làng): Thầy Khang và 3 học viên, mỗi người một lối đánh (phòng thủ, tốc độ, hệ đặc biệt). Chuỗi 3 bài học dạy chọn chiêu khắc hệ, né và rút lui, dồn hỏa lực bằng lệnh Tấn công; tốt nghiệp mở rương của trại.
+
+### 5.4c Câu cá & hái lượm
+- **Câu cá**: đứng cạnh chỗ nước gợn sóng, bấm E thả câu; khi phao chìm và hiện "!" bấm lại trong 0,9 s. Sớm hoặc chậm thì cá chạy (không mất lượt). Kết quả: vật phẩm, hoặc một Pokémon hệ Nước ở lại dưới nước để đánh / bắt. Cần cần câu (nhiệm vụ Ông Sáu, Hồ Pha Lê).
+- **Bụi quả**: bấm E để hái quả mọng, thuốc, bóng, kẹo EXP; đôi khi Pokémon trốn trong bụi nhảy ra.
+- Mỗi điểm hồi lại theo thời gian chơi (câu 60–75 s, bụi 4–5 phút); dữ liệu bảng ở `data/world/gathering.json`, vị trí ở trường `nodes` của vùng.
 
 ### 5.5 Hầm ngục
 Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmortar), Tháp Thử Thách (Tyranitar, có giới hạn thời gian). Mỗi hầm: phòng sóng quái → bẫy (đá rơi / băng rơi / đá nóng) → câu đố → phòng Boss → rương. **3 độ khó** (Thường / Khó / Chuyên gia), phần thưởng lần đầu riêng.
@@ -173,6 +185,8 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 | **Cà Mau** | 1–10 | Đất Mũi, Mũi Cà Mau, rừng ngập mặn, Rừng Tràm U Minh Hạ | Seviper — Chúa Rừng U Minh → Huy hiệu Rừng Tràm |
 | **An Giang** | 8–18 | Bảy Núi, Trà Sư, Núi Sam, Đền Cổ Thất Sơn, đảo Phú Quốc (đi phà) | Claydol — Hộ Vệ Đền Cổ → Huy hiệu Bảy Núi |
 | **Cần Thơ** | 16–26 | Bến Ninh Kiều, Chợ nổi Cái Răng, Cồn Sơn, miệt vườn Phong Điền | Whiscash — Chúa Sông Hậu → Huy hiệu Sông Hậu |
+
+**Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
 
 **Hộ chiếu hành trình** (phím **P**): mỗi tỉnh một trang với dấu "ĐÃ ĐẾN", ngày đến, tiến độ khu vực / nhiệm vụ / rương / huấn luyện viên, địa danh và huy hiệu.
 

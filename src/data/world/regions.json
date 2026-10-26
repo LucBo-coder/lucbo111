@@ -619,5 +619,27 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "emerald-woods",
+  "name": "Rừng Ngọc Lục Bảo",
+  "areas": [
+   "emerald-trail",
+   "emerald-heart",
+   "emerald-falls"
+  ],
+  "biome": "forest",
+  "level": [
+   12,
+   19
+  ],
+  "elite": [
+   21,
+   24
+  ],
+  "boss": null,
+  "recommended": 15,
+  "danger": 2,
+  "unlock": "region:emerald-forest"
  }
 ]

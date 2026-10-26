@@ -50,3 +50,22 @@ Chi tiết bố cục: `MAP_DESIGN.md` §2.
   - Khách lưu id đã nhận trong save (`coopLootIds`, 200 id gần nhất) → bản gửi lại không bị cộng hai lần, kể cả sau khi tải lại.
   - **Tương thích ngược**: chủ phòng chỉ gửi lại cho khách đã từng xác nhận (bản cũ không xác nhận → không gửi lại → không nhân đôi); bản cũ bỏ qua trường `id` và tin `coopLootAck`. Không đổi `PROTOCOL_VERSION`.
 - Còn tồn tại: bộ đệm 400 tin ở máy chủ relay (repo `pokemon-server`, triển khai riêng) vẫn xóa tin cũ nhất; với bản vá này phần thưởng vẫn tới nơi nhờ gửi lại, nhưng nên áp dụng cùng quy tắc `trimQueue` ở máy chủ.
+
+## V22 — Trận huấn luyện viên & danh tiếng theo tỉnh
+
+### Huấn luyện viên đánh có chiến thuật (`src/core/trainerAI.ts`)
+| Tình huống | HLV làm gì |
+|---|---|
+| Bắt đầu trận | Gửi 2 Pokémon đầu đội (Pokémon "tủ" của HLV); còn lại chờ dự bị |
+| Một Pokémon gục | Sau 0,9 s gửi Pokémon dự bị có lợi thế hệ nhất trước Pokémon bạn đang điều khiển |
+| Pokémon bị bạn khắc hệ và < 50% HP | Gọi về, đổi lấy dự bị kháng hệ hơn (không đổi sang Pokémon cũng bị khắc); HP được giữ |
+| Pokémon < 30% HP | Dùng Potion (+40% HP), 1 bình — 2 bình nếu đội ≥ 3 hoặc tái đấu |
+
+### Tái đấu
+Thắng xong, sau 10 phút chơi HLV mời tái đấu. Đội giữ nguyên loài, cấp kéo theo Pokémon mạnh nhất của bạn (≥ +3, ≤ +15 so với đội gốc, +2 mỗi lần thắng lại). Thưởng: tiền (300 → 800) + 2 danh tiếng, **không** lặp vật phẩm của lần thắng đầu.
+
+### Danh tiếng theo tỉnh (`src/core/reputation.ts`, `src/data/world/reputation.json`)
+- Điểm cộng vào vùng đang đứng; mỗi chiến dịch có điểm riêng.
+- Người lạ → **Quen mặt** (15) → **Được tin cậy** (40) → **Người nhà** (80). Mỗi hạng tặng quà một lần (cờ `rep:<vùng>:<hạng>`).
+- NPC ở Cà Mau, An Giang, Cần Thơ đổi câu chào theo hạng.
+- Hạng *Được tin cậy* mở: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi*.

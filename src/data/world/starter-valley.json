@@ -297,6 +297,19 @@
      83
     ]
    ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     60,
+     17
+    ],
+    [
+     64,
+     13
+    ]
+   ]
   }
  ],
  "plaza": [
@@ -569,6 +582,15 @@
     "TRẠI HUẤN LUYỆN",
     "Ba học viên, ba lối đánh. Thắng cả ba để tốt nghiệp."
    ]
+  },
+  {
+   "x": 110,
+   "y": 76,
+   "text": [
+    "HỒ PHA LÊ — CHỖ CÂU CÁ",
+    "Đứng cạnh chỗ nước gợn sóng, bấm E (điện thoại: nút Tương tác) để thả câu.",
+    "Khi phao chìm và hiện dấu \"!\", bấm lần nữa thật nhanh để kéo lên."
+   ]
   }
  ],
  "npcs": [
@@ -690,6 +712,17 @@
    "lines": [
     "Mỗi Pokémon có vai trò: Tank giữ địch, Fighter áp sát, Assassin săn con yếu, Marksman bắn xa, Mage đánh diện rộng, Support hồi máu.",
     "Tự đánh không có nghĩa là không cần chỉ huy. Chọn đúng lúc bấm Q, đúng chiêu và đúng lệnh mới là huấn luyện viên giỏi."
+   ]
+  },
+  {
+   "id": "sv-fisher",
+   "name": "Ông Sáu câu cá",
+   "sprite": "farmer",
+   "x": 110,
+   "y": 73,
+   "lines": [
+    "Hồ Pha Lê này cá nhiều lắm, nhưng phải kiên nhẫn.",
+    "Thấy phao chìm xuống là giật ngay, chậm một nhịp là cá chạy mất!"
    ]
   }
  ],
@@ -1463,6 +1496,75 @@
     "region:coral-coast"
    ],
    "hint": "Tiếng sóng vọng lại sau cổng... Hãy giúp Bà Thầy Mo ở Đầm Lầy trước. Khuyến nghị Lv28+."
+  },
+  {
+   "id": "portal-emerald",
+   "name": "Cổng Rừng Ngọc Lục Bảo",
+   "x": 64,
+   "y": 12,
+   "to": "emerald-woods",
+   "toX": 48,
+   "toY": 76,
+   "requires": [
+    "region:emerald-forest"
+   ],
+   "hint": "Cành cây đan kín lối vào rừng sâu... Hãy giải quyết bí ẩn Hang Đá Cổ trước. Khuyến nghị Lv14+."
+  }
+ ],
+ "nodes": [
+  {
+   "id": "fish-west",
+   "table": "lake-fish",
+   "x": 112,
+   "y": 70
+  },
+  {
+   "id": "fish-south",
+   "table": "lake-fish",
+   "x": 127,
+   "y": 82
+  },
+  {
+   "id": "fish-east",
+   "table": "lake-fish",
+   "x": 143,
+   "y": 70
+  },
+  {
+   "id": "fish-north",
+   "table": "lake-fish",
+   "x": 127,
+   "y": 58
+  },
+  {
+   "id": "bush-1",
+   "table": "meadow-forage",
+   "x": 24,
+   "y": 58
+  },
+  {
+   "id": "bush-2",
+   "table": "meadow-forage",
+   "x": 42,
+   "y": 55
+  },
+  {
+   "id": "bush-3",
+   "table": "meadow-forage",
+   "x": 57,
+   "y": 71
+  },
+  {
+   "id": "bush-4",
+   "table": "meadow-forage",
+   "x": 77,
+   "y": 57
+  },
+  {
+   "id": "bush-5",
+   "table": "meadow-forage",
+   "x": 93,
+   "y": 67
   }
  ]
 }

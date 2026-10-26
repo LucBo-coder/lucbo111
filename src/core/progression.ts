@@ -61,6 +61,8 @@ export interface OwnedPokemon {
   nickname?: string;
   /** Shiny individual (kept through evolution) */
   shiny?: boolean;
+  /** Skills (ids) the player keeps for the skill bar: the AI does not use them. Ids, not slots, so they survive new moves / evolution */
+  keptSkills?: string[];
   /** Poké Ball it was caught in (wild / legendary captures) */
   ball?: string;
   /** Lasting status kept while recalled into its ball (kind, seconds left) */

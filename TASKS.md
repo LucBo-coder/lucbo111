@@ -165,14 +165,37 @@ Trạng thái: `[x]` đã làm + build + unit + e2e · `[~]` một phần · `[ 
 | ID | Mục tiêu | File đã sửa | Trạng thái | Kiểm thử | Còn tồn tại |
 |---|---|---|---|---|---|
 | T20-0 | Audit hiện trạng | `GAME_AUDIT.md` | [x] | baseline build + 370/370 unit | — |
-| T20-1 | Kỹ năng chủ động: lõi (`requestSkill`, hàng đợi, GCD 1,2 s, giữ chiêu), UI thanh 4 ô, phím Q/T, chuột phải / nhấn giữ, cảm ứng | `src/core/world.ts`, `src/scenes/AdventureScene.ts`, `src/scenes/AdventureUI.ts` | [x] | `tests/v20_active_skills.test.ts` 9/9; e2e `v20_starter` (Q, click, chuột phải, giữ qua thả lại, chạm trên điện thoại dọc, không đè nút) | chưa có ở PvP / khách co-op / Thế giới online; giữ chiêu chưa lưu vào save |
+| T20-1 | Kỹ năng chủ động: lõi (`requestSkill`, hàng đợi, GCD 1,2 s, giữ chiêu), UI thanh 4 ô, phím Q/T, chuột phải / nhấn giữ, cảm ứng | `src/core/world.ts`, `src/scenes/AdventureScene.ts`, `src/scenes/AdventureUI.ts` | [x] | `tests/v20_active_skills.test.ts` 9/9; e2e `v20_starter` (Q, click, chuột phải, giữ qua thả lại, chạm trên điện thoại dọc, không đè nút) | PvP / khách co-op / lưu giữ chiêu: xong ở T21-1, T21-2; Thế giới online chưa có |
 | T20-2 | Làng: Trung tâm Pokémon (PC), y tá hồi phục, bảng nhiệm vụ, biển hướng dẫn, NPC đi lại (`wander`) | `src/data/world/starter-valley.json`, `src/core/map/valley.ts`, `src/scenes/AdventureScene.ts`, `src/render/spriteRegistry.ts` | [x] | `v17_maps` (vật thể trên ô đi được), `v20_starter_valley`, e2e (y tá hồi đầy máu, NPC di chuyển ban ngày và quanh chỗ) | lịch NPC chỉ ngày/đêm |
 | T20-3 | Trại Huấn Luyện + chuỗi 3 nhiệm vụ + 2 nhiệm vụ bảng tin | `starter-valley.json`, `src/data/world/quests.json`, `scripts/patch-starter-valley.mjs` | [x] | `v20_starter_valley` (chuỗi từ đầu tới cuối, sai HLV không tiến triển, thưởng 1 lần, cờ mở rương); e2e (vào khu trại, nhận nhiệm vụ qua hội thoại thật) | trận với 3 học viên chưa được e2e đánh trọn (dùng chung luồng HLV đã có test) |
-| T20-4 | BUG-NET-1/2: phần thưởng co-op mất khi rớt mạng | `src/net/transport.ts`, `src/net/coop.ts`, `src/net/coopRewards.ts`, `src/net/protocol.ts`, `src/scenes/CoopGuestScene.ts`, `src/systems/saveSchema.ts`, `tests/coop.test.ts` | [x] | `tests/v20_net_reliability.test.ts` 5/5, `coop.test.ts`, `coop_rewards.test.ts` | bộ đệm máy chủ relay (repo `pokemon-server`) vẫn xóa tin cũ nhất — chưa sửa (ngoài workspace, cần triển khai) |
+| T20-4 | BUG-NET-1/2: phần thưởng co-op mất khi rớt mạng | `src/net/transport.ts`, `src/net/coop.ts`, `src/net/coopRewards.ts`, `src/net/protocol.ts`, `src/scenes/CoopGuestScene.ts`, `src/systems/saveSchema.ts`, `tests/coop.test.ts` | [x] | `tests/v20_net_reliability.test.ts` 5/5, `coop.test.ts`, `coop_rewards.test.ts` | bộ đệm máy chủ relay: sửa ở T21-0 |
 | T20-5 | Tài liệu | `GAME_DESIGN.md`, `MAP_DESIGN.md`, `GAMEPLAY_IMPROVEMENTS.md`, `TEST_REPORT.md`, `CHANGELOG.md`, `TASKS.md` | [x] | — | — |
-| T20-6 | Câu cá, thu thập nguyên liệu, lối đi ẩn (Khu 2, 4) | — | [ ] | — | cần hệ thống mới |
+| T20-6 | Câu cá, thu thập nguyên liệu, lối đi ẩn (Khu 2, 4) | xem T21-3 | [~] | — | câu cá + bụi quả xong; lối đi ẩn chưa làm |
 | T20-7 | Nâng cấp các vùng còn lại theo 10 tiêu chí (Phần 2.3) | — | [ ] | — | — |
 | T20-8 | Đo hiệu năng trên điện thoại thật | — | [ ] | — | không có thiết bị trong môi trường này |
+
+### V21 — tiếp nối V20
+| ID | Mục tiêu | File đã sửa | Trạng thái | Kiểm thử | Còn tồn tại |
+|---|---|---|---|---|---|
+| T21-0 | Bộ đệm máy chủ relay bỏ tin tạm thời trước | `pokemon-server/src/room.ts` | [~] | typecheck + `wrangler deploy --dry-run` + thử hàm cắt bộ đệm | chưa triển khai (chờ xác nhận) |
+| T21-1 | Kỹ năng chủ động PvP + khách co-op (tin tùy chọn), thanh kỹ năng dùng chung | `src/net/protocol.ts`, `src/net/skillWire.ts`, `src/net/duel.ts`, `src/net/coop.ts`, `src/scenes/DuelScene.ts`, `DuelUI.ts`, `CoopGuestScene.ts`, `CoopGuestUI.ts`, `src/ui/SkillBar.ts`, `AdventureUI.ts` | [x] | `v21_remote_skills` (host ra chiêu cho khách, mirror nhận hồi chiêu / giữ chiêu / GCD, epoch sai bị bỏ, không điều khiển Pokémon của chủ phòng); e2e Q trong PvP luyện tập | thanh kỹ năng khách co-op chưa chụp ảnh kiểm trên điện thoại |
+| T21-2 | Lưu giữ chiêu vào save (theo mã chiêu) | `src/core/keptSkills.ts`, `src/core/progression.ts`, `AdventureScene.ts` | [x] | unit (tải lại, chiêu mới chèn trước, bỏ hết thì xóa trường); e2e V20 giữ chiêu qua thả lại | — |
+| T21-3 | Câu cá Hồ Pha Lê + bụi quả Đồng Cỏ + Ông Sáu + 2 nhiệm vụ | `src/core/gathering.ts`, `src/data/world/gathering.json`, `valley.ts`, `mapProvider.ts`, `saveSchema.ts`, `AdventureScene.ts`, `AdventureUI.ts`, `scripts/patch-valley-gathering.mjs` | [x] | `v21_gathering` (bảng hợp lệ, tung kết quả, cửa sổ phản xạ, hồi điểm + lưu, vị trí trên bờ / phao trên nước, chuỗi nhiệm vụ); e2e câu cá + hái quả bằng phím thật | — |
+| T21-4 | Rừng Ngọc Lục Bảo thành bản đồ riêng | `src/data/world/emerald-woods.json`, `regions.json`, `starter-valley.json`, `quests.json`, `regionDefs.ts`, `scripts/build-emerald-woods.mjs` | [x] | `v21_gathering` (đăng ký, cổng 2 chiều, đi bộ tới mọi vật thể), `v17_maps`, `fish live in water`; e2e qua cổng | Rìa Rừng Ngọc vẫn là khu trong Thung Lũng (giữ nhiệm vụ / huyền thoại) |
+| T21-5 | Sửa Mega thiếu hình riêng | `scripts/fetch-pmd-megas.py`, `public/assets/pmd/*-mega*`, `src/scenes/BootScene.ts` | [x] | e2e `v21_mega_sprites` + ảnh chụp | 20 dạng Mega chưa có hoạt ảnh PMD (dùng ảnh tĩnh chính thức) |
+
+### V22 — Master Prompt "Adventure & Vietnam Odyssey 2.0" (đang làm theo P0 → P1 → P2)
+| ID | Mục tiêu | File đã sửa | Trạng thái | Kiểm thử | Còn tồn tại |
+|---|---|---|---|---|---|
+| T22-0 | Kiểm tra hiện trạng (danh tiếng, HLV, phà, Alpha, hầm ngục, huyền thoại) | — | [x] | — | danh tiếng chỉ có 1 số chung; HLV không đổi Pokémon, không tái đấu |
+| T22-1 | AI huấn luyện viên: 2 trên sân + dự bị, đổi Pokémon khi yếu hệ, gửi dự bị hợp hệ, Potion | `src/core/trainerAI.ts`, `AdventureScene.ts` | [x] | unit (đổi / không đổi / không đổi sang yếu hệ / chọn dự bị / Potion); e2e Cà Mau 2 ra sân + 1 dự bị ra sau khi gục; e2e v8, v13 (HLV cốt truyện) vẫn qua | HLV chưa dùng chiêu phòng thủ riêng (dùng AI chiêu chung) |
+| T22-2 | Tái đấu HLV (hồi 10 phút, cấp theo đội, chỉ thưởng tiền) | `trainerAI.ts`, `AdventureScene.ts`, `saveSchema.ts` | [x] | unit (hồi, cấp có giới hạn, tiền); e2e: từ chối khi chưa hồi, tái đấu cấp cao hơn, không lặp vật phẩm, còn sau tải lại | — |
+| T22-3 | Danh tiếng theo tỉnh + hạng + quà một lần + NPC chào theo hạng + 3 nhiệm vụ mở bằng danh tiếng | `src/core/reputation.ts`, `src/data/world/reputation.json`, `AdventureState.ts`, `AdventureUI.ts`, `src/data/vietnam/quests.json` | [x] | unit (tách theo vùng, quà không trả lại sau tải lại, nhiệm vụ khóa → mở); e2e lời chào + tải lại | chưa có cửa hàng mở theo danh tiếng |
+| T22-4 | Năng lực khám phá (phá vật cản, đẩy đá, qua nước, soi hang) | — | [ ] | — | chưa làm |
+| T22-5 | Sinh thái Pokémon (lãnh thổ, nhóm, điều kiện hiếm) | — | [ ] | — | Alpha / thời tiết / giờ đã có từ trước; phần mới chưa làm |
+| T22-6 | Hầm ngục 2.0, điều tra huyền thoại | — | [ ] | — | chưa làm |
+| T22-7 | Việt Nam: đi ghe / xuồng trên sông, thủy triều, chợ nổi theo sự kiện | — | [ ] | — | hiện chỉ có phà dạng cổng |
+| T22-8 | Nhật ký nhiệm vụ / bản đồ sương mù / bảng danh tiếng riêng | — | [~] | — | danh tiếng hiện trong bảng Thống kê; chưa có bảng riêng |
 
 ## PHASE E — World expansion
 - [ ] Rừng Ngọc Lục Bảo (cờ mở đã có) và 5 vùng còn lại

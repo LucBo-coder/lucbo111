@@ -1117,5 +1117,183 @@
   "requires": [
    "vn-ct-1"
   ]
+ },
+ {
+  "id": "vn-cm-rep",
+  "kind": "side",
+  "title": "Tuần tra rừng tràm U Minh",
+  "giver": "cm-ranger-uminh",
+  "requires": [
+   "vn-cm-2"
+  ],
+  "requiresFlags": [
+   "rep:ca-mau:2"
+  ],
+  "description": "Danh tiếng ở Cà Mau đủ để kiểm lâm nhờ việc: đi tuần rừng tràm, đuổi bớt Pokémon hung dữ quanh trạm.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "*",
+    "count": 6,
+    "text": "Đánh đuổi Pokémon hung dữ trong rừng (0/6)",
+    "marker": {
+     "x": 30,
+     "y": 28,
+     "region": "ca-mau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cm-ranger-uminh",
+    "count": 1,
+    "text": "Báo lại Kiểm lâm U Minh",
+    "marker": {
+     "x": 24,
+     "y": 26,
+     "region": "ca-mau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "netball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 500,
+   "reputation": 10,
+   "flags": [
+    "vn:uminh-patrol"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Người trong xóm nói con đáng tin. Mùa khô rừng tràm dễ cháy, Pokémon hoảng chạy lung tung — con đi tuần với chú một vòng nghen?"
+   ],
+   "progress": [
+    "Cứ men theo bìa rừng tràm, gặp con nào hung dữ thì đuổi đi."
+   ],
+   "complete": [
+    "Rừng yên rồi. Từ giờ trạm kiểm lâm coi con như người của rừng."
+   ]
+  }
+ },
+ {
+  "id": "vn-ag-rep",
+  "kind": "side",
+  "title": "Lời nhờ của Sư cô Núi Cấm",
+  "giver": "ag-monk-cam",
+  "requires": [
+   "vn-ag-1"
+  ],
+  "requiresFlags": [
+   "rep:an-giang:2"
+  ],
+  "description": "Người Bảy Núi đã tin bạn. Sư cô nhờ dẹp đám Pokémon đá phá lối mòn lên núi.",
+  "objectives": [
+   {
+    "type": "defeat",
+    "target": "*",
+    "count": 5,
+    "text": "Dọn lối mòn lên núi (0/5)",
+    "marker": {
+     "x": 100,
+     "y": 34,
+     "region": "an-giang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ag-monk-cam",
+    "count": 1,
+    "text": "Trở lại gặp Sư cô Núi Cấm",
+    "marker": {
+     "x": 104,
+     "y": 30,
+     "region": "an-giang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "hard-stone": 1,
+    "greatball": 4
+   },
+   "worldExp": 700,
+   "reputation": 10,
+   "flags": [
+    "vn:cam-path"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Bà con trong vùng nhắc tên con hoài. Lối mòn lên núi bị đá lở, Pokémon trú trong đó hay quấy khách hành hương. Con giúp được không?"
+   ],
+   "progress": [
+    "Lối mòn phía bắc chùa — cẩn thận đá trơn."
+   ],
+   "complete": [
+    "Mô Phật, lối đi thông rồi. Khách hành hương sẽ nhớ ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ct-rep",
+  "kind": "side",
+  "title": "Mối hàng chợ nổi",
+  "giver": "ct-merchant",
+  "requires": [
+   "vn-ct-2"
+  ],
+  "requiresFlags": [
+   "rep:can-tho:2"
+  ],
+  "description": "Chủ ghe Tư Hiền tin bạn đủ để giao một mối hàng: chở trái cây từ vườn Chú Tám ra chợ nổi.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "ct-orchard-owner",
+    "count": 1,
+    "text": "Lấy hàng ở vườn Chú Tám",
+    "marker": {
+     "x": 40,
+     "y": 86,
+     "region": "can-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ct-merchant",
+    "count": 1,
+    "text": "Giao trái cây cho Chủ ghe Tư Hiền",
+    "marker": {
+     "x": 118,
+     "y": 88,
+     "region": "can-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "mystic-water": 1
+   },
+   "worldExp": 800,
+   "reputation": 10,
+   "flags": [
+    "vn:market-partner"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Giờ cả chợ biết con rồi, cô giao mối này cho con: ra vườn Chú Tám lấy mấy sọt trái cây, chở về đây giùm cô."
+   ],
+   "progress": [
+    "Vườn Chú Tám ở phía tây, men theo kênh mà đi.",
+    "Sọt trái cây đây — chở ra chợ nổi cho kịp con nước nghen."
+   ],
+   "complete": [
+    "Trái còn tươi rói! Từ nay con là mối ruột của ghe cô."
+   ]
+  }
  }
 ]

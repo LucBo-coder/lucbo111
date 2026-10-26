@@ -8,6 +8,7 @@ import { NATURES, STAT_KEYS } from '../core/stats';
 import type { StatusKind, Team } from '../core/types';
 import { Side, STEP, Unit, World, WorldEvent } from '../core/world';
 import type { DuelMon, DuelRules, PackedUnit, RosterUnit, Snapshot } from './protocol';
+import { applySkills, packSkills } from './skillWire';
 
 // Online duel logic shared by host and guest (no Phaser): rules, team checks, building the duel world,
 // packing a snapshot on the host and mirroring it on the guest.
@@ -125,6 +126,9 @@ export function packSnapshot(w: World, n: number): Snapshot {
     zones: w.zones.filter((z) => z.active).map((z) => [z.shape === 'circle' ? 0 : z.shape === 'line' ? 1 : 2, r1(z.x), r1(z.y), r1(z.r), Math.round(z.angle * 1000) / 1000, r1(z.length), r1(z.delay), r1(z.t), sideIdx(z.owner), z.slot.def.id, z.visualOnly ? 1 : 0]),
     sides: w.sides().map((s) => [s.command, r1(s.switchCd), s.megaUsed]),
     winner: w.duel?.winner ?? null,
+    // the guest (rival side) draws its own skill bar from these
+    skl: w.rival ? w.rival.allies.map((u) => packSkills(u)) : undefined,
+    gcd: w.rival ? r1(w.rival.manualCd) : undefined,
   };
 }
 
@@ -243,6 +247,8 @@ export class DuelMirror {
     const [hostSide, guestSide] = s.sides;
     if (guestSide) { w.home.command = guestSide[0]; w.home.switchCd = guestSide[1]; w.home.megaUsed = guestSide[2]; }
     if (hostSide) { w.rival!.command = hostSide[0]; w.rival!.switchCd = hostSide[1]; w.rival!.megaUsed = hostSide[2]; }
+    if (Array.isArray(s.skl)) for (const k of s.skl) { const u = this.map.get(k[0]); if (u) applySkills(u, k); }
+    w.home.manualCd = s.gcd ?? 0;
     w.time = s.time;
     if (w.duel) w.duel.winner = s.winner === 'home' ? 'rival' : s.winner === 'rival' ? 'home' : s.winner;
   }

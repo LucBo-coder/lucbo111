@@ -41,6 +41,12 @@ export interface AdventureSave {
   playTime: number; // seconds
   /** playTime (s) when each world boss was last defeated → respawn timer */
   bossDefeatedAt: Record<string, number>;
+  /** playTime (s) when each resource node (fishing spot, berry bush) was last used → refill timer */
+  nodes?: Record<string, number>;
+  /** Reputation per region / province of this campaign (`reputation` stays the campaign total) */
+  repBy?: Record<string, number>;
+  /** Trainer rematches: playTime of the last win and how many rematches were won */
+  rematch?: Record<string, { at: number; wins: number }>;
   /** World events: check timers, per-type cooldowns, history (active events are not saved) */
   events: EventSave;
   /** Legendary / Mythical encounter states (persistent: a caught legendary never respawns as a duplicate) */

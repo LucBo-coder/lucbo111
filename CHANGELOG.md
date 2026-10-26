@@ -1,5 +1,28 @@
 # Changelog
 
+## Chưa phát hành — V22: AI huấn luyện viên, tái đấu, danh tiếng theo tỉnh
+
+- **Huấn luyện viên đánh có chiến thuật** (Phiêu lưu và Việt Nam Odyssey dùng chung): chỉ 2 Pokémon ra sân cùng lúc, số còn lại chờ dự bị. Khi một Pokémon gục, HLV gửi Pokémon dự bị **hợp hệ nhất** với Pokémon của bạn. Pokémon bị yếu hệ và còn dưới 50% HP được **gọi về** đổi lấy Pokémon kháng hệ (không bao giờ đổi sang một Pokémon cũng yếu hệ); máu được giữ khi gọi về / ra lại. HLV có 1–2 Potion, dùng khi Pokémon dưới 30% HP. Thông báo trên màn hình cho mỗi lần gửi ra, gọi về, dùng thuốc.
+- **Tái đấu**: thắng xong 10 phút chơi thì HLV mời tái đấu. Cấp đội theo Pokémon mạnh nhất của bạn (tối đa +15 so với đội gốc, +2 mỗi lần thắng tái đấu, không quá 100). Thắng tái đấu chỉ nhận tiền (300 → 800) và +2 danh tiếng — vật phẩm lần thắng đầu không bao giờ trả lại lần hai. Lưu trong save (`rematch`).
+- **Danh tiếng theo từng tỉnh / vùng** (`repBy` trong save của từng chiến dịch — Phiêu lưu và Việt Nam Odyssey không dùng chung điểm): 4 hạng *Người lạ → Quen mặt (15) → Được tin cậy (40) → Người nhà (80)*. Lên hạng nhận quà một lần (cờ `rep:<vùng>:<hạng>`, không nhận lại khi tải lại save). NPC ở Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng. Bảng Thống kê hiện hạng của vùng đang đứng.
+- **3 nhiệm vụ mở bằng danh tiếng "Được tin cậy"**: *Tuần tra rừng tràm U Minh* (Kiểm lâm U Minh, Cà Mau), *Lời nhờ của Sư cô Núi Cấm* (An Giang), *Mối hàng chợ nổi* (giao trái cây từ vườn Chú Tám cho Chủ ghe Tư Hiền, Cần Thơ).
+- Sửa trong lúc làm: trận HLV có thể kết thúc ngay khi Pokémon dự bị cuối cùng vừa được gửi ra (bắt được bằng e2e trước khi phát hành).
+- Dữ liệu mới: `src/data/world/reputation.json`. Lõi mới: `src/core/trainerAI.ts`, `src/core/reputation.ts`.
+- Test: `tests/v22_trainer_rep.test.ts` (11), `e2e/v22_trainer_rep.spec.ts`.
+
+## Chưa phát hành — V21: Kỹ năng chủ động online, câu cá & hái lượm, Rừng Ngọc Lục Bảo, sprite Mega
+
+- **Kỹ năng chủ động cho PvP và khách co-op**: cùng thanh 4 ô + phím **Q** / **T** như Phiêu lưu (chuột phải / nhấn giữ = giữ chiêu). Chủ phòng vẫn là bên quyết định: khách gửi lệnh (`act` skill / reserve trong PvP, `coopSkill` / `coopReserve` trong co-op), chủ phòng chạy cùng luật (hồi chiêu, năng lượng, hồi chiêu chung 1,2 s) và gửi lại lý do khi chiêu không ra (`skillRes`); snapshot mang hồi chiêu thật, ô đang giữ, chiêu đang chờ và hồi chiêu chung của khách. Tin nhắn đều tùy chọn — bản cũ bỏ qua, không đổi phiên bản giao thức. Thanh kỹ năng tách thành thành phần dùng chung `src/ui/SkillBar.ts`.
+- **Giữ chiêu được lưu vào save** (theo mã chiêu trên từng Pokémon, `keptSkills`): còn sau khi tải lại, học chiêu mới hay tiến hóa.
+- **Câu cá ở Hồ Pha Lê**: 4 chỗ câu có gợn sóng quanh hồ. Bấm E thả câu → chờ phao chìm và dấu "!" → bấm lại trong 0,9 s. Giật sớm / chậm thì cá chạy (không mất lượt); câu được vật phẩm hoặc Pokémon hệ Nước (ở lại dưới nước, đánh và bắt như thường). Mỗi chỗ cần 60 s thời gian chơi để cá quay lại. Cần câu: nhiệm vụ của **Ông Sáu** ở bờ tây hồ.
+- **Bụi quả mọng ở Đồng Cỏ Gió**: 5 bụi, hái ra quả mọng / thuốc / bóng / kẹo EXP, đôi khi một Pokémon nhảy ra. Bụi ra quả lại sau 4 phút chơi.
+- Nhiệm vụ mới: *Cần câu của Ông Sáu* (hái 3 bụi làm mồi → nhận cần câu), *Mẻ cá đầu tiên* (câu thành công 3 lần), *Tuần tra Rừng Ngọc Lục Bảo*.
+- **Rừng Ngọc Lục Bảo — bản đồ riêng** (96×84, Lv12–19): Đường Mòn Ngọc, Lõi Rừng Ngọc, Suối Lục Bảo (hồ + suối có cầu), Chòi Kiểm Lâm, 2 NPC, 3 HLV, 3 rương, 2 trạm dịch chuyển, bụi quả rừng và chỗ câu cá riêng. Vào bằng **Cổng Rừng Ngọc Lục Bảo** ở cuối đường mòn Rìa Rừng Ngọc, mở bằng cờ `region:emerald-forest` (sau Hang Đá Cổ). Rìa Rừng Ngọc trong Thung Lũng giữ nguyên (nhiệm vụ, huyền thoại lang thang không đổi).
+- **Sửa: Mega Tiến Hóa thiếu hình riêng** — trước đây mọi dạng Mega vẽ bằng sprite của loài gốc. Giờ 30/50 dạng Mega có hoạt ảnh PMD riêng (lấy từ PMDCollab SpriteCollab bằng `scripts/fetch-pmd-megas.py`); 20 dạng SpriteCollab chưa vẽ dùng ảnh chính thức của chính dạng Mega đó, chỉ khi không có gói ảnh mới quay về loài gốc.
+- **Máy chủ relay** (`pokemon-server`): bộ đệm khi một bên rớt mạng giờ bỏ snapshot / input / ping cũ trước, giữ tin một lần (phần thưởng, vào phòng, kết thúc) — cùng cách với client.
+- Hệ thống dữ liệu mới: `src/data/world/gathering.json` (bảng câu cá / hái lượm), trường `nodes` của vùng, `AdventureSave.nodes` (hồi điểm theo thời gian chơi). Script: `scripts/patch-valley-gathering.mjs`, `scripts/build-emerald-woods.mjs`.
+- Test: `tests/v21_remote_skills.test.ts` (7), `tests/v21_gathering.test.ts` (9), `e2e/v21_world.spec.ts` (câu cá, hái quả, cổng rừng, Q trong PvP luyện tập), `e2e/v21_mega_sprites.spec.ts`.
+
 ## Chưa phát hành — V20: Kỹ năng chủ động, Trại Huấn Luyện, phần thưởng co-op tin cậy
 
 - **Kỹ năng chủ động** (Phiêu lưu / Việt Nam Odyssey): **Q** = Pokémon đang điều khiển dùng chiêu tốt nhất ngay, click / chạm ô trên **thanh kỹ năng** mới = dùng đúng chiêu đó, chuột phải / nhấn giữ = giữ chiêu cho mình (AI không dùng), **T** = đổi Pokémon điều khiển. Cùng luật với AI (hồi chiêu, năng lượng, Choice / Assault Vest, miễn nhiễm) + hồi chiêu chung 1,2 s chống spam; ngoài tầm thì Pokémon tự đi tới đúng tầm (chờ tối đa 3 s). Thanh 4 ô có icon, thời gian hồi, năng lượng, trạng thái chờ / niệm / giữ; điện thoại dọc đặt ở góc trái dưới. Sinh tồn, PvP, khách co-op, Thế giới online không đổi.

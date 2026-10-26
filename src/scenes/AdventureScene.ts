@@ -4,6 +4,8 @@ import { addCoopHud, rewardCoopHost } from './coopHud';
 import { passportPages, stampVisit } from '../adventure/passport';
 import { OnlinePresence } from '../adventure/OnlinePresence';
 import { net } from '../net/session';
+import { skillFailText } from '../net/skillWire';
+import { keptMask, setKept } from '../core/keptSkills';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
@@ -14,6 +16,9 @@ import { DungeonController } from '../adventure/DungeonController';
 import { SpawnManager } from '../adventure/SpawnManager';
 import { BALL_ORDER, BallContext, ballMultiplier, BALLS, BallId, fleeChance, rollCapture, statusBonus, captureChance } from '../core/capture';
 import { BOSSES, POKEMON } from '../core/data';
+import type { PokeType } from '../core/types';
+import { FIELD_MAX, HEAL_FRAC, pickLead, pickSwitch, potionsFor, rematchPrize, rematchReady, rematchTeam, REMATCH_COOLDOWN, shouldHeal } from '../core/trainerAI';
+import { repGreeting, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { DungeonMap } from '../core/map/dungeonMap';
 import { dungeonDef } from '../core/map/dungeons';
 import { REGION_DEFS } from '../core/map/regionDefs';
@@ -27,6 +32,7 @@ import { addFriendship, captureRateOf, expYield, individualOf } from '../core/pr
 import { legendRule, legendThrowChance, LegendCaptureRule } from '../core/legendCapture';
 import { QuestDef } from '../core/quests';
 import { makeWildState } from '../core/wildAI';
+import { FISH_WAIT, FISH_WINDOW, fishOutcome, gatherTable, nodeCooldownLeft, rollGather, type GatherTable } from '../core/gathering';
 import { AllyCommand, STEP, Unit, World, WorldEvent } from '../core/world';
 import { createGroundSprite } from '../render/groundSprite';
 import { pixelPerfectZoom } from '../render/pixelZoom';
@@ -34,7 +40,7 @@ import { ChunkRecord, ChunkView } from '../render/ChunkView';
 import { QUALITY_PROFILE } from '../render/vfx';
 import { WorldRenderer } from '../render/WorldRenderer';
 import { WorldEventController } from '../adventure/WorldEventController';
-import type { WeatherKind } from '../core/encounters';
+import { isAquatic, type WeatherKind } from '../core/encounters';
 import { LEGENDS, LegendEnv, missingConditions as legendMissing } from '../core/legends';
 import { LegendaryEncounterManager } from '../adventure/LegendaryEncounterManager';
 import { audio } from '../systems/audio';
@@ -95,6 +101,9 @@ interface CaptureFx {
   ballId: BallId;
 }
 
+interface BenchMon { sp: string; lv: number; frac: number; types: PokeType[]; name: string }
+interface TrainerBattle { id: string; units: Unit[]; bench: BenchMon[]; potions: number; rematch: boolean; x: number; y: number; nextSend: number; think: number; size: number }
+
 export class AdventureScene extends Phaser.Scene {
   state!: AdventureState;
   map!: MapProvider;
@@ -123,7 +132,8 @@ export class AdventureScene extends Phaser.Scene {
   env: EnvironmentController | null = null;
   /** Open capture window on a weakened legendary boss (all phases cleared) */
   legendCap: { unit: Unit; id: string; level: number; left: number; rule: LegendCaptureRule } | null = null;
-  battle: { id: string; units: Unit[] } | null = null;
+  /** Trainer battle: fielded units, the bench (reserves / recalled, HP kept), Potions left, rematch or first fight */
+  battle: TrainerBattle | null = null;
   areaName = '';
   weather: { kind: WeatherKind; t: number } = { kind: 'clear', t: 240 };
   pointerWorld = { x: 0, y: 0, at: -99999 };
@@ -181,6 +191,8 @@ export class AdventureScene extends Phaser.Scene {
     this.mapKind = data.map ?? 'valley';
     this.difficulty = data.difficulty ?? 'normal';
     this.interactables = new Map();
+    this.nodeViews = new Map();
+    this.fishing = null;
     this.pcTerminals = [];
     this.nearest = null;
     this.spawns = null;
@@ -550,6 +562,34 @@ export class AdventureScene extends Phaser.Scene {
           this.addInteractable(o, s.x, py + TILE_PX + 14, 'Rời hang', s);
           break;
         }
+        case 'node': {
+          const tb = gatherTable((o.data as { table: string }).table);
+          if (!tb) break;
+          const cx = px + TILE_PX / 2, cy = py + TILE_PX / 2;
+          if (tb.kind === 'forage') {
+            // berry bush (Kenney tile) with a berry on top while it has fruit
+            const s = add(this.add.image(cx, cy, 'ow_tiles', TOWN.bush).setScale(SCALE).setDepth(cy));
+            const berry = add(this.add.image(cx + 8, cy - 10, itemIconKey(this, 'oranberry')).setScale(2).setDepth(cy + 1));
+            this.world.addObstacle({ x: cx, y: cy, r: 14, kind: 'prop', tag });
+            this.addInteractable(o, cx, cy + 20, 'Hái quả', s);
+            this.nodeViews.set(o.id, { tb, cue: [berry], wx: cx, wy: cy });
+          } else {
+            // fishing spot: ripples on the water, one and a half tiles toward the lake centre
+            const lake = this.regionDef.lake;
+            const dx = lake.cx - (o.x + 0.5), dy = lake.cy - (o.y + 0.5), d = Math.hypot(dx, dy) || 1;
+            const wx = cx + (dx / d) * TILE_PX * 1.5, wy = cy + (dy / d) * TILE_PX * 1.5;
+            const cue = [0, 1].map((i) => {
+              const ring = add(this.add.graphics({ x: wx, y: wy }).setDepth(-5));
+              ring.lineStyle(3, 0xe8f8ff, 0.9).strokeEllipse(0, 0, 34, 14);
+              this.tweens.add({ targets: ring, scale: { from: 0.5, to: 1.5 }, alpha: { from: 0.9, to: 0 }, duration: 1600, delay: i * 800, repeat: -1 });
+              return ring;
+            });
+            this.addInteractable(o, cx, cy, 'Câu cá');
+            this.nodeViews.set(o.id, { tb, cue, wx, wy });
+          }
+          this.refreshNode(o.id);
+          break;
+        }
         case 'rescue': {
           if (this.state.hasFlag('rescued:' + o.id)) break;
           const d = o.data as { species: string; guards: [string, number][] };
@@ -573,6 +613,7 @@ export class AdventureScene extends Phaser.Scene {
     this.world.removeObstacles('chunk-' + rec.idx);
     for (const o of rec.mapObjects) {
       this.interactables.delete(o.kind === 'plate' ? 'plate:' + o.id : o.id);
+      this.nodeViews.delete(o.id);
     }
     this.lamps = this.lamps.filter((l) => {
       if (rec.objects.includes(l.img)) return false;
@@ -802,8 +843,6 @@ export class AdventureScene extends Phaser.Scene {
 
   /** Party member the skill bar controls (uid); falls back to the first Pokémon on the field. */
   private focusUid: string | null = null;
-  /** Skill slots kept for the player, per Pokémon (uid → bitmask) — survives summon / recall / evolution */
-  private reservedSlots = new Map<string, number>();
 
   focusAlly(): Unit | null {
     const field = this.world.allies.filter((a) => a.ownerUid != null);
@@ -829,16 +868,17 @@ export class AdventureScene extends Phaser.Scene {
     if (!u || u.ownerUid == null || slot >= u.skills.length) return;
     const on = !this.isReserved(u, slot);
     this.world.setReserved(u, slot, on);
-    this.reservedSlots.set(u.ownerUid, u.reserved);
+    // saved on the owned Pokémon (by skill id): kept across recall / summon, evolution and reloads
+    const p = this.state.owned(u.ownerUid);
+    if (p) setKept(p, u.skills[slot].def.id, on);
     this.ui?.banner(on ? `Giữ ${u.skills[slot].def.name} cho bạn tự dùng` : `${u.skills[slot].def.name}: trả lại cho AI`, '#a0d8ff');
   }
 
-  /** Units are rebuilt on summon / evolution: re-apply the kept slots. */
+  /** Units are rebuilt on summon / evolution: re-apply the kept skills from the save. */
   private syncReserved(): void {
     for (const a of this.world.allies) {
       if (a.ownerUid == null) continue;
-      const m = this.reservedSlots.get(a.ownerUid) ?? 0;
-      a.reserved = m & ((1 << a.skills.length) - 1);
+      a.reserved = keptMask(this.state.owned(a.ownerUid), a.skills);
     }
   }
 
@@ -846,17 +886,8 @@ export class AdventureScene extends Phaser.Scene {
     const u = this.focusAlly();
     if (!u) return;
     const r = this.world.requestSkill(u, slot);
-    const name = typeof slot === 'number' ? u.skills[slot]?.def.name ?? '' : '';
-    const msg: Partial<Record<typeof r, string>> = {
-      cooldown: `${name || 'Mọi chiêu'} đang hồi`,
-      energy: `${u.name} không đủ năng lượng`,
-      noTarget: 'Không có mục tiêu trong tầm',
-      immune: 'Mục tiêu miễn nhiễm chiêu này',
-      global: 'Chờ một chút trước lệnh kế tiếp',
-      fainted: `${u.name} đã kiệt sức`,
-      blocked: `${name} đang bị khóa (vật phẩm cầm)`,
-    };
-    if (msg[r]) { this.ui?.banner(msg[r]!, '#ffb0a0'); audio.play('click'); }
+    const msg = skillFailText(r, u.name, typeof slot === 'number' ? u.skills[slot]?.def.name ?? '' : '');
+    if (msg) { this.ui?.banner(msg, '#ffb0a0'); audio.play('click'); }
   }
 
   command(cmd: AllyCommand): void {
@@ -895,7 +926,7 @@ export class AdventureScene extends Phaser.Scene {
     let ix = (k.D.isDown || k.RIGHT.isDown ? 1 : 0) - (k.A.isDown || k.LEFT.isDown ? 1 : 0);
     let iy = (k.S.isDown || k.DOWN.isDown ? 1 : 0) - (k.W.isDown || k.UP.isDown ? 1 : 0);
     if (!ix && !iy) { ix = this.joystick.x; iy = this.joystick.y; }
-    const frozen = this.modal || this.blackoutT >= 0 || this.captureFx?.phase === 'shaking';
+    const frozen = this.modal || this.blackoutT >= 0 || this.captureFx?.phase === 'shaking' || !!this.fishing;
     w.input.x = frozen ? 0 : ix; w.input.y = frozen ? 0 : iy;
     w.run = k.SHIFT.isDown || this.runHeld;
 
@@ -932,6 +963,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateExploration();
     this.presence?.update(performance.now());
     this.updateWalkers(dt);
+    this.updateFishing(dt);
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
@@ -1171,11 +1203,13 @@ export class AdventureScene extends Phaser.Scene {
     this.applyParty();
     audio.play('victory');
     this.ui?.questComplete(q.title, lines);
+    this.notifyRepTier();
   }
 
   // ───────────────────────────── interaction ─────────────────────────────
 
   async interact(): Promise<void> {
+    if (this.fishing) return this.reel();
     const it = this.nearest;
     if (!it || this.modal) return;
     switch (it.kind) {
@@ -1195,7 +1229,113 @@ export class AdventureScene extends Phaser.Scene {
       case 'rescue': return this.rescue(it);
       case 'exit': return this.leaveDungeon(false);
       case 'remote': return this.presence?.challenge();
+      case 'node': return this.useNode(it);
     }
+  }
+
+  // ───────────────────────────── fishing & foraging ─────────────────────────────
+
+  /** Resource nodes on screen: the cue (berry / ripples) shows while the node is ready. */
+  private nodeViews = new Map<string, { tb: GatherTable; cue: Phaser.GameObjects.Components.Visible[]; wx: number; wy: number }>();
+  /** a line in the water: seconds since the cast, when the fish bites, the bobber and its "!" */
+  fishing: { it: Interactable; tb: GatherTable; t: number; biteAt: number; bit: boolean; g: Phaser.GameObjects.Graphics; mark: Phaser.GameObjects.Text; wx: number; wy: number } | null = null;
+  private nodeRefreshT = 0;
+
+  /** Play time in seconds, finer than the saved 20 s steps (node refill timers). */
+  private playNow(): number {
+    return this.state.adv.playTime + this.playClock;
+  }
+
+  private refreshNode(id: string): void {
+    const v = this.nodeViews.get(id);
+    if (!v) return;
+    const ready = nodeCooldownLeft(this.state.adv.nodes, id, v.tb, this.playNow()) <= 0 && (!v.tb.requiresFlag || this.state.hasFlag(v.tb.requiresFlag));
+    for (const c of v.cue) c.setVisible(ready && this.fishing?.it.id !== id);
+  }
+
+  private async useNode(it: Interactable): Promise<void> {
+    const v = this.nodeViews.get(it.id);
+    if (!v) return;
+    const tb = v.tb;
+    if (tb.requiresFlag && !this.state.hasFlag(tb.requiresFlag)) {
+      await this.say(tb.name, ['Bạn chưa có cần câu.', 'Ông Sáu ở bờ tây Hồ Pha Lê có thể cho bạn một chiếc.']);
+      return;
+    }
+    const left = nodeCooldownLeft(this.state.adv.nodes, it.id, tb, this.playNow());
+    if (left > 0) {
+      this.ui?.banner(tb.kind === 'fish' ? `Cá chưa quay lại chỗ này (còn ${Math.ceil(left)} giây)` : `Bụi cây chưa ra quả mới (còn ${Math.ceil(left)} giây)`, '#ffb0a0');
+      return;
+    }
+    if (this.inCombat()) { this.ui?.banner(tb.kind === 'fish' ? 'Không thể câu cá khi đang giao chiến' : 'Không thể hái quả khi đang giao chiến', '#ffb0a0'); return; }
+    if (tb.kind === 'forage') { this.gather(it, tb); return; }
+    // cast: the bobber lands on the ripples; the fish bites after a random wait
+    const g = this.add.graphics().setDepth(9000);
+    const mark = this.add.text(v.wx, v.wy - 40, '!', { fontFamily: '"VT323", monospace', fontSize: '44px', color: '#ffe040', stroke: '#000', strokeThickness: 6 }).setOrigin(0.5).setDepth(9100).setVisible(false);
+    this.fishing = { it, tb, t: 0, biteAt: FISH_WAIT[0] + Math.random() * (FISH_WAIT[1] - FISH_WAIT[0]), bit: false, g, mark, wx: v.wx, wy: v.wy };
+    this.refreshNode(it.id);
+    audio.play('bubble');
+    this.ui?.banner('Thả câu… chờ phao chìm rồi bấm lại thật nhanh!', '#a0d8ff');
+  }
+
+  /** E / Space / the interact button while a line is in the water. */
+  reel(): void {
+    const f = this.fishing;
+    if (!f) return;
+    const r = fishOutcome(f.biteAt, f.t);
+    this.endFishing();
+    if (r === 'early') { this.ui?.banner('Giật sớm quá — cá bỏ đi mất rồi', '#ffb0a0'); audio.play('click'); return; }
+    if (r === 'late') { this.ui?.banner('Chậm một nhịp — cá đã thoát mồi', '#ffb0a0'); return; }
+    this.gather(f.it, f.tb);
+  }
+
+  private endFishing(): void {
+    const f = this.fishing;
+    if (!f) return;
+    f.g.destroy(); f.mark.destroy();
+    this.fishing = null;
+    this.refreshNode(f.it.id);
+  }
+
+  private updateFishing(dt: number): void {
+    if ((this.nodeRefreshT -= dt) <= 0) { this.nodeRefreshT = 1; for (const id of this.nodeViews.keys()) this.refreshNode(id); }
+    const f = this.fishing;
+    if (!f) return;
+    const t = this.world.trainer;
+    if (this.modal || t.hp <= 0 || this.inCombat()) { this.endFishing(); return; }
+    f.t += dt;
+    if (!f.bit && f.t >= f.biteAt) { f.bit = true; audio.play('whip'); }
+    if (f.t > f.biteAt + FISH_WINDOW) { this.endFishing(); this.ui?.banner('Chậm một nhịp — cá đã thoát mồi', '#ffb0a0'); return; }
+    // line from the trainer's hands to the bobber; the bobber bobs, then dips when the fish bites
+    const by = f.wy + (f.bit ? 6 : Math.sin(f.t * 5) * 2);
+    f.g.clear();
+    f.g.lineStyle(2, 0xf0f0f0, 0.8).lineBetween(t.x + 10, t.y - 30, f.wx, by);
+    if (f.bit) f.g.lineStyle(2, 0xe8f8ff, 0.8).strokeEllipse(f.wx, f.wy + 4, 30 + Math.sin(f.t * 30) * 4, 10);
+    f.g.fillStyle(0xffffff, 1).fillCircle(f.wx, by, 6).fillStyle(0xe03030, 1).fillRect(f.wx - 6, by - 6, 12, 5);
+    f.mark.setVisible(f.bit).setY(f.wy - 40 + Math.sin(f.t * 20) * 3);
+  }
+
+  /** A successful pick / catch: an item for the bag, or a wild Pokémon that jumps out. The node starts refilling. */
+  private gather(it: Interactable, tb: GatherTable): void {
+    const adv = this.state.adv;
+    (adv.nodes ??= {})[it.id] = this.playNow();
+    const res = rollGather(tb);
+    const v = this.nodeViews.get(it.id);
+    if (res.type === 'item') {
+      this.state.addItems({ [res.id]: res.qty });
+      const name = ITEMS[res.id]?.name ?? res.id;
+      this.ui?.banner(`${tb.kind === 'fish' ? 'Câu được' : 'Hái được'}: ${name} ×${res.qty}`, '#a0ffa0');
+      audio.play('gem');
+    } else {
+      // a normal wild battle (catchable): a fish stays in the water at the bobber, anything else lands next to the player
+      const t = this.world.trainer, swim = tb.kind === 'fish' && !!v && isAquatic(res.species);
+      const x = swim ? v!.wx : v ? (v.wx + t.x) / 2 : t.x + 50, y = swim ? v!.wy : v ? (v.wy + t.y) / 2 : t.y;
+      const e = this.world.spawnWild(res.species, res.level, x, y, { wild: makeWildState(x, y, 'aggressive', { homeR: 60, aggroR: 300, leash: 500 }), hostile: true });
+      this.ui?.banner(tb.kind === 'fish' ? `Có gì đó cắn câu… một ${e.name} hoang dã!` : `Một ${e.name} nhảy ra từ bụi cây!`, '#ffe060');
+      audio.play('boss');
+    }
+    this.questEvent({ type: 'collect', target: tb.kind });
+    this.refreshNode(it.id);
+    this.persist();
   }
 
   /** Dialogue portrait: official trainer art if the pack is on, else the IcyEthics portrait. */
@@ -1264,7 +1404,8 @@ export class AdventureScene extends Phaser.Scene {
     }
     // 4) progress hint or idle chatter
     const active = qs.forGiver(npc.id).find((q) => qs.states[q.id].status === 'active');
-    await say(active?.dialogue.progress ?? npc.lines);
+    const greet = active ? null : repGreeting(this.state.adv.region, this.state.adv.repBy?.[this.state.adv.region] ?? 0);
+    await say(active?.dialogue.progress ?? (greet ? [greet, ...npc.lines] : npc.lines));
   }
 
   private async shop(name: string): Promise<void> {
@@ -1750,35 +1891,132 @@ export class AdventureScene extends Phaser.Scene {
 
   private async challenge(it: Interactable): Promise<void> {
     const tr = it.obj.data as RegionDef['trainers'][number];
-    if (this.state.hasFlag('beat:' + tr.id)) return void (await this.say(tr.name, tr.win, undefined, this.portraitOf(tr.id)));
+    const pt = this.portraitOf(tr.id);
     if (this.battle) return;
-    if (!this.world.allies.some((a) => !a.fainted)) return void (await this.say(tr.name, ['Anh/chị chưa có Pokémon nào sẵn sàng chiến đấu kìa!'], undefined, this.portraitOf(tr.id)));
-    const r = await this.say(tr.name, tr.challenge, [{ label: 'Chấp nhận thách đấu', value: 'yes' }, { label: 'Để sau', value: 'no' }], this.portraitOf(tr.id));
+    if (this.state.hasFlag('beat:' + tr.id)) {
+      // rematch: after a cooldown, levels follow the player's party, prize money only
+      const rm = this.state.adv.rematch?.[tr.id];
+      if (!rematchReady(rm, undefined, this.state.adv.playTime)) {
+        const left = Math.max(1, Math.ceil((REMATCH_COOLDOWN - (this.state.adv.playTime - rm!.at)) / 60));
+        return void (await this.say(tr.name, [...tr.win, `Để tôi luyện thêm đã — khoảng ${left} phút nữa quay lại tái đấu nhé!`], undefined, pt));
+      }
+      if (!this.world.allies.some((a) => !a.fainted)) return void (await this.say(tr.name, tr.win, undefined, pt));
+      const r = await this.say(tr.name, ['Tôi đã luyện tập lại rồi. Tái đấu một trận chứ?'], [{ label: 'Tái đấu', value: 'yes' }, { label: 'Để sau', value: 'no' }], pt);
+      if (r !== 'yes') return;
+      const top = Math.max(1, ...this.world.allies.filter((a) => a.ownerUid != null).map((a) => a.level));
+      return this.startTrainerBattle(tr, it, rematchTeam(tr.team, top, rm?.wins ?? 0), true);
+    }
+    if (!this.world.allies.some((a) => !a.fainted)) return void (await this.say(tr.name, ['Anh/chị chưa có Pokémon nào sẵn sàng chiến đấu kìa!'], undefined, pt));
+    const r = await this.say(tr.name, tr.challenge, [{ label: 'Chấp nhận thách đấu', value: 'yes' }, { label: 'Để sau', value: 'no' }], pt);
     if (r !== 'yes') return;
-    const units = tr.team.map(([sp, lv], i) => {
-      const x = it.x + (i - (tr.team.length - 1) / 2) * 70, y = it.y + 90;
-      return this.world.spawnWild(sp, lv, x, y, { wild: makeWildState(x, y, 'aggressive', { homeR: 40, aggroR: 600, leash: 700 }), hostile: true, tag: 'trainer:' + tr.id, noCapture: true, hpMult: 3 });
-    });
-    this.battle = { id: tr.id, units };
-    this.ui.banner(`${tr.name} gửi ra ${units.map((u) => u.name).join(' & ')}!`, '#ffcc44');
+    this.startTrainerBattle(tr, it, tr.team, false);
+  }
+
+  private startTrainerBattle(tr: RegionDef['trainers'][number], it: Interactable, team: [string, number][], rematch: boolean): void {
+    const bench: BenchMon[] = team.map(([sp, lv]) => ({ sp, lv, frac: 1, types: [...(POKEMON.get(sp)?.types ?? [])], name: POKEMON.get(sp)?.name ?? sp }));
+    this.battle = { id: tr.id, units: [], bench, potions: potionsFor(team.length, rematch), rematch, x: it.x, y: it.y, nextSend: 0, think: 0, size: team.length };
+    // lead with the first FIELD_MAX in team order (the trainer's signature opener)
+    const lead: string[] = [];
+    for (let i = 0; i < FIELD_MAX && bench.length; i++) lead.push(this.sendOut(0)!.name);
+    this.ui.banner(`${tr.name} ${rematch ? '(tái đấu) ' : ''}gửi ra ${lead.join(' & ')}!`, '#ffcc44');
     audio.play('boss');
+  }
+
+  /** Sends bench[i] onto the field next to its trainer, with the HP it had when recalled. */
+  private sendOut(i: number): Unit | null {
+    const b = this.battle;
+    if (!b || !b.bench[i]) return null;
+    const m = b.bench.splice(i, 1)[0];
+    const slot = b.units.filter((u) => u.alive).length;
+    const x = b.x + (slot - 0.5) * 70, y = b.y + 90;
+    const u = this.world.spawnWild(m.sp, m.lv, x, y, { wild: makeWildState(x, y, 'aggressive', { homeR: 40, aggroR: 600, leash: 700 }), hostile: true, tag: 'trainer:' + b.id, noCapture: true, hpMult: 3 });
+    u.hp = Math.max(1, Math.round(u.maxHp * m.frac));
+    b.units = b.units.filter((v) => v.alive);
+    b.units.push(u);
+    return u;
+  }
+
+  /** The player's Pokémon the trainer reads the match-up against. */
+  private battleFoe(): Unit | null {
+    return this.focusAlly() ?? this.world.allies.find((a) => a.ownerUid != null && !a.fainted) ?? null;
   }
 
   private updateBattle(): void {
     const b = this.battle;
-    if (!b || !b.units.every((u) => !u.alive)) return;
+    if (!b) return;
+    const tr = this.regionDef.trainers.find((t) => t.id === b.id);
+    if (!tr) { this.battle = null; return; }
+    const now = this.time.now / 1000;
+    // tactics, twice a second: a Potion for a Pokémon in danger, or a hurt Pokémon called back out of a bad match-up
+    if (now >= b.think) {
+      b.think = now + 0.5;
+      const foe = this.battleFoe();
+      for (const u of b.units.filter((v) => v.alive)) {
+        if (shouldHeal(u, b.potions)) {
+          b.potions--;
+          u.hp = Math.min(u.maxHp, u.hp + Math.round(u.maxHp * HEAL_FRAC));
+          this.renderer_.vfx.named('heal', u.x, u.y);
+          this.ui.banner(`${tr.name} dùng Potion cho ${u.name}!`, '#80ffa0');
+          audio.play('heal');
+          break;
+        }
+        if (!foe) continue;
+        const k = pickSwitch(u, b.bench.map((m) => ({ types: m.types, hp: m.frac, maxHp: 1 })), foe.types);
+        if (k < 0) continue;
+        const back: BenchMon = { sp: u.defId, lv: u.level, frac: u.hp / u.maxHp, types: [...u.types], name: u.name };
+        this.world.removeEnemy(u);
+        const nu = this.sendOut(k);
+        b.bench.push(back);
+        if (nu) this.ui.banner(`${tr.name}: "${u.name}, quay về!" — gửi ra ${nu.name}!`, '#ffcc44');
+        break;
+      }
+    }
+    // a slot opened (a Pokémon fainted): the next reserve comes out after a short pause, picked for the match-up
+    const alive = b.units.filter((u) => u.alive).length;
+    if (alive < FIELD_MAX && b.bench.length) {
+      if (!b.nextSend) b.nextSend = now + 0.9;
+      else if (now >= b.nextSend) {
+        b.nextSend = 0;
+        const k = pickLead(b.bench.map((m) => ({ types: m.types, hp: m.frac, maxHp: 1 })), this.battleFoe()?.types ?? null);
+        const nu = this.sendOut(Math.max(0, k));
+        if (nu) this.ui.banner(`${tr.name} gửi ra ${nu.name}! (còn ${b.bench.length} Pokémon)`, '#ffcc44');
+      }
+    }
+    if (b.units.some((u) => u.alive) || b.bench.length) return;
     this.battle = null;
-    const tr = this.regionDef.trainers.find((t) => t.id === b.id)!;
-    this.state.setFlag('beat:' + tr.id);
     const it = this.interactables.get(tr.id);
     if (it) this.tagNpc(it, tr.name, true, true);
-    this.state.addItems(tr.rewards.items);
-    this.state.adv.reputation += 5;
-    this.state.earn(500);
-    this.ui.banner(`Thắng ${tr.name}! Nhận ${Object.entries(tr.rewards.items ?? {}).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`).join(', ')}`, '#ffe066');
+    const rm = (this.state.adv.rematch ??= {});
+    if (b.rematch) {
+      const wins = (rm[tr.id]?.wins ?? 0) + 1;
+      rm[tr.id] = { at: this.state.adv.playTime, wins };
+      const prize = rematchPrize(wins - 1);
+      this.state.earn(prize);
+      this.state.addReputation(2);
+      this.ui.banner(`Thắng tái đấu ${tr.name}! +${prize} ${this.state.unit}`, '#ffe066');
+      this.questEvent({ type: 'trainer', target: tr.id }); // only quests still waiting for this trainer progress
+    } else {
+      this.state.setFlag('beat:' + tr.id);
+      rm[tr.id] = { at: this.state.adv.playTime, wins: 0 };
+      this.state.addItems(tr.rewards.items);
+      this.state.addReputation(5);
+      this.state.earn(500);
+      this.ui.banner(`Thắng ${tr.name}! Nhận ${Object.entries(tr.rewards.items ?? {}).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`).join(', ')}`, '#ffe066');
+      this.questEvent({ type: 'trainer', target: tr.id });
+    }
+    this.notifyRepTier();
     audio.play('victory');
-    this.questEvent({ type: 'trainer', target: tr.id });
+    this.persist();
     void this.say(tr.name, tr.win, undefined, this.portraitOf(tr.id));
+  }
+
+  /** Banner for a reputation milestone reached since the last check. */
+  notifyRepTier(): void {
+    const g = this.state.lastRepGain;
+    if (!g) return;
+    this.state.lastRepGain = null;
+    const name = REP_REGIONS[g.region]?.name ?? '';
+    this.time.delayedCall(1600, () => this.ui.banner(`Danh tiếng ${name}: ${REP_TIERS[g.tier].name}! Nhận quà của người dân.`, '#ffd040'));
   }
 
   private async rescue(it: Interactable): Promise<void> {
@@ -2031,6 +2269,7 @@ export class AdventureScene extends Phaser.Scene {
     if (this.battle) {
       const tr = this.regionDef.trainers.find((t) => t.id === this.battle!.id);
       for (const u of this.battle.units) if (u.alive) this.world.removeEnemy(u);
+      this.battle.bench.length = 0;
       this.battle = null;
       if (tr) this.time.delayedCall(1800, () => void this.say(tr.name, tr.lose, undefined, this.portraitOf(tr.id)));
     }

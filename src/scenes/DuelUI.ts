@@ -8,6 +8,7 @@ import { audio } from '../systems/audio';
 import { RULE_LABEL } from '../net/duel';
 import { CMD_LABEL, DuelScene } from './DuelScene';
 import { button, Button, COLORS, fmtTime, panel, text, uiScale } from './ui';
+import { SkillBar } from '../ui/SkillBar';
 
 // HUD of a duel: both parties (field / bench / fainted), the clock, orders, Mega, forfeit, result screen.
 
@@ -32,6 +33,7 @@ export class DuelUI extends Phaser.Scene {
   /** field Pokémon picked to leave on the next switch */
   private picked: Unit | null = null;
   private result: Phaser.GameObjects.Container | null = null;
+  private skillBar!: SkillBar;
 
   constructor() {
     super('DuelUI');
@@ -97,6 +99,17 @@ export class DuelUI extends Phaser.Scene {
     this.megaBtn = button(this, W - 150 * s, H - 30 * s, 110 * s, 40 * s, 'G  MEGA', () => this.duel.megaAny(), 0x7a2f6a);
     button(this, W - 50 * s, H - 30 * s, 80 * s, 40 * s, 'Hàng', () => this.duel.forfeit(), 0x6a2f2f);
     text(this, 12 * s, H - 76 * s, 'Chạm Pokémon đối thủ: cả đội tấn công nó · Chạm con dự bị để đổi (Z X C) · WASD di chuyển', 14 * s, COLORS.dim);
+    // active skills of the focused Pokémon: tap = use now · right-click / long-press = keep it for yourself
+    const d = this.duel;
+    this.skillBar = new SkillBar(this, {
+      focusAlly: () => d.focusAlly(),
+      manualSkill: (j) => d.manualSkill(j),
+      cycleFocus: () => d.cycleFocus(),
+      globalCd: () => d.mine.manualCd,
+      toggleReserved: (j) => d.toggleReserved(j),
+      isReserved: (u, j) => d.isReserved(u, j),
+    }, this.sys.game.device.input.touch);
+    this.skillBar.build(s, { centerX: W / 2, y: H - 150 * s });
   }
 
   banner(t: string, color: string): void {
@@ -153,6 +166,7 @@ export class DuelUI extends Phaser.Scene {
       });
     });
     const mine = d.mine;
+    this.skillBar.draw(g, !!d.ended || d.countdown > 0);
     this.cmdButtons.forEach((b, i) => b.container.setAlpha(mine.command === CMDS[i].id ? 1 : 0.62));
     const megaOk = !mine.megaUsed && mine.allies.some((u) => !u.fainted && d.canMega(u));
     this.megaBtn.container.setAlpha(megaOk ? 1 : 0.35);

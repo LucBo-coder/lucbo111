@@ -1414,5 +1414,182 @@
     "Chào học viên mới! Khi nào sẵn sàng thì nhận bài học đầu tiên."
    ]
   }
+ },
+ {
+  "id": "q-fish-1",
+  "kind": "side",
+  "title": "Cần câu của Ông Sáu",
+  "giver": "sv-fisher",
+  "requires": [
+   "q-main-1"
+  ],
+  "description": "Ông Sáu sẽ cho bạn mượn cần câu nếu bạn kiếm giúp ít quả mọng làm mồi.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "forage",
+    "count": 3,
+    "text": "Hái 3 bụi quả mọng ở Đồng Cỏ Gió",
+    "marker": {
+     "x": 42,
+     "y": 55
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sv-fisher",
+    "count": 1,
+    "text": "Mang mồi về cho Ông Sáu",
+    "marker": {
+     "x": 110,
+     "y": 73
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "oranberry": 2
+   },
+   "worldExp": 80,
+   "flags": [
+    "tool:rod"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cần câu thì ông có thừa, mồi thì hết rồi. Cháu ra Đồng Cỏ Gió hái giúp ông vài bụi quả mọng nhé.",
+    "Bụi nào có quả đỏ là hái được."
+   ],
+   "progress": [
+    "Bụi quả mọng mọc rải rác khắp Đồng Cỏ Gió, phía tây bắc làng."
+   ],
+   "complete": [
+    "Mồi ngon đấy! Cái cần này cho cháu. Đứng cạnh chỗ nước gợn sóng mà thả câu."
+   ]
+  }
+ },
+ {
+  "id": "q-fish-2",
+  "kind": "side",
+  "title": "Mẻ cá đầu tiên",
+  "giver": "sv-fisher",
+  "requires": [
+   "q-fish-1"
+  ],
+  "description": "Câu thành công ba lần ở Hồ Pha Lê.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "fish",
+    "count": 3,
+    "text": "Câu thành công 3 lần ở Hồ Pha Lê",
+    "marker": {
+     "x": 112,
+     "y": 70
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sv-fisher",
+    "count": 1,
+    "text": "Kể chuyện với Ông Sáu",
+    "marker": {
+     "x": 110,
+     "y": 73
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "netball": 3,
+    "exp-candy-s": 1
+   },
+   "worldExp": 120,
+   "reputation": 5
+  },
+  "dialogue": {
+   "offer": [
+    "Thử tay nghề nào: câu được ba mẻ rồi quay lại kể ông nghe.",
+    "Phao chìm, hiện dấu \"!\" là bấm ngay. Mỗi chỗ câu xong phải đợi cá kéo về lại."
+   ],
+   "progress": [
+    "Có bốn chỗ câu quanh hồ: bờ tây, bờ nam, bờ đông và bờ bắc."
+   ],
+   "complete": [
+    "Khá lắm! Đôi khi còn câu được cả Pokémon đấy. Cầm mấy quả Net Ball này mà bắt Pokémon hệ Nước."
+   ]
+  }
+ },
+ {
+  "id": "q-emerald-1",
+  "kind": "exploration",
+  "title": "Tuần tra Rừng Ngọc Lục Bảo",
+  "giver": "ef-ranger",
+  "requires": [
+   "q-main-3"
+  ],
+  "description": "Kiểm lâm Hùng nhờ bạn đi một vòng rừng sâu và dẹp những kẻ làm ồn.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "emerald-heart",
+    "count": 1,
+    "text": "Đến Lõi Rừng Ngọc",
+    "marker": {
+     "x": 28,
+     "y": 32
+    }
+   },
+   {
+    "type": "explore",
+    "target": "emerald-falls",
+    "count": 1,
+    "text": "Đến Suối Lục Bảo",
+    "marker": {
+     "x": 70,
+     "y": 32
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ef-hiker",
+    "count": 1,
+    "text": "Đánh bại Phượt thủ Dũng",
+    "marker": {
+     "x": 22,
+     "y": 22
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ef-ranger",
+    "count": 1,
+    "text": "Báo cáo với Kiểm lâm Hùng",
+    "marker": {
+     "x": 58,
+     "y": 71
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "exp-candy-m": 2
+   },
+   "worldExp": 400,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Từ khi Hang Đá Cổ yên ắng trở lại, Pokémon kéo về rừng sâu rất đông.",
+    "Cháu đi một vòng Lõi Rừng và Suối Lục Bảo giúp chú nhé. Có anh Dũng hay chặn đường ở lõi rừng đấy."
+   ],
+   "progress": [
+    "Theo đường mòn: rẽ trái lên Lõi Rừng, rẽ phải sang Suối Lục Bảo."
+   ],
+   "complete": [
+    "Cảm ơn cháu! Rừng yên rồi. Mấy quả Ultra Ball này để cháu bắt Pokémon quý trong rừng."
+   ]
+  }
  }
 ]

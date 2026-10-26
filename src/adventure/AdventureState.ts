@@ -15,6 +15,7 @@ import {
 } from '../core/pc';
 import { AdventureSave, Difficulty, newAdventure, registerCaught, SaveData } from '../systems/saveSchema';
 import { MAX_STACK, shopCatalogue } from '../core/shop';
+import { addRep, REP_REGIONS, REP_TIERS, tierReward, type RepGain } from '../core/reputation';
 import { balance, campaignWallet, earnTo, spendFrom, Wallet, WALLETS } from '../core/wallet';
 
 // Adventure progression wrapper around the shared save. No Phaser here (unit-tested).
@@ -57,6 +58,8 @@ export const STARTERS = ['charmander', 'squirtle', 'bulbasaur'];
 export class AdventureState {
   readonly quests: QuestManager;
   trackedQuest: string | null = null;
+  /** last reputation gain that reached a new tier (UI shows a notice) */
+  lastRepGain: RepGain | null = null;
 
   /**
    * @param walletOverride the online world (server/) always pays the Adventure wallet (`currency`, xu) even though it
@@ -571,6 +574,23 @@ export class AdventureState {
     return ok;
   }
 
+  /**
+   * Reputation for the region the player is in (and the campaign total). New milestones pay their one-time gift
+   * (guarded by the `rep:<region>:<tier>` flag, so it survives reloads and is never paid twice).
+   */
+  addReputation(n: number, region = this.adv.region): string[] {
+    const g = addRep(this.adv, region, n);
+    const where = REP_REGIONS[region]?.name;
+    const lines = [`+${n} Danh tiếng${where ? ` (${where})` : ''}`];
+    for (const t of g.newTiers) {
+      lines.push(`Danh tiếng ${where ?? ''}: ${REP_TIERS[t].name}!`.replace('  ', ' '));
+      const gift = tierReward(region, t);
+      if (gift) { this.addItems(gift); lines.push(...Object.entries(gift).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`)); }
+    }
+    this.lastRepGain = g.newTiers.length ? g : this.lastRepGain;
+    return lines;
+  }
+
   /** Applies quest/dungeon rewards; returns human-readable lines. */
   grant(r: QuestRewards): string[] {
     const lines: string[] = [];
@@ -579,7 +599,7 @@ export class AdventureState {
       lines.push(...Object.entries(r.items).map(([k, v]) => `+${v} ${ITEMS[k]?.name ?? k}`));
     }
     if (r.worldExp) { const up = this.addWorldExp(r.worldExp); lines.push(`+${r.worldExp} EXP thế giới${up ? ` → Cấp thế giới ${this.worldLevel}!` : ''}`); }
-    if (r.reputation) { this.adv.reputation += r.reputation; lines.push(`+${r.reputation} Danh tiếng`); }
+    if (r.reputation) lines.push(...this.addReputation(r.reputation));
     if (r.pokemon) {
       const p = this.addPokemon(r.pokemon.species, r.pokemon.level, 'gift');
       lines.push(`${POKEMON.get(p.species)?.name} (Lv${p.level}) gia nhập bộ sưu tập!`);

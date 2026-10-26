@@ -3,7 +3,8 @@ import { World, type Unit, type WorldEvent, type WorldState } from '../core/worl
 import { cleanAvatarId } from '../core/avatars';
 import { RULESETS, validateParty, shareableEvents } from './duel';
 import { net } from './session';
-import type { NetMsg } from './protocol';
+import type { NetMsg, SkillWire } from './protocol';
+import { applySkills, packSkills, remoteSlot } from './skillWire';
 import { LootLedger, type CoopLoot } from './coopRewards';
 import { type Wallet, WALLETS } from '../core/wallet';
 import { CoopEventDirector, type CoopEventView } from '../core/coopEvents';
@@ -32,6 +33,9 @@ export interface CoopSnapshot {
   hold?: number;
   /** keyframe sent without the obstacle list: the guest keeps the one it has (same obsSig) */
   noObs?: boolean;
+  /** skill bars of the guest's Pokémon and the guest side's global skill cooldown (active skills) */
+  skl?: SkillWire[];
+  gcd?: number;
 }
 /**
  * Between keyframes the host sends only what changed since the previous snapshot: the ordered unit ids of each side
@@ -79,6 +83,7 @@ export function packCoop(w: World, map: CoopMap, epoch: string, n: number, pause
     projectiles: w.projectiles.filter(p => p.active && p.skill).map(p => ({ x: r1(p.x), y: r1(p.y), vx: r1(p.vx), vy: r1(p.vy), r: p.r, team: p.team, skill: p.skill!.id })),
     zones: w.zones.filter(z => z.active).map(({ owner: _o, slot, ...z }) => ({ ...z, x: r1(z.x), y: r1(z.y), skill: slot.def.id })),
     gems: w.gems.filter(g => g.active).map(g => ({ ...g, x: r1(g.x), y: r1(g.y) })), obstacles: w.obstacles.map(o => ({ ...o })), events: shareableEvents(events),
+    ...(w.companion ? { skl: w.companion.allies.map((u) => packSkills(u)), gcd: r1(w.companion.manualCd) } : {}),
   };
 }
 
@@ -166,6 +171,17 @@ export class CoopHost {
       }
     } else if (m.t === 'coopLootAck' && typeof m.id === 'string') {
       this.loot.ack(m.id);
+    } else if ((m.t === 'coopSkill' || m.t === 'coopReserve') && w.companion && m.epoch === this.epoch) {
+      const side = w.companion, u = side.allies.find((a) => a.id === m.unit);
+      if (!u) return;
+      if (m.t === 'coopReserve') {
+        if (Number.isInteger(m.mask)) for (let i = 0; i < u.skills.length; i++) w.setReserved(u, i, !!(m.mask & (1 << i)));
+        return;
+      }
+      const slot = remoteSlot(u, m.slot);
+      if (slot == null) return;
+      const r = w.requestSkill(u, slot, side);
+      if (r !== 'cast' && r !== 'queued') net.send({ t: 'skillRes', r, unit: u.id, slot });
     } else if (m.t === 'coopInput' && w.companion && m.epoch === this.epoch) {
       if (!Number.isSafeInteger(m.seq) || m.seq <= this.seq || !Number.isFinite(m.x) || !Number.isFinite(m.y)) return;
       this.seq = m.seq; this.lastInput = performance.now();
@@ -295,6 +311,8 @@ export class CoopMirror {
     for (const id of this.units.keys()) if (!present.has(id)) { this.units.delete(id); this.positions.delete(id); }
     w.time = s.time; w.state = s.state; w.level = s.level; w.kills = s.kills;
     w.gems = s.gems; w.obstacles = s.obstacles;
+    if (Array.isArray(s.skl)) for (const k of s.skl) { const u = this.units.get(k[0]); if (u) applySkills(u, k); }
+    w.home.manualCd = s.gcd ?? 0;
     w.projectiles = s.projectiles.map(p => ({ ...p, active: true, skill: getSkill(p.skill), owner: null, slot: null, life: 1, pierce: 0, hit: new Set<number>() }));
     w.zones = s.zones.map(({ skill, ...z }) => ({ ...z, owner: w.trainer, slot: { def: getSkill(skill), cd: 0, level: 1, powerBonus: 0 } }));
     const me = s.guest[0];

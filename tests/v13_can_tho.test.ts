@@ -59,7 +59,7 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
 
   it('quest chain: arrival → floating market → Chúa Sông Hậu, gated by the An Giang badge', () => {
     const ids = quests.filter((q) => q.id.startsWith('vn-ct-')).map((q) => q.id);
-    expect(ids).toEqual(['vn-ct-1', 'vn-ct-2', 'vn-ct-3', 'vn-ct-rescue', 'vn-ct-board-1', 'vn-ct-board-2']);
+    expect(ids).toEqual(['vn-ct-1', 'vn-ct-2', 'vn-ct-3', 'vn-ct-rescue', 'vn-ct-board-1', 'vn-ct-board-2', 'vn-ct-rep']);
     const s = defaultSave(); s.adventure = newAdventure('vietnam');
     const st = new AdventureState(s);
     expect(st.quests.states['vn-ct-1'].status).toBe('locked');
@@ -107,7 +107,7 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
     expect(page.playable).toBe(true);
     expect(page.unlocked).toBe(true);
     expect(page.trainers.total).toBe(6);
-    expect(page.quests.total).toBe(6);
+    expect(page.quests.total).toBe(7);
     expect(page.boss?.name).toContain('Whiscash');
   });
 });
