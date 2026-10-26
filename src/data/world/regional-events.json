@@ -1,0 +1,34 @@
+[
+  {
+    "id": "mua-ca-linh", "type": "outbreak", "regions": ["vn-ag-wetland"], "name": "Mùa cá linh về",
+    "intro": "Mùa nước nổi đưa cá linh về Đồng Nước Nổi — Pokémon nước kéo đến thành bầy!",
+    "species": ["buizel", "wooper", "lotad"], "bonus": { "netball": 3 }
+  },
+  {
+    "id": "mua-nuoc-noi", "type": "weather", "regions": ["vn-ag-wetland", "vn-ag-tra-su"], "name": "Nước nổi tràn đồng",
+    "intro": "Nước sông Hậu tràn đồng, mưa dầm cả ngày. Đòn Nước mạnh hơn, Pokémon nước ra khỏi kênh.",
+    "weather": "heavyRain"
+  },
+  {
+    "id": "trieu-cuong", "type": "weather", "regions": ["vn-cm-cape", "vn-cm-mangrove"], "name": "Triều cường",
+    "intro": "Triều cường dâng cao ở mũi Cà Mau! Nước tràn lên bãi bồi, mưa gió mịt mù.",
+    "weather": "heavyRain"
+  },
+  {
+    "id": "co-ve-vuon", "type": "migration", "regions": ["vn-ct-bang-lang", "vn-cm-mangrove"], "name": "Cò về vườn",
+    "intro": "Chiều xuống, từng đàn chim trắng bay về tổ — Pokémon chim nước băng qua trời!",
+    "species": ["wingull", "ducklett", "pelipper"]
+  },
+  {
+    "id": "le-hoi-trai-cay", "type": "merchant", "regions": ["vn-ct-orchard", "vn-ct-cai-rang"], "name": "Lễ hội trái cây miệt vườn",
+    "intro": "Lễ hội trái cây Phong Điền! Sạp hàng miệt vườn bày bán quả ngọt và hạt giống quý.",
+    "title": "Sạp lễ hội trái cây", "tag": "🍊 Sạp lễ hội trái cây",
+    "greeting": "Trái cây miệt vườn, hạt giống tốt — giá lễ hội, ai mua lẹ thì còn!",
+    "offers": [{ "id": "sitrus-berry", "stock": 4 }, { "id": "leaf-stone", "stock": 1 }, { "id": "miracle-seed", "stock": 1 }, { "id": "exp-candy-s", "stock": 3 }]
+  },
+  {
+    "id": "dom-dom", "type": "outbreak", "regions": ["starter-valley", "emerald-forest"], "name": "Đêm đom đóm",
+    "intro": "Hàng ngàn đốm sáng lập lòe trên cỏ — Volbeat và Illumise tụ về nhảy múa!",
+    "species": ["volbeat", "illumise"], "bonus": { "duskball": 2 }
+  }
+]

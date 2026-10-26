@@ -159,3 +159,14 @@ Ghi chú: một lần chạy unit khi máy đang chạy e2e song song có 10 tes
 
 Lỗi test tìm thấy: `adventure.spec.ts` xóa mọi Pokémon hung hăng rồi lấy một con hoang dã để bắt — với đàn (V22), cả đàn có thể cùng hung hăng nên đôi khi không còn con nào (`Cannot set properties of undefined`). Test giờ chờ một Pokémon hoang dã yên bình xuất hiện; chạy lại 4/4.
 Ảnh đã xem: điểm trồng đước, thông báo Hồi phục / Trù phú, quà Trù phú, bảng Danh tiếng có sinh thái (đã rút gọn thông báo sau lần xem đầu vì chữ chồng nhau).
+
+## V22 — đợt 9: sự kiện vùng miền
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **466/466 ✅**. Mới: `v22_regional_events.test.ts` (4) |
+| E2E mới (`v22_regional_events.spec.ts`) | ✅ |
+| E2E hồi quy (v18_events, v3_events, v22_conservation) | ✅ — Meteor Shower (v18) trượt 1 lần khi chạy song song, chạy lại riêng 2/2 và lặp 4 lần song song 4/4 ✅ (chập chờn do tải, không liên quan) |
+
+Ảnh đã xem: lời báo Mùa cá linh về và dòng sự kiện trên HUD, cửa sổ Sạp lễ hội trái cây (tiêu đề, lời chào, 4 món giảm giá).

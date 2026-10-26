@@ -204,6 +204,8 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 
 **Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
 
+**Sự kiện vùng miền**: sự kiện thế giới (bùng phát, di cư, thời tiết, thương nhân) ở vùng có phiên bản địa phương thì 70% mang màu sắc vùng đó — Mùa cá linh về, Nước nổi tràn đồng, Triều cường, Cò về vườn, Lễ hội trái cây miệt vườn, Đêm đom đóm — với loài, thời tiết, hàng hóa và quà riêng (dữ liệu `regional-events.json`).
+
 **Bảo tồn** (sau boss mỗi tỉnh): 6 điểm phục hồi ven nước — trồng đước (Cà Mau), gỡ lưới bỏ hoang (An Giang), vớt rác sông Hậu (Cần Thơ). Sức khỏe sinh thái 0–100 của tỉnh (Suy thoái / Hồi phục / Trù phú) làm Pokémon hiếm theo điều kiện xuất hiện thường hơn (tối đa ×2); Trù phú có quà một lần.
 
 **Chợ nổi Cái Răng** (Cần Thơ): họp 5:00–9:00 giờ trong game. 4 ghe hàng treo cây bẹo; hàng có hạn mỗi phiên, hôm sau có hàng mới; mối quen (danh tiếng *Được tin cậy*) bớt 10%.

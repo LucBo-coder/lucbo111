@@ -8,13 +8,15 @@ import { ITEMS } from './AdventureState';
 import { AMBUSH_TRAINER_ART, officialPack } from '../render/spriteRegistry';
 import type { EventSpawnInfo } from './SpawnManager';
 import type { AdventureScene } from '../scenes/AdventureScene';
-import { MerchantOffer, merchantStock, shopCatalogue } from '../core/shop';
+import { MERCHANT_DISCOUNT, MerchantOffer, merchantStock, shopCatalogue } from '../core/shop';
+import { pickVariant, variantById, type RegionalVariant } from '../core/regionalEvents';
 import { audio } from '../systems/audio';
 
 // Gameplay of the random world events (Master Prompt V3 §VI). The director decides *when*; this class makes each
 // event real: spawns, movement, hazards, chests, goals, rewards, map markers and cleanup.
 // Event units are tagged `event:<uid>` so they never count toward (or get despawned by) ordinary spawning,
 // and they are always removed when the event ends — nothing outlives its event or the scene.
+// Regional variants (core/regionalEvents): a local flavour can take over an event's name, species, weather or goods.
 
 const RARE_TIERS: Rarity[] = ['rare', 'epic', 'ultra'];
 const FOSSILS = ['omanyte', 'kabuto', 'aerodactyl', 'lileep', 'anorith', 'cranidos', 'shieldon', 'spiritomb', 'rotom'];
@@ -82,8 +84,8 @@ export class WorldEventController {
   }
 
   /** Debug / tests: force an event now in a region (eligibility is still checked by begin). */
-  force(type: EventType, region: string): ActiveEvent {
-    const ev = this.director.start(type, region, this.now);
+  force(type: EventType, region: string, variant?: string): ActiveEvent {
+    const ev = this.director.start(type, region, this.now, variant ? { variant } : {});
     this.begin(ev);
     return ev;
   }
@@ -96,13 +98,16 @@ export class WorldEventController {
     const p = this.regionPoint(region);
     if (!p) { this.director.finish(ev, 'cleanup'); return; }
     ev.data.x = p.x; ev.data.y = p.y;
+    // a local flavour (forced by debug / tests, or rolled here)
+    const v = variantById(ev.data.variant) ?? (ev.data.variant === undefined ? pickVariant(this.world.rng, ev.type, region.id) : null);
+    if (v) ev.data.variant = v.id; else delete ev.data.variant;
     switch (ev.type) {
       case 'outbreak': {
-        const species = this.pickSpecies(region, (e) => e.rarity !== 'common', OUTBREAK_SPECIAL);
+        const species = this.variantSpecies(v) ?? this.pickSpecies(region, (e) => e.rarity !== 'common', OUTBREAK_SPECIAL);
         if (!species) return this.abort(ev);
         ev.data.species = species; ev.goal = 6;
         this.track(ev, this.group(ev, species, 4, p, region.level, false));
-        this.announce(`${def.name}: ${this.name(species)} xuất hiện thành đàn ở ${region.name}!`, '#ffe060');
+        this.announce(v ? `${v.name}: ${v.intro}` : `${def.name}: ${this.name(species)} xuất hiện thành đàn ở ${region.name}!`, '#ffe060');
         break;
       }
       case 'alpha': {
@@ -120,21 +125,21 @@ export class WorldEventController {
         break;
       }
       case 'migration': {
-        const species = this.pickSpecies(region, (e) => RARE_TIERS.includes(e.rarity));
+        const species = this.variantSpecies(v) ?? this.pickSpecies(region, (e) => RARE_TIERS.includes(e.rarity));
         const end = this.regionPoint(region, p, 420);
         if (!species || !end) return this.abort(ev);
         ev.data.species = species; ev.data.path = [p, { x: (p.x + end.x) / 2 + 120, y: (p.y + end.y) / 2 }, end]; ev.data.leg = 1;
         ev.goal = 0;
         this.track(ev, this.group(ev, species, 5, p, [region.level[1] - 2, region.level[1] + 2], true));
-        this.announce(`${def.name}: một đàn ${this.name(species)} đang băng qua ${region.name}!`, '#a0e0ff');
+        this.announce(v ? `${v.name}: ${v.intro}` : `${def.name}: một đàn ${this.name(species)} đang băng qua ${region.name}!`, '#a0e0ff');
         break;
       }
       case 'weather': {
         const kinds = ANOMALY_BY_BIOME[region.biome] ?? ['thunderstorm'];
-        const kind = this.world.rng.pick(kinds);
+        const kind = v?.weather && v.weather in ANOMALIES ? v.weather as keyof typeof ANOMALIES : this.world.rng.pick(kinds);
         ev.data.kind = kind;
         this.world.weatherMods = { ...ANOMALIES[kind].combat };
-        this.announce(`${ANOMALIES[kind].name}! ${ANOMALIES[kind].banner}`, '#c0d0ff');
+        this.announce(v ? `${v.name}! ${v.intro}` : `${ANOMALIES[kind].name}! ${ANOMALIES[kind].banner}`, '#c0d0ff');
         break;
       }
       case 'ambush': {
@@ -192,7 +197,7 @@ export class WorldEventController {
       }
       case 'merchant': {
         const rng = this.world.rng;
-        const stock = merchantStock(<T,>(l: T[]) => rng.pick(l), (a, b) => rng.int(a, b));
+        const stock = v?.offers ? this.variantOffers(v) : merchantStock(<T,>(l: T[]) => rng.pick(l), (a, b) => rng.int(a, b));
         if (!stock.length) return this.abort(ev);
         ev.data.stock = stock;
         const art = 'otrainer-gentleman';
@@ -200,9 +205,9 @@ export class WorldEventController {
           ? this.scene.add.image(p.x, p.y + 20, art).setOrigin(0.5, 0.85).setDepth(p.y)
           : this.scene.add.image(p.x, p.y, 'ow_tiles', DUNGEON.npc.wizard).setScale(SCALE).setDepth(p.y).setTint(0xc0ffd0);
         this.scene.addEventObject('evmerchant-' + ev.uid, p.x, p.y, 'Mua hàng hiếm', { event: ev.uid, action: 'merchant' }, spr);
-        const tag = this.scene.add.text(p.x, p.y + 30, '$ Thương nhân Lữ Khách', { fontFamily: 'VT323, monospace', fontSize: '18px', color: '#80ffb0', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(p.y + 1);
+        const tag = this.scene.add.text(p.x, p.y + 30, v?.tag ?? '$ Thương nhân Lữ Khách', { fontFamily: 'VT323, monospace', fontSize: '18px', color: '#80ffb0', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(p.y + 1);
         this.props.set(ev.uid, [tag]);
-        this.announce(`${def.name} dừng chân ở ${region.name}: ${stock.length} món hàng hiếm giảm 30%, chỉ trong ${Math.round(def.duration / 60)} phút!`, '#80ffb0');
+        this.announce(v ? `${v.name}! ${v.intro}` : `${def.name} dừng chân ở ${region.name}: ${stock.length} món hàng hiếm giảm 30%, chỉ trong ${Math.round(def.duration / 60)} phút!`, '#80ffb0');
         break;
       }
       case 'meteor': {
@@ -252,10 +257,11 @@ export class WorldEventController {
 
   private async openMerchant(ev: ActiveEvent): Promise<void> {
     const stock = ev.data.stock as MerchantOffer[];
+    const v = variantById(ev.data.variant);
     this.merchantOpen = ev.uid;
     await this.scene.ui.openShop({
-      title: 'Thương nhân lưu động', shelves: false, offers: stock,
-      greeting: 'Hàng hiếm từ phương xa, giảm 30% — mỗi món chỉ có vài cái. Ta sắp lên đường rồi đấy!',
+      title: v?.title ?? 'Thương nhân lưu động', shelves: false, offers: stock,
+      greeting: v?.greeting ?? 'Hàng hiếm từ phương xa, giảm 30% — mỗi món chỉ có vài cái. Ta sắp lên đường rồi đấy!',
       onBought: () => { ev.progress = stock.filter((o) => o.stock <= 0).length; },
     });
     this.merchantOpen = null;
@@ -395,6 +401,9 @@ export class WorldEventController {
         }
         default: break;
       }
+      // the local flavour's own extra
+      const bonus = variantById(ev.data.variant)?.bonus;
+      if (bonus) { st.addItems(bonus); for (const [id, n] of Object.entries(bonus)) lines.push(`+${n} ${ITEMS[id]?.name ?? id} (${variantById(ev.data.variant)!.name})`); }
       st.addWorldExp(ev.type === 'weather' || ev.type === 'migration' || ev.type === 'merchant' ? 60 : 150);
       const items = Object.fromEntries(Object.entries(st.save.inventory).map(([id, qty]) => [id, qty - (beforeItems[id] ?? 0)]).filter(([, qty]) => Number(qty) > 0));
       this.scene.coopHost?.grant({ currency: st.money - beforeMoney, items, note: EVENT_DEFS[ev.type].name });
@@ -416,7 +425,7 @@ export class WorldEventController {
     if (ev.type === 'treasure') this.scene.removeEventChest(ev.uid);
     for (const o of this.props.get(ev.uid) ?? []) o.destroy();
     this.props.delete(ev.uid);
-    const name = EVENT_DEFS[ev.type].name;
+    const name = variantById(ev.data.variant)?.name ?? EVENT_DEFS[ev.type].name;
     if (completed && lines.length) this.scene.ui.questComplete(`${name}: hoàn thành!`, lines);
     else this.scene.ui.banner(`${name} ở ${region?.name ?? ''} đã kết thúc${partial}`, '#c0c8e0');
     this.scene.persist();
@@ -464,7 +473,7 @@ export class WorldEventController {
     return this.director.active.map((ev) => {
       const r = REGIONS.get(ev.region);
       return {
-        uid: ev.uid, type: ev.type, name: EVENT_DEFS[ev.type].name, region: ev.region, regionName: r?.name ?? ev.region,
+        uid: ev.uid, type: ev.type, name: variantById(ev.data.variant)?.name ?? EVENT_DEFS[ev.type].name, region: ev.region, regionName: r?.name ?? ev.region,
         left: Math.max(0, ev.end - this.now), progress: ev.progress, goal: ev.goal,
         x: (ev.data.x as number) ?? 0, y: (ev.data.y as number) ?? 0, approx: ev.type === 'treasure' ? 260 : 0,
       };
@@ -485,6 +494,21 @@ export class WorldEventController {
     const list = this.units.get(ev.uid) ?? [];
     list.push(...us);
     this.units.set(ev.uid, list);
+  }
+
+  /** A variant's species that exists and fits the region's level range (null: fall back to the generic pick). */
+  private variantSpecies(v: RegionalVariant | null): string | null {
+    const ok = (v?.species ?? []).filter((s) => { const e = ECOLOGY.get(s); return e && !e.legendary && !e.mythical; });
+    return ok.length ? this.world.rng.pick(ok) : null;
+  }
+
+  /** A variant market's goods at the event discount (catalogue prices; unknown items dropped). */
+  private variantOffers(v: RegionalVariant): MerchantOffer[] {
+    const cat = shopCatalogue();
+    return (v.offers ?? []).flatMap((o) => {
+      const e = cat.find((c) => c.id === o.id);
+      return e ? [{ ...e, was: e.price, price: Math.round((e.price * (1 - MERCHANT_DISCOUNT)) / 50) * 50, stock: o.stock }] : [];
+    });
   }
 
   private name(sp: string): string {

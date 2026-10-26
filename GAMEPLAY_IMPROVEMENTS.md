@@ -117,3 +117,7 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Hạ xong "chúa" của tỉnh chưa phải là hết: đất cần được chữa lành. Cà Mau trồng đước ven bãi bồi, An Giang gỡ lưới mục trong lau sậy mùa nước nổi, Cần Thơ vớt rác dọc bờ sông Hậu.
 - Mỗi tỉnh có sức khỏe sinh thái. Tỉnh càng xanh thì những vị khách hiếm (Seviper đêm mưa ở U Minh, Sableye Bảy Núi, Zangoose đồng ruộng…) ghé càng thường.
 - Cây đước bạn trồng mọc lại trên bản đồ và ở đó mãi.
+
+### Sự kiện vùng miền
+- Cùng là "bùng phát" nhưng ở Đồng Nước Nổi thì đó là Mùa cá linh về; cùng là thương nhân nhưng ở Phong Điền thì đó là sạp lễ hội trái cây. Sự kiện mang tên, lời kể, loài và hàng hóa của nơi nó xảy ra.
+- Vẫn có 30% là sự kiện thường để thế giới không đoán trước được.
