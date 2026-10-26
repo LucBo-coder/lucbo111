@@ -150,6 +150,8 @@ Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu,
 
 **Danh tiếng theo vùng** (`core/reputation.ts`, `data/world/reputation.json`): điểm danh tiếng từ nhiệm vụ / HLV cộng vào vùng đang đứng. Hạng *Người lạ / Quen mặt 15 / Được tin cậy 40 / Người nhà 80*; mỗi hạng tặng quà một lần và đặt cờ `rep:<vùng>:<hạng>` để mở nhiệm vụ. Mỗi chiến dịch giữ điểm riêng.
 
+- **Nhật ký nhiệm vụ** có bộ lọc Tất cả / Vùng này / Đã xong và **bảng Danh tiếng** (hạng, điểm, tiến độ, quà hạng sau của từng tỉnh / vùng trong chiến dịch). Bản đồ: sương mù theo vùng đã khám phá, trạm dịch chuyển, hầm ngục, sự kiện, mục tiêu nhiệm vụ, bến ghe, chướng ngại khám phá.
+
 ### 5.4b Làng khởi đầu & Trại Huấn Luyện
 - **Trung tâm Pokémon**: y tá Chị Mai hồi phục cả đội, máy PC ở cửa. **Bảng nhiệm vụ** của làng nhận việc vặt (săn Rattata, thăm trại). Dân làng đi lại ban ngày, về chỗ ban đêm; biển ở cổng bắc hướng dẫn chiến đấu và kỹ năng chủ động.
 - **Trại Huấn Luyện** (phía tây làng): Thầy Khang và 3 học viên, mỗi người một lối đánh (phòng thủ, tốc độ, hệ đặc biệt). Chuỗi 3 bài học dạy chọn chiêu khắc hệ, né và rút lui, dồn hỏa lực bằng lệnh Tấn công; tốt nghiệp mở rương của trại.

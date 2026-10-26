@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { tideName } from '../core/field';
+import { fieldFlag, tideName } from '../core/field';
+import { questInRegion, repBoard } from '../core/journal';
 import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
 import { coopSession } from '../net/coop';
@@ -111,6 +112,8 @@ export class AdventureUI extends Phaser.Scene {
   private dexPage = 0;
   private partyPage = 0;
   private questPage = 0;
+  /** Journal filter: every quest, quests of this map, finished ones, or the reputation board */
+  private questFilter: 'all' | 'here' | 'done' | 'rep' = 'all';
   /** the HUD is laid out for a portrait phone */
   private portraitHud = false;
   /** Active-skill bar (focused Pokémon's 4 skills) */
@@ -1444,7 +1447,20 @@ export class AdventureUI extends Phaser.Scene {
 
   private buildQuests(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, st = this.adv.state, qs = st.quests;
-    const list = qs.defs.filter((d) => qs.states[d.id].status === 'active' || qs.states[d.id].status === 'completed' || qs.states[d.id].status === 'available');
+    // filter row: all / this map / finished / reputation board
+    const filters: [typeof this.questFilter, string][] = [['all', 'Tất cả'], ['here', 'Vùng này'], ['done', 'Đã xong'], ['rep', 'Danh tiếng']];
+    const fw = Math.min(150 * s, (r.w - 12 * s) / filters.length);
+    filters.forEach(([id, label], i) => c.add(button(this, r.x + fw / 2 + i * (fw + 4 * s), r.y + 14 * s, fw, 30 * s, label, () => { this.questFilter = id; this.questPage = 0; this.openMenu('quests'); }, this.questFilter === id ? 0x4a5a8a : 0x262c44).container));
+    r = { ...r, y: r.y + 36 * s, h: r.h - 36 * s };
+    if (this.questFilter === 'rep') { this.buildRepBoard(c, r); return; }
+    const here = this.adv.regionDef.id;
+    const list = qs.defs.filter((d) => {
+      const stt = qs.states[d.id].status;
+      if (stt !== 'active' && stt !== 'completed' && stt !== 'available') return false;
+      if (this.questFilter === 'done') return stt === 'completed';
+      if (this.questFilter === 'here') return questInRegion(d, here);
+      return true;
+    });
     const [L, D] = this.split(r, 0.42, 0.4), lw = L.w;
     list.sort((a, b) => order(qs.states[a.id].status) - order(qs.states[b.id].status));
     const perPage = Math.max(1, Math.floor((L.h - 40 * s) / (46 * s)));
@@ -1484,6 +1500,28 @@ export class AdventureUI extends Phaser.Scene {
     const rewards = [...Object.entries(rw.items ?? {}).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`), rw.worldExp ? `${rw.worldExp} EXP thế giới` : '', rw.reputation ? `${rw.reputation} danh tiếng` : '', rw.pokemon ? `${POKEMON.get(rw.pokemon.species)?.name} Lv${rw.pokemon.level}` : ''].filter(Boolean);
     c.add(text(this, dx + 16 * s, r.y + r.h - 90 * s, `Phần thưởng: ${rewards.join(', ')}`, 16 * s, '#9fe0a0').setWordWrapWidth(dw - 32 * s));
     if (state.status === 'active') c.add(button(this, dx + dw - 100 * s, r.y + r.h - 30 * s, 170 * s, 36 * s, st.trackedQuest === sel.id ? 'Đang theo dõi' : 'Theo dõi', () => { st.trackedQuest = sel.id; this.openMenu('quests'); }).container);
+  }
+
+  /** Reputation of every province / region of this campaign: tier, points, progress to the next tier and its gift. */
+  private buildRepBoard(c: Phaser.GameObjects.Container, r: Rect): void {
+    const s = this.s, st = this.adv.state, vn = st.adv.campaign === 'vietnam';
+    const ids = vn ? VN_PROVINCES.map((p) => p.id) : Object.keys(REGION_DEFS).filter((id) => !VN_PROVINCES.some((p) => p.id === id));
+    const rows = repBoard(st.adv, ids);
+    c.add(text(this, r.x + 10 * s, r.y + 6 * s, `DANH TIẾNG${vn ? ' — HÀNH TRÌNH VIỆT NAM' : ''} · tổng ${st.adv.reputation}`, 20 * s, '#ffe080'));
+    if (!rows.length) { c.add(text(this, r.x + 10 * s, r.y + 40 * s, 'Chưa có vùng nào ghi nhận danh tiếng.', 17 * s, COLORS.dim)); return; }
+    const rowH = Math.min(110 * s, (r.h - 44 * s) / rows.length), bw = Math.min(r.w - 40 * s, 520 * s);
+    rows.forEach((row, i) => {
+      const y = r.y + 40 * s + i * rowH, cur = row.region === this.adv.regionDef.id;
+      c.add(panel(this, r.x + 6 * s, y, r.w - 12 * s, rowH - 8 * s, cur ? 0x6a8acf : COLORS.panelEdge, cur ? 0x232c48 : 0x1c2134, 1));
+      c.add(text(this, r.x + 18 * s, y + 8 * s, `${cur ? '▶ ' : ''}${row.name} — ${row.tierName}`, 19 * s, cur ? '#80ff90' : '#ffffff'));
+      c.add(text(this, r.x + r.w - 20 * s, y + 10 * s, `${row.points} điểm`, 16 * s, '#d0d8f0').setOrigin(1, 0));
+      const g = this.add.graphics();
+      g.fillStyle(0x0c0f1a, 1).fillRect(r.x + 18 * s, y + 36 * s, bw, 12 * s);
+      g.fillStyle(row.toNext == null ? 0xffd040 : 0x60c0ff, 1).fillRect(r.x + 18 * s, y + 36 * s, bw * row.progress, 12 * s);
+      c.add(g);
+      const gift = row.nextReward ? Object.entries(row.nextReward).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`).join(', ') : '';
+      c.add(text(this, r.x + 18 * s, y + 54 * s, row.toNext == null ? 'Hạng cao nhất — được xem như người nhà.' : `Còn ${row.toNext} điểm tới "${row.nextName}"${gift ? ' · quà: ' + gift : ''}`, 15 * s, COLORS.dim).setWordWrapWidth(r.w - 40 * s));
+    });
   }
 
   private buildMap(c: Phaser.GameObjects.Container, r: Rect): void {
@@ -1531,6 +1569,15 @@ export class AdventureUI extends Phaser.Scene {
         if (e.approx) g.lineStyle(2, 0xffd080, 0.9).strokeCircle(ex, ey, (e.approx / TILE_PX) * k);
         else g.fillStyle(EVENT_COLOR[e.type] ?? 0xd090ff, 1).fillTriangle(ex, ey - 9, ex - 8, ey + 6, ex + 8, ey + 6);
         inner.add(text(this, ex, ey + 8, `${e.name} ${fmtTime(e.left)}`, 13 * s, '#f0d8ff').setOrigin(0.5, 0));
+      }
+      // boat docks and exploration obstacles still in the way (seen part of the map only)
+      for (const dk of region.docks ?? []) if (isDisc(dk.x, dk.y)) {
+        g.fillStyle(0x3090e0, 1).fillRect((dk.x + 0.5) * k - 4, (dk.y + 0.5) * k - 4, 8, 8);
+        inner.add(text(this, (dk.x + 0.5) * k, (dk.y + 0.5) * k + 6, dk.name.replace(/^Bến (ghe|xuồng|đò) /, '⚓ '), 12 * s, '#a0d0ff').setOrigin(0.5, 0));
+      }
+      for (const f of region.field ?? []) if (isDisc(f.x, f.y) && !st.hasFlag(fieldFlag(region.id, f.id))) {
+        const fx = (f.x + 0.5) * k, fy = (f.y + 0.5) * k;
+        g.fillStyle(0xb0a080, 1).fillTriangle(fx, fy - 5, fx + 5, fy, fx, fy + 5).fillTriangle(fx, fy - 5, fx - 5, fy, fx, fy + 5);
       }
       for (const q of st.quests.active()) {
         const o = st.quests.currentObjective(q.id);

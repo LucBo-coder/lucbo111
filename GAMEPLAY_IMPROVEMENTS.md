@@ -107,3 +107,8 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### Điều tra huyền thoại
 - Khi một huyền thoại đã mở khóa, các vùng của nó xuất hiện những đốm sáng mờ: lông vũ bạc của Lugia, vết cháy hình tròn của Entei, bia khắc chấm của bộ ba Regi…
 - Đọc đủ 3 dấu vết thì biết chính xác khi nào nó xuất hiện, và hiểu nó đủ để có thêm một lượt ném bóng.
+
+### Nhật ký và bảng danh tiếng
+- Nhật ký lọc được nhiệm vụ của vùng đang đứng, hoặc chỉ xem những việc đã xong.
+- Tab *Danh tiếng* cho biết mỗi tỉnh đang coi bạn là ai, còn bao nhiêu điểm nữa thì lên hạng và quà là gì.
+- Bản đồ đánh dấu bến ghe và những bụi cây / tảng đá còn chắn lối, để nhớ quay lại khi đội đủ mạnh.

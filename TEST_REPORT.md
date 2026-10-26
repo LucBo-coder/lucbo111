@@ -136,3 +136,14 @@ Ghi chú: một lần chạy unit khi máy đang chạy e2e song song có 10 tes
 | E2E hồi quy (v22 ×5, v6_rayquaza, v7_regions, v4_regions, v13_can_tho, v8_vietnam, adventure, v6_dungeons, evolution, v18_events) | 25/25 ✅ |
 
 Ảnh đã xem: đốm sáng manh mối ở bìa rừng dừa (đã tăng độ sáng sau lần xem đầu vì quá mờ), hộp thoại hoàn tất.
+
+## V22 — đợt 7: nhật ký, bảng danh tiếng, bản đồ
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **458/458 ✅**. Mới: `v22_journal.test.ts` (4) |
+| E2E mới (`v22_journal.spec.ts`) | ✅ — bảng danh tiếng (Cà Mau Quen mặt, còn 15 điểm, quà hạng sau), lọc Vùng này, ⚓ trên bản đồ |
+| E2E hồi quy (v22_trainer_rep, v8_vietnam, adventure, v13_can_tho, v16_profile) | 11/11 ✅ |
+
+Ảnh đã xem: bảng danh tiếng 3 tỉnh, nhật ký lọc Vùng này, bản đồ sương mù với bến Đất Mũi.
