@@ -112,3 +112,8 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Nhật ký lọc được nhiệm vụ của vùng đang đứng, hoặc chỉ xem những việc đã xong.
 - Tab *Danh tiếng* cho biết mỗi tỉnh đang coi bạn là ai, còn bao nhiêu điểm nữa thì lên hạng và quà là gì.
 - Bản đồ đánh dấu bến ghe và những bụi cây / tảng đá còn chắn lối, để nhớ quay lại khi đội đủ mạnh.
+
+### Bảo tồn — hậu truyện từng tỉnh
+- Hạ xong "chúa" của tỉnh chưa phải là hết: đất cần được chữa lành. Cà Mau trồng đước ven bãi bồi, An Giang gỡ lưới mục trong lau sậy mùa nước nổi, Cần Thơ vớt rác dọc bờ sông Hậu.
+- Mỗi tỉnh có sức khỏe sinh thái. Tỉnh càng xanh thì những vị khách hiếm (Seviper đêm mưa ở U Minh, Sableye Bảy Núi, Zangoose đồng ruộng…) ghé càng thường.
+- Cây đước bạn trồng mọc lại trên bản đồ và ở đó mãi.

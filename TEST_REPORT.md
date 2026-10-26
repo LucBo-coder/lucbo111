@@ -147,3 +147,15 @@ Ghi chú: một lần chạy unit khi máy đang chạy e2e song song có 10 tes
 | E2E hồi quy (v22_trainer_rep, v8_vietnam, adventure, v13_can_tho, v16_profile) | 11/11 ✅ |
 
 Ảnh đã xem: bảng danh tiếng 3 tỉnh, nhật ký lọc Vùng này, bản đồ sương mù với bến Đất Mũi.
+
+## V22 — đợt 8: bảo tồn & hậu truyện 3 tỉnh
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **462/462 ✅**. Mới: `v22_conservation.test.ts` (4). Sửa `v8_vietnam` (mục tiêu `activate` có thể là `eco:<tỉnh>`), `v13_can_tho` (Cần Thơ 11 nhiệm vụ) |
+| E2E mới (`v22_conservation.spec.ts`) | ✅ |
+| E2E hồi quy (v22 ×5, v8_vietnam, v13_can_tho, v9_aquatic, adventure) | 13/13 ✅ sau khi sửa `adventure.spec.ts` |
+
+Lỗi test tìm thấy: `adventure.spec.ts` xóa mọi Pokémon hung hăng rồi lấy một con hoang dã để bắt — với đàn (V22), cả đàn có thể cùng hung hăng nên đôi khi không còn con nào (`Cannot set properties of undefined`). Test giờ chờ một Pokémon hoang dã yên bình xuất hiện; chạy lại 4/4.
+Ảnh đã xem: điểm trồng đước, thông báo Hồi phục / Trù phú, quà Trù phú, bảng Danh tiếng có sinh thái (đã rút gọn thông báo sau lần xem đầu vì chữ chồng nhau).

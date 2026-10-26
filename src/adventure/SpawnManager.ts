@@ -32,6 +32,8 @@ export interface SpawnOptions {
   weather: () => WeatherKind;
   /** In-game clock in minutes (rare spawns tied to an hour window) */
   clock?: () => number;
+  /** Multiplier on rare-condition chances (Vietnam conservation: healthier province → more rare visitors) */
+  rareMult?: () => number;
   events?: () => EventSpawnInfo;
   /** Returns false for tiles outside loaded chunks */
   loaded: (tx: number, ty: number) => boolean;
@@ -116,7 +118,7 @@ export class SpawnManager {
         const ctx: SpawnContext = {
           biome: BIOME_OF_HABITAT[habitat] ?? region.biome, extraBiomes: ev.extraBiomes, night: this.o.isNight(), weather: this.o.weather(), boosted: ev.boosted,
         };
-        const opts = { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE, clock: this.o.clock?.() };
+        const opts = { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE, clock: this.o.clock?.(), chanceMult: this.o.rareMult?.() };
         const rare = rollRare(this.world.rng, ctx, region, opts);
         const roll = rare ?? rollEncounter(this.world.rng, ctx, region, opts);
         if (!roll) continue;
@@ -200,7 +202,7 @@ export class SpawnManager {
       biome: area?.habitat === 'coast' || region.biome === 'coast' ? 'coast' : 'lake', aquatic: true, extraBiomes: ev.extraBiomes,
       night: this.o.isNight(), weather: this.o.weather(), boosted: ev.boosted,
     };
-    const opts = { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE, clock: this.o.clock?.() };
+    const opts = { worldLevelBonus: this.o.levelBonus?.() ?? 0, shinyRate: ev.shinyRate ?? SHINY_BASE, clock: this.o.clock?.(), chanceMult: this.o.rareMult?.() };
     const rare = rollRare(this.world.rng, ctx, region, opts);
     const roll = rare ?? rollEncounter(this.world.rng, ctx, region, opts);
     if (!roll) return false;

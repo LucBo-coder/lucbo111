@@ -36,6 +36,7 @@ import { QuestDef } from '../core/quests';
 import { makeWildState } from '../core/wildAI';
 import { RARE_RULES } from '../core/ecologyRules';
 import { modsFor, modsLabel } from '../core/dungeonMods';
+import { CONSERVATION, ecoHealth, ECO_TIERS, ecoTier, openSites, rareMult, siteFlag, sitesDone, thrivingFlag, type ConsSite } from '../core/conservation';
 import { clueFlag, cluesFound, conditionSummary, INVESTIGATION_BONUS, investigated, LEGEND_CLUES, visibleClues, type Clue } from '../core/legendClues';
 import { FISH_WAIT, FISH_WINDOW, fishOutcome, gatherTable, nodeCooldownLeft, rollGather, type GatherTable } from '../core/gathering';
 import { AllyCommand, STEP, Unit, World, WorldEvent } from '../core/world';
@@ -304,6 +305,7 @@ export class AdventureScene extends Phaser.Scene {
         isNight: () => this.isNight(),
         weather: () => this.effectiveWeather(),
         clock: () => this.state.adv.clock,
+        rareMult: () => rareMult(this.regionDef.id, (f) => this.state.hasFlag(f)),
         events: () => this.worldEvents?.spawnInfo() ?? {},
         loaded: (tx, ty) => this.chunks.isLoadedTile(tx, ty),
         onScreen: (x, y) => { const v = this.cameras.main.worldView; return x > v.x - 60 && x < v.right + 60 && y > v.y - 60 && y < v.bottom + 60; },
@@ -1261,6 +1263,8 @@ export class AdventureScene extends Phaser.Scene {
     audio.play('victory');
     this.ui?.questComplete(q.title, lines);
     this.notifyRepTier();
+    // the province's story is done: its restoration sites appear right away
+    if (CONSERVATION[this.regionDef.id]?.unlock === q.id && this.mapKind !== 'dungeon') this.buildConservation();
   }
 
   // ───────────────────────────── interaction ─────────────────────────────
@@ -1285,6 +1289,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'portal': return this.usePortal(it.obj.data as unknown as PortalDef);
       case 'field': return this.useField(it);
       case 'clue': return this.useClue(it);
+      case 'eco': return this.useEco(it);
       case 'dock': return this.useDock(it);
       case 'market': return this.useMarket(it);
       case 'cave': return this.enterCave((it.obj.data as { id?: string } | undefined)?.id ?? 'ancient-cave');
@@ -2169,6 +2174,7 @@ export class AdventureScene extends Phaser.Scene {
     for (const f of this.regionDef.field ?? []) this.drawField(f);
     for (const k of this.regionDef.docks ?? []) this.drawDock(k);
     this.buildClues();
+    this.buildConservation();
     // a save made on the river resumes in the boat
     const at = this.state.adv.boat && (this.regionDef.docks ?? []).find((k) => k.id === this.state.adv.boat);
     const t = this.world.trainer;
@@ -2186,6 +2192,71 @@ export class AdventureScene extends Phaser.Scene {
       const obj: MapObject = { kind: 'clue', id: 'clue:' + c.id, x: c.x, y: c.y, data: c as unknown as MapObject['data'] };
       this.interactables.set('clue:' + c.id, { kind: 'clue', id: 'clue:' + c.id, x, y, label: 'Xem dấu vết lạ', obj, sprite: glow });
     }
+  }
+
+  /** Vietnam conservation: restoration sites (after the province's story boss) and the saplings already planted. */
+  private buildConservation(): void {
+    const p = CONSERVATION[this.regionDef.id];
+    if (!p) return;
+    const has = (f: string) => this.state.hasFlag(f);
+    if (p.action === 'plant') for (const s of p.sites) if (has(siteFlag(s.id))) this.drawSite(s, 'sapling');
+    for (const s of openSites(p.id, { has, questDone: (id) => this.state.quests.states[id]?.status === 'completed' })) {
+      const g = this.drawSite(s, p.action);
+      const x = (s.x + 0.5) * TILE_PX, y = (s.y + 0.5) * TILE_PX;
+      const obj: MapObject = { kind: 'eco', id: 'eco:' + s.id, x: s.x, y: s.y, data: { site: s, g } as unknown as MapObject['data'] };
+      this.interactables.set('eco:' + s.id, { kind: 'eco', id: 'eco:' + s.id, x, y, label: p.label, obj });
+    }
+  }
+
+  private drawSite(s: ConsSite, look: 'plant' | 'net' | 'trash' | 'sapling'): Phaser.GameObjects.Graphics {
+    const x = (s.x + 0.5) * TILE_PX, y = (s.y + 0.5) * TILE_PX;
+    const g = this.add.graphics().setDepth(y + 4);
+    if (look === 'plant') {
+      // a bundle of mangrove seedlings waiting by a dug hole
+      g.fillStyle(0x3a2a1a, 0.9).fillEllipse(x, y + 8, 30, 12);
+      g.lineStyle(3, 0x6a4a2a, 1).lineBetween(x - 6, y + 6, x - 4, y - 12).lineBetween(x + 2, y + 6, x + 3, y - 14).lineBetween(x + 8, y + 6, x + 9, y - 10);
+      g.fillStyle(0x58b050, 1).fillCircle(x - 4, y - 13, 4).fillCircle(x + 3, y - 15, 4).fillCircle(x + 9, y - 11, 4);
+    } else if (look === 'sapling') {
+      g.lineStyle(3, 0x6a4a2a, 1).lineBetween(x, y + 8, x, y - 10).lineBetween(x, y + 8, x - 6, y + 12).lineBetween(x, y + 8, x + 6, y + 12);
+      g.fillStyle(0x4aa048, 1).fillCircle(x, y - 12, 7).fillCircle(x - 6, y - 7, 5).fillCircle(x + 6, y - 7, 5);
+    } else if (look === 'net') {
+      g.lineStyle(2, 0x9a9a8a, 0.95);
+      for (let i = -3; i <= 3; i++) { g.lineBetween(x - 16, y + i * 4, x + 16, y + i * 4 + 3); g.lineBetween(x + i * 5, y - 12, x + i * 5 + 2, y + 14); }
+      g.fillStyle(0xd06030, 1).fillCircle(x + 14, y - 10, 3);
+    } else {
+      // plastic washed up on the bank
+      g.fillStyle(0xe0e0e8, 0.95).fillRect(x - 14, y - 2, 10, 6).fillStyle(0x40a0e0, 0.95).fillRect(x - 2, y + 2, 5, 12);
+      g.fillStyle(0xd04040, 0.95).fillRect(x + 6, y - 6, 9, 7).fillStyle(0x30302a, 0.9).fillEllipse(x + 2, y - 8, 12, 7);
+    }
+    return g;
+  }
+
+  private useEco(it: Interactable): void {
+    const { site, g } = it.obj.data as unknown as { site: ConsSite; g: Phaser.GameObjects.Graphics };
+    const p = CONSERVATION[this.regionDef.id];
+    const has = (f: string) => this.state.hasFlag(f);
+    if (!p || has(siteFlag(site.id))) return;
+    const before = ecoTier(ecoHealth(p.id, has));
+    this.state.setFlag(siteFlag(site.id));
+    g.destroy();
+    this.interactables.delete(it.id);
+    if (this.nearest?.id === it.id) this.nearest = null;
+    if (p.action === 'plant') this.drawSite(site, 'sapling');
+    this.renderer_.vfx.named(p.action === 'plant' ? 'grass' : 'heal', it.x, it.y);
+    audio.play('heal');
+    this.state.addReputation(2);
+    const health = ecoHealth(p.id, has), tier = ecoTier(health);
+    // the story line once, then a short counter
+    if (sitesDone(p.id, has) === 1) void this.say(p.label, [p.done]);
+    this.ui.banner(`✔ ${p.label} — sinh thái ${p.name} ${health}/100`, '#a0f0a0');
+    if (tier > before) this.ui.eventAlert(`${p.name}: hệ sinh thái ${ECO_TIERS[tier].name}! Pokémon hiếm ghé thăm thường hơn.`, '#a0f0c0');
+    if (tier === ECO_TIERS.length - 1 && !has(thrivingFlag(p.id))) {
+      this.state.setFlag(thrivingFlag(p.id));
+      const lines = this.state.grant({ items: p.thrivingReward });
+      this.ui.questComplete(`${p.name} trù phú trở lại`, lines);
+    }
+    this.questEvent({ type: 'activate', target: 'eco:' + p.id });
+    this.persist();
   }
 
   private async useClue(it: Interactable): Promise<void> {

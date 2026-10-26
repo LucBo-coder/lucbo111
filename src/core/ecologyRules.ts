@@ -92,9 +92,10 @@ export function activeRare(c: SpawnContext, region: RegionDef, clock?: number): 
 }
 
 /** One roll against the rare conditions active right now; null most of the time. */
-export function rollRare(rng: Rng, c: SpawnContext, region: RegionDef, o: { clock?: number; worldLevelBonus?: number; shinyRate?: number } = {}): (EncounterRoll & { rule: string }) | null {
+export function rollRare(rng: Rng, c: SpawnContext, region: RegionDef, o: { clock?: number; worldLevelBonus?: number; shinyRate?: number; chanceMult?: number } = {}): (EncounterRoll & { rule: string }) | null {
   for (const r of activeRare(c, region, o.clock)) {
-    if (rng.next() >= r.chance) continue;
+    // a healthy ecosystem (conservation) makes rare visitors more frequent
+    if (rng.next() >= r.chance * (o.chanceMult ?? 1)) continue;
     const e = ECOLOGY.get(r.species)!;
     return {
       species: e.id, level: rollLevel(rng, e, region, o.worldLevelBonus), rarity: e.rarity === 'common' || e.rarity === 'uncommon' ? 'rare' : e.rarity,

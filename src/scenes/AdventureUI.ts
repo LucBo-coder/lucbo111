@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { fieldFlag, tideName } from '../core/field';
 import { questInRegion, repBoard } from '../core/journal';
+import { CONSERVATION, ecoHealth, ECO_TIERS, ecoTier } from '../core/conservation';
 import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
 import { coopSession } from '../net/coop';
@@ -1514,7 +1515,8 @@ export class AdventureUI extends Phaser.Scene {
       const y = r.y + 40 * s + i * rowH, cur = row.region === this.adv.regionDef.id;
       c.add(panel(this, r.x + 6 * s, y, r.w - 12 * s, rowH - 8 * s, cur ? 0x6a8acf : COLORS.panelEdge, cur ? 0x232c48 : 0x1c2134, 1));
       c.add(text(this, r.x + 18 * s, y + 8 * s, `${cur ? '▶ ' : ''}${row.name} — ${row.tierName}`, 19 * s, cur ? '#80ff90' : '#ffffff'));
-      c.add(text(this, r.x + r.w - 20 * s, y + 10 * s, `${row.points} điểm`, 16 * s, '#d0d8f0').setOrigin(1, 0));
+      const eco = CONSERVATION[row.region] ? ecoHealth(row.region, (f) => st.hasFlag(f)) : null;
+      c.add(text(this, r.x + r.w - 20 * s, y + 10 * s, `${eco != null ? `Sinh thái: ${ECO_TIERS[ecoTier(eco)].name} ${eco}/100 · ` : ''}${row.points} điểm`, 16 * s, '#d0d8f0').setOrigin(1, 0));
       const g = this.add.graphics();
       g.fillStyle(0x0c0f1a, 1).fillRect(r.x + 18 * s, y + 36 * s, bw, 12 * s);
       g.fillStyle(row.toNext == null ? 0xffd040 : 0x60c0ff, 1).fillRect(r.x + 18 * s, y + 36 * s, bw * row.progress, 12 * s);

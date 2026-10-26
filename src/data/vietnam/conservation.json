@@ -1,0 +1,158 @@
+{
+ "tiers": [
+  {
+   "at": 0,
+   "name": "Suy thoái"
+  },
+  {
+   "at": 40,
+   "name": "Hồi phục"
+  },
+  {
+   "at": 80,
+   "name": "Trù phú"
+  }
+ ],
+ "perSite": 15,
+ "bossBonus": 10,
+ "provinces": {
+  "ca-mau": {
+   "id": "ca-mau",
+   "name": "Cà Mau",
+   "area": "cm-mangrove",
+   "action": "plant",
+   "unlock": "vn-cm-3",
+   "boss": "seviper",
+   "label": "Trồng cây đước con",
+   "done": "Bạn vùi cây đước con xuống bùn ven nước. Rễ nó sẽ giữ đất cho cả bãi bồi.",
+   "thrivingReward": {
+    "miracle-seed": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "ca-mau-1",
+     "x": 59,
+     "y": 62
+    },
+    {
+     "id": "ca-mau-2",
+     "x": 65,
+     "y": 75
+    },
+    {
+     "id": "ca-mau-3",
+     "x": 77,
+     "y": 66
+    },
+    {
+     "id": "ca-mau-4",
+     "x": 70,
+     "y": 46
+    },
+    {
+     "id": "ca-mau-5",
+     "x": 47,
+     "y": 70
+    },
+    {
+     "id": "ca-mau-6",
+     "x": 46,
+     "y": 54
+    }
+   ]
+  },
+  "an-giang": {
+   "id": "an-giang",
+   "name": "An Giang",
+   "area": "ag-wetland",
+   "action": "net",
+   "unlock": "vn-ag-temple",
+   "boss": "claydol",
+   "label": "Gỡ lưới bỏ hoang",
+   "done": "Bạn gỡ tấm lưới mục mắc trong lau sậy. Cá linh mùa nước nổi lại có đường bơi.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "netball": 3
+   },
+   "sites": [
+    {
+     "id": "an-giang-1",
+     "x": 99,
+     "y": 84
+    },
+    {
+     "id": "an-giang-2",
+     "x": 101,
+     "y": 70
+    },
+    {
+     "id": "an-giang-3",
+     "x": 100,
+     "y": 98
+    },
+    {
+     "id": "an-giang-4",
+     "x": 114,
+     "y": 65
+    },
+    {
+     "id": "an-giang-5",
+     "x": 125,
+     "y": 60
+    },
+    {
+     "id": "an-giang-6",
+     "x": 101,
+     "y": 109
+    }
+   ]
+  },
+  "can-tho": {
+   "id": "can-tho",
+   "name": "Cần Thơ",
+   "area": "ct-song-hau",
+   "action": "trash",
+   "unlock": "vn-ct-3",
+   "boss": "whiscash",
+   "label": "Vớt rác ven sông",
+   "done": "Bạn gom túi ni lông và chai nhựa dạt vào bờ. Nước sông Hậu trong hơn một chút.",
+   "thrivingReward": {
+    "water-stone": 1,
+    "superpotion": 3
+   },
+   "sites": [
+    {
+     "id": "can-tho-1",
+     "x": 93,
+     "y": 30
+    },
+    {
+     "id": "can-tho-2",
+     "x": 79,
+     "y": 26
+    },
+    {
+     "id": "can-tho-3",
+     "x": 107,
+     "y": 33
+    },
+    {
+     "id": "can-tho-4",
+     "x": 103,
+     "y": 47
+    },
+    {
+     "id": "can-tho-5",
+     "x": 67,
+     "y": 18
+    },
+    {
+     "id": "can-tho-6",
+     "x": 121,
+     "y": 32
+    }
+   ]
+  }
+ }
+}

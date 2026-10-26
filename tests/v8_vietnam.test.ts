@@ -76,7 +76,8 @@ describe('Vietnam Odyssey mode', () => {
         if ((o.type === 'capture' || o.type === 'defeat') && t !== '*') expect(POKEMON.has(t), `${q.id} ${t}`).toBe(true);
         // explore: an area, or 'dock:<id>' = landing at a boat dock
         if (o.type === 'explore') expect(areas.has(t) || docks.has(t), `${q.id} ${t}`).toBe(true);
-        if (o.type === 'activate') expect(wps.has(t), `${q.id} ${t}`).toBe(true);
+        // activate: a waypoint, or 'eco:<province>' = a conservation site of that province
+        if (o.type === 'activate') expect(wps.has(t) || ['eco:ca-mau', 'eco:an-giang', 'eco:can-tho'].includes(t), `${q.id} ${t}`).toBe(true);
         if (o.type === 'boss') expect(BOSSES.has(t), `${q.id} ${t}`).toBe(true);
         if (o.marker) expect(VN).toContain(o.marker.region);
       }

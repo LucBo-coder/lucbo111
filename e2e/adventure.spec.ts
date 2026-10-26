@@ -102,6 +102,8 @@ test('open world: start, move, follow, auto-combat, spawns, capture, quests, sav
   expect(await ev(page, `window.__adv.world.command`)).toBe('follow');
   await ev(page, `(() => { const w = window.__adv.world; for (const e of w.enemies) if (e.hostile) w.removeEnemy(e); })()`);
   await page.waitForTimeout(800);
+  // a whole pack may have turned hostile with the first one (V22 packs): wait for a calm wild Pokémon to spawn
+  await page.waitForFunction(() => (window as Win).__adv.world.enemies.some((e: Win) => e.alive && e.wild && !e.noCapture && !e.hostile), null, { timeout: 30_000 });
   const targetPos = await ev<number[]>(page, `(() => { const a = window.__adv, w = a.world, t = w.trainer;
     const e = w.enemies.find(e => e.alive && e.wild && !e.noCapture && e.id !== ${hostileId}) || w.enemies.find(e => e.alive && e.wild && !e.noCapture);
     e.x = t.x + 160; e.y = t.y + 20; e.hp = 1; e.hostile = false; e.wild.mode = 'sleep'; e.wild.t = 60;
