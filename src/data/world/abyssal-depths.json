@@ -1,0 +1,106 @@
+{
+ "id": "abyssal-depths",
+ "name": "Vực Nguyên Hải",
+ "width": 50,
+ "height": 50,
+ "chunk": 16,
+ "theme": "coast",
+ "void": "Water",
+ "spawn": {
+  "x": 25,
+  "y": 43
+ },
+ "areas": [
+  {
+   "id": "abyssal-depths",
+   "name": "Vực Nguyên Hải",
+   "rect": [
+    0,
+    0,
+    49,
+    49
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    50,
+    80
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     25,
+     38
+    ],
+    [
+     25,
+     47
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "kyogre",
+   "name": "Đền Đáy Biển",
+   "x": 25,
+   "y": 22,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 624,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 2.82,
+   "hint": "Sóng dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi trời mưa.",
+   "shrine": "kyogre"
+  }
+ ],
+ "portals": [
+  {
+   "id": "portal-abyss-back",
+   "name": "Trồi lên mặt biển",
+   "x": 25,
+   "y": 46,
+   "to": "coral-coast",
+   "toX": 79,
+   "toY": 64
+  }
+ ]
+}

@@ -1,7 +1,7 @@
 # LEGENDARY SHRINES — Hệ thống đền triệu hồi huyền thoại (thiết kế)
 
 > Phạm vi: chế độ **Phiêu lưu** (7 bản đồ) và các bản đồ riêng (instance) mới cho nghi lễ cấp sự kiện. Việt Nam Odyssey **không** thêm huyền thoại (giữ bản sắc boss địa phương Seviper / Claydol / Whiscash).
-> Trạng thái: **tài liệu thiết kế, chưa triển khai**. Mọi sơ đồ trong tài liệu được sinh bằng script và đã kiểm tra tự động: trong bán kính arena không có vật cản ngoài những vật được ghi rõ là "cover có chủ đích".
+> Trạng thái: **đã triển khai bước 1–6** (xem mục 7). Mọi sơ đồ trong tài liệu được sinh bằng script và đã kiểm tra tự động: trong bán kính arena không có vật cản ngoài những vật được ghi rõ là "cover có chủ đích".
 
 ---
 
@@ -1429,4 +1429,41 @@ Thay đổi so với sơ đồ ở bước 3 (đã sửa trong `gen-shrines.py`)
 - **Darkrai**: lối mòn có bước chéo (không đi được) → nối thành lối 4 hướng, vẫn có 2 nhánh cụt.
 - **Rayquaza**: cầu thang xoắn chưa chạm mép sơ đồ → kéo dài 1 bậc.
 - Rừng Lục Bảo chật: đường mòn chính giờ kết thúc ở bậc tháp chuông Ho-Oh, nhánh lên Thác Ngọc rẽ từ (36, 48); dời HLV Leo núi, Nhà thực vật học, Trạm Lõi Rừng và tổ ong ra ngoài đền. Thung Lũng: rương `chest-rocky` dời lên (150, 21).
-- Tạm thời (làm ở các bước sau): vách nứt `%` của Mew đang là nền đi được (bước 2 gắn Đập đá); tượng `S` dùng hình trụ; Kyogre / Dialga / Palkia / Arceus giữ vòng trụ cũ (Dialga, Palkia dời lên (36, 11) / (62, 11) để nhường chỗ Uxie và Regigigas) cho tới khi có bản đồ riêng (bước 5); Cresselia, Manaphy, điểm kích hoạt Lati / Mesprit, cổng Kyogre / Arceus chưa đặt (bước 2 / 4); vùng lang thang chưa đổi (bước 4).
+- Tạm thời ở bước 1 (đã làm ở bước 2–5, xem dưới): vách nứt `%` của Mew đang là nền đi được (bước 2 gắn Đập đá); tượng `S` dùng hình trụ; Kyogre / Dialga / Palkia / Arceus giữ vòng trụ cũ (Dialga, Palkia dời lên (36, 11) / (62, 11) để nhường chỗ Uxie và Regigigas) cho tới khi có bản đồ riêng (bước 5); Cresselia, Manaphy, điểm kích hoạt Lati / Mesprit, cổng Kyogre / Arceus chưa đặt (bước 2 / 4); vùng lang thang chưa đổi (bước 4).
+
+### Bước 2 — nghi lễ: **xong**
+
+- `src/core/rituals.ts` (pure) + `src/data/world/rituals.json`: mỗi đền (32/32) có tên, 0–3 bước nghi lễ, kiểu xuất hiện của huyền thoại, màu nguyên tố, câu chuyển cảnh. 7 loại bước: `relic` (thánh vật trong túi; thời tiết thay thế), `sequence` (chạm vật đang sáng theo lượt; có giới hạn giờ + thời gian chờ khi sai — Mew), `plates` (giẫm tấm nén theo thứ tự, theo chiều kim đồng hồ từ hướng bắc; `hidden`: không chỉ đường — Cresselia), `still` (đứng yên trên ô làm lễ; bão tuyết rút ngắn — Regice), `waves` (trụ vững trong vòng qua các đợt — Azelf), `quiz` (hộp thoại chọn đáp án — Uxie), `field` (năng lực khám phá — Flash ở Registeel, Đẩy đá ở Regirock). Bước `condition` của thiết kế dùng điều kiện giờ / thời tiết / thân thiết sẵn có của điểm đền (kiểm tra trước nghi lễ). `RitualRun` là máy trạng thái của một lần làm lễ.
+- `src/adventure/ShrineController.ts`: đi vào đền **không còn gọi huyền thoại**; `updateWorldBoss` chỉ nhắc "bấm E ở chỗ làm lễ" (vòng trụ cũ / lùm cây Mega Venusaur / boss tỉnh Việt Nam giữ cách cũ). E ở `P`: kiểm tra cờ cốt truyện → điều kiện → thời gian hồi → nghi lễ (lần đầu) → **chuyển cảnh** (khóa điều khiển, camera trượt tới `+`, hiệu ứng theo kiểu xuất hiện, câu chuyển cảnh) → boss ở `+` (không có `+`: tâm đền). Nghi lễ đã làm được nhớ trong save (`adv.rites`) → đánh lại chỉ cần E.
+- **Arena niêm phong**: trong trận, người chơi bị giữ trong bán kính R (vòng sáng màu nguyên tố); E ở chỗ làm lễ (hoặc điểm arena gần nó nhất) hỏi "Rời trận?" → boss biến mất, checkpoint xóa, như cơ chế reset cũ.
+- **Lõi đền 3 trạng thái**: ngủ (sáng yếu, nhịp chậm) → thức (trong nghi lễ / trận: sáng mạnh, nhịp nhanh) → thanh tịnh (trong thời gian hồi sau khi thắng / đã nhận quà: sáng dịu).
+- Đền gặp gỡ (Celebi, Jirachi, Shaymin): nghi lễ → chuyển cảnh → cuộc gặp như cũ.
+- Mew: vách nứt `%` là chướng ngại Đập đá (`field` `sv-mew-crack`, vẽ bằng ô vách nứt).
+
+### Bước 3 — asset: **xong (bộ cơ bản)**
+
+- 14 ô pixel 16 px mới trong `src/render/tileset.ts` (`EX.statue … EX.regiSlot`, hàng tileset thứ 31): tượng hộ vệ, lõi triệu hồi, cột băng, cột thu lôi, cột trắng đền biển, trụ gãy, đá rune thấp, đá sao, khóm hoa héo / nở, phiến trăng, bệ dịch chuyển, vách nứt, khe lõi Regi. Vật liệu mới trong `shrines.json` (`pillar` / `stone` / `plate`, sinh bằng `gen-shrines.py`) chọn ô cho từng đền; `S` không còn dùng hình trụ.
+- Tấm nén đã giẫm sáng lại trong lúc làm lễ; ở Đồi Hoa (Shaymin) khóm hoa được tưới thì nở.
+- Ảnh vật phẩm của 16 thánh vật: ánh xạ sang ảnh vật phẩm PokéAPI gần nhất trong `scripts/fetch-official-sprites.mjs` (gói cá nhân).
+- Chưa làm so với bảng mục 4: 36 ô nền theo 12 chủ đề (vẫn dùng nền chủ đề sẵn có), lõi riêng cho từng đền (một lõi chung tô màu theo nguyên tố), các lớp phủ môi trường riêng.
+
+### Bước 4 — thánh vật, lang thang, đền mới: **xong**
+
+- 16 thánh vật (`data/world/relics.json`, key item trong `items.json`): nhận tự động khi đủ cờ boss hoặc điều tra xong 3 manh mối (vd. Lông Bạc ← điều tra Lugia; 3 lông Thần Điểu ← hạ từng con; Ngọc Lam / Ngọc Đỏ ← Lugia + Ho-Oh + điều tra; 3 Lõi Regi ← hạ từng Regi; Sáo Thiên Giới ← Dialga + Palkia + Giratina). Đền đã từng thắng không đòi lại thánh vật.
+- **Lang thang** theo bảng 1.4: 6 loài, không vào Đồng Cỏ Gió / Làng / Nông Trại; mỗi con cần cờ `roam:<id>` từ điểm kích hoạt: **3 tượng Thú** ở chân Tháp Chuông (Raikou / Entei / Suicune, sau Mega Venusaur), **Đài Gió Thác Ngọc** (Latias + Latios, sau Lugia), **Đá Cảm Xúc** bờ Hồ Pha Lê (Mesprit, sau Mewtwo). Save cũ: con đã gặp / đã thắng được bật cờ sẵn.
+- Đền mới đã đặt (`scripts/place-shrines.ts`): Cresselia — Hồ Trăng (Rừng Ngọc 76, 44; đền, không còn lang thang), Rạn Ấu Hải (Bờ Biển 75, 79; nhận Trứng Manaphy sau Kyogre), Đài Gió Thác Ngọc (Rừng Ngọc 84, 6), Đá Cảm Xúc (Thung Lũng 116, 62), Xoáy Nước Sâu (Bờ Biển 78, 56; thêm đê đá nối bờ phía tây vì bờ biển chạy dọc), Cổng Thần Điện (Thánh Địa 48, 12).
+
+### Bước 5 — bản đồ riêng: **xong**
+
+- Thay vì một lớp `ShrineMap` mới, hai mặt phẳng là `RegionDef` có `void` (`data/world/abyssal-depths.json`, `origin-temple.json`): `ValleyMap` bỏ địa hình thủ tục — ngoài các đền và lối đi là nước sâu / tường, không mọc cây — nên dùng lại toàn bộ đóng dấu đền, chunk, cổng, lưu vị trí (không tạo hệ trùng). Không hiện trong danh sách vùng / danh tiếng.
+- **Vực Nguyên Hải** (50 × 50): đền Kyogre 41 × 37, vào từ Xoáy Nước Sâu (cần Lugia + Ho-Oh, mưa, Ngọc Lam), nghi lễ Ngọc Lam + đứng yên; cổng trồi lên mặt biển ngay cạnh xoáy.
+- **Thần Điện Khởi Nguyên** (110 × 100): Điện Thời Gian (Dialga) tây nam, Điện Không Gian (Palkia) đông nam, Ngai Khởi Nguyên (Arceus) phía bắc, nối bằng hành lang; vào từ cổng ở Thánh Địa (sau Uxie + Mesprit + Azelf).
+
+### Bước 6 — hiểm họa arena: **xong**
+
+- `src/core/shrineHazards.ts` (pure) + `hazards` trong `rituals.json`: 24 đền có trận, mỗi đền ≤ 2 loại, mỗi lúc 1 loại (đổi theo pha boss), không đánh khi boss đang chuyển pha / kiệt sức. 4 dạng: `strike` (vòng ngay trước người chơi), `ring` (vòng quanh mép arena — thủy triều, vòng lửa), `line` (dải từ boss qua người chơi), `floor` (các ô `x` của đền bừng lên — vành thủy triều Kyogre, khe nứt Groudon). Đi qua `World.addHazard` (vòng cảnh báo 1,0 s rồi mới đánh).
+
+### Còn lại
+
+- Ảnh riêng cho từng lõi và nền theo 12 chủ đề (mục 4) chưa vẽ.
+- Một số chi tiết chuyển cảnh trong thiết kế được làm đơn giản (hiệu ứng theo 10 kiểu xuất hiện thay vì hoạt cảnh riêng từng loài; Darkrai không làm mờ nhánh đường giả).

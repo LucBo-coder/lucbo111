@@ -2,6 +2,12 @@
 
 ## Chưa phát hành — V22: AI huấn luyện viên, tái đấu, danh tiếng theo tỉnh
 
+- **Đền huyền thoại bước 2–6** (LEGENDARY_SHRINES.md):
+  - Đi vào đền không còn tự gọi huyền thoại: bấm E ở chỗ làm lễ → nghi lễ (chạm cột theo lượt, giẫm tấm nén, đứng yên, trụ qua các đợt, câu đố, năng lực khám phá, thánh vật) → chuyển cảnh → trận trong arena niêm phong. E lần nữa để rời trận. Nghi lễ đã làm được nhớ, đánh lại chỉ cần E.
+  - 16 thánh vật (Lông Băng / Sấm / Lửa, Lông Bạc, Lông Cầu Vồng, Ngọc Lam / Đỏ / Lục, Đá Dung Nham, Lông Trăng, Chén Sương, 3 Lõi Regi, Ngọc Bạch Kim, Sáo Thiên Giới), nhận khi hạ boss / điều tra xong.
+  - Thú huyền thoại, Latias / Latios, Mesprit chỉ lang thang sau khi đánh thức ở điểm kích hoạt; Cresselia có đền Hồ Trăng; 6 đền mới; Trứng Manaphy ở Rạn Ấu Hải.
+  - 2 bản đồ đền: Vực Nguyên Hải (Kyogre, vào từ Xoáy Nước Sâu khi mưa) và Thần Điện Khởi Nguyên (Dialga, Palkia, Arceus).
+  - Hiểm họa trong arena theo từng đền (sét, thủy triều, vòng lửa, khe nứt…), có cảnh báo trước; 14 ô pixel mới cho đền.
 - **Giao diện điện thoại: nút không đè nhau, chữ không tràn khung** (dọc 390×844 và ngang 844×390):
   - Menu chính: 4 nút cuối (Cài đặt, Chơi online, Nâng cấp, Thế giới online) xếp lưới 2 × 2 khi màn hình dọc thay vì 4 nút chen một hàng đè lên nhau và tràn khỏi màn hình; mô tả Việt Nam Odyssey nằm gọn trong thẻ; bỏ dòng gợi ý bàn phím trên điện thoại dọc.
   - Chọn Pokémon khởi đầu: nút "Bắt đầu" không còn tràn khỏi mép phải.

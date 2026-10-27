@@ -139,3 +139,9 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Đồng Nước Nổi không còn là bãi cỏ: đi trên bờ đê giữa những ô ruộng ngập, ô nào còn lúa đứng thì có Pokémon nấp. Ngồi bờ đê thả câu, hái bông điên điển vàng, vào rừng tràm Trà Sư lấy mật ong — đủ thì mang về cho Cô Sáu làm bánh mùa nước nổi.
 - Cà Mau: lúc nước ròng lượm ốc len trên bãi bùn dưới gốc đước, đem về cho Ngư dân Tư Sáu đổi cây cần câu — giờ có cần câu ngay ở tỉnh đầu, câu trên lạch rừng đước.
 - Mỗi tỉnh thêm 2 hốc bí mật (rễ đước, bụi tràm U Minh, bụi rậm Trà Sư, tảng đá nứt Thất Sơn).
+
+### Đền huyền thoại sống động
+- Trước: bước vào vòng trụ là huyền thoại hiện ra ngay. Giờ mỗi đền là một nơi có chủ đề (đỉnh băng với cột pha lê, tháp thu lôi, đồi hoa héo…), phải làm lễ mới gọi được: chạm cột băng theo lượt ngân, giẫm phiến trăng theo chiều kim đồng hồ, đứng yên trên bệ dung nham, trả lời câu đố của Uxie, tưới hoa cho Shaymin nở lại.
+- Huyền thoại xuất hiện bằng một đoạn chuyển cảnh, trận đánh diễn ra trong arena niêm phong với hiểm họa của đền (sét đánh, thủy triều dâng, khe nứt phun lửa) — có vòng cảnh báo để né.
+- Thánh vật thu được trên đường đi (Ngọc Đỏ, Lông Bạc, Lõi Regi…) mở các đền sau; thú lang thang chỉ chạy khắp vùng sau khi được đánh thức ở tượng / đài của chúng.
+- Hai nơi chỉ vào được qua cổng đền: Vực Nguyên Hải dưới đáy biển và Thần Điện Khởi Nguyên.

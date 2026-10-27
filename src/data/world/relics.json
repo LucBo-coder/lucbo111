@@ -1,0 +1,18 @@
+[
+  { "id": "feather-ice", "from": ["boss:articuno"] },
+  { "id": "feather-thunder", "from": ["boss:zapdos"] },
+  { "id": "feather-fire", "from": ["boss:moltres"] },
+  { "id": "silver-feather", "from": ["clues:lugia"] },
+  { "id": "rainbow-feather", "from": ["boss:raikou", "boss:entei", "boss:suicune"] },
+  { "id": "blue-orb", "from": ["boss:lugia", "boss:ho-oh", "clues:kyogre"] },
+  { "id": "red-orb", "from": ["boss:lugia", "boss:ho-oh", "clues:groudon"] },
+  { "id": "jade-orb", "from": ["boss:kyogre", "boss:groudon", "clues:rayquaza"] },
+  { "id": "magma-stone", "from": ["boss:groudon", "clues:heatran"] },
+  { "id": "lunar-feather", "from": ["boss:mew"] },
+  { "id": "dew-cup", "from": ["boss:mega-venusaur"] },
+  { "id": "regi-core-rock", "from": ["boss:regirock"] },
+  { "id": "regi-core-ice", "from": ["boss:regice"] },
+  { "id": "regi-core-steel", "from": ["boss:registeel"] },
+  { "id": "platinum-orb", "from": ["boss:dialga", "boss:palkia", "clues:giratina"] },
+  { "id": "azure-flute", "from": ["boss:dialga", "boss:palkia", "boss:giratina"] }
+]

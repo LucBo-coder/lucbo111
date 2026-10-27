@@ -1,0 +1,185 @@
+{
+ "id": "origin-temple",
+ "name": "Thần Điện Khởi Nguyên",
+ "width": 110,
+ "height": 100,
+ "chunk": 16,
+ "theme": "sanctuary",
+ "void": "Wall",
+ "spawn": {
+  "x": 55,
+  "y": 90
+ },
+ "areas": [
+  {
+   "id": "origin-temple",
+   "name": "Thần Điện Khởi Nguyên",
+   "rect": [
+    0,
+    0,
+    109,
+    99
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    50,
+    80
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     55,
+     96
+    ],
+    [
+     55,
+     42
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     25,
+     82
+    ],
+    [
+     85,
+     82
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     25,
+     82
+    ],
+    [
+     25,
+     75
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     85,
+     82
+    ],
+    [
+     85,
+     75
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "dialga",
+   "name": "Cột Thời Gian",
+   "x": 25,
+   "y": 62,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 480,
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "gap": 5.96,
+   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
+   "condition": {},
+   "shrine": "dialga"
+  },
+  {
+   "id": "palkia",
+   "name": "Cột Không Gian",
+   "x": 85,
+   "y": 62,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 480,
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "gap": 3.61,
+   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
+   "condition": {},
+   "shrine": "palkia"
+  },
+  {
+   "id": "arceus",
+   "name": "Đài Khởi Nguyên",
+   "x": 55,
+   "y": 25,
+   "level": 80,
+   "respawn": 1500,
+   "arena": 624,
+   "requires": [
+    "boss:dialga",
+    "boss:palkia",
+    "boss:giratina",
+    "boss:mewtwo",
+    "boss:rayquaza"
+   ],
+   "gap": 1.57,
+   "hint": "Một bậc thang ánh sáng mờ ảo... chỉ người đã thấy thời gian, không gian, phản vật chất, rồng trời và Mewtwo mới được bước lên.",
+   "condition": {},
+   "shrine": "arceus"
+  }
+ ],
+ "portals": [
+  {
+   "id": "portal-temple-back",
+   "name": "Rời Thần Điện",
+   "x": 55,
+   "y": 94,
+   "to": "legendary-sanctuary",
+   "toX": 48,
+   "toY": 14
+  }
+ ]
+}

@@ -55,8 +55,11 @@ export const EX = {
   reeds: 348, // +frame (349)
   // Vietnam Odyssey (0.10.0): mangrove (cây đước) and melaleuca (cây tràm)
   mangrove: 350, melaleuca: 351,
+  // legendary shrines (V22, LEGENDARY_SHRINES.md §4): statue, summoning core, themed pillars, small ritual props
+  statue: 352, altar: 353, icePillar: 354, rodPillar: 355, whitePillar: 356, brokenPillar: 357,
+  runeStone: 358, starStone: 359, flowerWilt: 360, flowerBloom: 361, moonPlate: 362, pad: 363, crack: 364, regiSlot: 365,
 } as const;
-export const TILESET_ROWS = 30;
+export const TILESET_ROWS = 31;
 
 /** Terrain codes produced by map providers. */
 export const T = {

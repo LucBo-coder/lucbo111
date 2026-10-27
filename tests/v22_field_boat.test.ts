@@ -70,8 +70,9 @@ describe('exploration abilities', () => {
 
   it('valley nooks: walls on open ground, the chest inside sealed by the obstacle flag, unreachable until cleared', () => {
     const d = REGION_DEFS['starter-valley'], m = new ValleyMap(d);
-    expect(d.field?.length).toBe(3);
-    for (const f of d.field!) {
+    // + Mew's cracked shrine wall (a smash obstacle without a nook, see tests/v22_rituals.test.ts)
+    expect(d.field?.filter((f) => f.nook).length).toBe(3);
+    for (const f of d.field!.filter((x) => x.nook)) {
       const chest = d.chests.find((c) => c.requiresFlag === fieldFlag('starter-valley', f.id))!;
       expect(chest, f.id).toBeTruthy();
       for (const k of Object.keys(chest.items)) expect(ITEMS[k], k).toBeTruthy();

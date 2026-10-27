@@ -1,0 +1,1008 @@
+[
+ {
+  "shrine": "articuno",
+  "legends": [
+   "articuno"
+  ],
+  "title": "Băng Đài Hồ Băng Lam",
+  "appear": "shatter",
+  "color": 10477823,
+  "steps": [
+   {
+    "kind": "sequence",
+    "part": "O",
+    "count": 4,
+    "text": "Bốn cột pha lê lần lượt ngân lên. Chạm vào cột đang ngân."
+   }
+  ],
+  "awaken": "Tinh thể nứt toác — Articuno phá băng bay ra!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "ice",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "ring",
+    "type": "ice",
+    "every": 9,
+    "power": 40
+   }
+  ]
+ },
+ {
+  "shrine": "zapdos",
+  "legends": [
+   "zapdos"
+  ],
+  "title": "Đỉnh Sấm Vách Hải Âu",
+  "appear": "descend",
+  "color": 16769088,
+  "steps": [
+   {
+    "kind": "plates",
+    "part": "&",
+    "order": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "text": "Giẫm lên tấm mạch đang sáng, theo chiều kim đồng hồ, để khép kín mạch sét."
+   }
+  ],
+  "awaken": "Sét đánh thẳng vào Cột Thu Lôi — Zapdos sà xuống!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "electric",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "line",
+    "type": "electric",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "moltres",
+  "legends": [
+   "moltres"
+  ],
+  "title": "Đền Lửa Thần Điểu",
+  "appear": "burst",
+  "color": 16748576,
+  "steps": [
+   {
+    "kind": "sequence",
+    "part": "*",
+    "count": 6,
+    "text": "Tia lửa chỉ đường: thắp lư đang bừng sáng."
+   }
+  ],
+  "awaken": "Ngọn lửa tâm bùng cao — Moltres bật ra từ biển lửa!",
+  "hazards": [
+   {
+    "kind": "ring",
+    "type": "fire",
+    "every": 9,
+    "power": 40
+   },
+   {
+    "kind": "strike",
+    "type": "fire",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "mewtwo",
+  "legends": [
+   "mewtwo"
+  ],
+  "title": "Hang Tâm Linh",
+  "appear": "shatter",
+  "color": 13660415,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "feather-ice",
+     "feather-thunder",
+     "feather-fire"
+    ],
+    "text": "Đặt ba chiếc lông Thần Điểu vào ba khe quanh pha lê."
+   }
+  ],
+  "awaken": "Pha lê nứt vỡ, một áp lực khủng khiếp đẩy bạn lùi lại — Mewtwo hiện ra giữa mảnh vỡ!",
+  "hazards": [
+   {
+    "kind": "line",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "strike",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "mew",
+  "legends": [
+   "mew"
+  ],
+  "title": "Tàn Tích Lặng",
+  "appear": "fade",
+  "color": 16758976,
+  "steps": [
+   {
+    "kind": "sequence",
+    "part": "S",
+    "count": 3,
+    "window": 3.5,
+    "cooldown": 60,
+    "text": "Một đốm sáng hồng nhảy giữa các tượng. Chạm vào tượng nó đang đậu trước khi nó bay đi (3 lần liền)."
+   }
+  ],
+  "awaken": "Tiếng cười khúc khích vang lên — Mew hiện hình!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "ho-oh",
+  "legends": [
+   "ho-oh"
+  ],
+  "title": "Tháp Chuông Cầu Vồng",
+  "appear": "descend",
+  "color": 16756800,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "rainbow-feather"
+    ],
+    "text": "Đặt Lông Cầu Vồng dưới quả chuông lớn."
+   },
+   {
+    "kind": "sequence",
+    "part": "S",
+    "count": 3,
+    "text": "Nắng chạm lần lượt vào ba tượng Thú. Gõ chuông (chạm tượng) đúng lúc tượng đó rực sáng."
+   }
+  ],
+  "awaken": "Bóng một cánh chim khổng lồ phủ kín sân — Ho-Oh đáp xuống!",
+  "wake": [
+   "raikou",
+   "entei",
+   "suicune"
+  ],
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "fire",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "ring",
+    "type": "fire",
+    "every": 9,
+    "power": 40
+   }
+  ]
+ },
+ {
+  "shrine": "cresselia",
+  "legends": [
+   "cresselia"
+  ],
+  "title": "Hồ Trăng Lục Bảo",
+  "appear": "reflect",
+  "color": 16113919,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "lunar-feather"
+    ],
+    "text": "Giơ Lông Trăng lên trước mặt hồ."
+   },
+   {
+    "kind": "plates",
+    "part": "&",
+    "order": [
+     2,
+     0,
+     1
+    ],
+    "hidden": true,
+    "text": "Bước lên ba phiến trăng theo thứ tự tuần trăng: trăng khuyết tây → trăng tròn bắc → trăng khuyết đông."
+   }
+  ],
+  "awaken": "Ảnh trăng giữa hồ sáng tròn — Cresselia hiện ra từ phản chiếu rồi bay lên!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "celebi",
+  "legends": [
+   "celebi"
+  ],
+  "mode": "gift",
+  "title": "Vòng Cây Cổ",
+  "appear": "fade",
+  "color": 10551200,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "dew-cup"
+    ],
+    "text": "Dâng chén sương lên miếu nhỏ giữa vòng cây."
+   }
+  ],
+  "awaken": "Lá cây xào xạc dù không có gió..."
+ },
+ {
+  "shrine": "giratina",
+  "legends": [
+   "giratina"
+  ],
+  "title": "Cổng Thế Giới Đảo Ngược",
+  "appear": "shadow",
+  "color": 7363736,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "platinum-orb"
+    ],
+    "text": "Đặt Ngọc Bạch Kim trước tấm gương."
+   },
+   {
+    "kind": "still",
+    "seconds": 5,
+    "text": "Đứng yên trước gương — dù ảnh phản chiếu của bạn đang cử động khác."
+   }
+  ],
+  "awaken": "Gương vỡ. Bóng của chính bạn tách ra và lớn dần — Giratina!",
+  "hazards": [
+   {
+    "kind": "floor",
+    "type": "ghost",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "line",
+    "type": "ghost",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "azelf",
+  "legends": [
+   "azelf"
+  ],
+  "title": "Hồ Dũng Khí",
+  "appear": "fly",
+  "color": 16736352,
+  "steps": [
+   {
+    "kind": "waves",
+    "waves": 3,
+    "ring": 3,
+    "species": [
+     "croagunk",
+     "skorupi",
+     "carnivine",
+     "toxicroak"
+    ],
+    "text": "Thử thách dũng khí: trụ vững trong vòng qua 3 đợt Pokémon đầm, không bước ra ngoài."
+   }
+  ],
+  "awaken": "Azelf bay ra khỏi hang, lướt qua mặt hồ!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "registeel",
+  "legends": [
+   "registeel"
+  ],
+  "title": "Lăng Thép Chìm",
+  "appear": "wall",
+  "color": 12632280,
+  "steps": [
+   {
+    "kind": "field",
+    "ability": "flash",
+    "text": "Bia chữ chấm: \"Thắp đèn rồi mới đọc được lối.\""
+   },
+   {
+    "kind": "plates",
+    "part": "&",
+    "order": [
+     1,
+     3,
+     0,
+     2
+    ],
+    "text": "Ánh đèn hiện chữ chấm: nén 4 tấm theo thứ tự đang sáng."
+   }
+  ],
+  "awaken": "Tường bắc nứt toác — Registeel bước ra!",
+  "hazards": [
+   {
+    "kind": "line",
+    "type": "steel",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "darkrai",
+  "legends": [
+   "darkrai"
+  ],
+  "title": "Đảo Ác Mộng",
+  "appear": "shadow",
+  "color": 3157040,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "lunar-feather"
+    ],
+    "text": "Lông Trăng tự bay lên, sáng rồi tắt..."
+   }
+  ],
+  "awaken": "Bóng của bạn bỗng dài ra — Darkrai hiện từ bóng tối!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "dark",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "lugia",
+  "legends": [
+   "lugia"
+  ],
+  "title": "Đảo Xoáy Bạc",
+  "appear": "rise",
+  "color": 12636415,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "silver-feather"
+    ],
+    "text": "Đặt Lông Bạc vào vỏ ốc khổng lồ."
+   },
+   {
+    "kind": "sequence",
+    "part": "S",
+    "count": 3,
+    "text": "Ba tượng Thần Điểu lần lượt phát sáng. Thổi sáo (chạm tượng) khi tượng sáng."
+   }
+  ],
+  "awaken": "Biển nổi xoáy lớn phía bắc đảo — Lugia trồi lên khỏi sóng!",
+  "hazards": [
+   {
+    "kind": "ring",
+    "type": "water",
+    "every": 9,
+    "power": 40
+   },
+   {
+    "kind": "line",
+    "type": "flying",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "kyogre-gate",
+  "legends": [
+   "kyogre"
+  ],
+  "mode": "portal",
+  "requires": [
+   "boss:lugia",
+   "boss:ho-oh"
+  ],
+  "to": {
+   "region": "abyssal-depths",
+   "x": 25,
+   "y": 43
+  },
+  "title": "Xoáy Nước Sâu",
+  "appear": "rise",
+  "color": 4227327,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "blue-orb"
+    ],
+    "text": "Ngọc Lam phát sáng khi bạn giơ nó về phía xoáy nước."
+   }
+  ],
+  "awaken": "Bạn nhảy xuống xoáy nước..."
+ },
+ {
+  "shrine": "kyogre",
+  "legends": [
+   "kyogre"
+  ],
+  "title": "Vực Nguyên Hải",
+  "appear": "rise",
+  "color": 3170559,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "blue-orb"
+    ],
+    "text": "Đặt Ngọc Lam lên Đài Nguyên Hải — ánh xanh lan khắp vực."
+   },
+   {
+    "kind": "still",
+    "seconds": 4,
+    "text": "Đứng yên lắng nghe nhịp thủy triều..."
+   }
+  ],
+  "awaken": "Đáy vực rung chuyển — Kyogre trồi lên giữa vòng nước!",
+  "hazards": [
+   {
+    "kind": "ring",
+    "type": "water",
+    "every": 9,
+    "power": 40
+   },
+   {
+    "kind": "floor",
+    "type": "water",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "regirock",
+  "legends": [
+   "regirock"
+  ],
+  "title": "Lăng Sa Thạch",
+  "appear": "wall",
+  "color": 13148264,
+  "steps": [
+   {
+    "kind": "field",
+    "ability": "strength",
+    "text": "Bia: \"Hai hòn đá về chỗ ngủ.\" Cần sức mạnh để đẩy đá."
+   },
+   {
+    "kind": "plates",
+    "part": "&",
+    "order": [
+     0,
+     1
+    ],
+    "text": "Đẩy đá xong — bước lên hai hốc đá đang sáng để mở cửa lăng."
+   }
+  ],
+  "awaken": "Cửa lăng mở, tường nứt — Regirock bước ra!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "rock",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "manaphy",
+  "legends": [
+   "manaphy"
+  ],
+  "mode": "egg",
+  "requires": [
+   "boss:kyogre"
+  ],
+  "title": "Rạn Ấu Hải",
+  "appear": "fade",
+  "color": 6340863,
+  "steps": [],
+  "awaken": "Trong vỏ sò khổng lồ có một quả trứng xanh trong suốt..."
+ },
+ {
+  "shrine": "rayquaza",
+  "legends": [
+   "rayquaza"
+  ],
+  "title": "Trụ Trời Đỉnh Bão",
+  "appear": "coil",
+  "color": 4251776,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "jade-orb"
+    ],
+    "text": "Đặt Ngọc Lục Thiên lên bệ đá giữa trời."
+   },
+   {
+    "kind": "sequence",
+    "part": "o",
+    "count": 3,
+    "text": "Tuyết bay chỉ hướng gió: chạm trụ gió đang rít."
+   }
+  ],
+  "awaken": "Một con rồng xoắn từ trên trời xuống, cuộn quanh sân — Rayquaza!",
+  "hazards": [
+   {
+    "kind": "line",
+    "type": "dragon",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "strike",
+    "type": "flying",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "regice",
+  "legends": [
+   "regice"
+  ],
+  "title": "Lăng Băng Tĩnh",
+  "appear": "wall",
+  "color": 11591935,
+  "steps": [
+   {
+    "kind": "still",
+    "seconds": 60,
+    "fast": [
+     "blizzard"
+    ],
+    "fastSeconds": 20,
+    "text": "Bia: \"Đứng yên như băng.\" Đứng yên trên ô tĩnh (bão tuyết: chỉ 20 giây)."
+   }
+  ],
+  "awaken": "Cửa trong tường bắc nứt — Regice bước ra!",
+  "hazards": [
+   {
+    "kind": "ring",
+    "type": "ice",
+    "every": 9,
+    "power": 40
+   }
+  ]
+ },
+ {
+  "shrine": "jirachi",
+  "legends": [
+   "jirachi"
+  ],
+  "mode": "gift",
+  "title": "Đài Sao Băng",
+  "appear": "fade",
+  "color": 16774272,
+  "steps": [
+   {
+    "kind": "sequence",
+    "part": "o",
+    "count": 7,
+    "text": "Bảy đá sao lấp lánh theo chòm sao. Chạm đá đang lấp lánh."
+   }
+  ],
+  "awaken": "Một điều ước được thì thầm..."
+ },
+ {
+  "shrine": "groudon",
+  "legends": [
+   "groudon"
+  ],
+  "title": "Đại Điện Dung Nham",
+  "appear": "rise",
+  "color": 16732192,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "red-orb"
+    ],
+    "text": "Thả Ngọc Đỏ vào ao magma."
+   },
+   {
+    "kind": "still",
+    "seconds": 3,
+    "text": "Mặt đất rung từng nhịp... giữ vững chân."
+   }
+  ],
+  "awaken": "Bốn đường nứt sáng rực — Groudon trồi lên từ giữa sân!",
+  "hazards": [
+   {
+    "kind": "floor",
+    "type": "ground",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "strike",
+    "type": "ground",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "heatran",
+  "legends": [
+   "heatran"
+  ],
+  "title": "Lòng Chảo Nham Tâm",
+  "appear": "rise",
+  "color": 16740400,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "magma-stone"
+    ],
+    "text": "Đặt Đá Nham Tâm vào khe nứt."
+   }
+  ],
+  "awaken": "Dung nham trong khe dâng lên — Heatran bò ra!",
+  "hazards": [
+   {
+    "kind": "ring",
+    "type": "fire",
+    "every": 9,
+    "power": 40
+   }
+  ]
+ },
+ {
+  "shrine": "shaymin",
+  "legends": [
+   "shaymin"
+  ],
+  "mode": "gift",
+  "title": "Đồi Hoa Tái Sinh",
+  "appear": "fade",
+  "color": 10547312,
+  "steps": [
+   {
+    "kind": "plates",
+    "part": "&",
+    "order": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "text": "Tưới năm khóm hoa héo (bước lên khóm đang sáng)."
+   }
+  ],
+  "awaken": "Hoa nở rộ khắp đồi..."
+ },
+ {
+  "shrine": "dialga",
+  "legends": [
+   "dialga"
+  ],
+  "title": "Điện Thời Gian",
+  "appear": "fade",
+  "color": 4227296,
+  "steps": [
+   {
+    "kind": "sequence",
+    "part": "o",
+    "count": 3,
+    "text": "Kim đồng hồ đá xoay: chạm mốc giờ đang sáng."
+   }
+  ],
+  "awaken": "Kim chỉ 12 giờ — Dialga hiện ra như một đoạn phim tua ngược!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "steel",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "line",
+    "type": "dragon",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "palkia",
+  "legends": [
+   "palkia"
+  ],
+  "title": "Điện Không Gian",
+  "appear": "burst",
+  "color": 15761632,
+  "steps": [
+   {
+    "kind": "plates",
+    "part": "12",
+    "order": [
+     0,
+     2,
+     1,
+     3
+    ],
+    "text": "Đi qua các bệ ánh ngọc theo thứ tự đang sáng."
+   }
+  ],
+  "awaken": "Tia sáng nối bốn bệ — Palkia xé không gian bước ra!",
+  "hazards": [
+   {
+    "kind": "line",
+    "type": "water",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "strike",
+    "type": "dragon",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "arceus",
+  "legends": [
+   "arceus"
+  ],
+  "title": "Ngai Khởi Nguyên",
+  "appear": "descend",
+  "color": 16775360,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "azure-flute"
+    ],
+    "text": "Thổi Sáo Thiên Giới trước ngai."
+   },
+   {
+    "kind": "still",
+    "seconds": 3,
+    "text": "Ánh sáng dâng lên từng bậc thềm..."
+   }
+  ],
+  "awaken": "Một cột sáng xuyên trần — Arceus giáng xuống!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "normal",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "ring",
+    "type": "normal",
+    "every": 9,
+    "power": 40
+   }
+  ]
+ },
+ {
+  "shrine": "arceus-gate",
+  "legends": [
+   "dialga",
+   "palkia",
+   "arceus"
+  ],
+  "mode": "portal",
+  "requires": [
+   "boss:uxie",
+   "boss:mesprit",
+   "boss:azelf"
+  ],
+  "to": {
+   "region": "origin-temple",
+   "x": 55,
+   "y": 90
+  },
+  "title": "Cổng Thần Điện Khởi Nguyên",
+  "appear": "fade",
+  "color": 16775360,
+  "steps": [],
+  "awaken": "Cánh cổng đá mở ra một hành lang dẫn vào Thần Điện..."
+ },
+ {
+  "shrine": "uxie",
+  "legends": [
+   "uxie"
+  ],
+  "title": "Hồ Tri Thức",
+  "appear": "fly",
+  "color": 16768064,
+  "steps": [
+   {
+    "kind": "quiz",
+    "text": "Ba tấm bia hỏi về những huyền thoại bạn đã gặp.",
+    "questions": [
+     {
+      "q": "Ba Thần Điểu cùng mở khóa huyền thoại nào?",
+      "options": [
+       "Mewtwo",
+       "Celebi",
+       "Jirachi"
+      ],
+      "answer": 0
+     },
+     {
+      "q": "Ba con Thú lang thang đánh thức ai ở Tháp Chuông?",
+      "options": [
+       "Lugia",
+       "Ho-Oh",
+       "Rayquaza"
+      ],
+      "answer": 1
+     },
+     {
+      "q": "Huyền thoại nào ngự trên trời, giữ thăng bằng giữa biển và đất?",
+      "options": [
+       "Groudon",
+       "Kyogre",
+       "Rayquaza"
+      ],
+      "answer": 2
+     }
+    ]
+   }
+  ],
+  "awaken": "Uxie mở mắt, bay ra khỏi hang!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "regigigas",
+  "legends": [
+   "regigigas"
+  ],
+  "title": "Đại Điện Titan",
+  "appear": "rise",
+  "color": 15265976,
+  "steps": [
+   {
+    "kind": "relic",
+    "items": [
+     "regi-core-rock",
+     "regi-core-ice",
+     "regi-core-steel"
+    ],
+    "text": "Đặt ba Lõi Regi vào ba khe dưới chân tượng."
+   }
+  ],
+  "awaken": "Tượng khổng lồ nứt — Regigigas đứng dậy!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "normal",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "ring",
+    "type": "ground",
+    "every": 9,
+    "power": 40
+   }
+  ]
+ },
+ {
+  "shrine": "deoxys",
+  "legends": [
+   "deoxys"
+  ],
+  "title": "Hố Thiên Thạch",
+  "appear": "fade",
+  "color": 16740464,
+  "steps": [],
+  "awaken": "Lõi thiên thạch tách đôi — Deoxys tụ hình!",
+  "hazards": [
+   {
+    "kind": "strike",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   },
+   {
+    "kind": "line",
+    "type": "psychic",
+    "every": 7,
+    "power": 45
+   }
+  ]
+ },
+ {
+  "shrine": "lati",
+  "legends": [
+   "latias",
+   "latios"
+  ],
+  "mode": "roam",
+  "requires": [
+   "boss:lugia"
+  ],
+  "title": "Đài Gió Thác Ngọc",
+  "appear": "fly",
+  "color": 16752800,
+  "steps": [],
+  "awaken": "Hai bóng đỏ và lam lướt qua thác — Latias và Latios bắt đầu lang thang!"
+ },
+ {
+  "shrine": "mesprit",
+  "legends": [
+   "mesprit"
+  ],
+  "mode": "roam",
+  "requires": [
+   "boss:mewtwo"
+  ],
+  "title": "Đá Cảm Xúc",
+  "appear": "fly",
+  "color": 16756960,
+  "steps": [],
+  "awaken": "Một đốm sáng hồng vụt khỏi phiến đá — Mesprit bắt đầu lang thang!"
+ }
+]

@@ -72,14 +72,14 @@
   "kind": "roaming",
   "name": "Raikou lang thang",
   "regions": [
-   "starter-valley",
-   "farm",
    "rocky-highlands",
-   "coral-coast"
+   "coral-coast",
+   "frozen-mountains"
   ],
   "level": 40,
   "requires": [
-   "boss:mega-venusaur"
+   "boss:mega-venusaur",
+   "roam:raikou"
   ],
   "weather": [
    "thunderstorm",
@@ -94,12 +94,12 @@
   "regions": [
    "rocky-highlands",
    "ancient-ruins",
-   "emerald-forest",
    "volcanic-lands"
   ],
   "level": 40,
   "requires": [
-   "boss:mega-venusaur"
+   "boss:mega-venusaur",
+   "roam:entei"
   ],
   "weather": [
    "heatwave",
@@ -113,12 +113,13 @@
   "name": "Suicune bên hồ",
   "regions": [
    "crystal-lake",
-   "frozen-mountains",
+   "emerald-woods",
    "coral-coast"
   ],
   "level": 40,
   "requires": [
-   "boss:mega-venusaur"
+   "boss:mega-venusaur",
+   "roam:suicune"
   ],
   "weather": [
    "rain",
@@ -262,13 +263,13 @@
   "name": "Latias lang thang",
   "regions": [
    "crystal-lake",
-   "starter-valley",
-   "farm",
+   "emerald-woods",
    "coral-coast"
   ],
   "level": 45,
   "requires": [
-   "boss:lugia"
+   "boss:lugia",
+   "roam:latias"
   ],
   "lore": "Pokémon Rồng nhạy cảm, có thể tàng hình bằng lông vũ."
  },
@@ -277,14 +278,14 @@
   "kind": "roaming",
   "name": "Latios lang thang",
   "regions": [
-   "crystal-lake",
-   "emerald-forest",
    "rocky-highlands",
+   "emerald-woods",
    "coral-coast"
   ],
   "level": 45,
   "requires": [
-   "boss:lugia"
+   "boss:lugia",
+   "roam:latios"
   ],
   "lore": "Pokémon Rồng thông minh, bay nhanh hơn máy bay phản lực."
  },
@@ -305,9 +306,9 @@
   "lore": "Chúa tể đại dương, gọi mưa bão mở rộng biển cả.",
   "hint": "Sóng dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi trời mưa.",
   "site": {
-   "x": 58,
-   "y": 56,
-   "region": "coral-coast"
+   "x": 25,
+   "y": 22,
+   "region": "abyssal-depths"
   }
  },
  {
@@ -408,14 +409,13 @@
   "name": "Mesprit lang thang",
   "regions": [
    "crystal-lake",
-   "starter-valley",
-   "emerald-forest",
-   "farm",
+   "emerald-woods",
    "misty-swamp"
   ],
   "level": 45,
   "requires": [
-   "boss:mewtwo"
+   "boss:mewtwo",
+   "roam:mesprit"
   ],
   "lore": "Hộ thần cảm xúc — bay khắp nơi, không ở yên một chỗ."
  },
@@ -448,9 +448,9 @@
   "lore": "Thần thời gian — tim nó đập là thời gian trôi.",
   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
   "site": {
-   "x": 36,
-   "y": 11,
-   "region": "legendary-sanctuary"
+   "x": 25,
+   "y": 62,
+   "region": "origin-temple"
   }
  },
  {
@@ -466,9 +466,9 @@
   "lore": "Thần không gian — mỗi hơi thở là một không gian mới.",
   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
   "site": {
-   "x": 62,
-   "y": 11,
-   "region": "legendary-sanctuary"
+   "x": 85,
+   "y": 62,
+   "region": "origin-temple"
   }
  },
  {
@@ -511,20 +511,22 @@
  },
  {
   "id": "cresselia",
-  "kind": "roaming",
+  "kind": "shrine",
   "name": "Cresselia dưới trăng",
-  "regions": [
-   "starter-valley",
-   "crystal-lake",
-   "emerald-forest",
-   "misty-swamp"
-  ],
   "level": 48,
   "requires": [
    "boss:mew"
   ],
   "time": "night",
-  "lore": "Hiện thân của trăng lưỡi liềm, mang giấc mơ đẹp — chỉ bay vào ban đêm."
+  "lore": "Hiện thân của trăng lưỡi liềm, mang giấc mơ đẹp — chỉ bay vào ban đêm.",
+  "site": {
+   "x": 76,
+   "y": 44,
+   "region": "emerald-woods"
+  },
+  "weather": [
+   "clear"
+  ]
  },
  {
   "id": "darkrai",
@@ -600,9 +602,9 @@
   "lore": "Đấng tạo hóa — tương truyền đã tạo ra cả vũ trụ từ quả trứng hỗn mang.",
   "hint": "Một bậc thang ánh sáng mờ ảo... chỉ người đã thấy thời gian, không gian, phản vật chất, rồng trời và Mewtwo mới được bước lên.",
   "site": {
-   "x": 48,
-   "y": 22,
-   "region": "legendary-sanctuary"
+   "x": 55,
+   "y": 25,
+   "region": "origin-temple"
   }
  }
 ]

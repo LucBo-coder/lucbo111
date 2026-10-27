@@ -122,6 +122,7 @@ done('lugia', g, (cx, cy, 13))
 # Kyogre — cổng xoáy (mặt đất) + Vực Nguyên Hải (bản đồ riêng)
 g = G(21, 17, '~'); cx, cy = 10, 7
 g.polar(cx, cy, 5, range(0, 360, 45), 'O'); g.disc(cx, cy, 1.2, '@'); g.disc(cx, 14, 2.2, ','); g.put(cx, 13, 'P'); g.put(cx, 12, '=')
+g.hline(13, 0, cx - 3, '=')  # đê đá nối bờ phía tây (bờ biển duy nhất của Bờ Biển San Hô chạy dọc)
 done('kyogre-gate', g)
 g = G(41, 37, '#'); cx, cy = 20, 19
 g.disc(cx, cy, 16.5, '~'); g.disc(cx, cy, 15, 'w'); g.disc(cx, cy, 10.5, '.'); g.ring(cx, cy, 13, 'x', 1.6)
@@ -330,40 +331,40 @@ ICE = {'floor': 'Ice', 'rune': 'Snow', 'star': 'crystal'}
 ASHF = {'floor': 'AshRock', 'rune': 'Ruin', 'star': 'torch'}
 STONE = {'floor': 'Rocky', 'rune': 'Ruin', 'star': 'crystal'}
 TEMPLE = {'floor': 'Ruin', 'rune': 'Sanctum', 'star': 'crystal'}
-WHITE = {'floor': 'Sanctum', 'rune': 'Ruin', 'star': 'crystal'}
+WHITE = {'floor': 'Sanctum', 'rune': 'Ruin', 'star': 'crystal', 'pillar': 'white'}
 META = {
-    'articuno': ('articuno', 2, 'frozen-mountains', 22, 40, ICE),
-    'zapdos': ('zapdos', 2, 'coral-coast', 16, 78, STONE),
+    'articuno': ('articuno', 2, 'frozen-mountains', 22, 40, {**ICE, 'pillar': 'ice'}),
+    'zapdos': ('zapdos', 2, 'coral-coast', 16, 78, {**STONE, 'pillar': 'rod'}),
     'moltres': ('moltres', 2, 'volcanic-lands', 16, 40, ASHF),
     'lugia': ('lugia', 1, 'coral-coast', 88, 20, {**WHITE, 'ground': 'Sand'}),
-    'kyogre-gate': ('kyogre', 1, 'coral-coast', 88, 62, WHITE),
+    'kyogre-gate': ('kyogre', 1, 'coral-coast', 78, 56, WHITE),
     'kyogre': ('kyogre', 1, 'instanced', 0, 0, WHITE),
     'ho-oh': ('ho-oh', 1, 'emerald-woods', 28, 22, {**TEMPLE, 'star': 'torch'}),
     'groudon': ('groudon', 1, 'volcanic-lands', 88, 24, {**STONE, 'star': 'torch', 'x': 'AshRock'}),
     'rayquaza': ('rayquaza', 1, 'frozen-mountains', 88, 22, {**STONE, 'rune': 'Sanctum'}),
-    'giratina': ('giratina', 1, 'misty-swamp', 92, 22, TEMPLE),
+    'giratina': ('giratina', 1, 'misty-swamp', 92, 22, {**TEMPLE, 'pillar': 'broken'}),
     'mewtwo': ('mewtwo', 1, 'starter-valley', 136, 20, WHITE),
     'dialga': ('dialga', 1, 'instanced', 0, 0, TEMPLE),
-    'palkia': ('palkia', 1, 'instanced', 0, 0, TEMPLE),
+    'palkia': ('palkia', 1, 'instanced', 0, 0, {**TEMPLE, 'plate': 'pad'}),
     'arceus': ('arceus', 1, 'instanced', 0, 0, TEMPLE),
     'arceus-gate': ('arceus', 1, 'legendary-sanctuary', 48, 12, TEMPLE),
     'azelf': ('azelf', 2, 'misty-swamp', 40, 22, TEMPLE),
     'uxie': ('uxie', 2, 'legendary-sanctuary', 23, 58, TEMPLE),
-    'cresselia': ('cresselia', 2, 'emerald-woods', 76, 38, WHITE),
+    'cresselia': ('cresselia', 2, 'emerald-woods', 76, 38, {**WHITE, 'plate': 'moon'}),
     'heatran': ('heatran', 2, 'volcanic-lands', 40, 16, ASHF),
     'regirock': ('regirock', 2, 'coral-coast', 30, 26, {**TEMPLE, 'rune': 'Sand'}),
-    'regice': ('regice', 2, 'frozen-mountains', 84, 76, ICE),
+    'regice': ('regice', 2, 'frozen-mountains', 84, 76, {**ICE, 'pillar': 'ice'}),
     'registeel': ('registeel', 2, 'misty-swamp', 60, 78, STONE),
     'regigigas': ('regigigas', 2, 'legendary-sanctuary', 74, 56, TEMPLE),
     'mew': ('mew', 4, 'starter-valley', 14, 34, {**TEMPLE, 'rune': 'Tuft'}),
     'celebi': ('celebi', 4, 'emerald-woods', 22, 68, {**TEMPLE, 'rune': 'Flowers'}),
     'darkrai': ('darkrai', 4, 'misty-swamp', 14, 40, STONE),
-    'jirachi': ('jirachi', 4, 'frozen-mountains', 24, 80, WHITE),
-    'shaymin': ('shaymin', 4, 'volcanic-lands', 56, 80, {**TEMPLE, 'rune': 'TallGrass'}),
+    'jirachi': ('jirachi', 4, 'frozen-mountains', 24, 80, {**WHITE, 'stone': 'star'}),
+    'shaymin': ('shaymin', 4, 'volcanic-lands', 56, 80, {**TEMPLE, 'rune': 'TallGrass', 'plate': 'flower'}),
     'deoxys': ('deoxys', 4, 'legendary-sanctuary', 16, 18, STONE),
     'manaphy': ('manaphy', 4, 'coral-coast', 96, 84, WHITE),
     'lati': ('latias', 3, 'emerald-woods', 84, 6, WHITE),
-    'mesprit': ('mesprit', 3, 'starter-valley', 0, 0, WHITE),
+    'mesprit': ('mesprit', 3, 'starter-valley', 116, 62, WHITE),
 }
 
 

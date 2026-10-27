@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { beatBossTo, catchWeakenedLegend } from './bossHelpers';
+import { beatBossTo, catchWeakenedLegend, closeDialogues, summonShrine } from './bossHelpers';
 
 // V3 world systems in the real game: encounter system, world events (gameplay + cleanup + journal),
 // shiny persistence, roaming legendary HP persistence, non-combat legendary meeting.
@@ -119,7 +119,7 @@ test('shiny capture persists; roaming legendary keeps its HP; Celebi meeting at 
   await ev(page, `window.__adv.travelTo('emerald-woods', 23, 76)`);
   await page.waitForFunction(() => (window as Win).__adv?.map?.id === 'emerald-woods' && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), null, { timeout: 15_000 });
   await page.waitForTimeout(500);
-  await ev(page, `(() => { const a = window.__adv; a.spawns.maxActive = 0; for (const e of a.world.enemies) e.alive = false; a.state.adv.bossDefeatedAt['mega-venusaur'] = a.state.adv.playTime; a.state.adv.clock = 6 * 60; a.world.teleport(23.5*48, 70*48); })()`);
+  await ev(page, `(() => { const a = window.__adv; a.spawns.maxActive = 0; for (const e of a.world.enemies) e.alive = false; a.state.adv.bossDefeatedAt['mega-venusaur'] = a.state.adv.playTime; a.state.adv.clock = 6 * 60; a.state.addItems({ 'dew-cup': 1 }); const s = a.shrines.spot('celebi'); a.world.teleport(s.P.x, s.P.y); void a.shrines.open('celebi'); })()`);
   for (let i = 0; i < 40 && !(await ev<boolean>(page, `(() => { const d = window.__phaser.scene.getScene('AdvUI').dialogueLayer; return !!d && d.list.length > 6; })()`)); i++) {
     if (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)) await page.keyboard.press('e');
     await page.waitForTimeout(200);
@@ -139,8 +139,13 @@ test('new shrine with a weather condition: Lugia waits for rain, then fights wit
   await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'coral-coast', { timeout: 15_000 });
   await ev(page, `(() => { const a = window.__adv; ['mega-venusaur', 'articuno', 'zapdos', 'moltres'].forEach((b) => a.state.setFlag('boss:' + b)); a.weather = { kind: 'clear', t: 999 }; const t = a.world.trainer; t.maxHp = t.hp = 1e7; a.world.teleport(88.5*48, 28*48); })()`);
   await page.waitForTimeout(2500);
-  expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false); // clear sky: Lugia stays hidden
+  expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false); // clear sky: Lugia stays hidden, even with E on the ritual spot
+  await summonShrine(page, 'lugia');
+  await page.waitForTimeout(2500);
+  expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false);
+  await closeDialogues(page);
   await ev(page, `window.__adv.weather = { kind: 'rain', t: 999 }`);
+  await summonShrine(page, 'lugia');
   await page.waitForFunction(() => (window as Win).__adv.worldBoss?.alive, null, { timeout: 10_000 });
   expect(await ev(page, `window.__adv.worldBoss.defId`)).toBe('lugia');
   expect(await ev(page, `window.__adv.world.boss.boss.def.ai`)).toBe('legendary');

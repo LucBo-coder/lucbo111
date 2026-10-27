@@ -256,3 +256,18 @@ Lỗi sơ đồ tìm thấy khi ráp lên bản đồ (công cụ `check-shrines
 | Toàn bộ E2E | **chưa chạy xong**: hệ thống dừng tiến trình ở 5/73 vì máy thiếu bộ nhớ (không phải test lỗi) |
 
 Ảnh đã xem (dọc + ngang): menu chính, chọn khởi đầu, HUD Phiêu lưu và Việt Nam Odyssey, Đội hình, Túi, Nhiệm vụ, Bản đồ, Pokédex, PC, Sự kiện, Hộ chiếu, Cài đặt, Cửa hàng, hội thoại, HUD Sinh tồn, thẻ lên cấp.
+
+
+## V22 — đợt 17: đền huyền thoại, bước 2–6 (nghi lễ, asset, thánh vật / lang thang, bản đồ đền, hiểm họa)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **518/518 ✅**. Mới: `v22_rituals.test.ts` (16). Cập nhật theo thiết kế mới: `legendary` (Cresselia thành đền, Kyogre / Dialga / Palkia / Arceus sang bản đồ đền, lang thang cần cờ), `v17_maps` (2 mặt phẳng), `v22_shrines` (32 điểm), `v22_legend_clues`, `v22_field_boat` (vách nứt Mew), `v4_regions` |
+| E2E mới `v22_rituals.spec.ts` | 3/3 ✅ (Articuno: nghi lễ + arena + hiểm họa + rời trận; Groudon: thánh vật + đứng yên + lưu / tải giữa trận; Mesprit + Xoáy Nước Sâu → Vực Nguyên Hải → Kyogre) |
+| E2E hồi quy (`v22_shrines`, `evolution`, `v3_events`, `v6_rayquaza`) | 10/10 ✅ (sau khi đổi test sang gọi huyền thoại bằng nghi lễ — `summonShrine` trong `bossHelpers.ts`) |
+| E2E hồi quy chung (`adventure`, `v22_mobile_layout`) | 8/8 ✅ |
+| Toàn bộ E2E | chưa chạy (máy thiếu bộ nhớ, xem đợt 16) |
+
+Lỗi tìm thấy khi làm: hiểm họa `floor` có vòng lặp vô hạn khi chọn ô → đã sửa; cổng Kyogre đặt trên biển không có lối đi bộ → thêm đê đá nối bờ phía tây.
+Ảnh đã xem: đền Articuno (cột băng, vòng niêm phong, vòng cảnh báo), Zapdos (cột thu lôi), Vực Nguyên Hải (Kyogre).

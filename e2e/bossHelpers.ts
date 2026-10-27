@@ -27,3 +27,17 @@ export async function catchWeakenedLegend(page: Page): Promise<void> {
     await page.waitForFunction(() => !(window as unknown as { __adv: { captureFx: unknown } }).__adv.captureFx, undefined, { timeout: 15_000 });
   }
 }
+
+/**
+ * V22 shrines: walking in no longer summons a legendary — E on the ritual spot does, after the ritual. This stands on
+ * the spot with the ritual already done once (a rematch only needs E) and presses E; the boss appears after the cutscene.
+ */
+export async function summonShrine(page: Page, site: string): Promise<void> {
+  await ev(page, `(() => { const a = window.__adv, sh = a.shrines, s = sh.spot('${site}'); a.world.teleport(s.P.x, s.P.y);
+    const r = (a.state.adv.rites ??= []); if (!r.includes(sh.shrineOf('${site}'))) r.push(sh.shrineOf('${site}')); void sh.open('${site}'); })()`);
+}
+
+/** Presses E until no dialogue is open. */
+export async function closeDialogues(page: Page): Promise<void> {
+  for (let i = 0; i < 10 && (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(200); }
+}

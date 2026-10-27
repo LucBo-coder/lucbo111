@@ -49,6 +49,8 @@ import { WorldEventController } from '../adventure/WorldEventController';
 import { isAquatic, type WeatherKind } from '../core/encounters';
 import { LEGENDS, LegendEnv, missingConditions as legendMissing } from '../core/legends';
 import { LegendaryEncounterManager } from '../adventure/LegendaryEncounterManager';
+import { ShrineController } from '../adventure/ShrineController';
+import { RITUALS } from '../core/rituals';
 import { audio } from '../systems/audio';
 import { gameModes } from '../systems/gameMode';
 import { saveStore } from '../systems/save';
@@ -123,6 +125,8 @@ export class AdventureScene extends Phaser.Scene {
   /** Random world events (valley only) */
   worldEvents: WorldEventController | null = null;
   legendsMgr: LegendaryEncounterManager | null = null;
+  /** Legendary shrine rituals, sealed arenas and hazards (overworld maps) */
+  shrines: ShrineController | null = null;
   private distortG: Phaser.GameObjects.Graphics | null = null;
   private snow: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
   private heat: Phaser.GameObjects.Rectangle | null = null;
@@ -313,6 +317,8 @@ export class AdventureScene extends Phaser.Scene {
     if (this.mapKind === 'valley') {
       this.worldEvents = new WorldEventController(this);
       this.legendsMgr = new LegendaryEncounterManager(this);
+      this.shrines = new ShrineController(this);
+      this.shrines.build();
       this.spawns = new SpawnManager(this.world, map, {
         maxActive: 14,
         perRegionCap: 10,
@@ -392,6 +398,8 @@ export class AdventureScene extends Phaser.Scene {
     this.worldEvents = null;
     this.legendsMgr?.cleanup();
     this.legendsMgr = null;
+    this.shrines?.cleanup();
+    this.shrines = null;
     this.scale.off('resize', this.applyZoom, this);
     this.game.events.off('blur', this.onBlur, this);
     this.sway.forEach((t) => t.remove());
@@ -1031,7 +1039,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateBattle();
     this.updateCapture(dt);
     if (!this.modal) this.updateMega(dt);
-    if (this.mapKind === 'valley') this.updateWorldBoss();
+    if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); }
     // Evolution prompts wait for a calm moment (never between dungeon waves / before the boss)
     const dungeonCalm = !this.dungeon || this.dungeon.phase === 'reward' || this.dungeon.phase === 'done';
     if (this.evoQueue.size && dungeonCalm && !this.modal && !this.evoBusy && !this.inCombat() && this.blackoutT < 0) void this.processEvolution();
@@ -1322,6 +1330,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'exit': return this.leaveDungeon(false);
       case 'remote': return this.presence?.challenge();
       case 'node': return this.useNode(it);
+      case 'shrine': return this.shrines?.interact(it.id, it.obj.data as never);
     }
   }
 
@@ -1334,7 +1343,7 @@ export class AdventureScene extends Phaser.Scene {
   private nodeRefreshT = 0;
 
   /** Play time in seconds, finer than the saved 20 s steps (node refill timers). */
-  private playNow(): number {
+  playNow(): number {
     return this.state.adv.playTime + this.playClock;
   }
 
@@ -1710,7 +1719,8 @@ export class AdventureScene extends Phaser.Scene {
   /** Mega Venusaur's grove + the legendary shrines. At most one of them is active at a time. */
   bossSites(): { id: string; name: string; x: number; y: number; level: number; respawn: number; arena: number; requires: string[]; hint?: string; gift?: boolean; condition?: { time?: 'day' | 'night' | 'dawn'; weather?: string[]; friendship?: number } }[] {
     const d = this.regionDef;
-    return [...(d.worldBoss ? [{ ...d.worldBoss, requires: d.worldBoss.requires ?? [] }] : []), ...(d.legendaries ?? [])];
+    const fights = (d.legendaries ?? []).filter((l) => { const m = l.shrine && RITUALS.get(l.shrine)?.mode; return !m || m === 'fight' || m === 'gift'; });
+    return [...(d.worldBoss ? [{ ...d.worldBoss, requires: d.worldBoss.requires ?? [] }] : []), ...fights];
   }
 
   /** Time / weather / party-lead friendship for legendary conditions. */
@@ -1727,9 +1737,7 @@ export class AdventureScene extends Phaser.Scene {
       const d = Math.hypot(t.x - (site.x + 0.5) * TILE_PX, t.y - (site.y + 0.5) * TILE_PX);
       if (!b.alive) { this.worldBoss = null; return; }
       if (d > 1400) { // reset when the player walks away (a capture window closes too)
-        if (this.legendCap?.unit === b) this.legendCap = null;
-        delete this.state.adv.bossFights[b.defId];
-        this.world.removeEnemy(b); this.worldBoss = null;
+        this.abandonWorldBoss();
       }
       return;
     }
@@ -1751,15 +1759,36 @@ export class AdventureScene extends Phaser.Scene {
       }
       const last = this.state.adv.bossDefeatedAt[s.id];
       if (last != null && this.state.adv.playTime - last < s.respawn) continue;
+      // a designed shrine never summons by walking in: its ritual (E on the ritual spot) does
+      if (this.shrines?.manages(s.id)) {
+        if (!this.sealedHinted.has(s.id + ':ritual')) { this.sealedHinted.add(s.id + ':ritual'); this.ui.banner(`${s.name}: lõi đền đang ngủ. Bấm E ở chỗ làm lễ trước lõi để bắt đầu nghi lễ.`, '#e0d0ff'); }
+        continue;
+      }
       if (s.gift) { void this.legendGift(s.id, s.level); return; }
-      if (s.id !== 'mega-venusaur' && this.state.adv.legends[s.id] !== 'caught') this.state.adv.legends[s.id] = 'active';
-      const level = s.level + (this.state.worldLevel - 1) * 2;
-      this.worldBoss = this.world.spawnBoss(s.id, level, false, { x: cx, y: cy });
-      this.worldBoss.tag = 'worldboss';
-      this.restoreBossFight(this.worldBoss);
-      this.cameras.main.shake(700, 0.012);
+      this.spawnSiteBoss(s, { x: cx, y: cy });
       return;
     }
+  }
+
+  /** Summons a site's boss (the auto-summoned grove / ring, or a shrine after its ritual). */
+  spawnSiteBoss(s: { id: string; level: number }, at: { x: number; y: number }): Unit {
+    if (s.id !== 'mega-venusaur' && this.state.adv.legends[s.id] !== 'caught') this.state.adv.legends[s.id] = 'active';
+    const level = s.level + (this.state.worldLevel - 1) * 2;
+    this.worldBoss = this.world.spawnBoss(s.id, level, false, at);
+    this.worldBoss.tag = 'worldboss';
+    this.restoreBossFight(this.worldBoss);
+    this.cameras.main.shake(700, 0.012);
+    return this.worldBoss;
+  }
+
+  /** Leaves a world boss fight: the boss goes, its checkpoint (and a capture window) is dropped. */
+  abandonWorldBoss(): void {
+    const b = this.worldBoss;
+    if (!b) return;
+    if (this.legendCap?.unit === b) this.legendCap = null;
+    delete this.state.adv.bossFights[b.defId];
+    this.world.removeEnemy(b);
+    this.worldBoss = null;
   }
 
   private onWorldBossDefeated(id: string, level: number): void {
@@ -1796,7 +1825,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   /** Non-combat meeting (Celebi, Jirachi, Shaymin): a short scene, then it joins. */
-  private async legendGift(id: string, level: number): Promise<void> {
+  async legendGift(id: string, level: number): Promise<void> {
     const name = POKEMON.get(id)?.name ?? id;
     const def = LEGENDS.get(id);
     this.renderer_.vfx.named('evolve', this.world.trainer.x + 80, this.world.trainer.y - 40, 80);
@@ -1823,7 +1852,8 @@ export class AdventureScene extends Phaser.Scene {
   private onLegendaryDefeated(id: string, level: number): void {
     const first = !this.state.hasFlag('boss:' + id);
     if (this.state.adv.legends[id] !== 'caught') this.state.adv.legends[id] = 'defeated';
-    if (first && id === 'kyogre') { this.state.adv.eggs.push({ species: 'manaphy', hatchAt: this.state.adv.playTime + (LEGENDS.get('manaphy')?.hatch ?? 600) }); this.ui.banner('Kyogre để lại một quả trứng biển xanh thẳm...', '#80c0ff'); }
+    // Manaphy's egg waits in the giant shell of Rạn Ấu Hải (Bờ Biển San Hô), which opens now
+    if (first && id === 'kyogre') this.ui.banner('Xa xa ở Rạn Ấu Hải, vỏ sò khổng lồ vừa hé mở...', '#80c0ff');
     this.state.adv.bossDefeatedAt[id] = this.state.adv.playTime;
     const items: Record<string, number> = first ? LEGEND_REWARDS[id] ?? { ultraball: 3, superpotion: 2 } : { superpotion: 2, ultraball: 2 };
     this.state.addItems(items);
@@ -2233,7 +2263,7 @@ export class AdventureScene extends Phaser.Scene {
   // ───────────────────────────── exploration abilities & boats ─────────────────────────────
 
   /** Party members as the field rules see them (anyone in the party counts, on the field or in the ball). */
-  private partyMembers(): PartyMember[] {
+  partyMembers(): PartyMember[] {
     const out: PartyMember[] = [];
     for (const uid of this.state.adv.party) {
       const p = this.state.owned(uid), d = p && POKEMON.get(p.species);
@@ -2375,6 +2405,8 @@ export class AdventureScene extends Phaser.Scene {
     if (f.ability === 'cut') {
       // a thorny thicket: a squat, darker tree
       img = this.add.image(px, py + 22, 'ow_tiles', TOWN.round).setOrigin(0.5, 1).setScale(SCALE * 0.9, SCALE * 0.75).setTint(0x6f9a52).setDepth(py + 22);
+    } else if (f.look === 'crack') {
+      img = this.add.image(px, py, 'ow_tiles', EX.crack).setScale(SCALE).setDepth(py + 6);
     } else {
       img = this.add.image(px, py + 6, 'boulder').setScale(SCALE * (f.ability === 'strength' ? 1.35 : 1.15)).setDepth(py + 6);
       if (f.ability === 'smash') {

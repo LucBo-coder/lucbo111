@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { summonShrine } from './bossHelpers';
 
 // Rayquaza at the Sky Pillar: boss HUD from the UI pack with live data, 3 phases (Mega form change with an
 // invulnerable cinematic, enraged Sky Cataclysm), WEAKENED capture window, capture → joins once, checkpoint save.
@@ -33,8 +34,8 @@ test('Rayquaza: HUD, 3 phases, Mega form, weakened capture, no duplicate', async
   await ev(page, `window.__adv.travelTo('frozen-mountains', 59, 42)`);
   await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'frozen-mountains', { timeout: 15_000 });
   await ev(page, `(() => { const a = window.__adv; ['garchomp', 'metagross', 'salamence', 'tyranitar'].forEach((s) => a.state.addPokemon(s, 70, 'gift')); a.state.addItems({ ultraball: 10 }); a.selectedBall = 'ultraball'; ['boss:kyogre', 'boss:groudon'].forEach((f) => a.state.setFlag(f)); a.applyParty(); const t = a.world.trainer; t.maxHp = t.hp = 1e9; })()`);
-  // walk into the Sky Pillar arena → the boss spawns there
-  await ev(page, `(() => { const s = window.__adv.bossSites().find((x) => x.id === 'rayquaza'); window.__adv.world.teleport((s.x + 0.5) * 48, (s.y + 3.5) * 48); })()`);
+  // E on the Sky Pillar's ritual spot (V22 shrines: walking in no longer summons) → the boss spawns in the arena
+  await summonShrine(page, 'rayquaza');
   await page.waitForFunction(() => (window as Win).__adv.world.boss?.defId === 'rayquaza', undefined, { timeout: 20_000 });
   await page.waitForTimeout(2500);
   expect(await ev(page, `window.__phaser.scene.getScene('AdvUI').bossHud.ok`)).toBe(true);

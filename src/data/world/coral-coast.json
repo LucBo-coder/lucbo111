@@ -491,28 +491,6 @@
  "spawns": {},
  "legendaries": [
   {
-   "id": "kyogre",
-   "name": "Đền Đáy Biển",
-   "x": 58,
-   "y": 56,
-   "level": 50,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:lugia",
-    "boss:ho-oh"
-   ],
-   "gap": 2.82,
-   "hint": "Sóng dâng lên rồi rút đi... Kyogre chỉ xuất hiện khi trời mưa.",
-   "condition": {
-    "weather": [
-     "heavyRain",
-     "rain",
-     "thunderstorm"
-    ]
-   }
-  },
-  {
    "id": "lugia",
    "name": "Đền Biển Sâu",
    "x": 88,
@@ -566,6 +544,44 @@
    "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
    "condition": {},
    "shrine": "regirock"
+  },
+  {
+   "id": "kyogre-gate",
+   "name": "Xoáy Nước Sâu",
+   "x": 78,
+   "y": 56,
+   "level": 50,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 0,
+   "hint": "Mặt nước ở đây sẫm lại một cách lạ thường... (cần hạ Lugia và Ho-Oh)",
+   "shrine": "kyogre-gate",
+   "condition": {
+    "weather": [
+     "rain",
+     "heavyRain",
+     "thunderstorm"
+    ]
+   }
+  },
+  {
+   "id": "manaphy",
+   "name": "Rạn Ấu Hải",
+   "x": 75,
+   "y": 79,
+   "level": 1,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:kyogre"
+   ],
+   "gap": 0,
+   "hint": "Một vỏ sò khổng lồ khép chặt. Nghe nói nó chỉ mở khi Chúa Tể Đại Dương thức giấc.",
+   "shrine": "manaphy"
   }
  ],
  "portals": [

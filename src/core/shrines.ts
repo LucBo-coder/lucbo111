@@ -4,7 +4,15 @@
 import shrinesJson from '../data/world/shrines.json';
 
 /** Terrain names (keys of T in core/map/tiles.ts) used by a shrine's floor, rune lines, hazard ground… */
-export interface ShrineMaterials { floor: string; rune: string; x: string; star: 'crystal' | 'torch'; ground?: string }
+export interface ShrineMaterials {
+  floor: string; rune: string; x: string; star: 'crystal' | 'torch'; ground?: string;
+  /** look of the `O` columns (default: the old stone pillar) */
+  pillar?: 'ice' | 'rod' | 'white' | 'broken';
+  /** look of the `o` low stones (default: rune stones) */
+  stone?: 'star';
+  /** look of the `& 1 2` plates (default: pressure plates; '1 2' default: teleport pads) */
+  plate?: 'moon' | 'flower' | 'pad';
+}
 
 export interface ShrineDef {
   id: string;

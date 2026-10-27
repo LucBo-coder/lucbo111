@@ -23,6 +23,8 @@ export interface FieldDef {
   nook?: { cx: number; cy: number; r: number; wall: 'tree' | 'boulder' };
   /** strength: target hole tile */
   to?: [number, number];
+  /** smash: drawn as a cracked wall (a shrine's `%`, e.g. Mew's ruins) instead of a boulder */
+  look?: 'crack';
 }
 
 export const fieldFlag = (region: string, id: string) => `field:${region}:${id}`;

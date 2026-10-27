@@ -96,9 +96,10 @@ describe('legendary world bosses', () => {
     const d = valleyJson as unknown as RegionDef;
     const m = new ValleyMap(d);
     // since 0.17 the themed regions hold their own shrines; since the V22 shrine redesign the valley keeps only
-    // Mewtwo's psychic cave (Đồi Đá Xám) and Mew's silent ruins — the birds moved to their elements' maps
-    expect(d.legendaries!.map((l) => l.id)).toEqual(['mewtwo', 'mew']);
-    for (const l of d.legendaries!) {
+    // Mewtwo's psychic cave (Đồi Đá Xám) and Mew's silent ruins — the birds moved to their elements' maps;
+    // shrines step 4 adds Mesprit's Emotion Stone on the Crystal Lake shore (a roaming trigger, no fight)
+    expect(d.legendaries!.map((l) => l.id)).toEqual(['mewtwo', 'mew', 'mesprit']);
+    for (const l of d.legendaries!.filter((x) => x.id !== 'mesprit')) {
       expect(l.shrine, l.id).toBe(l.id);
       for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) if (dx * dx + dy * dy <= 9) expect(m.solidAt(l.x + dx, l.y + dy), `${l.id} ${dx},${dy}`).toBe(false);
       expect(BOSSES.has(l.id)).toBe(true);

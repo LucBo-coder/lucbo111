@@ -5,6 +5,8 @@ import sanctuaryJson from '../../data/world/legendary-sanctuary.json';
 import swampJson from '../../data/world/misty-swamp.json';
 import coastJson from '../../data/world/coral-coast.json';
 import emeraldJson from '../../data/world/emerald-woods.json';
+import abyssJson from '../../data/world/abyssal-depths.json';
+import templeJson from '../../data/world/origin-temple.json';
 import caMauJson from '../../data/vietnam/ca-mau.json';
 import anGiangJson from '../../data/vietnam/an-giang.json';
 import canThoJson from '../../data/vietnam/can-tho.json';
@@ -19,6 +21,9 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'misty-swamp': swampJson as unknown as RegionDef,
   'coral-coast': coastJson as unknown as RegionDef,
   'emerald-woods': emeraldJson as unknown as RegionDef,
+  // shrine planes (reached through a shrine gate, not listed with the regions)
+  'abyssal-depths': abyssJson as unknown as RegionDef,
+  'origin-temple': templeJson as unknown as RegionDef,
   // Vietnam Odyssey mode (separate campaign)
   'ca-mau': caMauJson as unknown as RegionDef,
   'an-giang': anGiangJson as unknown as RegionDef,

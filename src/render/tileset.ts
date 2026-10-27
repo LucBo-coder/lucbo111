@@ -284,6 +284,36 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       }
     }
   }
+  // ── legendary shrines (V22): 16×16 pixel art, one palette each (tinted per shrine in the scene where it matters)
+  const sprite = (idx: number, rows: string[], pal: Record<string, string>) => {
+    const c = cell(idx);
+    rows.forEach((r, y) => { for (let x = 0; x < 16; x++) if (pal[r[x]]) { ctx.fillStyle = pal[r[x]]; ctx.fillRect(c.x + x, c.y + y, 1, 1); } });
+  };
+  const STONE_PAL = { k: '#2a2830', s: '#8a8496', l: '#b8b2c4', d: '#5e5a6a' };
+  // winged guardian statue on a plinth
+  sprite(EX.statue, ['......kk........', '.....kllk.......', '..k..klsk..k....', '.kls.ksdk.slk...', '.klss.ss.ssdk...', '..klssssssdk....', '...kssssssk.....', '....ksssdk......', '....ksssdk......', '....kssddk......', '...ksssssdk.....', '..kkkkkkkkkk....', '..klllllllsk....', '..ksssssssdk....', '..kkkkkkkkkk....', '................'], STONE_PAL);
+  // summoning core: a stone altar holding a bright orb (the scene adds the glow / state)
+  sprite(EX.altar, ['................', '......kkkk......', '.....kwwcck.....', '....kwccccck....', '....kccccppk....', '....kcccpppk....', '.....kcpppk.....', '......kkkk......', '...kkkkkkkkkk...', '...kllllllllk...', '..kllsssssslk...', '..ksssdsssdssk..', '..ksdsssdsssdk..', '..kssssssssssk..', '..kkkkkkkkkkkk..', '................'], { ...STONE_PAL, w: '#ffffff', c: '#e8e0ff', p: '#a090e0' });
+  // ice column
+  sprite(EX.icePillar, ['.....kkkkk......', '....kwwccbk.....', '....kwccccbk....', '....kwcccbbk....', '....kccccbbk....', '....kwcccbbk....', '....kwccccbk....', '....kccccbbk....', '....kwcccbbk....', '....kwccccbk....', '....kccccbbk....', '....kwcccbbk....', '...kkkkkkkkkk...', '...kllllllllk...', '...kkkkkkkkkk...', '................'], { k: '#203048', w: '#ffffff', c: '#b8e8ff', b: '#70b0e0', l: '#d8f0ff' });
+  // lightning rod: dark iron pole with copper rings and a spike
+  sprite(EX.rodPillar, ['.......k........', '......kyk.......', '.......k........', '......kok.......', '......kdk.......', '.....koook......', '......kdk.......', '......kdk.......', '.....koook......', '......kdk.......', '......kdk.......', '.....koook......', '....kkdddkk.....', '...kdddddddk....', '...kkkkkkkkk....', '................'], { k: '#1a1a22', d: '#4a4a58', o: '#c87838', y: '#fff060' });
+  // white sea-temple column (fluted)
+  sprite(EX.whitePillar, ['...kkkkkkkkkk...', '...kwwwwwwwwk...', '....kkkkkkkk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kwlwlwlk....', '....kkkkkkkk....', '...kwwwwwwwwk...', '...kkkkkkkkkk...', '................'], { k: '#4a5060', w: '#f4f6fa', l: '#c8d0dc' });
+  // broken column (Giratina's ruined mirror hall)
+  sprite(EX.brokenPillar, ['................', '................', '................', '................', '.....k.k........', '....kskdk.......', '....ksssdk......', '....kssddk......', '....ksssdk......', '....kssddk......', '....ksssdk..k...', '....kssddk.ksk..', '...kkkkkkkkkkk..', '...kllllllllsk..', '...kkkkkkkkkkk..', '................'], STONE_PAL);
+  // low rune stone (touch markers) and a star stone (Jirachi's constellation)
+  sprite(EX.runeStone, ['................', '................', '................', '................', '................', '......kkkk......', '.....kllssk.....', '....klscssdk....', '....kscccsdk....', '....ksscssdk....', '....kssssddk....', '...kkkkkkkkkk...', '...kddddddddk...', '...kkkkkkkkkk...', '................', '................'], { ...STONE_PAL, c: '#a0f0ff' });
+  sprite(EX.starStone, ['................', '................', '................', '.......y........', '......yyy.......', '...yyyyyyyyy....', '....yyyyyyy.....', '.....yyyyy......', '....yyy.yyy.....', '...kkkkkkkkk....', '...ksssssssk....', '...ksdsssdsk....', '...kkkkkkkkk....', '................', '................', '................'], { ...STONE_PAL, y: '#fff0a0' });
+  // Shaymin's flower clumps: wilted / in bloom
+  sprite(EX.flowerWilt, ['................', '................', '................', '................', '......b..b......', '.....b..b.b.....', '......b.bb......', '...b...bb...b...', '....b..gg..b....', '.....gggggg.....', '....gg.gg.gg....', '...g...gg...g...', '......dddd......', '.....dddddd.....', '................', '................'], { b: '#8a7050', g: '#7a8a50', d: '#5a4630' });
+  sprite(EX.flowerBloom, ['................', '................', '....p.....p.....', '...pyp...pyp....', '....p..w..p.....', '......wyw.......', '..p....w....p...', '.pyp..ggg..pyp..', '..p..gggggg.p...', '....gg.gg.gg....', '...g..ggg...g...', '......gg........', '......dddd......', '.....dddddd.....', '................', '................'], { p: '#f8a0c8', y: '#ffe060', w: '#ffffff', g: '#58b048', d: '#5a4630' });
+  // moon plate (Cresselia) and a teleport pad (Palkia)
+  sprite(EX.moonPlate, ['................', '................', '....kkkkkkkk....', '...kmmmmmmmmk...', '..kmmmwwmmmmmk..', '..kmmwwmmmmmmk..', '..kmwwmmmmmmmk..', '..kmwwmmmmmmmk..', '..kmwwmmmmmmmk..', '..kmmwwmmmmmmk..', '..kmmmwwmmmmmk..', '...kmmmmmmmmk...', '....kkkkkkkk....', '................', '................', '................'], { k: '#5a5870', m: '#c8c8e0', w: '#ffffff' });
+  sprite(EX.pad, ['................', '................', '.....kkkkkk.....', '...kkppppppkk...', '..kpprrrrrrppk..', '..kprrwwwwrrpk..', '.kprrw....wrrpk.', '.kprw......wrpk.', '.kprw......wrpk.', '.kprrw....wrrpk.', '..kprrwwwwrrpk..', '..kpprrrrrrppk..', '...kkppppppkk...', '.....kkkkkk.....', '................', '................'], { k: '#3a2840', p: '#a070c0', r: '#e8a0e8', w: '#ffffff' });
+  // cracked wall (Rock Smash) and a Regi core slot
+  sprite(EX.crack, ['kkkkkkkkkkkkkkkk', 'kssdsssdkssssdsk', 'ksssskdsssdsssdk', 'kdssks.ksdsssssk', 'kkkkk..kkkkkkkkk', 'ksdsk.k.ssdsssdk', 'kssk.kss.kssdssk', 'kdk.ksssdsk.sssk', 'kkk.kkkkkkk.kkkk', 'ksk.ssdssk.ssdsk', 'kssk.ssk..kssssk', 'kdssk...ksssdssk', 'kkkkkk.kkkkkkkkk', 'ksssdsk.sssdsssk', 'kssssdsksssssdsk', 'kkkkkkkkkkkkkkkk'], STONE_PAL);
+  sprite(EX.regiSlot, ['................', '................', '................', '....kkkkkkkk....', '...kllllllllk...', '...klkkkkkklk...', '...klk.oo.klk...', '...klko..okdk...', '...klko..okdk...', '...klk.oo.kdk...', '...klkkkkkkdk...', '...kdddddddddk..', '...kkkkkkkkkkk..', '................', '................', '................'], { ...STONE_PAL, o: '#ffd060' });
   // IcyEthics cave floors (16 px, see scripts/prepare-icy-tiles.py); if a file is missing, the Kenney floor
   for (const [base, name] of [[EX.icyGray, 'cave_gray'], [EX.icyBlue, 'cave_blue']] as const) {
     for (let i = 0; i < 4; i++) {

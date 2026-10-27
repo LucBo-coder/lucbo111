@@ -1367,6 +1367,21 @@
    "gap": 4.71,
    "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo.",
    "shrine": "mew"
+  },
+  {
+   "id": "mesprit",
+   "name": "Đá Cảm Xúc",
+   "x": 116,
+   "y": 62,
+   "level": 45,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 0,
+   "hint": "Một phiến đá hồng ấm áp bên hồ. Như có ai đang nhìn bạn.",
+   "shrine": "mesprit"
   }
  ],
  "portals": [
@@ -1547,6 +1562,13 @@
     "r": 3,
     "wall": "boulder"
    }
+  },
+  {
+   "id": "sv-mew-crack",
+   "ability": "smash",
+   "x": 17,
+   "y": 20,
+   "look": "crack"
   }
  ]
 }

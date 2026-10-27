@@ -78,6 +78,11 @@ export interface RegionDef {
   field?: FieldDef[];
   /** Boat docks (Vietnam Odyssey rivers): land tile + the water tile the boat starts from */
   docks?: Dock[];
+  /**
+   * A shrine's own plane (Vực Nguyên Hải, Thần Điện Khởi Nguyên): no procedural ground — everything outside the
+   * stamped shrines and the paths is this terrain, and no trees / boulders grow.
+   */
+  void?: 'Wall' | 'Water';
 }
 
 export interface PortalDef {
@@ -237,20 +242,24 @@ export class ValleyMap implements MapProvider {
    * legendary appears there).
    */
   private addShrine(l: LegendSite): void {
-    const sh = SHRINES.get(l.shrine!)!;
+    const sh = SHRINES.get(l.shrine!)!, m = sh.materials;
+    const pillar = m.pillar === 'ice' ? EX.icePillar : m.pillar === 'rod' ? EX.rodPillar : m.pillar === 'white' ? EX.whitePillar : m.pillar === 'broken' ? EX.brokenPillar : DUNGEON.pillar;
+    const plate = (ch: string) => m.plate === 'moon' ? EX.moonPlate : m.plate === 'flower' ? EX.flowerWilt : m.plate === 'pad' || ch !== '&' ? EX.pad : DUNGEON.plate;
     for (const { tx, ty, ch } of shrineCells(sh, l.x, l.y)) {
       if (!this.stamp.has(this.key(tx, ty))) continue;
       const id = `shrine-${l.id}-${tx}-${ty}`;
       switch (ch) {
-        case 'O': case 'S': this.add({ kind: 'pillar', id, x: tx, y: ty, tile: DUNGEON.pillar, collideR: 16, data: { shrine: sh.id, part: ch === 'S' ? 'statue' : 'pillar' } }); break;
-        case 'o': case 'B': this.add({ kind: 'boulder', id, x: tx + 0.5, y: ty + 0.5, collideR: ch === 'B' ? 20 : 16, data: { shrine: sh.id } }); break;
+        case 'O': this.add({ kind: 'pillar', id, x: tx, y: ty, tile: pillar, collideR: 16, data: { shrine: sh.id, part: 'pillar' } }); break;
+        case 'S': this.add({ kind: 'pillar', id, x: tx, y: ty, tile: EX.statue, collideR: 16, data: { shrine: sh.id, part: 'statue' } }); break;
+        case 'o': this.add({ kind: 'prop', id, x: tx, y: ty, tile: m.stone === 'star' ? EX.starStone : EX.runeStone, collideR: 14, data: { shrine: sh.id, part: 'stone' } }); break;
+        case 'B': this.add({ kind: 'boulder', id, x: tx + 0.5, y: ty + 0.5, collideR: 20, data: { shrine: sh.id } }); break;
         case '*':
           if (sh.materials.star === 'torch') this.add({ kind: 'torch', id, x: tx, y: ty, tile: DUNGEON.torch, data: { shrine: sh.id } });
           else this.add({ kind: 'prop', id, x: tx, y: ty, tile: EX.crystal, collideR: 12, data: { shrine: sh.id, prop: 'crystal' } });
           break;
-        case 'A': this.add({ kind: 'prop', id, x: tx, y: ty, tile: EX.portal, collideR: tx === l.x && ty === l.y ? 0 : 18, data: { shrine: sh.id, prop: 'altar' } }); break;
+        case 'A': this.add({ kind: 'prop', id, x: tx, y: ty, tile: EX.altar, collideR: tx === l.x && ty === l.y ? 0 : 18, data: { shrine: sh.id, prop: 'altar' } }); break;
         case 'T': this.add({ ...this.tree(tx, ty, this.areaAt(tx, ty)?.habitat ?? 'forest'), id }); break;
-        case '&': case '1': case '2': this.add({ kind: 'decal', id, x: tx, y: ty, tile: DUNGEON.plate, data: { shrine: sh.id, part: ch } }); break;
+        case '&': case '1': case '2': this.add({ kind: 'decal', id, x: tx, y: ty, tile: plate(ch), data: { shrine: sh.id, part: ch } }); break;
       }
     }
   }
@@ -375,6 +384,7 @@ export class ValleyMap implements MapProvider {
 
   private naturalTerrain(tx: number, ty: number): number {
     const W = this.widthTiles, H = this.heightTiles;
+    if (this.def.void) return this.onPath(tx, ty) ? T.Path : T[this.def.void];
     if (tx < 2 || ty < 2 || tx >= W - 2 || ty >= H - 2) return T.Deep;
     const theme = this.def.theme ?? 'valley';
     const lake = this.lakeValue(tx, ty);
@@ -622,7 +632,7 @@ export class ValleyMap implements MapProvider {
         const t = this.terrainAt(tx, ty);
         const border = tx < 4 || ty < 4 || tx >= this.widthTiles - 4 || ty >= this.heightTiles - 4;
         const h = hash2(tx, ty, 21);
-        if (this.stamp.has(this.key(tx, ty))) continue; // shrine: its own trees / pillars only
+        if (this.stamp.has(this.key(tx, ty)) || this.def.void) continue; // shrine (plane): its own trees / pillars only
         if (border) {
           if (h < 0.85) out.push(this.tree(tx, ty, 'forest'));
           continue;

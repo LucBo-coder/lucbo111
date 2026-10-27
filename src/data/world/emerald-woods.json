@@ -481,6 +481,42 @@
     "time": "day"
    },
    "shrine": "ho-oh"
+  },
+  {
+   "id": "cresselia",
+   "name": "Hồ Trăng Lục Bảo",
+   "x": 76,
+   "y": 44,
+   "level": 48,
+   "respawn": 480,
+   "arena": 240,
+   "requires": [
+    "boss:mew"
+   ],
+   "gap": 0,
+   "hint": "Mặt hồ phẳng lặng như gương. Đêm trăng quang, nó phản chiếu một bóng hình kỳ lạ.",
+   "shrine": "cresselia",
+   "condition": {
+    "time": "night",
+    "weather": [
+     "clear"
+    ]
+   }
+  },
+  {
+   "id": "lati",
+   "name": "Đài Gió Thác Ngọc",
+   "x": 84,
+   "y": 6,
+   "level": 45,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:lugia"
+   ],
+   "gap": 0,
+   "hint": "Hai tấm bia cánh đứng trước thác. Gió thổi qua như tiếng gọi xa xăm.",
+   "shrine": "lati"
   }
  ],
  "portals": [

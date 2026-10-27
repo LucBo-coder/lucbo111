@@ -11,6 +11,7 @@ import { REGIONS } from '../src/core/encounters';
 
 const ADVENTURE = ['starter-valley', 'frozen-mountains', 'volcanic-lands', 'misty-swamp', 'coral-coast', 'legendary-sanctuary'];
 const VIETNAM = ['ca-mau', 'an-giang', 'can-tho'];
+const PLANES = ['abyssal-depths', 'origin-temple'];
 
 const maps = new Map<string, ValleyMap>();
 const mapOf = (id: string) => { let m = maps.get(id); if (!m) maps.set(id, (m = new ValleyMap(REGION_DEFS[id]))); return m; };
@@ -45,25 +46,30 @@ describe('legendary shrines across the region maps', () => {
     expect(VIETNAM.every((id) => !(REGION_DEFS[id].legendaries ?? []).length)).toBe(true);
   });
   it('themes: ice on the mountain, fire in the volcano, sea legends on the coast, creation trio in the sanctuary', () => {
-    const where = (id: string) => ADVENTURE.find((m) => (REGION_DEFS[m].legendaries ?? []).some((l) => l.id === id));
+    const where = (id: string) => [...ADVENTURE, ...PLANES].find((m) => (REGION_DEFS[m].legendaries ?? []).some((l) => l.id === id));
     // V22 shrines (LEGENDARY_SHRINES.md): Rayquaza on the highest peak, the Regi tombs spread over three maps,
     // Ho-Oh's bell tower and Celebi's grove in Emerald Woods
     for (const id of ['articuno', 'regice', 'rayquaza', 'jirachi']) expect(where(id), id).toBe('frozen-mountains');
     for (const id of ['groudon', 'heatran', 'moltres', 'shaymin']) expect(where(id), id).toBe('volcanic-lands');
-    for (const id of ['lugia', 'kyogre', 'zapdos', 'regirock']) expect(where(id), id).toBe('coral-coast');
+    for (const id of ['lugia', 'zapdos', 'regirock', 'manaphy', 'kyogre-gate']) expect(where(id), id).toBe('coral-coast');
+    // V22 shrines step 5: Kyogre in its own plane under the coast's whirlpool, the creation trio in the Temple of Origin
+    expect(where('kyogre')).toBe('abyssal-depths');
+    for (const id of ['arceus', 'dialga', 'palkia']) expect(where(id), id).toBe('origin-temple');
+    expect(where('arceus-gate')).toBe('legendary-sanctuary');
     for (const id of ['darkrai', 'giratina', 'azelf', 'registeel']) expect(where(id), id).toBe('misty-swamp');
-    for (const id of ['arceus', 'dialga', 'palkia', 'deoxys', 'uxie', 'regigigas']) expect(where(id), id).toBe('legendary-sanctuary');
+    for (const id of ['deoxys', 'uxie', 'regigigas']) expect(where(id), id).toBe('legendary-sanctuary');
     for (const id of ['mewtwo', 'mew']) expect(where(id), id).toBe('starter-valley');
   });
   it('every site is on one map only, its quest marker points there, and the ring stands on open ground', () => {
     const bad: string[] = [];
     const seen = new Set<string>();
-    for (const id of ADVENTURE) {
+    for (const id of [...ADVENTURE, ...PLANES]) {
       const m = mapOf(id);
       for (const l of REGION_DEFS[id].legendaries ?? []) {
         expect(seen.has(l.id), l.id).toBe(false);
         seen.add(l.id);
-        const site = LEGENDS.get(l.id)!.site;
+        // gates / roaming triggers (kyogre-gate, lati, mesprit…) have no fight site of their own in legends.json
+        const site = LEGENDS.get(l.id)?.kind === 'shrine' || LEGENDS.get(l.id)?.kind === 'gift' ? LEGENDS.get(l.id)!.site : undefined;
         if (site) expect({ x: site.x, y: site.y, region: site.region ?? 'starter-valley' }, l.id).toEqual({ x: l.x, y: l.y, region: id });
         // designed shrines are checked by tests/v22_shrines.test.ts (their arena allows the altar / cover)
         if (l.ring !== false && !l.shrine && !open(m, l.x, l.y, 5)) bad.push(`${id} ${l.id} → ${JSON.stringify(nearest(m, l.x, l.y, 5))}`);
@@ -72,9 +78,16 @@ describe('legendary shrines across the region maps', () => {
     expect(bad).toEqual([]);
   });
   it('roaming legendaries also wander the themed regions', () => {
-    for (const [id, region] of [['entei', 'volcanic-lands'], ['suicune', 'frozen-mountains'], ['cresselia', 'misty-swamp']]) {
+    // V22 shrines step 4 (LEGENDARY_SHRINES.md §1.4): six roamers, never in the starting meadow / village / farm
+    for (const [id, region] of [['entei', 'volcanic-lands'], ['suicune', 'coral-coast'], ['raikou', 'frozen-mountains'], ['latios', 'emerald-woods']]) {
       expect(LEGENDS.get(id)!.regions, id).toContain(region);
       expect(REGIONS.has(region)).toBe(true);
+    }
+    const roamers = [...LEGENDS.values()].filter((l) => l.kind === 'roaming');
+    expect(roamers.map((l) => l.id).sort()).toEqual(['entei', 'latias', 'latios', 'mesprit', 'raikou', 'suicune']);
+    for (const l of roamers) {
+      for (const r of l.regions ?? []) expect(['starter-valley', 'farm'], l.id).not.toContain(r);
+      expect(l.requires, l.id).toContain('roam:' + l.id);
     }
   });
 });

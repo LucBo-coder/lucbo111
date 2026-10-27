@@ -1511,7 +1511,7 @@ export class AdventureUI extends Phaser.Scene {
   /** Reputation of every province / region of this campaign: tier, points, progress to the next tier and its gift. */
   private buildRepBoard(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, st = this.adv.state, vn = st.adv.campaign === 'vietnam';
-    const ids = vn ? VN_PROVINCES.map((p) => p.id) : Object.keys(REGION_DEFS).filter((id) => !VN_PROVINCES.some((p) => p.id === id));
+    const ids = vn ? VN_PROVINCES.map((p) => p.id) : Object.keys(REGION_DEFS).filter((id) => !VN_PROVINCES.some((p) => p.id === id) && !REGION_DEFS[id].void);
     const rows = repBoard(st.adv, ids);
     c.add(text(this, r.x + 10 * s, r.y + 6 * s, `DANH TIẾNG${vn ? ' — HÀNH TRÌNH VIỆT NAM' : ''} · tổng ${st.adv.reputation}`, 20 * s, '#ffe080'));
     if (!rows.length) { c.add(text(this, r.x + 10 * s, r.y + 40 * s, 'Chưa có vùng nào ghi nhận danh tiếng.', 17 * s, COLORS.dim)); return; }

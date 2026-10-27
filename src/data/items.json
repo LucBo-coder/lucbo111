@@ -1517,5 +1517,133 @@
   "megaFor": "diancie",
   "form": "diancie-mega",
   "desc": "Diancie cầm đá này có thể Mega Tiến Hóa thành Mega Diancie (cần Vòng Mega)."
+ },
+ {
+  "id": "feather-ice",
+  "name": "Lông Băng",
+  "kind": "key",
+  "price": 0,
+  "color": "#a0e0ff",
+  "desc": "Lông vũ của Articuno. Một trong ba thánh vật mở Hang Tâm Linh."
+ },
+ {
+  "id": "feather-thunder",
+  "name": "Lông Sấm",
+  "kind": "key",
+  "price": 0,
+  "color": "#ffe040",
+  "desc": "Lông vũ của Zapdos. Một trong ba thánh vật mở Hang Tâm Linh."
+ },
+ {
+  "id": "feather-fire",
+  "name": "Lông Lửa",
+  "kind": "key",
+  "price": 0,
+  "color": "#ff8030",
+  "desc": "Lông vũ của Moltres. Một trong ba thánh vật mở Hang Tâm Linh."
+ },
+ {
+  "id": "silver-feather",
+  "name": "Lông Bạc",
+  "kind": "key",
+  "price": 0,
+  "color": "#d0d8f0",
+  "desc": "Thánh vật của Đảo Xoáy Bạc (Lugia). Nhận khi điều tra đủ 3 manh mối về Lugia."
+ },
+ {
+  "id": "rainbow-feather",
+  "name": "Lông Cầu Vồng",
+  "kind": "key",
+  "price": 0,
+  "color": "#ffb040",
+  "desc": "Thánh vật của Tháp Chuông Cầu Vồng (Ho-Oh). Nhận khi đã hạ cả ba con Thú."
+ },
+ {
+  "id": "blue-orb",
+  "name": "Ngọc Lam",
+  "kind": "key",
+  "price": 0,
+  "color": "#4080ff",
+  "desc": "Mở Xoáy Nước Sâu dẫn xuống Vực Nguyên Hải (Kyogre)."
+ },
+ {
+  "id": "red-orb",
+  "name": "Ngọc Đỏ",
+  "kind": "key",
+  "price": 0,
+  "color": "#ff4030",
+  "desc": "Thánh vật của Đại Điện Dung Nham (Groudon)."
+ },
+ {
+  "id": "jade-orb",
+  "name": "Ngọc Lục Thiên",
+  "kind": "key",
+  "price": 0,
+  "color": "#40c080",
+  "desc": "Thánh vật của Trụ Trời Đỉnh Bão (Rayquaza)."
+ },
+ {
+  "id": "magma-stone",
+  "name": "Đá Nham Tâm",
+  "kind": "key",
+  "price": 0,
+  "color": "#ff7030",
+  "desc": "Thánh vật của Lòng Chảo Nham Tâm (Heatran)."
+ },
+ {
+  "id": "lunar-feather",
+  "name": "Lông Trăng",
+  "kind": "key",
+  "price": 0,
+  "color": "#f0e8ff",
+  "desc": "Thánh vật của Hồ Trăng (Cresselia). Cầm theo khi tới Đảo Ác Mộng."
+ },
+ {
+  "id": "dew-cup",
+  "name": "Chén Sương",
+  "kind": "key",
+  "price": 0,
+  "color": "#a0f0a0",
+  "desc": "Dâng lên miếu ở Vòng Cây Cổ lúc bình minh (Celebi)."
+ },
+ {
+  "id": "regi-core-rock",
+  "name": "Lõi Regi Đá",
+  "kind": "key",
+  "price": 0,
+  "color": "#c8a060",
+  "desc": "Một trong ba lõi đánh thức Regigigas."
+ },
+ {
+  "id": "regi-core-ice",
+  "name": "Lõi Regi Băng",
+  "kind": "key",
+  "price": 0,
+  "color": "#b0e8ff",
+  "desc": "Một trong ba lõi đánh thức Regigigas."
+ },
+ {
+  "id": "regi-core-steel",
+  "name": "Lõi Regi Thép",
+  "kind": "key",
+  "price": 0,
+  "color": "#c0c8d8",
+  "desc": "Một trong ba lõi đánh thức Regigigas."
+ },
+ {
+  "id": "platinum-orb",
+  "name": "Ngọc Bạch Kim",
+  "kind": "key",
+  "price": 0,
+  "color": "#b8b0d0",
+  "desc": "Thánh vật của Cổng Thế Giới Đảo Ngược (Giratina)."
+ },
+ {
+  "id": "azure-flute",
+  "name": "Sáo Thiên Giới",
+  "kind": "key",
+  "price": 0,
+  "color": "#fff0c0",
+  "desc": "Ghép từ ba mảnh của Dialga, Palkia, Giratina. Thổi trước Ngai Khởi Nguyên."
  }
 ]

@@ -255,25 +255,6 @@
  "spawns": {},
  "legendaries": [
   {
-   "id": "arceus",
-   "name": "Đài Khởi Nguyên",
-   "x": 48,
-   "y": 22,
-   "level": 80,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:dialga",
-    "boss:palkia",
-    "boss:giratina",
-    "boss:mewtwo",
-    "boss:rayquaza"
-   ],
-   "gap": 1.57,
-   "hint": "Một bậc thang ánh sáng mờ ảo... chỉ người đã thấy thời gian, không gian, phản vật chất, rồng trời và Mewtwo mới được bước lên.",
-   "condition": {}
-  },
-  {
    "id": "uxie",
    "name": "Hồ Trí Tuệ",
    "x": 23,
@@ -326,38 +307,21 @@
    "shrine": "deoxys"
   },
   {
-   "id": "dialga",
-   "name": "Cột Thời Gian",
-   "x": 36,
-   "y": 11,
+   "id": "arceus-gate",
+   "name": "Cổng Thần Điện Khởi Nguyên",
+   "x": 48,
+   "y": 12,
    "level": 55,
-   "respawn": 1500,
-   "arena": 330,
+   "respawn": 0,
+   "arena": 240,
    "requires": [
     "boss:uxie",
     "boss:mesprit",
     "boss:azelf"
    ],
-   "gap": 5.96,
-   "hint": "Kim đồng hồ đá đứng im... Dialga chờ người được cả ba hộ thần hồ công nhận.",
-   "condition": {}
-  },
-  {
-   "id": "palkia",
-   "name": "Cột Không Gian",
-   "x": 62,
-   "y": 11,
-   "level": 55,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:uxie",
-    "boss:mesprit",
-    "boss:azelf"
-   ],
-   "gap": 3.61,
-   "hint": "Không khí ở đây méo mó... Palkia chờ người được cả ba hộ thần hồ công nhận.",
-   "condition": {}
+   "gap": 0,
+   "hint": "Cánh cổng đá khắc ba vầng sáng: tri thức, cảm xúc, dũng khí.",
+   "shrine": "arceus-gate"
   }
  ],
  "portals": [

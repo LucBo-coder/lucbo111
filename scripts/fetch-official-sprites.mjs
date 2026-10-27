@@ -48,6 +48,10 @@ for (const t of targets) {
 const ITEM_NAME = {
   pokeball: 'poke-ball', greatball: 'great-ball', ultraball: 'ultra-ball', netball: 'net-ball', duskball: 'dusk-ball', quickball: 'quick-ball',
   timerball: 'timer-ball', luxuryball: 'luxury-ball', potion: 'potion', superpotion: 'super-potion', oranberry: 'oran-berry', 'key-stone': 'key-stone',
+  // shrine relics (V22): the official item art closest to each one
+  'feather-ice': 'resist-wing', 'feather-thunder': 'swift-wing', 'feather-fire': 'muscle-wing', 'silver-feather': 'silver-wing', 'rainbow-feather': 'rainbow-wing',
+  'lunar-feather': 'lunar-wing', 'platinum-orb': 'griseous-orb', 'dew-cup': 'fresh-water', 'regi-core-rock': 'hard-stone', 'regi-core-ice': 'icy-rock',
+  'regi-core-steel': 'iron-ball',
 };
 for (const it of JSON.parse(readFileSync('src/data/items.json', 'utf8'))) ITEM_NAME[it.id] ??= it.id;
 mkdirSync(`${OUT}/items`, { recursive: true });

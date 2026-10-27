@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { beatBossTo, catchWeakenedLegend } from './bossHelpers';
+import { beatBossTo, catchWeakenedLegend, closeDialogues, summonShrine } from './bossHelpers';
 
 type Win = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const ev = <T = unknown>(page: Page, fn: string) => page.evaluate(fn) as Promise<T>;
@@ -141,11 +141,16 @@ test('legendary shrines: sealed until the story flag, then Articuno fights and j
   await ev(page, `window.__adv.travelTo('frozen-mountains', 19, 50)`);
   await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'frozen-mountains', { timeout: 15_000 });
   await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('blastoise', 40, 'gift'); a.state.addPokemon('charizard', 40, 'gift'); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e7; a.world.teleport(19.5*48, 44*48); })()`);
-  // sealed: no boss without the Mega Venusaur flag
+  // sealed: no boss without the Mega Venusaur flag — not by walking in, not by E on the ritual spot
   await page.waitForTimeout(2500);
   expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false);
-  // story flag set → Articuno descends at its shrine with the legendary AI
+  await ev(page, `void window.__adv.shrines.open('articuno')`);
+  await page.waitForTimeout(600);
+  expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false);
+  await closeDialogues(page);
+  // story flag set → E on the ritual spot (ritual done) → Articuno descends at its shrine with the legendary AI
   await ev(page, `window.__adv.state.setFlag('boss:mega-venusaur')`);
+  await summonShrine(page, 'articuno');
   await page.waitForFunction(() => (window as Win).__adv.worldBoss?.alive, null, { timeout: 10_000 });
   expect(await ev(page, `window.__adv.worldBoss.defId`)).toBe('articuno');
   expect(await ev(page, `window.__adv.world.boss.boss.def.ai`)).toBe('legendary');

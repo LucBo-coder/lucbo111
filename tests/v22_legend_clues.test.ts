@@ -33,7 +33,9 @@ describe('V22 legendary investigation: data', () => {
       expect(clues.length).toBe(3);
       for (const c of clues) expect(c.text.length, c.id).toBeGreaterThan(30);
       // shrine clues lie on the shrine's map; roamers' on the maps of their regions
-      if (l.kind === 'shrine') for (const c of clues) expect(c.region).toBe(l.site?.region ?? 'starter-valley');
+      // a legend in its own plane (Kyogre): the clues lie on the map with the plane's gate
+      const map = l.site?.region ?? 'starter-valley', gate = REGION_DEFS[map]?.void ? REGION_DEFS[map].portals![0].to : map;
+      if (l.kind === 'shrine') for (const c of clues) expect(c.region).toBe(gate);
     }
   });
 

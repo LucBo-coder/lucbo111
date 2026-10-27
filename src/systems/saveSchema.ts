@@ -78,6 +78,8 @@ export interface AdventureSave {
   activeUid: string | null;
   /** PC boxes. Slots reference collection uids; a uid is never in the party and the PC at once. */
   pc: PcStorage;
+  /** Legendary shrines whose ritual was completed once (a rematch only needs E on the ritual spot) */
+  rites?: string[];
   /** Vietnam Odyssey passport: Date.now() of the first visit of each province */
   visited?: Record<string, number>;
 }
