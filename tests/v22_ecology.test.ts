@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import valleyJson from '../src/data/world/starter-valley.json';
 import { ECOLOGY, REGIONS, SpawnContext } from '../src/core/encounters';
 import { POKEMON } from '../src/core/data';
@@ -199,9 +199,13 @@ describe('V22 ecology rules: rare conditions', () => {
 });
 
 describe('V22 ecology in the spawner', () => {
+  // the spawner rolls with Math.random: seed it, or a rare run sees no pack within the two simulated minutes
+  afterEach(() => { vi.restoreAllMocks(); });
   it('pack species arrive with their group (shared pack id, one leader), territorial species guard, caps hold', () => {
     const map = valley();
     const w = advWorld(map);
+    const rnd = new Rng(22);
+    vi.spyOn(Math, 'random').mockImplementation(() => rnd.next());
     const sm = new SpawnManager(w, map, { maxActive: 14, isNight: () => false, weather: () => 'clear', loaded: () => true });
     const packs = new Map<number, Unit[]>();
     for (let i = 0; i < 60 * 120; i++) {
