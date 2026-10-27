@@ -16,12 +16,13 @@ import { regionDef } from '../core/map/regionDefs';
 import { net } from '../net/session';
 import { button, COLORS, fmtTime, panel, ROLE_LABEL, text, typeBadge, uiScale } from './ui';
 import { openPlayerProfile } from './playerProfile';
+import { markWhatsNewSeen, seenWhatsNew, unseenCount, WHATS_NEW } from '../core/whatsNew';
 
 import { GAME_VERSION } from '../version';
 import { balance, campaignWallet, fmtCoins, WALLETS } from '../core/wallet';
 export { GAME_VERSION };
 
-type View = 'home' | 'survivor' | 'settings' | 'credits' | 'slots' | 'confirm' | 'upgrades';
+type View = 'home' | 'survivor' | 'settings' | 'credits' | 'slots' | 'confirm' | 'upgrades' | 'whatsnew';
 /** what the Load Game screen is opened for */
 type SlotMode = 'load' | 'new';
 
@@ -34,6 +35,10 @@ export class MenuScene extends Phaser.Scene {
   private slots: (SlotSummary | null)[] = [];
   /** pending destructive action of the confirm view */
   private pending: { title: string; body: string; ok: string; run: () => void } | null = null;
+  /** entries of the What's-new list still unread when it was opened (tagged MỚI) */
+  private whatsNewFresh = 0;
+  /** scrolls the What's-new list (set while that view is built; wheel / drag call it) */
+  private scrollList: ((dy: number) => void) | null = null;
 
   constructor() {
     super('Menu');
@@ -48,6 +53,8 @@ export class MenuScene extends Phaser.Scene {
     // Enter: home → Survivor starter select → start
     this.input.keyboard?.on('keydown-ENTER', () => { if (this.view === 'survivor') this.startSurvivor(); else if (this.view === 'home') this.go('survivor'); });
     this.input.keyboard?.on('keydown-ESC', () => { if (this.view !== 'home') this.go('home'); });
+    this.input.on('wheel', (_p: Phaser.Input.Pointer, _o: unknown, _dx: number, dy: number) => this.scrollList?.(dy));
+    this.input.on('pointermove', (p: Phaser.Input.Pointer) => { if (p.isDown) this.scrollList?.(p.prevPosition.y - p.y); });
   }
 
   update(): void {
@@ -60,6 +67,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private rebuild(): void {
+    this.scrollList = null;
     this.tweens.killAll();
     this.children.removeAll(true);
     this.build();
@@ -113,7 +121,7 @@ export class MenuScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(COLORS.bg);
     this.buildBackdrop(W, H, s);
     this.buildLogo(W, s);
-    const sub = this.view === 'survivor' ? 'Chọn Pokémon khởi đầu' : this.view === 'upgrades' ? 'Nâng cấp vĩnh viễn (Sinh tồn)' : this.view === 'slots' ? (this.slotMode === 'new' ? (this.newCampaign === 'vietnam' ? 'Việt Nam Odyssey — chọn ô lưu' : 'Chơi mới — chọn ô lưu') : 'Tải game') : 'Auto-Battle Roguelite · Open World Adventure';
+    const sub = this.view === 'whatsnew' ? 'Có gì mới' : this.view === 'survivor' ? 'Chọn Pokémon khởi đầu' : this.view === 'upgrades' ? 'Nâng cấp vĩnh viễn (Sinh tồn)' : this.view === 'slots' ? (this.slotMode === 'new' ? (this.newCampaign === 'vietnam' ? 'Việt Nam Odyssey — chọn ô lưu' : 'Chơi mới — chọn ô lưu') : 'Tải game') : 'Auto-Battle Roguelite · Open World Adventure';
     text(this, W / 2, 96 * s, sub, 22 * s, '#c8d4f0').setOrigin(0.5);
     switch (this.view) {
       case 'home': return this.buildHome(W, H, s);
@@ -123,6 +131,7 @@ export class MenuScene extends Phaser.Scene {
       case 'slots': return this.buildSlots(W, H, s);
       case 'upgrades': return this.buildUpgrades(W, H, s);
       case 'confirm': return this.buildConfirm(W, H, s);
+      case 'whatsnew': return this.buildWhatsNew(W, H, s);
     }
   }
 
@@ -164,6 +173,8 @@ export class MenuScene extends Phaser.Scene {
 
   /** Logo: slowly turning Poké Ball emblem, gold title with a soft float (bounces in the first time). */
   private buildLogo(W: number, s: number): void {
+    // home on a portrait phone: the title makes room for the What's-new button in the top-right corner
+    const right = this.view === 'home' && W < this.scale.height ? W - this.cornerButton(s, true).w - 14 * s : W - 8 * s;
     const emb = this.add.container(W / 2, 46 * s);
     const ball = this.add.graphics();
     const r = 46 * s;
@@ -175,10 +186,17 @@ export class MenuScene extends Phaser.Scene {
     this.tweens.add({ targets: emb, angle: 360, duration: 24000, repeat: -1 });
     const title = text(this, W / 2, 46 * s, 'POKÉMON SURVIVOR', 62 * s, '#ffd640').setOrigin(0.5);
     title.setStroke('#5a2a08', Math.max(4, Math.round(9 * s))).setShadow(0, 4 * s, '#000000', 0, true, true);
+    const left = 8 * s;
+    if (title.x + title.width / 2 > right) {
+      const fit = Math.min(1, (right - left) / title.width);
+      title.setX(Math.max(left + (title.width * fit) / 2, right - (title.width * fit) / 2)).setScale(fit);
+      emb.setX(title.x);
+    }
+    const fitScale0 = title.scale;
     if (!this.titleShown) {
       this.titleShown = true;
-      title.setScale(0.6).setAlpha(0);
-      this.tweens.add({ targets: title, scale: 1, alpha: 1, duration: 520, ease: 'Back.out' });
+      title.setScale(0.6 * fitScale0).setAlpha(0);
+      this.tweens.add({ targets: title, scale: fitScale0, alpha: 1, duration: 520, ease: 'Back.out' });
     }
     this.tweens.add({ targets: title, y: 46 * s - 4 * s, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
   }
@@ -341,6 +359,72 @@ export class MenuScene extends Phaser.Scene {
     if (!portrait) text(this, W / 2, H - 20 * s, 'Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.  ·  Enter: Sinh tồn', 15 * s, '#a8b4d8').setOrigin(0.5).setWordWrapWidth(W - 120).setAlign('center');
     text(this, W - 10, H - 8, `v${GAME_VERSION}`, 14 * s, '#7a86a8').setOrigin(1, 1);
     this.slideIn(n0, 260, 20);
+    this.buildWhatsNewButton(W, s, portrait);
+  }
+
+  /** Top-right corner: "What's new" with a red count of the release notes not read yet on this device. */
+  private cornerButton(s: number, portrait: boolean): { w: number; h: number } {
+    return portrait ? { w: 46 * s, h: 42 * s } : { w: 150 * s, h: 40 * s };
+  }
+
+  private buildWhatsNewButton(W: number, s: number, portrait: boolean): void {
+    const { w: bw, h: bh } = this.cornerButton(s, portrait);
+    const bx = W - 8 * s - bw / 2, by = 10 * s + bh / 2;
+    button(this, bx, by, bw, bh, portrait ? '✨' : '✨ Có gì mới', () => this.openWhatsNew(), 0x5a3a8a);
+    const n = unseenCount(seenWhatsNew());
+    if (!n) return;
+    const dx = bx + bw / 2 - 4 * s, dy = by - bh / 2 + 4 * s, r = 11 * s;
+    const dot = this.add.graphics();
+    dot.fillStyle(0xe03030, 1).fillCircle(dx, dy, r).lineStyle(2 * s, 0xffffff, 1).strokeCircle(dx, dy, r);
+    text(this, dx, dy, String(n), 14 * s, '#ffffff').setOrigin(0.5);
+    this.tweens.add({ targets: dot, alpha: 0.55, duration: 700, yoyo: true, repeat: -1 });
+  }
+
+  openWhatsNew(): void {
+    this.whatsNewFresh = unseenCount(seenWhatsNew());
+    markWhatsNewSeen();
+    this.go('whatsnew');
+  }
+
+  /** Release notes (data/whatsnew.json, newest first) in a framed list; mouse wheel or drag scrolls it. */
+  private buildWhatsNew(W: number, H: number, s: number): void {
+    const pw = Math.min(W - 24, 780 * s), px = (W - pw) / 2, top = 118 * s;
+    const ph = Math.max(160 * s, H - top - 78 * s);
+    panel(this, px, top, pw, ph, 0xb090ff, 0x1e1a30);
+    const pad = 18 * s, wrap = pw - pad * 2 - 22 * s;
+    const list = this.add.container(0, 0);
+    let y = top + pad;
+    WHATS_NEW.forEach((e, i) => {
+      const head = text(this, px + pad, y, e.title, 24 * s, '#ffe080');
+      list.add(head);
+      if (i < this.whatsNewFresh) {
+        const tag = text(this, px + pad + head.width + 10 * s, y + 4 * s, 'MỚI', 15 * s, '#ffffff').setBackgroundColor('#c03030').setPadding(5 * s, 1 * s, 5 * s, 1 * s);
+        list.add(tag);
+      }
+      y += head.height + 6 * s;
+      for (const it of e.items) {
+        list.add(text(this, px + pad, y, '•', 17 * s, '#b090ff'));
+        const t = text(this, px + pad + 18 * s, y, it, 17 * s, '#dde4f8').setWordWrapWidth(wrap, true);
+        list.add(t);
+        y += t.height + 5 * s;
+      }
+      y += 14 * s;
+    });
+    // only the inside of the frame shows the list
+    const clip = this.add.graphics().setVisible(false);
+    clip.fillStyle(0xffffff).fillRect(px + 4, top + 4, pw - 8, ph - 8);
+    list.setMask(clip.createGeometryMask());
+    const max = Math.max(0, y - top - ph + pad);
+    if (max > 0) {
+      const track = this.add.graphics();
+      const bar = this.add.graphics();
+      const th = ph - 16 * s, kh = Math.max(30 * s, th * (ph / (ph + max)));
+      track.fillStyle(0x000000, 0.35).fillRect(px + pw - 14 * s, top + 8 * s, 6 * s, th);
+      const draw = () => bar.clear().fillStyle(0xb090ff, 0.9).fillRect(px + pw - 14 * s, top + 8 * s + (th - kh) * (-list.y / max), 6 * s, kh);
+      draw();
+      this.scrollList = (dy) => { list.y = Phaser.Math.Clamp(list.y - dy, -max, 0); draw(); };
+    }
+    button(this, W / 2, Math.min(H - 34 * s, top + ph + 38 * s), 220 * s, 44 * s, '← Quay lại', () => this.go('home'));
   }
 
   private buildSurvivor(W: number, H: number, s: number): void {

@@ -145,3 +145,6 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Huyền thoại xuất hiện bằng một đoạn chuyển cảnh, trận đánh diễn ra trong arena niêm phong với hiểm họa của đền (sét đánh, thủy triều dâng, khe nứt phun lửa) — có vòng cảnh báo để né.
 - Thánh vật thu được trên đường đi (Ngọc Đỏ, Lông Bạc, Lõi Regi…) mở các đền sau; thú lang thang chỉ chạy khắp vùng sau khi được đánh thức ở tượng / đài của chúng.
 - Hai nơi chỉ vào được qua cổng đền: Vực Nguyên Hải dưới đáy biển và Thần Điện Khởi Nguyên.
+
+### Biết ngay có gì mới
+- Trước: cập nhật chỉ nằm trong tài liệu, người chơi mở game không biết đã có gì thay đổi. Giờ góc phải trên menu chính có nút **✨ Có gì mới** với chấm đỏ đếm số mục chưa đọc; bấm vào xem danh sách tính năng mới, mục chưa đọc có nhãn MỚI.

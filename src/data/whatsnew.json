@@ -1,0 +1,68 @@
+[
+  {
+    "id": "v22-shrines",
+    "title": "Đền huyền thoại",
+    "items": [
+      "Huyền thoại không còn tự hiện ra khi bạn bước vào đền: đứng ở chỗ làm lễ và bấm E để bắt đầu nghi lễ.",
+      "Mỗi đền một nghi lễ riêng: chạm cột băng theo lượt ngân, giẫm phiến trăng theo chiều kim đồng hồ, đứng yên trên bệ dung nham, trả lời câu đố của Uxie, tưới hoa cho Shaymin nở lại…",
+      "Huyền thoại xuất hiện bằng chuyển cảnh, trận đánh diễn ra trong arena niêm phong với hiểm họa của đền (sét, thủy triều, khe nứt lửa) — có vòng cảnh báo để né. Bấm E ở chỗ làm lễ để rời trận.",
+      "16 thánh vật (Ngọc Đỏ, Ngọc Lam, Lông Bạc, Lõi Regi…) nhận khi hạ boss hoặc điều tra xong — cần để mở các đền sau.",
+      "Raikou / Entei / Suicune, Latias / Latios, Mesprit chỉ lang thang sau khi được đánh thức ở tượng / đài của chúng.",
+      "6 đền mới: Hồ Trăng (Cresselia), Rạn Ấu Hải (Trứng Manaphy), Đài Gió Thác Ngọc, Đá Cảm Xúc, Xoáy Nước Sâu, Cổng Thần Điện.",
+      "2 vùng mới chỉ vào được qua cổng đền: Vực Nguyên Hải (Kyogre) và Thần Điện Khởi Nguyên (Dialga, Palkia, Arceus)."
+    ]
+  },
+  {
+    "id": "v22-mobile",
+    "title": "Giao diện điện thoại",
+    "items": [
+      "Menu chính trên điện thoại dọc: các nút xếp lưới 2 × 2, không còn đè nhau hay tràn khỏi màn hình.",
+      "Nút Bắt đầu khi chọn Pokémon khởi đầu luôn nằm trong màn hình; chữ HUD nằm gọn trong khung.",
+      "Bảng đội hiện đúng dạng Mega khi Pokémon đang Mega Tiến Hóa."
+    ]
+  },
+  {
+    "id": "v22-vietnam",
+    "title": "Việt Nam Odyssey 2.0",
+    "items": [
+      "Đi ghe trên sông Hậu (5 bến), xuồng ở Cà Mau và An Giang; dòng nước đẩy ghe theo con nước lớn / ròng.",
+      "Chợ nổi Cái Răng họp từ 5:00 đến 9:00 giờ trong game.",
+      "Miệt vườn Phong Điền, ruộng mùa nước nổi An Giang, rừng đước Cà Mau: hái trái, câu cá, lượm ốc len, lấy mật ong, hốc bí mật có rương.",
+      "Danh tiếng theo từng tỉnh (4 hạng, có quà), nhiệm vụ phân nhánh — mỗi lựa chọn mở một hướng riêng.",
+      "Bảo tồn: trồng lại rừng đước, gỡ lưới, vớt rác — sinh thái tốt thì Pokémon hiếm hay ghé hơn.",
+      "Sự kiện vùng miền: Mùa cá linh, Triều cường, Cò về vườn, Lễ hội trái cây, Đêm đom đóm."
+    ]
+  },
+  {
+    "id": "v22-adventure",
+    "title": "Phiêu lưu sâu hơn",
+    "items": [
+      "Huấn luyện viên đánh có chiến thuật: 2 Pokémon trên sân, đổi Pokémon khi yếu hệ, dùng Potion. Thắng xong 10 phút thì được mời tái đấu.",
+      "Năng lực khám phá: Cắt cây, Đập đá, Đẩy đá, Flash — mở hốc bí mật và phòng ẩn trong hầm ngục.",
+      "Sinh thái: Pokémon đi theo đàn, có lãnh thổ (vòng đỏ cảnh báo), loài hiếm chỉ ra theo giờ / thời tiết.",
+      "Hầm ngục 2.0: biến thể đổi theo ngày, hang tối, bẫy sàn, vách nứt giấu rương.",
+      "Điều tra huyền thoại: tìm 3 manh mối để biết điều kiện xuất hiện và được thêm 1 lượt ném.",
+      "Combo nguyên tố trong Phiêu lưu; Pokémon trong đội tự hái quả giúp khi yên bình."
+    ]
+  },
+  {
+    "id": "v21",
+    "title": "Câu cá, Rừng Ngọc Lục Bảo, Mega",
+    "items": [
+      "Câu cá ở Hồ Pha Lê và hái quả mọng ở Đồng Cỏ Gió.",
+      "Rừng Ngọc Lục Bảo — bản đồ mới với NPC, huấn luyện viên, rương, trạm dịch chuyển.",
+      "Kỹ năng chủ động (Q / T) cho PvP và co-op; chiêu giữ được lưu vào save.",
+      "30 dạng Mega có hoạt ảnh riêng."
+    ]
+  },
+  {
+    "id": "v20",
+    "title": "Kỹ năng chủ động, Trại Huấn Luyện",
+    "items": [
+      "Phím Q dùng chiêu tốt nhất, chạm ô trên thanh kỹ năng để dùng đúng chiêu, T đổi Pokémon điều khiển.",
+      "Thung Lũng Khởi Nguyên có Trung tâm Pokémon, bảng nhiệm vụ làng, dân làng đi lại.",
+      "Trại Huấn Luyện phía tây làng với chuỗi 3 nhiệm vụ.",
+      "Mỗi chế độ một loại tiền: ngọc (Sinh tồn), xu (Phiêu lưu), đồng (Việt Nam Odyssey)."
+    ]
+  }
+]
