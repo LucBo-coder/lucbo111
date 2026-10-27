@@ -717,5 +717,59 @@
    "ultimateStyle": "safe",
    "power": 0.32
   }
+ },
+ {
+  "id": "trevenant",
+  "name": "Trevenant Thần Cây Dầu",
+  "types": [
+   "ghost",
+   "grass"
+  ],
+  "baseStats": {
+   "hp": 85,
+   "atk": 110,
+   "def": 76,
+   "spa": 65,
+   "spd": 82,
+   "spe": 56
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 44,
+  "segments": 0,
+  "skills": [
+   "wood_hammer",
+   "shadow_claw"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "phantump",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Rừng dầu xào xạc — Thần Cây Dầu nổi giận!",
+  "exp": 135,
+  "sprite": "trevenant",
+  "ai": "legendary",
+  "scale": 3.4,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "energy_ball",
+   "volley": "seed_bomb",
+   "nova": "ominous_wind",
+   "field": "leaf_tornado",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "leaf_storm",
+   "ultimateName": "Rễ Dầu Trăm Năm",
+   "ultimateStyle": "safe",
+   "power": 0.33
+  }
  }
 ]

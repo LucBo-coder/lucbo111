@@ -203,8 +203,9 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 | **An Giang** | 8–18 | Bảy Núi, Trà Sư, Núi Sam, Đền Cổ Thất Sơn, đảo Phú Quốc (đi phà) | Claydol — Hộ Vệ Đền Cổ → Huy hiệu Bảy Núi |
 | **Cần Thơ** | 16–26 | Bến Ninh Kiều, Chợ nổi Cái Răng, Cồn Sơn, miệt vườn Phong Điền | Whiscash — Chúa Sông Hậu → Huy hiệu Sông Hậu |
 | **Vĩnh Long** | 22–30 | Bến Vĩnh Long, Văn Thánh Miếu, Cù lao An Bình (đi đò), lò gạch Mang Thít, vườn bưởi Bình Minh, ruộng khoai Bình Tân | Torkoal — Thần Lò Mang Thít → Huy hiệu Gốm Đỏ |
+| **Trà Vinh** | 28–34 | Ao Bà Om, Chùa Âng, Chùa Hang (vườn cò), vườn dừa Cầu Kè, biển Ba Động, rừng ngập mặn Duyên Hải | Trevenant — Thần Cây Dầu → Huy hiệu Cây Dầu |
 
-**Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ, Vĩnh Long chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
+**Danh tiếng từng tỉnh**: người dân Cà Mau, An Giang, Cần Thơ, Vĩnh Long, Trà Vinh chào theo hạng danh tiếng của bạn ở tỉnh đó. Hạng *Được tin cậy* mở nhiệm vụ riêng: *Tuần tra rừng tràm U Minh*, *Lời nhờ của Sư cô Núi Cấm*, *Mối hàng chợ nổi* (giao hàng từ vườn Phong Điền ra chợ nổi).
 
 **Vùng mẫu Cần Thơ (V22)**: mỗi khu có bản sắc riêng — Ninh Kiều (bến, chợ), sông Hậu / Cồn Sơn (ghe, đấu trường Whiscash trên cồn), Cái Răng (chợ nổi), Bằng Lăng (rừng tràm, vườn cò, hốc đá bí mật), *Miệt vườn Phong Điền*: liếp cây ăn trái xen mương nước và cầu ván (khai báo `orchard` trong dữ liệu khu vực), bụi trái cây để hái, câu cá trên mương bằng cần câu tre của Ông Sáu, hốc bí mật sau bụi rậm. An Giang và Cà Mau đã nâng cấp theo mẫu này.
 
@@ -216,9 +217,11 @@ Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản 
 
 **Sự kiện vùng miền**: sự kiện thế giới (bùng phát, di cư, thời tiết, thương nhân) ở vùng có phiên bản địa phương thì 70% mang màu sắc vùng đó — Mùa cá linh về, Nước nổi tràn đồng, Triều cường, Cò về vườn, Lễ hội trái cây miệt vườn, Đêm đom đóm — với loài, thời tiết, hàng hóa và quà riêng (dữ liệu `regional-events.json`).
 
-**Bảo tồn** (sau boss mỗi tỉnh): 6 điểm phục hồi ven nước — trồng đước (Cà Mau), gỡ lưới bỏ hoang (An Giang), vớt rác sông Hậu (Cần Thơ), dọn tro trấu ven kênh Mang Thít (Vĩnh Long). Sức khỏe sinh thái 0–100 của tỉnh (Suy thoái / Hồi phục / Trù phú) làm Pokémon hiếm theo điều kiện xuất hiện thường hơn (tối đa ×2); Trù phú có quà một lần.
+**Bảo tồn** (sau boss mỗi tỉnh): 6 điểm phục hồi ven nước — trồng đước (Cà Mau), gỡ lưới bỏ hoang (An Giang), vớt rác sông Hậu (Cần Thơ), dọn tro trấu ven kênh Mang Thít (Vĩnh Long), nhặt rác bãi biển Ba Động (Trà Vinh). Sức khỏe sinh thái 0–100 của tỉnh (Suy thoái / Hồi phục / Trù phú) làm Pokémon hiếm theo điều kiện xuất hiện thường hơn (tối đa ×2); Trù phú có quà một lần.
 
 **Vĩnh Long (V23)**: đến từ Cần Thơ sau Huy hiệu Sông Hậu. Đất liền đi bộ được hết (cầu qua kênh Mang Thít); Cù lao An Bình giữa sông Tiền chỉ tới bằng đò của Chú Năm. Chuỗi chính: thăm Văn Thánh Miếu → ra cù lao nghe Bác Hai nhà vườn → lò gạch Mang Thít, hạ Thợ lò Ba Lò rồi làm dịu Torkoal (sinh vật giả tưởng của game, không bắt được). Phụ: giải cứu Phanpy ở ruộng khoai, mùa bưởi Năm Roi, 2 bảng nhiệm vụ, bảo tồn kênh. Cổng tới Trà Vinh đã có, đang khóa.
+
+**Trà Vinh (V23)**: đến từ góc đông nam Vĩnh Long sau Huy hiệu Gốm Đỏ. Đi bộ được hết (cầu qua mương vườn dừa và kênh rừng đước); biển ở phía đông. Chuỗi chính: dạo Ao Bà Om nghe Ông Ba Thạch → Chùa Hang hỏi chuyện đàn cò bỏ đi (Cô Năm, Nghệ nhân múa Apsara, Ông Achar Kim) → rừng dầu cổ thụ, hạ Người giữ rừng Sơn rồi làm dịu Trevenant (sinh vật giả tưởng, không bắt được). Phụ: giải cứu Ducklett, biển Ba Động (quán nghêu Cô Út), dừa sáp Cầu Kè, 2 bảng nhiệm vụ, bảo tồn bãi biển. Chùa chỉ là nơi tham quan / nói chuyện — không đánh nhau trong chùa. Cổng Cầu Cổ Chiên tới Bến Tre đã có, đang khóa.
 
 **Chợ nổi Cái Răng** (Cần Thơ): họp 5:00–9:00 giờ trong game. 4 ghe hàng treo cây bẹo; hàng có hạn mỗi phiên, hôm sau có hàng mới; mối quen (danh tiếng *Được tin cậy*) bớt 10%.
 

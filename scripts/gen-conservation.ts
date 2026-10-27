@@ -28,6 +28,11 @@ const PROVINCES = [
     label: 'Dọn tro trấu ven kênh', done: 'Bạn vớt tro trấu và gạch vỡ dạt vào bờ kênh. Nước kênh Mang Thít trong hơn một chút.',
     thrivingReward: { 'fire-stone': 1, superpotion: 3 },
   },
+  {
+    id: 'tra-vinh', name: 'Trà Vinh', area: 'tv-ba-dong', action: 'trash', unlock: 'vn-tv-3', boss: 'trevenant',
+    label: 'Nhặt rác trên bãi biển', done: 'Bạn nhặt chai nhựa và lưới rách dạt lên bãi. Cát Ba Động sạch hơn một chút.',
+    thrivingReward: { 'mystic-water': 1, netball: 3 },
+  },
 ];
 
 const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];

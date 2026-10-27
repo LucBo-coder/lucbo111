@@ -46,6 +46,16 @@
         "3": "Người Vĩnh Long mình đây rồi! Lò Mang Thít yên lửa lại cũng nhờ con."
       }
     },
+    "tra-vinh": {
+      "name": "Trà Vinh",
+      "rewards": { "1": { "sitrus-berry": 2, "greatball": 3 }, "2": { "superpotion": 3, "miracle-seed": 1 }, "3": { "ultraball": 3, "dusk-stone": 1 } },
+      "greet": {
+        "0": "Khách mới tới Trà Vinh hả? Đi dưới hàng cây dầu cho mát nghen.",
+        "1": "Lại gặp con rồi. Uống trái dừa sáp Cầu Kè chưa?",
+        "2": "Ông Achar bên Chùa Hang khen con hoài, nói cò về đông lại nhờ con.",
+        "3": "Người Trà Vinh mình đây rồi! Rừng dầu Ao Bà Om yên giấc lại cũng nhờ con."
+      }
+    },
     "starter-valley": {
       "name": "Thung Lũng Khởi Nguyên",
       "rewards": { "1": { "potion": 3 }, "2": { "greatball": 3 }, "3": { "ultraball": 2 } }

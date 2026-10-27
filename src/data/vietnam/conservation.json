@@ -199,6 +199,52 @@
      "y": 101
     }
    ]
+  },
+  "tra-vinh": {
+   "id": "tra-vinh",
+   "name": "Trà Vinh",
+   "area": "tv-ba-dong",
+   "action": "trash",
+   "unlock": "vn-tv-3",
+   "boss": "trevenant",
+   "label": "Nhặt rác trên bãi biển",
+   "done": "Bạn nhặt chai nhựa và lưới rách dạt lên bãi. Cát Ba Động sạch hơn một chút.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "netball": 3
+   },
+   "sites": [
+    {
+     "id": "tra-vinh-1",
+     "x": 109,
+     "y": 56
+    },
+    {
+     "id": "tra-vinh-2",
+     "x": 109,
+     "y": 42
+    },
+    {
+     "id": "tra-vinh-3",
+     "x": 107,
+     "y": 70
+    },
+    {
+     "id": "tra-vinh-4",
+     "x": 113,
+     "y": 83
+    },
+    {
+     "id": "tra-vinh-5",
+     "x": 112,
+     "y": 28
+    },
+    {
+     "id": "tra-vinh-6",
+     "x": 114,
+     "y": 97
+    }
+   ]
   }
  }
 }

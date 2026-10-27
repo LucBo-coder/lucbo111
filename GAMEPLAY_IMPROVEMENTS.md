@@ -159,3 +159,8 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Trước: Việt Nam Odyssey dừng ở Cần Thơ, cổng đi tiếp luôn khóa. Giờ có Huy hiệu Sông Hậu là sang được Vĩnh Long — tỉnh Lv 22–30 với Văn Thánh Miếu, đò ra Cù lao An Bình, vườn bưởi, ruộng khoai và xóm lò gạch Mang Thít.
 - Boss mới Torkoal — Thần Lò Mang Thít (giả tưởng): chỉ xuất hiện sau khi hạ thợ lò canh lò; đội Nước thắng nhanh, đội không lợi hệ vẫn thắng được nhưng lâu hơn.
 - 8 nhiệm vụ (chuỗi chính, giải cứu Phanpy, mùa bưởi Năm Roi, 2 bảng, bảo tồn kênh), 5 HLV, danh tiếng và hộ chiếu với 3 địa danh mới.
+
+### Tỉnh thứ năm: Trà Vinh
+- Trước: hạ Thần Lò Mang Thít xong thì hết đường. Giờ Huy hiệu Gốm Đỏ mở đường tới Trà Vinh (Lv 28–34): thành phố nhiều cây cổ thụ, Ao Bà Om, Chùa Hang có đàn cò, vườn dừa sáp Cầu Kè, bãi biển Ba Động đầu tiên của chiến dịch có biển mở.
+- Boss mới Trevenant — Thần Cây Dầu (giả tưởng) trong rừng dầu cổ thụ: đội hệ Lửa / Bay thắng nhanh, đội Nước bị kháng vẫn thắng được nhưng rất lâu — một lý do để đổi đội.
+- 9 nhiệm vụ (chuỗi chính, giải cứu Ducklett, biển Ba Động, dừa sáp, 2 bảng, bảo tồn bãi biển), 5 HLV, danh tiếng và hộ chiếu với 3 địa danh.

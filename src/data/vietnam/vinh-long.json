@@ -852,7 +852,7 @@
    },
    "money": 4000,
    "flag": "badge:vinh-long",
-   "message": "Nhận Huy hiệu Gốm Đỏ (Vĩnh Long)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Gốm Đỏ (Vĩnh Long)! Đường tới Trà Vinh (góc đông nam, cuối vườn bưởi Bình Minh) đã mở."
   }
  },
  "portals": [
@@ -888,13 +888,13 @@
    "name": "Đường tới Trà Vinh",
    "x": 112,
    "y": 106,
-   "to": "vinh-long",
-   "toX": 110,
-   "toY": 104,
+   "to": "tra-vinh",
+   "toX": 8,
+   "toY": 52,
    "requires": [
-    "vn:tra-vinh-open"
+    "badge:vinh-long"
    ],
-   "hint": "Đường tới Trà Vinh chưa có trong phiên bản này."
+   "hint": "Đường tới Trà Vinh mở cho người có Huy hiệu Gốm Đỏ — làm dịu Thần Lò Mang Thít trước đã."
   }
  ],
  "docks": [

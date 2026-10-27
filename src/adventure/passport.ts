@@ -22,6 +22,7 @@ export const VN_PROVINCES: ProvinceDef[] = [
   { id: 'an-giang', name: 'An Giang', need: ['badge:ca-mau'], hint: 'Cần Huy hiệu Rừng Tràm (Cà Mau)', questPrefix: 'vn-ag-', badge: { flag: 'badge:an-giang', name: 'Huy hiệu Bảy Núi' }, landmarks: [{ flag: 'landmark:phu-quoc', name: 'Đảo Phú Quốc' }] },
   { id: 'can-tho', name: 'Cần Thơ', need: ['badge:an-giang'], hint: 'Cần Huy hiệu Bảy Núi (An Giang)', questPrefix: 'vn-ct-', badge: { flag: 'badge:can-tho', name: 'Huy hiệu Sông Hậu' }, landmarks: [{ flag: 'landmark:cai-rang', name: 'Chợ nổi Cái Răng' }, { flag: 'landmark:ninh-kieu', name: 'Bến Ninh Kiều' }] },
   { id: 'vinh-long', name: 'Vĩnh Long', need: ['badge:can-tho'], hint: 'Cần Huy hiệu Sông Hậu (Cần Thơ)', questPrefix: 'vn-vl-', badge: { flag: 'badge:vinh-long', name: 'Huy hiệu Gốm Đỏ' }, landmarks: [{ flag: 'landmark:van-thanh', name: 'Văn Thánh Miếu' }, { flag: 'landmark:an-binh', name: 'Cù lao An Bình' }, { flag: 'landmark:mang-thit', name: 'Lò gạch Mang Thít' }] },
+  { id: 'tra-vinh', name: 'Trà Vinh', need: ['badge:vinh-long'], hint: 'Cần Huy hiệu Gốm Đỏ (Vĩnh Long)', questPrefix: 'vn-tv-', badge: { flag: 'badge:tra-vinh', name: 'Huy hiệu Cây Dầu' }, landmarks: [{ flag: 'landmark:ao-ba-om', name: 'Ao Bà Om' }, { flag: 'landmark:chua-hang', name: 'Chùa Hang' }, { flag: 'landmark:ba-dong', name: 'Biển Ba Động' }] },
 ];
 
 export interface Count { done: number; total: number }

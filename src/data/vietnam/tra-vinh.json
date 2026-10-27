@@ -1,0 +1,1070 @@
+{
+ "id": "tra-vinh",
+ "name": "Trà Vinh",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": {
+  "x": 8,
+  "y": 52
+ },
+ "areas": [
+  {
+   "id": "tv-grove",
+   "name": "Rừng dầu cổ thụ",
+   "rect": [
+    2,
+    60,
+    24,
+    80
+   ],
+   "habitat": "forest",
+   "level": [
+    31,
+    34
+   ]
+  },
+  {
+   "id": "tv-town",
+   "name": "Thành phố Trà Vinh",
+   "rect": [
+    41,
+    31,
+    98,
+    58
+   ],
+   "habitat": "village",
+   "level": [
+    28,
+    28
+   ]
+  },
+  {
+   "id": "tv-cau-ke",
+   "name": "Vườn dừa Cầu Kè",
+   "rect": [
+    0,
+    0,
+    50,
+    38
+   ],
+   "habitat": "farm",
+   "level": [
+    28,
+    32
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 14
+   }
+  },
+  {
+   "id": "tv-co-chien",
+   "name": "Bờ sông Cổ Chiên",
+   "rect": [
+    51,
+    0,
+    98,
+    30
+   ],
+   "habitat": "lake",
+   "level": [
+    29,
+    33
+   ]
+  },
+  {
+   "id": "tv-cang-long",
+   "name": "Đồng lúa Càng Long",
+   "rect": [
+    0,
+    39,
+    40,
+    59
+   ],
+   "habitat": "meadow",
+   "level": [
+    28,
+    31
+   ]
+  },
+  {
+   "id": "tv-ao-ba-om",
+   "name": "Ao Bà Om",
+   "rect": [
+    0,
+    60,
+    46,
+    95
+   ],
+   "habitat": "meadow",
+   "level": [
+    29,
+    32
+   ]
+  },
+  {
+   "id": "tv-chua-hang",
+   "name": "Chùa Hang",
+   "rect": [
+    47,
+    59,
+    98,
+    95
+   ],
+   "habitat": "meadow",
+   "level": [
+    29,
+    33
+   ]
+  },
+  {
+   "id": "tv-ba-dong",
+   "name": "Biển Ba Động",
+   "rect": [
+    99,
+    0,
+    127,
+    111
+   ],
+   "habitat": "coast",
+   "level": [
+    30,
+    34
+   ]
+  },
+  {
+   "id": "tv-duyen-hai",
+   "name": "Rừng ngập mặn Duyên Hải",
+   "rect": [
+    0,
+    96,
+    98,
+    111
+   ],
+   "habitat": "mangrove",
+   "level": [
+    30,
+    34
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     3,
+     52
+    ],
+    [
+     30,
+     52
+    ],
+    [
+     44,
+     46
+    ],
+    [
+     96,
+     46
+    ],
+    [
+     106,
+     50
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     24,
+     52
+    ],
+    [
+     22,
+     32
+    ],
+    [
+     18,
+     14
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     74,
+     46
+    ],
+    [
+     76,
+     26
+    ],
+    [
+     80,
+     12
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     44,
+     48
+    ],
+    [
+     40,
+     66
+    ],
+    [
+     36,
+     80
+    ],
+    [
+     32,
+     94
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     38,
+     74
+    ],
+    [
+     26,
+     76
+    ],
+    [
+     20,
+     76
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     70,
+     46
+    ],
+    [
+     70,
+     70
+    ],
+    [
+     76,
+     84
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     70,
+     70
+    ],
+    [
+     62,
+     90
+    ],
+    [
+     54,
+     104
+    ],
+    [
+     20,
+     104
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     96,
+     46
+    ],
+    [
+     100,
+     70
+    ],
+    [
+     102,
+     86
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  44,
+  34,
+  80,
+  56
+ ],
+ "lake": {
+  "cx": 150,
+  "cy": 56,
+  "rx": 40,
+  "ry": 90
+ },
+ "buildings": [
+  {
+   "id": "tv-center",
+   "name": "Trung tâm Pokémon",
+   "x": 48,
+   "y": 37,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "tv-mart",
+   "name": "Cửa hàng",
+   "x": 58,
+   "y": 37,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "tv-museum",
+   "name": "Bảo tàng Văn hóa Khmer",
+   "x": 66,
+   "y": 37,
+   "w": 7,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "tv-chua-ang",
+   "name": "Chùa Âng",
+   "x": 28,
+   "y": 64,
+   "w": 7,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "tv-chua-hang",
+   "name": "Chùa Hang",
+   "x": 60,
+   "y": 64,
+   "w": 8,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "tv-stall",
+   "name": "Quán nghêu Ba Động",
+   "x": 100,
+   "y": 54,
+   "w": 5,
+   "h": 3,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "tv-farmhouse",
+   "name": "Nhà vườn dừa sáp",
+   "x": 26,
+   "y": 18,
+   "w": 5,
+   "h": 3,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "haystack",
+   "x": 12,
+   "y": 46
+  },
+  {
+   "kind": "haystack",
+   "x": 32,
+   "y": 56
+  },
+  {
+   "kind": "bucket",
+   "x": 32,
+   "y": 22
+  },
+  {
+   "kind": "log",
+   "x": 40,
+   "y": 82
+  },
+  {
+   "kind": "bucket",
+   "x": 106,
+   "y": 56
+  },
+  {
+   "kind": "log",
+   "x": 86,
+   "y": 76
+  }
+ ],
+ "signs": [
+  {
+   "x": 54,
+   "y": 50,
+   "text": [
+    "THÀNH PHỐ TRÀ VINH",
+    "Thành phố nhiều cây cổ thụ, nơi người Kinh, Khmer và Hoa cùng sinh sống. Phía tây nam: Ao Bà Om, Chùa Âng · Phía nam: Chùa Hang · Phía đông: biển Ba Động · Phía tây: đường về Vĩnh Long."
+   ]
+  },
+  {
+   "x": 40,
+   "y": 62,
+   "text": [
+    "AO BÀ OM",
+    "Ao nước hình gần vuông, bờ ao trồng những hàng cây dầu cổ thụ rễ nổi lên mặt đất. Bên cạnh là Chùa Âng và Bảo tàng Văn hóa Khmer.",
+    "(Thần Cây Dầu trong game là sinh vật giả tưởng.)"
+   ]
+  },
+  {
+   "x": 68,
+   "y": 62,
+   "text": [
+    "CHÙA HANG",
+    "Ngôi chùa Khmer có cổng vòm như hang, khuôn viên nhiều cây cao — nơi hàng ngàn con cò về trú mỗi chiều.",
+    "Xin giữ yên lặng, không làm kinh động đàn cò."
+   ]
+  },
+  {
+   "x": 98,
+   "y": 44,
+   "text": [
+    "BIỂN BA ĐỘNG",
+    "Bãi biển cát mịn của Trà Vinh ở vùng Duyên Hải. ← Thành phố · ↓ Rừng ngập mặn Duyên Hải"
+   ]
+  },
+  {
+   "x": 26,
+   "y": 38,
+   "text": [
+    "VƯỜN DỪA CẦU KÈ",
+    "Cầu Kè là quê của dừa sáp — trái dừa cơm dày, dẻo, nước sệt."
+   ]
+  },
+  {
+   "x": 64,
+   "y": 94,
+   "text": [
+    "RỪNG NGẬP MẶN DUYÊN HẢI",
+    "Rừng đước, rừng mắm chắn sóng ven biển. Đi đường ven kênh, cẩn thận bùn lầy."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "tv-guide",
+   "name": "Hướng dẫn viên Thảo",
+   "sprite": "girl",
+   "x": 60,
+   "y": 49,
+   "lines": [
+    "Chào mừng tới Trà Vinh — thành phố của những hàng cây cổ thụ!",
+    "Ao Bà Om, Chùa Âng, Chùa Hang, biển Ba Động, dừa sáp Cầu Kè đều có thật. Thần Cây Dầu và những chuyện lạ trong game là giả tưởng."
+   ]
+  },
+  {
+   "id": "shopkeeper",
+   "name": "Cô bán hàng Mai",
+   "sprite": "villager",
+   "x": 61,
+   "y": 43,
+   "lines": [
+    "Bóng, thuốc, bánh tét Trà Cuôn — có đủ hết!"
+   ]
+  },
+  {
+   "id": "tv-board",
+   "name": "Bảng nhiệm vụ Trà Vinh",
+   "sprite": "board",
+   "x": 66,
+   "y": 49,
+   "lines": [
+    "Bảng nhiệm vụ: chưa có yêu cầu mới."
+   ]
+  },
+  {
+   "id": "tv-elder",
+   "name": "Ông Ba Thạch",
+   "sprite": "elder",
+   "x": 30,
+   "y": 79,
+   "lines": [
+    "Ông bà kể hồi xưa hai phe thi nhau đắp ao, phe phụ nữ do bà Om dẫn đầu thắng, nên ao mang tên Ao Bà Om.",
+    "Mấy cây dầu già này đứng đây cả trăm năm rồi."
+   ]
+  },
+  {
+   "id": "tv-achar",
+   "name": "Ông Achar Kim",
+   "sprite": "elder",
+   "x": 64,
+   "y": 70,
+   "lines": [
+    "Achar là người lo việc chùa giúp các sư. Chiều nào cò cũng về đầy cây — con đứng xa mà ngắm."
+   ]
+  },
+  {
+   "id": "tv-stork",
+   "name": "Cô Năm ngắm cò",
+   "sprite": "girl",
+   "x": 76,
+   "y": 72,
+   "lines": [
+    "Mấy bữa nay đàn cò về ít hẳn. Nghe nói bên rừng dầu có tiếng rễ cây kêu răng rắc ban đêm..."
+   ]
+  },
+  {
+   "id": "tv-farmer",
+   "name": "Chú Tư dừa sáp",
+   "sprite": "farmer",
+   "x": 24,
+   "y": 24,
+   "lines": [
+    "Cả trăm trái dừa mới có vài trái sáp. Dừa sáp Cầu Kè cơm dẻo, ăn với đường là hết sảy."
+   ]
+  },
+  {
+   "id": "tv-seller",
+   "name": "Cô Út bán nghêu",
+   "sprite": "villager",
+   "x": 102,
+   "y": 58,
+   "lines": [
+    "Nghêu Ba Động luộc sả nè! Mà rác dạt lên bãi nhiều quá, khách tới thấy kỳ."
+   ]
+  },
+  {
+   "id": "tv-ranger",
+   "name": "Anh kiểm lâm Duyên Hải",
+   "sprite": "youngster",
+   "x": 50,
+   "y": 104,
+   "lines": [
+    "Rừng đước chắn sóng cho cả vùng ven biển. Đi đường ven kênh thôi, đừng giẫm cây con."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "tv-keeper",
+   "name": "Người giữ rừng Sơn",
+   "sprite": "youngster",
+   "x": 28,
+   "y": 72,
+   "team": [
+    [
+     "phantump",
+     31
+    ],
+    [
+     "pumpkaboo",
+     31
+    ],
+    [
+     "gourgeist",
+     33
+    ]
+   ],
+   "challenge": [
+    "Rừng dầu ban đêm không yên đâu. Muốn vô thì qua được tôi đã!"
+   ],
+   "win": [
+    "Được! Thần Cây Dầu thức giấc rồi — đi nhẹ thôi."
+   ],
+   "lose": [
+    "Rừng này không dành cho người yếu bóng vía!"
+   ],
+   "rewards": {
+    "items": {
+     "dusk-stone": 1,
+     "superpotion": 2
+    },
+    "exp": 1100
+   }
+  },
+  {
+   "id": "tv-dancer",
+   "name": "Nghệ nhân múa Apsara",
+   "sprite": "girl",
+   "x": 72,
+   "y": 78,
+   "team": [
+    [
+     "kirlia",
+     30
+    ],
+    [
+     "medicham",
+     31
+    ],
+    [
+     "gardevoir",
+     32
+    ]
+   ],
+   "challenge": [
+    "Điệu múa Apsara cần sự uyển chuyển — trận đấu cũng vậy!"
+   ],
+   "win": [
+    "Bạn đấu đẹp như một điệu múa."
+   ],
+   "lose": [
+    "Tập thêm rồi quay lại nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "expert-belt": 1,
+     "greatball": 3
+    },
+    "exp": 1000
+   }
+  },
+  {
+   "id": "tv-coconut",
+   "name": "Chú Sáu leo dừa",
+   "sprite": "farmer",
+   "x": 14,
+   "y": 26,
+   "team": [
+    [
+     "exeggutor",
+     30
+    ],
+    [
+     "tropius",
+     30
+    ],
+    [
+     "sawsbuck",
+     31
+    ]
+   ],
+   "challenge": [
+    "Leo dừa cả buổi, đấu một trận cho giãn gân cốt!"
+   ],
+   "win": [
+    "Thua rồi, uống trái dừa sáp cho mát!"
+   ],
+   "lose": [
+    "Về nghỉ rồi quay lại đấu tiếp!"
+   ],
+   "rewards": {
+    "items": {
+     "miracle-seed": 1,
+     "greatball": 3
+    },
+    "exp": 980
+   }
+  },
+  {
+   "id": "tv-rower",
+   "name": "Tay chèo ghe Ngo",
+   "sprite": "youngster",
+   "x": 62,
+   "y": 22,
+   "team": [
+    [
+     "machoke",
+     30
+    ],
+    [
+     "hariyama",
+     31
+    ],
+    [
+     "sawk",
+     32
+    ]
+   ],
+   "challenge": [
+    "Đội ghe Ngo tập cho mùa đua lễ Ok Om Bok. Đấu thử sức chèo không?"
+   ],
+   "win": [
+    "Sức bạn chèo ghe Ngo được đó!"
+   ],
+   "lose": [
+    "Tập thêm cơ tay rồi quay lại!"
+   ],
+   "rewards": {
+    "items": {
+     "muscle-band": 1,
+     "superpotion": 2
+    },
+    "exp": 1020
+   }
+  },
+  {
+   "id": "tv-beach",
+   "name": "Cậu bé Ba Động",
+   "sprite": "youngster",
+   "x": 104,
+   "y": 74,
+   "team": [
+    [
+     "dwebble",
+     30
+    ],
+    [
+     "sandslash",
+     31
+    ],
+    [
+     "crustle",
+     32
+    ]
+   ],
+   "challenge": [
+    "Tui xây lâu đài cát giỏi nhất bãi này. Đấu không?"
+   ],
+   "win": [
+    "Lâu đài cát sập rồi..."
+   ],
+   "lose": [
+    "Biển Ba Động là sân nhà tui!"
+   ],
+   "rewards": {
+    "items": {
+     "soft-sand": 1,
+     "netball": 3
+    },
+    "exp": 990
+   }
+  }
+ ],
+ "rescue": {
+  "id": "tv-stork-ducklett",
+  "x": 84,
+  "y": 84,
+  "species": "ducklett",
+  "level": 30,
+  "guards": [
+   [
+    "murkrow",
+    30
+   ],
+   [
+    "murkrow",
+    30
+   ],
+   [
+    "honchkrow",
+    33
+   ]
+  ],
+  "quest": "vn-tv-rescue",
+  "reporter": "Cô Năm ngắm cò"
+ },
+ "chests": [
+  {
+   "id": "chest-tv-grove",
+   "x": 8,
+   "y": 80,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-tv-beach",
+   "x": 106,
+   "y": 30,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-tv-coconut",
+   "x": 40,
+   "y": 22,
+   "items": {
+    "greatball": 3,
+    "sitrus-berry": 2
+   }
+  },
+  {
+   "id": "chest-tv-hang",
+   "x": 90,
+   "y": 66,
+   "items": {
+    "superpotion": 2,
+    "sharp-beak": 1
+   }
+  },
+  {
+   "id": "chest-tv-coconut-nook",
+   "x": 32,
+   "y": 30,
+   "items": {
+    "sitrus-berry": 3,
+    "exp-candy-s": 2,
+    "miracle-seed": 1
+   },
+   "requiresFlag": "field:tra-vinh:tv-thicket"
+  },
+  {
+   "id": "chest-tv-beach-nook",
+   "x": 104,
+   "y": 90,
+   "items": {
+    "ultraball": 2,
+    "hard-stone": 1,
+    "exp-candy-s": 2
+   },
+   "requiresFlag": "field:tra-vinh:tv-cracked"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-tra-vinh-center",
+   "name": "Trung tâm Pokémon Trà Vinh",
+   "x": 51,
+   "y": 43
+  },
+  {
+   "id": "wp-tv-beach",
+   "name": "Trạm Ba Động",
+   "x": 100,
+   "y": 62
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "trevenant",
+  "name": "Trevenant — Thần Cây Dầu",
+  "x": 14,
+  "y": 70,
+  "level": 36,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:tv-keeper"
+  ],
+  "hint": "Rễ cây dầu già kêu răng rắc trong bóng tối... Hỏi chuyện Người giữ rừng Sơn trước đã.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "dusk-stone": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 4500,
+   "flag": "badge:tra-vinh",
+   "message": "Nhận Huy hiệu Cây Dầu (Trà Vinh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-tv-vl",
+   "name": "Đường về Vĩnh Long",
+   "x": 4,
+   "y": 52,
+   "to": "vinh-long",
+   "toX": 110,
+   "toY": 104
+  },
+  {
+   "id": "portal-tv-next",
+   "name": "Cầu Cổ Chiên — đường tới Bến Tre",
+   "x": 80,
+   "y": 12,
+   "to": "tra-vinh",
+   "toX": 78,
+   "toY": 15,
+   "requires": [
+    "vn:ben-tre-open"
+   ],
+   "hint": "Đường tới Bến Tre chưa có trong phiên bản này."
+  }
+ ],
+ "docks": [
+  {
+   "id": "tv-dock-beach",
+   "name": "Bến ghe Ba Động",
+   "x": 108,
+   "y": 46,
+   "wx": 112,
+   "wy": 46
+  },
+  {
+   "id": "tv-dock-canal",
+   "name": "Bến ghe Duyên Hải",
+   "x": 40,
+   "y": 95,
+   "wx": 40,
+   "wy": 98
+  }
+ ],
+ "rivers": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     0,
+     6
+    ],
+    [
+     40,
+     8
+    ],
+    [
+     80,
+     5
+    ],
+    [
+     124,
+     8
+    ]
+   ],
+   "mouth": true
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     2,
+     100
+    ],
+    [
+     40,
+     98
+    ],
+    [
+     80,
+     100
+    ],
+    [
+     114,
+     100
+    ]
+   ],
+   "mouth": true
+  },
+  {
+   "w": 4,
+   "pts": [
+    [
+     8,
+     87
+    ],
+    [
+     22,
+     87
+    ]
+   ]
+  }
+ ],
+ "nodes": [
+  {
+   "id": "tv-bush-1",
+   "table": "orchard-forage",
+   "x": 10,
+   "y": 18
+  },
+  {
+   "id": "tv-bush-2",
+   "table": "orchard-forage",
+   "x": 30,
+   "y": 14
+  },
+  {
+   "id": "tv-bush-3",
+   "table": "orchard-forage",
+   "x": 42,
+   "y": 26
+  },
+  {
+   "id": "tv-bush-4",
+   "table": "meadow-forage",
+   "x": 16,
+   "y": 46
+  },
+  {
+   "id": "tv-bush-5",
+   "table": "mangrove-forage",
+   "x": 30,
+   "y": 106
+  },
+  {
+   "id": "tv-fish-1",
+   "table": "lake-fish",
+   "x": 25,
+   "y": 86
+  },
+  {
+   "id": "tv-fish-2",
+   "table": "mangrove-fish",
+   "x": 70,
+   "y": 101
+  },
+  {
+   "id": "tv-fish-3",
+   "table": "lake-fish",
+   "x": 50,
+   "y": 12
+  }
+ ],
+ "field": [
+  {
+   "id": "tv-thicket",
+   "ability": "cut",
+   "x": 36,
+   "y": 30,
+   "nook": {
+    "cx": 32.5,
+    "cy": 30.5,
+    "r": 3,
+    "wall": "tree"
+   }
+  },
+  {
+   "id": "tv-cracked",
+   "ability": "smash",
+   "x": 108,
+   "y": 90,
+   "nook": {
+    "cx": 104.5,
+    "cy": 90.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}

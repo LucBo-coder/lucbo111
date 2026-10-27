@@ -779,5 +779,189 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-tv-cang-long",
+  "name": "Đồng lúa Càng Long",
+  "areas": [
+   "tv-cang-long"
+  ],
+  "biome": "meadow",
+  "level": [
+   28,
+   31
+  ],
+  "elite": [
+   33,
+   35
+  ],
+  "boss": null,
+  "recommended": 31,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-cau-ke",
+  "name": "Vườn dừa Cầu Kè",
+  "areas": [
+   "tv-cau-ke"
+  ],
+  "biome": "forest",
+  "level": [
+   28,
+   32
+  ],
+  "elite": [
+   34,
+   36
+  ],
+  "boss": null,
+  "recommended": 32,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-co-chien",
+  "name": "Bờ sông Cổ Chiên",
+  "areas": [
+   "tv-co-chien"
+  ],
+  "biome": "lake",
+  "level": [
+   29,
+   33
+  ],
+  "elite": [
+   35,
+   37
+  ],
+  "boss": null,
+  "recommended": 33,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-ao-ba-om",
+  "name": "Ao Bà Om",
+  "areas": [
+   "tv-ao-ba-om"
+  ],
+  "biome": "meadow",
+  "level": [
+   29,
+   32
+  ],
+  "elite": [
+   34,
+   36
+  ],
+  "boss": null,
+  "recommended": 32,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-grove",
+  "name": "Rừng dầu cổ thụ",
+  "areas": [
+   "tv-grove"
+  ],
+  "biome": "ruins",
+  "level": [
+   31,
+   34
+  ],
+  "elite": [
+   36,
+   38
+  ],
+  "boss": null,
+  "recommended": 34,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-chua-hang",
+  "name": "Chùa Hang",
+  "areas": [
+   "tv-chua-hang"
+  ],
+  "biome": "forest",
+  "level": [
+   29,
+   33
+  ],
+  "elite": [
+   35,
+   37
+  ],
+  "boss": null,
+  "recommended": 33,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-ba-dong",
+  "name": "Biển Ba Động",
+  "areas": [
+   "tv-ba-dong"
+  ],
+  "biome": "coast",
+  "level": [
+   30,
+   34
+  ],
+  "elite": [
+   36,
+   38
+  ],
+  "boss": null,
+  "recommended": 34,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tv-duyen-hai",
+  "name": "Rừng ngập mặn Duyên Hải",
+  "areas": [
+   "tv-duyen-hai"
+  ],
+  "biome": "swamp",
+  "level": [
+   30,
+   34
+  ],
+  "elite": [
+   36,
+   38
+  ],
+  "boss": null,
+  "recommended": 34,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

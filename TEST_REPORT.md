@@ -331,3 +331,16 @@ Phát hiện khi viết e2e: nhiệm vụ đang theo dõi bị đặt lại về
 Lỗi duy nhất: `coop.spec.ts:69` (khách giữ phím D 600 ms nhưng chủ phòng thấy dịch < 10 px: 3912 so với > 3922). **Lỗi có sẵn, không do đợt này**: cất tạm toàn bộ thay đổi (`git stash -u`), build lại commit `f6aa5855` và chạy riêng `coop.spec.ts` → cùng lỗi ở cùng dòng; 2 test co-op còn lại qua. Nghi do máy thiếu bộ nhớ / trang khách chạy nền bị giảm tốc khung hình — chưa sửa.
 
 Ảnh đã xem (e2e Vĩnh Long): bến, Văn Thánh Miếu, cù lao, Torkoal trong arena, trang hộ chiếu.
+
+## V23 — đợt 23: tỉnh Trà Vinh
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **545/545 ✅** (chạy toàn bộ). Mới: `tests/v23_tra_vinh.test.ts` (6; cân bằng Trevenant Lv 36: đội Lửa 33 s, đội Nước 230 s). Test điểm câu chung bắt được `tv-fish-2` xa nước → đã dời sát kênh. `server_v7` (bộ lập lịch sự kiện thế giới) lỗi 1 lần khi chạy cả bộ, chạy riêng 3/3 qua — chập chờn do timing, không liên quan |
+| E2E mới `v23_tra_vinh` | ✅ (49 s) |
+| E2E liên quan: `v23_vinh_long` (cổng đổi đích), `v8_vietnam`, `v13_can_tho`, `v22_conservation`, `v22_journal`, `v22_map_cantho` | ✅ 8/8 |
+
+Ghi chú e2e: đội thử Lv 34 có Staravia lên cấp → màn tiến hóa (modal) chặn boss xuất hiện; dùng đội không tiến hóa ở mức cấp này. Mục tiêu "đuổi 4 Pokémon" gửi đúng sự kiện `defeat` mà game phát khi hạ Pokémon hoang.
+
+Ảnh đã xem: thành phố, Ao Bà Om (ao, Ông Ba), Chùa Hang, Trevenant trong vòng đá rừng dầu, biển Ba Động (bãi cát, bến ghe, quán), hộ chiếu.

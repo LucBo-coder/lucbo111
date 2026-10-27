@@ -162,6 +162,9 @@ export const NPC_TRAINER_ART: Record<string, string> = {
   // Vĩnh Long
   'vl-guide': 'beauty', 'vl-ferryman': 'fisherman', 'vl-host': 'sage', 'vl-potter-master': 'sage', 'vl-scholar': 'gentleman', 'vl-grower': 'picnicker', 'vl-potato': 'rancher',
   'vl-potter': 'blackbelt', 'vl-orchard-girl': 'lass', 'vl-teacher': 'scientist', 'vl-digger': 'hiker', 'vl-fisher': 'fisherman',
+  // Trà Vinh
+  'tv-guide': 'beauty', 'tv-elder': 'sage', 'tv-achar': 'gentleman', 'tv-stork': 'picnicker', 'tv-farmer': 'rancher', 'tv-seller': 'picnicker', 'tv-ranger': 'camper',
+  'tv-keeper': 'hiker', 'tv-dancer': 'lass', 'tv-coconut': 'rancher', 'tv-rower': 'blackbelt', 'tv-beach': 'youngster',
   // V20 Starter Valley: village guide, flower seller, Training Camp coach + students
   'sv-guide': 'camper', 'sv-granny': 'sage', 'sv-fisher': 'fisherman',
   'ef-ranger': 'pokemonranger', 'ef-botanist': 'lass', 'ef-bugcatcher': 'bugcatcher', 'ef-hiker': 'hiker', 'ef-fisher': 'fisherman', 'camp-coach': 'veteran', 'camp-tank': 'hiker', 'camp-speed': 'lass', 'camp-mage': 'psychic',

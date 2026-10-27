@@ -3246,5 +3246,593 @@
     "Kênh trong lại rồi. Cá với Pokémon nước sẽ về đông."
    ]
   }
+ },
+ {
+  "id": "vn-tv-1",
+  "kind": "main",
+  "title": "Thành phố cây xanh",
+  "giver": "tv-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:vinh-long"
+  ],
+  "description": "Làm quen với Trà Vinh: ghé Trung tâm Pokémon, dạo Ao Bà Om và nghe Ông Ba Thạch kể chuyện.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-tra-vinh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Trà Vinh",
+    "marker": {
+     "x": 51,
+     "y": 43,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "tv-ao-ba-om",
+    "count": 1,
+    "text": "Đến Ao Bà Om (phía tây nam thành phố)",
+    "marker": {
+     "x": 38,
+     "y": 70,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-elder",
+    "count": 1,
+    "text": "Nghe Ông Ba Thạch kể chuyện bên Ao Bà Om",
+    "marker": {
+     "x": 30,
+     "y": 79,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 600,
+   "reputation": 10,
+   "flags": [
+    "landmark:ao-ba-om"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Trà Vinh! Thành phố này nhiều cây cổ thụ lắm, đi dưới bóng cây mát rượi.",
+    "Ghé Trung tâm Pokémon trước, rồi ra Ao Bà Om gặp Ông Ba Thạch — ông rành chuyện xưa nhất vùng."
+   ],
+   "progress": [
+    "Ao Bà Om ở phía tây nam, đi theo đường nhỏ từ thành phố xuống là tới."
+   ],
+   "complete": [
+    "Ông Ba nhờ con ghé Chùa Hang hỏi chuyện đàn cò rồi đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-2",
+  "kind": "main",
+  "title": "Đàn cò Chùa Hang",
+  "giver": "tv-elder",
+  "requires": [
+   "vn-tv-1"
+  ],
+  "description": "Đàn cò ở Chùa Hang về ít hẳn. Đến chùa hỏi chuyện Cô Năm và Ông Achar Kim.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tv-chua-hang",
+    "count": 1,
+    "text": "Đến Chùa Hang (phía nam thành phố)",
+    "marker": {
+     "x": 70,
+     "y": 64,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-stork",
+    "count": 1,
+    "text": "Hỏi chuyện Cô Năm ngắm cò",
+    "marker": {
+     "x": 76,
+     "y": 72,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tv-dancer",
+    "count": 1,
+    "text": "Đấu với Nghệ nhân múa Apsara",
+    "marker": {
+     "x": 72,
+     "y": 78,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-achar",
+    "count": 1,
+    "text": "Gặp Ông Achar Kim ở Chùa Hang",
+    "marker": {
+     "x": 64,
+     "y": 70,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 3
+   },
+   "worldExp": 800,
+   "reputation": 20,
+   "flags": [
+    "landmark:chua-hang"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chiều nào cò cũng bay về Chùa Hang trắng cả ngọn cây. Mà mấy bữa nay ít hẳn.",
+    "Con qua chùa hỏi thử coi có chuyện gì."
+   ],
+   "progress": [
+    "Chùa Hang ở phía nam thành phố, cổng vòm như cái hang."
+   ],
+   "complete": [
+    "Đêm nào bên rừng dầu cũng có tiếng rễ cây kêu răng rắc, cò sợ không dám về.",
+    "Có thứ gì đó trong rừng dầu cổ thụ đã thức giấc. Con qua đó coi giúp với."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-3",
+  "kind": "main",
+  "title": "Thần Cây Dầu",
+  "giver": "tv-achar",
+  "requires": [
+   "vn-tv-2"
+  ],
+  "description": "Vào rừng dầu cổ thụ cạnh Ao Bà Om, làm dịu Trevenant — Thần Cây Dầu (sinh vật giả tưởng của game) đang làm rừng bất an.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tv-grove",
+    "count": 1,
+    "text": "Đến rừng dầu cổ thụ (phía tây Chùa Âng)",
+    "marker": {
+     "x": 20,
+     "y": 76,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tv-keeper",
+    "count": 1,
+    "text": "Đấu với Người giữ rừng Sơn",
+    "marker": {
+     "x": 28,
+     "y": 72,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "trevenant",
+    "count": 1,
+    "text": "Đánh bại Trevenant — Thần Cây Dầu",
+    "marker": {
+     "x": 14,
+     "y": 70,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-achar",
+    "count": 1,
+    "text": "Báo tin cho Ông Achar Kim",
+    "marker": {
+     "x": 64,
+     "y": 70,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1600,
+   "reputation": 40
+  },
+  "dialogue": {
+   "offer": [
+    "Người giữ rừng Sơn canh rừng dầu ngày đêm. Con hỏi cậu ấy trước rồi hẵng vô."
+   ],
+   "progress": [
+    "Khi Thần Cây Dầu tung lá thành vòng, đứng vào chỗ trống mà né!"
+   ],
+   "complete": [
+    "Rừng dầu yên rồi! Chiều nay cò đã về đầy ngọn cây.",
+    "Cảm ơn con. Cầm lấy, đường đi còn xa lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-rescue",
+  "kind": "side",
+  "title": "Ducklett lạc bầy",
+  "giver": "tv-stork",
+  "requires": [
+   "vn-tv-1"
+  ],
+  "description": "Một chú Ducklett bị bầy Murkrow vây ở góc vườn Chùa Hang.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "tv-stork-ducklett",
+    "count": 1,
+    "text": "Giải cứu Ducklett ở góc đông nam Chùa Hang",
+    "marker": {
+     "x": 84,
+     "y": 84,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-stork",
+    "count": 1,
+    "text": "Báo cho Cô Năm",
+    "marker": {
+     "x": 76,
+     "y": 72,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sharp-beak": 1,
+    "greatball": 3
+   },
+   "worldExp": 650,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có chú Ducklett nhỏ bị bầy Murkrow vây ở góc vườn. Tụi nó kêu inh ỏi!",
+    "Con giúp cô với."
+   ],
+   "progress": [
+    "Góc đông nam khuôn viên chùa đó con."
+   ],
+   "complete": [
+    "Ducklett bay về với đàn rồi! Cảm ơn con nhiều."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-board-1",
+  "kind": "capture",
+  "title": "Bảng: Bạn của biển",
+  "giver": "tv-board",
+  "requires": [
+   "vn-tv-1"
+  ],
+  "description": "Cô Út bán nghêu muốn ghi lại Pokémon sống ở biển Ba Động.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "wingull",
+    "count": 1,
+    "text": "Thu phục 1 Wingull (biển Ba Động)",
+    "marker": {
+     "x": 104,
+     "y": 66,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "capture",
+    "target": "krabby",
+    "count": 1,
+    "text": "Thu phục 1 Krabby (biển Ba Động)",
+    "marker": {
+     "x": 104,
+     "y": 66,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-seller",
+    "count": 1,
+    "text": "Mang tới cho Cô Út bán nghêu xem",
+    "marker": {
+     "x": 102,
+     "y": 58,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "mystic-water": 1,
+    "netball": 3
+   },
+   "worldExp": 550,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Bảng nhiệm vụ: Cần người bắt Wingull và Krabby ở biển Ba Động. Liên hệ Cô Út bán nghêu."
+   ],
+   "progress": [
+    "Wingull bay dọc bãi, Krabby bò trên cát gần mép nước."
+   ],
+   "complete": [
+    "Đúng là bạn của biển Ba Động! Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-board-2",
+  "kind": "trainer",
+  "title": "Bảng: Cao thủ Trà Vinh",
+  "giver": "tv-board",
+  "requires": [
+   "vn-tv-1"
+  ],
+  "description": "Đánh bại ba huấn luyện viên mạnh của Trà Vinh.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tv-coconut",
+    "count": 1,
+    "text": "Đánh bại Chú Sáu leo dừa (Cầu Kè)",
+    "marker": {
+     "x": 14,
+     "y": 26,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tv-rower",
+    "count": 1,
+    "text": "Đánh bại Tay chèo ghe Ngo (bờ sông Cổ Chiên)",
+    "marker": {
+     "x": 62,
+     "y": 22,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tv-beach",
+    "count": 1,
+    "text": "Đánh bại Cậu bé Ba Động",
+    "marker": {
+     "x": 104,
+     "y": 74,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "expert-belt": 1
+   },
+   "worldExp": 1000,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Bảng nhiệm vụ: Ai hạ được ba cao thủ của tỉnh sẽ được thưởng một chiếc Expert Belt."
+   ],
+   "progress": [
+    "Chú Sáu ở vườn dừa Cầu Kè, đội ghe Ngo tập ở bờ sông Cổ Chiên, cậu bé ở biển Ba Động."
+   ],
+   "complete": [
+    "Cả tỉnh nể con rồi đó!"
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-sea",
+  "kind": "side",
+  "title": "Biển Ba Động",
+  "giver": "tv-guide",
+  "requires": [
+   "vn-tv-1"
+  ],
+  "description": "Ra biển Ba Động, ghé quán nghêu của Cô Út và giúp cô đuổi Pokémon phá lưới.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tv-ba-dong",
+    "count": 1,
+    "text": "Đến biển Ba Động (phía đông)",
+    "marker": {
+     "x": 102,
+     "y": 48,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-seller",
+    "count": 1,
+    "text": "Ghé quán nghêu của Cô Út",
+    "marker": {
+     "x": 102,
+     "y": 58,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "defeat",
+    "target": "*",
+    "count": 4,
+    "text": "Đuổi 4 Pokémon phá lưới trên bãi",
+    "marker": {
+     "x": 104,
+     "y": 66,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-seller",
+    "count": 1,
+    "text": "Báo cho Cô Út",
+    "marker": {
+     "x": 102,
+     "y": 58,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "netball": 3
+   },
+   "worldExp": 600,
+   "reputation": 15,
+   "flags": [
+    "landmark:ba-dong"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Biển Ba Động đẹp lắm, cát mịn, gió lồng lộng. Con ra đó chơi, ghé quán nghêu Cô Út nha."
+   ],
+   "progress": [
+    "Đi hết đường lớn về phía đông là tới biển."
+   ],
+   "complete": [
+    "Lưới yên rồi! Nghêu luộc sả nè, ăn đi con."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-coconut",
+  "kind": "side",
+  "title": "Dừa sáp Cầu Kè",
+  "giver": "tv-farmer",
+  "requires": [
+   "vn-tv-1"
+  ],
+  "description": "Giúp Chú Tư hái trái trong vườn dừa Cầu Kè.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "forage",
+    "count": 3,
+    "text": "Hái 3 bụi trái cây trong vườn Cầu Kè",
+    "marker": {
+     "x": 30,
+     "y": 14,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-farmer",
+    "count": 1,
+    "text": "Báo cho Chú Tư",
+    "marker": {
+     "x": 24,
+     "y": 24,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   },
+   "worldExp": 500,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Mùa này trái chín rộ mà chú leo dừa không xuể. Con hái giùm chú vài bụi nha!"
+   ],
+   "progress": [
+    "Bụi trái cây có dấu lấp lánh đó, dọc mấy liếp vườn."
+   ],
+   "complete": [
+    "Giỏi quá! Trái dừa sáp nè, cơm dẻo, ăn thử đi."
+   ]
+  }
+ },
+ {
+  "id": "vn-tv-eco",
+  "kind": "side",
+  "title": "Bãi biển Ba Động sạch",
+  "giver": "tv-seller",
+  "requires": [
+   "vn-tv-3"
+  ],
+  "description": "Nhặt rác dạt lên bãi biển Ba Động.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:tra-vinh",
+    "count": 6,
+    "text": "Dọn 6 điểm rác trên bãi biển Ba Động",
+    "marker": {
+     "x": 109,
+     "y": 56,
+     "region": "tra-vinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tv-seller",
+    "count": 1,
+    "text": "Báo cho Cô Út bán nghêu",
+    "marker": {
+     "x": 102,
+     "y": 58,
+     "region": "tra-vinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sitrus-berry": 2
+   },
+   "worldExp": 650,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Sóng đánh rác dạt lên đầy bãi. Con phụ cô nhặt với, bãi sạch thì khách mới về."
+   ],
+   "progress": [
+    "Mấy chỗ rác dồn lại sát mép nước, nhìn là thấy."
+   ],
+   "complete": [
+    "Bãi sạch trơn rồi! Wingull với Krabby sẽ về đông."
+   ]
+  }
  }
 ]
