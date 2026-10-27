@@ -16,27 +16,27 @@ import type { SecretDef } from '../src/core/secrets';
 
 type Reveal = 'cut' | 'smash' | 'clues';
 interface Entrance { name: string; look: SecretDef['look']; reveal: Reveal; color: number; requires?: string[]; weather?: string[]; hint?: string }
-interface Plane { id: string; name: string; theme: RegionDef['theme']; void: 'Wall' | 'Water'; weather?: RegionDef['weather']; from: string; sites: string[] }
+interface Plane { id: string; name: string; theme: RegionDef['theme']; void: 'Wall' | 'Water'; weather?: RegionDef['weather']; from: string; sites: string[]; decor?: RegionDef['decor'] }
 
 const STORM = ['rain', 'heavyRain', 'thunderstorm'];
 // tier 1: a dimension each (Kyogre's and the Temple's planes already exist and keep their own layout)
 const DIMS: Plane[] = [
-  { id: 'psychic-rift', name: 'Khe Nứt Tâm Linh', theme: 'sanctuary', void: 'Wall', from: 'starter-valley', sites: ['mewtwo'] },
-  { id: 'rainbow-sky', name: 'Thiên Đài Cầu Vồng', theme: 'sanctuary', void: 'Wall', from: 'emerald-woods', sites: ['ho-oh'] },
-  { id: 'silver-maelstrom', name: 'Biển Xoáy Bạc', theme: 'coast', void: 'Water', weather: 'rain', from: 'coral-coast', sites: ['lugia'] },
-  { id: 'magma-core', name: 'Lõi Dung Nham', theme: 'volcanic', void: 'Wall', weather: 'heatwave', from: 'volcanic-lands', sites: ['groudon'] },
-  { id: 'sky-pillar', name: 'Tầng Trời', theme: 'sanctuary', void: 'Wall', from: 'frozen-mountains', sites: ['rayquaza'] },
-  { id: 'distortion-world', name: 'Thế Giới Đảo Ngược', theme: 'swamp', void: 'Wall', weather: 'fog', from: 'misty-swamp', sites: ['giratina'] },
+  { id: 'psychic-rift', name: 'Khe Nứt Tâm Linh', theme: 'sanctuary', void: 'Wall', from: 'starter-valley', sites: ['mewtwo'], decor: { small: ['crystal', 'runeStone', 'sanctum2'], big: ['crystal', 'brokenPillar'], density: 0.09 } },
+  { id: 'rainbow-sky', name: 'Thiên Đài Cầu Vồng', theme: 'sanctuary', void: 'Wall', from: 'emerald-woods', sites: ['ho-oh'], decor: { small: ['flowerBloom', 'sprout', 'flowerBloom', 'mushrooms'], big: ['whitePillar', 'crystal'], density: 0.08 } },
+  { id: 'silver-maelstrom', name: 'Biển Xoáy Bạc', theme: 'coast', void: 'Water', weather: 'rain', from: 'coral-coast', sites: ['lugia'], decor: { small: ['reeds', 'rocky2', 'sand2'], big: ['palm', 'brokenPillar'], density: 0.08 } },
+  { id: 'magma-core', name: 'Lõi Dung Nham', theme: 'volcanic', void: 'Wall', weather: 'heatwave', from: 'volcanic-lands', sites: ['groudon'], decor: { small: ['ashRock', 'ash2', 'rocky'], big: ['deadTree', 'brokenPillar'], density: 0.09 } },
+  { id: 'sky-pillar', name: 'Tầng Trời', theme: 'sanctuary', void: 'Wall', from: 'frozen-mountains', sites: ['rayquaza'], decor: { small: ['starStone', 'crystal', 'sanctum2'], big: ['whitePillar', 'brokenPillar'], density: 0.07 } },
+  { id: 'distortion-world', name: 'Thế Giới Đảo Ngược', theme: 'swamp', void: 'Wall', weather: 'fog', from: 'misty-swamp', sites: ['giratina'], decor: { small: ['flowerWilt', 'ruin2', 'mud2', 'reeds'], big: ['deadTree', 'brokenPillar'], density: 0.1 } },
 ];
 // the rest: one hidden sanctum per map
 const HOLLOWS: Plane[] = [
-  { id: 'valley-hollow', name: 'Bí Cảnh Thung Lũng', theme: 'sanctuary', void: 'Wall', from: 'starter-valley', sites: ['mew', 'mesprit'] },
-  { id: 'emerald-hollow', name: 'Bí Cảnh Rừng Ngọc', theme: 'sanctuary', void: 'Wall', from: 'emerald-woods', sites: ['celebi', 'cresselia', 'lati'] },
-  { id: 'coral-hollow', name: 'Bí Cảnh Bờ Biển', theme: 'coast', void: 'Water', from: 'coral-coast', sites: ['zapdos', 'regirock', 'manaphy'] },
-  { id: 'frozen-hollow', name: 'Bí Cảnh Núi Tuyết', theme: 'frozen', void: 'Wall', from: 'frozen-mountains', sites: ['articuno', 'regice', 'jirachi'] },
-  { id: 'volcanic-hollow', name: 'Bí Cảnh Núi Lửa', theme: 'volcanic', void: 'Wall', from: 'volcanic-lands', sites: ['moltres', 'heatran', 'shaymin'] },
-  { id: 'sanctuary-hollow', name: 'Bí Cảnh Thánh Địa', theme: 'sanctuary', void: 'Wall', from: 'legendary-sanctuary', sites: ['uxie', 'regigigas', 'deoxys'] },
-  { id: 'swamp-hollow', name: 'Bí Cảnh Đầm Lầy', theme: 'swamp', void: 'Wall', from: 'misty-swamp', sites: ['azelf', 'registeel', 'darkrai'] },
+  { id: 'valley-hollow', name: 'Bí Cảnh Thung Lũng', theme: 'sanctuary', void: 'Wall', from: 'starter-valley', sites: ['mew', 'mesprit'], decor: { small: ['flowerBloom', 'mushrooms', 'sprout', 'bush'], big: ['round', 'pine'], density: 0.09 } },
+  { id: 'emerald-hollow', name: 'Bí Cảnh Rừng Ngọc', theme: 'sanctuary', void: 'Wall', from: 'emerald-woods', sites: ['celebi', 'cresselia', 'lati'], decor: { small: ['mushrooms', 'sprout', 'bush', 'flowerBloom'], big: ['round', 'tall', 'pine'], density: 0.1 } },
+  { id: 'coral-hollow', name: 'Bí Cảnh Bờ Biển', theme: 'coast', void: 'Water', from: 'coral-coast', sites: ['zapdos', 'regirock', 'manaphy'], decor: { small: ['reeds', 'rocky2', 'sand2'], big: ['palm'], density: 0.08 } },
+  { id: 'frozen-hollow', name: 'Bí Cảnh Núi Tuyết', theme: 'frozen', void: 'Wall', from: 'frozen-mountains', sites: ['articuno', 'regice', 'jirachi'], decor: { small: ['crystal', 'runeStone', 'crystal'], big: ['snowPine', 'icePillar'], density: 0.08 } },
+  { id: 'volcanic-hollow', name: 'Bí Cảnh Núi Lửa', theme: 'volcanic', void: 'Wall', from: 'volcanic-lands', sites: ['moltres', 'heatran', 'shaymin'], decor: { small: ['ashRock', 'ash2', 'rocky'], big: ['deadTree'], density: 0.08 } },
+  { id: 'sanctuary-hollow', name: 'Bí Cảnh Thánh Địa', theme: 'sanctuary', void: 'Wall', from: 'legendary-sanctuary', sites: ['uxie', 'regigigas', 'deoxys'], decor: { small: ['runeStone', 'crystal', 'starStone', 'sanctum2'], big: ['whitePillar', 'crystal'], density: 0.08 } },
+  { id: 'swamp-hollow', name: 'Bí Cảnh Đầm Lầy', theme: 'swamp', void: 'Wall', from: 'misty-swamp', sites: ['azelf', 'registeel', 'darkrai'], decor: { small: ['reeds', 'mushrooms', 'swampGrass', 'mud2'], big: ['deadTree', 'tall'], density: 0.09 } },
 ];
 // existing planes: only their entrance is new (it replaces the shrine gates kyogre-gate / arceus-gate)
 const FIXED: { plane: string; from: string; key: string; old: string }[] = [
@@ -136,7 +136,7 @@ function buildPlane(p: Plane): void {
   const dims = list.map((l) => { const sh = SHRINES.get(l.shrine!)!; return { l, sh, pw: sh.rows[0].length + 2 * M, ph: sh.rows.length + 2 * M }; });
   const W = dims.reduce((a, d) => a + d.pw, 0) + 4, H = Math.max(...dims.map((d) => d.ph)) + 4;
   const d: RegionDef = {
-    id: p.id, name: p.name, width: W, height: H, chunk: 16, theme: p.theme, void: p.void, ...(p.weather ? { weather: p.weather } : {}),
+    id: p.id, name: p.name, width: W, height: H, chunk: 16, theme: p.theme, void: p.void, ...(p.weather ? { weather: p.weather } : {}), ...(p.decor ? { decor: p.decor } : {}),
     spawn: { x: 0, y: 0 }, areas: [], paths: [], plaza: [0, 0, 0, 0], lake: { cx: -50, cy: -50, rx: 1, ry: 1 },
     buildings: [], fences: [], props: [], signs: [], npcs: [], trainers: [], rescue: { id: 'none', x: -99, y: -99, species: 'pidgey', level: 1, guards: [] },
     chests: [], waypoints: [], puzzles: [], dungeons: [], pillars: [], spawns: {}, legendaries: [], portals: [], field: [],

@@ -6,6 +6,20 @@
  "chunk": 16,
  "theme": "sanctuary",
  "void": "Wall",
+ "decor": {
+  "small": [
+   "mushrooms",
+   "sprout",
+   "bush",
+   "flowerBloom"
+  ],
+  "big": [
+   "round",
+   "tall",
+   "pine"
+  ],
+  "density": 0.1
+ },
  "spawn": {
   "x": 20,
   "y": 36

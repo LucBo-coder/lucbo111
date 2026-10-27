@@ -6,6 +6,17 @@
  "chunk": 16,
  "theme": "coast",
  "void": "Water",
+ "decor": {
+  "small": [
+   "reeds",
+   "rocky2",
+   "sand2"
+  ],
+  "big": [
+   "palm"
+  ],
+  "density": 0.08
+ },
  "spawn": {
   "x": 23,
   "y": 38

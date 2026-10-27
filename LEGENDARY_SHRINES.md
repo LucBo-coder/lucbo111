@@ -1517,3 +1517,8 @@ Mục tiêu "Đánh bại / Gặp <huyền thoại>" của mọi nhiệm vụ hu
 - Bộ lọc "Vùng này" của sổ nhiệm vụ xếp nhiệm vụ vào cả bản đồ có lối vào.
 - 5 nhiệm vụ viết tay (Articuno, Zapdos, Moltres, Mewtwo, Mew) viết lại mô tả / lời thoại theo vị trí mới; đánh dấu tĩnh trỏ đúng đền.
 - Nhiệm vụ đang theo dõi được lưu trong save (`adventure.tracked`): đi qua lối vào sang dimension không còn bị đổi sang nhiệm vụ khác.
+
+### 8.5 Cảnh trí dimension và tin đồn
+
+- **Cảnh trí** (`decor` trong dữ liệu vùng, `ValleyMap.decorAt`): mỗi dimension / bí cảnh mới có bộ vật trang trí riêng — tinh thể và đá rune (Khe Nứt Tâm Linh), hoa nở (Thiên Đài Cầu Vồng), lau sậy và đá bãi (Biển Xoáy Bạc), đá tro (Lõi Dung Nham), đá sao và cột trắng (Tầng Trời), hoa héo và bùn (Thế Giới Đảo Ngược), nấm / bụi / cây (Bí Cảnh Thung Lũng, Rừng Ngọc), thông tuyết và cột băng (Bí Cảnh Núi Tuyết)… Vật nhỏ nằm phẳng trên sàn đền (đi qua được); vật lớn (cây, cột) chỉ đứng ở đất ngoài trống 2 ô mọi phía và ngoài mọi arena — không chặn đường, không đổi trận đấu. Không dùng ô vết nứt / tấm nghi lễ để khỏi nhầm với chướng ngại hay ô nghi lễ thật.
+- **Tin đồn** (`entranceRumor`): khi người chơi đang làm nhiệm vụ huyền thoại cần một lối vào chưa tìm thấy trên bản đồ hiện tại, NPC nói chuyện phiếm thêm một câu: tên khu vực có chướng ngại lấp lánh, hoặc khu vực có manh mối kế tiếp (+ "chỉ mở khi trời mưa bão"). Không bao giờ nói tọa độ; xoay vòng nếu có nhiều lối vào; im khi đã tìm thấy hoặc đã dọn chướng ngại.

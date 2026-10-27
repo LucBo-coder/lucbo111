@@ -7,6 +7,18 @@
  "theme": "volcanic",
  "void": "Wall",
  "weather": "heatwave",
+ "decor": {
+  "small": [
+   "ashRock",
+   "ash2",
+   "rocky"
+  ],
+  "big": [
+   "deadTree",
+   "brokenPillar"
+  ],
+  "density": 0.09
+ },
  "spawn": {
   "x": 29,
   "y": 50

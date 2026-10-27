@@ -7,6 +7,19 @@
  "theme": "swamp",
  "void": "Wall",
  "weather": "fog",
+ "decor": {
+  "small": [
+   "flowerWilt",
+   "ruin2",
+   "mud2",
+   "reeds"
+  ],
+  "big": [
+   "deadTree",
+   "brokenPillar"
+  ],
+  "density": 0.1
+ },
  "spawn": {
   "x": 28,
   "y": 50

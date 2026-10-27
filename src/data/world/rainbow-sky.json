@@ -6,6 +6,19 @@
  "chunk": 16,
  "theme": "sanctuary",
  "void": "Wall",
+ "decor": {
+  "small": [
+   "flowerBloom",
+   "sprout",
+   "flowerBloom",
+   "mushrooms"
+  ],
+  "big": [
+   "whitePillar",
+   "crystal"
+  ],
+  "density": 0.08
+ },
  "spawn": {
   "x": 30,
   "y": 50

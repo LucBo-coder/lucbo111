@@ -6,6 +6,17 @@
  "chunk": 16,
  "theme": "volcanic",
  "void": "Wall",
+ "decor": {
+  "small": [
+   "ashRock",
+   "ash2",
+   "rocky"
+  ],
+  "big": [
+   "deadTree"
+  ],
+  "density": 0.08
+ },
  "spawn": {
   "x": 23,
   "y": 40

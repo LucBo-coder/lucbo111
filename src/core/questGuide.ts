@@ -70,3 +70,37 @@ export function guideObjective(obj: ObjectiveDef, ctx: GuideCtx): ObjectiveDef {
   const what = f.look === 'crack' ? 'Vách đá nứt' : ab.obstacle;
   return { ...obj, text: `${base} — tìm lối vào bí mật ở ${map}: ${what.toLowerCase()} lấp lánh trong vùng đánh dấu (${ab.name})`, marker: { x: f.x + dx, y: f.y + dy, region: e.region, approx: APPROX_R } };
 }
+
+/** Name of the authored area around a tile of a map ('' when none). */
+function areaName(region: string, x: number, y: number): string {
+  const a = REGION_DEFS[region].areas.find((r) => { const [x0, y0, x1, y1] = r.rect; return x >= x0 && x <= x1 && y >= y0 && y <= y1; });
+  return a?.name ?? '';
+}
+
+const legendName = (id: string) => id.split('-').map((w) => w[0].toUpperCase() + w.slice(1)).join('-');
+
+/**
+ * Villagers' rumours (idle chatter): a hidden entrance on this map that one of the player's active legend quests needs
+ * and that is still unfound — the area it lies in, never its tile. `pick` rotates between several (any integer).
+ */
+export function entranceRumor(region: string, targets: string[], hasFlag: (f: string) => boolean, pick: number): string | null {
+  const seen = new Set<string>(), out: string[] = [];
+  for (const t of targets) {
+    const e = entranceOf(t);
+    if (!e || e.region !== region || seen.has(e.secret.id) || hasFlag(secretFlag(e.region, e.secret.id))) continue;
+    seen.add(e.secret.id);
+    const s = e.secret, rain = s.weather?.length ? ' Họ còn bảo lối ấy chỉ mở khi trời mưa bão.' : '';
+    if (s.reveal.clues) {
+      const next = (LEGEND_CLUES.get(s.reveal.clues) ?? []).find((c) => !hasFlag(clueFlag(c.id)));
+      if (!next) continue;
+      const where = areaName(next.region, next.x, next.y);
+      out.push(`Dạo này người ta thấy dấu vết lạ${where ? ` quanh ${where}` : ''}. Có người bảo ai lần ra hết các dấu vết sẽ tìm được đường tới ${legendName(t)}.${rain}`);
+    } else if (s.reveal.field) {
+      const f = REGION_DEFS[region].field?.find((x) => x.id === s.reveal.field);
+      if (!f || hasFlag(fieldFlag(region, f.id))) continue;
+      const where = areaName(region, f.x, f.y), what = (f.look === 'crack' ? 'Vách đá nứt' : FIELD_ABILITIES[f.ability].obstacle).toLowerCase();
+      out.push(`Nghe nói${where ? ` ở ${where}` : ' đâu đây'} có một ${what} cứ lấp lánh lạ lắm… Biết đâu phía sau lại giấu lối vào nơi ${legendName(t)} trú ngụ.${rain}`);
+    }
+  }
+  return out.length ? out[((pick % out.length) + out.length) % out.length] : null;
+}

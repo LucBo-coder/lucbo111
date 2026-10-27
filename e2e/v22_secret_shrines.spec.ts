@@ -131,6 +131,13 @@ test('quest guidance: the tracker leads to the hidden entrance (area ring), then
   await page.waitForTimeout(400);
   await page.keyboard.press('Escape');
   await page.waitForTimeout(300);
+  // a villager's rumour: the area of the rock, no tile
+  await ev(page, `(() => { const a = window.__adv, n = a.regionDef.npcs.find((x) => x.id === 'coast-old-sailor'); void a.talkTo(n, null); })()`);
+  await page.waitForTimeout(400);
+  let said = '';
+  for (let i = 0; i < 8 && (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) { said += ' ' + (await dialogueText(page)); await page.keyboard.press('e'); await page.waitForTimeout(250); }
+  expect(said).toMatch(/tảng đá nứt cứ lấp lánh.*Zapdos/s);
+  await closeAll(page);
   // found: the entrance itself
   await ev(page, `window.__adv.state.setFlag('secret:${gate.region}:to-zapdos')`);
   await page.waitForTimeout(400);

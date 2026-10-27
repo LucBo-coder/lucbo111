@@ -124,4 +124,20 @@ describe('V22 hidden shrines: entrances', () => {
     expect(secretGate(s, () => true, 'clear')).toEqual({ ok: false, reason: 'weather' });
     expect(secretGate(s, () => true, 'rain')).toEqual({ ok: true });
   });
+
+  it('every new plane has its own scenery: flat pieces on the islands, standing ones only on open ground, never in an arena', () => {
+    // LEGENDARY_SHRINES.md mục 8.5 (the two authored planes, Vực Nguyên Hải and Thần Điện, keep their own look)
+    for (const d of planes.filter((x) => x.id !== 'abyssal-depths' && x.id !== 'origin-temple')) {
+      expect(d.decor, d.id).toBeDefined();
+      const m = mapOf(d.id), objs = [];
+      for (let cy = 0; cy < Math.ceil(m.heightTiles / m.chunk); cy++) for (let cx = 0; cx < Math.ceil(m.widthTiles / m.chunk); cx++) objs.push(...m.objectsInChunk(cx, cy).filter((o) => o.id.startsWith('decor-')));
+      expect(objs.length, d.id).toBeGreaterThan(0); // a grove (Celebi) is mostly trees already: a few pieces
+      for (const o of objs) {
+        expect(m.solidAt(o.x, o.y), o.id).toBe(false);
+        if (o.kind === 'decal') continue;
+        for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) expect(m.solidAt(o.x + dx, o.y + dy), `${d.id} ${o.id}`).toBe(false);
+        for (const l of d.legendaries ?? []) expect(Math.hypot(o.x - l.x, o.y - l.y) * 48, `${d.id} ${o.id}`).toBeGreaterThan(l.arena);
+      }
+    }
+  });
 });

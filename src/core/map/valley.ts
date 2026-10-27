@@ -3,7 +3,7 @@ import { nookRing, type Dock, type FieldDef } from '../field';
 import { SHRINES, shrineCells, type ShrineDef } from '../shrines';
 import type { SecretDef } from '../secrets';
 import { AreaDef, MapObject, MapProvider, SpawnEntry } from './mapProvider';
-import { DUNGEON, EX, T, TOWN } from './tiles';
+import { DUNGEON, EX, T, TILE_PX, TOWN } from './tiles';
 
 // Starter Valley: authored layout (JSON) + deterministic procedural detail (noise).
 // Terrain is computed lazily per tile and memoised in a compact byte array; render objects
@@ -88,6 +88,13 @@ export interface RegionDef {
   secrets?: SecretDef[];
   /** A plane's fixed sky (Biển Xoáy Bạc is always stormy); default: the theme's weather cycle */
   weather?: 'clear' | 'rain' | 'fog' | 'blizzard' | 'heatwave';
+  /**
+   * A plane's scenery (LEGENDARY_SHRINES.md mục 8.5): `small` pieces lie flat on the shrine's open floor and are
+   * walked over; `big` ones (trees, pillars) stand only on outer ground open two tiles all around, outside every
+   * arena, so no way is closed and no fight changes.
+   * Tile names: EX / TOWN keys (core/map/tiles.ts).
+   */
+  decor?: { small: string[]; big?: string[]; density: number };
 }
 
 export interface PortalDef {
@@ -643,6 +650,7 @@ export class ValleyMap implements MapProvider {
         const t = this.terrainAt(tx, ty);
         const border = tx < 4 || ty < 4 || tx >= this.widthTiles - 4 || ty >= this.heightTiles - 4;
         const h = hash2(tx, ty, 21);
+        if (this.def.void && this.def.decor) { const o = this.decorAt(tx, ty, h); if (o) out.push(o); continue; }
         if (this.stamp.has(this.key(tx, ty)) || this.def.void) continue; // shrine (plane): its own trees / pillars only
         if (border) {
           if (h < 0.85) out.push(this.tree(tx, ty, 'forest'));
@@ -675,6 +683,27 @@ export class ValleyMap implements MapProvider {
       }
     }
     return out;
+  }
+
+  /** Open floor of a plane's shrine (court `.` / outer ground `,` in `chars`), `r` tiles all around, off the paths. */
+  private openGround(tx: number, ty: number, r: number, chars = '.,'): boolean {
+    for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (!chars.includes(this.stamp.get(this.key(tx + dx, ty + dy))?.ch ?? '#')) return false;
+    return !this.nearPath(tx, ty) && !this.onPath(tx, ty);
+  }
+
+  /** One piece of a plane's scenery (`decor`), or nothing on this tile. */
+  private decorAt(tx: number, ty: number, h: number): MapObject | null {
+    const dc = this.def.decor!;
+    if (h >= dc.density || !this.openGround(tx, ty, 1)) return null;
+    const tileOf = (n: string) => (EX as Record<string, unknown>)[n] ?? (TOWN as Record<string, unknown>)[n];
+    // big pieces stay out of every arena (the fight keeps only its shrine's own cover)
+    const inArena = (this.def.legendaries ?? []).some((l) => Math.hypot(tx + 0.5 - l.x - 0.5, ty + 0.5 - l.y - 0.5) * TILE_PX < l.arena + TILE_PX);
+    const pick = hash2(tx, ty, 41), big = !!dc.big?.length && pick < 0.3 && !inArena && this.openGround(tx, ty, 2, ',');
+    const list = big ? dc.big! : dc.small;
+    const tile = tileOf(list[Math.floor(hash2(tx, ty, 42) * list.length)]);
+    if (typeof tile !== 'number') return null;
+    // small pieces lie flat on the ground (walked over); big ones stand and block like a prop
+    return big ? { kind: 'prop', id: `decor-${tx}-${ty}`, x: tx, y: ty, tile, collideR: 12, data: { prop: 'decor' } } : { kind: 'decal', id: `decor-${tx}-${ty}`, x: tx, y: ty, tile, data: { prop: 'decor' } };
   }
 
   private tree(tx: number, ty: number, hab: string): MapObject {

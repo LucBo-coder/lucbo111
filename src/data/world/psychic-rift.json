@@ -6,6 +6,18 @@
  "chunk": 16,
  "theme": "sanctuary",
  "void": "Wall",
+ "decor": {
+  "small": [
+   "crystal",
+   "runeStone",
+   "sanctum2"
+  ],
+  "big": [
+   "crystal",
+   "brokenPillar"
+  ],
+  "density": 0.09
+ },
  "spawn": {
   "x": 26,
   "y": 44

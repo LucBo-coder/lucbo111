@@ -7,6 +7,18 @@
  "theme": "coast",
  "void": "Water",
  "weather": "rain",
+ "decor": {
+  "small": [
+   "reeds",
+   "rocky2",
+   "sand2"
+  ],
+  "big": [
+   "palm",
+   "brokenPillar"
+  ],
+  "density": 0.08
+ },
  "spawn": {
   "x": 6,
   "y": 28

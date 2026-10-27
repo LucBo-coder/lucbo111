@@ -6,6 +6,19 @@
  "chunk": 16,
  "theme": "swamp",
  "void": "Wall",
+ "decor": {
+  "small": [
+   "reeds",
+   "mushrooms",
+   "swampGrass",
+   "mud2"
+  ],
+  "big": [
+   "deadTree",
+   "tall"
+  ],
+  "density": 0.09
+ },
  "spawn": {
   "x": 23,
   "y": 42

@@ -33,7 +33,7 @@ import { REGIONS as ENC_REGIONS } from '../core/encounters';
 import { addFriendship, captureRateOf, expYield, individualOf } from '../core/progression';
 import { legendRule, legendThrowChance, LegendCaptureRule } from '../core/legendCapture';
 import { ObjectiveDef, QuestDef } from '../core/quests';
-import { guideObjective } from '../core/questGuide';
+import { entranceRumor, guideObjective } from '../core/questGuide';
 import { makeWildState } from '../core/wildAI';
 import { RARE_RULES } from '../core/ecologyRules';
 import { modsFor, modsLabel } from '../core/dungeonMods';
@@ -1517,6 +1517,8 @@ export class AdventureScene extends Phaser.Scene {
     try { await this.talkTo(npc, it); } finally { this.talkingTo = null; }
   }
 
+  /** rotates the villagers' rumours between the hidden entrances still to find */
+  private rumorN = 0;
   private async talkTo(npc: { id: string; name: string; lines: string[] }, it: Interactable): Promise<void> {
     void it;
     const qs = this.state.quests;
@@ -1559,7 +1561,10 @@ export class AdventureScene extends Phaser.Scene {
     // 4) progress hint or idle chatter
     const active = qs.forGiver(npc.id).find((q) => qs.states[q.id].status === 'active');
     const greet = active ? null : repGreeting(this.state.adv.region, this.state.adv.repBy?.[this.state.adv.region] ?? 0);
-    await say(active?.dialogue.progress ?? (greet ? [greet, ...npc.lines] : npc.lines));
+    // a rumour about a hidden shrine entrance the player's legend quests still need here (the area, never the tile)
+    const targets = qs.active().map((q) => qs.currentObjective(q.id)).filter((o) => o?.type === 'boss' && o.target).map((o) => o!.target!);
+    const rumor = active ? null : entranceRumor(this.regionDef.id, targets, (f) => this.state.hasFlag(f), this.rumorN++);
+    await say(active?.dialogue.progress ?? [...(greet ? [greet] : []), ...npc.lines, ...(rumor ? [rumor] : [])]);
   }
 
   /** A quest's crossroads: the NPC asks, the player picks a path (or walks away and decides later). */

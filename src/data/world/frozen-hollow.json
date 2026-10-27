@@ -6,6 +6,18 @@
  "chunk": 16,
  "theme": "frozen",
  "void": "Wall",
+ "decor": {
+  "small": [
+   "crystal",
+   "runeStone",
+   "crystal"
+  ],
+  "big": [
+   "snowPine",
+   "icePillar"
+  ],
+  "density": 0.08
+ },
  "spawn": {
   "x": 23,
   "y": 38

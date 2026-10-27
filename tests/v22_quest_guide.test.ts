@@ -5,7 +5,7 @@ import { questInRegion } from '../src/core/journal';
 import { clueFlag, LEGEND_CLUES } from '../src/core/legendClues';
 import { LEGENDS, legendQuests } from '../src/core/legends';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
-import { APPROX_R, entranceOf, guideObjective } from '../src/core/questGuide';
+import { APPROX_R, entranceOf, entranceRumor, guideObjective } from '../src/core/questGuide';
 import type { ObjectiveDef, QuestDef } from '../src/core/quests';
 import { secretFlag } from '../src/core/secrets';
 
@@ -78,5 +78,28 @@ describe('V22 quests follow the hidden shrines', () => {
     expect(questInRegion(zap, 'coral-hollow')).toBe(true);
     expect(questInRegion(zap, 'starter-valley')).toBe(false);
     expect(questInRegion(ALL.find((q) => q.id === 'q-legend-arceus')!, 'legendary-sanctuary')).toBe(true);
+  });
+
+  it('villager rumours: the area of an entrance an active legend quest needs, never once it is found', () => {
+    const none = () => false;
+    const zap = entranceRumor('coral-coast', ['zapdos'], none, 0)!;
+    expect(zap).toMatch(/tảng đá nứt/);
+    expect(zap).toMatch(/Zapdos/);
+    expect(zap).not.toMatch(/\d/); // no coordinates
+    // clue-revealed: where the next clue lies; the whirlpool only in the rain
+    const lugia = entranceRumor('coral-coast', ['lugia'], none, 0)!;
+    expect(lugia).toMatch(/dấu vết lạ/);
+    expect(lugia).toMatch(/mưa bão/);
+    // wrong map, found already, obstacle cleared, no quest → nothing
+    expect(entranceRumor('starter-valley', ['zapdos'], none, 0)).toBeNull();
+    const e = entranceOf('zapdos')!;
+    expect(entranceRumor('coral-coast', ['zapdos'], (f) => f === secretFlag(e.region, e.secret.id), 0)).toBeNull();
+    expect(entranceRumor('coral-coast', ['zapdos'], (f) => f === fieldFlag(e.region, e.secret.reveal.field!), 0)).toBeNull();
+    expect(entranceRumor('coral-coast', [], none, 0)).toBeNull();
+    // several: rotates
+    const two = new Set([0, 1, 2, 3].map((n) => entranceRumor('coral-coast', ['zapdos', 'lugia'], none, n)));
+    expect(two.size).toBe(2);
+    // Dialga / Palkia / Arceus share one gate: one rumour
+    expect(new Set([0, 1, 2].map((n) => entranceRumor('legendary-sanctuary', ['dialga', 'palkia'], none, n))).size).toBe(1);
   });
 });
