@@ -8,6 +8,26 @@ const LEGACY_KEY = 'main';
 const META_KEY = 'meta';
 export const SLOT_COUNT = 3;
 const slotKey = (n: number) => `slot-${n}`;
+/**
+ * Rescue copy (localStorage, written synchronously when the page is hidden / closed / reloaded): an IndexedDB
+ * write started at that moment may never finish. It wins over the slot only if it is newer.
+ */
+const RESCUE_KEY = 'pokemon-survivor-rescue';
+
+interface Rescue { slot: number; save: SaveData }
+
+function readRescue(): Rescue | null {
+  try {
+    const raw = globalThis.localStorage?.getItem(RESCUE_KEY);
+    if (!raw) return null;
+    const r = JSON.parse(raw) as Rescue;
+    return r && typeof r.slot === 'number' && r.save && typeof r.save === 'object' ? r : null;
+  } catch { return null; }
+}
+
+function clearRescue(): void {
+  try { globalThis.localStorage?.removeItem(RESCUE_KEY); } catch { /* storage blocked */ }
+}
 
 export const PLAYER_NAME_MAX = 16;
 export const DEFAULT_PLAYER_NAME = 'Huấn luyện viên';
@@ -121,7 +141,7 @@ class SaveStore {
         await this.put(META_KEY, meta);
       }
       this.slot = Math.min(SLOT_COUNT, Math.max(1, meta.activeSlot | 0));
-      const raw = await this.get(slotKey(this.slot));
+      const raw = await this.newest(this.slot, await this.get(slotKey(this.slot)));
       const settings = { ...defaultSave().settings, ...meta.settings };
       this.data = raw ? migrate(raw) : freshSave(settings);
       this.data.settings = settings;
@@ -143,6 +163,8 @@ class SaveStore {
       if (!isEmptySave(next)) {
         next.savedAt = Date.now();
         await this.put(slotKey(this.slot), next);
+        const r = readRescue();
+        if (r && r.slot === this.slot && (r.save.savedAt ?? 0) <= next.savedAt) clearRescue();
       }
       await this.put(META_KEY, { activeSlot: this.slot, settings: next.settings, profile: this.profile, legacyMigrated: true } satisfies SaveMeta);
     } catch (e) {
@@ -150,12 +172,43 @@ class SaveStore {
     }
   }
 
+  /**
+   * Synchronous copy of the active slot for the moment the page goes away (also starts the normal async save).
+   * Never throws: a full / blocked localStorage only loses the rescue copy.
+   */
+  rescue(): void {
+    const next = this.data;
+    if (isEmptySave(next)) return;
+    next.savedAt = Date.now();
+    try {
+      globalThis.localStorage?.setItem(RESCUE_KEY, JSON.stringify({ slot: this.slot, save: next } satisfies Rescue));
+    } catch (e) {
+      console.warn('[save] rescue copy failed', e);
+    }
+    void this.save(next);
+  }
+
+  /** The stored slot, or the rescue copy of that slot when it is newer (then written back to the slot). */
+  private async newest(n: number, raw: unknown): Promise<unknown> {
+    const r = readRescue();
+    if (!r || r.slot !== n) return raw;
+    const stored = (raw as { savedAt?: number } | undefined)?.savedAt ?? 0;
+    if ((r.save.savedAt ?? 0) <= stored) { clearRescue(); return raw; }
+    try {
+      await this.put(slotKey(n), r.save);
+      clearRescue();
+    } catch (e) {
+      console.warn('[save] could not restore the rescue copy', e);
+    }
+    return r.save;
+  }
+
   /** Summaries of every slot (null = empty) for the Load Game screen. */
   async listSlots(): Promise<(SlotSummary | null)[]> {
     const out: (SlotSummary | null)[] = [];
     for (let n = 1; n <= SLOT_COUNT; n++) {
       try {
-        const raw = await this.get(slotKey(n));
+        const raw = await this.newest(n, await this.get(slotKey(n)));
         const d = raw ? migrate(raw) : null;
         out.push(d && !isEmptySave(d) ? slotSummary(d) : null);
       } catch { out.push(null); }
@@ -166,7 +219,7 @@ class SaveStore {
   /** Makes slot n active and loads it (an empty slot loads as a brand-new save). */
   async loadSlot(n: number): Promise<SaveData> {
     const settings = this.data.settings;
-    const raw = await this.get(slotKey(n)).catch(() => undefined);
+    const raw = await this.newest(n, await this.get(slotKey(n)).catch(() => undefined));
     this.slot = n;
     this.data = raw ? migrate(raw) : freshSave(settings);
     this.data.settings = settings;
@@ -184,12 +237,14 @@ class SaveStore {
     this.slot = n;
     this.data = freshSave(settings);
     this.data.playerName = this.profile.name;
+    if (readRescue()?.slot === n) clearRescue();
     await this.del(slotKey(n)).catch(() => undefined);
     await this.put(META_KEY, { activeSlot: n, settings, profile: this.profile, legacyMigrated: true } satisfies SaveMeta).catch(() => undefined);
     return this.data;
   }
 
   async deleteSlot(n: number): Promise<void> {
+    if (readRescue()?.slot === n) clearRescue();
     await this.del(slotKey(n)).catch(() => undefined);
     if (n === this.slot) {
       this.data = freshSave(this.data.settings);

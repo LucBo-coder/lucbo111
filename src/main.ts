@@ -14,14 +14,14 @@ import { CoopGuestUI } from './scenes/CoopGuestUI';
 import { ServerScene } from './scenes/ServerScene';
 import { OnlineHubScene } from './scenes/OnlineHubScene';
 import { DPR } from './scenes/ui';
+import { installCrashGuard } from './systems/crashGuard';
 
-async function boot(): Promise<void> {
-  // Wait (briefly) for the pixel font so canvas text doesn't render in a fallback font
-  try {
-    await Promise.race([document.fonts.load('20px "VT323"'), new Promise((r) => setTimeout(r, 2500))]);
-  } catch {
-    /* offline: fall back to monospace */
-  }
+function boot(): void {
+  console.info(`[boot] scripts ready at ${Math.round(performance.now())} ms`);
+  // The pixel font loads while the game downloads its assets; Boot waits for it (briefly) before the first text,
+  // so canvas text doesn't render in a fallback font — without holding the whole start-up for it.
+  const fontReady = Promise.race([document.fonts.load('20px "VT323"'), new Promise((r) => setTimeout(r, 2500))])
+    .catch(() => undefined); // offline: fall back to monospace
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game',
@@ -36,6 +36,8 @@ async function boot(): Promise<void> {
     fps: { target: 60, forceSetTimeOut: false },
     scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene, CoopGuestUI, ServerScene, OnlineHubScene],
   });
+  game.registry.set('fontReady', fontReady);
+  installCrashGuard(game as unknown as Parameters<typeof installCrashGuard>[0]);
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
   if (DPR > 1) {
     const fit = () => game.scale.resize(Math.round(innerWidth * DPR), Math.round(innerHeight * DPR));
@@ -45,4 +47,4 @@ async function boot(): Promise<void> {
   if (new URLSearchParams(location.search).has('netstats')) void import('./net/netOverlay').then(m => m.startNetOverlay());
 }
 
-void boot();
+boot();

@@ -32,3 +32,23 @@ export function preloadManifest(scene: Phaser.Scene): void {
 export function attributionLines(): string[] {
   return (manifest.assets as (ManifestAsset & { attribution?: string })[]).filter((a) => a.attribution).map((a) => a.attribution!);
 }
+
+/**
+ * Images the first screens never show (item art, boss HUD): loaded after the menu is up, a few at a time, so they
+ * no longer hold the boot. Every user checks `textures.exists` and has a fallback until the file arrives.
+ */
+export function loadImagesInBackground(textures: Phaser.Textures.TextureManager, files: [key: string, url: string][], parallel = 4): Promise<void> {
+  const queue = files.filter(([k]) => !textures.exists(k));
+  const one = (): Promise<void> => {
+    const next = queue.shift();
+    if (!next) return Promise.resolve();
+    const [key, url] = next;
+    return new Promise<void>((done) => {
+      const img = new Image();
+      img.onload = () => { if (!textures.exists(key)) textures.addImage(key, img); done(); };
+      img.onerror = () => { missingAssets.add(key); done(); };
+      img.src = url;
+    }).then(one);
+  };
+  return Promise.all(Array.from({ length: Math.min(parallel, queue.length) }, one)).then(() => undefined);
+}

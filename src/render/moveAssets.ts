@@ -1,5 +1,5 @@
 import type { SkillDef } from '../core/types';
-import { ProjectileRegistry, SkillIconRegistry, StatusIconRegistry, TypeIconRegistry } from './icons';
+import { ensureSkillIcon, ProjectileRegistry, SkillIconRegistry, StatusIconRegistry, TypeIconRegistry } from './icons';
 import { PROJECTILE_TEX } from './pixelArt';
 
 // MoveAssetRegistry: the single place that links a move to its visual/audio assets.
@@ -23,6 +23,7 @@ export interface MoveAssets {
 const cache = new Map<string, MoveAssets>();
 
 export function moveAssets(s: SkillDef): MoveAssets {
+  ensureSkillIcon(s);
   const hit = cache.get(s.id);
   if (hit) return hit;
   const a: MoveAssets = {

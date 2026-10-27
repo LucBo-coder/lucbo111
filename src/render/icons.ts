@@ -274,11 +274,23 @@ function drawProjectile(scene: Phaser.Scene, t: PokeType): void {
 }
 
 /** Builds every icon texture. Called once from BootScene after the data is loaded. */
+/** Scene whose (game-wide) texture manager receives skill icons drawn on first use. */
+let iconScene: Phaser.Scene | null = null;
+
+/**
+ * Skill icons (one per move, ~1000) are drawn the first time a move is shown (`moveAssets`) instead of all at
+ * boot, which was the slowest part of the start-up on phones.
+ */
+export function ensureSkillIcon(s: SkillDef): void {
+  if (iconScene && !iconScene.textures.exists('skill-' + s.id)) drawSkillIcon(iconScene, s);
+}
+
 export function buildIcons(scene: Phaser.Scene, skills: Iterable<SkillDef>, items: Iterable<{ id: string; color: string; kind: string; icon?: string; effect?: { pokeType?: string } }>): { skills: number; bespoke: number } {
   for (const t of ALL_TYPES) { drawTypeIcon(scene, t); drawProjectile(scene, t); }
   for (const k of Object.keys(STATUS_ICON) as StatusKind[]) drawStatusIcon(scene, k);
+  iconScene = scene;
   let n = 0, bespoke = 0;
-  for (const s of skills) { drawSkillIcon(scene, s); n++; if (BESPOKE[s.id]) bespoke++; }
+  for (const s of skills) { n++; if (BESPOKE[s.id]) bespoke++; }
   for (const it of items) drawItemIcon(scene, it.id, it.color, it.kind, it.effect?.pokeType, it.icon);
   for (const id of Object.keys(ITEM_ART)) drawItemIcon(scene, id, '#ffffff', 'art');
   return { skills: n, bespoke };

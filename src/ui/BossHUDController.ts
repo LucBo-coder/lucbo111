@@ -30,8 +30,9 @@ const LV_X = 640, LV_Y = 46;
 const PHASE_DOTS = [118, 305, 492];
 const PHASE_DOT_Y = 62;
 
-export function preloadBossUi(scene: Phaser.Scene): void {
-  for (const n of BOSS_UI_FILES) if (!scene.textures.exists(key(n))) scene.load.image(key(n), DIR + n + '.png');
+/** [texture key, url] of every boss HUD image (loaded in the background after boot). */
+export function bossUiFiles(): [string, string][] {
+  return BOSS_UI_FILES.map((n) => [key(n), DIR + n + '.png']);
 }
 
 export function bossUiReady(scene: Phaser.Scene): boolean {

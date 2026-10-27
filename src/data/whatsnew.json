@@ -1,5 +1,14 @@
 [
   {
+    "id": "v25-stability",
+    "title": "Mượt hơn, không mất tiến trình",
+    "items": [
+      "Game không còn đứng hình vì một lỗi nhỏ; nếu có sự cố, game tự lưu và cho bạn tải lại ngay.",
+      "Tải lại trang hay đóng tab lúc nào cũng giữ đúng tiến trình vừa chơi.",
+      "Khởi động nhanh hơn trên điện thoại và máy yếu."
+    ]
+  },
+  {
     "id": "v24-npc-starters",
     "title": "NPC sống động, starter Gen 1–9",
     "items": [

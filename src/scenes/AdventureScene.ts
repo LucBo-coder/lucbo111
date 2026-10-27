@@ -3,6 +3,7 @@ import { CoopHost, coopSession } from '../net/coop';
 import { addCoopHud, rewardCoopHost } from './coopHud';
 import { passportPages, stampVisit } from '../adventure/passport';
 import { OnlinePresence } from '../adventure/OnlinePresence';
+import { onEmergencySave } from '../systems/crashGuard';
 import { net } from '../net/session';
 import { skillFailText } from '../net/skillWire';
 import { keptMask, setKept } from '../core/keptSkills';
@@ -378,6 +379,8 @@ export class AdventureScene extends Phaser.Scene {
     this.game.events.on('blur', this.onBlur, this);
     this.scene.launch('AdvUI', { adv: this });
     this.events.once('shutdown', () => this.shutdown());
+    // page hidden / closed / reloaded, or a frame error that keeps repeating: write progress right now
+    this.offEmergency = onEmergencySave(() => { this.persist(); saveStore.rescue(); });
     audio.play('levelup');
     if (coopSession.active && net.role === 'host') this.startCoopHost();
     else if (net.connected) this.startPresence();
@@ -407,7 +410,10 @@ export class AdventureScene extends Phaser.Scene {
     this.presence = new OnlinePresence(this);
   }
 
+  private offEmergency: (() => void) | null = null;
+
   private shutdown(): void {
+    this.offEmergency?.(); this.offEmergency = null;
     this.coopHost?.destroy(); this.coopHost = null;
     this.presence?.destroy();
     this.presence = null;
@@ -1518,9 +1524,12 @@ export class AdventureScene extends Phaser.Scene {
 
   async say(speaker: string, lines: string[], choices?: DialogueChoice[], portrait?: string): Promise<string | null> {
     this.modal = true;
-    const r = await this.ui.dialogue(speaker, lines, choices, portrait ?? (this.talkingTo ? this.portraitOf(this.talkingTo) : undefined));
-    this.modal = false;
-    return r;
+    // finally: a failing dialogue must never leave the trainer frozen in place
+    try {
+      return await this.ui.dialogue(speaker, lines, choices, portrait ?? (this.talkingTo ? this.portraitOf(this.talkingTo) : undefined));
+    } finally {
+      this.modal = false;
+    }
   }
 
   inCombat(): boolean {
@@ -1625,15 +1634,17 @@ export class AdventureScene extends Phaser.Scene {
       ? [{ label: 'Để nó tiến hóa!', value: targets[0] }]
       : targets.map((to) => ({ label: `Tiến hóa thành ${POKEMON.get(to)!.name}`, value: to }));
     choices.push({ label: 'Chưa phải lúc (hỏi lại ở cấp sau)', value: 'no' });
-    const r = await this.say(fromName, [`Ồ? ${fromName} đang phát sáng...!`], choices);
-    if (!r || r === 'no') {
-      this.state.declineEvolution(uid);
-      this.ui.banner(`${fromName} đã dừng tiến hóa`, '#c0c8e0');
+    try {
+      const r = await this.say(fromName, [`Ồ? ${fromName} đang phát sáng...!`], choices);
+      if (!r || r === 'no') {
+        this.state.declineEvolution(uid);
+        this.ui.banner(`${fromName} đã dừng tiến hóa`, '#c0c8e0');
+        return;
+      }
+      await this.runEvolution(uid, r, fromName, POKEMON.get(r)!.name);
+    } finally {
       this.evoBusy = false;
-      return;
     }
-    await this.runEvolution(uid, r, fromName, POKEMON.get(r)!.name);
-    this.evoBusy = false;
   }
 
   /** Evolution animation + permanent change + field update. */
@@ -1642,8 +1653,11 @@ export class AdventureScene extends Phaser.Scene {
     if (!p) return false;
     const from = p.species;
     this.modal = true;
-    await this.ui.playEvolution(from, to, fromName, toName, { level: p.level, ind: individualOf(p) });
-    this.modal = false;
+    try {
+      await this.ui.playEvolution(from, to, fromName, toName, { level: p.level, ind: individualOf(p) });
+    } finally {
+      this.modal = false;
+    }
     if (!this.state.evolve(uid, to, stone, this.evoEnv())) return false;
     const ally = this.world.allies.find((a) => a.ownerUid === uid);
     if (ally) {
@@ -1920,8 +1934,12 @@ export class AdventureScene extends Phaser.Scene {
       const { tabs, first } = starterTabs(q.starter ?? STARTERS);
       // modal like a dialogue: keys 1–3 pick a starter, not a party command
       this.modal = true;
-      const species = await this.ui.pickStarter(tabs, first);
-      this.modal = false;
+      let species: string;
+      try {
+        species = await this.ui.pickStarter(tabs, first);
+      } finally {
+        this.modal = false;
+      }
       this.state.addPokemon(species, 5, 'starter');
       this.applyParty();
       this.state.addItems({ pokeball: 5, potion: 2 });

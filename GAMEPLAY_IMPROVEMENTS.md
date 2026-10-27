@@ -168,3 +168,8 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### NPC sống động, chọn starter mọi thế hệ
 - Trước: NPC là ảnh trainer tĩnh, nhiều người trông giống nhau. Giờ mỗi NPC là nhân vật pixel có hoạt ảnh với dáng và màu riêng; "Bà Tư" là bà cụ, "Bé Na" là đứa trẻ, nông dân miền Tây đội nón lá.
 - Trước: chỉ chọn được 3 starter của chiến dịch. Giờ giáo sư ở Phiêu lưu và Việt Nam Odyssey cho chọn 27 starter Gen 1–9; tab đầu vẫn là bộ ba quen thuộc nên người chơi cũ không bị lạ.
+
+### Không còn đơ, không mất tiến trình
+- Trước: thỉnh thoảng game đứng hình, phải tải lại trang và mất tới 20 giây chơi gần nhất. Nguyên nhân: một lỗi trong một khung hình làm vòng lặp game dừng hẳn. Giờ game chạy tiếp; nếu lỗi lặp lại liên tục thì tự lưu và đưa nút "Lưu và tải lại".
+- Tải lại / đóng tab bất cứ lúc nào cũng giữ đúng tiền, đồ, vị trí vừa có.
+- Vào menu nhanh hơn khoảng 30 % trên máy yếu.

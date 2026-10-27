@@ -357,3 +357,14 @@ Ghi chú e2e: đội thử Lv 34 có Staravia lên cấp → màn tiến hóa (m
 Lỗi tìm thấy và đã sửa: phím 3 dùng chọn starter lọt xuống thành lệnh đội "follow" → bảng chọn giờ chặn input cảnh (modal). `v23_vinh_long` / `v23_tra_vinh` thỉnh thoảng hỏng do HLV thử lên cấp thế giới, HP tính lại rồi ngất → test đặt lại HP ngay trước trận boss (lỗi của test, có cả ở commit trước).
 
 Ảnh đã xem: bảng chọn starter (Gen 1, Gen 4, Hoenn, Gen 9), làng cổ điển và Cà Mau với NPC đa dạng (nón lá, áo dài, trẻ em, cụ bà).
+
+## V25 — đợt 25: chống đơ game + khởi động nhanh
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **556/556 ✅**. Mới: `tests/v25_stability.test.ts` (6: khung lỗi được bắt và khung sau vẫn chạy, lỗi vẫn được báo; lỗi liên tục = kẹt, lỗi rải rác thì không; mọi hàm lưu khẩn cấp đều chạy kể cả khi một hàm lỗi; bản cứu hộ mới hơn thắng khi tải, cũ hơn bị bỏ, chơi mới xóa bản cứu hộ; biểu tượng chiêu vẫn đúng tên) |
+| E2E mới `v25_stability` | ✅ (một khung lỗi → vòng lặp vẫn chạy, không hiện bảng; đổi tiền + vị trí rồi tải lại ngay → giữ nguyên; lỗi mỗi khung → bảng hiện, tiến trình đã lưu, "Lưu và tải lại" giữ tiến trình) |
+| E2E toàn bộ (5 nhóm, `--workers=1`) | ✅ 21 + 21 + 18 + 14 + 11 (online, 1 bỏ qua như cũ). Nhóm online lần đầu 1 lỗi chập chờn, chạy lại qua hết |
+
+Đo khởi động (bản build, Edge, CPU chậm 4×, mạng 20 Mbit / 40 ms, 2 lượt): trước 6,6–7,0 s tới menu, 221 request (167 ảnh vật phẩm chờ trong lúc khởi động = 1,8 s, biểu tượng 0,6–0,8 s); sau **4,4–4,8 s**, 32 request. Vào Việt Nam Odyssey: ~1,1 s, 3 s đầu không khung nào > 50 ms.

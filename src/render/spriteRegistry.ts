@@ -134,10 +134,9 @@ export function registerIcyEthics(scene: Phaser.Scene, missing: Set<string>): st
 // scripts/fetch-official-sprites.mjs downloads PokeAPI/sprites PNGs into public/assets/official (git-ignored).
 export interface OfficialIndex { icons: string[]; front: string[]; shiny?: string[]; items?: string[]; trainers?: string[] }
 
-/** Small item art of the personal pack (≈ 60 files of 1–2 KB) — loaded with the boot (NPCs are pixel characters). */
-export function preloadOfficialSmall(scene: Phaser.Scene, idx: OfficialIndex): number {
-  for (const id of idx.items ?? []) scene.load.image('oitem-' + id, `assets/official/items/${id}.png`);
-  return idx.items?.length ?? 0;
+/** Small item art of the personal pack (~170 files of 1–2 KB): [texture key, url], loaded in the background after boot. */
+export function officialItemFiles(idx: OfficialIndex): [string, string][] {
+  return (idx.items ?? []).map((id) => ['oitem-' + id, `assets/official/items/${id}.png`]);
 }
 
 /** Texture key of an item icon: official art if loaded, else the original pixel icon. */
