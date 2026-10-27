@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { beatBossTo, catchWeakenedLegend, closeDialogues, summonShrine } from './bossHelpers';
+import { beatBossTo, catchWeakenedLegend, closeDialogues, shrineHome, summonShrine } from './bossHelpers';
 
 type Win = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const ev = <T = unknown>(page: Page, fn: string) => page.evaluate(fn) as Promise<T>;
@@ -137,10 +137,11 @@ test('legendary shrines: sealed until the story flag, then Articuno fights and j
   await startAdventure(page);
   // the trainer is made sturdy: this test checks the shrine mechanics, not whether a Lv1 trainer survives a Lv38 legendary
   // (a knocked-out trainer respawns in the village and the boss resets, which made the test flaky on slow machines)
-  // since 0.17 the shrine stands in its themed region: travel there first (bypasses the portal gate)
-  await ev(page, `window.__adv.travelTo('frozen-mountains', 19, 50)`);
-  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'frozen-mountains', { timeout: 15_000 });
-  await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('blastoise', 40, 'gift'); a.state.addPokemon('charizard', 40, 'gift'); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e7; a.world.teleport(19.5*48, 44*48); })()`);
+  // the shrine stands in the Frozen Mountains' hidden sanctum (LEGENDARY_SHRINES.md mục 8): travel there first
+  const home = shrineHome('articuno');
+  await ev(page, `window.__adv.travelTo('${home.region}', ${home.x}, ${home.y})`);
+  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), home.region, { timeout: 15_000 });
+  await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('blastoise', 40, 'gift'); a.state.addPokemon('charizard', 40, 'gift'); a.applyParty(); a.world.trainer.maxHp = a.world.trainer.hp = 1e7; })()`);
   // sealed: no boss without the Mega Venusaur flag — not by walking in, not by E on the ritual spot
   await page.waitForTimeout(2500);
   expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false);

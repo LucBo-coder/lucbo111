@@ -28,7 +28,9 @@ function reach(region: string): Set<string> {
   const m = mapOf(region), d = REGION_DEFS[region], b = blocked(m);
   // a shrine's own cracked wall (Mew's ruins) counts as solved: BFS "after the shrine's puzzle" (§5)
   for (const f of d.field ?? []) if (f.look !== 'crack') b.add(`${f.x},${f.y}`);
-  const seen = new Set([`${d.spawn.x},${d.spawn.y}`]), q = [[d.spawn.x, d.spawn.y]];
+  // a plane (one walled pocket per shrine) is entered at every hidden entrance's arrival
+  const starts = [[d.spawn.x, d.spawn.y], ...Object.values(REGION_DEFS).flatMap((o) => (o.secrets ?? []).filter((s) => s.to === region).map((s) => [s.toX, s.toY]))];
+  const seen = new Set(starts.map(([x, y]) => `${x},${y}`)), q = starts.map((p) => [...p]);
   while (q.length) {
     const [x, y] = q.pop()!;
     for (const [dx, dy] of N4) {
@@ -43,8 +45,9 @@ function reach(region: string): Set<string> {
 const near = (s: Set<string>, x: number, y: number) => s.has(`${x},${y}`) || N4.some(([dx, dy]) => s.has(`${x + dx},${y + dy}`));
 
 describe('V22 shrines: layouts', () => {
-  it('32 designed layouts, rectangular, each with a ritual spot; every arena free of all but its cover', () => {
-    expect(SHRINES.size).toBe(32);
+  it('30 designed layouts, rectangular, each with a ritual spot; every arena free of all but its cover', () => {
+    // the two shrine gates (Kyogre, Temple) became hidden entrances (LEGENDARY_SHRINES.md mục 8)
+    expect(SHRINES.size).toBe(30);
     for (const s of SHRINES.values()) {
       const w = s.rows[0].length;
       expect(s.rows.every((r) => r.length === w), s.id).toBe(true);
@@ -77,8 +80,8 @@ describe('V22 shrines: layouts', () => {
 
 describe('V22 shrines: on the maps', () => {
   it('every shrine of the design stands on its map (planes included); legends.json points at the fight spot', () => {
-    // 28 on the surface (fights, meetings, the two gates, Manaphy's reef, the Lati / Mesprit triggers) + 4 in planes
-    expect(sites.length).toBe(32);
+    // all in planes since the hidden shrines: fights, meetings, Manaphy's reef, the Lati / Mesprit triggers
+    expect(sites.length).toBe(30);
     expect(new Set(sites.map((x) => x.l.shrine)).size).toBe(SHRINES.size);
     for (const { region, l } of sites) {
       const s = SHRINES.get(l.shrine!)!;

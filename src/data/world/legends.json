@@ -7,9 +7,9 @@
    "boss:mega-venusaur"
   ],
   "site": {
-   "x": 19,
-   "y": 39,
-   "region": "frozen-mountains"
+   "x": 23,
+   "y": 22,
+   "region": "frozen-hollow"
   },
   "name": "Băng Đài Hồ Băng Lam"
  },
@@ -21,9 +21,9 @@
    "boss:mega-venusaur"
   ],
   "site": {
-   "x": 16,
-   "y": 66,
-   "region": "coral-coast"
+   "x": 23,
+   "y": 22,
+   "region": "coral-hollow"
   }
  },
  {
@@ -34,9 +34,9 @@
    "boss:mega-venusaur"
   ],
   "site": {
-   "x": 45,
-   "y": 41,
-   "region": "volcanic-lands"
+   "x": 23,
+   "y": 22,
+   "region": "volcanic-hollow"
   }
  },
  {
@@ -49,9 +49,9 @@
    "boss:moltres"
   ],
   "site": {
-   "x": 138,
-   "y": 45,
-   "region": "starter-valley"
+   "x": 25,
+   "y": 25,
+   "region": "psychic-rift"
   }
  },
  {
@@ -62,9 +62,9 @@
    "boss:mewtwo"
   ],
   "site": {
-   "x": 17,
-   "y": 13,
-   "region": "starter-valley"
+   "x": 20,
+   "y": 21,
+   "region": "valley-hollow"
   }
  },
  {
@@ -146,9 +146,9 @@
   "lore": "Hộ thần của biển cả và ba Thần Điểu — chỉ trồi lên khi trời mưa bão.",
   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
   "site": {
-   "x": 88,
-   "y": 20,
-   "region": "coral-coast"
+   "x": 28,
+   "y": 27,
+   "region": "silver-maelstrom"
   }
  },
  {
@@ -165,9 +165,9 @@
   "lore": "Phượng hoàng cầu vồng đã hồi sinh ba thú huyền thoại.",
   "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
   "site": {
-   "x": 20,
-   "y": 20,
-   "region": "emerald-woods"
+   "x": 28,
+   "y": 28,
+   "region": "rainbow-sky"
   }
  },
  {
@@ -183,9 +183,9 @@
   "lore": "Linh hồn khu rừng du hành qua thời gian, xuất hiện lúc bình minh ở rừng thiêng.",
   "hint": "",
   "site": {
-   "x": 23,
-   "y": 66,
-   "region": "emerald-woods"
+   "x": 20,
+   "y": 23,
+   "region": "emerald-hollow"
   }
  },
  {
@@ -199,9 +199,9 @@
   "lore": "Người khổng lồ đá bị phong ấn từ thời cổ đại.",
   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
   "site": {
-   "x": 30,
-   "y": 20,
-   "region": "coral-coast"
+   "x": 64,
+   "y": 19,
+   "region": "coral-hollow"
   }
  },
  {
@@ -218,9 +218,9 @@
   "lore": "Người khổng lồ băng ngủ say — chỉ thức dậy trong bão tuyết.",
   "hint": "Lớp băng mỏng phủ vòng đá trên Đỉnh Bão Tuyết... Regice chỉ thức dậy trong bão tuyết.",
   "site": {
-   "x": 84,
-   "y": 76,
-   "region": "frozen-mountains"
+   "x": 64,
+   "y": 19,
+   "region": "frozen-hollow"
   }
  },
  {
@@ -234,9 +234,9 @@
   "lore": "Người khổng lồ thép cứng hơn mọi kim loại.",
   "hint": "Một khối thép lạnh ngắt nằm im dưới vách đá... cần sức mạnh đã đánh bại Thần Rừng.",
   "site": {
-   "x": 37,
-   "y": 78,
-   "region": "misty-swamp"
+   "x": 64,
+   "y": 21,
+   "region": "swamp-hollow"
   }
  },
  {
@@ -252,9 +252,9 @@
   "lore": "Vị thần đã kéo các lục địa — chủ nhân của ba người khổng lồ.",
   "hint": "Bức tượng khổng lồ phủ tuyết không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
   "site": {
-   "x": 74,
-   "y": 56,
-   "region": "legendary-sanctuary"
+   "x": 75,
+   "y": 26,
+   "region": "sanctuary-hollow"
   }
  },
  {
@@ -327,9 +327,9 @@
   "lore": "Chúa tể đất liền, tạo ra lục địa bằng dung nham.",
   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
   "site": {
-   "x": 89,
-   "y": 23,
-   "region": "volcanic-lands"
+   "x": 28,
+   "y": 28,
+   "region": "magma-core"
   }
  },
  {
@@ -344,9 +344,9 @@
   "lore": "Rồng trời đã chấm dứt cuộc chiến giữa Kyogre và Groudon.",
   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
   "site": {
-   "x": 59,
-   "y": 19,
-   "region": "frozen-mountains"
+   "x": 28,
+   "y": 27,
+   "region": "sky-pillar"
   }
  },
  {
@@ -365,9 +365,9 @@
   "lore": "Pokémon ước nguyện thức dậy một tuần mỗi nghìn năm — chỉ trước người có trái tim gắn bó.",
   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
   "site": {
-   "x": 24,
-   "y": 80,
-   "region": "frozen-mountains"
+   "x": 102,
+   "y": 24,
+   "region": "frozen-hollow"
   }
  },
  {
@@ -382,9 +382,9 @@
   "lore": "Virus ngoài vũ trụ đột biến sau khi bị tia laser chiếu vào.",
   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
   "site": {
-   "x": 14,
-   "y": 18,
-   "region": "legendary-sanctuary"
+   "x": 122,
+   "y": 26,
+   "region": "sanctuary-hollow"
   }
  },
  {
@@ -398,9 +398,9 @@
   "lore": "Hộ thần tri thức — nhìn vào mắt nó sẽ mất trí nhớ.",
   "hint": "Mặt hồ băng phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
   "site": {
-   "x": 23,
-   "y": 58,
-   "region": "legendary-sanctuary"
+   "x": 30,
+   "y": 26,
+   "region": "sanctuary-hollow"
   }
  },
  {
@@ -430,9 +430,9 @@
   "lore": "Hộ thần ý chí, giữ cân bằng thế giới.",
   "hint": "Gió thổi mạnh quanh vòng đá bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
   "site": {
-   "x": 48,
-   "y": 21,
-   "region": "misty-swamp"
+   "x": 23,
+   "y": 29,
+   "region": "swamp-hollow"
   }
  },
  {
@@ -484,9 +484,9 @@
   "lore": "Bị đày vào Thế Giới Đảo Ngược vì sự hung bạo — chỉ lộ diện trong bóng tối.",
   "hint": "Bóng của vòng đá chỉ về hướng ngược lại... Giratina chỉ hiện ra ban đêm, sau khi Dialga và Palkia bị khuấy động.",
   "site": {
-   "x": 69,
-   "y": 52,
-   "region": "misty-swamp"
+   "x": 28,
+   "y": 28,
+   "region": "distortion-world"
   }
  },
  {
@@ -504,9 +504,9 @@
   "lore": "Sống trong hang núi lửa, máu nó là dung nham sôi.",
   "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
   "site": {
-   "x": 40,
-   "y": 16,
-   "region": "volcanic-lands"
+   "x": 66,
+   "y": 24,
+   "region": "volcanic-hollow"
   }
  },
  {
@@ -520,9 +520,9 @@
   "time": "night",
   "lore": "Hiện thân của trăng lưỡi liềm, mang giấc mơ đẹp — chỉ bay vào ban đêm.",
   "site": {
-   "x": 76,
-   "y": 44,
-   "region": "emerald-woods"
+   "x": 60,
+   "y": 23,
+   "region": "emerald-hollow"
   },
   "weather": [
    "clear"
@@ -540,9 +540,9 @@
   "lore": "Gieo ác mộng cho người ngủ gần nó; chỉ Cresselia mới xua tan được.",
   "hint": "Sương độc làm bạn buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
   "site": {
-   "x": 21,
-   "y": 29,
-   "region": "misty-swamp"
+   "x": 104,
+   "y": 23,
+   "region": "swamp-hollow"
   }
  },
  {
@@ -558,9 +558,9 @@
   "lore": "Pokémon nhím hoa làm nở hoa khắp nơi — chỉ đến bên người có Pokémon thật gắn bó.",
   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
   "site": {
-   "x": 66,
-   "y": 69,
-   "region": "volcanic-lands"
+   "x": 106,
+   "y": 23,
+   "region": "volcanic-hollow"
   }
  },
  {

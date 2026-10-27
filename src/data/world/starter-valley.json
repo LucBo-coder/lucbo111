@@ -1335,55 +1335,7 @@
   "respawn": 600,
   "arena": 330
  },
- "legendaries": [
-  {
-   "id": "mewtwo",
-   "name": "Vết Nứt Tâm Linh",
-   "x": 138,
-   "y": 45,
-   "level": 46,
-   "respawn": 1200,
-   "arena": 528,
-   "requires": [
-    "boss:articuno",
-    "boss:zapdos",
-    "boss:moltres"
-   ],
-   "gap": 1.57,
-   "hint": "Một áp lực tâm linh khổng lồ đẩy bạn lùi lại... Chỉ người được cả ba Thần Điểu công nhận mới vào được.",
-   "shrine": "mewtwo"
-  },
-  {
-   "id": "mew",
-   "name": "Đồi Hoa Huyền Bí",
-   "x": 17,
-   "y": 13,
-   "level": 42,
-   "respawn": 1200,
-   "arena": 240,
-   "requires": [
-    "boss:mewtwo"
-   ],
-   "gap": 4.71,
-   "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo.",
-   "shrine": "mew"
-  },
-  {
-   "id": "mesprit",
-   "name": "Đá Cảm Xúc",
-   "x": 116,
-   "y": 62,
-   "level": 45,
-   "respawn": 0,
-   "arena": 240,
-   "requires": [
-    "boss:mewtwo"
-   ],
-   "gap": 0,
-   "hint": "Một phiến đá hồng ấm áp bên hồ. Như có ai đang nhìn bạn.",
-   "shrine": "mesprit"
-  }
- ],
+ "legendaries": [],
  "portals": [
   {
    "id": "portal-frozen",
@@ -1564,11 +1516,80 @@
    }
   },
   {
-   "id": "sv-mew-crack",
+   "id": "secret-mewtwo",
+   "ability": "smash",
+   "x": 138,
+   "y": 44
+  },
+  {
+   "id": "secret-mew",
    "ability": "smash",
    "x": 17,
-   "y": 20,
-   "look": "crack"
+   "y": 13
+  },
+  {
+   "id": "secret-mesprit",
+   "ability": "cut",
+   "x": 115,
+   "y": 61
+  }
+ ],
+ "secrets": [
+  {
+   "id": "to-mewtwo",
+   "name": "Vết nứt đá lạ",
+   "x": 138,
+   "y": 44,
+   "to": "psychic-rift",
+   "toX": 26,
+   "toY": 44,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-mewtwo"
+   },
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "hint": "Một áp lực tâm linh khổng lồ đẩy bạn lùi lại... Chỉ người được cả ba Thần Điểu công nhận mới vào được.",
+   "color": 12615935
+  },
+  {
+   "id": "to-mew",
+   "name": "Tường nứt Tàn Tích",
+   "x": 17,
+   "y": 13,
+   "to": "valley-hollow",
+   "toX": 20,
+   "toY": 32,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-mew"
+   },
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo.",
+   "color": 16748752
+  },
+  {
+   "id": "to-mesprit",
+   "name": "Bụi lau ven hồ",
+   "x": 115,
+   "y": 61,
+   "to": "valley-hollow",
+   "toX": 54,
+   "toY": 27,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-mesprit"
+   },
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "hint": "Một phiến đá hồng ấm áp bên hồ. Như có ai đang nhìn bạn.",
+   "color": 16748736
   }
  ]
 }

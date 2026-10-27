@@ -489,101 +489,7 @@
  "dungeons": [],
  "pillars": [],
  "spawns": {},
- "legendaries": [
-  {
-   "id": "lugia",
-   "name": "Đền Biển Sâu",
-   "x": 88,
-   "y": 20,
-   "level": 45,
-   "respawn": 1500,
-   "arena": 576,
-   "requires": [
-    "boss:articuno",
-    "boss:zapdos",
-    "boss:moltres"
-   ],
-   "gap": 1.37,
-   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
-   "condition": {
-    "weather": [
-     "rain",
-     "heavyRain",
-     "thunderstorm"
-    ]
-   },
-   "shrine": "lugia"
-  },
-  {
-   "id": "zapdos",
-   "name": "Đỉnh Sấm Đồi Đá",
-   "x": 16,
-   "y": 66,
-   "level": 38,
-   "respawn": 900,
-   "arena": 432,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 2.36,
-   "hint": "Tia sét lóe lên quanh cột thu lôi rồi tắt ngấm... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
-   "shrine": "zapdos"
-  },
-  {
-   "id": "regirock",
-   "name": "Lăng Đá Đỏ",
-   "x": 30,
-   "y": 20,
-   "level": 42,
-   "respawn": 1500,
-   "arena": 288,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 5.61,
-   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
-   "condition": {},
-   "shrine": "regirock"
-  },
-  {
-   "id": "kyogre-gate",
-   "name": "Xoáy Nước Sâu",
-   "x": 78,
-   "y": 56,
-   "level": 50,
-   "respawn": 0,
-   "arena": 240,
-   "requires": [
-    "boss:lugia",
-    "boss:ho-oh"
-   ],
-   "gap": 0,
-   "hint": "Mặt nước ở đây sẫm lại một cách lạ thường... (cần hạ Lugia và Ho-Oh)",
-   "shrine": "kyogre-gate",
-   "condition": {
-    "weather": [
-     "rain",
-     "heavyRain",
-     "thunderstorm"
-    ]
-   }
-  },
-  {
-   "id": "manaphy",
-   "name": "Rạn Ấu Hải",
-   "x": 75,
-   "y": 79,
-   "level": 1,
-   "respawn": 0,
-   "arena": 240,
-   "requires": [
-    "boss:kyogre"
-   ],
-   "gap": 0,
-   "hint": "Một vỏ sò khổng lồ khép chặt. Nghe nói nó chỉ mở khi Chúa Tể Đại Dương thức giấc.",
-   "shrine": "manaphy"
-  }
- ],
+ "legendaries": [],
  "portals": [
   {
    "id": "portal-coast-valley",
@@ -616,6 +522,133 @@
      40
     ]
    ]
+  }
+ ],
+ "field": [
+  {
+   "id": "secret-zapdos",
+   "ability": "smash",
+   "x": 16,
+   "y": 66
+  },
+  {
+   "id": "secret-manaphy",
+   "ability": "smash",
+   "x": 75,
+   "y": 79
+  }
+ ],
+ "secrets": [
+  {
+   "id": "to-lugia",
+   "name": "Xoáy nước bạc",
+   "x": 77,
+   "y": 11,
+   "stand": [
+    76,
+    11
+   ],
+   "to": "silver-maelstrom",
+   "toX": 6,
+   "toY": 28,
+   "look": "whirlpool",
+   "reveal": {
+    "clues": "lugia"
+   },
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "weather": [
+    "rain",
+    "heavyRain",
+    "thunderstorm"
+   ],
+   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+   "color": 13164799
+  },
+  {
+   "id": "to-zapdos",
+   "name": "Tảng đá sét đánh",
+   "x": 16,
+   "y": 66,
+   "to": "coral-hollow",
+   "toX": 23,
+   "toY": 38,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-zapdos"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Tia sét lóe lên quanh cột thu lôi rồi tắt ngấm... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
+   "color": 16773216
+  },
+  {
+   "id": "to-regirock",
+   "name": "Cửa đá đỏ",
+   "x": 30,
+   "y": 20,
+   "to": "coral-hollow",
+   "toX": 65,
+   "toY": 37,
+   "look": "cave",
+   "reveal": {
+    "clues": "regirock"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
+   "color": 13664336
+  },
+  {
+   "id": "to-manaphy",
+   "name": "Hang san hô",
+   "x": 75,
+   "y": 79,
+   "to": "coral-hollow",
+   "toX": 102,
+   "toY": 35,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-manaphy"
+   },
+   "requires": [
+    "boss:kyogre"
+   ],
+   "hint": "Một vỏ sò khổng lồ khép chặt. Nghe nói nó chỉ mở khi Chúa Tể Đại Dương thức giấc.",
+   "color": 6340863
+  },
+  {
+   "id": "to-kyogre",
+   "name": "Xoáy Nước Sâu",
+   "x": 71,
+   "y": 57,
+   "stand": [
+    70,
+    57
+   ],
+   "to": "abyssal-depths",
+   "toX": 25,
+   "toY": 43,
+   "look": "whirlpool",
+   "reveal": {
+    "clues": "kyogre"
+   },
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "weather": [
+    "rain",
+    "heavyRain",
+    "thunderstorm"
+   ],
+   "hint": "Mặt nước ở đây sẫm lại một cách lạ thường... (cần hạ Lugia và Ho-Oh)",
+   "color": 4227327
   }
  ]
 }

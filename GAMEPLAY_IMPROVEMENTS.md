@@ -148,3 +148,7 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 
 ### Biết ngay có gì mới
 - Trước: cập nhật chỉ nằm trong tài liệu, người chơi mở game không biết đã có gì thay đổi. Giờ góc phải trên menu chính có nút **✨ Có gì mới** với chấm đỏ đếm số mục chưa đọc; bấm vào xem danh sách tính năng mới, mục chưa đọc có nhãn MỚI.
+
+### Đền huyền thoại phải tự tìm
+- Trước: đền nằm sẵn giữa bản đồ, ai đi ngang cũng thấy. Giờ bản đồ không có đền nào: phải để ý một bụi cây rậm lấp lánh, một tảng đá nứt lạ, hay lần theo 3 manh mối để lộ ra lối vào — một khe nứt phát sáng, miệng hang, hay xoáy nước giữa biển chỉ mở khi trời mưa.
+- Huyền thoại mạnh nhất có thế giới riêng: biển bão không bao giờ tạnh của Lugia, lõi dung nham của Groudon, Thế Giới Đảo Ngược của Giratina, Tầng Trời của Rayquaza.

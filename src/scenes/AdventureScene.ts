@@ -50,6 +50,7 @@ import { isAquatic, type WeatherKind } from '../core/encounters';
 import { LEGENDS, LegendEnv, missingConditions as legendMissing } from '../core/legends';
 import { LegendaryEncounterManager } from '../adventure/LegendaryEncounterManager';
 import { ShrineController } from '../adventure/ShrineController';
+import { SecretController } from '../adventure/SecretController';
 import { RITUALS } from '../core/rituals';
 import { audio } from '../systems/audio';
 import { gameModes } from '../systems/gameMode';
@@ -127,6 +128,7 @@ export class AdventureScene extends Phaser.Scene {
   legendsMgr: LegendaryEncounterManager | null = null;
   /** Legendary shrine rituals, sealed arenas and hazards (overworld maps) */
   shrines: ShrineController | null = null;
+  secrets: SecretController | null = null;
   private distortG: Phaser.GameObjects.Graphics | null = null;
   private snow: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
   private heat: Phaser.GameObjects.Rectangle | null = null;
@@ -319,6 +321,11 @@ export class AdventureScene extends Phaser.Scene {
       this.legendsMgr = new LegendaryEncounterManager(this);
       this.shrines = new ShrineController(this);
       this.shrines.build();
+      this.secrets = new SecretController(this);
+      this.secrets.build();
+      // a plane's fixed sky (Biển Xoáy Bạc: always a storm)
+      if (this.regionDef.weather) this.weather = { kind: this.regionDef.weather, t: Infinity };
+      else if (this.weather.t === Infinity) this.weather = { kind: 'clear', t: 240 }; // back from a plane
       this.spawns = new SpawnManager(this.world, map, {
         maxActive: 14,
         perRegionCap: 10,
@@ -400,6 +407,8 @@ export class AdventureScene extends Phaser.Scene {
     this.legendsMgr = null;
     this.shrines?.cleanup();
     this.shrines = null;
+    this.secrets?.cleanup();
+    this.secrets = null;
     this.scale.off('resize', this.applyZoom, this);
     this.game.events.off('blur', this.onBlur, this);
     this.sway.forEach((t) => t.remove());
@@ -1039,7 +1048,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateBattle();
     this.updateCapture(dt);
     if (!this.modal) this.updateMega(dt);
-    if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); }
+    if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); this.secrets?.update(dt); }
     // Evolution prompts wait for a calm moment (never between dungeon waves / before the boss)
     const dungeonCalm = !this.dungeon || this.dungeon.phase === 'reward' || this.dungeon.phase === 'done';
     if (this.evoQueue.size && dungeonCalm && !this.modal && !this.evoBusy && !this.inCombat() && this.blackoutT < 0) void this.processEvolution();
@@ -1331,6 +1340,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'remote': return this.presence?.challenge();
       case 'node': return this.useNode(it);
       case 'shrine': return this.shrines?.interact(it.id, it.obj.data as never);
+      case 'secret': return this.secrets?.interact(it.id);
     }
   }
 

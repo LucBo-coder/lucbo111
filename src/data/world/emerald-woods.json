@@ -442,83 +442,7 @@
  "dungeons": [],
  "pillars": [],
  "spawns": {},
- "legendaries": [
-  {
-   "id": "celebi",
-   "name": "Khu Rừng Thiêng lúc bình minh",
-   "x": 23,
-   "y": 66,
-   "level": 30,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 1.57,
-   "hint": "",
-   "gift": true,
-   "condition": {
-    "time": "dawn"
-   },
-   "shrine": "celebi"
-  },
-  {
-   "id": "ho-oh",
-   "name": "Tháp Chuông Cầu Vồng",
-   "x": 20,
-   "y": 20,
-   "level": 45,
-   "respawn": 1500,
-   "arena": 576,
-   "requires": [
-    "boss:raikou",
-    "boss:entei",
-    "boss:suicune"
-   ],
-   "gap": 1.57,
-   "hint": "Chuông tháp im lặng... Ho-Oh chỉ đáp lời ban ngày, khi ba thú huyền thoại đã công nhận bạn.",
-   "condition": {
-    "time": "day"
-   },
-   "shrine": "ho-oh"
-  },
-  {
-   "id": "cresselia",
-   "name": "Hồ Trăng Lục Bảo",
-   "x": 76,
-   "y": 44,
-   "level": 48,
-   "respawn": 480,
-   "arena": 240,
-   "requires": [
-    "boss:mew"
-   ],
-   "gap": 0,
-   "hint": "Mặt hồ phẳng lặng như gương. Đêm trăng quang, nó phản chiếu một bóng hình kỳ lạ.",
-   "shrine": "cresselia",
-   "condition": {
-    "time": "night",
-    "weather": [
-     "clear"
-    ]
-   }
-  },
-  {
-   "id": "lati",
-   "name": "Đài Gió Thác Ngọc",
-   "x": 84,
-   "y": 6,
-   "level": 45,
-   "respawn": 0,
-   "arena": 240,
-   "requires": [
-    "boss:lugia"
-   ],
-   "gap": 0,
-   "hint": "Hai tấm bia cánh đứng trước thác. Gió thổi qua như tiếng gọi xa xăm.",
-   "shrine": "lati"
-  }
- ],
+ "legendaries": [],
  "portals": [
   {
    "id": "portal-emerald-valley",
@@ -572,6 +496,106 @@
    "table": "falls-fish",
    "x": 78,
    "y": 11
+  }
+ ],
+ "field": [
+  {
+   "id": "secret-ho-oh",
+   "ability": "cut",
+   "x": 20,
+   "y": 20
+  },
+  {
+   "id": "secret-celebi",
+   "ability": "cut",
+   "x": 24,
+   "y": 69
+  },
+  {
+   "id": "secret-cresselia",
+   "ability": "cut",
+   "x": 77,
+   "y": 45
+  },
+  {
+   "id": "secret-lati",
+   "ability": "smash",
+   "x": 84,
+   "y": 6
+  }
+ ],
+ "secrets": [
+  {
+   "id": "to-ho-oh",
+   "name": "Lối mòn sau bụi rậm",
+   "x": 20,
+   "y": 20,
+   "to": "rainbow-sky",
+   "toX": 30,
+   "toY": 50,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-ho-oh"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Ánh cầu vồng lóe lên rồi tắt. Ba bức tượng Thú bên trong đang chờ người đã hạ Thần Rừng (Mega Venusaur).",
+   "color": 16756800
+  },
+  {
+   "id": "to-celebi",
+   "name": "Lùm cây cổ thụ",
+   "x": 24,
+   "y": 69,
+   "to": "emerald-hollow",
+   "toX": 20,
+   "toY": 36,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-celebi"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "",
+   "color": 8446080
+  },
+  {
+   "id": "to-cresselia",
+   "name": "Bụi cây ánh trăng",
+   "x": 77,
+   "y": 45,
+   "to": "emerald-hollow",
+   "toX": 60,
+   "toY": 40,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-cresselia"
+   },
+   "requires": [
+    "boss:mew"
+   ],
+   "hint": "Mặt hồ phẳng lặng như gương. Đêm trăng quang, nó phản chiếu một bóng hình kỳ lạ.",
+   "color": 13682943
+  },
+  {
+   "id": "to-lati",
+   "name": "Vách đá gió",
+   "x": 84,
+   "y": 6,
+   "to": "emerald-hollow",
+   "toX": 99,
+   "toY": 32,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-lati"
+   },
+   "requires": [
+    "boss:lugia"
+   ],
+   "hint": "Hai tấm bia cánh đứng trước thác. Gió thổi qua như tiếng gọi xa xăm.",
+   "color": 16744576
   }
  ]
 }

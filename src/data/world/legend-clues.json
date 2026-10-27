@@ -6,7 +6,7 @@
     "id": "lugia-1",
     "region": "coral-coast",
     "x": 61,
-    "y": 3,
+    "y": 4,
     "text": "Một chiếc lông vũ bạc to bằng cánh tay mắc trên bãi đá, vẫn còn ướt nước biển."
    },
    {
@@ -109,7 +109,7 @@
    {
     "id": "regice-1",
     "region": "frozen-mountains",
-    "x": 108,
+    "x": 107,
     "y": 45,
     "text": "Một khối băng không tan dù đặt dưới nắng, bề mặt khắc những chấm tròn xếp hàng."
    },
@@ -221,7 +221,7 @@
     "id": "giratina-2",
     "region": "misty-swamp",
     "x": 108,
-    "y": 26,
+    "y": 25,
     "text": "Trong đêm, mặt hồ đầm phản chiếu một thế giới lộn ngược."
    },
    {
@@ -246,8 +246,8 @@
    {
     "id": "darkrai-2",
     "region": "misty-swamp",
-    "x": 3,
-    "y": 13,
+    "x": 4,
+    "y": 14,
     "text": "Hoa ở đây khép lại cả ban ngày, như đang ngủ một giấc không yên."
    },
    {

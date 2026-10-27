@@ -1,5 +1,16 @@
 [
   {
+    "id": "v22-hidden-shrines",
+    "title": "Đền huyền thoại bí mật",
+    "items": [
+      "Bản đồ không còn đền nào nằm sẵn: phải tự tìm lối vào ẩn — sau bụi cây rậm (Cắt cây), sau tảng đá nứt (Đập đá), hoặc lần theo 3 manh mối điều tra.",
+      "Đứng gần một chướng ngại giấu lối vào sẽ thấy nó lấp lánh. Tìm thấy rồi thì lối vào được nhớ mãi.",
+      "10 huyền thoại mạnh nhất có thế giới riêng: Khe Nứt Tâm Linh (Mewtwo), Thiên Đài Cầu Vồng (Ho-Oh), Biển Xoáy Bạc luôn có bão (Lugia), Lõi Dung Nham (Groudon), Tầng Trời (Rayquaza), Thế Giới Đảo Ngược (Giratina), Vực Nguyên Hải (Kyogre), Thần Điện Khởi Nguyên (Dialga, Palkia, Arceus).",
+      "Các đền khác nằm trong Bí Cảnh của từng vùng, mỗi đền một khoang kín riêng.",
+      "Xoáy nước dẫn tới Lugia và Kyogre chỉ mở khi trời mưa."
+    ]
+  },
+  {
     "id": "v22-shrines",
     "title": "Đền huyền thoại",
     "items": [

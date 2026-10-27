@@ -1,0 +1,116 @@
+{
+ "id": "silver-maelstrom",
+ "name": "Biển Xoáy Bạc",
+ "width": 57,
+ "height": 57,
+ "chunk": 16,
+ "theme": "coast",
+ "void": "Water",
+ "weather": "rain",
+ "spawn": {
+  "x": 6,
+  "y": 28
+ },
+ "areas": [
+  {
+   "id": "silver-maelstrom-lugia",
+   "name": "Đảo Xoáy Bạc",
+   "rect": [
+    2,
+    2,
+    54,
+    54
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    45,
+    55
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     9.5,
+     28.5
+    ],
+    [
+     3.5,
+     28.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "lugia",
+   "name": "Đền Biển Sâu",
+   "x": 28,
+   "y": 27,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 576,
+   "requires": [
+    "boss:articuno",
+    "boss:zapdos",
+    "boss:moltres"
+   ],
+   "gap": 1.37,
+   "hint": "Mặt biển lặng như tờ... Lugia chỉ hiện ra trong mưa bão, trước người được ba Thần Điểu công nhận.",
+   "condition": {
+    "weather": [
+     "rain",
+     "heavyRain",
+     "thunderstorm"
+    ]
+   },
+   "shrine": "lugia"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-lugia",
+   "name": "Trở về Bờ Biển San Hô",
+   "x": 3,
+   "y": 28,
+   "to": "coral-coast",
+   "toX": 76,
+   "toY": 11
+  }
+ ],
+ "field": []
+}

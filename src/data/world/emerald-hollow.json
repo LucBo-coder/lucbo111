@@ -1,0 +1,220 @@
+{
+ "id": "emerald-hollow",
+ "name": "Bí Cảnh Rừng Ngọc",
+ "width": 117,
+ "height": 47,
+ "chunk": 16,
+ "theme": "sanctuary",
+ "void": "Wall",
+ "spawn": {
+  "x": 20,
+  "y": 36
+ },
+ "areas": [
+  {
+   "id": "emerald-hollow-celebi",
+   "name": "Vòng Cây Cổ",
+   "rect": [
+    2,
+    6,
+    38,
+    40
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    30,
+    40
+   ]
+  },
+  {
+   "id": "emerald-hollow-cresselia",
+   "name": "Hồ Trăng Lục Bảo",
+   "rect": [
+    39,
+    2,
+    81,
+    44
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    48,
+    58
+   ]
+  },
+  {
+   "id": "emerald-hollow-lati",
+   "name": "Đài Gió Thác Ngọc",
+   "rect": [
+    82,
+    10,
+    114,
+    36
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    45,
+    55
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     20.5,
+     33.5
+    ],
+    [
+     20.5,
+     39.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60.5,
+     37.5
+    ],
+    [
+     60.5,
+     43.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     99.5,
+     29.5
+    ],
+    [
+     99.5,
+     35.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "celebi",
+   "name": "Khu Rừng Thiêng lúc bình minh",
+   "x": 20,
+   "y": 23,
+   "level": 30,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 1.57,
+   "hint": "",
+   "gift": true,
+   "condition": {
+    "time": "dawn"
+   },
+   "shrine": "celebi"
+  },
+  {
+   "id": "cresselia",
+   "name": "Hồ Trăng Lục Bảo",
+   "x": 60,
+   "y": 23,
+   "level": 48,
+   "respawn": 480,
+   "arena": 240,
+   "requires": [
+    "boss:mew"
+   ],
+   "gap": 0,
+   "hint": "Mặt hồ phẳng lặng như gương. Đêm trăng quang, nó phản chiếu một bóng hình kỳ lạ.",
+   "shrine": "cresselia",
+   "condition": {
+    "time": "night",
+    "weather": [
+     "clear"
+    ]
+   }
+  },
+  {
+   "id": "lati",
+   "name": "Đài Gió Thác Ngọc",
+   "x": 98,
+   "y": 22,
+   "level": 45,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:lugia"
+   ],
+   "gap": 0,
+   "hint": "Hai tấm bia cánh đứng trước thác. Gió thổi qua như tiếng gọi xa xăm.",
+   "shrine": "lati"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-celebi",
+   "name": "Trở về Rừng Ngọc Lục Bảo",
+   "x": 20,
+   "y": 39,
+   "to": "emerald-woods",
+   "toX": 24,
+   "toY": 71
+  },
+  {
+   "id": "back-cresselia",
+   "name": "Trở về Rừng Ngọc Lục Bảo",
+   "x": 60,
+   "y": 43,
+   "to": "emerald-woods",
+   "toX": 77,
+   "toY": 47
+  },
+  {
+   "id": "back-lati",
+   "name": "Trở về Rừng Ngọc Lục Bảo",
+   "x": 99,
+   "y": 35,
+   "to": "emerald-woods",
+   "toX": 84,
+   "toY": 8
+  }
+ ],
+ "field": []
+}

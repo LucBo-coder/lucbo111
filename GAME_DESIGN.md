@@ -180,7 +180,7 @@ Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmor
 - Huyền thoại bị đánh tới **WEAKENED** (4% HP) → mở **cửa sổ bắt** có giới hạn lượt ném / thời gian; bắt hụt thì nó bay đi và quay lại sau.
 
 - **Điều tra huyền thoại**: 13 huyền thoại có 3 manh mối rải trên bản đồ (hiện sau khi mở khóa theo cốt truyện). Đủ manh mối → biết điều kiện xuất hiện, thêm 1 lượt ném khi thu phục. Cửa sổ thu phục (WEAKENED) lưu trong save, tải lại không làm mới số lượt.
-- **Đền huyền thoại (đã triển khai, V22)**: xem [LEGENDARY_SHRINES.md](LEGENDARY_SHRINES.md) — 32 đền có sơ đồ ô riêng; mỗi đền 4 lớp (vùng bao ngoài, sân nghi lễ, lõi triệu hồi, arena). Bấm E ở chỗ làm lễ → nghi lễ → chuyển cảnh → trận trong arena niêm phong có hiểm họa riêng. 16 thánh vật; thú lang thang chỉ thức sau điểm kích hoạt; Kyogre ở Vực Nguyên Hải, Dialga / Palkia / Arceus ở Thần Điện Khởi Nguyên.
+- **Đền huyền thoại (đã triển khai, V22)**: xem [LEGENDARY_SHRINES.md](LEGENDARY_SHRINES.md) — 32 đền có sơ đồ ô riêng; mỗi đền 4 lớp (vùng bao ngoài, sân nghi lễ, lõi triệu hồi, arena). Bấm E ở chỗ làm lễ → nghi lễ → chuyển cảnh → trận trong arena niêm phong có hiểm họa riêng. 16 thánh vật; thú lang thang chỉ thức sau điểm kích hoạt; Kyogre ở Vực Nguyên Hải, Dialga / Palkia / Arceus ở Thần Điện Khởi Nguyên. **Đền ẩn**: bản đồ thường không có đền nào — huyền thoại Tầng 1 ở dimension riêng, các đền khác ở Bí Cảnh của từng bản đồ; chỉ vào được qua lối vào ẩn (dọn chướng ngại hoặc đọc đủ manh mối).
 
 ### 5.7 Sự kiện thế giới
 Bùng phát, Pokémon Alpha, Di cư, Vùng biến dạng, kho báu, bão tuyết / sóng nhiệt, **Thương nhân lưu động** (6 món hiếm giảm 30%), **Mưa sao băng** (nhặt 5 mảnh sao đổi đá tiến hóa / đá Mega). Có thông báo, bảng đếm ngược, đánh dấu trên bản đồ nhỏ.

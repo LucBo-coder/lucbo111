@@ -1,0 +1,221 @@
+{
+ "id": "volcanic-hollow",
+ "name": "Bí Cảnh Núi Lửa",
+ "width": 127,
+ "height": 47,
+ "chunk": 16,
+ "theme": "volcanic",
+ "void": "Wall",
+ "spawn": {
+  "x": 23,
+  "y": 40
+ },
+ "areas": [
+  {
+   "id": "volcanic-hollow-moltres",
+   "name": "Đền Lửa Thần Điểu",
+   "rect": [
+    2,
+    2,
+    44,
+    44
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    38,
+    48
+   ]
+  },
+  {
+   "id": "volcanic-hollow-heatran",
+   "name": "Lòng Chảo Nham Tâm",
+   "rect": [
+    45,
+    3,
+    87,
+    43
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    50,
+    60
+   ]
+  },
+  {
+   "id": "volcanic-hollow-shaymin",
+   "name": "Đồi Hoa Tái Sinh",
+   "rect": [
+    88,
+    6,
+    124,
+    40
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    30,
+    40
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     23.5,
+     37.5
+    ],
+    [
+     23.5,
+     43.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     67.5,
+     36.5
+    ],
+    [
+     67.5,
+     42.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     107.5,
+     33.5
+    ],
+    [
+     107.5,
+     39.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "moltres",
+   "name": "Đền Lửa Tàn Tích",
+   "x": 23,
+   "y": 22,
+   "level": 38,
+   "respawn": 900,
+   "arena": 432,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 0,
+   "hint": "Tro nóng vẫn còn âm ỉ giữa đài lửa... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
+   "shrine": "moltres"
+  },
+  {
+   "id": "heatran",
+   "name": "Miệng Núi Lửa Ngầm",
+   "x": 66,
+   "y": 24,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 432,
+   "requires": [
+    "boss:groudon"
+   ],
+   "gap": 2.32,
+   "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
+   "condition": {
+    "weather": [
+     "heatwave",
+     "clear"
+    ]
+   },
+   "shrine": "heatran"
+  },
+  {
+   "id": "shaymin",
+   "name": "Vườn Hoa Gracidea",
+   "x": 106,
+   "y": 23,
+   "level": 30,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:celebi"
+   ],
+   "gap": 1.57,
+   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
+   "gift": true,
+   "condition": {
+    "time": "day",
+    "friendship": 200
+   },
+   "shrine": "shaymin"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-moltres",
+   "name": "Trở về Vùng Đất Núi Lửa",
+   "x": 23,
+   "y": 43,
+   "to": "volcanic-lands",
+   "toX": 45,
+   "toY": 43
+  },
+  {
+   "id": "back-heatran",
+   "name": "Trở về Vùng Đất Núi Lửa",
+   "x": 67,
+   "y": 42,
+   "to": "volcanic-lands",
+   "toX": 40,
+   "toY": 18
+  },
+  {
+   "id": "back-shaymin",
+   "name": "Trở về Vùng Đất Núi Lửa",
+   "x": 107,
+   "y": 39,
+   "to": "volcanic-lands",
+   "toX": 65,
+   "toY": 70
+  }
+ ],
+ "field": []
+}

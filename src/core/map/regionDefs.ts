@@ -7,6 +7,19 @@ import coastJson from '../../data/world/coral-coast.json';
 import emeraldJson from '../../data/world/emerald-woods.json';
 import abyssJson from '../../data/world/abyssal-depths.json';
 import templeJson from '../../data/world/origin-temple.json';
+import psychicRiftJson from '../../data/world/psychic-rift.json';
+import rainbowSkyJson from '../../data/world/rainbow-sky.json';
+import silverMaelstromJson from '../../data/world/silver-maelstrom.json';
+import magmaCoreJson from '../../data/world/magma-core.json';
+import skyPillarJson from '../../data/world/sky-pillar.json';
+import distortionWorldJson from '../../data/world/distortion-world.json';
+import valleyHollowJson from '../../data/world/valley-hollow.json';
+import emeraldHollowJson from '../../data/world/emerald-hollow.json';
+import coralHollowJson from '../../data/world/coral-hollow.json';
+import frozenHollowJson from '../../data/world/frozen-hollow.json';
+import volcanicHollowJson from '../../data/world/volcanic-hollow.json';
+import sanctuaryHollowJson from '../../data/world/sanctuary-hollow.json';
+import swampHollowJson from '../../data/world/swamp-hollow.json';
 import caMauJson from '../../data/vietnam/ca-mau.json';
 import anGiangJson from '../../data/vietnam/an-giang.json';
 import canThoJson from '../../data/vietnam/can-tho.json';
@@ -21,9 +34,23 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'misty-swamp': swampJson as unknown as RegionDef,
   'coral-coast': coastJson as unknown as RegionDef,
   'emerald-woods': emeraldJson as unknown as RegionDef,
-  // shrine planes (reached through a shrine gate, not listed with the regions)
+  // shrine planes (reached through a hidden entrance, not listed with the regions)
   'abyssal-depths': abyssJson as unknown as RegionDef,
   'origin-temple': templeJson as unknown as RegionDef,
+  // tier-1 legendaries' dimensions, then each map's hidden sanctum (LEGENDARY_SHRINES.md mục 8)
+  'psychic-rift': psychicRiftJson as unknown as RegionDef,
+  'rainbow-sky': rainbowSkyJson as unknown as RegionDef,
+  'silver-maelstrom': silverMaelstromJson as unknown as RegionDef,
+  'magma-core': magmaCoreJson as unknown as RegionDef,
+  'sky-pillar': skyPillarJson as unknown as RegionDef,
+  'distortion-world': distortionWorldJson as unknown as RegionDef,
+  'valley-hollow': valleyHollowJson as unknown as RegionDef,
+  'emerald-hollow': emeraldHollowJson as unknown as RegionDef,
+  'coral-hollow': coralHollowJson as unknown as RegionDef,
+  'frozen-hollow': frozenHollowJson as unknown as RegionDef,
+  'volcanic-hollow': volcanicHollowJson as unknown as RegionDef,
+  'sanctuary-hollow': sanctuaryHollowJson as unknown as RegionDef,
+  'swamp-hollow': swampHollowJson as unknown as RegionDef,
   // Vietnam Odyssey mode (separate campaign)
   'ca-mau': caMauJson as unknown as RegionDef,
   'an-giang': anGiangJson as unknown as RegionDef,

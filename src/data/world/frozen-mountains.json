@@ -478,83 +478,7 @@
  ],
  "pillars": [],
  "spawns": {},
- "legendaries": [
-  {
-   "id": "rayquaza",
-   "name": "Trụ Trời",
-   "x": 59,
-   "y": 19,
-   "level": 55,
-   "respawn": 1500,
-   "arena": 576,
-   "requires": [
-    "boss:kyogre",
-    "boss:groudon"
-   ],
-   "gap": 5.82,
-   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
-   "condition": {},
-   "shrine": "rayquaza"
-  },
-  {
-   "id": "articuno",
-   "name": "Băng Đài Hồ Băng Lam",
-   "x": 19,
-   "y": 39,
-   "level": 38,
-   "respawn": 900,
-   "arena": 432,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 5.82,
-   "hint": "Một luồng khí lạnh buốt tỏa ra từ băng đài bên Hồ Băng Lam... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur).",
-   "shrine": "articuno"
-  },
-  {
-   "id": "regice",
-   "name": "Lăng Băng Ẩn",
-   "x": 84,
-   "y": 76,
-   "level": 42,
-   "respawn": 1500,
-   "arena": 288,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 3.14,
-   "hint": "Lớp băng mỏng phủ kín lăng đá dưới Chân Núi Tuyết... Regice chỉ thức dậy trong bão tuyết.",
-   "condition": {
-    "weather": [
-     "blizzard"
-    ]
-   },
-   "shrine": "regice"
-  },
-  {
-   "id": "jirachi",
-   "name": "Đồi Ước Nguyện",
-   "x": 24,
-   "y": 80,
-   "level": 35,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:mew"
-   ],
-   "gap": 1.57,
-   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
-   "gift": true,
-   "condition": {
-    "time": "night",
-    "weather": [
-     "clear"
-    ],
-    "friendship": 180
-   },
-   "shrine": "jirachi"
-  }
- ],
+ "legendaries": [],
  "portals": [
   {
    "id": "portal-frozen-valley",
@@ -591,6 +515,95 @@
      72
     ]
    ]
+  }
+ ],
+ "field": [
+  {
+   "id": "secret-articuno",
+   "ability": "smash",
+   "x": 19,
+   "y": 39
+  },
+  {
+   "id": "secret-jirachi",
+   "ability": "smash",
+   "x": 25,
+   "y": 80
+  }
+ ],
+ "secrets": [
+  {
+   "id": "to-rayquaza",
+   "name": "Khe gió trời",
+   "x": 60,
+   "y": 19,
+   "to": "sky-pillar",
+   "toX": 28,
+   "toY": 50,
+   "look": "rift",
+   "reveal": {
+    "clues": "rayquaza"
+   },
+   "requires": [
+    "boss:kyogre",
+    "boss:groudon"
+   ],
+   "hint": "Gió trên đỉnh vách đá gào thét... Rayquaza chờ người đã thuần phục cả đất lẫn biển.",
+   "color": 6348960
+  },
+  {
+   "id": "to-articuno",
+   "name": "Khe băng",
+   "x": 19,
+   "y": 39,
+   "to": "frozen-hollow",
+   "toX": 23,
+   "toY": 38,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-articuno"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Một luồng khí lạnh buốt tỏa ra từ băng đài bên Hồ Băng Lam... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur).",
+   "color": 10543359
+  },
+  {
+   "id": "to-regice",
+   "name": "Cửa băng cổ",
+   "x": 84,
+   "y": 76,
+   "to": "frozen-hollow",
+   "toX": 65,
+   "toY": 37,
+   "look": "cave",
+   "reveal": {
+    "clues": "regice"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Lớp băng mỏng phủ kín lăng đá dưới Chân Núi Tuyết... Regice chỉ thức dậy trong bão tuyết.",
+   "color": 12644607
+  },
+  {
+   "id": "to-jirachi",
+   "name": "Đá sao rơi",
+   "x": 25,
+   "y": 80,
+   "to": "frozen-hollow",
+   "toX": 103,
+   "toY": 35,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-jirachi"
+   },
+   "requires": [
+    "boss:mew"
+   ],
+   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
+   "color": 16773280
   }
  ]
 }

@@ -95,12 +95,12 @@
  "portals": [
   {
    "id": "portal-abyss-back",
-   "name": "Trồi lên mặt biển",
+   "name": "Trở về Bờ Biển San Hô",
    "x": 25,
    "y": 46,
    "to": "coral-coast",
-   "toX": 79,
-   "toY": 64
+   "toX": 70,
+   "toY": 57
   }
  ]
 }

@@ -1,6 +1,6 @@
-// Dev tool (npx tsx scripts/place-clues.ts): after shrines move, puts each shrine legend's clues on the shrine's map
-// around it (outside the stamp, on open ground you can walk to) and moves any clue a shrine now covers. Rewrites
-// data/world/legend-clues.json.
+// Dev tool (npx tsx scripts/place-clues.ts): after shrines move, puts each shrine legend's clues on the map of its
+// hidden entrance (LEGENDARY_SHRINES.md mục 8: the shrine itself stands in a plane) around the entrance, on open ground
+// you can walk to, and moves any clue a shrine now covers. Rewrites data/world/legend-clues.json.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { ValleyMap } from '../src/core/map/valley';
@@ -40,7 +40,9 @@ for (const e of data) for (const c of e.clues) used.add(`${c.region}:${c.x},${c.
 const moved: string[] = [];
 for (const e of data) {
   const l = LEGENDS.get(e.legend)!;
-  const site = l.kind === 'shrine' ? l.site : undefined;
+  // the clues lead to the entrance (overworld), not into the plane
+  const entry = Object.values(REGION_DEFS).flatMap((d) => (d.secrets ?? []).map((s) => ({ d, s }))).find((x) => x.s.id === 'to-' + e.legend);
+  const site = l.kind === 'shrine' && entry ? { region: entry.d.id, x: entry.s.x, y: entry.s.y } : undefined;
   e.clues.forEach((c, i) => {
     const region = site ? site.region ?? 'starter-valley' : c.region;
     const { m, ok, stamp, seen } = info(region), W = m.widthTiles;
@@ -48,10 +50,8 @@ for (const e of data) {
     if (fine) return;
     // shrine clues: on a ring around the shrine (three directions); others: nearest open tile
     let best: [number, number] | null = null, bestD = Infinity;
-    const sh = site ? REGION_DEFS[region].legendaries!.find((s) => s.id === e.legend) : undefined;
-    const S = sh?.shrine ? SHRINES.get(sh.shrine)! : undefined;
-    const R = S ? Math.max(S.rows.length, S.rows[0].length) / 2 + 3 : 0;
-    const want = sh ? [sh.x + Math.cos(i * 2.1 + 0.6) * R, sh.y + Math.sin(i * 2.1 + 0.6) * R] : [c.x, c.y];
+    const R = 12;
+    const want = site ? [site.x + Math.cos(i * 2.1 + 0.6) * R, site.y + Math.sin(i * 2.1 + 0.6) * R] : [c.x, c.y];
     for (const k of ok) {
       const x = k % W, y = Math.floor(k / W);
       if (used.has(`${region}:${x},${y}`)) continue;

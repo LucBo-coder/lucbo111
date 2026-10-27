@@ -285,3 +285,15 @@ Lỗi tìm thấy khi làm: hiểm họa `floor` có vòng lặp vô hạn khi c
 
 Ảnh đã xem: menu chính và danh sách "Có gì mới" trên máy tính và điện thoại dọc.
 
+
+## V22 — đợt 19: đền ẩn + dimension riêng cho huyền thoại Tầng 1
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **527/527 ✅**. Mới: `v22_secret_shrines.test.ts` (7). Cập nhật theo thiết kế mới: `legendary` (Thung Lũng chỉ còn 3 lối vào), `v17_maps` (bản đồ của lối vào + mặt phẳng của đền), `v4_regions` (cổng Thần Điện ẩn), `v22_shrines` (30 sơ đồ; mặt phẳng đi từ chỗ đến của từng lối vào) |
+| E2E mới `v22_secret_shrines.spec.ts` | 2/2 ✅ — đập tảng đá → lối vào Mew hiện ra, bị phong ấn khi chưa hạ Mewtwo, vào Bí Cảnh đúng khoang Mew, cổng về đáp cạnh lối vào, tải lại vẫn nhớ; 13 bản đồ mới tải không lỗi, đúng đền |
+| E2E cập nhật (`v22_rituals`, `v3_events`, `v6_rayquaza`, `v22_shrines`, `v22_legend_clues`, `v22_field_boat`, `evolution`) | 17/17 ✅ — Lugia: xoáy nước đóng khi trời quang, mở khi mưa, trong Biển Xoáy Bạc luôn mưa; Kyogre: lối vào không tồn tại tới khi đọc đủ 3 manh mối. `evolution` (cửa hàng) hỏng 1 lần khi chạy chung 7 file (bấm phím chậm), chạy riêng 5/5 ✅ |
+| Toàn bộ e2e (`--workers=1`, 23,8 phút) | 79 passed / 1 skipped / 1 failed → `v21_world` (hái bụi): sau khi dịch chuyển tới bụi, Pokémon đồng hành (hái quả giúp, V22) hái mất trước khi bấm E — test đua với tính năng đồng hành, trước đây qua nhờ có Pokémon hoang ở gần. Sửa test: tạm dừng việc hái hộ trong đoạn hái tay → chạy lại 3 lần 6/6 ✅ |
+
+Ảnh đã xem: lối vào Mew vừa lộ ra, khoang Mew trong Bí Cảnh Thung Lũng, Biển Xoáy Bạc (mưa), Lõi Dung Nham, Thế Giới Đảo Ngược, Tầng Trời, khoang Zapdos ở Bí Cảnh Bờ Biển.

@@ -446,86 +446,7 @@
  ],
  "pillars": [],
  "spawns": {},
- "legendaries": [
-  {
-   "id": "groudon",
-   "name": "Đền Dung Nham",
-   "x": 89,
-   "y": 23,
-   "level": 50,
-   "respawn": 1500,
-   "arena": 576,
-   "requires": [
-    "boss:lugia",
-    "boss:ho-oh"
-   ],
-   "gap": 2.71,
-   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
-   "condition": {
-    "weather": [
-     "heatwave",
-     "clear"
-    ]
-   },
-   "shrine": "groudon"
-  },
-  {
-   "id": "shaymin",
-   "name": "Vườn Hoa Gracidea",
-   "x": 66,
-   "y": 69,
-   "level": 30,
-   "respawn": 1500,
-   "arena": 330,
-   "requires": [
-    "boss:celebi"
-   ],
-   "gap": 1.57,
-   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
-   "gift": true,
-   "condition": {
-    "time": "day",
-    "friendship": 200
-   },
-   "shrine": "shaymin"
-  },
-  {
-   "id": "heatran",
-   "name": "Miệng Núi Lửa Ngầm",
-   "x": 40,
-   "y": 16,
-   "level": 50,
-   "respawn": 1500,
-   "arena": 432,
-   "requires": [
-    "boss:groudon"
-   ],
-   "gap": 2.32,
-   "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
-   "condition": {
-    "weather": [
-     "heatwave",
-     "clear"
-    ]
-   },
-   "shrine": "heatran"
-  },
-  {
-   "id": "moltres",
-   "name": "Đền Lửa Tàn Tích",
-   "x": 45,
-   "y": 41,
-   "level": 38,
-   "respawn": 900,
-   "arena": 432,
-   "requires": [
-    "boss:mega-venusaur"
-   ],
-   "gap": 0,
-   "hint": "Tro nóng vẫn còn âm ỉ giữa đài lửa... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
-   "shrine": "moltres"
-  }
- ],
+ "legendaries": [],
  "portals": [
   {
    "id": "portal-volcano-valley",
@@ -562,6 +483,95 @@
      68
     ]
    ]
+  }
+ ],
+ "field": [
+  {
+   "id": "secret-moltres",
+   "ability": "smash",
+   "x": 45,
+   "y": 41
+  },
+  {
+   "id": "secret-shaymin",
+   "ability": "cut",
+   "x": 65,
+   "y": 68
+  }
+ ],
+ "secrets": [
+  {
+   "id": "to-groudon",
+   "name": "Khe nứt dung nham",
+   "x": 96,
+   "y": 23,
+   "to": "magma-core",
+   "toX": 29,
+   "toY": 50,
+   "look": "cave",
+   "reveal": {
+    "clues": "groudon"
+   },
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
+   "color": 16736304
+  },
+  {
+   "id": "to-moltres",
+   "name": "Khe đá cháy",
+   "x": 45,
+   "y": 41,
+   "to": "volcanic-hollow",
+   "toX": 23,
+   "toY": 40,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-moltres"
+   },
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "hint": "Tro nóng vẫn còn âm ỉ giữa đài lửa... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
+   "color": 16744512
+  },
+  {
+   "id": "to-heatran",
+   "name": "Miệng hang nóng",
+   "x": 40,
+   "y": 16,
+   "to": "volcanic-hollow",
+   "toX": 67,
+   "toY": 39,
+   "look": "cave",
+   "reveal": {
+    "clues": "heatran"
+   },
+   "requires": [
+    "boss:groudon"
+   ],
+   "hint": "Hơi nóng phả ra từ khe đá trên miệng núi lửa... Heatran xuất hiện khi trời nắng gắt, sau khi Groudon thức giấc.",
+   "color": 16736288
+  },
+  {
+   "id": "to-shaymin",
+   "name": "Bụi hoa dại",
+   "x": 65,
+   "y": 68,
+   "to": "volcanic-hollow",
+   "toX": 107,
+   "toY": 36,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-shaymin"
+   },
+   "requires": [
+    "boss:celebi"
+   ],
+   "hint": "Những bông hoa khép lại... Shaymin chỉ ra mặt ban ngày, khi Pokémon dẫn đầu rất thân thiết (≥200).",
+   "color": 10551184
   }
  ]
 }

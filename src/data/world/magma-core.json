@@ -1,0 +1,114 @@
+{
+ "id": "magma-core",
+ "name": "Lõi Dung Nham",
+ "width": 57,
+ "height": 57,
+ "chunk": 16,
+ "theme": "volcanic",
+ "void": "Wall",
+ "weather": "heatwave",
+ "spawn": {
+  "x": 29,
+  "y": 50
+ },
+ "areas": [
+  {
+   "id": "magma-core-groudon",
+   "name": "Đại Điện Dung Nham",
+   "rect": [
+    2,
+    2,
+    54,
+    54
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    50,
+    60
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     29.5,
+     47.5
+    ],
+    [
+     29.5,
+     53.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "groudon",
+   "name": "Đền Dung Nham",
+   "x": 28,
+   "y": 28,
+   "level": 50,
+   "respawn": 1500,
+   "arena": 576,
+   "requires": [
+    "boss:lugia",
+    "boss:ho-oh"
+   ],
+   "gap": 2.71,
+   "hint": "Đá dưới chân nóng ran... Groudon chỉ thức dậy khi trời nắng gắt, trước người đã gặp Lugia và Ho-Oh.",
+   "condition": {
+    "weather": [
+     "heatwave",
+     "clear"
+    ]
+   },
+   "shrine": "groudon"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-groudon",
+   "name": "Trở về Vùng Đất Núi Lửa",
+   "x": 29,
+   "y": 53,
+   "to": "volcanic-lands",
+   "toX": 96,
+   "toY": 25
+  }
+ ],
+ "field": []
+}

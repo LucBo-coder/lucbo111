@@ -1,18 +1,17 @@
 import { expect, test, type Page } from '@playwright/test';
+import { shrineHome } from './bossHelpers';
 
-// V22 legendary shrines (step 1) in the real game: every stamped shrine loads without errors, walls block the way,
-// the court is walkable; V22_SHOTS=<dir> saves a screenshot of each.
+// V22 legendary shrines in the real game: every stamped shrine loads without errors, walls block the way, the court is
+// walkable; V22_SHOTS=<dir> saves a screenshot of each. Since the hidden shrines (LEGENDARY_SHRINES.md mục 8) they
+// stand in planes: the tier-1 dimensions and the maps' sanctums.
 
 type Win = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const ev = <T = unknown>(page: Page, fn: string) => page.evaluate(fn) as Promise<T>;
 const SHOTS = process.env.V22_SHOTS;
 const ready = (page: Page, map: string) => page.waitForFunction((m) => (window as Win).__adv?.map?.id === m && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), map, { timeout: 20_000 });
 
-const SITES: [string, string][] = [
-  ['starter-valley', 'mewtwo'], ['frozen-mountains', 'rayquaza'], ['frozen-mountains', 'articuno'], ['frozen-mountains', 'regice'],
-  ['volcanic-lands', 'groudon'], ['volcanic-lands', 'heatran'], ['misty-swamp', 'giratina'], ['coral-coast', 'lugia'],
-  ['coral-coast', 'zapdos'], ['legendary-sanctuary', 'regigigas'], ['emerald-woods', 'ho-oh'], ['emerald-woods', 'celebi'],
-];
+const SITES: [string, string][] = ['mewtwo', 'rayquaza', 'articuno', 'regice', 'groudon', 'heatran', 'giratina', 'lugia', 'zapdos', 'regigigas', 'ho-oh', 'celebi']
+  .map((id) => [shrineHome(id).region, id]);
 
 test('designed shrines stand on the maps: walls solid, court open, no errors', async ({ page }) => {
   test.setTimeout(240_000);
@@ -25,7 +24,8 @@ test('designed shrines stand on the maps: walls solid, court open, no errors', a
   await ready(page, 'starter-valley');
   for (const [region, id] of SITES) {
     if (await ev<string>(page, `window.__adv.map.id`) !== region) {
-      await ev(page, `window.__adv.travelTo('${region}', 10, 10)`);
+      const h = shrineHome(id);
+      await ev(page, `window.__adv.travelTo('${region}', ${h.x}, ${h.y})`);
       await ready(page, region);
       await page.waitForTimeout(400);
     }

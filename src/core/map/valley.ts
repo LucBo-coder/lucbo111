@@ -1,6 +1,7 @@
 import { fbm, hash2 } from './noise';
 import { nookRing, type Dock, type FieldDef } from '../field';
 import { SHRINES, shrineCells, type ShrineDef } from '../shrines';
+import type { SecretDef } from '../secrets';
 import { AreaDef, MapObject, MapProvider, SpawnEntry } from './mapProvider';
 import { DUNGEON, EX, T, TOWN } from './tiles';
 
@@ -83,6 +84,10 @@ export interface RegionDef {
    * stamped shrines and the paths is this terrain, and no trees / boulders grow.
    */
   void?: 'Wall' | 'Water';
+  /** Hidden ways into the legendary planes (core/secrets.ts) */
+  secrets?: SecretDef[];
+  /** A plane's fixed sky (Biển Xoáy Bạc is always stormy); default: the theme's weather cycle */
+  weather?: 'clear' | 'rain' | 'fog' | 'blizzard' | 'heatwave';
 }
 
 export interface PortalDef {
@@ -205,6 +210,10 @@ export class ValleyMap implements MapProvider {
     const r = d.rescue;
     if (r.x >= 0) this.addRescue(r);
     this.clear.push({ x: d.spawn.x, y: d.spawn.y, r: 3 });
+    for (const sc of d.secrets ?? []) {
+      const [sx, sy] = sc.stand ?? [sc.x, sc.y];
+      this.clear.push({ x: sx + 0.5, y: sy + 0.5, r: 2 });
+    }
     for (const p of d.portals ?? []) {
       this.add({ kind: 'portal', id: p.id, x: p.x, y: p.y, tile: EX.portal, data: { ...p } });
       this.clear.push({ x: p.x, y: p.y, r: 3 });
@@ -280,6 +289,8 @@ export class ValleyMap implements MapProvider {
       case ':': return named(m.rune, T.Sanctum);
       case 'x': return named(m.x, T.Mud);
       case ',': case 'T':
+        // a plane has no ground of its own: the shrine's footprint is the island / cavern floor
+        if (this.def.void) return ground;
         return natural === T.Water || natural === T.Lava || natural === T.Bog || natural === T.Deep || natural === T.SnowDeep ? ground : natural;
       default: return named(m.floor, T.Ruin); // court floor, and under pillars, statues, the altar, plates
     }

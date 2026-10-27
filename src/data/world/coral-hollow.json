@@ -1,0 +1,211 @@
+{
+ "id": "coral-hollow",
+ "name": "Bí Cảnh Bờ Biển",
+ "width": 123,
+ "height": 45,
+ "chunk": 16,
+ "theme": "coast",
+ "void": "Water",
+ "spawn": {
+  "x": 23,
+  "y": 38
+ },
+ "areas": [
+  {
+   "id": "coral-hollow-zapdos",
+   "name": "Đỉnh Sấm Vách Hải Âu",
+   "rect": [
+    2,
+    2,
+    44,
+    42
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    38,
+    48
+   ]
+  },
+  {
+   "id": "coral-hollow-regirock",
+   "name": "Lăng Sa Thạch",
+   "rect": [
+    45,
+    3,
+    83,
+    41
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    42,
+    52
+   ]
+  },
+  {
+   "id": "coral-hollow-manaphy",
+   "name": "Rạn Ấu Hải",
+   "rect": [
+    84,
+    5,
+    120,
+    39
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    1,
+    11
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     23.5,
+     35.5
+    ],
+    [
+     23.5,
+     41.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     65.5,
+     34.5
+    ],
+    [
+     65.5,
+     40.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     102.5,
+     32.5
+    ],
+    [
+     102.5,
+     38.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "zapdos",
+   "name": "Đỉnh Sấm Đồi Đá",
+   "x": 23,
+   "y": 22,
+   "level": 38,
+   "respawn": 900,
+   "arena": 432,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 2.36,
+   "hint": "Tia sét lóe lên quanh cột thu lôi rồi tắt ngấm... Hãy quay lại sau khi hạ Thần Rừng (Mega Venusaur).",
+   "shrine": "zapdos"
+  },
+  {
+   "id": "regirock",
+   "name": "Lăng Đá Đỏ",
+   "x": 64,
+   "y": 19,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 288,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.61,
+   "hint": "Những ký tự cổ khắc trên đá đỏ... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {},
+   "shrine": "regirock"
+  },
+  {
+   "id": "manaphy",
+   "name": "Rạn Ấu Hải",
+   "x": 102,
+   "y": 22,
+   "level": 1,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:kyogre"
+   ],
+   "gap": 0,
+   "hint": "Một vỏ sò khổng lồ khép chặt. Nghe nói nó chỉ mở khi Chúa Tể Đại Dương thức giấc.",
+   "shrine": "manaphy"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-zapdos",
+   "name": "Trở về Bờ Biển San Hô",
+   "x": 23,
+   "y": 41,
+   "to": "coral-coast",
+   "toX": 16,
+   "toY": 68
+  },
+  {
+   "id": "back-regirock",
+   "name": "Trở về Bờ Biển San Hô",
+   "x": 65,
+   "y": 40,
+   "to": "coral-coast",
+   "toX": 30,
+   "toY": 22
+  },
+  {
+   "id": "back-manaphy",
+   "name": "Trở về Bờ Biển San Hô",
+   "x": 102,
+   "y": 38,
+   "to": "coral-coast",
+   "toX": 75,
+   "toY": 81
+  }
+ ],
+ "field": []
+}

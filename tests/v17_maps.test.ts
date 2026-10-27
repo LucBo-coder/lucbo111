@@ -11,7 +11,7 @@ import { REGIONS } from '../src/core/encounters';
 
 const ADVENTURE = ['starter-valley', 'frozen-mountains', 'volcanic-lands', 'misty-swamp', 'coral-coast', 'legendary-sanctuary'];
 const VIETNAM = ['ca-mau', 'an-giang', 'can-tho'];
-const PLANES = ['abyssal-depths', 'origin-temple'];
+const PLANES = Object.keys(REGION_DEFS).filter((id) => REGION_DEFS[id].void);
 
 const maps = new Map<string, ValleyMap>();
 const mapOf = (id: string) => { let m = maps.get(id); if (!m) maps.set(id, (m = new ValleyMap(REGION_DEFS[id]))); return m; };
@@ -40,25 +40,33 @@ function objects(d: RegionDef): { key: string; x: number; y: number }[] {
 
 describe('legendary shrines across the region maps', () => {
   it('no map holds most of them; each themed region has its own', () => {
-    const per = ADVENTURE.map((id) => (REGION_DEFS[id].legendaries ?? []).length);
+    // hidden shrines (LEGENDARY_SHRINES.md mục 8): a map holds the secret entrances, the shrines are in planes
+    const per = ADVENTURE.map((id) => (REGION_DEFS[id].secrets ?? []).length);
     expect(Math.max(...per)).toBeLessThanOrEqual(8);
-    for (const id of ADVENTURE.slice(1)) expect((REGION_DEFS[id].legendaries ?? []).length, id).toBeGreaterThanOrEqual(3);
-    expect(VIETNAM.every((id) => !(REGION_DEFS[id].legendaries ?? []).length)).toBe(true);
+    for (const id of ADVENTURE.slice(1)) expect((REGION_DEFS[id].secrets ?? []).length, id).toBeGreaterThanOrEqual(3);
+    expect(VIETNAM.every((id) => !(REGION_DEFS[id].legendaries ?? []).length && !(REGION_DEFS[id].secrets ?? []).length)).toBe(true);
   });
   it('themes: ice on the mountain, fire in the volcano, sea legends on the coast, creation trio in the sanctuary', () => {
-    const where = (id: string) => [...ADVENTURE, ...PLANES].find((m) => (REGION_DEFS[m].legendaries ?? []).some((l) => l.id === id));
+    // the plane a shrine stands in, and the map whose hidden entrance leads there (LEGENDARY_SHRINES.md mục 8)
+    const plane = (id: string) => PLANES.find((m) => (REGION_DEFS[m].legendaries ?? []).some((l) => l.id === id));
+    const where = (id: string) => [...ADVENTURE, 'emerald-woods'].find((m) => (REGION_DEFS[m].secrets ?? []).some((s) => s.id === 'to-' + id));
     // V22 shrines (LEGENDARY_SHRINES.md): Rayquaza on the highest peak, the Regi tombs spread over three maps,
     // Ho-Oh's bell tower and Celebi's grove in Emerald Woods
     for (const id of ['articuno', 'regice', 'rayquaza', 'jirachi']) expect(where(id), id).toBe('frozen-mountains');
     for (const id of ['groudon', 'heatran', 'moltres', 'shaymin']) expect(where(id), id).toBe('volcanic-lands');
-    for (const id of ['lugia', 'zapdos', 'regirock', 'manaphy', 'kyogre-gate']) expect(where(id), id).toBe('coral-coast');
-    // V22 shrines step 5: Kyogre in its own plane under the coast's whirlpool, the creation trio in the Temple of Origin
-    expect(where('kyogre')).toBe('abyssal-depths');
-    for (const id of ['arceus', 'dialga', 'palkia']) expect(where(id), id).toBe('origin-temple');
-    expect(where('arceus-gate')).toBe('legendary-sanctuary');
+    for (const id of ['lugia', 'zapdos', 'regirock', 'manaphy', 'kyogre']) expect(where(id), id).toBe('coral-coast');
+    // Kyogre in its own plane under the coast's whirlpool, the creation trio in the Temple of Origin
+    expect(plane('kyogre')).toBe('abyssal-depths');
+    for (const id of ['arceus', 'dialga', 'palkia']) expect(plane(id), id).toBe('origin-temple');
+    expect(where('origin')).toBe('legendary-sanctuary');
     for (const id of ['darkrai', 'giratina', 'azelf', 'registeel']) expect(where(id), id).toBe('misty-swamp');
     for (const id of ['deoxys', 'uxie', 'regigigas']) expect(where(id), id).toBe('legendary-sanctuary');
     for (const id of ['mewtwo', 'mew']) expect(where(id), id).toBe('starter-valley');
+    for (const id of ['ho-oh', 'celebi', 'cresselia']) expect(where(id), id).toBe('emerald-woods');
+    // tier 1 in a dimension of its own, the others in their map's sanctum
+    expect(plane('lugia')).toBe('silver-maelstrom');
+    expect(plane('giratina')).toBe('distortion-world');
+    expect(plane('articuno')).toBe('frozen-hollow');
   });
   it('every site is on one map only, its quest marker points there, and the ring stands on open ground', () => {
     const bad: string[] = [];

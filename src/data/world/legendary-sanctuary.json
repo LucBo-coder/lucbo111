@@ -253,77 +253,7 @@
  ],
  "pillars": [],
  "spawns": {},
- "legendaries": [
-  {
-   "id": "uxie",
-   "name": "Hồ Trí Tuệ",
-   "x": 23,
-   "y": 58,
-   "level": 45,
-   "respawn": 1500,
-   "arena": 336,
-   "requires": [
-    "boss:mewtwo"
-   ],
-   "gap": 0.21,
-   "hint": "Mặt hồ tri thức phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
-   "condition": {},
-   "shrine": "uxie"
-  },
-  {
-   "id": "regigigas",
-   "name": "Đền Khổng Lồ",
-   "x": 74,
-   "y": 56,
-   "level": 52,
-   "respawn": 1500,
-   "arena": 480,
-   "requires": [
-    "boss:regirock",
-    "boss:regice",
-    "boss:registeel"
-   ],
-   "gap": 0.24,
-   "hint": "Bức tượng khổng lồ phủ rêu không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
-   "condition": {},
-   "shrine": "regigigas"
-  },
-  {
-   "id": "deoxys",
-   "name": "Hố Thiên Thạch",
-   "x": 14,
-   "y": 18,
-   "level": 55,
-   "respawn": 1500,
-   "arena": 336,
-   "requires": [
-    "boss:rayquaza"
-   ],
-   "gap": 2.78,
-   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
-   "condition": {
-    "time": "night"
-   },
-   "shrine": "deoxys"
-  },
-  {
-   "id": "arceus-gate",
-   "name": "Cổng Thần Điện Khởi Nguyên",
-   "x": 48,
-   "y": 12,
-   "level": 55,
-   "respawn": 0,
-   "arena": 240,
-   "requires": [
-    "boss:uxie",
-    "boss:mesprit",
-    "boss:azelf"
-   ],
-   "gap": 0,
-   "hint": "Cánh cổng đá khắc ba vầng sáng: tri thức, cảm xúc, dũng khí.",
-   "shrine": "arceus-gate"
-  }
- ],
+ "legendaries": [],
  "portals": [
   {
    "id": "portal-sanctuary-valley",
@@ -333,6 +263,110 @@
    "to": "starter-valley",
    "toX": 80,
    "toY": 116
+  }
+ ],
+ "field": [
+  {
+   "id": "secret-uxie",
+   "ability": "smash",
+   "x": 23,
+   "y": 58
+  },
+  {
+   "id": "secret-regigigas",
+   "ability": "smash",
+   "x": 74,
+   "y": 56
+  },
+  {
+   "id": "secret-deoxys",
+   "ability": "smash",
+   "x": 14,
+   "y": 17
+  },
+  {
+   "id": "secret-origin",
+   "ability": "smash",
+   "x": 48,
+   "y": 12
+  }
+ ],
+ "secrets": [
+  {
+   "id": "to-uxie",
+   "name": "Tấm bia nứt",
+   "x": 23,
+   "y": 58,
+   "to": "sanctuary-hollow",
+   "toX": 26,
+   "toY": 42,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-uxie"
+   },
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "hint": "Mặt hồ tri thức phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+   "color": 16769136
+  },
+  {
+   "id": "to-regigigas",
+   "name": "Cổng đá khổng lồ",
+   "x": 74,
+   "y": 56,
+   "to": "sanctuary-hollow",
+   "toX": 75,
+   "toY": 46,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-regigigas"
+   },
+   "requires": [
+    "boss:regirock",
+    "boss:regice",
+    "boss:registeel"
+   ],
+   "hint": "Bức tượng khổng lồ phủ rêu không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
+   "color": 14737600
+  },
+  {
+   "id": "to-deoxys",
+   "name": "Hố thiên thạch nhỏ",
+   "x": 14,
+   "y": 17,
+   "to": "sanctuary-hollow",
+   "toX": 123,
+   "toY": 41,
+   "look": "cave",
+   "reveal": {
+    "field": "secret-deoxys"
+   },
+   "requires": [
+    "boss:rayquaza"
+   ],
+   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
+   "color": 16736384
+  },
+  {
+   "id": "to-origin",
+   "name": "Cổng Thần Điện",
+   "x": 48,
+   "y": 12,
+   "to": "origin-temple",
+   "toX": 55,
+   "toY": 90,
+   "look": "rift",
+   "reveal": {
+    "field": "secret-origin"
+   },
+   "requires": [
+    "boss:uxie",
+    "boss:mesprit",
+    "boss:azelf"
+   ],
+   "hint": "Sau bức tường đổ là một cánh cổng đá khắc ba hộ thần hồ. Nó chỉ mở cho người được cả ba công nhận.",
+   "color": 15788208
   }
  ]
 }

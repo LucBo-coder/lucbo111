@@ -1,10 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
-import { closeDialogues } from './bossHelpers';
+import { closeDialogues, secretOf, shrineHome } from './bossHelpers';
 
 // V22 legendary shrines, steps 2–6 in the real game (LEGENDARY_SHRINES.md §2.2 / §5): walking into a shrine never
 // starts a fight; E on the ritual spot runs the ritual, then a cutscene and the fight in a sealed arena with its
 // hazards; leaving resets the fight; a save mid-fight reloads with the fight reset and the relics kept. Roaming
-// triggers wake roamers, the Kyogre gate leads into Vực Nguyên Hải.
+// triggers wake roamers, Kyogre's hidden whirlpool (found through its clues, open in the rain) leads into Vực Nguyên Hải.
+// Since the hidden shrines (LEGENDARY_SHRINES.md mục 8) every shrine stands in a plane: shrineHome() finds it.
 
 type Win = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const ev = <T = unknown>(page: Page, fn: string) => page.evaluate(fn) as Promise<T>;
@@ -37,7 +38,8 @@ const run = (page: Page) => ev<{ site: string; step: number; kind?: string; lit:
 test('Articuno: walking in does nothing; the pillar ritual, cutscene, sealed arena, hazards, leaving resets', async ({ page }) => {
   test.setTimeout(150_000);
   const errors = errorsOf(page);
-  await start(page, 'frozen-mountains', 19, 50);
+  const home = shrineHome('articuno');
+  await start(page, home.region, home.x, home.y);
   await ev(page, `window.__adv.state.setFlag('boss:mega-venusaur')`);
   // standing in the middle of the arena with every condition met: nothing for a while
   await ev(page, `(() => { const a = window.__adv, s = a.shrines.spot('articuno'); a.world.teleport(s.spawn.x, s.spawn.y + 60); })()`);
@@ -89,7 +91,8 @@ test('Articuno: walking in does nothing; the pillar ritual, cutscene, sealed are
 test('Groudon: a missing relic stops the ritual; with the Red Orb, standing still summons it; save mid-fight → reset, relic kept', async ({ page }) => {
   test.setTimeout(150_000);
   const errors = errorsOf(page);
-  await start(page, 'volcanic-lands', 89, 40);
+  const home = shrineHome('groudon');
+  await start(page, home.region, home.x, home.y);
   await ev(page, `(() => { const a = window.__adv; ['mega-venusaur', 'lugia', 'ho-oh'].forEach((f) => a.state.setFlag('boss:' + f)); a.weather = { kind: 'clear', t: 999 }; })()`);
   await ev(page, atSpot('groudon'));
   await ev(page, `void window.__adv.shrines.open('groudon')`);
@@ -110,7 +113,7 @@ test('Groudon: a missing relic stops the ritual; with the Red Orb, standing stil
   await page.reload();
   await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(false, 1, 'classic')`);
-  await ready(page, 'volcanic-lands');
+  await ready(page, home.region);
   await page.waitForTimeout(1500);
   expect(await ev(page, `!!window.__adv.worldBoss`)).toBe(false);
   expect(await ev(page, `window.__adv.state.item('red-orb')`)).toBe(1);
@@ -121,18 +124,27 @@ test('Groudon: a missing relic stops the ritual; with the Red Orb, standing stil
 test('roaming trigger and shrine plane: Mesprit\'s stone wakes it; the Kyogre gate leads into Vực Nguyên Hải', async ({ page }) => {
   test.setTimeout(150_000);
   const errors = errorsOf(page);
-  await start(page, 'starter-valley', 0, 0);
+  const stone = shrineHome('mesprit');
+  await start(page, stone.region, stone.x, stone.y);
   await ev(page, `window.__adv.state.setFlag('boss:mewtwo')`);
   await ev(page, atSpot('mesprit'));
   await ev(page, `void window.__adv.shrines.open('mesprit')`);
   await page.waitForFunction(() => (window as Win).__adv.state.hasFlag('roam:mesprit'), null, { timeout: 5000 });
   await closeDialogues(page);
-  // the coast's whirlpool: Lugia + Ho-Oh beaten, rain, the Blue Orb → the plane
-  await ev(page, `window.__adv.travelTo('coral-coast', 79, 66)`);
-  await ready(page, 'coral-coast');
-  await ev(page, `(() => { const a = window.__adv; ['lugia', 'ho-oh'].forEach((f) => a.state.setFlag('boss:' + f)); a.state.addItems({ 'blue-orb': 1 }); a.weather = { kind: 'rain', t: 999 }; })()`);
-  await ev(page, atSpot('kyogre-gate'));
-  await ev(page, `void window.__adv.shrines.open('kyogre-gate')`);
+  // the coast's hidden whirlpool: nothing there until Kyogre's three clues are read; Lugia + Ho-Oh beaten, rain → the plane
+  const gate = secretOf('kyogre');
+  await ev(page, `window.__adv.travelTo('${gate.region}', ${gate.stand[0]}, ${gate.stand[1]})`);
+  await ready(page, gate.region);
+  await page.waitForTimeout(800);
+  expect(await ev(page, `window.__adv.secrets.debug().found`)).not.toContain('to-kyogre');
+  expect(await ev(page, `window.__adv.interactables.has('secret:to-kyogre')`)).toBe(false);
+  await ev(page, `(() => { const a = window.__adv; ['lugia', 'ho-oh'].forEach((f) => a.state.setFlag('boss:' + f)); ['kyogre-1', 'kyogre-2', 'kyogre-3'].forEach((c) => a.state.setFlag('clue:' + c)); a.state.addItems({ 'blue-orb': 1 }); a.weather = { kind: 'rain', t: 999 }; })()`);
+  await page.waitForFunction(() => (window as Win).__adv.secrets.debug().found.includes('to-kyogre'), null, { timeout: 5000 });
+  await closeDialogues(page);
+  await page.screenshot({ path: test.info().outputPath('kyogre-whirlpool.png') });
+  await ev(page, `void window.__adv.secrets.interact('secret:to-kyogre')`);
+  for (let i = 0; i < 20 && !(await ev<boolean>(page, `(() => { const d = window.__phaser.scene.getScene('AdvUI').dialogueLayer; return !!d && d.list.length > 6; })()`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(150); }
+  await page.keyboard.press('1');
   await ready(page, 'abyssal-depths');
   expect(await ev(page, `window.__adv.shrines.debug().views`)).toEqual(['kyogre']);
   // inside: the ritual (Blue Orb on the altar, stand still) → Kyogre

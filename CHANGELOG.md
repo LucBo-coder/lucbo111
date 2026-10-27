@@ -2,6 +2,7 @@
 
 ## Chưa phát hành — V22: AI huấn luyện viên, tái đấu, danh tiếng theo tỉnh
 
+- **Đền huyền thoại giờ là bí mật** (LEGENDARY_SHRINES.md mục 8): bản đồ thường không còn đền nào. 10 huyền thoại Tầng 1 (Mewtwo, Ho-Oh, Lugia, Kyogre, Groudon, Rayquaza, Giratina, Dialga, Palkia, Arceus) ở trong **dimension riêng** — Khe Nứt Tâm Linh, Thiên Đài Cầu Vồng, Biển Xoáy Bạc (luôn có bão), Lõi Dung Nham (luôn nắng nóng), Tầng Trời, Thế Giới Đảo Ngược, Vực Nguyên Hải, Thần Điện Khởi Nguyên. Các đền khác ở **Bí Cảnh** của từng bản đồ, mỗi đền một khoang kín. Trên bản đồ chỉ có 28 **lối vào ẩn**: sau bụi rậm (Cắt cây), sau tảng đá nứt (Đập đá) hoặc chỉ hiện khi điều tra đủ 3 manh mối; lối vào của Lugia và Kyogre là xoáy nước chỉ mở khi trời mưa. Tìm thấy rồi thì nhớ mãi; cổng trong bí cảnh đưa về ngay cạnh lối vào.
 - **Menu chính: nút "✨ Có gì mới" ở góc phải trên** (`data/whatsnew.json`, `src/core/whatsNew.ts`): danh sách cập nhật mới nhất cho người chơi, cuộn bằng chuột / kéo; chấm đỏ đếm số mục chưa đọc trên máy này, đọc xong thì mất. Điện thoại dọc: nút biểu tượng ✨, tiêu đề game thu gọn để không bị đè. Khi phát hành tính năng mới, thêm một mục ở đầu `whatsnew.json`.
 - **Đền huyền thoại bước 2–6** (LEGENDARY_SHRINES.md):
   - Đi vào đền không còn tự gọi huyền thoại: bấm E ở chỗ làm lễ → nghi lễ (chạm cột theo lượt, giẫm tấm nén, đứng yên, trụ qua các đợt, câu đố, năng lực khám phá, thánh vật) → chuyển cảnh → trận trong arena niêm phong. E lần nữa để rời trận. Nghi lễ đã làm được nhớ, đánh lại chỉ cần E.

@@ -438,35 +438,6 @@
   ]
  },
  {
-  "shrine": "kyogre-gate",
-  "legends": [
-   "kyogre"
-  ],
-  "mode": "portal",
-  "requires": [
-   "boss:lugia",
-   "boss:ho-oh"
-  ],
-  "to": {
-   "region": "abyssal-depths",
-   "x": 25,
-   "y": 43
-  },
-  "title": "Xoáy Nước Sâu",
-  "appear": "rise",
-  "color": 4227327,
-  "steps": [
-   {
-    "kind": "relic",
-    "items": [
-     "blue-orb"
-    ],
-    "text": "Ngọc Lam phát sáng khi bạn giơ nó về phía xoáy nước."
-   }
-  ],
-  "awaken": "Bạn nhảy xuống xoáy nước..."
- },
- {
   "shrine": "kyogre",
   "legends": [
    "kyogre"
@@ -836,30 +807,6 @@
     "power": 40
    }
   ]
- },
- {
-  "shrine": "arceus-gate",
-  "legends": [
-   "dialga",
-   "palkia",
-   "arceus"
-  ],
-  "mode": "portal",
-  "requires": [
-   "boss:uxie",
-   "boss:mesprit",
-   "boss:azelf"
-  ],
-  "to": {
-   "region": "origin-temple",
-   "x": 55,
-   "y": 90
-  },
-  "title": "Cổng Thần Điện Khởi Nguyên",
-  "appear": "fade",
-  "color": 16775360,
-  "steps": [],
-  "awaken": "Cánh cổng đá mở ra một hành lang dẫn vào Thần Điện..."
  },
  {
   "shrine": "uxie",

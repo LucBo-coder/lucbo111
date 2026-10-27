@@ -65,11 +65,11 @@ describe('regions beyond the valley (Frozen Mountains, Volcanic Lands, Legendary
     expect(ECOLOGY.get('slugma')!.method).toBe('wild');
     expect(ECOLOGY.get('dragonite')!.biomes).toContain('sanctuary');
   });
-  it('Arceus waits at Lv80 in the Temple of Origin, whose gate stands in the Legendary Sanctuary', () => {
+  it('Arceus waits at Lv80 in the Temple of Origin, whose hidden gate stands in the Legendary Sanctuary', () => {
     const site = REGION_DEFS['origin-temple'].legendaries!.find((l) => l.id === 'arceus')!;
     expect(site.level).toBe(80);
     expect(LEGENDS.get('arceus')!.site!.region).toBe('origin-temple');
-    expect(REGION_DEFS['legendary-sanctuary'].legendaries!.some((l) => l.id === 'arceus-gate')).toBe(true);
+    expect(REGION_DEFS['legendary-sanctuary'].secrets!.some((s) => s.to === 'origin-temple')).toBe(true);
     expect(REGION_DEFS['origin-temple'].portals![0].to).toBe('legendary-sanctuary');
     expect(REGION_DEFS['starter-valley'].legendaries!.some((l) => l.id === 'arceus')).toBe(false);
   });

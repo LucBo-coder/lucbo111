@@ -337,7 +337,6 @@ META = {
     'zapdos': ('zapdos', 2, 'coral-coast', 16, 78, {**STONE, 'pillar': 'rod'}),
     'moltres': ('moltres', 2, 'volcanic-lands', 16, 40, ASHF),
     'lugia': ('lugia', 1, 'coral-coast', 88, 20, {**WHITE, 'ground': 'Sand'}),
-    'kyogre-gate': ('kyogre', 1, 'coral-coast', 78, 56, WHITE),
     'kyogre': ('kyogre', 1, 'instanced', 0, 0, WHITE),
     'ho-oh': ('ho-oh', 1, 'emerald-woods', 28, 22, {**TEMPLE, 'star': 'torch'}),
     'groudon': ('groudon', 1, 'volcanic-lands', 88, 24, {**STONE, 'star': 'torch', 'x': 'AshRock'}),
@@ -347,7 +346,6 @@ META = {
     'dialga': ('dialga', 1, 'instanced', 0, 0, TEMPLE),
     'palkia': ('palkia', 1, 'instanced', 0, 0, {**TEMPLE, 'plate': 'pad'}),
     'arceus': ('arceus', 1, 'instanced', 0, 0, TEMPLE),
-    'arceus-gate': ('arceus', 1, 'legendary-sanctuary', 48, 12, TEMPLE),
     'azelf': ('azelf', 2, 'misty-swamp', 40, 22, TEMPLE),
     'uxie': ('uxie', 2, 'legendary-sanctuary', 23, 58, TEMPLE),
     'cresselia': ('cresselia', 2, 'emerald-woods', 76, 38, {**WHITE, 'plate': 'moon'}),
@@ -376,9 +374,15 @@ def find(g, ch):
     return None
 
 
+# Every shrine now stands in a plane of its own (LEGENDARY_SHRINES.md mục 8: a tier-1 dimension or the map's hidden
+# sanctum, built by scripts/gen-legend-planes.ts); x, y above stay as the designed overworld spot of its entrance.
+# The old gates (kyogre-gate, arceus-gate) became hidden entrances: their layouts are no longer written.
 out = []
 for name, g in L.items():
+    if name not in META:
+        continue
     legend, tier, region, x, y, m = META[name]
+    region = 'instanced'
     arena, allow = ARENA[name]
     anchor = [int(arena[0]), int(arena[1])] if arena else (find(g, 'A') or find(g, '@') or find(g, 'P'))
     e = {'id': name, 'legend': legend, 'tier': tier, 'region': region, 'x': x, 'y': y, 'anchor': anchor,

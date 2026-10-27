@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { summonShrine } from './bossHelpers';
+import { shrineHome, summonShrine } from './bossHelpers';
 
 // Rayquaza at the Sky Pillar: boss HUD from the UI pack with live data, 3 phases (Mega form change with an
 // invulnerable cinematic, enraged Sky Cataclysm), WEAKENED capture window, capture → joins once, checkpoint save.
@@ -30,9 +30,10 @@ test('Rayquaza: HUD, 3 phases, Mega form, weakened capture, no duplicate', async
   await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
   await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true)`);
   await page.waitForFunction(() => (window as Win).__adv?.world && (window as Win).__phaser.scene.isActive('AdvUI'), undefined, { timeout: 15_000 });
-  // the Sky Pillar crowns the Frozen Mountains (V22 shrines): travel there first (bypasses the portal gate)
-  await ev(page, `window.__adv.travelTo('frozen-mountains', 59, 42)`);
-  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), 'frozen-mountains', { timeout: 15_000 });
+  // the Sky Pillar stands in Rayquaza's own dimension (Tầng Trời): travel there first (bypasses the hidden entrance)
+  const home = shrineHome('rayquaza');
+  await ev(page, `window.__adv.travelTo('${home.region}', ${home.x}, ${home.y})`);
+  await page.waitForFunction((r) => (window as Win).__adv?.map?.id === r && (window as Win).__adv.world && (window as Win).__phaser.scene.isActive('AdvUI'), home.region, { timeout: 15_000 });
   await ev(page, `(() => { const a = window.__adv; ['garchomp', 'metagross', 'salamence', 'tyranitar'].forEach((s) => a.state.addPokemon(s, 70, 'gift')); a.state.addItems({ ultraball: 10 }); a.selectedBall = 'ultraball'; ['boss:kyogre', 'boss:groudon'].forEach((f) => a.state.setFlag(f)); a.applyParty(); const t = a.world.trainer; t.maxHp = t.hp = 1e9; })()`);
   // E on the Sky Pillar's ritual spot (V22 shrines: walking in no longer summons) → the boss spawns in the arena
   await summonShrine(page, 'rayquaza');

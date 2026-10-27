@@ -1,0 +1,223 @@
+{
+ "id": "frozen-hollow",
+ "name": "Bí Cảnh Núi Tuyết",
+ "width": 123,
+ "height": 45,
+ "chunk": 16,
+ "theme": "frozen",
+ "void": "Wall",
+ "spawn": {
+  "x": 23,
+  "y": 38
+ },
+ "areas": [
+  {
+   "id": "frozen-hollow-articuno",
+   "name": "Băng Đài Hồ Băng Lam",
+   "rect": [
+    2,
+    2,
+    44,
+    42
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    38,
+    48
+   ]
+  },
+  {
+   "id": "frozen-hollow-regice",
+   "name": "Lăng Băng Tĩnh",
+   "rect": [
+    45,
+    3,
+    83,
+    41
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    42,
+    52
+   ]
+  },
+  {
+   "id": "frozen-hollow-jirachi",
+   "name": "Đài Sao Băng",
+   "rect": [
+    84,
+    5,
+    120,
+    39
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    35,
+    45
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     23.5,
+     35.5
+    ],
+    [
+     23.5,
+     41.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     65.5,
+     34.5
+    ],
+    [
+     65.5,
+     40.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     103.5,
+     32.5
+    ],
+    [
+     103.5,
+     38.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "articuno",
+   "name": "Băng Đài Hồ Băng Lam",
+   "x": 23,
+   "y": 22,
+   "level": 38,
+   "respawn": 900,
+   "arena": 432,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.82,
+   "hint": "Một luồng khí lạnh buốt tỏa ra từ băng đài bên Hồ Băng Lam... Có lẽ cần chứng tỏ sức mạnh trước Thần Rừng (Mega Venusaur).",
+   "shrine": "articuno"
+  },
+  {
+   "id": "regice",
+   "name": "Lăng Băng Ẩn",
+   "x": 64,
+   "y": 19,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 288,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 3.14,
+   "hint": "Lớp băng mỏng phủ kín lăng đá dưới Chân Núi Tuyết... Regice chỉ thức dậy trong bão tuyết.",
+   "condition": {
+    "weather": [
+     "blizzard"
+    ]
+   },
+   "shrine": "regice"
+  },
+  {
+   "id": "jirachi",
+   "name": "Đồi Ước Nguyện",
+   "x": 102,
+   "y": 24,
+   "level": 35,
+   "respawn": 1500,
+   "arena": 330,
+   "requires": [
+    "boss:mew"
+   ],
+   "gap": 1.57,
+   "hint": "Một ngôi sao nhỏ đang ngủ... nó chỉ thức vào đêm trời quang, trước Pokémon dẫn đầu thật thân thiết (≥180).",
+   "gift": true,
+   "condition": {
+    "time": "night",
+    "weather": [
+     "clear"
+    ],
+    "friendship": 180
+   },
+   "shrine": "jirachi"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-articuno",
+   "name": "Trở về Núi Tuyết Vĩnh Hằng",
+   "x": 23,
+   "y": 41,
+   "to": "frozen-mountains",
+   "toX": 19,
+   "toY": 41
+  },
+  {
+   "id": "back-regice",
+   "name": "Trở về Núi Tuyết Vĩnh Hằng",
+   "x": 65,
+   "y": 40,
+   "to": "frozen-mountains",
+   "toX": 84,
+   "toY": 78
+  },
+  {
+   "id": "back-jirachi",
+   "name": "Trở về Núi Tuyết Vĩnh Hằng",
+   "x": 103,
+   "y": 38,
+   "to": "frozen-mountains",
+   "toX": 25,
+   "toY": 82
+  }
+ ],
+ "field": []
+}

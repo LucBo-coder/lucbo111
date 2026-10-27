@@ -29,6 +29,8 @@ test('fishing, foraging and the Rừng Ngọc Lục Bảo gate', async ({ page }
     s.adv.clock = 12 * 60; a.applyParty(); })()`);
 
   // ── foraging: walk up to a meadow bush and press E ──
+  // (the companions' berry errands are paused here, or a party Pokémon picks the bush before the player does)
+  await ev(page, `window.__adv.errandT = 1e9`);
   await ev(page, `window.__adv.world.teleport(42.5*${T}, 56.6*${T})`);
   await page.waitForTimeout(500);
   expect(await ev(page, `window.__adv.nearest?.id`)).toBe('bush-2');

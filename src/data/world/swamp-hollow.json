@@ -1,0 +1,215 @@
+{
+ "id": "swamp-hollow",
+ "name": "Bí Cảnh Đầm Lầy",
+ "width": 127,
+ "height": 49,
+ "chunk": 16,
+ "theme": "swamp",
+ "void": "Wall",
+ "spawn": {
+  "x": 23,
+  "y": 42
+ },
+ "areas": [
+  {
+   "id": "swamp-hollow-azelf",
+   "name": "Hồ Dũng Khí",
+   "rect": [
+    2,
+    2,
+    44,
+    46
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    45,
+    55
+   ]
+  },
+  {
+   "id": "swamp-hollow-registeel",
+   "name": "Lăng Thép Chìm",
+   "rect": [
+    45,
+    5,
+    83,
+    43
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    42,
+    52
+   ]
+  },
+  {
+   "id": "swamp-hollow-darkrai",
+   "name": "Đảo Ác Mộng",
+   "rect": [
+    84,
+    5,
+    124,
+    43
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    52,
+    62
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     23.5,
+     39.5
+    ],
+    [
+     23.5,
+     45.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     65.5,
+     36.5
+    ],
+    [
+     65.5,
+     42.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     104.5,
+     36.5
+    ],
+    [
+     104.5,
+     42.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "azelf",
+   "name": "Hồ Dũng Khí",
+   "x": 23,
+   "y": 29,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 336,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 1.93,
+   "hint": "Gió thổi mạnh quanh ngôi đền bên hồ đầm... Azelf chờ người đã đối mặt với Mewtwo.",
+   "condition": {},
+   "shrine": "azelf"
+  },
+  {
+   "id": "registeel",
+   "name": "Lăng Thép",
+   "x": 64,
+   "y": 21,
+   "level": 42,
+   "respawn": 1500,
+   "arena": 288,
+   "requires": [
+    "boss:mega-venusaur"
+   ],
+   "gap": 5.7,
+   "hint": "Một khối thép lạnh ngắt nằm im trong lăng chìm giữa đầm... cần sức mạnh đã đánh bại Thần Rừng.",
+   "condition": {},
+   "shrine": "registeel"
+  },
+  {
+   "id": "darkrai",
+   "name": "Đảo Ác Mộng",
+   "x": 104,
+   "y": 23,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 288,
+   "requires": [
+    "boss:cresselia"
+   ],
+   "gap": 0.32,
+   "hint": "Sương độc làm bạn buồn ngủ... Darkrai chỉ đến vào đêm, khi Cresselia đã công nhận bạn.",
+   "condition": {
+    "time": "night"
+   },
+   "shrine": "darkrai"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-azelf",
+   "name": "Trở về Đầm Lầy Sương Mù",
+   "x": 23,
+   "y": 45,
+   "to": "misty-swamp",
+   "toX": 48,
+   "toY": 23
+  },
+  {
+   "id": "back-registeel",
+   "name": "Trở về Đầm Lầy Sương Mù",
+   "x": 65,
+   "y": 42,
+   "to": "misty-swamp",
+   "toX": 37,
+   "toY": 80
+  },
+  {
+   "id": "back-darkrai",
+   "name": "Trở về Đầm Lầy Sương Mù",
+   "x": 104,
+   "y": 42,
+   "to": "misty-swamp",
+   "toX": 21,
+   "toY": 33
+  }
+ ],
+ "field": []
+}

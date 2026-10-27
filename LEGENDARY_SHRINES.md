@@ -1,7 +1,7 @@
 # LEGENDARY SHRINES — Hệ thống đền triệu hồi huyền thoại (thiết kế)
 
 > Phạm vi: chế độ **Phiêu lưu** (7 bản đồ) và các bản đồ riêng (instance) mới cho nghi lễ cấp sự kiện. Việt Nam Odyssey **không** thêm huyền thoại (giữ bản sắc boss địa phương Seviper / Claydol / Whiscash).
-> Trạng thái: **đã triển khai bước 1–6** (xem mục 7). Mọi sơ đồ trong tài liệu được sinh bằng script và đã kiểm tra tự động: trong bán kính arena không có vật cản ngoài những vật được ghi rõ là "cover có chủ đích".
+> Trạng thái: **đã triển khai bước 1–6** (xem mục 7); **đền ẩn + dimension riêng** (mục 8) thay phân bố của mục 1.2 — đền không còn đứng trên bản đồ thường. Mọi sơ đồ trong tài liệu được sinh bằng script và đã kiểm tra tự động: trong bán kính arena không có vật cản ngoài những vật được ghi rõ là "cover có chủ đích".
 
 ---
 
@@ -1467,3 +1467,38 @@ Thay đổi so với sơ đồ ở bước 3 (đã sửa trong `gen-shrines.py`)
 
 - Ảnh riêng cho từng lõi và nền theo 12 chủ đề (mục 4) chưa vẽ.
 - Một số chi tiết chuyển cảnh trong thiết kế được làm đơn giản (hiệu ứng theo 10 kiểu xuất hiện thay vì hoạt cảnh riêng từng loài; Darkrai không làm mờ nhánh đường giả).
+
+## 8. Đền ẩn và dimension riêng (đã triển khai)
+
+Yêu cầu: đền không nằm rải rác trên bản đồ; huyền thoại cao cấp có dimension riêng.
+
+### 8.1 Phân bố mới
+
+- **Không còn đền nào trên bản đồ thường.** Trên 7 bản đồ Phiêu lưu chỉ còn **lối vào ẩn** (28 lối) đặt gần chỗ đền cũ, xa đường đi và các NPC / trạm / cổng.
+- **10 huyền thoại Tầng 1 — dimension riêng** (mỗi dimension chỉ có đền của loài đó; Dialga / Palkia / Arceus là một chuỗi nên dùng chung Thần Điện):
+
+| Huyền thoại | Dimension | Lối vào (bản đồ) | Cách tìm |
+|---|---|---|---|
+| Mewtwo | Khe Nứt Tâm Linh | Vết nứt đá lạ (Thung Lũng) | Đập đá |
+| Ho-Oh (+ 3 tượng Thú) | Thiên Đài Cầu Vồng | Lối mòn sau bụi rậm (Rừng Ngọc) | Cắt cây |
+| Lugia | Biển Xoáy Bạc (luôn có bão) | Xoáy nước bạc (Bờ Biển) — chỉ mở khi mưa | 3 manh mối Lugia |
+| Kyogre | Vực Nguyên Hải | Xoáy Nước Sâu (Bờ Biển) — chỉ mở khi mưa | 3 manh mối Kyogre |
+| Groudon | Lõi Dung Nham (luôn nắng nóng) | Khe nứt dung nham (Núi Lửa) | 3 manh mối Groudon |
+| Rayquaza | Tầng Trời | Khe gió trời (Núi Tuyết) | 3 manh mối Rayquaza |
+| Giratina | Thế Giới Đảo Ngược (sương mù) | Vết rách không gian (Đầm Lầy) | 3 manh mối Giratina |
+| Dialga, Palkia, Arceus | Thần Điện Khởi Nguyên | Cổng Thần Điện (Thánh Địa) | Đập đá |
+
+- **Các đền còn lại — Bí Cảnh của từng bản đồ** (một bản đồ ẩn, mỗi đền một khoang kín riêng, mỗi khoang một lối vào riêng trên bản đồ): Bí Cảnh Thung Lũng (Mew, Đá Cảm Xúc), Rừng Ngọc (Celebi, Cresselia, Đài Gió), Bờ Biển (Zapdos, Regirock, Rạn Ấu Hải), Núi Tuyết (Articuno, Regice, Jirachi), Núi Lửa (Moltres, Heatran, Shaymin), Thánh Địa (Uxie, Regigigas, Deoxys), Đầm Lầy (Azelf, Registeel, Darkrai). Lối vào Regirock / Regice / Registeel / Heatran / Darkrai hiện ra khi điều tra xong 3 manh mối; các lối khác nằm sau bụi rậm (Cắt cây) hoặc tảng đá nứt (Đập đá).
+
+### 8.2 Cơ chế (`src/core/secrets.ts`, `src/adventure/SecretController.ts`)
+
+- Lối vào chưa tìm thấy **không tồn tại** trên bản đồ (không biểu tượng, không tương tác); chỉ có chướng ngại khám phá (lấp lánh nhẹ khi đứng gần) hoặc không có gì cho tới khi đọc đủ manh mối.
+- Dọn chướng ngại / đọc manh mối thứ 3 → lối vào mở ra (hiệu ứng + thông báo "Lối vào bí mật!"), nhớ trong save (`secret:<bản đồ>:<id>`). Hình dạng: hang (cave), khe nứt phát sáng (rift), xoáy nước trên biển (whirlpool).
+- Đã tìm thấy nhưng chưa đủ cốt truyện → thông báo bị phong ấn (gợi ý của đền). Lối vào của Lugia / Kyogre chỉ mở khi trời mưa.
+- Trong dimension / bí cảnh: cổng "Trở về …" đưa ra ngay cạnh lối vào. Bản đồ phẳng `void` (ngoài đền là tường / biển); vùng đất của đền là phần trong hình elip của sơ đồ. Một số dimension có thời tiết cố định (`weather` trong dữ liệu vùng).
+
+### 8.3 Dữ liệu & công cụ
+
+- `scripts/gen-legend-planes.ts` sinh 13 bản đồ mới (`src/data/world/<id>.json`), lối vào (`secrets` + chướng ngại `field` trong bản đồ thường), cập nhật `legends.json` và manh mối nằm ở chỗ không tới được. Chạy lại được (lối vào giữ chỗ cũ).
+- `gen-shrines.py`: 30 sơ đồ (bỏ 2 sơ đồ cổng cũ `kyogre-gate`, `arceus-gate`); `region` của mọi đền là `instanced`.
+- Save cũ: tiến độ đền / nghi lễ giữ nguyên theo id; vách nứt trong đền Mew (giờ ở Bí Cảnh Thung Lũng) phải đập lại.

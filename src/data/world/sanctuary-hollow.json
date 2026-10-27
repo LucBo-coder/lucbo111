@@ -1,0 +1,217 @@
+{
+ "id": "sanctuary-hollow",
+ "name": "Bí Cảnh Thánh Địa",
+ "width": 145,
+ "height": 53,
+ "chunk": 16,
+ "theme": "sanctuary",
+ "void": "Wall",
+ "spawn": {
+  "x": 26,
+  "y": 42
+ },
+ "areas": [
+  {
+   "id": "sanctuary-hollow-uxie",
+   "name": "Hồ Tri Thức",
+   "rect": [
+    2,
+    6,
+    48,
+    46
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    45,
+    55
+   ]
+  },
+  {
+   "id": "sanctuary-hollow-regigigas",
+   "name": "Đại Điện Titan",
+   "rect": [
+    49,
+    2,
+    101,
+    50
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    52,
+    62
+   ]
+  },
+  {
+   "id": "sanctuary-hollow-deoxys",
+   "name": "Hố Thiên Thạch",
+   "rect": [
+    102,
+    7,
+    142,
+    45
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    55,
+    65
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     26.5,
+     39.5
+    ],
+    [
+     26.5,
+     45.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     75.5,
+     43.5
+    ],
+    [
+     75.5,
+     49.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     123.5,
+     38.5
+    ],
+    [
+     123.5,
+     44.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "uxie",
+   "name": "Hồ Trí Tuệ",
+   "x": 30,
+   "y": 26,
+   "level": 45,
+   "respawn": 1500,
+   "arena": 336,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 0.21,
+   "hint": "Mặt hồ tri thức phẳng lặng phản chiếu bạn... Uxie chờ người đã đối mặt với Mewtwo.",
+   "condition": {},
+   "shrine": "uxie"
+  },
+  {
+   "id": "regigigas",
+   "name": "Đền Khổng Lồ",
+   "x": 75,
+   "y": 26,
+   "level": 52,
+   "respawn": 1500,
+   "arena": 480,
+   "requires": [
+    "boss:regirock",
+    "boss:regice",
+    "boss:registeel"
+   ],
+   "gap": 0.24,
+   "hint": "Bức tượng khổng lồ phủ rêu không nhúc nhích... nó đang chờ ba người khổng lồ (Regirock, Regice, Registeel).",
+   "condition": {},
+   "shrine": "regigigas"
+  },
+  {
+   "id": "deoxys",
+   "name": "Hố Thiên Thạch",
+   "x": 122,
+   "y": 26,
+   "level": 55,
+   "respawn": 1500,
+   "arena": 336,
+   "requires": [
+    "boss:rayquaza"
+   ],
+   "gap": 2.78,
+   "hint": "Mảnh thiên thạch phát sáng mờ... Deoxys chỉ hạ xuống vào ban đêm.",
+   "condition": {
+    "time": "night"
+   },
+   "shrine": "deoxys"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-uxie",
+   "name": "Trở về Thánh Địa Huyền Thoại",
+   "x": 26,
+   "y": 45,
+   "to": "legendary-sanctuary",
+   "toX": 23,
+   "toY": 60
+  },
+  {
+   "id": "back-regigigas",
+   "name": "Trở về Thánh Địa Huyền Thoại",
+   "x": 75,
+   "y": 49,
+   "to": "legendary-sanctuary",
+   "toX": 74,
+   "toY": 58
+  },
+  {
+   "id": "back-deoxys",
+   "name": "Trở về Thánh Địa Huyền Thoại",
+   "x": 123,
+   "y": 44,
+   "to": "legendary-sanctuary",
+   "toX": 14,
+   "toY": 19
+  }
+ ],
+ "field": []
+}

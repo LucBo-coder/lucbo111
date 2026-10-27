@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { readdirSync, readFileSync } from 'node:fs';
 
 // Since v0.8 a boss can't be one-shot: HP stops at each phase threshold and every transition is invulnerable,
 // and legendaries end WEAKENED (capture window) instead of dying. These helpers play that out in the page.
@@ -40,4 +41,31 @@ export async function summonShrine(page: Page, site: string): Promise<void> {
 /** Presses E until no dialogue is open. */
 export async function closeDialogues(page: Page): Promise<void> {
   for (let i = 0; i < 10 && (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(200); }
+}
+
+/**
+ * Hidden shrines (LEGENDARY_SHRINES.md mục 8): where a shrine stands now — the plane (a tier-1 dimension or a map's
+ * sanctum) and its anchor tile; travelTo(region, x, y) lands in its court. Read from the map data, never hard-coded.
+ */
+export function shrineHome(site: string): { region: string; x: number; y: number } {
+  const dir = 'src/data/world/';
+  for (const f of readdirSync(dir)) {
+    if (!f.endsWith('.json')) continue;
+    const d = JSON.parse(readFileSync(dir + f, 'utf8')) as { id?: string; void?: string; legendaries?: { id: string; x: number; y: number }[] };
+    const l = d.void ? d.legendaries?.find((x) => x.id === site) : undefined;
+    if (l && d.id) return { region: d.id, x: l.x, y: l.y };
+  }
+  throw new Error(`no shrine ${site}`);
+}
+
+/** The hidden entrance to a shrine's plane on its overworld map (`to-<site>`; the Temple's is `to-origin`). */
+export function secretOf(site: string): { region: string; x: number; y: number; stand: [number, number]; to: string } {
+  const dir = 'src/data/world/';
+  for (const f of readdirSync(dir)) {
+    if (!f.endsWith('.json')) continue;
+    const d = JSON.parse(readFileSync(dir + f, 'utf8')) as { id?: string; secrets?: { id: string; x: number; y: number; stand?: [number, number]; to: string }[] };
+    const s = d.secrets?.find((x) => x.id === `to-${site}`);
+    if (s && d.id) return { region: d.id, x: s.x, y: s.y, stand: s.stand ?? [s.x, s.y], to: s.to };
+  }
+  throw new Error(`no entrance to ${site}`);
 }

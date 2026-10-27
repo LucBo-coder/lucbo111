@@ -1,0 +1,166 @@
+{
+ "id": "valley-hollow",
+ "name": "Bí Cảnh Thung Lũng",
+ "width": 70,
+ "height": 39,
+ "chunk": 16,
+ "theme": "sanctuary",
+ "void": "Wall",
+ "spawn": {
+  "x": 20,
+  "y": 32
+ },
+ "areas": [
+  {
+   "id": "valley-hollow-mew",
+   "name": "Tàn Tích Lặng",
+   "rect": [
+    2,
+    2,
+    38,
+    36
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    42,
+    52
+   ]
+  },
+  {
+   "id": "valley-hollow-mesprit",
+   "name": "Đá Cảm Xúc",
+   "rect": [
+    39,
+    7,
+    67,
+    31
+   ],
+   "habitat": "sanctuary",
+   "level": [
+    45,
+    55
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     20.5,
+     29.5
+    ],
+    [
+     20.5,
+     35.5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     54.5,
+     24.5
+    ],
+    [
+     54.5,
+     30.5
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  0,
+  0,
+  0,
+  0
+ ],
+ "lake": {
+  "cx": -50,
+  "cy": -50,
+  "rx": 1,
+  "ry": 1
+ },
+ "buildings": [],
+ "fences": [],
+ "props": [],
+ "signs": [],
+ "npcs": [],
+ "trainers": [],
+ "rescue": {
+  "id": "none",
+  "x": -99,
+  "y": -99,
+  "species": "pidgey",
+  "level": 1,
+  "guards": []
+ },
+ "chests": [],
+ "waypoints": [],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [
+  {
+   "id": "mew",
+   "name": "Đồi Hoa Huyền Bí",
+   "x": 20,
+   "y": 21,
+   "level": 42,
+   "respawn": 1200,
+   "arena": 240,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 4.71,
+   "hint": "Có tiếng cười khúc khích vang lên rồi biến mất... Có lẽ nó chỉ hiện ra trước người đã đối mặt với Mewtwo.",
+   "shrine": "mew"
+  },
+  {
+   "id": "mesprit",
+   "name": "Đá Cảm Xúc",
+   "x": 53,
+   "y": 18,
+   "level": 45,
+   "respawn": 0,
+   "arena": 240,
+   "requires": [
+    "boss:mewtwo"
+   ],
+   "gap": 0,
+   "hint": "Một phiến đá hồng ấm áp bên hồ. Như có ai đang nhìn bạn.",
+   "shrine": "mesprit"
+  }
+ ],
+ "portals": [
+  {
+   "id": "back-mew",
+   "name": "Trở về Thung Lũng Khởi Nguyên",
+   "x": 20,
+   "y": 35,
+   "to": "starter-valley",
+   "toX": 17,
+   "toY": 15
+  },
+  {
+   "id": "back-mesprit",
+   "name": "Trở về Thung Lũng Khởi Nguyên",
+   "x": 54,
+   "y": 30,
+   "to": "starter-valley",
+   "toX": 115,
+   "toY": 63
+  }
+ ],
+ "field": [
+  {
+   "id": "crack-mew",
+   "ability": "smash",
+   "x": 20,
+   "y": 28,
+   "look": "crack"
+  }
+ ]
+}
