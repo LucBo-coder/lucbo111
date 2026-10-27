@@ -243,3 +243,16 @@ Lỗi tìm thấy nhờ test có sẵn: 1 biển chỉ đường, 3 điểm bả
 Lỗi sơ đồ tìm thấy khi ráp lên bản đồ (công cụ `check-shrines.ts` / `place-shrines.ts`): cổng lăng Regi chỉ mở 1 trong 2 lớp tường; lối mòn Darkrai có bước chéo; cầu thang Rayquaza không chạm mép; đê Lugia hướng ra biển → đã sửa trong `gen-shrines.py`. Bản đầu cắt góc mọi ô nền làm hở 4 góc tường lăng → chỉ cắt ô không sát sân. Toạ độ thiết kế của 13 / 22 đền đè NPC, nhà, cổng, trạm hoặc hốc bí mật → dời tới ô hợp lệ gần nhất (bảng ở `LEGENDARY_SHRINES.md` mục 7).
 2 test V7 phía server (EXP Alpha, lịch sự kiện) quá giờ 1 lần khi chạy cả bộ, qua khi chạy riêng và khi chạy lại cả bộ — do tải máy, không liên quan bản đồ.
 Ảnh đã xem: Hang Tâm Linh (Mewtwo, vành pha lê tím + lõi), Đảo Xoáy Bạc (Lugia), Tháp Chuông (Ho-Oh), Đại Điện (Groudon).
+
+
+## V22 — đợt 16: giao diện điện thoại (nút không đè, chữ không tràn)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **502/502 ✅** |
+| E2E mới `v22_mobile_layout.spec.ts` (dọc 390×844 + ngang 844×390: nút menu chính / chọn khởi đầu trên màn hình, không chồng nhau, chữ vừa nút; HUD HP + bảng đội trong khung; danh sách vùng ở tab Bản đồ không đè dòng) | 4/4 ✅ — chạy trên code cũ: 3/4 ❌ (bắt đúng các lỗi đã sửa) |
+| E2E Mega (`evolution.spec.ts`, `v21_mega_sprites.spec.ts`) | ✅ |
+| Toàn bộ E2E | **chưa chạy xong**: hệ thống dừng tiến trình ở 5/73 vì máy thiếu bộ nhớ (không phải test lỗi) |
+
+Ảnh đã xem (dọc + ngang): menu chính, chọn khởi đầu, HUD Phiêu lưu và Việt Nam Odyssey, Đội hình, Túi, Nhiệm vụ, Bản đồ, Pokédex, PC, Sự kiện, Hộ chiếu, Cài đặt, Cửa hàng, hội thoại, HUD Sinh tồn, thẻ lên cấp.

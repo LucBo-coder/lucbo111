@@ -57,6 +57,32 @@ export function text(scene: Phaser.Scene, x: number, y: number, str: string, siz
   return scene.add.text(x, y, str, { fontFamily: FONT, fontSize: `${Math.round(size)}px`, color, stroke: '#0b0c12', strokeThickness: Math.max(2, Math.round(size / 6)) });
 }
 
+/**
+ * Sets a single-line text and keeps it inside `maxW` px (phones: labels must not run past their box or into the next
+ * one): the font shrinks down to `minFrac` of its own size, then the end is cut with "…". Cheap to call every frame —
+ * nothing is redrawn while the string and the width stay the same.
+ */
+export function fitText(t: Phaser.GameObjects.Text, str: string, maxW: number, minFrac = 0.72): Phaser.GameObjects.Text {
+  const d = t as Phaser.GameObjects.Text & { _fit?: { base: number; src: string; w: number } };
+  if (d._fit && d._fit.src === str && d._fit.w === maxW) return t;
+  const base = d._fit?.base ?? parseFloat(String(t.style.fontSize));
+  if (parseFloat(String(t.style.fontSize)) !== base) t.setFontSize(base);
+  t.setText(str);
+  if (t.width > maxW && maxW > 0) {
+    t.setFontSize(Math.round(Math.max(base * minFrac, Math.floor(base * (maxW / t.width)))));
+    if (t.width > maxW) {
+      let lo = 0, hi = str.length;
+      while (lo < hi) { const m = (lo + hi + 1) >> 1; t.setText(str.slice(0, m).trimEnd() + '…'); if (t.width <= maxW) lo = m; else hi = m - 1; }
+      t.setText(str.slice(0, lo).trimEnd() + '…');
+    }
+  }
+  d._fit = { base, src: str, w: maxW };
+  return t;
+}
+
+/** fitText with the text's current string. */
+export const fitWidth = (t: Phaser.GameObjects.Text, maxW: number, minFrac?: number) => fitText(t, t.text, maxW, minFrac);
+
 const shade = (c: number, pct: number) => {
   const col = Phaser.Display.Color.ValueToColor(c);
   return (pct >= 0 ? col.lighten(pct) : col.darken(-pct)).color;
@@ -101,7 +127,7 @@ export function button(scene: Phaser.Scene, x: number, y: number, w: number, h: 
     g.lineStyle(1, 0x000000, 0.4).lineBetween(-w / 2 + 3, h / 2 - 3.5 + dy, w / 2 - 3, h / 2 - 3.5 + dy);
     t.setY(dy);
   };
-  const t = text(scene, 0, 0, label, Math.min(28 * DPR, h * 0.55)).setOrigin(0.5);
+  const t = fitWidth(text(scene, 0, 0, label, Math.min(28 * DPR, h * 0.55)).setOrigin(0.5), w - 10);
   draw('idle');
   const zone = scene.add.zone(0, 0, w, h).setInteractive({ useHandCursor: true });
   zone.on('pointerover', () => { draw('hover'); scene.tweens.add({ targets: c, scale: 1.04, duration: 90 }); });
@@ -114,7 +140,7 @@ export function button(scene: Phaser.Scene, x: number, y: number, w: number, h: 
     onClick();
   });
   c.add([g, t, zone]);
-  return { container: c, setLabel: (s) => t.setText(s) };
+  return { container: c, setLabel: (s) => { fitText(t, s, w - 10); } };
 }
 
 export function fmtTime(sec: number): string {

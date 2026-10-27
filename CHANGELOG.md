@@ -2,6 +2,14 @@
 
 ## Chưa phát hành — V22: AI huấn luyện viên, tái đấu, danh tiếng theo tỉnh
 
+- **Giao diện điện thoại: nút không đè nhau, chữ không tràn khung** (dọc 390×844 và ngang 844×390):
+  - Menu chính: 4 nút cuối (Cài đặt, Chơi online, Nâng cấp, Thế giới online) xếp lưới 2 × 2 khi màn hình dọc thay vì 4 nút chen một hàng đè lên nhau và tràn khỏi màn hình; mô tả Việt Nam Odyssey nằm gọn trong thẻ; bỏ dòng gợi ý bàn phím trên điện thoại dọc.
+  - Chọn Pokémon khởi đầu: nút "Bắt đầu" không còn tràn khỏi mép phải.
+  - HUD Phiêu lưu: dòng HP và dòng "★ ngoài bóng / trong bóng" của bảng đội nằm trong khung.
+  - Bản đồ: danh sách vùng xếp theo chiều cao thật của từng dòng (gợi ý dài 3 dòng từng đè lên tên vùng kế tiếp), tối đa 2 dòng rồi cắt "…"; dòng thống kê tự xuống dòng.
+  - Chi tiết Pokémon: dòng EXP / nhóm tăng trưởng không tràn khung.
+  - Thẻ lên cấp (Sinh tồn): tiêu đề có nền riêng, không còn chồng lên đồng hồ HUD.
+  - Mọi nút trong game: chữ dài hơn nút thì tự thu nhỏ, vẫn dài thì cắt "…" (`fitText` / `fitWidth` trong `scenes/ui.ts`).
 - **Sửa: Mega Tiến Hóa không đổi dạng trên bảng đội** — Pokémon trên sân đã đổi sprite / hệ / chỉ số sang dạng Mega, nhưng bảng đội góc trái vẫn hiện tên và icon dạng gốc (bảng đọc loài từ save thay vì từ Pokémon đang ở ngoài). Giờ bảng đội hiện dạng hiện tại (Mega Charizard X…) và trở lại dạng gốc khi hết Mega; save vẫn giữ loài gốc. E2E Mega kiểm tra thêm sprite trên sân và bảng đội.
 - **Đền huyền thoại, bước 1 — đền thiết kế thay vòng 12 trụ** (`src/core/shrines.ts`, `data/world/shrines.json` sinh bằng `scripts/gen-shrines.py`; xem `LEGENDARY_SHRINES.md` mục 7): 22 huyền thoại trên mặt đất giờ đứng giữa một ngôi đền dựng theo sơ đồ riêng — vách đá, hồ / biển / hào dung nham, sân lát theo chủ đề với vòng rune, trụ, tượng, pha lê hoặc lư lửa, lõi triệu hồi, bậc lối vào. Đền được dời về bản đồ đúng chất (Rayquaza lên Núi Tuyết, Ho-Oh và Celebi vào Rừng Lục Bảo, Zapdos ra vách biển, Moltres vào núi lửa, Mewtwo / Mew ở lại Thung Lũng, Uxie và Regigigas về Thánh Địa, Regirock / Registeel ra biển / đầm lầy). Vùng đánh = sân của đền (bán kính tiếp cận theo arena). Địa hình mới *tường đền* chặn người và đạn. Manh mối điều tra dời theo đền. Save cũ: tiến độ giữ nguyên theo id; người chơi lưu game đúng chỗ giờ là tường được đặt sang ô trống gần nhất.
 - **Huấn luyện viên đánh có chiến thuật** (Phiêu lưu và Việt Nam Odyssey dùng chung): chỉ 2 Pokémon ra sân cùng lúc, số còn lại chờ dự bị. Khi một Pokémon gục, HLV gửi Pokémon dự bị **hợp hệ nhất** với Pokémon của bạn. Pokémon bị yếu hệ và còn dưới 50% HP được **gọi về** đổi lấy Pokémon kháng hệ (không bao giờ đổi sang một Pokémon cũng yếu hệ); máu được giữ khi gọi về / ra lại. HLV có 1–2 Potion, dùng khi Pokémon dưới 30% HP. Thông báo trên màn hình cho mỗi lần gửi ra, gọi về, dùng thuốc.

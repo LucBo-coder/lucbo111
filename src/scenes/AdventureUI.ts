@@ -38,7 +38,7 @@ import { saveStore } from '../systems/save';
 import { fitScale, itemIconKey, officialPack } from '../render/spriteRegistry';
 import type { QualitySetting } from '../systems/saveSchema';
 import { AdventureScene, COMMANDS } from './AdventureScene';
-import { askText, button, COLORS, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
+import { askText, button, COLORS, fitText, fitWidth, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
 import { net } from '../net/session';
 import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
@@ -297,7 +297,7 @@ export class AdventureUI extends Phaser.Scene {
     g.fillStyle(0x000000, 0.75).fillRect(12 * s - 2, 10 * s - 2, hw + 4, 24 * s + 4);
     g.fillStyle(0x502020, 1).fillRect(12 * s, 10 * s, hw, 24 * s);
     g.fillStyle(0xe04848, 1).fillRect(12 * s, 10 * s, hw * (t.hp / t.maxHp), 24 * s);
-    this.texts.hp.setText(`HLV  ${Math.ceil(t.hp)}/${t.maxHp}   ·   Cấp thế giới ${a.state.worldLevel}`).setPosition(18 * s, 12 * s);
+    fitText(this.texts.hp, `HLV  ${Math.ceil(t.hp)}/${t.maxHp}   ·   Cấp thế giới ${a.state.worldLevel}`, hw - 10 * s).setPosition(18 * s, 12 * s);
     const party = a.state.party();
     while (this.partyIcons.length > party.length) this.partyIcons.pop()!.destroy();
     while (this.partyRows.length > party.length) { const r = this.partyRows.pop()!; r.frame?.destroy(); r.ball.destroy(); r.zone.destroy(); }
@@ -333,7 +333,7 @@ export class AdventureUI extends Phaser.Scene {
       icon.setPosition(32 * s, y + 18 * s).setAlpha(ally?.fainted ? 0.35 : inBall ? 0.5 : 1).setDepth(4);
       const k = 'p' + i;
       if (!this.texts[k]) this.texts[k] = text(this, 0, 0, '', 15 * s);
-      this.texts[k].setText(`${POKEMON.get(species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : a.state.isActive(p.uid) ? '  ★ ngoài bóng' : inBall ? '  · trong bóng' : ''}`).setPosition(52 * s, y + 1 * s);
+      fitText(this.texts[k], `${POKEMON.get(species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : a.state.isActive(p.uid) ? '  ★ ngoài bóng' : inBall ? '  · trong bóng' : ''}`, hw - 44 * s).setPosition(52 * s, y + 1 * s);
       const bx = 52 * s, bw = hw - 112 * s;
       if (ally) bar(g, bx, y + 21 * s, bw, 6 * s, ally.hp / ally.maxHp, hpColor(ally.hp / ally.maxHp));
       else if (inBall) bar(g, bx, y + 21 * s, bw, 6 * s, p.hpFrac ?? 1, 0x8890a8); // HP kept in the ball (no healing)
@@ -1137,7 +1137,7 @@ export class AdventureUI extends Phaser.Scene {
     c.add(g);
     bar(g, r.x + 120 * s, r.y + 72 * s, r.w - 140 * s, 6 * s, levelProgress(p), 0x60a0ff);
     const where = st.isActive(p.uid) ? '★ đang ở ngoài bóng' : st.pcLocation(p.uid) ? `PC Box ${st.pcLocation(p.uid)!.box + 1}` : st.inParty(p.uid) ? 'trong đội · trong bóng' : 'chưa xếp';
-    c.add(text(this, r.x + 120 * s, r.y + 80 * s, `EXP ${p.exp} · ${where} · nhóm tăng trưởng ${api?.growthRate ?? '?'} (PokéAPI)`, 14 * s, st.isActive(p.uid) ? '#ffe060' : COLORS.dim));
+    c.add(fitWidth(text(this, r.x + 120 * s, r.y + 80 * s, `EXP ${p.exp} · ${where} · nhóm tăng trưởng ${api?.growthRate ?? '?'} (PokéAPI)`, 14 * s, st.isActive(p.uid) ? '#ffe060' : COLORS.dim), r.w - 134 * s));
     const ind = individualOf(p);
     const stats = calcStats(def.baseStats, p.level, ind);
     const nat = NATURES[ind.nature];
@@ -1608,19 +1608,47 @@ export class AdventureUI extends Phaser.Scene {
     c.add(button(this, sx + 120 * s, sy + 20 * s, 70 * s, 34 * s, '−', () => this.zoomMap(0.8)).container);
     c.add(button(this, sx + 200 * s, sy + 20 * s, 70 * s, 34 * s, '⌖', () => { this.mapView = { zoom: 1, ox: 0, oy: 0 }; this.openMenu('map'); }).container);
     const tot = a.totals();
-    c.add(text(this, sx, sy + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%\nCấp thế giới: ${st.worldLevel}\nDanh tiếng: ${st.adv.reputation}${repLine(st.adv)}\nTrạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}\nThời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
+    // stats, then the region list stacked by the real height of each (wrapped) line, so nothing overlaps
+    const stats = text(this, sx, sy + 50 * s, `Khám phá: ${st.explorationPercent(tot.chunks, tot.chests, tot.waypoints)}%
+Cấp thế giới: ${st.worldLevel}
+Danh tiếng: ${st.adv.reputation}${repLine(st.adv)}
+Trạm: ${st.adv.waypoints.length}/${tot.waypoints} · Rương: ${st.adv.chests.length}/${tot.chests}
+Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapWidth(side - 8 * s, true);
+    c.add(stats);
     const vn = st.adv.campaign === 'vietnam';
-    c.add(text(this, sx, sy + 170 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080'));
-    const rowH = (this.portraitMenu ? 52 : 40) * s; // a wrapped hint takes two lines
-    if (vn) c.add(button(this, sx + 110 * s, sy + 216 * s + VN_REGIONS.length * rowH, 200 * s, 34 * s, 'Mở Hộ chiếu (P)', () => this.openMenu('passport'), 0x7a3a2a).container);
-    (vn ? VN_REGIONS : REGIONS).forEach((rg, i) => {
+    const head = text(this, sx, stats.y + stats.height + 6 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080');
+    c.add(head);
+    const list = vn ? VN_REGIONS : REGIONS;
+    const bottom = r.y + r.h - (vn ? 44 : 4) * s;
+    const rows = list.map((rg) => {
       const unlocked = rg.need.every((f) => st.hasFlag(f));
       const cur = rg.id === a.regionDef.id;
       const lv = ENC_REGIONS.get(rg.id);
       const status = cur ? 'đang ở đây' : unlocked ? `đã mở — đi qua cổng${lv ? ` · Lv${lv.level[0]}–${lv.level[1]}` : ''}` : `khóa · ${rg.hint}`;
-      c.add(text(this, sx, sy + 196 * s + i * rowH, `${cur ? '▶' : unlocked ? '○' : '–'} ${rg.name}`, 16 * s, cur ? '#80ff90' : unlocked ? '#ffe080' : COLORS.dim));
-      c.add(text(this, sx + 14 * s, sy + 214 * s + i * rowH, status, 13 * s, COLORS.dim).setWordWrapWidth(side - 20 * s));
+      const name = text(this, sx, 0, `${cur ? '▶' : unlocked ? '○' : '–'} ${rg.name}`, 16 * s, cur ? '#80ff90' : unlocked ? '#ffe080' : COLORS.dim);
+      fitWidth(name, side - 8 * s);
+      const hint = text(this, sx + 14 * s, 0, status, 13 * s, COLORS.dim).setWordWrapWidth(side - 20 * s, true);
+      c.add([name, hint]);
+      return { name, hint, status };
     });
+    // the hints keep at most 2 lines (1 when even that does not fit), cut with "…"
+    const clampLines = (t: Phaser.GameObjects.Text, full: string, n: number) => {
+      t.setText(full);
+      const lines = t.getWrappedText(full);
+      if (lines.length > n) t.setText(lines.slice(0, n).join('\n').replace(/\s*\S{0,3}$/, '') + '…');
+    };
+    for (const max of [2, 1]) {
+      let y = head.y + head.height + 4 * s;
+      for (const row of rows) {
+        clampLines(row.hint, row.status, max);
+        row.name.setY(y);
+        row.hint.setY(y + row.name.height - 2 * s);
+        y = row.hint.y + row.hint.height + 5 * s;
+      }
+      if (y <= bottom) break;
+    }
+    const last = rows[rows.length - 1];
+    if (vn) c.add(button(this, sx + 110 * s, Math.min(bottom + 22 * s, last.hint.y + last.hint.height + 24 * s), 200 * s, 34 * s, 'Mở Hộ chiếu (P)', () => this.openMenu('passport'), 0x7a3a2a).container);
     c.add(text(this, r.x + 8 * s, r.y + vh - 22 * s, 'Kéo để di chuyển · cuộn/nút để thu phóng · chạm trạm xanh để dịch chuyển', 14 * s, COLORS.dim));
   }
 

@@ -309,7 +309,10 @@ export class MenuScene extends Phaser.Scene {
     text(this, sx + 90 * s, sy + 8 * s, 'VIỆT NAM ODYSSEY', 28 * s, '#ffe060');
     const vnStarted = vnSlot && !!adv?.started;
     const vnInfo = vnStarted ? `Ô ${saveStore.slot} · ${regionDef(adv!.region).name} · ${sv.collection.length} Pokémon · ${adv!.flags.filter((f) => f.startsWith('badge:')).length} huy hiệu` : 'Hành trình từ Mũi Cà Mau: Cà Mau → An Giang (bản thử nghiệm)';
-    text(this, sx + 90 * s, sy + 40 * s, vnInfo, 15 * s, '#f0c8a0').setWordWrapWidth(sw - (portrait ? 100 : 380) * s);
+    // phones: a smaller font so two wrapped lines stay inside the strip
+    const info = text(this, sx + 90 * s, sy + (portrait ? 37 : 40) * s, vnInfo, (portrait ? 13 : 15) * s, '#f0c8a0').setWordWrapWidth(sw - (portrait ? 100 : 380) * s, true);
+    const infoLines = info.getWrappedText(vnInfo);
+    if (infoLines.length > 2) info.setText(infoLines.slice(0, 2).join('\n').replace(/\s*\S{0,3}$/, '') + '…');
     const vb = portrait ? 0 : 1;
     if (vb) {
       if (vnStarted) button(this, sx + sw - 250 * s, sy + sh / 2, 150 * s, 44 * s, '▶ Tiếp tục', () => void this.startAdventure(false), 0xa8322a);
@@ -323,14 +326,19 @@ export class MenuScene extends Phaser.Scene {
 
     // footer: secondary actions, version, tip
     n0 = this.children.length;
-    const by = portrait ? sy + sh + 80 * s : sy + sh + 34 * s;
-    const bw4 = Math.min(210 * s, (W - 60) / 4), gx = (i: number) => W / 2 + (i - 1.5) * (bw4 + 10 * s);
-    button(this, gx(0), by, bw4, 42 * s, '⚙ Cài đặt', () => this.go('settings'), 0x2c3654);
-    button(this, gx(1), by, bw4, 42 * s, '🌐 Chơi online', () => { audio.unlock(); gameModes.start(this, 'online', { entry: 'OnlineHub' }); }, 0x8a2f4a);
-    button(this, gx(2), by, bw4, 42 * s, portrait ? '★ Nâng cấp' : '★ Nâng cấp vĩnh viễn', () => this.go('upgrades'), 0x6a5424);
-    button(this, gx(3), by, bw4, 42 * s, portrait ? 'Thế giới online' : '🌐 Thế giới online', () => { audio.unlock(); this.scene.start('ServerWorld'); }, 0x28604e);
+    // portrait: a 2 × 2 grid (four in a row left ~90 px per label on a phone); landscape: one row
+    const by = portrait ? sy + sh + 72 * s : sy + sh + 34 * s;
+    const bw4 = portrait ? Math.min(260 * s, (W - 40 * s) / 2) : Math.min(210 * s, (W - 60) / 4);
+    const gx = (i: number) => portrait ? W / 2 + ((i % 2) - 0.5) * (bw4 + 10 * s) : W / 2 + (i - 1.5) * (bw4 + 10 * s);
+    const gy = (i: number) => portrait ? by + Math.floor(i / 2) * 46 * s : by;
+    const bh = (portrait ? 40 : 42) * s;
+    button(this, gx(0), gy(0), bw4, bh, '⚙ Cài đặt', () => this.go('settings'), 0x2c3654);
+    button(this, gx(1), gy(1), bw4, bh, '🌐 Chơi online', () => { audio.unlock(); gameModes.start(this, 'online', { entry: 'OnlineHub' }); }, 0x8a2f4a);
+    button(this, gx(2), gy(2), bw4, bh, portrait ? '★ Nâng cấp' : '★ Nâng cấp vĩnh viễn', () => this.go('upgrades'), 0x6a5424);
+    button(this, gx(3), gy(3), bw4, bh, '🌐 Thế giới online', () => { audio.unlock(); this.scene.start('ServerWorld'); }, 0x28604e);
     text(this, 10, H - 8, '© Ghi công', 16 * s, '#a8b4d8').setOrigin(0, 1).setInteractive({ useHandCursor: true }).on('pointerdown', () => this.go('credits'));
-    text(this, W / 2, H - 20 * s, 'Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.  ·  Enter: Sinh tồn', 15 * s, '#a8b4d8').setOrigin(0.5).setWordWrapWidth(W - 120).setAlign('center');
+    // the keyboard tip is for desktops; on a phone the grid needs that space
+    if (!portrait) text(this, W / 2, H - 20 * s, 'Pokémon tự chiến đấu — bạn di chuyển, chỉ huy và thu phục.  ·  Enter: Sinh tồn', 15 * s, '#a8b4d8').setOrigin(0.5).setWordWrapWidth(W - 120).setAlign('center');
     text(this, W - 10, H - 8, `v${GAME_VERSION}`, 14 * s, '#7a86a8').setOrigin(1, 1);
     this.slideIn(n0, 260, 20);
   }
@@ -372,8 +380,12 @@ export class MenuScene extends Phaser.Scene {
       button(this, W / 2 + 110 * s, by, 80 * s, 40 * s, '▶', () => { this.page = (this.page + 1) % pages; this.rebuild(); });
       by += 54 * s;
     }
-    button(this, W / 2 + 130 * s, by, 240 * s, 52 * s, '▶ BẮT ĐẦU', () => this.startSurvivor(), 0x2f6a3a);
-    button(this, W / 2 - 130 * s, by, 200 * s, 52 * s, '← Quay lại', () => this.go('home'));
+    // both buttons stay on screen on a narrow phone (240 + 200 px did not fit 390 px)
+    const room = W - 40 * s, gapB = 16 * s;
+    const bwR = Math.min(240 * s, (room - gapB) * 0.55), bwL = Math.min(200 * s, (room - gapB) * 0.45);
+    const bx0 = W / 2 - (bwL + bwR + gapB) / 2;
+    button(this, bx0 + bwL + gapB + bwR / 2, by, bwR, 52 * s, '▶ BẮT ĐẦU', () => this.startSurvivor(), 0x2f6a3a);
+    button(this, bx0 + bwL / 2, by, bwL, 52 * s, '← Quay lại', () => this.go('home'));
     text(this, W / 2, by + 46 * s, 'Pokémon bắt được ở chế độ Phiêu lưu cũng xuất hiện ở đây. Đạt 10:00 hoặc hạ 2 Boss để mang Pokémon chiêu mộ được về Bộ sưu tập (Lv5).', 15 * s, COLORS.dim).setOrigin(0.5, 0).setWordWrapWidth(W - 40).setAlign('center');
   }
 

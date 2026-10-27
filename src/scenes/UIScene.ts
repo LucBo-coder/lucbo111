@@ -11,7 +11,7 @@ import { fitScale } from '../render/spriteRegistry';
 import { moveAssets } from '../render/moveAssets';
 import { gameModes } from '../systems/gameMode';
 import type { GameScene } from './GameScene';
-import { button, COLORS, fmtTime, panel, RARITY_COLOR, RARITY_LABEL, text, TYPE_COLOR, uiScale } from './ui';
+import { button, COLORS, fitWidth, fmtTime, panel, RARITY_COLOR, RARITY_LABEL, text, TYPE_COLOR, uiScale } from './ui';
 
 interface PartyRow {
   icon: Phaser.GameObjects.Image;
@@ -291,8 +291,12 @@ export class UIScene extends Phaser.Scene {
     const c = this.add.container(0, 0).setDepth(100);
     c.add(this.add.rectangle(0, 0, W, H, 0x05060c, 0.72).setOrigin(0).setInteractive());
     const isBoss = w.pendingBossRewards > 0;
-    c.add(text(this, W / 2, 70 * s, isBoss ? '★ PHẦN THƯỞNG BOSS ★' : `LÊN CẤP!  Lv ${w.level}`, 46 * s, isBoss ? '#ffd040' : '#ffffff').setOrigin(0.5));
-    c.add(text(this, W / 2, 112 * s, 'Chọn 1 nâng cấp  (phím 1 · 2 · 3 hoặc chạm)', 20 * s, COLORS.dim).setOrigin(0.5));
+    const title = fitWidth(text(this, W / 2, 70 * s, isBoss ? '★ PHẦN THƯỞNG BOSS ★' : `LÊN CẤP!  Lv ${w.level}`, 46 * s, isBoss ? '#ffd040' : '#ffffff').setOrigin(0.5), W - 24 * s);
+    const hint = fitWidth(text(this, W / 2, 112 * s, 'Chọn 1 nâng cấp  (phím 1 · 2 · 3 hoặc chạm)', 20 * s, COLORS.dim).setOrigin(0.5), W - 24 * s);
+    // a solid band behind the heading: the HUD clock / kill counter under it showed through the dimmed backdrop
+    const bandW = Math.min(W, Math.max(title.width, hint.width) + 48 * s);
+    c.add(this.add.rectangle(W / 2, 85 * s, bandW, 96 * s, 0x05060c, 0.94));
+    c.add([title, hint]);
 
     const portrait = W < H * 0.9;
     const cw = portrait ? Math.min(W - 32, 460) : Math.min(270 * s, (W - 80) / 3);
