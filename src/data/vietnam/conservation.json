@@ -153,6 +153,52 @@
      "y": 32
     }
    ]
+  },
+  "vinh-long": {
+   "id": "vinh-long",
+   "name": "Vĩnh Long",
+   "area": "vl-mang-thit",
+   "action": "trash",
+   "unlock": "vn-vl-3",
+   "boss": "torkoal",
+   "label": "Dọn tro trấu ven kênh",
+   "done": "Bạn vớt tro trấu và gạch vỡ dạt vào bờ kênh. Nước kênh Mang Thít trong hơn một chút.",
+   "thrivingReward": {
+    "fire-stone": 1,
+    "superpotion": 3
+   },
+   "sites": [
+    {
+     "id": "vinh-long-1",
+     "x": 28,
+     "y": 97
+    },
+    {
+     "id": "vinh-long-2",
+     "x": 42,
+     "y": 99
+    },
+    {
+     "id": "vinh-long-3",
+     "x": 14,
+     "y": 98
+    },
+    {
+     "id": "vinh-long-4",
+     "x": 56,
+     "y": 94
+    },
+    {
+     "id": "vinh-long-5",
+     "x": 5,
+     "y": 102
+    },
+    {
+     "id": "vinh-long-6",
+     "x": 21,
+     "y": 101
+    }
+   ]
   }
  }
 }

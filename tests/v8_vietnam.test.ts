@@ -10,7 +10,7 @@ import vnQuests from '../src/data/vietnam/quests.json';
 import type { QuestDef } from '../src/core/quests';
 import { defaultSave, migrate, newAdventure } from '../src/systems/saveSchema';
 
-const VN = ['ca-mau', 'an-giang', 'can-tho'];
+const VN = ['ca-mau', 'an-giang', 'can-tho', 'vinh-long'];
 const quests = vnQuests as unknown as QuestDef[];
 
 describe('Vietnam Odyssey mode', () => {
@@ -47,13 +47,13 @@ describe('Vietnam Odyssey mode', () => {
     expect(water).toBeGreaterThan(200); // sea at the southern tip
   });
 
-  it('spawns: Lv1–18 (Cần Thơ ≤ 26), no Ice types in the tropical provinces, never legendaries', () => {
+  it('spawns: Lv1–18 (Cần Thơ ≤ 26, Vĩnh Long ≤ 30), no Ice types in the tropical provinces, never legendaries', () => {
     for (const r of [...REGIONS.values()].filter((x) => x.id.startsWith('vn-'))) {
       const pool = eligible({ biome: r.biome, night: false, weather: 'clear' } as never, r);
       expect(pool.length, r.id).toBeGreaterThan(8);
       expect(pool.some((e) => POKEMON.get(e.id)?.types.includes('ice')), r.id).toBe(false);
       expect(pool.every((e) => !e.legendary && !e.mythical)).toBe(true);
-      expect(r.level[1]).toBeLessThanOrEqual(r.id.startsWith('vn-ct-') ? 26 : 18);
+      expect(r.level[1]).toBeLessThanOrEqual(r.id.startsWith('vn-vl-') ? 30 : r.id.startsWith('vn-ct-') ? 26 : 18);
     }
   });
 
@@ -77,7 +77,7 @@ describe('Vietnam Odyssey mode', () => {
         // explore: an area, or 'dock:<id>' = landing at a boat dock
         if (o.type === 'explore') expect(areas.has(t) || docks.has(t), `${q.id} ${t}`).toBe(true);
         // activate: a waypoint, or 'eco:<province>' = a conservation site of that province
-        if (o.type === 'activate') expect(wps.has(t) || ['eco:ca-mau', 'eco:an-giang', 'eco:can-tho'].includes(t), `${q.id} ${t}`).toBe(true);
+        if (o.type === 'activate') expect(wps.has(t) || ['eco:ca-mau', 'eco:an-giang', 'eco:can-tho', 'eco:vinh-long'].includes(t), `${q.id} ${t}`).toBe(true);
         if (o.type === 'boss') expect(BOSSES.has(t), `${q.id} ${t}`).toBe(true);
         if (o.marker) expect(VN).toContain(o.marker.region);
       }

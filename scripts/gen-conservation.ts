@@ -1,7 +1,8 @@
 // Generates src/data/vietnam/conservation.json: six restoration sites per province on reachable dry ground right next
 // to water (mangrove shore, flooded-field banks, the Hậu river banks), spread apart and away from other objects.
-// Usage: npx tsx scripts/gen-conservation.ts   (deterministic; rerun after map changes)
-import { writeFileSync } from 'node:fs';
+// Usage: npx tsx scripts/gen-conservation.ts   (deterministic). A province already in the file keeps its sites (saves
+// store progress per site, and maps changed since would move them) — pass --all to place every province again.
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { ValleyMap } from '../src/core/map/valley';
 import { T } from '../src/core/map/tiles';
@@ -22,6 +23,11 @@ const PROVINCES = [
     label: 'Vớt rác ven sông', done: 'Bạn gom túi ni lông và chai nhựa dạt vào bờ. Nước sông Hậu trong hơn một chút.',
     thrivingReward: { 'water-stone': 1, superpotion: 3 },
   },
+  {
+    id: 'vinh-long', name: 'Vĩnh Long', area: 'vl-mang-thit', action: 'trash', unlock: 'vn-vl-3', boss: 'torkoal',
+    label: 'Dọn tro trấu ven kênh', done: 'Bạn vớt tro trấu và gạch vỡ dạt vào bờ kênh. Nước kênh Mang Thít trong hơn một chút.',
+    thrivingReward: { 'fire-stone': 1, superpotion: 3 },
+  },
 ];
 
 const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
@@ -30,7 +36,10 @@ const out: Record<string, unknown> = {
   perSite: 15, bossBonus: 10,
   provinces: {} as Record<string, unknown>,
 };
+const FILE = 'src/data/vietnam/conservation.json';
+const kept = !process.argv.includes('--all') && existsSync(FILE) ? (JSON.parse(readFileSync(FILE, 'utf8')).provinces as Record<string, { sites: unknown[] }>) : {};
 for (const p of PROVINCES) {
+  if (kept[p.id]) { (out.provinces as Record<string, unknown>)[p.id] = { ...p, sites: kept[p.id].sites }; continue; }
   const d = REGION_DEFS[p.id], m = new ValleyMap(d), W = m.widthTiles;
   const dry = (x: number, y: number) => !m.solidAt(x, y) && m.terrainAt(x, y) !== T.Water;
   const seen = new Set([d.spawn.y * W + d.spawn.x]), q = [[d.spawn.x, d.spawn.y]];
@@ -47,6 +56,7 @@ for (const p of PROVINCES) {
   const cand: { x: number; y: number }[] = [];
   for (let y = y0 + 1; y < y1; y++) for (let x = x0 + 1; x < x1; x++) {
     if (!seen.has(y * W + x)) continue;
+    if (x < 5 || y < 5 || x >= W - 5 || y >= m.heightTiles - 5) continue; // the map's border trees grow there
     if (!dirs.some(([dx, dy]) => m.terrainAt(x + dx, y + dy) === T.Water)) continue; // on the water's edge
     if (objs.some((o) => Math.hypot(o.x - x, o.y - y) < 3)) continue;
     if (d.buildings.some((b) => x >= b.x - 1 && x <= b.x + b.w && y >= b.y - 1 && y <= b.y + b.h)) continue;
@@ -69,4 +79,4 @@ for (const p of PROVINCES) {
   (out.provinces as Record<string, unknown>)[p.id] = { ...p, sites: sites.map((s, i) => ({ id: `${p.id}-${i + 1}`, x: s.x, y: s.y })) };
   console.log(p.id, sites.map((s) => `(${s.x},${s.y})`).join(' '));
 }
-writeFileSync('src/data/vietnam/conservation.json', JSON.stringify(out, null, 1) + '\n');
+writeFileSync(FILE, JSON.stringify(out, null, 1) + '\n');

@@ -1,0 +1,1059 @@
+{
+ "id": "vinh-long",
+ "name": "Vĩnh Long",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": {
+  "x": 8,
+  "y": 50
+ },
+ "areas": [
+  {
+   "id": "vl-town",
+   "name": "Bến Vĩnh Long",
+   "rect": [
+    62,
+    38,
+    94,
+    60
+   ],
+   "habitat": "village",
+   "level": [
+    22,
+    22
+   ]
+  },
+  {
+   "id": "vl-van-thanh",
+   "name": "Văn Thánh Miếu",
+   "rect": [
+    40,
+    38,
+    61,
+    60
+   ],
+   "habitat": "village",
+   "level": [
+    22,
+    22
+   ]
+  },
+  {
+   "id": "vl-an-binh",
+   "name": "Cù lao An Bình",
+   "rect": [
+    86,
+    0,
+    114,
+    14
+   ],
+   "habitat": "farm",
+   "level": [
+    24,
+    28
+   ]
+  },
+  {
+   "id": "vl-tien",
+   "name": "Bờ sông Tiền",
+   "rect": [
+    0,
+    0,
+    85,
+    25
+   ],
+   "habitat": "lake",
+   "level": [
+    24,
+    28
+   ]
+  },
+  {
+   "id": "vl-binh-tan",
+   "name": "Ruộng khoai Bình Tân",
+   "rect": [
+    0,
+    26,
+    39,
+    70
+   ],
+   "habitat": "meadow",
+   "level": [
+    22,
+    26
+   ]
+  },
+  {
+   "id": "vl-mang-thit",
+   "name": "Lò gạch Mang Thít",
+   "rect": [
+    0,
+    71,
+    60,
+    111
+   ],
+   "habitat": "rocky",
+   "level": [
+    25,
+    29
+   ]
+  },
+  {
+   "id": "vl-binh-minh",
+   "name": "Vườn bưởi Bình Minh",
+   "rect": [
+    61,
+    61,
+    110,
+    111
+   ],
+   "habitat": "farm",
+   "level": [
+    23,
+    27
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 14
+   }
+  },
+  {
+   "id": "vl-co-chien",
+   "name": "Bờ sông Cổ Chiên",
+   "rect": [
+    95,
+    23,
+    127,
+    60
+   ],
+   "habitat": "lake",
+   "level": [
+    25,
+    29
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     3,
+     50
+    ],
+    [
+     30,
+     50
+    ],
+    [
+     50,
+     50
+    ],
+    [
+     70,
+     50
+    ],
+    [
+     88,
+     50
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     78,
+     48
+    ],
+    [
+     80,
+     36
+    ],
+    [
+     82,
+     24
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     72,
+     56
+    ],
+    [
+     60,
+     72
+    ],
+    [
+     40,
+     84
+    ],
+    [
+     24,
+     90
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     86,
+     56
+    ],
+    [
+     88,
+     72
+    ],
+    [
+     84,
+     96
+    ],
+    [
+     100,
+     102
+    ],
+    [
+     112,
+     106
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     24,
+     50
+    ],
+    [
+     20,
+     36
+    ],
+    [
+     16,
+     30
+    ]
+   ]
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     88,
+     50
+    ],
+    [
+     104,
+     44
+    ],
+    [
+     110,
+     40
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  64,
+  40,
+  92,
+  58
+ ],
+ "lake": {
+  "cx": 100,
+  "cy": -4,
+  "rx": 50,
+  "ry": 24
+ },
+ "islands": [
+  {
+   "cx": 100,
+   "cy": 7,
+   "rx": 12,
+   "ry": 6
+  }
+ ],
+ "buildings": [
+  {
+   "id": "vl-center",
+   "name": "Trung tâm Pokémon",
+   "x": 66,
+   "y": 41,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "vl-mart",
+   "name": "Cửa hàng",
+   "x": 82,
+   "y": 41,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "vl-temple",
+   "name": "Văn Thánh Miếu",
+   "x": 45,
+   "y": 41,
+   "w": 7,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "vl-kiln-1",
+   "name": "Lò gạch",
+   "x": 12,
+   "y": 78,
+   "w": 5,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "vl-kiln-2",
+   "name": "Lò gạch",
+   "x": 30,
+   "y": 96,
+   "w": 5,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "vl-kiln-3",
+   "name": "Lò gốm",
+   "x": 46,
+   "y": 76,
+   "w": 5,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "vl-homestay",
+   "name": "Nhà vườn An Bình",
+   "x": 96,
+   "y": 4,
+   "w": 5,
+   "h": 3,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "haystack",
+   "x": 16,
+   "y": 44
+  },
+  {
+   "kind": "bucket",
+   "x": 22,
+   "y": 88
+  },
+  {
+   "kind": "log",
+   "x": 38,
+   "y": 100
+  },
+  {
+   "kind": "haystack",
+   "x": 30,
+   "y": 62
+  },
+  {
+   "kind": "bucket",
+   "x": 90,
+   "y": 56
+  },
+  {
+   "kind": "log",
+   "x": 101,
+   "y": 11
+  }
+ ],
+ "signs": [
+  {
+   "x": 74,
+   "y": 54,
+   "text": [
+    "BẾN VĨNH LONG",
+    "Thành phố nằm bên sông Cổ Chiên, nơi tách ra từ sông Tiền. Phía bắc: bến đò ra Cù lao An Bình · Phía tây: Văn Thánh Miếu, ruộng khoai Bình Tân, đường về Cần Thơ · Phía nam: lò gạch Mang Thít, vườn bưởi Bình Minh."
+   ]
+  },
+  {
+   "x": 54,
+   "y": 47,
+   "text": [
+    "VĂN THÁNH MIẾU",
+    "Miếu thờ Khổng Tử và các bậc hiền nho, xây từ thời nhà Nguyễn, nay là di tích của Vĩnh Long.",
+    "Xin giữ yên lặng khi vào miếu."
+   ]
+  },
+  {
+   "x": 78,
+   "y": 27,
+   "text": [
+    "CÙ LAO AN BÌNH",
+    "Cù lao giữa sông Tiền và sông Cổ Chiên, nổi tiếng với vườn trái cây và nhà vườn đón khách.",
+    "Đò ra cù lao ở bến phía trước."
+   ]
+  },
+  {
+   "x": 34,
+   "y": 82,
+   "text": [
+    "LÒ GẠCH MANG THÍT",
+    "Hàng trăm lò gạch, lò gốm dọc kênh Mang Thít — người ta gọi nơi đây là \"vương quốc gốm đỏ\".",
+    "(Thần Lò trong game là sinh vật giả tưởng.)"
+   ]
+  },
+  {
+   "x": 83,
+   "y": 77,
+   "text": [
+    "VƯỜN BƯỞI BÌNH MINH",
+    "Bình Minh là quê của bưởi Năm Roi ngọt thanh, mọng nước."
+   ]
+  },
+  {
+   "x": 20,
+   "y": 48,
+   "text": [
+    "RUỘNG KHOAI BÌNH TÂN",
+    "Đất cát pha ven sông hợp trồng khoai lang. ↑ Bờ sông Tiền · → Bến Vĩnh Long · ← Đường về Cần Thơ"
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "vl-guide",
+   "name": "Hướng dẫn viên Thanh",
+   "sprite": "girl",
+   "x": 76,
+   "y": 55,
+   "lines": [
+    "Chào mừng tới Vĩnh Long — đất của cù lao, gốm đỏ và bưởi Năm Roi!",
+    "Văn Thánh Miếu, Cù lao An Bình, lò gạch Mang Thít đều có thật. Thần Lò và những chuyện lạ trong game là giả tưởng."
+   ]
+  },
+  {
+   "id": "shopkeeper",
+   "name": "Cô bán hàng Diễm",
+   "sprite": "villager",
+   "x": 85,
+   "y": 46,
+   "lines": [
+    "Bóng, thuốc, bưởi Năm Roi — có đủ hết!"
+   ]
+  },
+  {
+   "id": "vl-board",
+   "name": "Bảng nhiệm vụ Vĩnh Long",
+   "sprite": "board",
+   "x": 79,
+   "y": 56,
+   "lines": [
+    "Bảng nhiệm vụ: chưa có yêu cầu mới."
+   ]
+  },
+  {
+   "id": "vl-ferryman",
+   "name": "Chú Năm lái đò",
+   "sprite": "farmer",
+   "x": 80,
+   "y": 25,
+   "lines": [
+    "Đò ra cù lao chạy cả ngày. Mấy bữa nay lò gạch bên Mang Thít đỏ lửa suốt đêm, lạ thiệt."
+   ]
+  },
+  {
+   "id": "vl-host",
+   "name": "Bác Hai nhà vườn",
+   "sprite": "elder",
+   "x": 100,
+   "y": 9,
+   "lines": [
+    "Nhà vườn An Bình đón khách ăn trái tại vườn đó con. Chôm chôm, nhãn, bưởi, sầu riêng — vô hái thoải mái!"
+   ]
+  },
+  {
+   "id": "vl-potter-master",
+   "name": "Ông Bảy thợ gốm",
+   "sprite": "elder",
+   "x": 49,
+   "y": 81,
+   "lines": [
+    "Gạch Mang Thít phải nung bằng trấu, lửa đều thì gạch mới đỏ au.",
+    "Mấy đêm nay lò nóng quá trời, có thứ gì nằm trong đó..."
+   ]
+  },
+  {
+   "id": "vl-scholar",
+   "name": "Thầy đồ Khiêm",
+   "sprite": "wizard",
+   "x": 51,
+   "y": 52,
+   "lines": [
+    "Học đi đôi với hành. Huấn luyện Pokémon cũng vậy."
+   ]
+  },
+  {
+   "id": "vl-grower",
+   "name": "Chị Út trồng bưởi",
+   "sprite": "farmer",
+   "x": 92,
+   "y": 84,
+   "lines": [
+    "Bưởi Năm Roi chín rộ rồi. Pokémon hệ Bọ cứ lén vô ăn hoài."
+   ]
+  },
+  {
+   "id": "vl-potato",
+   "name": "Anh Tư trồng khoai",
+   "sprite": "farmer",
+   "x": 22,
+   "y": 58,
+   "lines": [
+    "Khoai lang Bình Tân ngọt bùi nhất xứ. Có mấy con Pokémon đào hang phá ruộng quá."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "vl-potter",
+   "name": "Thợ lò Ba Lò",
+   "sprite": "youngster",
+   "x": 36,
+   "y": 90,
+   "team": [
+    [
+     "numel",
+     25
+    ],
+    [
+     "slugma",
+     25
+    ],
+    [
+     "torkoal",
+     27
+    ]
+   ],
+   "challenge": [
+    "Muốn vô xem lò hả? Qua được tôi đã!"
+   ],
+   "win": [
+    "Giỏi đó. Lò lớn cuối kênh có thứ gì đó nằm trong lửa — cẩn thận nghen."
+   ],
+   "lose": [
+    "Lửa lò không dành cho người yếu tay!"
+   ],
+   "rewards": {
+    "items": {
+     "charcoal": 1,
+     "superpotion": 2
+    },
+    "exp": 1000
+   }
+  },
+  {
+   "id": "vl-orchard-girl",
+   "name": "Cô chủ vườn Bảy",
+   "sprite": "girl",
+   "x": 106,
+   "y": 9,
+   "team": [
+    [
+     "tropius",
+     24
+    ],
+    [
+     "skiploom",
+     24
+    ],
+    [
+     "breloom",
+     26
+    ]
+   ],
+   "challenge": [
+    "Khách ghé vườn thì đấu một trận cho vui!"
+   ],
+   "win": [
+    "Thua rồi, hái trái ăn thoải mái đi!"
+   ],
+   "lose": [
+    "Vườn tôi Pokémon khỏe lắm đó!"
+   ],
+   "rewards": {
+    "items": {
+     "sitrus-berry": 2,
+     "greatball": 3
+    },
+    "exp": 900
+   }
+  },
+  {
+   "id": "vl-teacher",
+   "name": "Thầy giáo Nghĩa",
+   "sprite": "wizard",
+   "x": 56,
+   "y": 56,
+   "team": [
+    [
+     "xatu",
+     25
+    ],
+    [
+     "kadabra",
+     25
+    ],
+    [
+     "noctowl",
+     26
+    ]
+   ],
+   "challenge": [
+    "Ôn bài nào! Trận đấu này là bài kiểm tra."
+   ],
+   "win": [
+    "Điểm mười! Em học giỏi lắm."
+   ],
+   "lose": [
+    "Về ôn lại rồi kiểm tra lại nhé."
+   ],
+   "rewards": {
+    "items": {
+     "wise-glasses": 1,
+     "ultraball": 1
+    },
+    "exp": 950
+   }
+  },
+  {
+   "id": "vl-digger",
+   "name": "Nông dân Bình Tân",
+   "sprite": "farmer",
+   "x": 12,
+   "y": 36,
+   "team": [
+    [
+     "sandslash",
+     24
+    ],
+    [
+     "dugtrio",
+     25
+    ],
+    [
+     "donphan",
+     26
+    ]
+   ],
+   "challenge": [
+    "Đào khoai cả buổi, đấu một trận giải lao!"
+   ],
+   "win": [
+    "Khoai nướng nè, ăn cho có sức!"
+   ],
+   "lose": [
+    "Về hồi phục rồi quay lại đấu tiếp nhé!"
+   ],
+   "rewards": {
+    "items": {
+     "soft-sand": 1,
+     "greatball": 3
+    },
+    "exp": 920
+   }
+  },
+  {
+   "id": "vl-fisher",
+   "name": "Ngư dân Cổ Chiên",
+   "sprite": "youngster",
+   "x": 104,
+   "y": 52,
+   "team": [
+    [
+     "quagsire",
+     25
+    ],
+    [
+     "pelipper",
+     25
+    ],
+    [
+     "crawdaunt",
+     27
+    ]
+   ],
+   "challenge": [
+    "Sông Cổ Chiên nhiều cá lớn lắm. Đấu với tôi một trận đi!"
+   ],
+   "win": [
+    "Bạn câu Pokémon còn giỏi hơn tôi câu cá."
+   ],
+   "lose": [
+    "Về luyện thêm rồi ra sông nghen!"
+   ],
+   "rewards": {
+    "items": {
+     "mystic-water": 1,
+     "netball": 3
+    },
+    "exp": 980
+   }
+  }
+ ],
+ "rescue": {
+  "id": "vl-potato-phanpy",
+  "x": 30,
+  "y": 32,
+  "species": "phanpy",
+  "level": 24,
+  "guards": [
+   [
+    "sandshrew",
+    24
+   ],
+   [
+    "sandshrew",
+    24
+   ],
+   [
+    "sandslash",
+    27
+   ]
+  ],
+  "quest": "vn-vl-rescue",
+  "reporter": "Anh Tư trồng khoai"
+ },
+ "chests": [
+  {
+   "id": "chest-vl-island",
+   "x": 108,
+   "y": 5,
+   "items": {
+    "ultraball": 2,
+    "sitrus-berry": 2
+   }
+  },
+  {
+   "id": "chest-vl-kiln",
+   "x": 52,
+   "y": 88,
+   "items": {
+    "charcoal": 1,
+    "fire-stone": 1,
+    "superpotion": 2
+   }
+  },
+  {
+   "id": "chest-vl-river",
+   "x": 108,
+   "y": 28,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-vl-fields",
+   "x": 6,
+   "y": 30,
+   "items": {
+    "greatball": 3,
+    "soft-sand": 1
+   }
+  },
+  {
+   "id": "chest-vl-pomelo-nook",
+   "x": 70,
+   "y": 106,
+   "items": {
+    "sitrus-berry": 3,
+    "exp-candy-s": 2,
+    "miracle-seed": 1
+   },
+   "requiresFlag": "field:vinh-long:vl-thicket"
+  },
+  {
+   "id": "chest-vl-kiln-nook",
+   "x": 10,
+   "y": 90,
+   "items": {
+    "ultraball": 2,
+    "hard-stone": 1,
+    "exp-candy-s": 2
+   },
+   "requiresFlag": "field:vinh-long:vl-cracked"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-vinh-long-center",
+   "name": "Trung tâm Pokémon Vĩnh Long",
+   "x": 69,
+   "y": 47
+  },
+  {
+   "id": "wp-vl-kiln",
+   "name": "Trạm lò gạch",
+   "x": 40,
+   "y": 86
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "torkoal",
+  "name": "Torkoal — Thần Lò Mang Thít",
+  "x": 24,
+  "y": 86,
+  "level": 32,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:vl-potter"
+  ],
+  "hint": "Khói than cuồn cuộn từ lò lớn cuối kênh... Hỏi chuyện Thợ lò Ba Lò trước đã.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "charcoal": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 4000,
+   "flag": "badge:vinh-long",
+   "message": "Nhận Huy hiệu Gốm Đỏ (Vĩnh Long)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-vl-ct",
+   "name": "Đường về Cần Thơ",
+   "x": 4,
+   "y": 50,
+   "to": "can-tho",
+   "toX": 119,
+   "toY": 64
+  },
+  {
+   "id": "vl-boat-out",
+   "name": "Bến đò ra Cù lao An Bình",
+   "x": 82,
+   "y": 22,
+   "to": "vinh-long",
+   "toX": 97,
+   "toY": 8
+  },
+  {
+   "id": "vl-boat-back",
+   "name": "Bến đò về Vĩnh Long",
+   "x": 94,
+   "y": 9,
+   "to": "vinh-long",
+   "toX": 82,
+   "toY": 25
+  },
+  {
+   "id": "portal-vl-next",
+   "name": "Đường tới Trà Vinh",
+   "x": 112,
+   "y": 106,
+   "to": "vinh-long",
+   "toX": 110,
+   "toY": 104,
+   "requires": [
+    "vn:tra-vinh-open"
+   ],
+   "hint": "Đường tới Trà Vinh chưa có trong phiên bản này."
+  }
+ ],
+ "docks": [
+  {
+   "id": "vl-dock-town",
+   "name": "Bến ghe Vĩnh Long",
+   "x": 86,
+   "y": 21,
+   "wx": 86,
+   "wy": 17
+  },
+  {
+   "id": "vl-dock-anbinh",
+   "name": "Bến ghe An Bình",
+   "x": 109,
+   "y": 10,
+   "wx": 112,
+   "wy": 12
+  },
+  {
+   "id": "vl-dock-cochien",
+   "name": "Bến ghe Cổ Chiên",
+   "x": 110,
+   "y": 60,
+   "wx": 115,
+   "wy": 60
+  },
+  {
+   "id": "vl-dock-mangthit",
+   "name": "Bến ghe Mang Thít",
+   "x": 44,
+   "y": 95,
+   "wx": 44,
+   "wy": 98
+  }
+ ],
+ "rivers": [
+  {
+   "w": 4,
+   "pts": [
+    [
+     114,
+     16
+    ],
+    [
+     114,
+     40
+    ],
+    [
+     116,
+     70
+    ],
+    [
+     118,
+     111
+    ]
+   ],
+   "mouth": true
+  },
+  {
+   "w": 2,
+   "pts": [
+    [
+     116,
+     74
+    ],
+    [
+     90,
+     90
+    ],
+    [
+     60,
+     96
+    ],
+    [
+     30,
+     99
+    ],
+    [
+     2,
+     101
+    ]
+   ]
+  }
+ ],
+ "nodes": [
+  {
+   "id": "vl-bush-1",
+   "table": "orchard-forage",
+   "x": 70,
+   "y": 66
+  },
+  {
+   "id": "vl-bush-2",
+   "table": "orchard-forage",
+   "x": 98,
+   "y": 72
+  },
+  {
+   "id": "vl-bush-3",
+   "table": "orchard-forage",
+   "x": 76,
+   "y": 104
+  },
+  {
+   "id": "vl-bush-4",
+   "table": "orchard-forage",
+   "x": 104,
+   "y": 10
+  },
+  {
+   "id": "vl-bush-5",
+   "table": "meadow-forage",
+   "x": 14,
+   "y": 54
+  },
+  {
+   "id": "vl-fish-1",
+   "table": "canal-fish",
+   "x": 70,
+   "y": 92
+  },
+  {
+   "id": "vl-fish-2",
+   "table": "canal-fish",
+   "x": 50,
+   "y": 95
+  },
+  {
+   "id": "vl-fish-3",
+   "table": "lake-fish",
+   "x": 59,
+   "y": 12
+  }
+ ],
+ "field": [
+  {
+   "id": "vl-thicket",
+   "ability": "cut",
+   "x": 74,
+   "y": 106,
+   "nook": {
+    "cx": 70.5,
+    "cy": 106.5,
+    "r": 3,
+    "wall": "tree"
+   }
+  },
+  {
+   "id": "vl-cracked",
+   "ability": "smash",
+   "x": 14,
+   "y": 90,
+   "nook": {
+    "cx": 10.5,
+    "cy": 90.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}

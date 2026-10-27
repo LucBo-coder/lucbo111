@@ -641,5 +641,143 @@
   "recommended": 15,
   "danger": 2,
   "unlock": "region:emerald-forest"
+ },
+ {
+  "id": "vn-vl-binh-tan",
+  "name": "Ruộng khoai Bình Tân",
+  "areas": [
+   "vl-binh-tan"
+  ],
+  "biome": "meadow",
+  "level": [
+   22,
+   26
+  ],
+  "elite": [
+   28,
+   30
+  ],
+  "boss": null,
+  "recommended": 26,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-vl-binh-minh",
+  "name": "Vườn bưởi Bình Minh",
+  "areas": [
+   "vl-binh-minh"
+  ],
+  "biome": "forest",
+  "level": [
+   23,
+   27
+  ],
+  "elite": [
+   29,
+   31
+  ],
+  "boss": null,
+  "recommended": 27,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-vl-tien",
+  "name": "Bờ sông Tiền",
+  "areas": [
+   "vl-tien"
+  ],
+  "biome": "lake",
+  "level": [
+   24,
+   28
+  ],
+  "elite": [
+   30,
+   32
+  ],
+  "boss": null,
+  "recommended": 28,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-vl-an-binh",
+  "name": "Cù lao An Bình",
+  "areas": [
+   "vl-an-binh"
+  ],
+  "biome": "forest",
+  "level": [
+   24,
+   28
+  ],
+  "elite": [
+   30,
+   32
+  ],
+  "boss": null,
+  "recommended": 28,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-vl-mang-thit",
+  "name": "Lò gạch Mang Thít",
+  "areas": [
+   "vl-mang-thit"
+  ],
+  "biome": "volcano",
+  "level": [
+   25,
+   29
+  ],
+  "elite": [
+   31,
+   33
+  ],
+  "boss": null,
+  "recommended": 29,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-vl-co-chien",
+  "name": "Bờ sông Cổ Chiên",
+  "areas": [
+   "vl-co-chien"
+  ],
+  "biome": "lake",
+  "level": [
+   25,
+   29
+  ],
+  "elite": [
+   31,
+   33
+  ],
+  "boss": null,
+  "recommended": 29,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

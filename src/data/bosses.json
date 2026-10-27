@@ -664,5 +664,58 @@
    "ultimateStyle": "safe",
    "power": 0.3
   }
+ },
+ {
+  "id": "torkoal",
+  "name": "Torkoal Thần Lò Mang Thít",
+  "types": [
+   "fire"
+  ],
+  "baseStats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 140,
+   "spa": 85,
+   "spd": 70,
+   "spe": 20
+  },
+  "hpMult": 42,
+  "moveSpeed": 60,
+  "radius": 32,
+  "contactPower": 42,
+  "segments": 0,
+  "skills": [
+   "flamethrower",
+   "fire_spin"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "slugma",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Lò Mang Thít bùng lửa — Thần Lò nổi giận!",
+  "exp": 125,
+  "sprite": "torkoal",
+  "ai": "legendary",
+  "scale": 3.4,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "flamethrower",
+   "volley": "flame_burst",
+   "nova": "heat_wave",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "burn",
+    "chance": 0.5,
+    "duration": 3,
+    "magnitude": 0.03
+   },
+   "ultimate": "heat_wave",
+   "ultimateName": "Lửa Lò Nung",
+   "ultimateStyle": "safe",
+   "power": 0.32
+  }
  }
 ]

@@ -11,7 +11,7 @@ const save = () => ({ reputation: 0, repBy: {} as Record<string, number>, flags:
 
 describe('V22 journal: quests of this map', () => {
   it('every Vietnam quest belongs to at least one province; Cần Thơ quests are not listed in Cà Mau', () => {
-    for (const q of VN) expect(['ca-mau', 'an-giang', 'can-tho'].some((r) => questInRegion(q, r)), q.id).toBe(true);
+    for (const q of VN) expect(['ca-mau', 'an-giang', 'can-tho', 'vinh-long'].some((r) => questInRegion(q, r)), q.id).toBe(true);
     const ct = VN.find((q) => q.id === 'vn-ct-market')!;
     expect(questInRegion(ct, 'can-tho')).toBe(true);
     expect(questInRegion(ct, 'ca-mau')).toBe(false);

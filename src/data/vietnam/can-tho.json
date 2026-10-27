@@ -82,13 +82,13 @@
   "id": "whiscash", "name": "Whiscash — Chúa Sông Hậu", "x": 106, "y": 10, "level": 26, "respawn": 600, "arena": 260,
   "requires": ["beat:ct-vendor"],
   "hint": "Mặt nước quanh Cồn Sơn sủi bọt... Hỏi chuyện Tiểu thương Hạnh ở chợ nổi trước đã.",
-  "rewards": { "first": { "ultraball": 3, "superpotion": 3, "mystic-water": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 }, "money": 3500, "flag": "badge:can-tho", "message": "Nhận Huy hiệu Sông Hậu (Cần Thơ)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." }
+  "rewards": { "first": { "ultraball": 3, "superpotion": 3, "mystic-water": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 }, "money": 3500, "flag": "badge:can-tho", "message": "Nhận Huy hiệu Sông Hậu (Cần Thơ)! Đường tới Vĩnh Long (phía đông Bến Ninh Kiều) đã mở." }
  },
  "portals": [
   { "id": "portal-ct-ag", "name": "Đường về An Giang", "x": 4, "y": 60, "to": "an-giang", "toX": 121, "toY": 100 },
   { "id": "ct-boat-out", "name": "Bến đò ra Cồn Sơn", "x": 96, "y": 40, "to": "can-tho", "toX": 104, "toY": 13 },
   { "id": "ct-boat-back", "name": "Bến đò về Ninh Kiều", "x": 108, "y": 14, "to": "can-tho", "toX": 96, "toY": 43 },
-  { "id": "portal-ct-next", "name": "Đường tới Vĩnh Long", "x": 123, "y": 64, "to": "can-tho", "toX": 120, "toY": 64, "requires": ["vn:vinh-long-open"], "hint": "Đường tới Vĩnh Long chưa có trong phiên bản này." }
+  { "id": "portal-ct-next", "name": "Đường tới Vĩnh Long", "x": 123, "y": 64, "to": "vinh-long", "toX": 8, "toY": 50, "requires": ["badge:can-tho"], "hint": "Đường tới Vĩnh Long mở cho người có Huy hiệu Sông Hậu — hạ Chúa Sông Hậu ở Cồn Sơn trước đã." }
  ],
  "docks": [
   { "id": "ct-dock-ninhkieu", "name": "Bến ghe Ninh Kiều", "x": 98, "y": 46, "wx": 100, "wy": 46 },

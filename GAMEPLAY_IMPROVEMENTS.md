@@ -153,3 +153,9 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Trước: đền nằm sẵn giữa bản đồ, ai đi ngang cũng thấy. Giờ bản đồ không có đền nào: phải để ý một bụi cây rậm lấp lánh, một tảng đá nứt lạ, hay lần theo 3 manh mối để lộ ra lối vào — một khe nứt phát sáng, miệng hang, hay xoáy nước giữa biển chỉ mở khi trời mưa.
 - Huyền thoại mạnh nhất có thế giới riêng: biển bão không bao giờ tạnh của Lugia, lõi dung nham của Groudon, Thế Giới Đảo Ngược của Giratina, Tầng Trời của Rayquaza.
 - Nhiệm vụ huyền thoại dẫn đường từng bước mà không làm lộ bí mật: lúc đầu chỉ là một vòng tròn khu vực ("có gì đó lấp lánh quanh đây") hoặc manh mối kế tiếp; tìm được lối vào thì mới đánh dấu đúng chỗ.
+- Mỗi dimension có cảnh trí riêng, và dân làng thỉnh thoảng kể tin đồn ("Nghe nói ở Vách Đá Hải Âu có một tảng đá nứt cứ lấp lánh lạ lắm…") — một lý do để nói chuyện với NPC, mà vẫn phải tự tìm.
+
+### Tỉnh thứ tư: Vĩnh Long
+- Trước: Việt Nam Odyssey dừng ở Cần Thơ, cổng đi tiếp luôn khóa. Giờ có Huy hiệu Sông Hậu là sang được Vĩnh Long — tỉnh Lv 22–30 với Văn Thánh Miếu, đò ra Cù lao An Bình, vườn bưởi, ruộng khoai và xóm lò gạch Mang Thít.
+- Boss mới Torkoal — Thần Lò Mang Thít (giả tưởng): chỉ xuất hiện sau khi hạ thợ lò canh lò; đội Nước thắng nhanh, đội không lợi hệ vẫn thắng được nhưng lâu hơn.
+- 8 nhiệm vụ (chuỗi chính, giải cứu Phanpy, mùa bưởi Năm Roi, 2 bảng, bảo tồn kênh), 5 HLV, danh tiếng và hộ chiếu với 3 địa danh mới.

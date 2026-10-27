@@ -2710,5 +2710,541 @@
     "Trời, đủ hết rồi! Bánh điên điển chấm mật ong tràm, thêm nồi cá kho — mùa nước nổi vậy mới vui. Cầm lấy nè con."
    ]
   }
+ },
+ {
+  "id": "vn-vl-1",
+  "kind": "main",
+  "title": "Cửa ngõ Vĩnh Long",
+  "giver": "vl-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:can-tho"
+  ],
+  "description": "Làm quen với Vĩnh Long: ghé Trung tâm Pokémon, thăm Văn Thánh Miếu và chào thầy đồ giữ miếu.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-vinh-long-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Vĩnh Long",
+    "marker": {
+     "x": 69,
+     "y": 47,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "vl-van-thanh",
+    "count": 1,
+    "text": "Đến Văn Thánh Miếu (phía tây bến)",
+    "marker": {
+     "x": 52,
+     "y": 48,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-scholar",
+    "count": 1,
+    "text": "Chào Thầy đồ Khiêm ở Văn Thánh Miếu",
+    "marker": {
+     "x": 51,
+     "y": 52,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 500,
+   "reputation": 10,
+   "flags": [
+    "landmark:van-thanh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Vĩnh Long! Đi theo chị một vòng nha.",
+    "Ghé Trung tâm Pokémon trước, rồi qua Văn Thánh Miếu chào Thầy đồ Khiêm — thầy biết mọi chuyện trong tỉnh."
+   ],
+   "progress": [
+    "Văn Thánh Miếu ở phía tây Bến Vĩnh Long, đi theo đường lớn là tới."
+   ],
+   "complete": [
+    "Thầy Khiêm nhờ con đi một chuyến ra cù lao rồi đó. Chuẩn bị đi nha!"
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-2",
+  "kind": "main",
+  "title": "Cù lao An Bình",
+  "giver": "vl-scholar",
+  "requires": [
+   "vn-vl-1"
+  ],
+  "description": "Theo đò Chú Năm ra Cù lao An Bình, nghe Bác Hai nhà vườn kể chuyện lửa lò lạ bên Mang Thít.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "vl-ferryman",
+    "count": 1,
+    "text": "Gặp Chú Năm lái đò ở bến phía bắc",
+    "marker": {
+     "x": 80,
+     "y": 25,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "vl-an-binh",
+    "count": 1,
+    "text": "Đi đò ra Cù lao An Bình",
+    "marker": {
+     "x": 82,
+     "y": 22,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "vl-orchard-girl",
+    "count": 1,
+    "text": "Đấu với Cô chủ vườn Bảy",
+    "marker": {
+     "x": 106,
+     "y": 9,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-host",
+    "count": 1,
+    "text": "Nghe Bác Hai nhà vườn kể chuyện",
+    "marker": {
+     "x": 100,
+     "y": 9,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 3
+   },
+   "worldExp": 700,
+   "reputation": 20,
+   "flags": [
+    "landmark:an-binh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Học đi đôi với hành, con à.",
+    "Bác Hai nhà vườn ngoài cù lao nhắn có chuyện lạ bên lò gạch. Con ra đó nghe bác kể thử."
+   ],
+   "progress": [
+    "Đò ra cù lao ở bến phía bắc, Chú Năm chở cả ngày."
+   ],
+   "complete": [
+    "Mấy đêm nay trời bên Mang Thít đỏ rực như cháy nhà. Lò lớn cuối kênh nóng quá, thợ không dám lại gần.",
+    "Con qua đó coi giúp bác với."
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-3",
+  "kind": "main",
+  "title": "Thần Lò Mang Thít",
+  "giver": "vl-host",
+  "requires": [
+   "vn-vl-2"
+  ],
+  "description": "Đến lò gạch Mang Thít, làm dịu Torkoal — Thần Lò (sinh vật giả tưởng của game) đang làm lò nóng quá mức.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "vl-mang-thit",
+    "count": 1,
+    "text": "Đến lò gạch Mang Thít (phía tây nam)",
+    "marker": {
+     "x": 40,
+     "y": 84,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-potter-master",
+    "count": 1,
+    "text": "Hỏi chuyện Ông Bảy thợ gốm",
+    "marker": {
+     "x": 49,
+     "y": 81,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "vl-potter",
+    "count": 1,
+    "text": "Đấu với Thợ lò Ba Lò",
+    "marker": {
+     "x": 36,
+     "y": 90,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "torkoal",
+    "count": 1,
+    "text": "Đánh bại Torkoal — Thần Lò Mang Thít",
+    "marker": {
+     "x": 24,
+     "y": 86,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-potter-master",
+    "count": 1,
+    "text": "Báo tin cho Ông Bảy",
+    "marker": {
+     "x": 49,
+     "y": 81,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1400,
+   "reputation": 40,
+   "flags": [
+    "landmark:mang-thit"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Lò lớn cuối kênh nóng tới mức gạch chảy nhão. Có thứ gì nằm trong đó phun khói than hoài.",
+    "Thằng Ba Lò canh lò, con hỏi nó trước rồi hẵng vô."
+   ],
+   "progress": [
+    "Khi Thần Lò phun lửa thành vòng, đứng vào chỗ trống mà né!"
+   ],
+   "complete": [
+    "Lò yên rồi! Lửa đều trở lại, gạch đỏ au như xưa.",
+    "Cả xóm lò cảm ơn con. Cầm lấy, đường đi còn xa lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-rescue",
+  "kind": "side",
+  "title": "Phanpy dưới ruộng khoai",
+  "giver": "vl-potato",
+  "requires": [
+   "vn-vl-1"
+  ],
+  "description": "Một chú Phanpy bị bầy Sandshrew vây trên ruộng khoai Bình Tân.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "vl-potato-phanpy",
+    "count": 1,
+    "text": "Giải cứu Phanpy ở ruộng khoai phía bắc",
+    "marker": {
+     "x": 30,
+     "y": 32,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-potato",
+    "count": 1,
+    "text": "Báo cho Anh Tư trồng khoai",
+    "marker": {
+     "x": 22,
+     "y": 58,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "soft-sand": 1,
+    "greatball": 3
+   },
+   "worldExp": 600,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con Phanpy nhỏ bị bầy Sandshrew vây ngoài ruộng. Tụi nó đào hang tùm lum!",
+    "Con giúp anh đuổi tụi nó với."
+   ],
+   "progress": [
+    "Ruộng phía bắc đó, gần bờ sông Tiền."
+   ],
+   "complete": [
+    "Phanpy chạy về rồi! Khoai nướng nè, ăn cho có sức."
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-board-1",
+  "kind": "capture",
+  "title": "Bảng: Gốm đỏ lửa hồng",
+  "giver": "vl-board",
+  "requires": [
+   "vn-vl-1"
+  ],
+  "description": "Ông Bảy thợ gốm cần Pokémon hệ Lửa giữ lửa lò cho đều.",
+  "objectives": [
+   {
+    "type": "capture",
+    "target": "numel",
+    "count": 1,
+    "text": "Thu phục 1 Numel (lò gạch Mang Thít)",
+    "marker": {
+     "x": 30,
+     "y": 84,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "capture",
+    "target": "slugma",
+    "count": 1,
+    "text": "Thu phục 1 Slugma (lò gạch Mang Thít)",
+    "marker": {
+     "x": 30,
+     "y": 84,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-potter-master",
+    "count": 1,
+    "text": "Mang tới cho Ông Bảy thợ gốm xem",
+    "marker": {
+     "x": 49,
+     "y": 81,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "charcoal": 1,
+    "greatball": 3
+   },
+   "worldExp": 500,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Bảng nhiệm vụ: Cần người bắt Numel và Slugma quanh lò gạch Mang Thít. Liên hệ Ông Bảy thợ gốm."
+   ],
+   "progress": [
+    "Numel và Slugma hay nằm phơi nắng gần mấy lò gạch."
+   ],
+   "complete": [
+    "Có tụi nhỏ này canh lò thì lửa đều, gạch đẹp. Cảm ơn con!"
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-board-2",
+  "kind": "trainer",
+  "title": "Bảng: Cao thủ Vĩnh Long",
+  "giver": "vl-board",
+  "requires": [
+   "vn-vl-1"
+  ],
+  "description": "Đánh bại ba huấn luyện viên mạnh của Vĩnh Long.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "vl-teacher",
+    "count": 1,
+    "text": "Đánh bại Thầy giáo Nghĩa (Văn Thánh Miếu)",
+    "marker": {
+     "x": 56,
+     "y": 56,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "vl-digger",
+    "count": 1,
+    "text": "Đánh bại Nông dân Bình Tân",
+    "marker": {
+     "x": 12,
+     "y": 36,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "vl-fisher",
+    "count": 1,
+    "text": "Đánh bại Ngư dân Cổ Chiên",
+    "marker": {
+     "x": 104,
+     "y": 52,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "assault-vest": 1
+   },
+   "worldExp": 900,
+   "reputation": 30
+  },
+  "dialogue": {
+   "offer": [
+    "Bảng nhiệm vụ: Ai hạ được ba cao thủ của tỉnh sẽ được thưởng một chiếc Assault Vest."
+   ],
+   "progress": [
+    "Thầy Nghĩa ở Văn Thánh Miếu, anh nông dân ở ruộng khoai, ngư dân ở bờ sông Cổ Chiên."
+   ],
+   "complete": [
+    "Cả tỉnh nể con rồi đó!"
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-pomelo",
+  "kind": "side",
+  "title": "Mùa bưởi Năm Roi",
+  "giver": "vl-grower",
+  "requires": [
+   "vn-vl-1"
+  ],
+  "description": "Giúp Chị Út hái trái và đuổi Pokémon phá vườn ở Bình Minh.",
+  "objectives": [
+   {
+    "type": "collect",
+    "target": "forage",
+    "count": 3,
+    "text": "Hái 3 bụi trái cây",
+    "marker": {
+     "x": 92,
+     "y": 84,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "defeat",
+    "target": "*",
+    "count": 4,
+    "text": "Đuổi 4 Pokémon phá vườn",
+    "marker": {
+     "x": 80,
+     "y": 90,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-grower",
+    "count": 1,
+    "text": "Báo cho Chị Út",
+    "marker": {
+     "x": 92,
+     "y": 84,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "exp-candy-s": 2
+   },
+   "worldExp": 500,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Bưởi chín rộ mà Pokémon phá quá trời. Con hái giùm chị vài bụi, đuổi tụi nó đi với!"
+   ],
+   "progress": [
+    "Bụi trái cây có dấu lấp lánh đó. Pokémon hay núp trong vườn."
+   ],
+   "complete": [
+    "Vườn yên rồi! Bưởi Năm Roi nè, ngọt lịm luôn."
+   ]
+  }
+ },
+ {
+  "id": "vn-vl-eco",
+  "kind": "side",
+  "title": "Kênh Mang Thít trong xanh",
+  "giver": "vl-potter-master",
+  "requires": [
+   "vn-vl-3"
+  ],
+  "description": "Dọn tro trấu và gạch vỡ trôi dọc kênh Mang Thít sau những đêm lò cháy dữ.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:vinh-long",
+    "count": 6,
+    "text": "Dọn 6 điểm dọc kênh Mang Thít",
+    "marker": {
+     "x": 28,
+     "y": 97,
+     "region": "vinh-long"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "vl-potter-master",
+    "count": 1,
+    "text": "Báo cho Ông Bảy thợ gốm",
+    "marker": {
+     "x": 49,
+     "y": 81,
+     "region": "vinh-long"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sitrus-berry": 2
+   },
+   "worldExp": 600,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Mấy đêm lò cháy dữ, tro trấu với gạch vỡ trôi đầy kênh. Con phụ ông dọn với."
+   ],
+   "progress": [
+    "Mấy chỗ tro trấu dồn lại ven kênh, nhìn là thấy."
+   ],
+   "complete": [
+    "Kênh trong lại rồi. Cá với Pokémon nước sẽ về đông."
+   ]
+  }
  }
 ]

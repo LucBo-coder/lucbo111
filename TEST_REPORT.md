@@ -308,3 +308,26 @@ Lỗi tìm thấy khi làm: hiểm họa `floor` có vòng lặp vô hạn khi c
 | Toàn bộ e2e (`--workers=1`, 19,5 phút) | **81 passed / 1 skipped / 0 failed ✅** |
 
 Phát hiện khi viết e2e: nhiệm vụ đang theo dõi bị đặt lại về nhiệm vụ đầu tiên mỗi lần chuyển bản đồ (có từ trước) — đã sửa (lưu trong save).
+
+## V22 — đợt 21: cảnh trí dimension + tin đồn lối vào ẩn
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **533/533 ✅**. Mới: cảnh trí (`v22_secret_shrines.test.ts`), tin đồn (`v22_quest_guide.test.ts`) |
+| E2E `v22_secret_shrines` (NPC kể tin đồn; 13 mặt phẳng tải không lỗi, có ảnh) | ✅ |
+
+Ảnh đã xem: Khe Nứt Tâm Linh (tinh thể, đá rune), Thế Giới Đảo Ngược, Thiên Đài Cầu Vồng (hoa, nấm), Bí Cảnh Núi Tuyết. Bỏ ô vết nứt / tấm trăng khỏi cảnh trí sau khi xem ảnh (trông như chướng ngại / ô nghi lễ).
+
+## V23 — đợt 22: tỉnh Vĩnh Long (+ chạy lại toàn bộ cho đợt 21)
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **539/539 ✅**. Mới: `tests/v23_vinh_long.test.ts` (6; cân bằng Torkoal Lv 32: đội Nước 34 s, đội Cỏ 262 s). Cập nhật danh sách tỉnh trong `v17_maps`, `v8_vietnam`, `v22_conservation`, `v22_journal` |
+| E2E toàn bộ (49 file, chạy theo 5 nhóm, 1 worker) | **82 ✅ / 1 bỏ qua / 1 ❌** |
+| E2E mới `v23_vinh_long` | ✅ (50 s) |
+
+Lỗi duy nhất: `coop.spec.ts:69` (khách giữ phím D 600 ms nhưng chủ phòng thấy dịch < 10 px: 3912 so với > 3922). **Lỗi có sẵn, không do đợt này**: cất tạm toàn bộ thay đổi (`git stash -u`), build lại commit `f6aa5855` và chạy riêng `coop.spec.ts` → cùng lỗi ở cùng dòng; 2 test co-op còn lại qua. Nghi do máy thiếu bộ nhớ / trang khách chạy nền bị giảm tốc khung hình — chưa sửa.
+
+Ảnh đã xem (e2e Vĩnh Long): bến, Văn Thánh Miếu, cù lao, Torkoal trong arena, trang hộ chiếu.

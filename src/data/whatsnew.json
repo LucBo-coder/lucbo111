@@ -1,5 +1,22 @@
 [
   {
+    "id": "v23-vinh-long",
+    "title": "Việt Nam Odyssey: tỉnh Vĩnh Long",
+    "items": [
+      "Có Huy hiệu Sông Hậu? Cổng phía đông Cần Thơ giờ mở đường tới Vĩnh Long (Lv 22–30).",
+      "Thăm Văn Thánh Miếu, đi đò ra Cù lao An Bình, hái bưởi Năm Roi, cứu Phanpy ở ruộng khoai.",
+      "Xóm lò gạch Mang Thít đang nóng bất thường — hạ thợ lò rồi làm dịu Torkoal, Thần Lò Mang Thít, để nhận Huy hiệu Gốm Đỏ."
+    ]
+  },
+  {
+    "id": "v22-dimension-decor",
+    "title": "Dimension đẹp hơn, dân làng kể tin đồn",
+    "items": [
+      "Mỗi dimension và Bí Cảnh có cảnh trí riêng: tinh thể tâm linh, hoa cầu vồng, lau sậy bên biển bão, đá tro dung nham, cột trắng trên Tầng Trời…",
+      "Đang làm nhiệm vụ huyền thoại? Hãy nói chuyện với dân làng — họ có thể kể khu vực có tảng đá hay bụi cây lấp lánh lạ."
+    ]
+  },
+  {
     "id": "v22-quest-guide",
     "title": "Nhiệm vụ dẫn đường tới đền ẩn",
     "items": [

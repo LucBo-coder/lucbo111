@@ -159,6 +159,9 @@ export const NPC_TRAINER_ART: Record<string, string> = {
   'cm-fisher-ut': 'fisherman', 'cm-ranger-uminh': 'pokemonranger', 'cm-dried-fish': 'lass', 'cm-kid-fish': 'youngster', 'cm-boatman': 'camper',
   'ag-monk-cam': 'sage', 'ag-sugar-palm': 'picnicker', 'ag-rock-hiker': 'hiker', 'ag-wetland-girl': 'lass',
   'ct-orchard-owner': 'rancher', 'ct-ferry-girl': 'picnicker', 'ct-rice-farmer': 'rancher', 'ct-market-boy': 'youngster',
+  // Vĩnh Long
+  'vl-guide': 'beauty', 'vl-ferryman': 'fisherman', 'vl-host': 'sage', 'vl-potter-master': 'sage', 'vl-scholar': 'gentleman', 'vl-grower': 'picnicker', 'vl-potato': 'rancher',
+  'vl-potter': 'blackbelt', 'vl-orchard-girl': 'lass', 'vl-teacher': 'scientist', 'vl-digger': 'hiker', 'vl-fisher': 'fisherman',
   // V20 Starter Valley: village guide, flower seller, Training Camp coach + students
   'sv-guide': 'camper', 'sv-granny': 'sage', 'sv-fisher': 'fisherman',
   'ef-ranger': 'pokemonranger', 'ef-botanist': 'lass', 'ef-bugcatcher': 'bugcatcher', 'ef-hiker': 'hiker', 'ef-fisher': 'fisherman', 'camp-coach': 'veteran', 'camp-tank': 'hiker', 'camp-speed': 'lass', 'camp-mage': 'psychic',
