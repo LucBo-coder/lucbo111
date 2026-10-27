@@ -164,3 +164,7 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 - Trước: hạ Thần Lò Mang Thít xong thì hết đường. Giờ Huy hiệu Gốm Đỏ mở đường tới Trà Vinh (Lv 28–34): thành phố nhiều cây cổ thụ, Ao Bà Om, Chùa Hang có đàn cò, vườn dừa sáp Cầu Kè, bãi biển Ba Động đầu tiên của chiến dịch có biển mở.
 - Boss mới Trevenant — Thần Cây Dầu (giả tưởng) trong rừng dầu cổ thụ: đội hệ Lửa / Bay thắng nhanh, đội Nước bị kháng vẫn thắng được nhưng rất lâu — một lý do để đổi đội.
 - 9 nhiệm vụ (chuỗi chính, giải cứu Ducklett, biển Ba Động, dừa sáp, 2 bảng, bảo tồn bãi biển), 5 HLV, danh tiếng và hộ chiếu với 3 địa danh.
+
+### NPC sống động, chọn starter mọi thế hệ
+- Trước: NPC là ảnh trainer tĩnh, nhiều người trông giống nhau. Giờ mỗi NPC là nhân vật pixel có hoạt ảnh với dáng và màu riêng; "Bà Tư" là bà cụ, "Bé Na" là đứa trẻ, nông dân miền Tây đội nón lá.
+- Trước: chỉ chọn được 3 starter của chiến dịch. Giờ giáo sư ở Phiêu lưu và Việt Nam Odyssey cho chọn 27 starter Gen 1–9; tab đầu vẫn là bộ ba quen thuộc nên người chơi cũ không bị lạ.

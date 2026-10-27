@@ -146,6 +146,8 @@ Tiếp cận / đánh yếu → chọn bóng (**R**) → ngắm & ném (**F**, �
 ### 5.4 Nhiệm vụ & NPC
 Nhiệm vụ chính, phụ, thu phục, thách đấu, khám phá, giải cứu, câu đố, hầm ngục, boss. HUD có mũi tên chỉ hướng + khoảng cách; NPC hiện `!` (có nhiệm vụ) / `?` (chờ báo cáo). Huấn luyện viên có bảng tên ⚔ (chưa đấu) / ✓ (đã thắng).
 
+**Hình NPC** (`core/npcLooks.ts`): nhân vật pixel 16×16 có hoạt ảnh thở / bước, 15 dáng (nón lá, áo dài, trẻ em, cụ ông / cụ bà, kiểm lâm, nhà khoa học…), bộ màu riêng cố định theo id; danh xưng tiếng Việt quyết định giới / tuổi (Cô, Bà, Chú, Bé…); vùng Mekong dùng nón lá. Chân dung hội thoại cùng mẫu. **Starter** (`core/starters.ts`): Phiêu lưu và Việt Nam Odyssey cho chọn 27 starter Gen 1–9, tab đầu là bộ ba của chiến dịch.
+
 **Trận huấn luyện viên** (`core/trainerAI.ts`): tối đa 2 Pokémon trên sân, còn lại dự bị. Pokémon gục → HLV gửi dự bị hợp hệ nhất với Pokémon bạn đang điều khiển. Pokémon yếu hệ còn dưới 50% HP bị gọi về, đổi lấy Pokémon kháng hệ (HP được giữ). 1–2 Potion, dùng dưới 30% HP. **Tái đấu** sau 10 phút chơi: cấp theo đội bạn (tối đa +15 so với đội gốc, +2 mỗi lần thắng lại), thưởng tiền, không lặp vật phẩm.
 
 **Danh tiếng theo vùng** (`core/reputation.ts`, `data/world/reputation.json`): điểm danh tiếng từ nhiệm vụ / HLV cộng vào vùng đang đứng. Hạng *Người lạ / Quen mặt 15 / Được tin cậy 40 / Người nhà 80*; mỗi hạng tặng quà một lần và đặt cờ `rep:<vùng>:<hạng>` để mở nhiệm vụ. Mỗi chiến dịch giữ điểm riêng.
@@ -195,7 +197,7 @@ Cửa hàng chia **8 kệ**: Bóng · Hồi phục · Kẹo EXP · Tiến hóa �
 
 ## 6. Việt Nam Odyssey
 
-Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản đồ, nhiệm vụ, khởi đầu và tiền tệ riêng. Starter: **Treecko / Torchic / Mudkip**. Không có Pokémon hệ Băng (miền Nam nhiệt đới). Địa danh chỉ dùng thông tin có thật; Pokémon, đền cổ và truyền thuyết ghi rõ là giả tưởng.
+Chiến dịch riêng theo ô lưu, cùng engine với Phiêu lưu nhưng bản đồ, nhiệm vụ, khởi đầu và tiền tệ riêng. Starter: giáo sư cho chọn **Gen 1–9** (27 loài), mở sẵn ở tab Hoenn **Treecko / Torchic / Mudkip**. Không có Pokémon hệ Băng (miền Nam nhiệt đới). Địa danh chỉ dùng thông tin có thật; Pokémon, đền cổ và truyền thuyết ghi rõ là giả tưởng.
 
 | Tỉnh | Cấp | Nội dung chính | Boss khu vực → Huy hiệu |
 |---|---|---|---|

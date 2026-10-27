@@ -44,6 +44,7 @@ import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
 import { WALLETS } from '../core/wallet';
 import { SkillBar } from '../ui/SkillBar';
+import type { StarterGen } from '../core/starters';
 
 const STAT_VI: Record<string, string> = { hp: 'HP', atk: 'Công', def: 'Thủ', spa: 'Công ĐB', spd: 'Thủ ĐB', spe: 'Tốc' };
 
@@ -814,6 +815,93 @@ export class AdventureUI extends Phaser.Scene {
           else if (li === lines.length - 1 && choices) showChoices();
         },
       });
+    });
+  }
+
+  /**
+   * Starter picker: one tab per generation (◀ ▶ / click), three cards per tab. A click on a card selects it and the
+   * confirm button takes it; keys 1–3 take that card of the open tab at once. Counts as the dialogue layer (no menus).
+   */
+  pickStarter(tabs: StarterGen[], first: number): Promise<string> {
+    return new Promise((resolve) => {
+      this.dialogueLayer?.destroy();
+      const { width: W, height: H } = this.scale;
+      const s = this.s;
+      const pw = Math.min(W - 16, 820 * s), ph = Math.min(H - 16, 470 * s);
+      const x0 = (W - pw) / 2, y0 = (H - ph) / 2;
+      const c = this.add.container(0, 0).setDepth(150);
+      c.add(this.add.rectangle(0, 0, W, H, 0x000000, 0.55).setOrigin(0).setInteractive());
+      c.add(panel(this, x0, y0, pw, ph, 0xe0c070, 0x141826, 0.97));
+      c.add(text(this, W / 2, y0 + 14 * s, 'Chọn Pokémon khởi đầu', 28 * s, '#ffe080').setOrigin(0.5, 0));
+      this.dialogueLayer = c;
+      let tab = first, pick = 0, done = false;
+      let parts: Phaser.GameObjects.GameObject[] = [];
+      const finish = (sp: string) => {
+        if (done) return;
+        done = true;
+        this.input.keyboard?.off('keydown', onKey);
+        c.destroy();
+        if (this.dialogueLayer === c) this.dialogueLayer = null;
+        resolve(sp);
+      };
+      const draw = () => {
+        parts.forEach((p) => p.destroy());
+        parts = [];
+        const add = <T extends Phaser.GameObjects.GameObject>(o: T): T => { c.add(o); parts.push(o); return o; };
+        // generation tabs: one row, or two on a narrow phone
+        const perRow = pw / tabs.length >= 70 * s ? tabs.length : Math.ceil(tabs.length / 2);
+        const tw = (pw - 24 * s) / perRow, th = 34 * s;
+        tabs.forEach((g, i) => {
+          const r = Math.floor(i / perRow), col = i % perRow;
+          const b = button(this, x0 + 12 * s + tw * (col + 0.5), y0 + 66 * s + r * (th + 6 * s), tw - 6 * s, th,
+            g.gen ? `Gen ${g.gen}` : g.region, () => { tab = i; pick = 0; draw(); }, i === tab ? 0x8a6a20 : 0x2c3654);
+          add(b.container);
+        });
+        const rows = Math.ceil(tabs.length / perRow);
+        const g = tabs[tab];
+        const top = y0 + 66 * s + rows * (th + 6 * s) + 4 * s;
+        add(text(this, W / 2, top, g.gen ? `Thế hệ ${g.gen} — vùng ${g.region}` : 'Pokémon giáo sư chuẩn bị sẵn', 20 * s, COLORS.dim).setOrigin(0.5, 0));
+        const cardTop = top + 32 * s, cardH = y0 + ph - 70 * s - cardTop;
+        const cw = (pw - 24 * s) / 3;
+        g.species.forEach((sp, i) => {
+          const p = POKEMON.get(sp);
+          if (!p) return;
+          const cx = x0 + 12 * s + cw * i, sel = i === pick;
+          add(panel(this, cx + 4 * s, cardTop, cw - 8 * s, cardH, sel ? 0xffe080 : COLORS.panelEdge, sel ? 0x2a3048 : COLORS.panel));
+          const art = 'front-' + sp, box = Math.min(cw - 30 * s, cardH - 84 * s);
+          const midX = cx + cw / 2, midY = cardTop + 12 * s + box / 2;
+          if (officialPack.active && this.textures.exists(art)) add(this.add.image(midX, midY, art).setScale(fitScale(this, art, box)));
+          else {
+            const spr = add(this.add.sprite(midX, midY, sheetKey(sp), 0).setScale(fitScale(this, sp, box * 0.8)));
+            spr.play(sp + (sel ? ':walk' : ':idle'));
+          }
+          add(text(this, midX, cardTop + cardH - 66 * s, `${i + 1}. ${p.name}`, 21 * s, sel ? '#ffe680' : COLORS.text).setOrigin(0.5, 0));
+          const badges = p.types.map((t) => add(typeBadge(this, 0, cardTop + cardH - 34 * s, t, 12 * s)));
+          const bw = badges.reduce((a, b) => a + b.getBounds().width + 4 * s, -4 * s);
+          let bx = midX - bw / 2;
+          for (const b of badges) { b.setX(bx); bx += b.getBounds().width + 4 * s; }
+          const z = add(this.add.zone(cx + 4 * s, cardTop, cw - 8 * s, cardH).setOrigin(0).setInteractive({ useHandCursor: true }));
+          z.on('pointerup', () => { audio.play('click'); if (pick === i) finish(sp); else { pick = i; draw(); } });
+        });
+        const chosen = POKEMON.get(g.species[pick]);
+        const by = y0 + ph - 34 * s;
+        add(button(this, x0 + 70 * s, by, 90 * s, 40 * s, '◀', () => { tab = (tab + tabs.length - 1) % tabs.length; pick = 0; draw(); }).container);
+        add(button(this, x0 + pw - 70 * s, by, 90 * s, 40 * s, '▶', () => { tab = (tab + 1) % tabs.length; pick = 0; draw(); }).container);
+        add(button(this, W / 2, by, Math.min(300 * s, pw - 220 * s), 44 * s, `Chọn ${chosen?.name ?? ''}`, () => finish(g.species[pick]), 0x2f6a3a).container);
+        // official art arrives on demand: redraw once the open tab's pictures are in
+        if (officialPack.active && g.species.some((sp) => !this.textures.exists('front-' + sp))) {
+          void Promise.all(g.species.map((sp) => loadFront(sp))).then(() => { if (!done && tabs[tab] === g) draw(); });
+        }
+      };
+      const onKey = (ev: KeyboardEvent) => {
+        const n = parseInt(ev.key, 10);
+        if (n >= 1 && n <= tabs[tab].species.length) finish(tabs[tab].species[n - 1]);
+        else if (ev.key === 'ArrowRight') { tab = (tab + 1) % tabs.length; pick = 0; draw(); }
+        else if (ev.key === 'ArrowLeft') { tab = (tab + tabs.length - 1) % tabs.length; pick = 0; draw(); }
+        else if (ev.key === 'Enter') finish(tabs[tab].species[pick]);
+      };
+      this.input.keyboard?.on('keydown', onKey);
+      draw();
     });
   }
 

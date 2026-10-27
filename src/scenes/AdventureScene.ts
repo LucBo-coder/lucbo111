@@ -28,7 +28,10 @@ import { chunkCols, chunkRows, MapObject, MapProvider } from '../core/map/mapPro
 import { DUNGEON, EX, SCALE, T, TILE_PX, TOWN } from '../core/map/tiles';
 import { PortalDef, RegionDef, ValleyMap } from '../core/map/valley';
 import { regionDef } from '../core/map/regionDefs';
-import { itemIconKey, trainerArtKey } from '../render/spriteRegistry';
+import { itemIconKey } from '../render/spriteRegistry';
+import { starterTabs } from '../core/starters';
+import { npcLook } from '../core/npcLooks';
+import { buildNpcLook, sheetKey } from '../render/animation';
 import { REGIONS as ENC_REGIONS } from '../core/encounters';
 import { addFriendship, captureRateOf, expYield, individualOf } from '../core/progression';
 import { legendRule, legendThrowChance, LegendCaptureRule } from '../core/legendCapture';
@@ -193,7 +196,7 @@ export class AdventureScene extends Phaser.Scene {
   /** World positions of PC terminals (Pokémon Center / town lab). PC access is gated by proximity. */
   private pcTerminals: { x: number; y: number }[] = [];
   /** NPCs that walk around their spot (data `wander`); dropped when their chunk unloads */
-  private walkers: { it: Interactable; img: Phaser.GameObjects.Image; homeX: number; homeY: number; r: number; tx: number; ty: number; wait: number }[] = [];
+  private walkers: { it: Interactable; img: Phaser.GameObjects.Sprite; homeX: number; homeY: number; r: number; tx: number; ty: number; wait: number }[] = [];
 
   constructor() {
     super('Adventure');
@@ -566,16 +569,18 @@ export class AdventureScene extends Phaser.Scene {
         }
         case 'npc':
         case 'trainer': {
-          const d = o.data as { sprite: string; name: string; id?: string };
-          // official trainer art (personal pack) when available — feet on the tile, else the Kenney NPC tile
-          const art = trainerArtKey(this, o.id);
-          const s = add(art
-            ? this.add.image(px + TILE_PX / 2, py + TILE_PX * 0.95, art).setOrigin(0.5, 0.85).setScale(1).setDepth(py + TILE_PX / 2)
-            : this.add.image(px + TILE_PX / 2, py + TILE_PX / 2, 'ow_tiles', NPC_FRAME[d.sprite] ?? DUNGEON.npc.villager).setScale(SCALE).setDepth(py + TILE_PX / 2));
+          const d = o.data as { sprite: string; name: string; id?: string; role?: string };
+          // people: an animated pixel character with this NPC's own body and colours; boards / lights keep their tile
+          const look = this.lookOf(o.id);
+          const s = add(look
+            ? this.add.sprite(px + TILE_PX / 2, py + TILE_PX * 0.55, sheetKey(look), 0).setScale(SCALE).setDepth(py + TILE_PX / 2).play(look + ':idle')
+            : this.add.sprite(px + TILE_PX / 2, py + TILE_PX / 2, 'ow_tiles', NPC_FRAME[d.sprite] ?? DUNGEON.npc.villager).setScale(SCALE).setDepth(py + TILE_PX / 2));
+          // idle NPCs breathe at their own pace
+          if (look) s.anims.timeScale = 0.8 + (o.x % 5) * 0.1;
           const wander = o.kind === 'npc' ? (o.data as { wander?: number }).wander ?? 0 : 0;
-          // walkers have no static obstacle (it would stay behind); everyone else bobs in place
+          // walkers have no static obstacle (it would stay behind); a tile sprite bobs in place
           if (!wander) {
-            this.tweens.add({ targets: s, y: s.y - 3, duration: 700 + (o.x % 5) * 80, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+            if (!look) this.tweens.add({ targets: s, y: s.y - 3, duration: 700 + (o.x % 5) * 80, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
             this.world.addObstacle({ x: s.x, y: s.y + 6, r: 14, kind: 'prop', tag });
           }
           const it = this.addInteractable(o, s.x, s.y + 24, o.kind === 'trainer' ? 'Thách đấu' : 'Nói chuyện', s);
@@ -1228,10 +1233,13 @@ export class AdventureScene extends Phaser.Scene {
     for (const w of this.walkers) {
       const img = w.img;
       const near = Math.hypot(t.x - img.x, t.y - img.y) < 90 || this.talkingTo === w.it.id;
-      if (near) { img.setFlipX(t.x < img.x); continue; }
+      const look = img.texture.key.endsWith('_sheet') ? img.texture.key.slice(0, -6) : '';
+      const pose = (a: 'idle' | 'walk') => { if (look && img.anims.currentAnim?.key !== `${look}:${a}`) img.play(`${look}:${a}`); };
+      if (near) { img.setFlipX(t.x < img.x); pose('idle'); continue; }
       if (night) { w.tx = w.homeX; w.ty = w.homeY; }
       const dx = w.tx - img.x, dy = w.ty - img.y, d = Math.hypot(dx, dy);
       if (d < 2) {
+        pose('idle');
         if ((w.wait -= dt) > 0 || night) continue;
         // next stop: a random open tile inside the radius (a few tries, else stay)
         for (let k = 0; k < 6; k++) {
@@ -1246,6 +1254,7 @@ export class AdventureScene extends Phaser.Scene {
       const nx = img.x + (dx / d) * step, ny = img.y + (dy / d) * step;
       if (this.map.solidAt(Math.floor(nx / TILE_PX), Math.floor((ny + 10) / TILE_PX))) { w.tx = img.x; w.ty = img.y; continue; }
       img.setPosition(nx, ny).setDepth(ny).setFlipX(dx < 0);
+      pose('walk');
       w.it.x = nx; w.it.y = ny + 24;
       w.it.marker?.setX(nx);
       w.it.nameTag?.setPosition(nx, ny + TILE_PX / 2 + 4);
@@ -1491,9 +1500,17 @@ export class AdventureScene extends Phaser.Scene {
     this.persist();
   }
 
-  /** Dialogue portrait: official trainer art if the pack is on, else the IcyEthics portrait. */
+  /** Dialogue portrait: the hand-drawn IcyEthics portrait where there is one, else the NPC's own pixel look. */
   portraitOf(npcId: string): string | undefined {
-    return trainerArtKey(this, npcId) ?? PORTRAITS[npcId] ?? (npcId === 'shopkeeper' ? 'portrait-mycologist' : undefined);
+    return PORTRAITS[npcId] ?? this.lookOf(npcId) ?? (npcId === 'shopkeeper' ? 'portrait-mycologist' : undefined);
+  }
+
+  /** Texture key of an NPC / trainer's pixel look on this map (built on first use), null for boards and lights. */
+  lookOf(id: string): string | null {
+    const d = this.regionDef;
+    const n = [...d.npcs, ...d.trainers].find((x) => x.id === id) as { id: string; sprite: string; name: string; role?: string } | undefined;
+    const look = n && npcLook(n.id, n.sprite, n.name, { mekong: d.theme === 'mekong', role: n.role });
+    return look ? buildNpcLook(this, look) : null;
   }
 
   /** NPC currently being talked to: every line of that conversation shows its portrait. */
@@ -1899,9 +1916,12 @@ export class AdventureScene extends Phaser.Scene {
   private async starterIntro(name: string, q: QuestDef, npcId = 'prof'): Promise<void> {
     await this.say(name, q.dialogue.offer);
     if (this.state.save.collection.length === 0) {
-      const choice = await this.say(name, ['Ta có ba Pokémon ở đây. Cháu muốn đồng hành cùng ai?'],
-        (q.starter ?? STARTERS).map((s) => ({ label: `${POKEMON.get(s)!.name} (${POKEMON.get(s)!.types.join('/')})`, value: s })));
-      const species = choice ?? (q.starter ?? STARTERS)[0];
+      await this.say(name, ['Ta có Pokémon khởi đầu của cả chín thế hệ ở đây. Cháu muốn đồng hành cùng ai?']);
+      const { tabs, first } = starterTabs(q.starter ?? STARTERS);
+      // modal like a dialogue: keys 1–3 pick a starter, not a party command
+      this.modal = true;
+      const species = await this.ui.pickStarter(tabs, first);
+      this.modal = false;
       this.state.addPokemon(species, 5, 'starter');
       this.applyParty();
       this.state.addItems({ pokeball: 5, potion: 2 });

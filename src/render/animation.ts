@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { AVATARS, avatarTextureKey } from '../core/avatars';
-import type { Palette } from './pixelArt';
+import type { NpcLook } from '../core/npcLooks';
+import { drawGridTexture, type Palette } from './pixelArt';
 import { REGISTRY } from './spriteRegistry';
 
 // Creature animation sheets.
@@ -163,6 +164,13 @@ export function buildCreatureSheet(scene: Phaser.Scene, key: string): void {
 /** Animated sheets for the profile avatars (same derived walk/cast frames as creatures). */
 export function buildAvatarSheets(scene: Phaser.Scene): void {
   for (const a of AVATARS) buildGridSheet(scene, avatarTextureKey(a.id), a.rows, a.pal, true);
+}
+
+/** Static drawing (dialogue portrait) + animated sheet of an NPC look, built on first use. Returns its key. */
+export function buildNpcLook(scene: Phaser.Scene, look: NpcLook): string {
+  if (!scene.textures.exists(look.key)) drawGridTexture(scene, look.key, look.rows, look.pal, true);
+  buildGridSheet(scene, look.key, look.rows, look.pal, true);
+  return look.key;
 }
 
 function buildGridSheet(scene: Phaser.Scene, key: string, rows: string[], pal: Palette, outline: boolean): void {

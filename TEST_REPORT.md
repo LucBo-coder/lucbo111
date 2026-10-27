@@ -344,3 +344,16 @@ Lỗi duy nhất: `coop.spec.ts:69` (khách giữ phím D 600 ms nhưng chủ ph
 Ghi chú e2e: đội thử Lv 34 có Staravia lên cấp → màn tiến hóa (modal) chặn boss xuất hiện; dùng đội không tiến hóa ở mức cấp này. Mục tiêu "đuổi 4 Pokémon" gửi đúng sự kiện `defeat` mà game phát khi hạ Pokémon hoang.
 
 Ảnh đã xem: thành phố, Ao Bà Om (ao, Ông Ba), Chùa Hang, Trevenant trong vòng đá rừng dầu, biển Ba Động (bãi cát, bến ghe, quán), hộ chiếu.
+
+## V24 — đợt 24: NPC pixel có hoạt ảnh + starter Gen 1–9
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **550/550 ✅**. Mới: `tests/v24_npc_looks_starters.test.ts` (mọi dáng 16×16 đúng ký tự; mọi NPC/HLV trên mọi bản đồ có mẫu cố định; ≥ 12 dáng, > 90% NPC có texture riêng; giới / tuổi theo danh xưng, nón lá ở Mekong; 27 starter đúng hệ cỏ / lửa / nước; tab chiến dịch mở trước). `tests/v5_official_art.test.ts` bỏ phần ảnh trainer (giữ ảnh vật phẩm) |
+| E2E mới `v24_npc_starters` | ✅ 2/2 (làng cổ điển: > 5 NPC, > 4 mẫu, đều có anim idle/walk; ▶×3 → Gen 4, phím 2 → Chimchar; Cà Mau: mở ở Hoenn, ◀×3 → Gen 9, phím 2 → Fuecoco) |
+| E2E toàn bộ (5 nhóm, `--workers=1`) | ✅ tất cả |
+
+Lỗi tìm thấy và đã sửa: phím 3 dùng chọn starter lọt xuống thành lệnh đội "follow" → bảng chọn giờ chặn input cảnh (modal). `v23_vinh_long` / `v23_tra_vinh` thỉnh thoảng hỏng do HLV thử lên cấp thế giới, HP tính lại rồi ngất → test đặt lại HP ngay trước trận boss (lỗi của test, có cả ở commit trước).
+
+Ảnh đã xem: bảng chọn starter (Gen 1, Gen 4, Hoenn, Gen 9), làng cổ điển và Cà Mau với NPC đa dạng (nón lá, áo dài, trẻ em, cụ bà).

@@ -1,11 +1,12 @@
 import { Biome, ECOLOGY, eligible, Rarity, REGIONS, RegionDef, regionOfArea, SHINY_OUTBREAK, WeatherKind } from '../core/encounters';
 import Phaser from 'phaser';
-import { DUNGEON, SCALE, TILE_PX } from '../core/map/tiles';
+import { SCALE, TILE_PX } from '../core/map/tiles';
 import { makeWildState } from '../core/wildAI';
 import { ActiveEvent, ANOMALIES, EVENT_DEFS, EventType, WorldEventDirector } from '../core/worldEvents';
 import type { Unit } from '../core/world';
 import { ITEMS } from './AdventureState';
-import { AMBUSH_TRAINER_ART, officialPack } from '../render/spriteRegistry';
+import { randomLook } from '../core/npcLooks';
+import { buildNpcLook, sheetKey } from '../render/animation';
 import type { EventSpawnInfo } from './SpawnManager';
 import type { AdventureScene } from '../scenes/AdventureScene';
 import { MERCHANT_DISCOUNT, MerchantOffer, merchantStock, shopCatalogue } from '../core/shop';
@@ -160,13 +161,10 @@ export class WorldEventController {
         }
         if (!team.length) return this.abort(ev);
         ev.data.x = t.x + 240; ev.data.y = t.y; ev.data.trainer = name; ev.goal = team.length;
-        // the trainer stands behind the team (NPC tile from the dungeon pack, tinted as a rival)
+        // the trainer stands behind the team: a pixel character of its own (same style as the map NPCs)
         const sx = t.x + 320, sy = t.y - 10;
-        const look = [DUNGEON.npc.knight, DUNGEON.npc.viking, DUNGEON.npc.ranger, DUNGEON.npc.wizard, DUNGEON.npc.girl][this.world.rng.int(0, 4)];
-        const art = 'otrainer-' + this.world.rng.pick(AMBUSH_TRAINER_ART);
-        const spr = officialPack.active && this.scene.textures.exists(art)
-          ? this.scene.add.image(sx, sy + 20, art).setOrigin(0.5, 0.85).setDepth(sy)
-          : this.scene.add.image(sx, sy, 'ow_tiles', look).setScale(SCALE).setDepth(sy).setTint(0xffd0c0);
+        const look = buildNpcLook(this.scene, randomLook('ambush-' + ev.uid + '-' + name, ['cap', 'veteran', 'ranger', 'hiker', 'lass', 'woman', 'man']));
+        const spr = this.scene.add.sprite(sx, sy, sheetKey(look), 0).setScale(SCALE).setDepth(sy).setFlipX(true).play(look + ':idle');
         const tag = this.scene.add.text(sx, sy - 40, name, { fontFamily: 'VT323, monospace', fontSize: '18px', color: '#ffb070', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5).setDepth(sy + 1);
         this.props.set(ev.uid, [spr, tag]);
         this.track(ev, team);
@@ -200,10 +198,8 @@ export class WorldEventController {
         const stock = v?.offers ? this.variantOffers(v) : merchantStock(<T,>(l: T[]) => rng.pick(l), (a, b) => rng.int(a, b));
         if (!stock.length) return this.abort(ev);
         ev.data.stock = stock;
-        const art = 'otrainer-gentleman';
-        const spr = officialPack.active && this.scene.textures.exists(art)
-          ? this.scene.add.image(p.x, p.y + 20, art).setOrigin(0.5, 0.85).setDepth(p.y)
-          : this.scene.add.image(p.x, p.y, 'ow_tiles', DUNGEON.npc.wizard).setScale(SCALE).setDepth(p.y).setTint(0xc0ffd0);
+        const look = buildNpcLook(this.scene, randomLook('merchant-' + ev.uid, ['robe', 'man', 'grandma']));
+        const spr = this.scene.add.sprite(p.x, p.y, sheetKey(look), 0).setScale(SCALE).setDepth(p.y).play(look + ':idle');
         this.scene.addEventObject('evmerchant-' + ev.uid, p.x, p.y, 'Mua hàng hiếm', { event: ev.uid, action: 'merchant' }, spr);
         const tag = this.scene.add.text(p.x, p.y + 30, v?.tag ?? '$ Thương nhân Lữ Khách', { fontFamily: 'VT323, monospace', fontSize: '18px', color: '#80ffb0', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(p.y + 1);
         this.props.set(ev.uid, [tag]);

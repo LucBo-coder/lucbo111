@@ -105,6 +105,8 @@ test('Trà Vinh: Vĩnh Long gate → Ao Bà Om → Chùa Hang → Thần Cây D�
   await page.waitForTimeout(2500);
   await page.screenshot({ path: info.outputPath('5-trevenant.png') });
   expect(await ev(page, `window.__adv.world.boss.boss.pm.count`)).toBe(3);
+  // world-level ups recompute the trainer's HP: keep the test trainer unbeatable for the boss fight
+  await ev(page, `(() => { const t = window.__adv.world.trainer; t.maxHp = t.hp = 1e7; })()`);
   await beatBossTo(page, 0);
   await page.waitForFunction(() => (window as Win).__adv.state.hasFlag('badge:tra-vinh'), undefined, { timeout: 15_000 });
   expect(await ev(page, `window.__adv.state.save.collection.some(p => p.species === 'trevenant')`)).toBe(false);

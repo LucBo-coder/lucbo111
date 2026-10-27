@@ -134,60 +134,16 @@ export function registerIcyEthics(scene: Phaser.Scene, missing: Set<string>): st
 // scripts/fetch-official-sprites.mjs downloads PokeAPI/sprites PNGs into public/assets/official (git-ignored).
 export interface OfficialIndex { icons: string[]; front: string[]; shiny?: string[]; items?: string[]; trainers?: string[] }
 
-/** NPC id (or trainer / ambush key) → Pokémon Showdown trainer sprite of the personal pack. */
-export const NPC_TRAINER_ART: Record<string, string> = {
-  prof: 'oak', farmer: 'rancher', collector: 'pokemaniac', ranger: 'pokemonranger', elder: 'sage', nurse: 'nurse', shopkeeper: 'gentleman',
-  youngster: 'youngster', climber: 'hiker', geologist: 'scientist', oracle: 'psychic',
-  // 0.9.0 regions + their trainers
-  'swamp-witch': 'sage', 'swamp-fisher': 'fisherman', 'swamp-scout': 'pokemonranger', 'poison-tamer': 'psychic', 'swamp-bugcatcher': 'bugcatcher',
-  diver: 'acetrainer', 'lighthouse-keeper': 'gentleman', swimmer: 'picnicker', sailor: 'blackbelt',
-  // Vietnam Odyssey: Cà Mau, An Giang
-  'vn-prof': 'scientist', 'cm-guide': 'lass', 'cm-fisher': 'fisherman', 'cm-ranger': 'pokemonranger', 'cm-elder': 'sage',
-  'cm-youngster': 'bugcatcher', 'cm-fisherman': 'fisherman', 'cm-forest-trainer': 'camper',
-  'ag-guide': 'beauty', 'ag-researcher': 'scientist', 'ag-boatman': 'rancher', 'ag-islander': 'picnicker',
-  'ag-climber': 'hiker', 'ag-boater': 'acetrainerf', 'ag-diver': 'veteran',
-  'ct-guide': 'beauty', 'ct-boatwoman': 'picnicker', 'ct-merchant': 'gentleman', 'ct-ranger': 'pokemonranger', 'ct-gardener': 'rancher',
-  'ct-vendor': 'lass', 'ct-farmer': 'rancher', 'ct-birder': 'birdkeeper', 'ct-student': 'psychic',
-  // 0.17 map content: themed regions, the Sanctuary and the Mekong provinces
-  'frozen-hermit': 'sage', 'frozen-monk': 'sage', 'frozen-ranger': 'pokemonranger', 'frozen-researcher': 'scientist',
-  'frozen-skier': 'skier', 'frozen-climber': 'hiker', 'frozen-ace': 'acetrainerf',
-  'volcano-geologist': 'scientist', 'volcano-elder': 'sage', 'volcano-guard': 'pokemonranger',
-  'volcano-firebreather': 'blackbelt', 'volcano-miner': 'hiker', 'volcano-ace': 'acetrainer',
-  'swamp-fortune': 'psychic', 'swamp-hunter': 'pokemonranger', 'swamp-fisher2': 'fisherman', 'swamp-hexer': 'beauty', 'swamp-frogman': 'bugcatcher',
-  'coast-diver2': 'acetrainerf', 'coast-old-sailor': 'gentleman', 'coast-surfer': 'picnicker', 'coast-cliff': 'hiker',
-  'sanctuary-sage': 'sage', 'sanctuary-astronomer': 'scientist', 'sanctuary-champion': 'veteran',
-  'cm-fisher-ut': 'fisherman', 'cm-ranger-uminh': 'pokemonranger', 'cm-dried-fish': 'lass', 'cm-kid-fish': 'youngster', 'cm-boatman': 'camper',
-  'ag-monk-cam': 'sage', 'ag-sugar-palm': 'picnicker', 'ag-rock-hiker': 'hiker', 'ag-wetland-girl': 'lass',
-  'ct-orchard-owner': 'rancher', 'ct-ferry-girl': 'picnicker', 'ct-rice-farmer': 'rancher', 'ct-market-boy': 'youngster',
-  // Vĩnh Long
-  'vl-guide': 'beauty', 'vl-ferryman': 'fisherman', 'vl-host': 'sage', 'vl-potter-master': 'sage', 'vl-scholar': 'gentleman', 'vl-grower': 'picnicker', 'vl-potato': 'rancher',
-  'vl-potter': 'blackbelt', 'vl-orchard-girl': 'lass', 'vl-teacher': 'scientist', 'vl-digger': 'hiker', 'vl-fisher': 'fisherman',
-  // Trà Vinh
-  'tv-guide': 'beauty', 'tv-elder': 'sage', 'tv-achar': 'gentleman', 'tv-stork': 'picnicker', 'tv-farmer': 'rancher', 'tv-seller': 'picnicker', 'tv-ranger': 'camper',
-  'tv-keeper': 'hiker', 'tv-dancer': 'lass', 'tv-coconut': 'rancher', 'tv-rower': 'blackbelt', 'tv-beach': 'youngster',
-  // V20 Starter Valley: village guide, flower seller, Training Camp coach + students
-  'sv-guide': 'camper', 'sv-granny': 'sage', 'sv-fisher': 'fisherman',
-  'ef-ranger': 'pokemonranger', 'ef-botanist': 'lass', 'ef-bugcatcher': 'bugcatcher', 'ef-hiker': 'hiker', 'ef-fisher': 'fisherman', 'camp-coach': 'veteran', 'camp-tank': 'hiker', 'camp-speed': 'lass', 'camp-mage': 'psychic',
-};
-export const AMBUSH_TRAINER_ART = ['acetrainer', 'acetrainerf', 'blackbelt', 'beauty', 'veteran', 'cyclist', 'skier'];
-
-/** Small item / trainer art of the personal pack (≈ 80 files of 1–2 KB) — loaded with the boot. */
+/** Small item art of the personal pack (≈ 60 files of 1–2 KB) — loaded with the boot (NPCs are pixel characters). */
 export function preloadOfficialSmall(scene: Phaser.Scene, idx: OfficialIndex): number {
   for (const id of idx.items ?? []) scene.load.image('oitem-' + id, `assets/official/items/${id}.png`);
-  for (const t of idx.trainers ?? []) scene.load.image('otrainer-' + t, `assets/official/trainers/${t}.png`);
-  return (idx.items?.length ?? 0) + (idx.trainers?.length ?? 0);
+  return idx.items?.length ?? 0;
 }
 
 /** Texture key of an item icon: official art if loaded, else the original pixel icon. */
 export function itemIconKey(scene: Phaser.Scene, id: string): string {
   if (officialPack.active && scene.textures.exists('oitem-' + id)) return 'oitem-' + id;
   return scene.textures.exists('item-' + id) ? 'item-' + id : 'item_held';
-}
-
-/** Texture key of an NPC's official trainer art (null → keep the tile sprite). */
-export function trainerArtKey(scene: Phaser.Scene, npcId: string): string | null {
-  const t = NPC_TRAINER_ART[npcId];
-  return officialPack.active && t && scene.textures.exists('otrainer-' + t) ? 'otrainer-' + t : null;
 }
 
 export async function loadOfficialIndex(): Promise<OfficialIndex | null> {
