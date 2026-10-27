@@ -1502,3 +1502,18 @@ Yêu cầu: đền không nằm rải rác trên bản đồ; huyền thoại ca
 - `scripts/gen-legend-planes.ts` sinh 13 bản đồ mới (`src/data/world/<id>.json`), lối vào (`secrets` + chướng ngại `field` trong bản đồ thường), cập nhật `legends.json` và manh mối nằm ở chỗ không tới được. Chạy lại được (lối vào giữ chỗ cũ).
 - `gen-shrines.py`: 30 sơ đồ (bỏ 2 sơ đồ cổng cũ `kyogre-gate`, `arceus-gate`); `region` của mọi đền là `instanced`.
 - Save cũ: tiến độ đền / nghi lễ giữ nguyên theo id; vách nứt trong đền Mew (giờ ở Bí Cảnh Thung Lũng) phải đập lại.
+
+### 8.4 Nhiệm vụ theo đền ẩn (`src/core/questGuide.ts`)
+
+Mục tiêu "Đánh bại / Gặp <huyền thoại>" của mọi nhiệm vụ huyền thoại (5 nhiệm vụ viết tay + chuỗi tự sinh) hiển thị theo bước người chơi đang ở — trên HUD, bản đồ nhỏ, bản đồ lớn và sổ nhiệm vụ:
+
+| Bước | Dòng mục tiêu | Đánh dấu |
+|---|---|---|
+| Lối vào do manh mối mở, chưa đọc đủ | "tìm lối vào bí mật ở <bản đồ>: điều tra manh mối n/3" | manh mối tiếp theo (chính xác) |
+| Lối vào sau chướng ngại, chưa dọn | "… <bụi cây rậm / tảng đá nứt> lấp lánh trong vùng đánh dấu (Cắt cây / Đập đá)" | **vòng tròn** bán kính 7 ô, tâm lệch cố định — không lộ đúng ô; HUD ghi khoảng cách "~N m" |
+| Đã tìm thấy lối vào | "vào <dimension> qua <lối vào> (<bản đồ>)" (+ "chỉ mở khi trời mưa") | lối vào |
+| Đang ở trong dimension / bí cảnh | "Đánh bại X (<dimension>)" | đền |
+
+- Bộ lọc "Vùng này" của sổ nhiệm vụ xếp nhiệm vụ vào cả bản đồ có lối vào.
+- 5 nhiệm vụ viết tay (Articuno, Zapdos, Moltres, Mewtwo, Mew) viết lại mô tả / lời thoại theo vị trí mới; đánh dấu tĩnh trỏ đúng đền.
+- Nhiệm vụ đang theo dõi được lưu trong save (`adventure.tracked`): đi qua lối vào sang dimension không còn bị đổi sang nhiệm vụ khác.

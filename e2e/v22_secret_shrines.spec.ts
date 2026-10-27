@@ -111,3 +111,35 @@ test('every dimension and sanctum loads: its shrines stand there, no errors', as
   }
   expect(errors).toEqual([]);
 });
+
+test('quest guidance: the tracker leads to the hidden entrance (area ring), then the entrance, then the shrine', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors = errorsOf(page);
+  await start(page);
+  const gate = secretOf('zapdos');
+  const objText = () => ev<string>(page, `window.__phaser.scene.getScene('AdvUI').texts.obj.text`);
+  await ev(page, `window.__adv.travelTo('${gate.region}', ${gate.x}, ${gate.y + 6})`);
+  await ready(page, gate.region);
+  await ev(page, `(() => { const st = window.__adv.state; st.quests.states['q-legend-zapdos'] = { status: 'active', step: 0, progress: 0 }; st.trackedQuest = 'q-legend-zapdos'; })()`);
+  await page.waitForTimeout(500);
+  // not found yet: the map and the obstacle, a rough distance (~) — never the exact tile
+  expect(await objText()).toMatch(/lối vào bí mật ở Bờ Biển San Hô.*Đập đá.*~\d+m/s);
+  await ev(page, `window.__phaser.scene.getScene('AdvUI').openMenu('map')`);
+  await page.waitForTimeout(400);
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/quest-ring.png` });
+  await ev(page, `window.__phaser.scene.getScene('AdvUI').openMenu('quests')`);
+  await page.waitForTimeout(400);
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+  // found: the entrance itself
+  await ev(page, `window.__adv.state.setFlag('secret:${gate.region}:to-zapdos')`);
+  await page.waitForTimeout(400);
+  expect(await objText()).toMatch(/vào Bí Cảnh Bờ Biển qua/);
+  // inside the sanctum: the shrine
+  const h = shrineHome('zapdos');
+  await ev(page, `window.__adv.travelTo('${h.region}', ${h.x}, ${h.y})`);
+  await ready(page, h.region);
+  await page.waitForTimeout(400);
+  expect(await objText()).toMatch(/Đánh bại Zapdos \(Bí Cảnh Bờ Biển\)/);
+  expect(errors).toEqual([]);
+});

@@ -30,6 +30,8 @@ export interface AdventureSave {
   lastWaypoint: string;
   waypoints: string[];
   quests: Record<string, QuestState>;
+  /** the quest the HUD tracks (kept across map travel / reload) */
+  tracked?: string | null;
   flags: string[];
   discovered: number[]; // chunk indices
   chests: string[];

@@ -13,9 +13,9 @@ export interface ObjectiveDef {
   target?: string;
   count: number;
   text: string;
-  /** World position hint for the HUD tracker / map (pixels) */
-  /** World position hint; `region` = map id (default: the valley) */
-  marker?: { x: number; y: number; region?: string };
+  /** World position hint (tiles); `region` = map id (default: the valley); `approx` = only an area of this radius
+   *  (tiles) is known — the map draws a ring, the tracker a rough distance (a hidden shrine's obstacle) */
+  marker?: { x: number; y: number; region?: string; approx?: number };
   /** Only applies when this option was chosen */
   branch?: string;
   /** 'choose' objective: the options (target = the NPC who asks) */

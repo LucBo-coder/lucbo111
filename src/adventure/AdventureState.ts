@@ -57,7 +57,9 @@ export const STARTERS = ['charmander', 'squirtle', 'bulbasaur'];
 
 export class AdventureState {
   readonly quests: QuestManager;
-  trackedQuest: string | null = null;
+  /** the quest the HUD tracks — stored in the save, so travelling to another map keeps it */
+  get trackedQuest(): string | null { return this.adv.tracked ?? null; }
+  set trackedQuest(id: string | null) { this.adv.tracked = id; }
   /** last reputation gain that reached a new tier (UI shows a notice) */
   lastRepGain: RepGain | null = null;
 
@@ -73,7 +75,7 @@ export class AdventureState {
     const authored = (vn ? vnQuestsJson : questsJson) as QuestDef[];
     this.quests = new QuestManager(vn ? authored : [...authored, ...legendQuests(authored)], this.adv.quests, () => new Set(this.adv.flags));
     this.syncQuests();
-    this.trackedQuest = this.quests.active()[0]?.id ?? null;
+    if (!this.trackedQuest || this.quests.states[this.trackedQuest]?.status !== 'active') this.trackedQuest = this.quests.active()[0]?.id ?? null;
     // Repair the V7 invariants on every construction (old saves, hand-edited saves, interrupted captures).
     this.ensureStorage();
   }

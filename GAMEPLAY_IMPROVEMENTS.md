@@ -152,3 +152,4 @@ Chỉ cần một Pokémon trong đội đủ điều kiện; thiếu thì game 
 ### Đền huyền thoại phải tự tìm
 - Trước: đền nằm sẵn giữa bản đồ, ai đi ngang cũng thấy. Giờ bản đồ không có đền nào: phải để ý một bụi cây rậm lấp lánh, một tảng đá nứt lạ, hay lần theo 3 manh mối để lộ ra lối vào — một khe nứt phát sáng, miệng hang, hay xoáy nước giữa biển chỉ mở khi trời mưa.
 - Huyền thoại mạnh nhất có thế giới riêng: biển bão không bao giờ tạnh của Lugia, lõi dung nham của Groudon, Thế Giới Đảo Ngược của Giratina, Tầng Trời của Rayquaza.
+- Nhiệm vụ huyền thoại dẫn đường từng bước mà không làm lộ bí mật: lúc đầu chỉ là một vòng tròn khu vực ("có gì đó lấp lánh quanh đây") hoặc manh mối kế tiếp; tìm được lối vào thì mới đánh dấu đúng chỗ.

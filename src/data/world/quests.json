@@ -579,17 +579,17 @@
    "q-main-4"
   ],
   "autoStart": true,
-  "description": "Sương giá phủ kín Hồ Băng Lam trên Núi Tuyết. Thần Điểu băng giá đang chờ ở Băng Đài.",
+  "description": "Sương giá phủ kín Núi Tuyết. Thần Điểu băng giá chờ ở Băng Đài, sâu trong Bí Cảnh Núi Tuyết — lối vào giấu sau một khe băng bị đá lấp.",
   "objectives": [
    {
     "type": "boss",
     "target": "articuno",
     "count": 1,
-    "text": "Đánh bại Articuno (Núi Tuyết)",
+    "text": "Đánh bại Articuno (Bí Cảnh Núi Tuyết)",
     "marker": {
-     "x": 22,
-     "y": 45,
-     "region": "frozen-mountains"
+     "x": 23,
+     "y": 22,
+     "region": "frozen-hollow"
     }
    }
   ],
@@ -600,7 +600,8 @@
   "dialogue": {
    "offer": [
     "Người già trong làng kể rằng ba Thần Điểu canh giữ thung lũng này.",
-    "Articuno ngự ở Băng Đài bên Hồ Băng Lam, trên Núi Tuyết Vĩnh Hằng (cổng ở góc đông bắc thung lũng)."
+    "Articuno ngự ở Băng Đài trong Bí Cảnh Núi Tuyết. Không ai thấy đền từ bên ngoài: lối vào nằm sau một tảng đá nứt đâu đó trên Núi Tuyết Vĩnh Hằng (cổng ở góc đông bắc thung lũng).",
+    "Mang theo một Pokémon biết Đập đá. Đứng gần đúng chỗ, tảng đá sẽ lấp lánh."
    ],
    "progress": [
     "Khi Articuno gọi Bão Tuyết, hãy đứng vào ba vòng an toàn!"
@@ -618,16 +619,17 @@
    "q-main-4"
   ],
   "autoStart": true,
-  "description": "Sấm sét không ngớt trên Đồi Đá Xám. Zapdos đậu trên Đỉnh Sấm.",
+  "description": "Sấm sét không ngớt trên Bờ Biển San Hô. Zapdos đậu trên Đỉnh Sấm trong Bí Cảnh Bờ Biển — lối vào nằm sau một tảng đá bị sét đánh nứt.",
   "objectives": [
    {
     "type": "boss",
     "target": "zapdos",
     "count": 1,
-    "text": "Đánh bại Zapdos",
+    "text": "Đánh bại Zapdos (Bí Cảnh Bờ Biển)",
     "marker": {
-     "x": 120,
-     "y": 32
+     "x": 23,
+     "y": 22,
+     "region": "coral-hollow"
     }
    }
   ],
@@ -637,7 +639,8 @@
   },
   "dialogue": {
    "offer": [
-    "Zapdos ngự trên Đỉnh Sấm giữa Đồi Đá Xám."
+    "Zapdos ngự trên Đỉnh Sấm trong Bí Cảnh Bờ Biển.",
+    "Ngư dân thấy sét đánh mãi vào một tảng đá nứt trên bờ biển. Đập vỡ nó, lối vào sẽ lộ ra."
    ],
    "progress": [
     "Lôi Vũ đánh vào chỗ cháu đứng — luôn di chuyển!"
@@ -655,16 +658,17 @@
    "q-main-4"
   ],
   "autoStart": true,
-  "description": "Tro nóng bay lên từ Tàn Tích Cổ. Moltres canh giữ Đền Lửa.",
+  "description": "Tro nóng bay lên khắp Vùng Đất Núi Lửa. Moltres canh giữ Đền Lửa trong Bí Cảnh Núi Lửa — lối vào giấu sau một khe đá cháy sém.",
   "objectives": [
    {
     "type": "boss",
     "target": "moltres",
     "count": 1,
-    "text": "Đánh bại Moltres",
+    "text": "Đánh bại Moltres (Bí Cảnh Núi Lửa)",
     "marker": {
-     "x": 11,
-     "y": 35
+     "x": 23,
+     "y": 22,
+     "region": "volcanic-hollow"
     }
    }
   ],
@@ -674,7 +678,8 @@
   },
   "dialogue": {
    "offer": [
-    "Moltres ngự ở Đền Lửa trong Tàn Tích Cổ phía tây."
+    "Moltres ngự ở Đền Lửa trong Bí Cảnh Núi Lửa.",
+    "Lối vào nằm sau một tảng đá nứt cháy sém trên Vùng Đất Núi Lửa. Cần một Pokémon biết Đập đá."
    ],
    "progress": [
     "Vòng Lửa bắn ra theo các nan hoa — đứng vào khe giữa các tia!"
@@ -694,16 +699,17 @@
    "q-legend-moltres"
   ],
   "autoStart": true,
-  "description": "Cả ba Thần Điểu đã công nhận bạn. Một áp lực tâm linh khổng lồ phát ra từ Rìa Rừng Ngọc.",
+  "description": "Cả ba Thần Điểu đã công nhận bạn. Một áp lực tâm linh khổng lồ rỉ ra từ một vết nứt đá lạ trong thung lũng — phía sau là Khe Nứt Tâm Linh, thế giới riêng của Mewtwo.",
   "objectives": [
    {
     "type": "boss",
     "target": "mewtwo",
     "count": 1,
-    "text": "Đánh bại Mewtwo",
+    "text": "Đánh bại Mewtwo (Khe Nứt Tâm Linh)",
     "marker": {
-     "x": 62,
-     "y": 39
+     "x": 25,
+     "y": 25,
+     "region": "psychic-rift"
     }
    }
   ],
@@ -713,7 +719,8 @@
   },
   "dialogue": {
    "offer": [
-    "Một Pokémon nhân tạo mạnh nhất từng tồn tại đang ẩn trong Vết Nứt Tâm Linh..."
+    "Một Pokémon nhân tạo mạnh nhất từng tồn tại đang ẩn trong Khe Nứt Tâm Linh — một thế giới riêng, không nằm trên bản đồ nào.",
+    "Lối vào là một vết nứt đá lạ ở Thung Lũng Khởi Nguyên. Đập vỡ tảng đá chắn trước nó."
    ],
    "progress": [
     "Mewtwo dịch chuyển liên tục và đổi chiêu cuối mỗi lần — đừng đứng yên!"
@@ -731,16 +738,17 @@
    "q-legend-mewtwo"
   ],
   "autoStart": true,
-  "description": "Có tiếng cười khúc khích trên Đồi Hoa phía nam Đồng Cỏ Gió.",
+  "description": "Có tiếng cười khúc khích sau bức tường nứt của Tàn Tích. Đền của Mew nằm trong Bí Cảnh Thung Lũng.",
   "objectives": [
    {
     "type": "boss",
     "target": "mew",
     "count": 1,
-    "text": "Đánh bại Mew",
+    "text": "Đánh bại Mew (Bí Cảnh Thung Lũng)",
     "marker": {
-     "x": 84,
-     "y": 61
+     "x": 20,
+     "y": 21,
+     "region": "valley-hollow"
     }
    }
   ],
@@ -750,7 +758,8 @@
   },
   "dialogue": {
    "offer": [
-    "Người ta nói tổ tiên của mọi Pokémon vẫn còn chơi đùa đâu đó trong thung lũng."
+    "Người ta nói tổ tiên của mọi Pokémon vẫn còn chơi đùa đâu đó trong thung lũng.",
+    "Có một bức tường nứt trong Tàn Tích Cổ — sau nó là Bí Cảnh Thung Lũng. Đập vỡ nó thử xem."
    ],
    "progress": [
     "Mew dùng chiêu của mọi Pokémon — hãy quan sát vùng báo trước!"

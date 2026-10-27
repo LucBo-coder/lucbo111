@@ -1,4 +1,5 @@
 import { REGION_DEFS } from './map/regionDefs';
+import { entranceOf } from './questGuide';
 import type { QuestDef } from './quests';
 import { nextTierIn, regionRep, REP_REGIONS, REP_TIERS, repTier, tierReward, type RepSave } from './reputation';
 
@@ -7,10 +8,11 @@ import { nextTierIn, regionRep, REP_REGIONS, REP_TIERS, repTier, tierReward, typ
 const NPC_REGION = new Map<string, string>();
 for (const [id, d] of Object.entries(REGION_DEFS)) for (const n of [...d.npcs, ...d.trainers]) if (!NPC_REGION.has(n.id)) NPC_REGION.set(n.id, id);
 
-/** A quest belongs to a map if its giver lives there or any objective points there (markers default to the valley). */
+/** A quest belongs to a map if its giver lives there or any objective points there (markers default to the valley);
+ *  a hidden shrine's fight also belongs to the map of its secret entrance (LEGENDARY_SHRINES.md mục 8). */
 export function questInRegion(q: QuestDef, region: string): boolean {
   if (q.giver && NPC_REGION.get(q.giver) === region) return true;
-  return q.objectives.some((o) => o.marker && (o.marker.region ?? 'starter-valley') === region);
+  return q.objectives.some((o) => (o.marker && (o.marker.region ?? 'starter-valley') === region) || (o.type === 'boss' && !!o.target && entranceOf(o.target)?.region === region));
 }
 
 export interface RepRow {

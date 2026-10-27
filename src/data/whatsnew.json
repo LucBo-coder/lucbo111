@@ -1,5 +1,15 @@
 [
   {
+    "id": "v22-quest-guide",
+    "title": "Nhiệm vụ dẫn đường tới đền ẩn",
+    "items": [
+      "Nhiệm vụ huyền thoại giờ chỉ đường theo từng bước: manh mối cần điều tra tiếp → khu vực có lối vào ẩn (vòng tròn trên bản đồ) → lối vào → ngôi đền trong dimension.",
+      "Vòng tròn chỉ cho biết lối vào nằm đâu đó trong khu vực — phải tự tìm chỗ lấp lánh.",
+      "Nhiệm vụ Thần Điểu, Mewtwo và Mew đã cập nhật theo vị trí đền mới.",
+      "Nhiệm vụ đang theo dõi không còn bị đổi khi sang bản đồ khác."
+    ]
+  },
+  {
     "id": "v22-hidden-shrines",
     "title": "Đền huyền thoại bí mật",
     "items": [

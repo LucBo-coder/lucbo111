@@ -297,3 +297,14 @@ Lỗi tìm thấy khi làm: hiểm họa `floor` có vòng lặp vô hạn khi c
 | Toàn bộ e2e (`--workers=1`, 23,8 phút) | 79 passed / 1 skipped / 1 failed → `v21_world` (hái bụi): sau khi dịch chuyển tới bụi, Pokémon đồng hành (hái quả giúp, V22) hái mất trước khi bấm E — test đua với tính năng đồng hành, trước đây qua nhờ có Pokémon hoang ở gần. Sửa test: tạm dừng việc hái hộ trong đoạn hái tay → chạy lại 3 lần 6/6 ✅ |
 
 Ảnh đã xem: lối vào Mew vừa lộ ra, khoang Mew trong Bí Cảnh Thung Lũng, Biển Xoáy Bạc (mưa), Lõi Dung Nham, Thế Giới Đảo Ngược, Tầng Trời, khoang Zapdos ở Bí Cảnh Bờ Biển.
+
+## V22 — đợt 20: nhiệm vụ theo đền ẩn
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **531/531 ✅** (mới `v22_quest_guide.test.ts`: 4) |
+| E2E `v22_secret_shrines` (3, mới: chỉ đường nhiệm vụ Zapdos qua 3 bước, bản đồ vẽ vòng tròn), `v22_journal`, `adventure` | 8/8 ✅ |
+| Toàn bộ e2e (`--workers=1`, 19,5 phút) | **81 passed / 1 skipped / 0 failed ✅** |
+
+Phát hiện khi viết e2e: nhiệm vụ đang theo dõi bị đặt lại về nhiệm vụ đầu tiên mỗi lần chuyển bản đồ (có từ trước) — đã sửa (lưu trong save).

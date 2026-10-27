@@ -369,7 +369,7 @@ export class AdventureUI extends Phaser.Scene {
     // Quest tracker
     const qid = a.state.trackedQuest;
     const qdef = qid ? a.state.quests.def(qid) : undefined;
-    const obj = qid ? a.state.quests.currentObjective(qid) : null;
+    const obj = qid ? a.shownObjective(qid) : null;
     const qy = this.miniBox.y + this.miniBox.h + (this.portraitHud ? 76 : 52) * s;
     if (qdef && obj) {
       const st = a.state.quests.states[qid!];
@@ -379,7 +379,7 @@ export class AdventureUI extends Phaser.Scene {
         const mx = (obj.marker.x + 0.5) * TILE_PX, my = (obj.marker.y + 0.5) * TILE_PX;
         const d = Math.hypot(mx - t.x, my - t.y) / TILE_PX;
         const ang = Math.atan2(my - t.y, mx - t.x);
-        dist = `  ${arrow(ang)} ${Math.round(d)}m`;
+        dist = obj.marker.approx ? `  ${arrow(ang)} ~${Math.max(0, Math.round(d - obj.marker.approx))}m` : `  ${arrow(ang)} ${Math.round(d)}m`;
       }
       this.texts.quest.setText(`◆ ${qdef.title}`).setOrigin(1, 0).setPosition(W - 12 * s, qy);
       this.texts.obj.setText(`${obj.text.replace(/\(\d+\/\d+\)/, '')}${prog}${dist}`).setOrigin(1, 0).setPosition(W - 12 * s, qy + 22 * s).setWordWrapWidth(300 * s);
@@ -483,8 +483,12 @@ export class AdventureUI extends Phaser.Scene {
     }
     const t = a.world.trainer;
     g.fillStyle(0xffffff, 1).fillRect(x + (t.x / TILE_PX) * kx - 2, y + (t.y / TILE_PX) * ky - 2, 4, 4);
-    const obj = a.state.trackedQuest ? a.state.quests.currentObjective(a.state.trackedQuest) : null;
-    if (obj?.marker && m.kind === 'overworld' && (obj.marker.region ?? 'starter-valley') === a.regionDef.id) g.fillStyle(0xffe040, 1).fillCircle(x + (obj.marker.x + 0.5) * kx, y + (obj.marker.y + 0.5) * ky, 3);
+    const obj = a.state.trackedQuest ? a.shownObjective(a.state.trackedQuest) : null;
+    if (obj?.marker && m.kind === 'overworld' && (obj.marker.region ?? 'starter-valley') === a.regionDef.id) {
+      // an approximate marker (a hidden entrance's area) is a ring, never a dot on the exact tile
+      if (obj.marker.approx) g.lineStyle(1.5, 0xffe040, 1).strokeCircle(x + (obj.marker.x + 0.5) * kx, y + (obj.marker.y + 0.5) * ky, Math.max(4, obj.marker.approx * kx));
+      else g.fillStyle(0xffe040, 1).fillCircle(x + (obj.marker.x + 0.5) * kx, y + (obj.marker.y + 0.5) * ky, 3);
+    }
     // world event markers (treasure only as an approximate ring)
     if (m.kind === 'overworld') for (const e of a.worldEvents?.views() ?? []) {
       if (!e.x) continue;
@@ -1499,7 +1503,8 @@ export class AdventureUI extends Phaser.Scene {
       const done = state.status === 'completed' || i < state.step;
       const cur = state.status === 'active' && i === state.step;
       const prog = cur && o.count > 1 ? ` (${state.progress}/${o.count})` : '';
-      const label = o.type === 'choose' && picked ? `${o.text} — ${picked.label}` : o.text.replace(/\(\d+\/\d+\)/, '');
+      const shown = cur ? this.adv.shownObjective(sel.id) ?? o : o;
+      const label = o.type === 'choose' && picked ? `${o.text} — ${picked.label}` : shown.text.replace(/\(\d+\/\d+\)/, '');
       c.add(text(this, dx + 24 * s, dy + 110 * s + row * 28 * s, `${done ? '☑' : cur ? '▶' : '☐'} ${label}${prog}`, 18 * s, done ? '#80c080' : cur ? '#ffe080' : COLORS.dim));
     });
     const rw = qs.rewardsOf(sel.id);
@@ -1587,9 +1592,11 @@ export class AdventureUI extends Phaser.Scene {
         g.fillStyle(0xb0a080, 1).fillTriangle(fx, fy - 5, fx + 5, fy, fx, fy + 5).fillTriangle(fx, fy - 5, fx - 5, fy, fx, fy + 5);
       }
       for (const q of st.quests.active()) {
-        const o = st.quests.currentObjective(q.id);
+        const o = a.shownObjective(q.id);
         if (!o?.marker || (o.marker.region ?? 'starter-valley') !== a.regionDef.id) continue;
-        g.fillStyle(q.id === st.trackedQuest ? 0xffe040 : 0xc0a040, 1).fillCircle((o.marker.x + 0.5) * k, (o.marker.y + 0.5) * k, q.id === st.trackedQuest ? 6 : 4);
+        const col = q.id === st.trackedQuest ? 0xffe040 : 0xc0a040;
+        if (o.marker.approx) g.lineStyle(3, col, 0.9).strokeCircle((o.marker.x + 0.5) * k, (o.marker.y + 0.5) * k, o.marker.approx * k);
+        else g.fillStyle(col, 1).fillCircle((o.marker.x + 0.5) * k, (o.marker.y + 0.5) * k, q.id === st.trackedQuest ? 6 : 4);
       }
     }
     const t = a.world.trainer;

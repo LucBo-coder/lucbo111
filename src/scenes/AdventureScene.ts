@@ -32,7 +32,8 @@ import { itemIconKey, trainerArtKey } from '../render/spriteRegistry';
 import { REGIONS as ENC_REGIONS } from '../core/encounters';
 import { addFriendship, captureRateOf, expYield, individualOf } from '../core/progression';
 import { legendRule, legendThrowChance, LegendCaptureRule } from '../core/legendCapture';
-import { QuestDef } from '../core/quests';
+import { ObjectiveDef, QuestDef } from '../core/quests';
+import { guideObjective } from '../core/questGuide';
 import { makeWildState } from '../core/wildAI';
 import { RARE_RULES } from '../core/ecologyRules';
 import { modsFor, modsLabel } from '../core/dungeonMods';
@@ -207,6 +208,13 @@ export class AdventureScene extends Phaser.Scene {
 
   get ui(): AdventureUI {
     return this.scene.get('AdvUI') as AdventureUI;
+  }
+
+  /** A quest's current objective as shown to the player: a hidden shrine's fight points at the step the player is
+   *  on (clues → entrance → plane) instead of a shrine in a plane they cannot reach yet. */
+  shownObjective(qid: string): ObjectiveDef | null {
+    const o = this.state.quests.currentObjective(qid);
+    return o && guideObjective(o, { region: this.regionDef.id, hasFlag: (f) => this.state.hasFlag(f) });
   }
 
   /** Dungeon being played (mapKind 'dungeon') */
