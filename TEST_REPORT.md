@@ -271,3 +271,17 @@ Lỗi sơ đồ tìm thấy khi ráp lên bản đồ (công cụ `check-shrines
 
 Lỗi tìm thấy khi làm: hiểm họa `floor` có vòng lặp vô hạn khi chọn ô → đã sửa; cổng Kyogre đặt trên biển không có lối đi bộ → thêm đê đá nối bờ phía tây.
 Ảnh đã xem: đền Articuno (cột băng, vòng niêm phong, vòng cảnh báo), Zapdos (cột thu lôi), Vực Nguyên Hải (Kyogre).
+
+
+## V22 — đợt 18: mục "Có gì mới" + kiểm tra lại toàn bộ
+
+| Bước | Kết quả |
+|---|---|
+| `npm run build`, `tsc --noEmit` | ✅ |
+| Unit | **520/520 ✅** (518 + `v22_whatsnew.test.ts` 2) |
+| E2E mới `v22_whatsnew.spec.ts` (máy tính 1280×720, điện thoại dọc 390×844, ngang 844×390) | 3/3 ✅ — lần đầu nút đè chữ "POKÉMON SURVIVOR" trên điện thoại dọc → nút biểu tượng ✨ + tiêu đề thu gọn bên cạnh |
+| **Toàn bộ E2E** (47 spec, 1 luồng, 22 phút) | **78 qua, 1 bỏ qua, 0 lỗi** — lần đầu chạy trọn bộ sau đợt 16 (trước bị dừng ở 5/73 vì thiếu bộ nhớ; chạy 1 luồng thì đủ bộ nhớ) |
+| Triển khai GitHub Pages (`main` 3103d747) | ✅ |
+
+Ảnh đã xem: menu chính và danh sách "Có gì mới" trên máy tính và điện thoại dọc.
+
