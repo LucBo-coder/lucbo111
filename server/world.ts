@@ -14,7 +14,8 @@ import { EMOTES, SERVER_PROTOCOL } from '../src/net/serverProtocol';
 import { ActionError, hasCachedAction, performAction } from './actions';
 import { AuthError, changePassword, login, logout, logoutAll, purgeExpiredSessions, recover, regenerateRecovery, register, resume } from './auth';
 import type { SqlDb } from './sql';
-import { activePokemon, playerLevel, readSave, writeSave } from './playerSave';
+import { activePokemon, leadPokemon, playerLevel, readSave, writeSave } from './playerSave';
+import { checkClientSave, inflateSave, MAX_SAVE_B64, MAX_SAVE_PARTS, PLACE_RE, SaveRejected } from './advSave';
 import { eventDef, eventObjectiveLabel, ONLINE_BADGE_LEVEL, pickEvent, REGION_ALPHA, RegionalEventDef } from './eventCatalog';
 
 export interface GameServerConfig {
@@ -112,6 +113,12 @@ interface Client {
   seen: Map<string, string> | null;
   alive: boolean;
   authTimer: Timer | null;
+  /** plays the Vietnam Odyssey campaign in the browser (sent adv.where): free movement, its own maps, no Alpha */
+  adv: boolean;
+  /** campaign save being received in parts */
+  upload: { seq: number; parts: string[]; got: number; size: number } | null;
+  /** last stored campaign save */
+  savedSeq: number;
 }
 
 interface AlphaRow {
@@ -237,7 +244,7 @@ export class WorldServer {
       region: this.config.enabledRegions[0] ?? 'ca-mau', channel: 1, x: 0, y: 0, facing: 0, moving: false,
       lastMoveAt: 0, lastChatAt: 0, lastAlphaAt: 0, lastSwitchAt: 0, lastEmoteAt: 0, pet: 'none', petUntil: 0, emote: null,
       lastSeen: nowMs(), tokens: 40, lastRefill: nowMs(), seen: null,
-      alive: true, authTimer: null as Timer | null,
+      alive: true, authTimer: null as Timer | null, adv: false, upload: null, savedSeq: -1,
     } as Client;
     this.clients.set(ws, c);
     c.authTimer = setTimeout(() => { if (!c.account) this.closeWithError(c, 'AUTH_TIMEOUT', 'Hết thời gian đăng nhập.'); }, this.config.authTimeoutMs);
@@ -294,7 +301,8 @@ export class WorldServer {
   /** Region-wide world state (Alpha, events): every channel of the region shares it. */
   private broadcast(region: string, msg: ServerMsg, except?: string): void {
     for (const c of this.byAccount.values()) {
-      if (c.region !== region || c.account.id === except) continue;
+      // campaign players have no Alpha / server events (the campaign brings its own)
+      if (c.region !== region || c.account.id === except || c.adv) continue;
       this.send(c, msg);
     }
   }
@@ -362,7 +370,7 @@ export class WorldServer {
     if (!c.account) {
       if (msg.t === 'login' || msg.t === 'register' || msg.t === 'resume' || msg.t === 'recover') {
         if (this.authLimit(ip ?? 'unknown')) { this.closeWithError(c, 'AUTH_RATE_LIMIT', 'Quá nhiều lần đăng nhập, thử lại sau 1 phút.'); return; }
-        this.authenticate(c, msg, ip);
+        await this.authenticate(c, msg, ip);
       } else {
         this.closeWithError(c, 'AUTH_REQUIRED', 'Hãy đăng nhập trước.');
       }
@@ -379,7 +387,7 @@ export class WorldServer {
         return;
       case 'enter': this.enterRegion(c, msg.region); return;
       case 'travel': this.travel(c, msg.portal); return;
-      case 'account': this.accountOp(c, msg); return;
+      case 'account': await this.accountOp(c, msg); return;
       case 'move': this.move(c, msg.x, msg.y, msg.facing, msg.moving, now); return;
       case 'action': this.handleAction(c, msg, now); return;
       case 'alpha.attack': this.alphaAttack(c, msg.actionId, now); return;
@@ -388,18 +396,20 @@ export class WorldServer {
       case 'party': this.partyOp(c, msg.actionId, msg.op, msg.target); return;
       case 'whisper': this.whisper(c, msg.actionId, msg.target, msg.body, now); return;
       case 'emote': this.emote(c, msg.kind, now); return;
+      case 'adv.save': await this.advSave(c, msg); return;
+      case 'adv.where': this.advWhere(c, msg.region, msg.x, msg.y); return;
       default: this.send(c, { t: 'error', code: 'UNKNOWN_MESSAGE', message: 'Loại tin nhắn không hỗ trợ.' });
     }
   }
 
-  private authenticate(c: Client, msg: Extract<ClientMsg, { t: 'login' | 'register' | 'resume' | 'recover' }>, ip?: string): void {
+  private async authenticate(c: Client, msg: Extract<ClientMsg, { t: 'login' | 'register' | 'resume' | 'recover' }>, ip?: string): Promise<void> {
     try {
       const result = msg.t === 'register'
-        ? register(this.db, msg.username, msg.password, msg.displayName, msg.starter, ip)
+        ? await register(this.db, msg.username, msg.password, msg.displayName, msg.starter, ip)
         : msg.t === 'login'
-          ? login(this.db, msg.username, msg.password, ip)
+          ? await login(this.db, msg.username, msg.password, ip)
           : msg.t === 'recover'
-            ? recover(this.db, msg.username, msg.code, msg.newPassword, ip)
+            ? await recover(this.db, msg.username, msg.code, msg.newPassword, ip)
             : resume(this.db, msg.token);
       const old = this.byAccount.get(result.account.id);
       if (old && old !== c) {
@@ -410,13 +420,16 @@ export class WorldServer {
       c.account = result.account;
       c.token = result.token;
       c.save = result.save;
-      c.region = result.save.adventure?.region && this.maps.has(result.save.adventure.region)
-        ? result.save.adventure.region
-        : (this.config.enabledRegions[0] ?? 'ca-mau');
+      // the campaign runs in the browser and its save says where the trainer is (any province or dungeon);
+      // the client confirms it (adv.where) right after signing in
+      const saved = result.save.adventure?.region;
+      c.region = saved && PLACE_RE.test(saved) ? saved : (this.config.enabledRegions[0] ?? 'ca-mau');
       const pos = result.save.adventure?.pos ?? { x: 2304, y: 3008 };
-      const pr = this.db.one<{ x: number; y: number; facing: number }>('SELECT x, y, facing FROM players WHERE account_id = ?', result.account.id);
-      c.x = pr?.x ?? pos.x;
-      c.y = pr?.y ?? pos.y;
+      // the last flushed position wins while it is on the same map (it is newer than the last save upload)
+      const pr = this.db.one<{ x: number; y: number; facing: number; region: string }>('SELECT x, y, facing, region FROM players WHERE account_id = ?', result.account.id);
+      const same = !!pr && pr.region === c.region;
+      c.x = same ? pr!.x : pos.x;
+      c.y = same ? pr!.y : pos.y;
       c.facing = pr?.facing ?? 0;
       c.lastMoveAt = nowMs(); // the first move after login is speed-checked too
       c.lastSeen = nowMs();
@@ -445,6 +458,60 @@ export class WorldServer {
     } catch (e) {
       const err = e as AuthError;
       this.send(c, { t: 'error', code: err.code ?? 'AUTH_FAILED', message: err.message ?? 'Đăng nhập thất bại.' });
+    }
+  }
+
+  /** Online Vietnam Odyssey: the map the campaign is on now (region or dungeon). Others there see this player. */
+  private advWhere(c: Client, region: unknown, x: unknown, y: unknown): void {
+    const place = String(region ?? '');
+    const nx = Number(x), ny = Number(y);
+    if (!PLACE_RE.test(place) || !Number.isFinite(nx) || !Number.isFinite(ny)) {
+      this.send(c, { t: 'error', code: 'BAD_PLACE', message: 'Vị trí không hợp lệ.' });
+      return;
+    }
+    const changed = !c.adv || place !== c.region;
+    c.adv = true;
+    c.x = nx; c.y = ny; c.lastMoveAt = nowMs();
+    if (!changed) return;
+    c.region = place;
+    c.channel = this.pickChannel(place, c);
+    c.seen = null;
+    this.db.run('UPDATE players SET region = ?, x = ?, y = ?, updated_at = ? WHERE account_id = ?', place, nx, ny, nowMs(), c.account.id);
+    this.sendChatHistory(c);
+    this.broadcastPresence();
+  }
+
+  /** Online Vietnam Odyssey: one part of the campaign save; all parts → checked and stored. */
+  private async advSave(c: Client, msg: Extract<ClientMsg, { t: 'adv.save' }>): Promise<void> {
+    const seq = Number(msg.seq), part = Number(msg.part), parts = Number(msg.parts);
+    const reject = (code: string, message: string) => { c.upload = null; this.send(c, { t: 'saved', seq, ok: false, code, message }); };
+    if (!Number.isInteger(seq) || !Number.isInteger(part) || !Number.isInteger(parts) || parts < 1 || parts > MAX_SAVE_PARTS || part < 0 || part >= parts || typeof msg.data !== 'string') {
+      reject('SAVE_INVALID', 'Gói lưu không hợp lệ.');
+      return;
+    }
+    if (seq <= c.savedSeq) return; // an older save arriving late never replaces a newer one
+    if (!c.upload || c.upload.seq !== seq) {
+      if (c.upload && seq < c.upload.seq) return;
+      c.upload = { seq, parts: new Array<string>(parts), got: 0, size: 0 };
+    }
+    const up = c.upload;
+    if (up.parts.length !== parts) { reject('SAVE_INVALID', 'Gói lưu không hợp lệ.'); return; }
+    if (up.parts[part] === undefined) { up.got++; up.size += msg.data.length; }
+    up.parts[part] = msg.data;
+    if (up.size > MAX_SAVE_B64) { reject('SAVE_TOO_LARGE', 'Bản lưu quá lớn.'); return; }
+    if (up.got < parts) return;
+    c.upload = null;
+    try {
+      const save = checkClientSave(await inflateSave(up.parts.join('')));
+      if (seq <= c.savedSeq) return;
+      c.savedSeq = seq;
+      c.save = save;
+      writeSave(this.db, c.account.id, save);
+      this.send(c, { t: 'saved', seq, ok: true });
+    } catch (e) {
+      const err = e instanceof SaveRejected ? e : new SaveRejected('SAVE_INVALID', 'Bản lưu bị hỏng.');
+      this.log('save rejected', c.account.username, err.code, err.message);
+      this.send(c, { t: 'saved', seq, ok: false, code: err.code, message: err.message });
     }
   }
 
@@ -478,6 +545,15 @@ export class WorldServer {
   private move(c: Client, x: unknown, y: unknown, facing: unknown, moving: unknown, now: number): void {
     const nx = Number(x), ny = Number(y);
     if (!Number.isFinite(nx) || !Number.isFinite(ny)) return;
+    if (c.adv) {
+      // the campaign moves the trainer itself (waypoints, boats, dungeons); the server only relays the position
+      if (nx < 0 || ny < 0 || nx > 200_000 || ny > 200_000) return;
+      c.x = nx; c.y = ny;
+      c.facing = Number.isFinite(Number(facing)) ? Number(facing) : c.facing;
+      c.moving = !!moving;
+      c.lastMoveAt = now;
+      return;
+    }
     const map = this.regionMap(c.region);
     if (!map) return;
     const maxX = map.widthTiles * TILE_PX, maxY = map.heightTiles * TILE_PX;
@@ -508,7 +584,7 @@ export class WorldServer {
   }
 
   private playerView(c: Client): ServerPlayerView {
-    const p = activePokemon(c.save);
+    const p = c.adv ? leadPokemon(c.save) : activePokemon(c.save);
     const now = nowMs();
     return {
       accountId: c.account.id, username: c.account.username, displayName: c.account.displayName, avatar: c.account.avatar, region: c.region,
@@ -642,14 +718,14 @@ export class WorldServer {
     this.placeInRegion(c, portal.to, x, y);
   }
 
-  private accountOp(c: Client, msg: Extract<ClientMsg, { t: 'account' }>): void {
+  private async accountOp(c: Client, msg: Extract<ClientMsg, { t: 'account' }>): Promise<void> {
     try {
       if (msg.op === 'changePassword') {
-        changePassword(this.db, c.account.id, c.token, String(msg.password ?? ''), String(msg.newPassword ?? ''));
+        await changePassword(this.db, c.account.id, c.token, String(msg.password ?? ''), String(msg.newPassword ?? ''));
         this.send(c, { t: 'actionResult', actionId: msg.actionId, ok: true, save: c.save, result: { op: msg.op } });
         this.send(c, { t: 'notice', message: 'Đã đổi mật khẩu. Các thiết bị khác đã bị đăng xuất.' });
       } else if (msg.op === 'recoveryCode') {
-        const code = regenerateRecovery(this.db, c.account.id, String(msg.password ?? ''));
+        const code = await regenerateRecovery(this.db, c.account.id, String(msg.password ?? ''));
         this.send(c, { t: 'recoveryCode', code });
       } else if (msg.op === 'logoutAll') {
         logoutAll(this.db, c.account.id);

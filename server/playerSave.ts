@@ -4,10 +4,13 @@ import { TILE_PX } from '../src/core/map/tiles';
 import { defaultSave, migrate, newAdventure, SaveData } from '../src/systems/saveSchema';
 import type { OwnedPokemon } from '../src/core/progression';
 import type { SqlDb as Db } from './sql';
+import { freshOnlineSave } from './advSave';
 
 export const STARTERS = ['bulbasaur', 'charmander', 'squirtle', 'pikachu', 'eevee'] as const;
 
 export function seedSave(starter = 'charmander', now = Date.now()): SaveData {
+  // the online Vietnam Odyssey: the professor offers every generation's starter in game
+  if (starter === 'pick') return freshOnlineSave();
   if (!(STARTERS as readonly string[]).includes(starter) || !POKEMON.has(starter)) starter = 'charmander';
   const s = defaultSave();
   s.adventure = newAdventure('vietnam');
@@ -59,6 +62,14 @@ export function activePokemon(save: SaveData): OwnedPokemon | null {
   if (!adv?.activeUid) return null;
   const p = save.collection.find((c) => c.uid === adv.activeUid);
   return p ?? null;
+}
+
+/** Pokémon shown beside the trainer to others: the active one, else (campaign: the whole party is out) the party lead. */
+export function leadPokemon(save: SaveData): OwnedPokemon | null {
+  const active = activePokemon(save);
+  if (active) return active;
+  const uid = save.adventure?.party?.[0];
+  return uid ? save.collection.find((p) => p.uid === uid) ?? null : null;
 }
 
 export function playerLevel(save: SaveData): number {

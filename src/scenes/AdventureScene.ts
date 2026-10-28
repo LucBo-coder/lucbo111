@@ -4,6 +4,8 @@ import { addCoopHud, rewardCoopHost } from './coopHud';
 import { passportPages, stampVisit } from '../adventure/passport';
 import { OnlinePresence } from '../adventure/OnlinePresence';
 import { onEmergencySave } from '../systems/crashGuard';
+import { WorldOnline } from '../adventure/WorldOnline';
+import { worldSession } from '../net/worldSession';
 import { net } from '../net/session';
 import { skillFailText } from '../net/skillWire';
 import { keptMask, setKept } from '../core/keptSkills';
@@ -92,8 +94,8 @@ export const PORTRAITS: Record<string, string> = {
 };
 
 export interface Interactable {
-  /** 'remote' = the other player of an online session (shared open world) */
-  kind: MapObject['kind'] | 'remote';
+  /** 'remote' = the other player of an online session (shared open world); 'online' = a player of Thế giới online */
+  kind: MapObject['kind'] | 'remote' | 'online';
   id: string;
   x: number;
   y: number;
@@ -384,7 +386,12 @@ export class AdventureScene extends Phaser.Scene {
     audio.play('levelup');
     if (coopSession.active && net.role === 'host') this.startCoopHost();
     else if (net.connected) this.startPresence();
+    // Thế giới online: this campaign is an account's, other players share the map
+    if (worldSession.active) this.online = new WorldOnline(this);
   }
+
+  /** Thế giới online (signed-in account): other players, chat, friends, party. */
+  online: WorldOnline | null = null;
 
   /** Shared open world with the other player of the online session (see OnlinePresence). */
   presence: OnlinePresence | null = null;
@@ -414,6 +421,7 @@ export class AdventureScene extends Phaser.Scene {
 
   private shutdown(): void {
     this.offEmergency?.(); this.offEmergency = null;
+    this.online?.destroy(); this.online = null;
     this.coopHost?.destroy(); this.coopHost = null;
     this.presence?.destroy();
     this.presence = null;
@@ -1056,6 +1064,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateAtmosphere(dt);
     this.updateExploration();
     this.presence?.update(performance.now());
+    this.online?.update(performance.now());
     this.updateWalkers(dt);
     this.updateFishing(dt);
     this.updateErrands(dt);
@@ -1276,7 +1285,9 @@ export class AdventureScene extends Phaser.Scene {
       const k = it.kind === 'dock' ? it.obj.data as unknown as Dock : null;
       const d = k ? Math.min(Math.hypot((k.x + 0.5) * TILE_PX - t.x, (k.y + 0.5) * TILE_PX - t.y), Math.hypot((k.wx + 0.5) * TILE_PX - t.x, (k.wy + 0.5) * TILE_PX - t.y))
         : Math.hypot(it.x - t.x, it.y - t.y);
-      if (d < bd) { bd = d; best = it; }
+      // another player of Thế giới online never takes E away from an NPC / sign / chest standing near them
+      const rank = it.kind === 'online' ? d + 48 : d;
+      if (rank < bd) { bd = rank; best = it; }
       if (it.marker) {
         const giver = it.kind === 'npc' || it.kind === 'trainer' ? this.state.quests.forGiver(it.id) : [];
         const waiting = giver.some((q) => this.state.quests.states[q.id].status === 'available');
@@ -1361,6 +1372,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'rescue': return this.rescue(it);
       case 'exit': return this.leaveDungeon(false);
       case 'remote': return this.presence?.challenge();
+      case 'online': return this.online?.openCard(it.id);
       case 'node': return this.useNode(it);
       case 'shrine': return this.shrines?.interact(it.id, it.obj.data as never);
       case 'secret': return this.secrets?.interact(it.id);

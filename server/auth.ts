@@ -1,4 +1,5 @@
-import { createHash, randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
+import { createHash, randomBytes, randomUUID, scrypt, timingSafeEqual } from 'node:crypto';
+import { promisify } from 'node:util';
 import type { SaveData } from '../src/systems/saveSchema';
 import type { ServerAccount } from '../src/net/serverProtocol';
 import type { SqlDb as Db } from './sql';
@@ -7,13 +8,15 @@ import { activePokemon, readSave, seedSave } from './playerSave';
 const SCRYPT_KEYLEN = 64;
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const USERNAME_RE = /^[A-Za-z0-9_]{3,20}$/;
+const scryptAsync = promisify(scrypt) as (password: string, salt: string, keylen: number) => Promise<Buffer>;
 
 export class AuthError extends Error {
   constructor(readonly code: string, message: string) { super(message); }
 }
 
-function hashPassword(password: string, salt: string): string {
-  return scryptSync(password, salt, SCRYPT_KEYLEN).toString('hex');
+/** Async on purpose: scrypt is slow and must not freeze the game server for every other player. */
+async function hashPassword(password: string, salt: string): Promise<string> {
+  return (await scryptAsync(password, salt, SCRYPT_KEYLEN)).toString('hex');
 }
 
 function hashToken(token: string): string {
@@ -46,11 +49,18 @@ function normalizeCode(raw: string): string {
   return String(raw ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
-function setRecovery(db: Db, accountId: string): string {
+interface PreparedRecovery { code: string; salt: string; hash: string }
+
+/** Hashes a new recovery code before the database transaction opens (the transaction itself is synchronous). */
+async function prepareRecovery(): Promise<PreparedRecovery> {
   const code = newRecoveryCode();
   const salt = randomBytes(16).toString('hex');
-  db.run('UPDATE accounts SET recovery_salt = ?, recovery_hash = ? WHERE id = ?', salt, hashPassword(normalizeCode(code), salt), accountId);
-  return code;
+  return { code, salt, hash: await hashPassword(normalizeCode(code), salt) };
+}
+
+function storeRecovery(db: Db, accountId: string, rec: PreparedRecovery): string {
+  db.run('UPDATE accounts SET recovery_salt = ?, recovery_hash = ? WHERE id = ?', rec.salt, rec.hash, accountId);
+  return rec.code;
 }
 
 function checkPassword(password: string): void {
@@ -59,9 +69,9 @@ function checkPassword(password: string): void {
   }
 }
 
-function matches(hashHex: string, secret: string, salt: string): boolean {
+async function matches(hashHex: string, secret: string, salt: string): Promise<boolean> {
   const expected = Buffer.from(hashHex, 'hex');
-  const actual = Buffer.from(hashPassword(secret, salt), 'hex');
+  const actual = Buffer.from(await hashPassword(secret, salt), 'hex');
   return expected.length === actual.length && timingSafeEqual(expected, actual);
 }
 
@@ -87,23 +97,26 @@ function createSession(db: Db, accountId: string, ip?: string): string {
   return token;
 }
 
-export function register(db: Db, username: string, password: string, displayName?: string, starter?: string, ip?: string): AuthResult {
+export async function register(db: Db, username: string, password: string, displayName?: string, starter?: string, ip?: string): Promise<AuthResult> {
   const user = String(username ?? '').trim();
   if (!USERNAME_RE.test(user)) throw new AuthError('BAD_USERNAME', 'Tên đăng nhập 3–20 ký tự: chữ, số, dấu _.');
   checkPassword(password);
-  if (db.one('SELECT 1 AS x FROM accounts WHERE username = ?', user)) {
-    throw new AuthError('USERNAME_TAKEN', 'Tên đăng nhập đã có người dùng.');
-  }
   const id = randomUUID();
   const salt = randomBytes(16).toString('hex');
   const now = Date.now();
   const save = seedSave(starter, now);
   const active = activePokemon(save);
   const pos = save.adventure?.pos ?? { x: 2304, y: 3008 };
+  const passHash = await hashPassword(password, salt);
+  const recovery = await prepareRecovery();
   const token = db.tx(() => {
+    // checked inside the transaction: two registrations of the same name cannot both pass
+    if (db.one('SELECT 1 AS x FROM accounts WHERE username = ?', user)) {
+      throw new AuthError('USERNAME_TAKEN', 'Tên đăng nhập đã có người dùng.');
+    }
     db.run(
       'INSERT INTO accounts (id, username, display_name, avatar, pass_salt, pass_hash, role, banned, created_at, last_login) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)',
-      id, user, cleanName(displayName || user), 'avatar-1', salt, hashPassword(password, salt), 'player', now, now,
+      id, user, cleanName(displayName || user), 'avatar-1', salt, passHash, 'player', now, now,
     );
     db.run(
       'INSERT INTO players (account_id, save_json, region, x, y, facing, active_uid, updated_at, last_seen) VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?)',
@@ -111,18 +124,18 @@ export function register(db: Db, username: string, password: string, displayName
     );
     db.run('INSERT INTO audit_log (account_id, action, detail_json, created_at, ip) VALUES (?, ?, ?, ?, ?)',
       id, 'account.register', JSON.stringify({ username: user, starter: starter ?? 'charmander' }), now, ip ?? null);
-    return { session: createSession(db, id, ip), code: setRecovery(db, id) };
+    return { session: createSession(db, id, ip), code: storeRecovery(db, id, recovery) };
   });
   const row = db.one<AccountRow>('SELECT * FROM accounts WHERE id = ?', id)!;
   return { token: token.session, account: view(row), save, recoveryCode: token.code };
 }
 
-export function login(db: Db, username: string, password: string, ip?: string): AuthResult {
+export async function login(db: Db, username: string, password: string, ip?: string): Promise<AuthResult> {
   const user = String(username ?? '').trim();
   const row = db.one<AccountRow>('SELECT * FROM accounts WHERE username = ?', user);
   if (!row) throw new AuthError('BAD_CREDENTIALS', 'Sai tên đăng nhập hoặc mật khẩu.');
   if (row.banned) throw new AuthError('BANNED', 'Tài khoản đã bị khóa.');
-  if (!matches(row.pass_hash, String(password ?? ''), row.pass_salt)) {
+  if (!(await matches(row.pass_hash, String(password ?? ''), row.pass_salt))) {
     throw new AuthError('BAD_CREDENTIALS', 'Sai tên đăng nhập hoặc mật khẩu.');
   }
   const now = Date.now();
@@ -158,44 +171,48 @@ export function purgeExpiredSessions(db: Db): number {
 }
 
 /** Forgotten password: the recovery code resets it, revokes every session and is replaced by a new code. */
-export function recover(db: Db, username: string, code: string, newPassword: string, ip?: string): AuthResult {
+export async function recover(db: Db, username: string, code: string, newPassword: string, ip?: string): Promise<AuthResult> {
   checkPassword(newPassword);
   const row = db.one<AccountRow & { recovery_salt: string | null; recovery_hash: string | null }>('SELECT * FROM accounts WHERE username = ?', String(username ?? '').trim());
-  if (!row || !row.recovery_hash || !row.recovery_salt || !matches(row.recovery_hash, normalizeCode(code), row.recovery_salt)) {
+  if (!row || !row.recovery_hash || !row.recovery_salt || !(await matches(row.recovery_hash, normalizeCode(code), row.recovery_salt))) {
     throw new AuthError('BAD_RECOVERY', 'Tên đăng nhập hoặc mã khôi phục không đúng.');
   }
   if (row.banned) throw new AuthError('BANNED', 'Tài khoản đã bị khóa.');
   const now = Date.now();
   const salt = randomBytes(16).toString('hex');
+  const passHash = await hashPassword(newPassword, salt);
+  const recovery = await prepareRecovery();
   const out = db.tx(() => {
-    db.run('UPDATE accounts SET pass_salt = ?, pass_hash = ?, password_changed_at = ?, last_login = ? WHERE id = ?', salt, hashPassword(newPassword, salt), now, now, row.id);
+    db.run('UPDATE accounts SET pass_salt = ?, pass_hash = ?, password_changed_at = ?, last_login = ? WHERE id = ?', salt, passHash, now, now, row.id);
     db.run('DELETE FROM sessions WHERE account_id = ?', row.id);
     db.run('INSERT INTO audit_log (account_id, action, created_at, ip) VALUES (?, ?, ?, ?)', row.id, 'account.recover', now, ip ?? null);
-    return { session: createSession(db, row.id, ip), code: setRecovery(db, row.id) };
+    return { session: createSession(db, row.id, ip), code: storeRecovery(db, row.id, recovery) };
   });
   return { token: out.session, account: view(row), save: readSave(db, row.id), recoveryCode: out.code };
 }
 
 /** Logged-in password change: needs the current password; other sessions are signed out. */
-export function changePassword(db: Db, accountId: string, keepToken: string, oldPassword: string, newPassword: string): void {
+export async function changePassword(db: Db, accountId: string, keepToken: string, oldPassword: string, newPassword: string): Promise<void> {
   checkPassword(newPassword);
   const row = db.one<AccountRow>('SELECT * FROM accounts WHERE id = ?', accountId);
-  if (!row || !matches(row.pass_hash, String(oldPassword ?? ''), row.pass_salt)) throw new AuthError('BAD_CREDENTIALS', 'Mật khẩu hiện tại không đúng.');
+  if (!row || !(await matches(row.pass_hash, String(oldPassword ?? ''), row.pass_salt))) throw new AuthError('BAD_CREDENTIALS', 'Mật khẩu hiện tại không đúng.');
   const salt = randomBytes(16).toString('hex');
   const now = Date.now();
+  const passHash = await hashPassword(newPassword, salt);
   db.tx(() => {
-    db.run('UPDATE accounts SET pass_salt = ?, pass_hash = ?, password_changed_at = ? WHERE id = ?', salt, hashPassword(newPassword, salt), now, accountId);
+    db.run('UPDATE accounts SET pass_salt = ?, pass_hash = ?, password_changed_at = ? WHERE id = ?', salt, passHash, now, accountId);
     db.run('DELETE FROM sessions WHERE account_id = ? AND token_hash <> ?', accountId, hashToken(keepToken));
     db.run('INSERT INTO audit_log (account_id, action, created_at) VALUES (?, ?, ?)', accountId, 'account.password', now);
   });
 }
 
 /** New recovery code (old one stops working); requires the current password. */
-export function regenerateRecovery(db: Db, accountId: string, password: string): string {
+export async function regenerateRecovery(db: Db, accountId: string, password: string): Promise<string> {
   const row = db.one<AccountRow>('SELECT * FROM accounts WHERE id = ?', accountId);
-  if (!row || !matches(row.pass_hash, String(password ?? ''), row.pass_salt)) throw new AuthError('BAD_CREDENTIALS', 'Mật khẩu hiện tại không đúng.');
+  if (!row || !(await matches(row.pass_hash, String(password ?? ''), row.pass_salt))) throw new AuthError('BAD_CREDENTIALS', 'Mật khẩu hiện tại không đúng.');
+  const recovery = await prepareRecovery();
   db.run('INSERT INTO audit_log (account_id, action, created_at) VALUES (?, ?, ?)', accountId, 'account.recovery_code', Date.now());
-  return setRecovery(db, accountId);
+  return storeRecovery(db, accountId, recovery);
 }
 
 export function logoutAll(db: Db, accountId: string): void {

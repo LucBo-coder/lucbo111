@@ -65,6 +65,28 @@ class SaveStore {
   /** Player identity shared by every slot (name + avatar survive NEW GAME; older saves migrate their slot name). */
   profile: PlayerProfile = { name: DEFAULT_PLAYER_NAME, avatar: DEFAULT_AVATAR };
   private db: IDBDatabase | null = null;
+  /**
+   * Online world: the active save belongs to an account on the server. Saves go to `remote` (never into a local
+   * slot); leaving the online world reloads the local slot.
+   */
+  private remote: ((save: SaveData, urgent: boolean) => void) | null = null;
+
+  get online(): boolean { return !!this.remote; }
+
+  /** Plays `save` (an online account's) instead of the local slot until `leaveRemote`. */
+  enterRemote(save: SaveData, upload: (save: SaveData, urgent: boolean) => void): void {
+    save.settings = this.data.settings;
+    save.playerName = this.profile.name;
+    this.data = save;
+    this.remote = upload;
+  }
+
+  /** Back to the local slot (the online save stays on the server). */
+  async leaveRemote(): Promise<void> {
+    if (!this.remote) return;
+    this.remote = null;
+    await this.loadSlot(this.slot);
+  }
   /** memory fallback when IndexedDB is unavailable */
   private mem = new Map<string, unknown>();
 
@@ -159,6 +181,12 @@ class SaveStore {
   async save(next: SaveData = this.data): Promise<void> {
     this.data = next;
     next.playerName = this.profile.name;
+    if (this.remote) {
+      next.savedAt = Date.now();
+      this.remote(next, false);
+      await this.put(META_KEY, { activeSlot: this.slot, settings: next.settings, profile: this.profile, legacyMigrated: true } satisfies SaveMeta).catch(() => undefined);
+      return;
+    }
     try {
       if (!isEmptySave(next)) {
         next.savedAt = Date.now();
@@ -178,6 +206,11 @@ class SaveStore {
    */
   rescue(): void {
     const next = this.data;
+    if (this.remote) {
+      next.savedAt = Date.now();
+      this.remote(next, true);
+      return;
+    }
     if (isEmptySave(next)) return;
     next.savedAt = Date.now();
     try {

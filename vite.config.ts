@@ -22,5 +22,7 @@ export default defineConfig({
   test: {
     include: ['tests/**/*.test.ts'],
     environment: 'node',
+    // socket tests wait on real timers; too many parallel files starve them and time out
+    poolOptions: { threads: { minThreads: 1, maxThreads: 4 }, forks: { minForks: 1, maxForks: 4 } },
   },
 } as never);

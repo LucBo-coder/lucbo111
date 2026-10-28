@@ -352,15 +352,15 @@ describe('V7 PC terminal, accounts and portals', () => {
     expect(w.save.collection.length).toBe(a.welcome.save.collection.length);
     expect(server!.db.one<{ n: number }>('SELECT COUNT(*) AS n FROM sessions WHERE account_id = ?', a.welcome.account.id)!.n).toBe(1);
     expect(() => resume(server!.db, oldToken)).toThrow();
-    expect(() => login(server!.db, 'rc_a', 'secret123')).toThrow();
-    expect(login(server!.db, 'rc_a', 'newpass1').account.username).toBe('rc_a');
-    expect(() => recover(server!.db, 'rc_a', code, 'another1')).toThrow();
+    await expect(login(server!.db, 'rc_a', 'secret123')).rejects.toThrow();
+    expect((await login(server!.db, 'rc_a', 'newpass1')).account.username).toBe('rc_a');
+    await expect(recover(server!.db, 'rc_a', code, 'another1')).rejects.toThrow();
   });
 
   it('changing the password needs the current one and signs out other devices', async () => {
     boot();
     const a = await client('cp_a');
-    const other = login(server!.db, 'cp_a', 'secret123').token;
+    const other = (await login(server!.db, 'cp_a', 'secret123')).token;
     a.send({ t: 'account', actionId: 'cp_bad', op: 'changePassword', password: 'wrong', newPassword: 'newpass1' });
     expect((await a.next('actionError')).code).toBe('BAD_CREDENTIALS');
     a.send({ t: 'account', actionId: 'cp_ok', op: 'changePassword', password: 'secret123', newPassword: 'newpass1' });

@@ -4,7 +4,8 @@ import type { SaveData } from '../systems/saveSchema';
 // The client only *requests* actions; the server validates ownership/cooldowns/inventory, mutates the
 // canonical save inside a transaction and sends back the authoritative state. Presence is server-driven.
 
-export const SERVER_PROTOCOL = 2;
+/** 3: the online world runs the full Vietnam Odyssey campaign in the browser (adv.save / adv.where). */
+export const SERVER_PROTOCOL = 3;
 
 export interface ServerAccount {
   id: string;
@@ -173,7 +174,11 @@ export type ClientMsg =
   | { t: 'whisper'; actionId: string; target: string; body: string }
   | { t: 'emote'; kind: EmoteKind }
   | { t: 'alpha.attack'; actionId: string }
-  | { t: 'ping'; at?: number };
+  | { t: 'ping'; at?: number }
+  /** one part of the compressed campaign save (base64 deflate-raw JSON); the server stores it once all parts arrived */
+  | { t: 'adv.save'; seq: number; part: number; parts: number; data: string }
+  /** the map the campaign is on (region or dungeon) and the position there: others in the same place see you */
+  | { t: 'adv.where'; region: string; x: number; y: number };
 
 export type ServerMsg =
   | { t: 'saveSync'; save: SaveData }
@@ -200,4 +205,6 @@ export type ServerMsg =
   | { t: 'petFx'; accountId: string; kind: 'summon' | 'recall'; species: string | null; x: number; y: number }
   | { t: 'emote'; accountId: string; kind: EmoteKind; at: number }
   | { t: 'notice'; message: string; level?: 'info' | 'warn' }
-  | { t: 'pong'; at?: number; serverTime: number };
+  | { t: 'pong'; at?: number; serverTime: number }
+  /** campaign save `seq` is stored (or rejected with a reason) */
+  | { t: 'saved'; seq: number; ok: boolean; code?: string; message?: string };

@@ -1,0 +1,35 @@
+/* Thế giới online over the Vietnam Odyssey map: a small button, a side drawer (chat / friends / party / more),
+   the last chat lines and a player card. Pointer events only on the controls, never on the map. */
+.wo-root { position: fixed; inset: 0; pointer-events: none; z-index: 30; font-family: var(--ol-font); color: var(--ol-text); font-size: 20px; }
+.wo-root button, .wo-root input, .wo-root select, .wo-drawer, .wo-card, .wo-mini { pointer-events: auto; }
+.wo-root button { font: inherit; }
+/* .ol-panel (onlineTheme.css) sets position: relative and loads later: the drawer and card must win over it */
+.wo-root .wo-drawer, .wo-root .wo-card { position: absolute; }
+.wo-pill { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); min-height: 38px; padding: 4px 14px; font-size: 20px; }
+.wo-pill[data-off="1"] { --c: #7a3a24; --hi: #d0683c; }
+.wo-toast { position: absolute; top: 54px; left: 50%; transform: translateX(-50%); max-width: min(90vw, 560px); padding: 6px 12px;
+  background: rgba(10, 12, 20, .82); border: 1px solid var(--ol-edge-hi); white-space: pre-line; text-align: center; transition: opacity .6s; }
+.wo-toast.faded { opacity: 0; }
+.wo-mini { position: absolute; left: 10px; bottom: 150px; max-width: min(70vw, 440px); padding: 4px 8px; font-size: 18px; line-height: 1.15;
+  background: rgba(10, 12, 20, .62); white-space: pre-line; cursor: pointer; }
+.wo-drawer { position: absolute; top: 52px; right: 8px; bottom: 8px; width: min(380px, calc(100vw - 16px)); display: flex; flex-direction: column; gap: 8px; padding: 10px; }
+.wo-drawer[hidden], .wo-card[hidden], .wo-mini[hidden], .wo-toast[hidden] { display: none; }
+.wo-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.wo-tabs button { flex: 1; min-height: 36px; padding: 2px 6px; font-size: 18px; }
+.wo-tabs button[aria-selected="true"] { border-color: var(--ol-gold); }
+.wo-panel { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.wo-panel[hidden] { display: none; }
+.wo-panel h2 { margin: 6px 0 0; font-size: 22px; font-weight: normal; color: var(--ol-gold); }
+.wo-panel p { margin: 0; }
+.wo-log { flex: 1; min-height: 120px; overflow-y: auto; white-space: pre-line; background: var(--ol-field); padding: 6px; font-size: 18px; }
+.wo-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.wo-row input { flex: 1; min-width: 0; }
+.wo-row button, .wo-card button { min-height: 34px; padding: 2px 10px; font-size: 18px; }
+.wo-entry { padding: 4px 6px; border: 1px solid var(--ol-edge); background: rgba(0, 0, 0, .2); }
+.wo-help { color: var(--ol-dim); font-size: 17px; }
+.wo-card { position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%); width: min(92vw, 460px); padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.wo-code { font-size: 26px; color: var(--ol-gold); letter-spacing: 2px; user-select: all; }
+@media (max-width: 640px) {
+  .wo-drawer { top: 50px; left: 8px; right: 8px; width: auto; }
+  .wo-mini { bottom: 210px; }
+}

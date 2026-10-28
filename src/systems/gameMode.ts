@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { coopSession } from '../net/coop';
 import { net } from '../net/session';
+import { worldSession } from '../net/worldSession';
+import { saveStore } from './save';
 
 // GameModeManager: the single place that starts/stops mode scenes so Survivor and Adventure
 // never run at the same time or leak each other's systems.
@@ -35,6 +37,12 @@ class GameModeManager {
     if (coopSession.active) { coopSession.active = false; net.leave(); }
     this.stopAll(scene);
     this.current = null;
+    if (worldSession.active) {
+      // leaving Thế giới online: the account's last save reaches the server, then the local slot comes back
+      const game = scene.game;
+      void worldSession.end(worldSession.signOut).then(() => saveStore.leaveRemote()).finally(() => game.scene.start('Menu'));
+      return;
+    }
     scene.scene.start('Menu');
   }
 }
