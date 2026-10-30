@@ -712,10 +712,11 @@
    },
    "money": 16500,
    "flag": "badge:thai-nguyen",
-   "message": "Nhận Huy hiệu Đệ Nhất Danh Trà (Thái Nguyên)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Đệ Nhất Danh Trà (Thái Nguyên)! Đường tới Tuyên Quang đã mở: Quốc lộ 37."
   }
  },
  "portals": [
+  {"id": "portal-ty-next", "name": "Quốc lộ 37 — đường lên Tuyên Quang", "x": 112, "y": 5, "to": "tuyen-quang", "toX": 64, "toY": 104, "requires": ["badge:thai-nguyen"], "hint": "Đường tới Tuyên Quang mở cho người có Huy hiệu Đệ Nhất Danh Trà — hạ boss Thái Nguyên trước."},
   {
    "id": "portal-ty-cb",
    "name": "Quốc lộ 3 — về Cao Bằng",

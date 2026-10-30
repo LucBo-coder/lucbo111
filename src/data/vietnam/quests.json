@@ -16267,5 +16267,534 @@
     "Hồ trong veo rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-tq-1",
+  "kind": "main",
+  "title": "Vó ngựa trên đèo",
+  "giver": "tq-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:thai-nguyen"
+  ],
+  "description": "Lên Tuyên Quang: ghé Trung tâm Pokémon rồi lên đèo Mã Pí Lèng hỏi ông già người Mông.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-tuyen-quang-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Tuyên Quang",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "tq-mapileng",
+    "count": 1,
+    "text": "Lên đèo Mã Pí Lèng (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-elder",
+    "count": 1,
+    "text": "Hỏi Ông già người Mông",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 2000,
+   "reputation": 10,
+   "flags": [
+    "landmark:ma-pi-leng"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng lên Tuyên Quang! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên đèo Mã Pí Lèng hỏi ông già người Mông, đá lở mấy đêm rồi."
+   ],
+   "progress": [
+    "Đèo Mã Pí Lèng ở phía tây bắc."
+   ],
+   "complete": [
+    "Ông nói Ngựa Thần nổi giận vì tiếng mìn... Cô lái thuyền Na Hang và cụ giữ cây đa có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-2",
+  "kind": "main",
+  "title": "Đá lở Nho Quế",
+  "giver": "tq-guide",
+  "requires": [
+   "vn-tq-1"
+  ],
+  "description": "Ra hồ Na Hang hỏi cô lái thuyền, rồi về Tân Trào hỏi cụ giữ cây đa.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tq-nahang",
+    "count": 1,
+    "text": "Ra hồ Na Hang (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-lake",
+    "count": 1,
+    "text": "Hỏi Cô lái thuyền Na Hang",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-tantrao",
+    "count": 1,
+    "text": "Hỏi Cụ giữ cây đa Tân Trào",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 2050,
+   "reputation": 15,
+   "flags": [
+    "landmark:tan-trao"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cô lái thuyền nghe đá lở trên đèo. Em ra hỏi, rồi về Tân Trào hỏi thêm."
+   ],
+   "progress": [
+    "Hồ ở phía bắc, Tân Trào ở phía tây."
+   ],
+   "complete": [
+    "Muốn lên đỉnh đèo gặp Ngựa Thần, phải qua người dắt ngựa."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-3",
+  "kind": "main",
+  "title": "Ngựa Thần Mã Pí Lèng",
+  "giver": "tq-guide",
+  "requires": [
+   "vn-tq-2"
+  ],
+  "description": "Thắng Người dắt ngựa Mã Pí Lèng để lên đỉnh đèo, rồi làm Mudsdale nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tq-gate-t",
+    "count": 1,
+    "text": "Thắng Người dắt ngựa Mã Pí Lèng",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "mudsdale",
+    "count": 1,
+    "text": "Đánh bại Mudsdale — Ngựa Thần Mã Pí Lèng",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2300,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Người dắt ngựa canh đường lên đỉnh. Em đủ sức thì lên."
+   ],
+   "progress": [
+    "Đỉnh đèo ở góc tây bắc."
+   ],
+   "complete": [
+    "Ngựa Thần yên rồi, đèo thông đường! Huy hiệu Mã Pí Lèng là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-rescue",
+  "kind": "side",
+  "title": "Hươu núi đá",
+  "giver": "tq-elder",
+  "requires": [
+   "vn-tq-1"
+  ],
+  "description": "Một con Stantler bị bầy sói vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "tq-deer-rescue",
+    "count": 1,
+    "text": "Giải cứu Stantler ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-elder",
+    "count": 1,
+    "text": "Báo cho Ông già người Mông",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1750,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con hươu bị sói vây ở góc tây núi. Em giúp ông!"
+   ],
+   "progress": [
+    "Góc tây đèo Mã Pí Lèng."
+   ],
+   "complete": [
+    "Hươu về rừng rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-glide",
+  "kind": "side",
+  "title": "Bay qua Na Hang",
+  "giver": "tq-lake",
+  "requires": [
+   "vn-tq-1"
+  ],
+  "description": "Người bay lượn Na Hang thách ai dám đấu.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tq-lake-t",
+    "count": 1,
+    "text": "Thắng Người bay lượn Na Hang",
+    "marker": {
+     "x": 94,
+     "y": 24,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái thuyền Na Hang",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sharp-beak": 1
+   },
+   "worldExp": 1600,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh bay lượn ham đấu lắm. Em thử một trận nha."
+   ],
+   "progress": [
+    "Anh ấy ở bờ đông hồ."
+   ],
+   "complete": [
+    "Ảnh phục em rồi. Mai cô chở em ra núi Pác Tạ."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-banyan",
+  "kind": "side",
+  "title": "Rừng quanh cây đa",
+  "giver": "tq-tantrao",
+  "requires": [
+   "vn-tq-2"
+  ],
+  "description": "Kẻ chặt gỗ phá rừng quanh Tân Trào.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tq-tantrao-t",
+    "count": 1,
+    "text": "Thắng Kẻ chặt gỗ Tân Trào",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-tantrao",
+    "count": 1,
+    "text": "Báo cho Cụ giữ cây đa Tân Trào",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "protein": 1
+   },
+   "worldExp": 1550,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa chặt gỗ ở góc tây nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Rừng yên rồi, cây đa xanh lại. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-terrace",
+  "kind": "side",
+  "title": "Bờ ruộng bậc thang",
+  "giver": "tq-farm",
+  "requires": [
+   "vn-tq-1"
+  ],
+  "description": "Kẻ phá bờ ruộng làm nước chảy hết khỏi ruộng bậc thang.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tq-hoangsuphi",
+    "count": 1,
+    "text": "Đến Hoàng Su Phì (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 89,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tq-farm-t",
+    "count": 1,
+    "text": "Thắng Kẻ phá bờ ruộng",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-farm",
+    "count": 1,
+    "text": "Báo cho Chú trồng lúa Hoàng Su Phì",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "poison-barb": 1
+   },
+   "worldExp": 1550,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng đó phá bờ ruộng. Em nói chuyện với nó giùm chú."
+   ],
+   "progress": [
+    "Nó ở góc đông nam ruộng."
+   ],
+   "complete": [
+    "Nó hứa đắp lại bờ rồi. Bao gạo mới này chú tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-stone",
+  "kind": "side",
+  "title": "Đá tai mèo",
+  "giver": "tq-stone",
+  "requires": [
+   "vn-tq-1"
+  ],
+  "description": "Người đẽo đá Đồng Văn muốn thử Pokémon đá của mình.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tq-dongvan",
+    "count": 1,
+    "text": "Đến cao nguyên đá Đồng Văn (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tq-stone-t",
+    "count": 1,
+    "text": "Thắng Người đẽo đá Đồng Văn",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-stone",
+    "count": 1,
+    "text": "Báo cho Người Mông Đồng Văn",
+    "marker": {
+     "x": 116,
+     "y": 40,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1600,
+   "reputation": 12,
+   "flags": [
+    "landmark:dong-van"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Anh đẽo đá ham đấu lắm. Em thử với ảnh."
+   ],
+   "progress": [
+    "Anh ấy ở phía nam cao nguyên."
+   ],
+   "complete": [
+    "Bát ngô rang này tặng em, ăn lấy sức qua đèo."
+   ]
+  }
+ },
+ {
+  "id": "vn-tq-eco",
+  "kind": "side",
+  "title": "Hồ Na Hang trong xanh",
+  "giver": "tq-lake",
+  "requires": [
+   "vn-tq-3"
+  ],
+  "description": "Rác du lịch dạt bờ hồ Na Hang.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:tuyen-quang",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "tuyen-quang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tq-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái thuyền Na Hang",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "tuyen-quang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1600,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Đèo yên rồi, giờ dọn hồ. Em phụ cô vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Hồ trong veo rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

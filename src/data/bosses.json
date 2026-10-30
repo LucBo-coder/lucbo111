@@ -2059,5 +2059,58 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "mudsdale",
+  "name": "Mudsdale — Ngựa Thần Mã Pí Lèng",
+  "types": [
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 125,
+   "def": 100,
+   "spa": 55,
+   "spd": 85,
+   "spe": 35
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "high_horsepower",
+   "heavy_slam"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "mudbray",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Ngựa Thần dậm vó — cả con đèo rung chuyển!",
+  "exp": 150,
+  "sprite": "mudsdale",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "earth_power",
+   "volley": "mud_shot",
+   "nova": "earthquake",
+   "field": "sand_tomb",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "stomping_tantrum",
+   "ultimateName": "Ngựa Thần Mã Pí Lèng Phi Nước Đại",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

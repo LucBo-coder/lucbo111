@@ -1349,6 +1349,52 @@
      "y": 17
     }
    ]
+  },
+  "tuyen-quang": {
+   "id": "tuyen-quang",
+   "name": "Tuyên Quang",
+   "area": "tq-nahang",
+   "action": "trash",
+   "unlock": "vn-tq-3",
+   "boss": "mudsdale",
+   "label": "Vớt rác trên hồ Na Hang",
+   "done": "Bạn vớt chai nhựa và túi nilon dạt bờ hồ. Hồ Na Hang trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "tuyen-quang-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "tuyen-quang-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "tuyen-quang-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "tuyen-quang-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "tuyen-quang-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "tuyen-quang-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
   }
  }
 }

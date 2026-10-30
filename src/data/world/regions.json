@@ -3930,5 +3930,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-tq-mapileng",
+  "name": "Đèo Mã Pí Lèng",
+  "areas": [
+   "tq-mapileng"
+  ],
+  "biome": "rocky",
+  "level": [
+   85,
+   88
+  ],
+  "elite": [
+   89,
+   91
+  ],
+  "boss": null,
+  "recommended": 87,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tq-nahang",
+  "name": "Hồ Na Hang",
+  "areas": [
+   "tq-nahang"
+  ],
+  "biome": "lake",
+  "level": [
+   84,
+   87
+  ],
+  "elite": [
+   88,
+   90
+  ],
+  "boss": null,
+  "recommended": 86,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tq-tantrao",
+  "name": "Tân Trào — cây đa",
+  "areas": [
+   "tq-tantrao"
+  ],
+  "biome": "forest",
+  "level": [
+   82,
+   85
+  ],
+  "elite": [
+   86,
+   88
+  ],
+  "boss": null,
+  "recommended": 84,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tq-hoangsuphi",
+  "name": "Ruộng bậc thang Hoàng Su Phì",
+  "areas": [
+   "tq-hoangsuphi"
+  ],
+  "biome": "farm",
+  "level": [
+   82,
+   85
+  ],
+  "elite": [
+   86,
+   88
+  ],
+  "boss": null,
+  "recommended": 84,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-tq-dongvan",
+  "name": "Cao nguyên đá Đồng Văn",
+  "areas": [
+   "tq-dongvan"
+  ],
+  "biome": "ruins",
+  "level": [
+   83,
+   86
+  ],
+  "elite": [
+   87,
+   89
+  ],
+  "boss": null,
+  "recommended": 85,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]
