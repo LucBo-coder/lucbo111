@@ -3010,5 +3010,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-nb-hangmua",
+  "name": "Hang Múa",
+  "areas": [
+   "nb-hangmua"
+  ],
+  "biome": "rocky",
+  "level": [
+   69,
+   72
+  ],
+  "elite": [
+   73,
+   75
+  ],
+  "boss": null,
+  "recommended": 71,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-nb-trangan",
+  "name": "Tràng An",
+  "areas": [
+   "nb-trangan"
+  ],
+  "biome": "lake",
+  "level": [
+   67,
+   70
+  ],
+  "elite": [
+   71,
+   73
+  ],
+  "boss": null,
+  "recommended": 69,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-nb-baidinh",
+  "name": "Chùa Bái Đính — Tam Chúc",
+  "areas": [
+   "nb-baidinh"
+  ],
+  "biome": "ruins",
+  "level": [
+   68,
+   71
+  ],
+  "elite": [
+   72,
+   74
+  ],
+  "boss": null,
+  "recommended": 70,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-nb-cucphuong",
+  "name": "Rừng Cúc Phương",
+  "areas": [
+   "nb-cucphuong"
+  ],
+  "biome": "forest",
+  "level": [
+   66,
+   69
+  ],
+  "elite": [
+   70,
+   72
+  ],
+  "boss": null,
+  "recommended": 68,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-nb-tamcoc",
+  "name": "Đồng lúa Tam Cốc",
+  "areas": [
+   "nb-tamcoc"
+  ],
+  "biome": "lake",
+  "level": [
+   66,
+   69
+  ],
+  "elite": [
+   70,
+   72
+  ],
+  "boss": null,
+  "recommended": 68,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

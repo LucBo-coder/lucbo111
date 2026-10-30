@@ -1,0 +1,142 @@
+{
+ "id": "ninh-binh",
+ "name": "Ninh Bình",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 24, "y": 104 },
+ "areas": [
+  { "id": "nb-hangmua", "name": "Hang Múa", "rect": [0, 0, 45, 40], "habitat": "rocky", "level": [69, 72] },
+  { "id": "nb-trangan", "name": "Tràng An", "rect": [46, 0, 100, 35], "habitat": "lake", "level": [67, 70] },
+  { "id": "nb-baidinh", "name": "Chùa Bái Đính — Tam Chúc", "rect": [101, 0, 127, 111], "habitat": "ruins", "level": [68, 71] },
+  { "id": "nb-hoalu", "name": "Cố đô Hoa Lư", "rect": [40, 36, 100, 70], "habitat": "village", "level": [68, 68] },
+  { "id": "nb-cucphuong", "name": "Rừng Cúc Phương", "rect": [0, 41, 39, 111], "habitat": "forest", "level": [66, 69] },
+  { "id": "nb-tamcoc", "name": "Đồng lúa Tam Cốc", "rect": [40, 71, 100, 111], "habitat": "lake", "level": [66, 69], "paddy": { "cell": 6, "rice": 0.3 } }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[24, 107], [24, 86], [50, 76], [62, 64]] },
+  { "w": 3, "pts": [[60, 50], [40, 30], [24, 18]] },
+  { "w": 3, "pts": [[66, 50], [64, 30]] },
+  { "w": 3, "pts": [[74, 56], [110, 56], [112, 20], [112, 5]] },
+  { "w": 3, "pts": [[110, 56], [112, 96]] },
+  { "w": 3, "pts": [[50, 76], [70, 96]] }
+ ],
+ "plaza": [58, 50, 74, 62],
+ "lake": { "cx": 72, "cy": 16, "rx": 18, "ry": 10 },
+ "buildings": [
+  { "id": "nb-center", "name": "Trung tâm Pokémon", "x": 42, "y": 42, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "nb-mart", "name": "Cửa hàng Hoa Lư", "x": 78, "y": 40, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "nb-dinh", "name": "Đền vua Đinh Tiên Hoàng", "x": 86, "y": 40, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "nb-baidinh-temple", "name": "Điện Tam Thế Bái Đính", "x": 114, "y": 34, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "nb-house-1", "name": "Nhà cô Thắm", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "nb-house-2", "name": "Quán cơm cháy", "x": 90, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 68 },
+  { "kind": "log", "x": 20, "y": 70 },
+  { "kind": "haystack", "x": 59, "y": 88 },
+  { "kind": "target", "x": 106, "y": 80 },
+  { "kind": "bucket", "x": 52, "y": 30 }
+ ],
+ "signs": [
+  { "x": 62, "y": 60, "text": ["CỐ ĐÔ HOA LƯ", "Kinh đô đầu tiên của nhà nước phong kiến tập quyền. Phía tây bắc: Hang Múa · Phía bắc: Tràng An · Phía đông: Bái Đính · Phía tây: Cúc Phương · Phía nam: Tam Cốc."] },
+  { "x": 36, "y": 20, "text": ["HANG MÚA", "Năm trăm bậc đá lên đỉnh núi, tượng rồng đá uốn quanh, nhìn xuống đồng lúa Tam Cốc."] },
+  { "x": 60, "y": 32, "text": ["TRÀNG AN", "Thuyền nan len qua hang tối và núi đá vôi. Di sản thế giới kép đầu tiên của Việt Nam."] }
+ ],
+ "npcs": [
+  { "id": "nb-guide", "name": "Cô Thắm Hoa Lư", "sprite": "girl", "x": 70, "y": 60, "lines": [
+    "Chào mừng tới Ninh Bình! Ăn miếng cơm cháy giòn đã con.",
+    "Mấy đêm nay trên đỉnh Hang Múa có con rồng ba đầu, tượng rồng đá nứt cả rồi.",
+    "Cô lái đò Tràng An đi khắp hang, con ra hỏi thử."] },
+  { "id": "nb-boat", "name": "Cô lái đò Tràng An", "sprite": "girl", "x": 50, "y": 30, "lines": [
+    "Chèo đò bằng chân mấy chục năm rồi, hang nào cô cũng thuộc.",
+    "Trong hang có tiếng gầm vọng ra từ phía Hang Múa, ba tiếng một lúc."] },
+  { "id": "nb-mua", "name": "Người giữ bậc đá Hang Múa", "sprite": "villager", "x": 36, "y": 30, "lines": [
+    "Năm trăm bậc lên đỉnh, ai lên tới cũng thở không ra hơi.",
+    "Con rồng ba đầu đậu trên tượng rồng đá, ai lên gần là nó phun lửa."] },
+  { "id": "nb-monk", "name": "Sư chùa Bái Đính", "sprite": "elder", "x": 108, "y": 30, "lines": [
+    "Chùa Bái Đính có pho tượng Phật bằng đồng lớn nhất châu Á.",
+    "Rồng ba đầu kia không ác, nó chỉ giận vì núi đá bị nổ mìn khai thác."] },
+  { "id": "nb-ranger", "name": "Kiểm lâm Cúc Phương", "sprite": "ranger", "x": 14, "y": 60, "lines": [
+    "Cúc Phương là vườn quốc gia đầu tiên của Việt Nam, có cây chò ngàn năm.",
+    "Bầy rắn độc vây con sóc bay ở góc rừng, anh chưa tới kịp."] },
+  { "id": "nb-farmer", "name": "Bác nông dân Tam Cốc", "sprite": "farmer", "x": 60, "y": 86, "lines": [
+    "Mùa lúa chín Tam Cốc vàng rực giữa núi đá, đẹp nhất năm.",
+    "Rồng gầm làm đàn vịt chạy tán loạn khắp đồng."] },
+  { "id": "nb-hist", "name": "Nhà nghiên cứu cố đô", "sprite": "elder", "x": 84, "y": 48, "lines": [
+    "Vua Đinh Tiên Hoàng dẹp loạn mười hai sứ quân, lập kinh đô Hoa Lư năm 968.",
+    "Truyền thuyết kể rồng mẹ dẫn đàn rồng con xuống giúp dân đánh giặc, nên có tên Ninh Bình — Hạ Long cạn."] }
+ ],
+ "trainers": [
+  { "id": "nb-gate-t", "name": "Người leo núi Hang Múa", "sprite": "hiker", "x": 30, "y": 24,
+    "team": [["haxorus", 71], ["goodra", 71], ["flygon", 71]],
+    "challenge": ["Tôi leo năm trăm bậc mỗi ngày. Muốn lên gặp rồng ba đầu phải thắng tôi!"],
+    "win": ["Bạn đủ sức rồi. Rồng ở đỉnh núi phía tây bắc."],
+    "lose": ["Leo lại từ bậc đầu nhé."],
+    "rewards": { "items": { "superpotion": 2, "dragon-scale": 1 }, "exp": 3300 } },
+  { "id": "nb-boat-t", "name": "Người kể chuyện hang tối", "sprite": "elder", "x": 94, "y": 30,
+    "team": [["mismagius", 69], ["dusknoir", 69], ["drifblim", 69]],
+    "challenge": ["Trong hang tối có ma đó nha... Thử đấu với ma không?"],
+    "win": ["Bạn không sợ ma thật."],
+    "lose": ["Ma bắt rồi kìa!"],
+    "rewards": { "items": { "ultraball": 2, "dusk-stone": 1 }, "exp": 3200 } },
+  { "id": "nb-monk-t", "name": "Võ tăng Bái Đính", "sprite": "knight", "x": 118, "y": 44,
+    "team": [["gallade", 70], ["medicham", 70], ["lucario", 70]],
+    "challenge": ["Luyện võ trong chùa để giữ thân tâm. Mời thí chủ."],
+    "win": ["Thí chủ có căn tu. Mô Phật."],
+    "lose": ["Thí chủ về tịnh tâm đã."],
+    "rewards": { "items": { "superpotion": 2, "protein": 1 }, "exp": 3200 } },
+  { "id": "nb-forest-t", "name": "Kẻ bắt bướm trái phép", "sprite": "youngster", "x": 8, "y": 96,
+    "team": [["scolipede", 68], ["galvantula", 68], ["vespiquen", 68]],
+    "challenge": ["Bướm Cúc Phương bán được giá lắm! Đi chỗ khác!"],
+    "win": ["Thôi được, tao thả bướm ra."],
+    "lose": ["Cút!"],
+    "rewards": { "items": { "ultraball": 2, "silver-powder": 1 }, "exp": 3100 } },
+  { "id": "nb-paddy-t", "name": "Người chăn vịt Tam Cốc", "sprite": "farmer", "x": 72, "y": 98,
+    "team": [["stoutland", 68], ["bouffalant", 68], ["gogoat", 68]],
+    "challenge": ["Vịt tui chạy tán loạn hết rồi, bực lắm! Đấu với tui cho đỡ bực!"],
+    "win": ["Đỡ bực rồi. Cảm ơn bạn."],
+    "lose": ["Vẫn còn bực..."],
+    "rewards": { "items": { "sitrus-berry": 3 }, "exp": 3100 } }
+ ],
+ "rescue": { "id": "nb-squirrel-rescue", "x": 8, "y": 48, "species": "cinccino", "level": 69,
+   "guards": [["drapion", 68], ["arbok", 67], ["arbok", 67]], "quest": "vn-nb-rescue", "reporter": "Kiểm lâm Cúc Phương" },
+ "chests": [
+  { "id": "chest-nb-hangmua", "x": 6, "y": 6, "items": { "ultraball": 2, "hard-stone": 1 } },
+  { "id": "chest-nb-trangan", "x": 96, "y": 6, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-nb-baidinh", "x": 122, "y": 104, "items": { "superpotion": 3, "moon-stone": 1 } },
+  { "id": "chest-nb-cucphuong", "x": 6, "y": 106, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-nb-tamcoc", "x": 72, "y": 100, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-nb-nook", "x": 40, "y": 36, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:ninh-binh:nb-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-ninh-binh-center", "name": "Trung tâm Pokémon Hoa Lư", "x": 45, "y": 49 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "hydreigon", "name": "Hydreigon — Rồng Ba Đầu Hang Múa", "x": 18, "y": 8, "level": 72, "respawn": 600, "arena": 260,
+   "requires": ["beat:nb-gate-t"],
+   "hint": "Ba tiếng gầm cùng lúc vang từ đỉnh núi... Người leo núi chưa cho ai lên.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 13000, "flag": "badge:ninh-binh", "message": "Nhận Huy hiệu Hạ Long Cạn (Ninh Bình)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-nb-th", "name": "Quốc lộ 1 — về Thanh Hóa", "x": 24, "y": 107, "to": "thanh-hoa", "toX": 24, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "nb-meadow-1", "table": "meadow-forage", "x": 30, "y": 8 },
+  { "id": "nb-lake-1", "table": "lake-fish", "x": 52, "y": 28 },
+  { "id": "nb-forest-1", "table": "forest-forage", "x": 20, "y": 80 },
+  { "id": "nb-paddy-1", "table": "paddy-fish", "x": 60, "y": 82 },
+  { "id": "nb-meadow-2", "table": "meadow-forage", "x": 116, "y": 80 }
+ ],
+ "field": [
+  { "id": "nb-boulder", "ability": "smash", "x": 44, "y": 36, "nook": { "cx": 40.5, "cy": 36.5, "r": 3, "wall": "boulder" } }
+ ]
+}

@@ -12043,5 +12043,534 @@
     "Bãi sạch rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-nb-1",
+  "kind": "main",
+  "title": "Tượng rồng đá nứt",
+  "giver": "nb-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:thanh-hoa"
+  ],
+  "description": "Tới Ninh Bình: ghé Trung tâm Pokémon rồi ra Tràng An hỏi cô lái đò về tiếng gầm trên núi.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-ninh-binh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Hoa Lư",
+    "marker": {
+     "x": 45,
+     "y": 49,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "nb-trangan",
+    "count": 1,
+    "text": "Đến Tràng An (phía bắc)",
+    "marker": {
+     "x": 75,
+     "y": 26,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-boat",
+    "count": 1,
+    "text": "Hỏi Cô lái đò Tràng An",
+    "marker": {
+     "x": 50,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1500,
+   "reputation": 10,
+   "flags": [
+    "landmark:trang-an"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Ninh Bình! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi ra Tràng An hỏi cô lái đò, có rồng ba đầu trên Hang Múa."
+   ],
+   "progress": [
+    "Tràng An ở phía bắc cố đô."
+   ],
+   "complete": [
+    "Tiếng gầm vọng từ Hang Múa... Sư chùa Bái Đính và người giữ bậc đá có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-2",
+  "kind": "main",
+  "title": "Núi đá bị nổ mìn",
+  "giver": "nb-guide",
+  "requires": [
+   "vn-nb-1"
+  ],
+  "description": "Lên chùa Bái Đính hỏi sư, rồi tới chân Hang Múa hỏi người giữ bậc đá.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "nb-baidinh",
+    "count": 1,
+    "text": "Lên chùa Bái Đính (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-monk",
+    "count": 1,
+    "text": "Hỏi Sư chùa Bái Đính",
+    "marker": {
+     "x": 108,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-mua",
+    "count": 1,
+    "text": "Hỏi Người giữ bậc đá Hang Múa",
+    "marker": {
+     "x": 36,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1550,
+   "reputation": 15,
+   "flags": [
+    "landmark:bai-dinh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Sư Bái Đính hiểu chuyện rồng. Con lên hỏi, rồi tới chân Hang Múa hỏi thêm."
+   ],
+   "progress": [
+    "Bái Đính ở phía đông, Hang Múa ở phía tây bắc."
+   ],
+   "complete": [
+    "Rồng giận vì núi đá bị nổ mìn. Phải qua người leo núi mới lên tới đỉnh."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-3",
+  "kind": "main",
+  "title": "Rồng Ba Đầu Hang Múa",
+  "giver": "nb-guide",
+  "requires": [
+   "vn-nb-2"
+  ],
+  "description": "Thắng Người leo núi Hang Múa để lên đỉnh, rồi làm Hydreigon nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "nb-gate-t",
+    "count": 1,
+    "text": "Thắng Người leo núi Hang Múa",
+    "marker": {
+     "x": 30,
+     "y": 24,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "hydreigon",
+    "count": 1,
+    "text": "Đánh bại Hydreigon — Rồng Ba Đầu Hang Múa",
+    "marker": {
+     "x": 18,
+     "y": 8,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1800,
+   "reputation": 20,
+   "flags": [
+    "landmark:hang-mua"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Người leo núi canh năm trăm bậc đá. Con đủ sức thì lên."
+   ],
+   "progress": [
+    "Đỉnh Hang Múa ở góc tây bắc."
+   ],
+   "complete": [
+    "Rồng ba đầu bay về hang, tượng đá còn nguyên! Huy hiệu Hạ Long Cạn là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-rescue",
+  "kind": "side",
+  "title": "Sóc bay Cúc Phương",
+  "giver": "nb-ranger",
+  "requires": [
+   "vn-nb-1"
+  ],
+  "description": "Một con Cinccino bị bầy rắn độc vây ở góc rừng Cúc Phương.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "nb-squirrel-rescue",
+    "count": 1,
+    "text": "Giải cứu Cinccino ở góc tây bắc rừng",
+    "marker": {
+     "x": 8,
+     "y": 48,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cúc Phương",
+    "marker": {
+     "x": 14,
+     "y": 60,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1350,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con sóc bị rắn vây ở góc tây bắc rừng. Con giúp anh!"
+   ],
+   "progress": [
+    "Góc tây bắc rừng Cúc Phương."
+   ],
+   "complete": [
+    "Sóc chuyền cành đi rồi. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-butterfly",
+  "kind": "side",
+  "title": "Mùa bướm Cúc Phương",
+  "giver": "nb-ranger",
+  "requires": [
+   "vn-nb-1"
+  ],
+  "description": "Kẻ bắt bướm trái phép giăng lưới khắp rừng.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "nb-cucphuong",
+    "count": 1,
+    "text": "Vào rừng Cúc Phương (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 76,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "nb-forest-t",
+    "count": 1,
+    "text": "Thắng Kẻ bắt bướm trái phép",
+    "marker": {
+     "x": 8,
+     "y": 96,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cúc Phương",
+    "marker": {
+     "x": 14,
+     "y": 60,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "silver-powder": 1
+   },
+   "worldExp": 1200,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa giăng lưới bắt bướm ở góc tây nam rừng. Con đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Bướm bay đầy rừng lại rồi. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-cave",
+  "kind": "side",
+  "title": "Chuyện ma trong hang",
+  "giver": "nb-boat",
+  "requires": [
+   "vn-nb-1"
+  ],
+  "description": "Người kể chuyện hang tối dọa khách đi đò. Cô lái đò nhờ bạn.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "nb-boat-t",
+    "count": 1,
+    "text": "Thắng Người kể chuyện hang tối",
+    "marker": {
+     "x": 94,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-boat",
+    "count": 1,
+    "text": "Báo cho Cô lái đò Tràng An",
+    "marker": {
+     "x": 50,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "dusk-stone": 1
+   },
+   "worldExp": 1200,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Ông kể chuyện ma làm khách sợ không dám đi đò. Con đấu với ổng giùm cô."
+   ],
+   "progress": [
+    "Ông ở bờ đông hồ."
+   ],
+   "complete": [
+    "Khách đi đò đông lại rồi. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-monk",
+  "kind": "side",
+  "title": "Võ tăng Bái Đính",
+  "giver": "nb-monk",
+  "requires": [
+   "vn-nb-2"
+  ],
+  "description": "Võ tăng muốn thử sức thí chủ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "nb-monk-t",
+    "count": 1,
+    "text": "Thắng Võ tăng Bái Đính",
+    "marker": {
+     "x": 118,
+     "y": 44,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-monk",
+    "count": 1,
+    "text": "Báo cho Sư chùa Bái Đính",
+    "marker": {
+     "x": 108,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "protein": 1
+   },
+   "worldExp": 1200,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Võ tăng muốn đấu với con. Con chiều nha."
+   ],
+   "progress": [
+    "Võ tăng ở sân phía nam điện."
+   ],
+   "complete": [
+    "Mô Phật. Thí chủ giỏi lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-ducks",
+  "kind": "side",
+  "title": "Vịt chạy đồng",
+  "giver": "nb-farmer",
+  "requires": [
+   "vn-nb-1"
+  ],
+  "description": "Người chăn vịt bực vì đàn vịt chạy tán loạn.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "nb-tamcoc",
+    "count": 1,
+    "text": "Ra đồng lúa Tam Cốc (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 91,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "nb-paddy-t",
+    "count": 1,
+    "text": "Thắng Người chăn vịt Tam Cốc",
+    "marker": {
+     "x": 72,
+     "y": 98,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-farmer",
+    "count": 1,
+    "text": "Báo cho Bác nông dân Tam Cốc",
+    "marker": {
+     "x": 60,
+     "y": 86,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "greatball": 2
+   },
+   "worldExp": 1150,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng chăn vịt bực lắm, con đấu với nó cho nó đỡ bực."
+   ],
+   "progress": [
+    "Nó ở giữa đồng phía nam."
+   ],
+   "complete": [
+    "Nó vui lại rồi. Bao gạo Tam Cốc này bác cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-nb-eco",
+  "kind": "side",
+  "title": "Tràng An trong xanh",
+  "giver": "nb-boat",
+  "requires": [
+   "vn-nb-3"
+  ],
+  "description": "Rác du lịch trôi dạt quanh bến đò Tràng An.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:ninh-binh",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm quanh bến",
+    "marker": {
+     "x": 75,
+     "y": 26,
+     "region": "ninh-binh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "nb-boat",
+    "count": 1,
+    "text": "Báo cho Cô lái đò Tràng An",
+    "marker": {
+     "x": 50,
+     "y": 30,
+     "region": "ninh-binh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1200,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rồng yên rồi, giờ dọn bến đò. Con phụ cô vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Nước trong veo rồi! Mai cô chở con đi hang miễn phí."
+   ]
+  }
  }
 ]

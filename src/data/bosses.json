@@ -1630,5 +1630,59 @@
    "ultimateStyle": "safe",
    "power": 0.33
   }
+ },
+ {
+  "id": "hydreigon",
+  "name": "Hydreigon — Rồng Ba Đầu Hang Múa",
+  "types": [
+   "dark",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 92,
+   "atk": 105,
+   "def": 90,
+   "spa": 125,
+   "spd": 90,
+   "spe": 98
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "dark_pulse",
+   "dragon_pulse"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "deino",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Ba cái đầu cùng gầm — lửa rồng trùm kín đỉnh núi!",
+  "exp": 150,
+  "sprite": "hydreigon",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "dragon_pulse",
+   "volley": "dark_pulse",
+   "nova": "crunch",
+   "field": "flamethrower",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "outrage",
+   "ultimateName": "Ba Đầu Rồng Hang Múa",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

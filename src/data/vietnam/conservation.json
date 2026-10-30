@@ -798,6 +798,52 @@
     }
    ]
   },
+  "ninh-binh": {
+   "id": "ninh-binh",
+   "name": "Ninh Bình",
+   "area": "nb-trangan",
+   "action": "trash",
+   "unlock": "vn-nb-3",
+   "boss": "hydreigon",
+   "label": "Vớt rác trên bến Tràng An",
+   "done": "Bạn vớt chai nhựa và túi nilon trôi dạt bến đò. Nước Tràng An trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "ninh-binh-1",
+     "x": 75,
+     "y": 26
+    },
+    {
+     "id": "ninh-binh-2",
+     "x": 73,
+     "y": 5
+    },
+    {
+     "id": "ninh-binh-3",
+     "x": 61,
+     "y": 25
+    },
+    {
+     "id": "ninh-binh-4",
+     "x": 87,
+     "y": 10
+    },
+    {
+     "id": "ninh-binh-5",
+     "x": 59,
+     "y": 8
+    },
+    {
+     "id": "ninh-binh-6",
+     "x": 87,
+     "y": 23
+    }
+   ]
+  },
   "quang-ngai": {
    "id": "quang-ngai",
    "name": "Quảng Ngãi",
