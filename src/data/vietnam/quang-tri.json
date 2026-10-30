@@ -1,0 +1,141 @@
+{
+ "id": "quang-tri",
+ "name": "Quảng Trị",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 40, "y": 104 },
+ "areas": [
+  { "id": "qt-phongnha", "name": "Phong Nha — Kẻ Bàng", "rect": [0, 0, 60, 40], "habitat": "rocky", "level": [61, 64] },
+  { "id": "qt-nhatle", "name": "Biển Nhật Lệ", "rect": [61, 0, 127, 40], "habitat": "coast", "level": [60, 63] },
+  { "id": "qt-city", "name": "Thành phố Đồng Hới", "rect": [40, 41, 100, 70], "habitat": "village", "level": [60, 60] },
+  { "id": "qt-truongson", "name": "Rừng Trường Sơn", "rect": [0, 41, 39, 111], "habitat": "forest", "level": [58, 61] },
+  { "id": "qt-vinhmoc", "name": "Địa đạo Vịnh Mốc — Cửa Tùng", "rect": [101, 41, 127, 111], "habitat": "coast", "level": [59, 62] },
+  { "id": "qt-hienluong", "name": "Cầu Hiền Lương — Thành cổ", "rect": [40, 71, 100, 111], "habitat": "ruins", "level": [58, 61] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[40, 107], [40, 90], [60, 80], [66, 66]] },
+  { "w": 3, "pts": [[62, 52], [40, 30], [20, 18]] },
+  { "w": 3, "pts": [[70, 52], [80, 20], [80, 5]] },
+  { "w": 3, "pts": [[76, 58], [106, 58], [110, 80]] },
+  { "w": 3, "pts": [[60, 80], [84, 96]] },
+  { "w": 3, "pts": [[40, 90], [16, 70]] }
+ ],
+ "plaza": [60, 52, 76, 64],
+ "lake": { "cx": 150, "cy": 30, "rx": 34, "ry": 60 },
+ "rivers": [
+  { "w": 3, "pts": [[0, 86], [60, 86], [127, 88]] }
+ ],
+ "buildings": [
+  { "id": "qt-center", "name": "Trung tâm Pokémon", "x": 44, "y": 44, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "qt-mart", "name": "Cửa hàng Đồng Hới", "x": 84, "y": 44, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "qt-gate", "name": "Quảng Bình Quan", "x": 90, "y": 50, "w": 6, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "qt-house-1", "name": "Nhà chú Hòa", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "qt-house-2", "name": "Quán cháo canh", "x": 90, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 56, "y": 68 },
+  { "kind": "log", "x": 24, "y": 56 },
+  { "kind": "bucket", "x": 104, "y": 30 },
+  { "kind": "target", "x": 52, "y": 22 },
+  { "kind": "haystack", "x": 76, "y": 100 }
+ ],
+ "signs": [
+  { "x": 64, "y": 62, "text": ["THÀNH PHỐ ĐỒNG HỚI", "Phía tây bắc: Phong Nha — Kẻ Bàng · Phía bắc: biển Nhật Lệ · Phía đông: địa đạo Vịnh Mốc · Phía nam: cầu Hiền Lương, Thành cổ."] },
+  { "x": 44, "y": 82, "text": ["CẦU HIỀN LƯƠNG", "Cây cầu bắc qua sông Bến Hải, hai mươi năm chia cắt hai miền, nay là biểu tượng thống nhất."] },
+  { "x": 30, "y": 14, "text": ["PHONG NHA — KẺ BÀNG", "Vương quốc hang động, có hang Sơn Đoòng lớn nhất thế giới. Di sản thiên nhiên thế giới."] }
+ ],
+ "npcs": [
+  { "id": "qt-guide", "name": "Chú Hòa Đồng Hới", "sprite": "villager", "x": 64, "y": 54, "lines": [
+    "Chào mừng tới Đồng Hới! Ăn chén cháo canh cho ấm bụng.",
+    "Từ hang động Phong Nha có bầy dơi bay ra kín trời, tiếng rít inh tai cả đêm.",
+    "Anh dẫn đường Phong Nha biết rõ hang, con lên hỏi."] },
+  { "id": "qt-cave", "name": "Anh dẫn đường Phong Nha", "sprite": "youngster", "x": 36, "y": 26, "lines": [
+    "Hang Sơn Đoòng to tới mức có cả rừng và mây bên trong.",
+    "Trong hang có Dơi Thần, tiếng kêu của nó làm vỡ cả thạch nhũ."] },
+  { "id": "qt-beach", "name": "Ngư dân Nhật Lệ", "sprite": "villager", "x": 96, "y": 24, "lines": [
+    "Biển Nhật Lệ cát trắng, nước trong, chiều nào cũng đông người tắm.",
+    "Rác nhựa trôi vô bờ nhiều quá con ơi."] },
+  { "id": "qt-veteran", "name": "Cựu chiến binh Vịnh Mốc", "sprite": "elder", "x": 108, "y": 70, "lines": [
+    "Ba tầng địa đạo đào bằng tay, cả làng sống dưới lòng đất mấy năm trời.",
+    "Đêm nào cũng nghe tiếng dơi rít trong địa đạo, chắc từ Phong Nha bay về."] },
+  { "id": "qt-bridge", "name": "Người giữ cầu Hiền Lương", "sprite": "elder", "x": 52, "y": 92, "lines": [
+    "Cầu sơn hai màu, bờ bắc bờ nam ngóng nhau hai mươi năm.",
+    "Giờ thống nhất rồi, cầu chỉ còn để nhớ."] },
+  { "id": "qt-ranger", "name": "Kiểm lâm Trường Sơn", "sprite": "ranger", "x": 20, "y": 60, "lines": [
+    "Rừng Trường Sơn có sao la, loài thú quý hiếm nhất thế giới.",
+    "Bầy thợ săn đặt bẫy khắp rừng, anh gỡ không xuể."] }
+ ],
+ "trainers": [
+  { "id": "qt-gate-t", "name": "Nhà thám hiểm Sơn Đoòng", "sprite": "hiker", "x": 28, "y": 24,
+    "team": [["crobat", 63], ["excadrill", 63], ["garchomp", 63]],
+    "challenge": ["Tôi đã đi hết Sơn Đoòng. Muốn vào gặp Dơi Thần thì phải thắng tôi!"],
+    "win": ["Bạn đủ sức rồi. Dơi Thần ở cửa hang phía tây bắc."],
+    "lose": ["Trong hang tối lắm, về luyện thêm đi."],
+    "rewards": { "items": { "superpotion": 2, "dragon-scale": 1 }, "exp": 2900 } },
+  { "id": "qt-cave-t", "name": "Nhà cổ sinh vật học", "sprite": "elder", "x": 48, "y": 12,
+    "team": [["aerodactyl", 61], ["armaldo", 61], ["cradily", 61]],
+    "challenge": ["Hóa thạch trong hang Phong Nha còn sống hết đó nha!"],
+    "win": ["Bạn mạnh như khủng long vậy."],
+    "lose": ["Tuyệt chủng rồi kìa!"],
+    "rewards": { "items": { "ultraball": 2, "hard-stone": 1 }, "exp": 2800 } },
+  { "id": "qt-beach-t", "name": "Cậu bé thả diều Nhật Lệ", "sprite": "youngster", "x": 100, "y": 14,
+    "team": [["staraptor", 61], ["swellow", 61], ["toucannon", 61]],
+    "challenge": ["Gió biển Nhật Lệ thổi mạnh lắm, chim tui bay cao nhất bãi!"],
+    "win": ["Đứt dây diều rồi... bạn thắng."],
+    "lose": ["Gió đổi chiều rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "greatball": 2 }, "exp": 2800 } },
+  { "id": "qt-tunnel-t", "name": "Thợ đào địa đạo", "sprite": "hiker", "x": 116, "y": 96,
+    "team": [["hippowdon", 61], ["sandslash", 61], ["krookodile", 61]],
+    "challenge": ["Pokémon tui đào đất giỏi hơn ai hết!"],
+    "win": ["Bạn còn giỏi hơn. Tui phục."],
+    "lose": ["Sập hầm rồi kìa!"],
+    "rewards": { "items": { "ultraball": 1, "soft-sand": 1 }, "exp": 2800 } },
+  { "id": "qt-forest-t", "name": "Thợ săn trộm Trường Sơn", "sprite": "knight", "x": 12, "y": 100,
+    "team": [["tangrowth", 60], ["victreebel", 60], ["roserade", 60]],
+    "challenge": ["Rừng sâu không ai thấy, con sao la là của tao!"],
+    "win": ["Thôi được... tao gỡ bẫy rồi đi."],
+    "lose": ["Đừng xía vô chuyện người khác."],
+    "rewards": { "items": { "sitrus-berry": 3, "leaf-stone": 1 }, "exp": 2700 } }
+ ],
+ "rescue": { "id": "qt-saola-rescue", "x": 8, "y": 48, "species": "sawsbuck", "level": 61,
+   "guards": [["drapion", 60], ["arbok", 59], ["arbok", 59]], "quest": "vn-qt-rescue", "reporter": "Kiểm lâm Trường Sơn" },
+ "chests": [
+  { "id": "chest-qt-phongnha", "x": 6, "y": 6, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-qt-nhatle", "x": 110, "y": 6, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-qt-truongson", "x": 6, "y": 106, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-qt-hienluong", "x": 96, "y": 106, "items": { "superpotion": 3, "protein": 1 } },
+  { "id": "chest-qt-vinhmoc", "x": 116, "y": 106, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-qt-nook", "x": 92, "y": 76, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:quang-tri:qt-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-quang-tri-center", "name": "Trung tâm Pokémon Đồng Hới", "x": 47, "y": 51 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "noivern", "name": "Noivern — Dơi Thần Sơn Đoòng", "x": 14, "y": 10, "level": 64, "respawn": 600, "arena": 260,
+   "requires": ["beat:qt-gate-t"],
+   "hint": "Tiếng rít vang ra từ cửa hang... Nhà thám hiểm Sơn Đoòng chưa cho ai vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 11000, "flag": "badge:quang-tri", "message": "Nhận Huy hiệu Hang Động (Quảng Trị)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-qt-hu", "name": "Quốc lộ 1 — về Huế", "x": 40, "y": 107, "to": "hue", "toX": 22, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "qt-meadow-1", "table": "meadow-forage", "x": 50, "y": 8 },
+  { "id": "qt-sea-1", "table": "lake-fish", "x": 112, "y": 40 },
+  { "id": "qt-forest-1", "table": "forest-forage", "x": 20, "y": 78 },
+  { "id": "qt-river-1", "table": "canal-fish", "x": 70, "y": 92 },
+  { "id": "qt-meadow-2", "table": "meadow-forage", "x": 80, "y": 104 }
+ ],
+ "field": [
+  { "id": "qt-boulder", "ability": "smash", "x": 96, "y": 76, "nook": { "cx": 92.5, "cy": 76.5, "r": 3, "wall": "boulder" } }
+ ]
+}

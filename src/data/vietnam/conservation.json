@@ -752,6 +752,52 @@
     }
    ]
   },
+  "quang-tri": {
+   "id": "quang-tri",
+   "name": "Quảng Trị",
+   "area": "qt-nhatle",
+   "action": "trash",
+   "unlock": "vn-qt-3",
+   "boss": "noivern",
+   "label": "Nhặt rác trên bãi Nhật Lệ",
+   "done": "Bạn nhặt chai nhựa và túi nilon dạt vào bãi. Biển Nhật Lệ trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "quang-tri-1",
+     "x": 113,
+     "y": 25
+    },
+    {
+     "id": "quang-tri-2",
+     "x": 118,
+     "y": 11
+    },
+    {
+     "id": "quang-tri-3",
+     "x": 115,
+     "y": 39
+    },
+    {
+     "id": "quang-tri-4",
+     "x": 117,
+     "y": 19
+    },
+    {
+     "id": "quang-tri-5",
+     "x": 115,
+     "y": 32
+    },
+    {
+     "id": "quang-tri-6",
+     "x": 121,
+     "y": 5
+    }
+   ]
+  },
   "tay-ninh": {
    "id": "tay-ninh",
    "name": "Tây Ninh",

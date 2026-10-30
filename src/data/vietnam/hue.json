@@ -128,8 +128,9 @@
    "requires": ["beat:hu-gate-t"],
    "hint": "Tiếng gươm khua vọng ra từ sân điện... Thị vệ Đại Nội chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "metal-coat": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 10500, "flag": "badge:hue", "message": "Nhận Huy hiệu Cố Đô (Huế)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 10500, "flag": "badge:hue", "message": "Nhận Huy hiệu Cố Đô (Huế)! Đường tới Quảng Trị đã mở: Quốc lộ 1." } },
  "portals": [
+  {"id": "portal-hu-next", "name": "Quốc lộ 1 — đường ra Quảng Trị", "x": 22, "y": 5, "to": "quang-tri", "toX": 40, "toY": 104, "requires": ["badge:hue"], "hint": "Đường tới Quảng Trị mở cho người có Huy hiệu Cố Đô — hạ boss Huế trước."},
   { "id": "portal-hu-dg", "name": "Đèo Hải Vân — về Đà Nẵng", "x": 100, "y": 107, "to": "da-nang", "toX": 20, "toY": 8 }
  ],
  "docks": [],

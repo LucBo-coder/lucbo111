@@ -1415,5 +1415,59 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "noivern",
+  "name": "Noivern — Dơi Thần Sơn Đoòng",
+  "types": [
+   "flying",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 85,
+   "atk": 70,
+   "def": 80,
+   "spa": 97,
+   "spd": 80,
+   "spe": 123
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "air_slash",
+   "dragon_pulse"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "noibat",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Dơi Thần rít lên — sóng âm làm vỡ cả thạch nhũ!",
+  "exp": 150,
+  "sprite": "noivern",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "dragon_pulse",
+   "volley": "air_slash",
+   "nova": "hurricane",
+   "field": "gust",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "boomburst",
+   "ultimateName": "Tiếng Vọng Sơn Đoòng",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

@@ -9942,5 +9942,521 @@
     "Phá thông rồi, cá về đông lắm!"
    ]
   }
+ },
+ {
+  "id": "vn-qt-1",
+  "kind": "main",
+  "title": "Bầy dơi kín trời",
+  "giver": "qt-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:hue"
+  ],
+  "description": "Tới Đồng Hới: ghé Trung tâm Pokémon rồi lên Phong Nha hỏi anh dẫn đường về bầy dơi.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-quang-tri-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Đồng Hới",
+    "marker": {
+     "x": 47,
+     "y": 51,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "qt-phongnha",
+    "count": 1,
+    "text": "Đến Phong Nha — Kẻ Bàng (phía tây bắc)",
+    "marker": {
+     "x": 30,
+     "y": 20,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-cave",
+    "count": 1,
+    "text": "Hỏi Anh dẫn đường Phong Nha",
+    "marker": {
+     "x": 36,
+     "y": 26,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1300,
+   "reputation": 10,
+   "flags": [
+    "landmark:phong-nha"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Đồng Hới! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên Phong Nha hỏi anh dẫn đường, dơi bay ra kín trời mấy đêm rồi."
+   ],
+   "progress": [
+    "Phong Nha ở phía tây bắc."
+   ],
+   "complete": [
+    "Có Dơi Thần trong hang... Cựu chiến binh Vịnh Mốc nghe tiếng dơi trong địa đạo, con hỏi thử."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-2",
+  "kind": "main",
+  "title": "Tiếng rít dưới lòng đất",
+  "giver": "qt-guide",
+  "requires": [
+   "vn-qt-1"
+  ],
+  "description": "Xuống địa đạo Vịnh Mốc hỏi cựu chiến binh, rồi ra cầu Hiền Lương hỏi người giữ cầu.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "qt-vinhmoc",
+    "count": 1,
+    "text": "Đến địa đạo Vịnh Mốc (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 76,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-veteran",
+    "count": 1,
+    "text": "Hỏi Cựu chiến binh Vịnh Mốc",
+    "marker": {
+     "x": 108,
+     "y": 70,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-bridge",
+    "count": 1,
+    "text": "Hỏi Người giữ cầu Hiền Lương",
+    "marker": {
+     "x": 52,
+     "y": 92,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1350,
+   "reputation": 15,
+   "flags": [
+    "landmark:vinh-moc",
+    "landmark:hien-luong"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cựu chiến binh ở Vịnh Mốc nghe tiếng dơi dưới địa đạo. Con hỏi ông, rồi qua cầu Hiền Lương hỏi thêm."
+   ],
+   "progress": [
+    "Vịnh Mốc ở phía đông, cầu Hiền Lương ở phía nam."
+   ],
+   "complete": [
+    "Dơi Thần giận vì đèn và tiếng ồn khách du lịch trong hang. Phải qua nhà thám hiểm Sơn Đoòng mới vào được."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-3",
+  "kind": "main",
+  "title": "Dơi Thần Sơn Đoòng",
+  "giver": "qt-guide",
+  "requires": [
+   "vn-qt-2"
+  ],
+  "description": "Thắng Nhà thám hiểm Sơn Đoòng để vào cửa hang, rồi làm Noivern yên lặng.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qt-gate-t",
+    "count": 1,
+    "text": "Thắng Nhà thám hiểm Sơn Đoòng",
+    "marker": {
+     "x": 28,
+     "y": 24,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "noivern",
+    "count": 1,
+    "text": "Đánh bại Noivern — Dơi Thần Sơn Đoòng",
+    "marker": {
+     "x": 14,
+     "y": 10,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1600,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Nhà thám hiểm canh cửa hang Sơn Đoòng. Con đủ sức thì vào."
+   ],
+   "progress": [
+    "Cửa hang ở góc tây bắc."
+   ],
+   "complete": [
+    "Dơi về hang, trời yên rồi! Huy hiệu Hang Động là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-rescue",
+  "kind": "side",
+  "title": "Sao la Trường Sơn",
+  "giver": "qt-ranger",
+  "requires": [
+   "vn-qt-1"
+  ],
+  "description": "Một con Sawsbuck mắc bẫy, bị bầy rắn vây ở bìa rừng Trường Sơn.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "qt-saola-rescue",
+    "count": 1,
+    "text": "Giải cứu Sawsbuck ở bìa rừng phía tây",
+    "marker": {
+     "x": 8,
+     "y": 48,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Trường Sơn",
+    "marker": {
+     "x": 20,
+     "y": 60,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1150,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con thú quý mắc bẫy bị rắn vây ở bìa rừng phía tây. Con giúp anh!"
+   ],
+   "progress": [
+    "Bìa rừng phía tây bắc."
+   ],
+   "complete": [
+    "Nó chạy vào rừng sâu rồi. Cảm ơn con nhiều."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-poacher",
+  "kind": "side",
+  "title": "Bẫy trong rừng sâu",
+  "giver": "qt-ranger",
+  "requires": [
+   "vn-qt-2"
+  ],
+  "description": "Thợ săn trộm đặt bẫy khắp rừng Trường Sơn.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qt-forest-t",
+    "count": 1,
+    "text": "Thắng Thợ săn trộm Trường Sơn",
+    "marker": {
+     "x": 12,
+     "y": 100,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Trường Sơn",
+    "marker": {
+     "x": 20,
+     "y": 60,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "leaf-stone": 1
+   },
+   "worldExp": 1050,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng săn trộm ở góc tây nam rừng. Con đuổi nó đi giùm anh."
+   ],
+   "progress": [
+    "Nó ở góc tây nam rừng, bên kia sông."
+   ],
+   "complete": [
+    "Nó gỡ bẫy bỏ đi rồi. Rừng yên rồi."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-fossil",
+  "kind": "side",
+  "title": "Hóa thạch Phong Nha",
+  "giver": "qt-cave",
+  "requires": [
+   "vn-qt-1"
+  ],
+  "description": "Nhà cổ sinh vật học muốn thử Pokémon hóa thạch của mình.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qt-cave-t",
+    "count": 1,
+    "text": "Thắng Nhà cổ sinh vật học",
+    "marker": {
+     "x": 48,
+     "y": 12,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-cave",
+    "count": 1,
+    "text": "Báo cho Anh dẫn đường Phong Nha",
+    "marker": {
+     "x": 36,
+     "y": 26,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1050,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Ông nhà khoa học ham đấu lắm. Con thử với ông một trận."
+   ],
+   "progress": [
+    "Ông ở phía bắc khu hang."
+   ],
+   "complete": [
+    "Ông khen con lắm. Lần sau ông dẫn con vô hang."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-kite",
+  "kind": "side",
+  "title": "Diều trên bãi Nhật Lệ",
+  "giver": "qt-beach",
+  "requires": [
+   "vn-qt-1"
+  ],
+  "description": "Cậu bé thả diều thả chim bay tứ tung trên bãi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "qt-nhatle",
+    "count": 1,
+    "text": "Ra biển Nhật Lệ (phía bắc)",
+    "marker": {
+     "x": 94,
+     "y": 20,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "qt-beach-t",
+    "count": 1,
+    "text": "Thắng Cậu bé thả diều Nhật Lệ",
+    "marker": {
+     "x": 100,
+     "y": 14,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-beach",
+    "count": 1,
+    "text": "Báo cho Ngư dân Nhật Lệ",
+    "marker": {
+     "x": 96,
+     "y": 24,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 2
+   },
+   "worldExp": 1050,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Chim của thằng nhỏ làm rối lưới chú hoài. Con đấu với nó giùm."
+   ],
+   "progress": [
+    "Nó ở phía bắc bãi."
+   ],
+   "complete": [
+    "Lưới gọn rồi. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-tunnel",
+  "kind": "side",
+  "title": "Thợ đào địa đạo",
+  "giver": "qt-veteran",
+  "requires": [
+   "vn-qt-2"
+  ],
+  "description": "Thợ đào muốn đào thêm hầm cạnh địa đạo. Cựu chiến binh muốn ai đó cản anh ta.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qt-tunnel-t",
+    "count": 1,
+    "text": "Thắng Thợ đào địa đạo",
+    "marker": {
+     "x": 116,
+     "y": 96,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-veteran",
+    "count": 1,
+    "text": "Báo cho Cựu chiến binh Vịnh Mốc",
+    "marker": {
+     "x": 108,
+     "y": 70,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "soft-sand": 1
+   },
+   "worldExp": 1050,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Đào thêm là sập địa đạo cũ mất. Con cản nó giùm ông."
+   ],
+   "progress": [
+    "Nó ở góc đông nam bãi."
+   ],
+   "complete": [
+    "Nó thôi đào rồi. Địa đạo còn nguyên cho con cháu xem."
+   ]
+  }
+ },
+ {
+  "id": "vn-qt-eco",
+  "kind": "side",
+  "title": "Nhật Lệ sạch đẹp",
+  "giver": "qt-beach",
+  "requires": [
+   "vn-qt-3"
+  ],
+  "description": "Rác nhựa dạt vào bãi Nhật Lệ sau mùa bão.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:quang-tri",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 113,
+     "y": 25,
+     "region": "quang-tri"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qt-beach",
+    "count": 1,
+    "text": "Báo cho Ngư dân Nhật Lệ",
+    "marker": {
+     "x": 96,
+     "y": 24,
+     "region": "quang-tri"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1050,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Dơi về hang rồi, giờ tới bãi biển. Con phụ chú nhặt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Cảm ơn con."
+   ]
+  }
  }
 ]
