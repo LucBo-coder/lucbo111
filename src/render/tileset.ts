@@ -200,6 +200,48 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   paint(TOWN.pine, PINE, conifer); paint(TOWN.pineAutumn, PINE, autumn);
   paint(TOWN.bush, BUSH, summer);
 
+  // Roof recolours: the red roof's colours ranked by brightness map onto a new ramp; the outline (darkest) stays
+  {
+    const src = ['tl', 't', 'tr', 'bl', 'b', 'br'] as const;
+    const lum = (r: number, g: number, b: number) => r * 0.3 + g * 0.59 + b * 0.11;
+    const px = src.map((k) => { const c = cell(TOWN.roofRed[k]); return ctx.getImageData(c.x, c.y, TILE, TILE); });
+    const colours = new Map<string, number>();
+    for (const d of px) for (let i = 0; i < d.data.length; i += 4) if (d.data[i + 3]) colours.set(`${d.data[i]},${d.data[i + 1]},${d.data[i + 2]}`, lum(d.data[i], d.data[i + 1], d.data[i + 2]));
+    const ranked = [...colours.entries()].sort((a, b) => a[1] - b[1]).map(([k]) => k);
+    const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    const recolour = (ramp: string[], target: Record<(typeof src)[number], number>) => {
+      const stops = ramp.map(hex);
+      const map = new Map<string, number[]>();
+      ranked.forEach((k, i) => {
+        if (i === 0) return; // outline
+        const t = (i - 1) / Math.max(1, ranked.length - 2) * (stops.length - 1), a = Math.floor(t), f = t - a, b = Math.min(a + 1, stops.length - 1);
+        map.set(k, stops[a].map((v, j) => Math.round(v + (stops[b][j] - v) * f)));
+      });
+      src.forEach((k, n) => {
+        const d = new ImageData(new Uint8ClampedArray(px[n].data), TILE, TILE);
+        for (let i = 0; i < d.data.length; i += 4) { const m = map.get(`${d.data[i]},${d.data[i + 1]},${d.data[i + 2]}`); if (m && d.data[i + 3]) d.data.set(m, i); }
+        const c = cell(target[k]);
+        ctx.putImageData(d, c.x, c.y);
+      });
+    };
+    recolour(['#6a4410', '#a8741c', '#d8a432', '#f2cc58', '#fff0a8'], EX.roofGold);
+    recolour(['#1e4440', '#2e6e64', '#3e9488', '#6cc0b0', '#b8ece0'], EX.roofTeal);
+  }
+  // Signs over the door: a Poké Ball for Pokémon Centers, a blue "M" plate for marts, on a copy of the plain wall
+  {
+    const BALL = ['..oooo..', '.orrrro.', 'orrrrrro', 'ooowwooo', 'ooowwooo', 'owwwwwwo', '.owwwwo.', '..oooo..'];
+    const MART = ['oooooooooo', 'oBBBBBBBBo', 'oBwBBBBwBo', 'oBwwBBwwBo', 'oBwBwwBwBo', 'oBwBBBBwBo', 'oBBBBBBBBo', 'oooooooooo'];
+    const pal: Record<string, string> = { o: '#2a1c24', r: '#e83838', w: '#ffffff', B: '#3868d8' };
+    for (const [wall, center, mart] of [[TOWN.wallStone.c, EX.signCenter.stone, EX.signMart.stone], [TOWN.wallWood.c, EX.signCenter.wood, EX.signMart.wood]] as const) {
+      for (const [idx, art] of [[center, BALL], [mart, MART]] as const) {
+        const c = cell(idx), s = cell(wall);
+        ctx.drawImage(tex.getSourceImage() as CanvasImageSource, s.x, s.y, TILE, TILE, c.x, c.y, TILE, TILE);
+        const ox = (TILE - art[0].length) >> 1;
+        art.forEach((r, y) => { for (let x = 0; x < r.length; x++) if (pal[r[x]]) dot(c, ox + x, 4 + y, pal[r[x]]); });
+      }
+    }
+  }
+
   const speckle = (idx: number, base: string, dots: string[], n: number, seed: number) => {
     const c = cell(idx);
     fill(idx, base);
@@ -479,19 +521,31 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   {
     // Dirt-path inner corners (Kenney has outer corners only): the dirt centre tile with a small grass notch +
     // the path's own rim colour, in the corner where the diagonal neighbour is grass
-    const dc = cell(TOWN.dirt.c), g0 = cell(TOWN.grass[0]);
+    const g0 = cell(TOWN.grass[0]);
     const img = ctx.getImageData(0, 0, W, H).data;
     const at = (x: number, y: number) => { const i = (y * W + x) * 4; return `rgb(${img[i]},${img[i + 1]},${img[i + 2]})`; };
-    const rim = GBA.pathRim;
-    const corners = [[EX.dirtInner.ne, 15, 0], [EX.dirtInner.nw, 0, 0], [EX.dirtInner.se, 15, 15], [EX.dirtInner.sw, 0, 15]] as const;
-    for (const [idx, cx, cy] of corners) {
-      const c = cell(idx);
-      ctx.drawImage(tex.getSourceImage() as CanvasImageSource, dc.x, dc.y, TILE, TILE, c.x, c.y, TILE, TILE);
-      for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
-        const d = Math.hypot(x - cx, y - cy);
-        if (d < 3.6) { ctx.fillStyle = at(g0.x + x, g0.y + y); ctx.fillRect(c.x + x, c.y + y, 1, 1); }
-        else if (d < 4.6) { ctx.fillStyle = rim; ctx.fillRect(c.x + x, c.y + y, 1, 1); }
+    // corner bits: NE=1, NW=2, SE=4, SW=8 → the corner pixel each notch is centred on
+    const CORNER: [number, number, number][] = [[1, 15, 0], [2, 0, 0], [4, 15, 15], [8, 0, 15]];
+    const notched = (idx: number, src: number, corners: number, rim: string) => {
+      const c = cell(idx), s = cell(src);
+      ctx.drawImage(tex.getSourceImage() as CanvasImageSource, s.x, s.y, TILE, TILE, c.x, c.y, TILE, TILE);
+      for (const [bit, cx, cy] of CORNER) {
+        if (!(corners & bit)) continue;
+        for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
+          const d = Math.hypot(x - cx, y - cy);
+          if (d < 3.6) dot(c, x, y, at(g0.x + x, g0.y + y));
+          else if (d < 4.6) dot(c, x, y, rim);
+        }
       }
+    };
+    notched(EX.dirtInner.ne, TOWN.dirt.c, 1, GBA.pathRim);
+    notched(EX.dirtInner.nw, TOWN.dirt.c, 2, GBA.pathRim);
+    notched(EX.dirtInner.se, TOWN.dirt.c, 4, GBA.pathRim);
+    notched(EX.dirtInner.sw, TOWN.dirt.c, 8, GBA.pathRim);
+    // sand / rocky patches: every combination of grass corners (diagonal neighbours only)
+    for (let m = 1; m < 16; m++) {
+      notched(EX.sandInner + m, EX.sand, m, SAND_PAL.rim);
+      notched(EX.rockyInner + m, EX.rocky, m, ROCKY_PAL.rim);
     }
   }
   // ── legendary shrines (V22): 16×16 pixel art, one palette each (tinted per shrine in the scene where it matters)

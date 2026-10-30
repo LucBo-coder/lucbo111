@@ -62,8 +62,15 @@ export const EX = {
   snowPath: 366, basaltPath: 368,
   /** sand / rocky ground with a jagged grass fringe on the sides that touch grass: + mask (N=1, E=2, S=4, W=8; 1..15) */
   sandEdge: 372, rockyEdge: 388,
+  /** sand / rocky with grass notches in the corners whose diagonal neighbour is grass: + mask (NE=1, NW=2, SE=4, SW=8) */
+  sandInner: 404, rockyInner: 420,
+  /** roofs recoloured from the red Tiny Town roof: gold (Khmer pagodas), teal glaze (Văn Thánh Miếu) — tl t tr bl b br */
+  roofGold: { tl: 436, t: 437, tr: 438, bl: 439, b: 440, br: 441 },
+  roofTeal: { tl: 442, t: 443, tr: 444, bl: 445, b: 446, br: 447 },
+  /** wall tiles carrying a sign above the door: Pokémon Center (Poké Ball) / Mart, on stone or wood */
+  signCenter: { stone: 448, wood: 449 }, signMart: { stone: 450, wood: 451 },
 } as const;
-export const TILESET_ROWS = 34;
+export const TILESET_ROWS = 38;
 
 /**
  * Adventure Awaits by Ishtar Pixels (CC0): cottages and old trees, separate images (outside 'ow_tiles') drawn at the

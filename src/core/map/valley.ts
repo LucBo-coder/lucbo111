@@ -50,7 +50,7 @@ export interface RegionDef {
    * Houses built from Tiny Town roof / wall tiles — or, with style 'cottage', one Adventure Awaits cottage image
    * (3 wide, door in the middle column: w 3, door 1; the roof rises above the footprint; `color` = roof colour)
    */
-  buildings: { id: string; name: string; x: number; y: number; w: number; h: number; roof: 'red' | 'grey'; wall: 'wood' | 'stone'; door: number;
+  buildings: { id: string; name: string; x: number; y: number; w: number; h: number; roof: 'red' | 'grey' | 'gold' | 'teal'; wall: 'wood' | 'stone'; door: number;
     style?: 'cottage'; color?: CottageColor }[];
   fences: number[][];
   props: { kind: string; x: number; y: number }[];
@@ -184,8 +184,10 @@ export class ValleyMap implements MapProvider {
   private buildAuthored(): void {
     const d = this.def;
     for (const b of d.buildings) {
-      const roof = b.roof === 'red' ? TOWN.roofRed : TOWN.roofGrey;
+      const roof = b.roof === 'red' ? TOWN.roofRed : b.roof === 'gold' ? EX.roofGold : b.roof === 'teal' ? EX.roofTeal : TOWN.roofGrey;
       const wall = b.wall === 'wood' ? TOWN.wallWood : TOWN.wallStone;
+      // Pokémon Centers and marts show their sign on the wall above the door (needs a wall row there: h ≥ 4)
+      const sign = /center/i.test(b.id) ? EX.signCenter : /mart/i.test(b.id) ? EX.signMart : null;
       const tiles: number[][] = [];
       tiles.push(Array.from({ length: b.w }, (_, i) => (i === 0 ? roof.tl : i === b.w - 1 ? roof.tr : roof.t)));
       tiles.push(Array.from({ length: b.w }, (_, i) => (i === 0 ? roof.bl : i === b.w - 1 ? roof.br : roof.b)));
@@ -195,6 +197,7 @@ export class ValleyMap implements MapProvider {
           if (i === 0) return wall.l;
           if (i === b.w - 1) return wall.r;
           if (bottom && i === b.door) return wall.door;
+          if (sign && r === b.h - 2 && i === b.door) return sign[b.wall];
           return (i % 2 === 1) ? wall.window : wall.c;
         }));
       }
@@ -562,6 +565,9 @@ export class ValleyMap implements MapProvider {
       const lawn = (dx: number, dy: number) => { const q = this.terrainAt(tx + dx, ty + dy); return q === T.Grass || q === T.Tuft || q === T.Flowers || q === T.Deep || q === T.TallGrass; };
       const mask = (lawn(0, -1) ? 1 : 0) | (lawn(1, 0) ? 2 : 0) | (lawn(0, 1) ? 4 : 0) | (lawn(-1, 0) ? 8 : 0);
       if (mask) return (t === T.Sand ? EX.sandEdge : EX.rockyEdge) + mask;
+      // no grass side, but grass on a diagonal: a notch in that corner
+      const corners = (lawn(1, -1) ? 1 : 0) | (lawn(-1, -1) ? 2 : 0) | (lawn(1, 1) ? 4 : 0) | (lawn(-1, 1) ? 8 : 0);
+      if (corners) return (t === T.Sand ? EX.sandInner : EX.rockyInner) + corners;
     }
     switch (t) {
       case T.Water: {

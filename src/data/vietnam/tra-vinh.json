@@ -357,7 +357,7 @@
    "y": 64,
    "w": 7,
    "h": 4,
-   "roof": "red",
+   "roof": "gold",
    "wall": "stone",
    "door": 3
   },
@@ -368,7 +368,7 @@
    "y": 64,
    "w": 8,
    "h": 4,
-   "roof": "red",
+   "roof": "gold",
    "wall": "stone",
    "door": 3
   },

@@ -54,13 +54,31 @@ describe('world art (Adventure Awaits)', () => {
     expect(count['ca-mau']).toBe(0);
     expect(count['frozen-mountains']).toBe(0);
   });
+
+  it('pagoda roofs are gold, Văn Thánh Miếu teal; Pokémon Centers and marts carry their sign above the door', () => {
+    const roofOf = (region: string, id: string) => objects(new ValleyMap(REGION_DEFS[region])).find((o) => o.id === id)!.tiles![0][1];
+    expect(roofOf('tra-vinh', 'tv-chua-ang')).toBe(EX.roofGold.t);
+    expect(roofOf('tra-vinh', 'tv-chua-hang')).toBe(EX.roofGold.t);
+    expect(roofOf('vinh-long', 'vl-temple')).toBe(EX.roofTeal.t);
+    let signs = 0;
+    for (const region of Object.keys(REGION_DEFS)) {
+      for (const o of objects(new ValleyMap(REGION_DEFS[region]))) {
+        if (o.kind !== 'building' || o.h! < 4) continue;
+        const kind = /center/i.test(o.id) ? EX.signCenter : /mart/i.test(o.id) ? EX.signMart : null;
+        const cell = o.tiles![o.h! - 2][(o.data!.doorX as number) - o.x];
+        if (kind) { signs++; expect(Object.values(kind), `${region} ${o.id}`).toContain(cell); }
+        else expect([...Object.values(EX.signCenter), ...Object.values(EX.signMart)], `${region} ${o.id}`).not.toContain(cell);
+      }
+    }
+    expect(signs).toBeGreaterThan(4);
+  });
 });
 
 describe('ground transitions and themed paths', () => {
   const lawn = [T.Grass, T.Tuft, T.Flowers, T.Deep, T.TallGrass] as number[];
 
-  it('sand / rocky on green ground take the fringe tile of exactly the sides that touch grass', () => {
-    let edges = 0;
+  it('sand / rocky on green ground: the fringe tile of exactly the sides touching grass, else notches for grass corners', () => {
+    let edges = 0, inner = 0;
     for (const id of ['coral-coast', 'starter-valley', 'ben-tre']) {
       const map = new ValleyMap(REGION_DEFS[id]);
       for (let y = 1; y < map.heightTiles - 1; y++) for (let x = 1; x < map.widthTiles - 1; x++) {
@@ -69,11 +87,14 @@ describe('ground transitions and themed paths', () => {
         const g = (dx: number, dy: number) => lawn.includes(map.terrainAt(x + dx, y + dy));
         const mask = (g(0, -1) ? 1 : 0) | (g(1, 0) ? 2 : 0) | (g(0, 1) ? 4 : 0) | (g(-1, 0) ? 8 : 0);
         const tile = map.tileIndexAt(x, y, 0);
+        const corners = (g(1, -1) ? 1 : 0) | (g(-1, -1) ? 2 : 0) | (g(1, 1) ? 4 : 0) | (g(-1, 1) ? 8 : 0);
         if (mask) { edges++; expect(tile, `${id} ${x},${y}`).toBe((t === T.Sand ? EX.sandEdge : EX.rockyEdge) + mask); }
+        else if (corners) { inner++; expect(tile, `${id} ${x},${y}`).toBe((t === T.Sand ? EX.sandInner : EX.rockyInner) + corners); }
         else expect(t === T.Sand ? [EX.sand, EX.sand2] : [EX.rocky, EX.rocky2], `${id} ${x},${y}`).toContain(tile);
       }
     }
     expect(edges).toBeGreaterThan(100);
+    expect(inner).toBeGreaterThan(10);
   });
 
   it('paths are a snow trail in the mountains and basalt in the volcanic lands', () => {
