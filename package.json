@@ -13,7 +13,8 @@
     "server": "tsx server/index.ts",
     "server:dev": "tsx watch server/index.ts",
     "server:typecheck": "tsc -p tsconfig.server.json --noEmit",
-    "e2e:server": "playwright test --config playwright.server.config.ts"
+    "e2e:server": "playwright test --config playwright.server.config.ts",
+    "tiled": "tsx scripts/export-tiled.ts"
   },
   "dependencies": {
     "peerjs": "^1.5.4",

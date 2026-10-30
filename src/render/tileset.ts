@@ -103,18 +103,36 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   const pathTiles: [number, string][] = [[D.c, ''], [D.tl, 'tl'], [D.t, 't'], [D.tr, 'tr'], [D.l, 'l'], [D.r, 'r'], [D.bl, 'bl'], [D.b, 'b'], [D.br, 'br']];
   pathTiles.forEach(([idx, sides], i) => gbaPath(idx, sides, 31 + i));
 
-  // Tall grass: dense blades swaying between 2 frames
-  for (let f = 0; f < 2; f++) {
-    const c = cell(EX.tallGrass + f);
-    ctx.fillStyle = rgb(grass, -18); ctx.fillRect(c.x, c.y, TILE, TILE);
-    for (let i = 0; i < 6; i++) {
-      const bx = c.x + 1 + (i % 3) * 5 + (i > 2 ? 2 : 0), by = c.y + (i > 2 ? 9 : 2);
-      ctx.fillStyle = rgb(grass, -55);
-      ctx.fillRect(bx, by + 5, 4, 2);
-      ctx.fillStyle = rgb(grass, -30);
-      ctx.fillRect(bx + f, by, 1, 6); ctx.fillRect(bx + 2 + f, by + 1, 1, 5); ctx.fillRect(bx + 1, by + 2, 1, 4);
-      ctx.fillStyle = rgb(grass, 25);
-      ctx.fillRect(bx + f, by, 1, 1); ctx.fillRect(bx + 2 + f, by + 1, 1, 1);
+  // Plaza: GBA town paving — warm grey slabs in a running bond, dark mortar, a light top edge per slab
+  {
+    const c = cell(TOWN.plaza);
+    fill(TOWN.plaza, '#7c7468');
+    const rnd = seeded(29);
+    for (let row = 0; row < 4; row++) for (let k = -1; k < 2; k++) {
+      const x0 = k * 8 + (row % 2 ? 4 : 0), y0 = row * 4;
+      const tone = ['#c8bea8', '#bcb29c', '#d2c8b2'][Math.floor(rnd() * 3)];
+      for (let y = y0; y < y0 + 3; y++) for (let x = Math.max(0, x0); x < Math.min(16, x0 + 7); x++) {
+        dot(c, x, y, y === y0 ? '#e4dcc8' : x === x0 + 6 || y === y0 + 2 ? '#a89e88' : tone);
+      }
+    }
+  }
+
+  // Tall grass (wild encounters): GBA-style leaf tufts — pointed tips fanning out, shading darker towards the
+  // roots, a dark line under each tuft — in a staggered 8×8 grid; frame 1 bends the top rows right (sway)
+  {
+    const tuft = ['...L....', '.L.G..L.', '.GLGL.G.', 'LGGMGGL.', 'GMGMGMG.', 'MMMDMMM.', 'DDDDDDD.', 'oooooooo'];
+    const pal: Record<string, string> = { L: GBA.light, G: GBA.grass, M: GBA.mid, D: GBA.dark, o: '#2e6a2e' };
+    for (let f = 0; f < 2; f++) {
+      const c = cell(EX.tallGrass + f);
+      fill(EX.tallGrass + f, '#4e9640');
+      for (const [bx, by] of [[0, 0], [8, 0], [4, 8], [12, 8], [-4, 8]] as const) {
+        tuft.forEach((r, y) => {
+          for (let x = 0; x < 8; x++) {
+            const col = pal[r[x]], tx = bx + x + (f && y < 3 ? 1 : 0);
+            if (col && tx >= 0 && tx < 16) dot(c, tx, by + y, col);
+          }
+        });
+      }
     }
   }
 
@@ -143,7 +161,18 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
     ctx.fillStyle = '#58a040';
     for (let x = 2; x < 16; x += 5) ctx.fillRect(c.x + x, c.y + 6, 2, 2);
   }
-  speckle(EX.deepGrass, rgb(grass, -40), [rgb(grass, -55), rgb(grass, -25)], 30, 8);
+  {
+    // Deep grass: the GBA grass one step darker, same tuft shapes, so patches blend into the meadow instead of
+    // reading as flat dark rectangles
+    const c = cell(EX.deepGrass);
+    fill(EX.deepGrass, GBA.mid);
+    const rnd = seeded(8);
+    for (let i = 0; i < 6; i++) { ctx.fillStyle = rnd() < 0.5 ? '#5a9e40' : GBA.grass; ctx.fillRect(c.x + Math.floor(rnd() * 14), c.y + Math.floor(rnd() * 14), 2, 2); }
+    for (let i = 0; i < 22; i++) {
+      const x = 1 + Math.floor(rnd() * 13), y = 1 + Math.floor(rnd() * 13);
+      dot(c, x, y, GBA.grass); dot(c, x, y + 1, GBA.dark); dot(c, x - 1, y + 2, GBA.dark); dot(c, x + 1, y + 2, GBA.dark);
+    }
+  }
   // Ancient ruin flagstones: 2x2 slabs with mortar lines and moss
   for (const [idx, seed] of [[EX.ruin, 11], [EX.ruin2, 12]] as const) {
     const c = cell(idx);
@@ -170,10 +199,22 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
         ctx.fillStyle = '#e8d49c'; ctx.fillRect(c.x + x, c.y + y, w, h);
       };
       const foam = (x: number, y: number, w: number, h: number) => { ctx.fillStyle = '#d8ecff'; ctx.fillRect(c.x + x, c.y + y, w, h); };
+      // shallows: a lighter band between the sand lip and the deep water (drawn first, lips and foam go on top)
+      const shallow = (x: number, y: number, w: number, h: number) => { ctx.fillStyle = '#5c9ee8'; ctx.fillRect(c.x + x, c.y + y, w, h); };
+      if (mask & 1) shallow(0, 4, 16, 3);
+      if (mask & 2) shallow(9, 0, 3, 16);
+      if (mask & 4) shallow(0, 9, 16, 3);
+      if (mask & 8) shallow(4, 0, 3, 16);
       if (mask & 1) { lip(0, 0, 16, 3); foam(0, 3, 16, 1); }
       if (mask & 2) { lip(13, 0, 3, 16); foam(12, 0, 1, 16); }
       if (mask & 4) { lip(0, 13, 16, 3); foam(0, 12, 16, 1); }
       if (mask & 8) { lip(0, 0, 3, 16); foam(3, 0, 1, 16); }
+      // wet sand: one darker row where the lip meets the foam
+      ctx.fillStyle = '#c8b07c';
+      if (mask & 1) ctx.fillRect(c.x, c.y + 2, 16, 1);
+      if (mask & 2) ctx.fillRect(c.x + 13, c.y, 1, 16);
+      if (mask & 4) ctx.fillRect(c.x, c.y + 13, 16, 1);
+      if (mask & 8) ctx.fillRect(c.x + 2, c.y, 1, 16);
     }
   }
   // ── snow / volcanic / sanctuary tiles (0.7.0) ──

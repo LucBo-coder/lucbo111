@@ -2,6 +2,8 @@
 
 ## Chưa phát hành — V22–V26: AI huấn luyện viên, danh tiếng theo tỉnh, Việt Nam Odyssey (đến Bến Tre), online
 
+- **Đồ họa nền kiểu GBA (Ruby/Emerald)** (`src/render/tileset.ts`): cỏ 3 tông có búi và hoa, đường đất màu cát có viền và sỏi (kể cả góc trong), quảng trường lát đá, cỏ cao (ô gặp Pokémon hoang dã) thành các búi lá nhọn xếp so le và lắc theo gió, cỏ sâu cùng kiểu với cỏ thường (không còn mảng sọc tối), bờ nước có dải nước nông và cát ướt. Áp dụng cho mọi bản đồ ngoài trời; chỉ số ô không đổi.
+- **Xem bản đồ trong Tiled** (`npm run tiled`, `scripts/export-tiled.ts`): xuất atlas `ow_tiles` đúng như game vẽ, tileset `.tsx` có hoạt ảnh nước / cỏ cao / bờ / dung nham, và 28 bản đồ ngoài trời thành `.tmx` (lớp Ground, Buildings, đối tượng cây / đạo cụ / NPC) vào thư mục `tiled/` để soát đồ họa trong trình biên tập Tiled.
 - **Việt Nam Odyssey — tỉnh thứ sáu: Bến Tre** (`data/vietnam/ben-tre.json`, Lv 34–40): đi từ Trà Vinh qua cầu Cổ Chiên khi có Huy hiệu Cây Dầu; làng kẹo dừa, vườn dừa Thới Sơn, rừng tràm, bờ sông Hàm Luông; boss Exeggutor — Dừa Trăm Thân (Huy hiệu Dừa Xiêm); 7 nhiệm vụ và 6 điểm bảo tồn.
 - **Hết đơ game, không mất tiến trình** (`src/systems/crashGuard.ts`): trước đây chỉ một lỗi trong một khung hình là vòng lặp game dừng hẳn (màn hình đứng, phải tải lại trang). Giờ game chạy tiếp; lỗi lặp liên tục thì lưu ngay và hiện bảng "Lưu và tải lại / Tiếp tục". Game lưu ngay khi ẩn tab, đóng hoặc tải lại trang (thêm bản cứu hộ localStorage), nên tải lại không còn mất tới 20 s tiến trình. Hội thoại / tiến hóa / chọn starter lỗi không còn khóa nhân vật.
 - **Khởi động nhanh hơn ~30 %**: ảnh vật phẩm và HUD boss tải nền sau khi vào menu, font không còn chặn khởi động, biểu tượng chiêu thức vẽ khi cần.
