@@ -522,6 +522,52 @@
     }
    ]
   },
+  "ha-tinh": {
+   "id": "ha-tinh",
+   "name": "Hà Tĩnh",
+   "area": "ht-thiencam",
+   "action": "trash",
+   "unlock": "vn-ht-3",
+   "boss": "braviary",
+   "label": "Nhặt rác trên bãi Thiên Cầm",
+   "done": "Bạn nhặt chai nhựa và lưới rách dạt vào bãi. Bãi Thiên Cầm sạch lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "ha-tinh-1",
+     "x": 108,
+     "y": 57
+    },
+    {
+     "id": "ha-tinh-2",
+     "x": 107,
+     "y": 43
+    },
+    {
+     "id": "ha-tinh-3",
+     "x": 105,
+     "y": 73
+    },
+    {
+     "id": "ha-tinh-4",
+     "x": 107,
+     "y": 29
+    },
+    {
+     "id": "ha-tinh-5",
+     "x": 111,
+     "y": 86
+    },
+    {
+     "id": "ha-tinh-6",
+     "x": 115,
+     "y": 17
+    }
+   ]
+  },
   "ho-chi-minh": {
    "id": "ho-chi-minh",
    "name": "TP. Hồ Chí Minh",

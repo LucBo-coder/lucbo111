@@ -10458,5 +10458,534 @@
     "Bãi sạch rồi! Cảm ơn con."
    ]
   }
+ },
+ {
+  "id": "vn-ht-1",
+  "kind": "main",
+  "title": "Bóng cánh trên làng",
+  "giver": "ht-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:quang-tri"
+  ],
+  "description": "Tới Hà Tĩnh: ghé Trung tâm Pokémon rồi lên chùa Hương Tích hỏi sư về con đại bàng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-ha-tinh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Hà Tĩnh",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ht-huongtich",
+    "count": 1,
+    "text": "Lên chùa Hương Tích (phía bắc)",
+    "marker": {
+     "x": 75,
+     "y": 15,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-monk",
+    "count": 1,
+    "text": "Hỏi Sư chùa Hương Tích",
+    "marker": {
+     "x": 60,
+     "y": 14,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1350,
+   "reputation": 10,
+   "flags": [
+    "landmark:huong-tich"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Hà Tĩnh! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên chùa Hương Tích hỏi sư, đại bàng sà xuống làng mấy bữa nay."
+   ],
+   "progress": [
+    "Chùa ở phía bắc, trên núi."
+   ],
+   "complete": [
+    "Sư nói đại bàng giận vì rừng đầu nguồn bị phá... Kiểm lâm Vũ Quang và chú trồng bưởi biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-2",
+  "kind": "main",
+  "title": "Rừng đầu nguồn",
+  "giver": "ht-guide",
+  "requires": [
+   "vn-ht-1"
+  ],
+  "description": "Vào rừng Vũ Quang hỏi kiểm lâm, rồi qua vườn bưởi hỏi chú Phúc Trạch.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ht-vuquang",
+    "count": 1,
+    "text": "Vào rừng Vũ Quang (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 76,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-ranger",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Vũ Quang",
+    "marker": {
+     "x": 20,
+     "y": 70,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-farmer",
+    "count": 1,
+    "text": "Hỏi Chú trồng bưởi Phúc Trạch",
+    "marker": {
+     "x": 56,
+     "y": 90,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1400,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Kiểm lâm Vũ Quang biết chuyện rừng. Con vào hỏi, rồi qua vườn bưởi hỏi thêm."
+   ],
+   "progress": [
+    "Rừng ở phía tây, vườn bưởi ở phía nam."
+   ],
+   "complete": [
+    "Đại Bàng đậu trên mỏm đá Hồng Lĩnh. Phải qua người nuôi chim ưng mới lên được."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-3",
+  "kind": "main",
+  "title": "Đại Bàng Hồng Lĩnh",
+  "giver": "ht-guide",
+  "requires": [
+   "vn-ht-2"
+  ],
+  "description": "Thắng Người nuôi chim ưng Hồng Lĩnh để lên mỏm đá, rồi làm Braviary nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ht-gate-t",
+    "count": 1,
+    "text": "Thắng Người nuôi chim ưng Hồng Lĩnh",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "braviary",
+    "count": 1,
+    "text": "Đánh bại Braviary — Đại Bàng Hồng Lĩnh",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1650,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Người nuôi chim ưng canh đường lên mỏm đá. Con đủ sức thì lên."
+   ],
+   "progress": [
+    "Mỏm đá ở góc tây bắc núi Hồng Lĩnh."
+   ],
+   "complete": [
+    "Đại Bàng về núi, làng yên rồi! Huy hiệu Hồng Lĩnh là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-rescue",
+  "kind": "side",
+  "title": "Trâu rừng Vũ Quang",
+  "giver": "ht-ranger",
+  "requires": [
+   "vn-ht-1"
+  ],
+  "description": "Một con Bouffalant mắc bẫy, bị bầy Liepard vây ở bìa rừng.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ht-ox-rescue",
+    "count": 1,
+    "text": "Giải cứu Bouffalant ở bìa rừng phía tây bắc",
+    "marker": {
+     "x": 8,
+     "y": 50,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Vũ Quang",
+    "marker": {
+     "x": 20,
+     "y": 70,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1200,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con trâu rừng mắc bẫy ở bìa rừng phía tây bắc. Con giúp anh!"
+   ],
+   "progress": [
+    "Bìa rừng phía tây bắc."
+   ],
+   "complete": [
+    "Trâu về rừng rồi. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-logger",
+  "kind": "side",
+  "title": "Lâm tặc Vũ Quang",
+  "giver": "ht-ranger",
+  "requires": [
+   "vn-ht-2"
+  ],
+  "description": "Lâm tặc chặt rừng đầu nguồn. Đuổi hắn đi.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ht-forest-t",
+    "count": 1,
+    "text": "Thắng Lâm tặc Vũ Quang",
+    "marker": {
+     "x": 12,
+     "y": 100,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Vũ Quang",
+    "marker": {
+     "x": 20,
+     "y": 70,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   },
+   "worldExp": 1100,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Lâm tặc ở góc tây nam rừng. Con đuổi nó giùm anh."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Nó bỏ cưa chạy rồi! Rừng đầu nguồn còn đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-pilgrim",
+  "kind": "side",
+  "title": "Người hành hương",
+  "giver": "ht-monk",
+  "requires": [
+   "vn-ht-1"
+  ],
+  "description": "Người hành hương muốn đấu một trận cho lòng thanh tịnh.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ht-temple-t",
+    "count": 1,
+    "text": "Thắng Người hành hương",
+    "marker": {
+     "x": 86,
+     "y": 12,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-monk",
+    "count": 1,
+    "text": "Báo cho Sư chùa Hương Tích",
+    "marker": {
+     "x": 60,
+     "y": 14,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "moon-stone": 1
+   },
+   "worldExp": 1100,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Cô hành hương muốn đấu một trận. Con chiều cô nha."
+   ],
+   "progress": [
+    "Cô ở phía đông chùa."
+   ],
+   "complete": [
+    "Lòng ai cũng nhẹ rồi. Nam mô A Di Đà Phật."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-pomelo",
+  "kind": "side",
+  "title": "Bưởi tiến vua",
+  "giver": "ht-farmer",
+  "requires": [
+   "vn-ht-1"
+  ],
+  "description": "Cô hái bưởi Hương muốn có bạn đấu sau giờ hái.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ht-orchard",
+    "count": 1,
+    "text": "Đến vườn bưởi Phúc Trạch (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 88,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ht-orchard-t",
+    "count": 1,
+    "text": "Thắng Cô hái bưởi Hương",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-farmer",
+    "count": 1,
+    "text": "Báo cho Chú trồng bưởi Phúc Trạch",
+    "marker": {
+     "x": 56,
+     "y": 90,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "greatball": 2
+   },
+   "worldExp": 1050,
+   "reputation": 10,
+   "flags": [
+    "landmark:dong-loc"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Con Hương hái bưởi giỏi mà đấu cũng giỏi. Con thử với nó nha. Nhớ ghé thắp nhang ở Đồng Lộc."
+   ],
+   "progress": [
+    "Hương ở góc đông nam vườn."
+   ],
+   "complete": [
+    "Quả bưởi Phúc Trạch này chú tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-wrestle",
+  "kind": "side",
+  "title": "Vật trên cát",
+  "giver": "ht-fisher",
+  "requires": [
+   "vn-ht-1"
+  ],
+  "description": "Võ sĩ vật Thiên Cầm thách ai dám vật trên cát.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ht-thiencam",
+    "count": 1,
+    "text": "Ra biển Thiên Cầm (phía đông)",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ht-beach-t",
+    "count": 1,
+    "text": "Thắng Võ sĩ vật Thiên Cầm",
+    "marker": {
+     "x": 104,
+     "y": 86,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-fisher",
+    "count": 1,
+    "text": "Báo cho Ngư dân Thiên Cầm",
+    "marker": {
+     "x": 104,
+     "y": 70,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "protein": 1
+   },
+   "worldExp": 1100,
+   "reputation": 12,
+   "flags": [
+    "landmark:thien-cam"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Anh võ sĩ vật trên bãi thách đấu hoài. Con lên vật thử nha."
+   ],
+   "progress": [
+    "Anh ấy ở giữa bãi phía nam."
+   ],
+   "complete": [
+    "Ảnh phục con rồi. Mai ảnh dạy con vật."
+   ]
+  }
+ },
+ {
+  "id": "vn-ht-eco",
+  "kind": "side",
+  "title": "Thiên Cầm sạch đẹp",
+  "giver": "ht-fisher",
+  "requires": [
+   "vn-ht-3"
+  ],
+  "description": "Rác nhựa dạt vào bãi Thiên Cầm sau mùa bão.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:ha-tinh",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "ha-tinh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ht-fisher",
+    "count": 1,
+    "text": "Báo cho Ngư dân Thiên Cầm",
+    "marker": {
+     "x": 104,
+     "y": 70,
+     "region": "ha-tinh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1100,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Núi yên rồi, giờ tới bãi biển. Con phụ chú nhặt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Nghe gió thổi như tiếng đàn chưa con?"
+   ]
+  }
  }
 ]

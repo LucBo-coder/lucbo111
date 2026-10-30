@@ -123,8 +123,9 @@
    "requires": ["beat:qt-gate-t"],
    "hint": "Tiếng rít vang ra từ cửa hang... Nhà thám hiểm Sơn Đoòng chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 11000, "flag": "badge:quang-tri", "message": "Nhận Huy hiệu Hang Động (Quảng Trị)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 11000, "flag": "badge:quang-tri", "message": "Nhận Huy hiệu Hang Động (Quảng Trị)! Đường tới Hà Tĩnh đã mở: Quốc lộ 1." } },
  "portals": [
+  {"id": "portal-qt-next", "name": "Quốc lộ 1 — đường ra Hà Tĩnh", "x": 80, "y": 5, "to": "ha-tinh", "toX": 64, "toY": 104, "requires": ["badge:quang-tri"], "hint": "Đường tới Hà Tĩnh mở cho người có Huy hiệu Hang Động — hạ boss Quảng Trị trước."},
   { "id": "portal-qt-hu", "name": "Quốc lộ 1 — về Huế", "x": 40, "y": 107, "to": "hue", "toX": 22, "toY": 8 }
  ],
  "docks": [],

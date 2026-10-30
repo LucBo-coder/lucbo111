@@ -1469,5 +1469,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "braviary",
+  "name": "Braviary — Đại Bàng Hồng Lĩnh",
+  "types": [
+   "normal",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 100,
+   "atk": 123,
+   "def": 75,
+   "spa": 57,
+   "spd": 75,
+   "spe": 80
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "brave_bird",
+   "slash"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "rufflet",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Đại Bàng sải cánh — gió núi cuốn bay đá sỏi!",
+  "exp": 150,
+  "sprite": "braviary",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "hyper_beam",
+   "volley": "air_slash",
+   "nova": "hurricane",
+   "field": "rock_slide",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "brave_bird",
+   "ultimateName": "Đại Bàng Sà Xuống",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

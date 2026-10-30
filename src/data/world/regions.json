@@ -2665,5 +2665,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-ht-honglinh",
+  "name": "Núi Hồng Lĩnh",
+  "areas": [
+   "ht-honglinh"
+  ],
+  "biome": "rocky",
+  "level": [
+   63,
+   66
+  ],
+  "elite": [
+   67,
+   69
+  ],
+  "boss": null,
+  "recommended": 65,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ht-huongtich",
+  "name": "Chùa Hương Tích",
+  "areas": [
+   "ht-huongtich"
+  ],
+  "biome": "ruins",
+  "level": [
+   62,
+   65
+  ],
+  "elite": [
+   66,
+   68
+  ],
+  "boss": null,
+  "recommended": 64,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ht-vuquang",
+  "name": "Rừng Vũ Quang",
+  "areas": [
+   "ht-vuquang"
+  ],
+  "biome": "forest",
+  "level": [
+   60,
+   63
+  ],
+  "elite": [
+   64,
+   66
+  ],
+  "boss": null,
+  "recommended": 62,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ht-orchard",
+  "name": "Vườn bưởi Phúc Trạch — Đồng Lộc",
+  "areas": [
+   "ht-orchard"
+  ],
+  "biome": "farm",
+  "level": [
+   60,
+   63
+  ],
+  "elite": [
+   64,
+   66
+  ],
+  "boss": null,
+  "recommended": 62,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ht-thiencam",
+  "name": "Biển Thiên Cầm",
+  "areas": [
+   "ht-thiencam"
+  ],
+  "biome": "coast",
+  "level": [
+   61,
+   64
+  ],
+  "elite": [
+   65,
+   67
+  ],
+  "boss": null,
+  "recommended": 63,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]
