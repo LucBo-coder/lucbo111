@@ -1,0 +1,145 @@
+{
+ "id": "lam-dong",
+ "name": "Lâm Đồng",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 7, "y": 100 },
+ "areas": [
+  { "id": "ld-langbiang", "name": "Núi Langbiang", "rect": [0, 0, 50, 38], "habitat": "rocky", "level": [47, 50] },
+  { "id": "ld-pine", "name": "Đồi thông Đà Lạt", "rect": [51, 0, 127, 38], "habitat": "forest", "level": [46, 49] },
+  { "id": "ld-flowers", "name": "Làng hoa Vạn Thành", "rect": [0, 39, 39, 92], "habitat": "meadow", "level": [46, 50] },
+  { "id": "ld-dalat", "name": "Thành phố Đà Lạt", "rect": [40, 39, 90, 72], "habitat": "village", "level": [46, 46] },
+  { "id": "ld-lake", "name": "Hồ Xuân Hương", "rect": [40, 73, 90, 92], "habitat": "lake", "level": [45, 47] },
+  { "id": "ld-tea", "name": "Đồi chè Cầu Đất", "rect": [91, 39, 127, 92], "habitat": "farm", "level": [45, 48], "orchard": { "period": 8, "gap": 8 } },
+  { "id": "ld-muine", "name": "Đồi cát Mũi Né", "rect": [0, 93, 127, 111], "habitat": "coast", "level": [44, 46] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[5, 100], [46, 100], [46, 70], [56, 62]] },
+  { "w": 3, "pts": [[56, 62], [60, 62], [60, 40], [40, 26], [24, 16]] },
+  { "w": 3, "pts": [[60, 40], [90, 24], [110, 14]] },
+  { "w": 3, "pts": [[46, 70], [20, 70], [14, 56]] },
+  { "w": 3, "pts": [[66, 62], [123, 62]] },
+  { "w": 3, "pts": [[46, 100], [100, 104], [118, 104]] }
+ ],
+ "plaza": [54, 54, 70, 68],
+ "lake": { "cx": 66, "cy": 82, "rx": 10, "ry": 5 },
+ "buildings": [
+  { "id": "ld-center", "name": "Trung tâm Pokémon", "x": 50, "y": 44, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "ld-mart", "name": "Cửa hàng Đà Lạt", "x": 62, "y": 44, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "ld-station", "name": "Ga Đà Lạt", "x": 70, "y": 42, "w": 8, "h": 5, "roof": "red", "wall": "stone", "door": 4 },
+  { "id": "ld-market", "name": "Chợ Đà Lạt", "x": 78, "y": 52, "w": 7, "h": 4, "roof": "grey", "wall": "stone", "door": 3 },
+  { "id": "ld-house-1", "name": "Nhà chị Hoa", "x": 43, "y": 54, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "ld-house-2", "name": "Biệt thự cổ", "x": 82, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "brown" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 56, "y": 70 },
+  { "kind": "beehive", "x": 26, "y": 80 },
+  { "kind": "beehive", "x": 10, "y": 66 },
+  { "kind": "log", "x": 96, "y": 30 },
+  { "kind": "haystack", "x": 100, "y": 70 },
+  { "kind": "bucket", "x": 86, "y": 58 }
+ ],
+ "signs": [
+  { "x": 62, "y": 66, "text": ["THÀNH PHỐ ĐÀ LẠT", "Thành phố ngàn hoa, quanh năm mát lạnh. Phía bắc: đồi thông, núi Langbiang · Phía tây: làng hoa Vạn Thành · Phía đông: đồi chè Cầu Đất · Phía nam: hồ Xuân Hương, đồi cát Mũi Né."] },
+  { "x": 26, "y": 20, "text": ["NÚI LANGBIANG", "Nóc nhà Đà Lạt. Người K'Ho kể chuyện tình chàng Lang và nàng Biang hóa thành hai ngọn núi."] },
+  { "x": 50, "y": 102, "text": ["ĐỒI CÁT MŨI NÉ", "Cát đỏ, cát trắng đổi hình theo gió. Đi trên đồi cát nhớ mang nước."] }
+ ],
+ "npcs": [
+  { "id": "ld-guide", "name": "Chị Hoa Đà Lạt", "sprite": "girl", "x": 62, "y": 58, "lines": [
+    "Chào mừng lên Đà Lạt! Mặc thêm áo ấm nha, ở đây lạnh lắm.",
+    "Năm nay hoa ở làng Vạn Thành héo hết trơn trước Tết. Ai cũng lo.",
+    "Bà Ba ở làng hoa phía tây biết rõ chuyện, con qua hỏi bà."] },
+  { "id": "ld-gardener", "name": "Bà Ba làng hoa", "sprite": "girl", "x": 22, "y": 64, "lines": [
+    "Làng hoa này trồng hồng, cúc, cẩm tú cầu, hoa nào cũng đẹp.",
+    "Người ta nói có Thần Hoa sống trong thung lũng phía bắc làng. Thần buồn thì hoa héo."] },
+  { "id": "ld-kho", "name": "Già làng K'Ho", "sprite": "elder", "x": 30, "y": 22, "lines": [
+    "Chàng Lang và nàng Biang yêu nhau mà không được ở bên nhau, hóa thành núi.",
+    "Thần Hoa là nước mắt của nàng Biang. Thần mà khóc thì hoa cả vùng héo theo."] },
+  { "id": "ld-tea", "name": "Chú Tám đồi chè", "sprite": "farmer", "x": 108, "y": 57, "lines": [
+    "Chè Cầu Đất trồng từ thời Pháp, đồi chè xanh tới tận chân mây.",
+    "Sương sớm trên đồi chè đẹp nhất, mà lạnh cóng tay."] },
+  { "id": "ld-pine", "name": "Anh kiểm lâm rừng thông", "sprite": "ranger", "x": 90, "y": 28, "lines": [
+    "Rừng thông Đà Lạt reo vi vu suốt ngày.",
+    "Có đàn Pokémon nai bị chó sói đuổi trong rừng, anh lo quá."] },
+  { "id": "ld-muine", "name": "Cô bán nước mắm Phan Thiết", "sprite": "girl", "x": 90, "y": 101, "lines": [
+    "Nước mắm Phan Thiết thơm nhất nước! Mua về chấm gì cũng ngon.",
+    "Đồi cát này gió thổi cả ngày, cát bay rát mặt lắm con."] },
+  { "id": "ld-lake", "name": "Ông đạp vịt hồ Xuân Hương", "sprite": "villager", "x": 48, "y": 80, "lines": [
+    "Thuê thuyền đạp vịt không con? Hồ Xuân Hương chiều nay đẹp lắm.",
+    "Rác trôi dạt vô bờ hồ nhiều quá, ông nhặt không xuể."] }
+ ],
+ "trainers": [
+  { "id": "ld-langbiang-t", "name": "Người leo núi Lang", "sprite": "bald", "x": 20, "y": 27,
+    "team": [["rhyperior", 48], ["aerodactyl", 47], ["skarmory", 48]],
+    "challenge": ["Đỉnh Langbiang cao lắm, đấu với tôi để làm nóng người!"],
+    "win": ["Con khỏe thiệt. Leo núi chắc nhẹ tênh."],
+    "lose": ["Thở đều, đi chậm thôi con."],
+    "rewards": { "items": { "ultraball": 2 }, "exp": 2100 } },
+  { "id": "ld-pine-t", "name": "Thợ rừng Biang", "sprite": "ranger", "x": 100, "y": 20,
+    "team": [["shiftry", 48], ["cacturne", 47], ["breloom", 48]],
+    "challenge": ["Rừng thông này tôi giữ cả chục năm rồi. Thử sức đi!"],
+    "win": ["Bạn giỏi. Rừng thông chào đón bạn."],
+    "lose": ["Thông reo là thông đang cười bạn đó."],
+    "rewards": { "items": { "superpotion": 2, "leaf-stone": 1 }, "exp": 2100 } },
+  { "id": "ld-tea-t", "name": "Cô hái chè Mai", "sprite": "girl", "x": 116, "y": 78,
+    "team": [["leafeon", 48], ["roserade", 48], ["meganium", 48]],
+    "challenge": ["Hái chè từ sáng sớm, giờ tới giờ đấu rồi!"],
+    "win": ["Thua rồi, mời bạn ly chè nóng nha."],
+    "lose": ["Chè ngon phải hái búp non, đấu hay phải chờ thời."],
+    "rewards": { "items": { "sitrus-berry": 3 }, "exp": 2100 } },
+  { "id": "ld-muine-t", "name": "Dân đua xe cát Nam", "sprite": "youngster", "x": 40, "y": 104,
+    "team": [["flygon", 48], ["sandslash", 47], ["palossand", 48]],
+    "challenge": ["Đua xe trên cát chán rồi, đua Pokémon đi!"],
+    "win": ["Bạn chạy nhanh hơn cả xe tôi."],
+    "lose": ["Cát lún là thua đó bạn!"],
+    "rewards": { "items": { "ultraball": 1, "soft-sand": 1 }, "exp": 2000 } },
+  { "id": "ld-flower-t", "name": "Người giữ vườn hoa Linh", "sprite": "girl", "x": 20, "y": 55,
+    "team": [["lilligant", 49], ["whimsicott", 49], ["sylveon", 49]],
+    "challenge": ["Thần Hoa đang khóc trong thung lũng. Ai muốn vào phải chứng tỏ mình không làm thần buồn thêm."],
+    "win": ["Bạn hiền mà mạnh. Vào đi, nói khẽ thôi."],
+    "lose": ["Hoa cần chăm, người cũng cần luyện."],
+    "rewards": { "items": { "superpotion": 2, "moon-stone": 1 }, "exp": 2200 } }
+ ],
+ "rescue": { "id": "ld-deer-rescue", "x": 112, "y": 8, "species": "stantler", "level": 48,
+   "guards": [["houndoom", 46], ["houndoom", 46], ["mightyena", 48]], "quest": "vn-ld-rescue", "reporter": "Anh kiểm lâm rừng thông" },
+ "chests": [
+  { "id": "chest-ld-langbiang", "x": 6, "y": 6, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-ld-pine", "x": 122, "y": 22, "items": { "superpotion": 3, "leaf-stone": 1 } },
+  { "id": "chest-ld-flowers", "x": 6, "y": 86, "items": { "sitrus-berry": 3, "moon-stone": 1 } },
+  { "id": "chest-ld-tea", "x": 121, "y": 85, "items": { "ultraball": 2, "greatball": 2 } },
+  { "id": "chest-ld-muine", "x": 120, "y": 100, "items": { "superpotion": 3, "soft-sand": 1 } },
+  { "id": "chest-ld-nook", "x": 80, "y": 12, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:lam-dong:ld-thicket" }
+ ],
+ "waypoints": [
+  { "id": "wp-lam-dong-center", "name": "Trung tâm Pokémon Đà Lạt", "x": 53, "y": 50 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "florges", "name": "Florges — Thần Hoa Đà Lạt", "x": 12, "y": 49, "level": 50, "respawn": 600, "arena": 260,
+   "requires": ["beat:ld-flower-t"],
+   "hint": "Cánh hoa rơi lả tả trong thung lũng, có tiếng ai khóc... Người giữ vườn hoa Linh chưa cho ai vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "shiny-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 7500, "flag": "badge:lam-dong", "message": "Nhận Huy hiệu Ngàn Hoa (Lâm Đồng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-ld-dn", "name": "Quốc lộ 20 — về Đồng Nai", "x": 5, "y": 100, "to": "dong-nai", "toX": 120, "toY": 26 }
+ ],
+ "docks": [],
+ "rivers": [],
+ "nodes": [
+  { "id": "ld-forest-1", "table": "forest-forage", "x": 72, "y": 20 },
+  { "id": "ld-meadow-1", "table": "meadow-forage", "x": 24, "y": 78 },
+  { "id": "ld-orchard-1", "table": "orchard-forage", "x": 100, "y": 82 },
+  { "id": "ld-lake-1", "table": "lake-fish", "x": 52, "y": 82 },
+  { "id": "ld-meadow-2", "table": "meadow-forage", "x": 80, "y": 106 }
+ ],
+ "field": [
+  { "id": "ld-thicket", "ability": "cut", "x": 84, "y": 12, "nook": { "cx": 80.5, "cy": 12.5, "r": 3, "wall": "tree" } }
+ ]
+}

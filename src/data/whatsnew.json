@@ -1,5 +1,23 @@
 [
   {
+    "id": "vn-lam-dong",
+    "title": "Việt Nam Odyssey: tỉnh thứ mười một — Lâm Đồng",
+    "items": [
+      "Theo quốc lộ 20 từ Đồng Nai sau khi có Huy hiệu Bò Tót.",
+      "Đà Lạt, hồ Xuân Hương, núi Langbiang, đồi thông, làng hoa Vạn Thành, đồi chè Cầu Đất và đồi cát Mũi Né: 9 nhiệm vụ.",
+      "Thần Hoa Đà Lạt khóc trong thung lũng: đánh bại để nhận Huy hiệu Ngàn Hoa."
+    ]
+  },
+  {
+    "id": "vn-dong-nai",
+    "title": "Việt Nam Odyssey: tỉnh thứ mười — Đồng Nai",
+    "items": [
+      "Theo quốc lộ 1 từ Lái Thiêu (TP. Hồ Chí Minh) sau khi có Huy hiệu Sài Gòn.",
+      "Vườn quốc gia Cát Tiên, Bàu Sấu, đồi điều Bình Phước, Biên Hòa, Bửu Long, thác Giang Điền và sông Đồng Nai: 9 nhiệm vụ.",
+      "Bò Tót đầu đàn nổi giận trong rừng sâu: đánh bại để nhận Huy hiệu Bò Tót."
+    ]
+  },
+  {
     "id": "vn-ho-chi-minh",
     "title": "Việt Nam Odyssey: tỉnh thứ chín — TP. Hồ Chí Minh",
     "items": [

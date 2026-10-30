@@ -5731,5 +5731,1050 @@
     "Đước con bám rễ rồi! Rừng Sác sẽ còn xanh lâu."
    ]
   }
+ },
+ {
+  "id": "vn-dn-1",
+  "kind": "main",
+  "title": "Đàn bò tót bỏ rừng",
+  "giver": "dn-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:ho-chi-minh"
+  ],
+  "description": "Tới Đồng Nai: ghé Trung tâm Pokémon Biên Hòa rồi lên Cát Tiên hỏi kiểm lâm vì sao đàn bò tót bỏ rừng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-dong-nai-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Biên Hòa",
+    "marker": {
+     "x": 49,
+     "y": 62,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "dn-cattien",
+    "count": 1,
+    "text": "Đến Vườn quốc gia Cát Tiên (phía bắc)",
+    "marker": {
+     "x": 30,
+     "y": 25,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-ranger",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Cát Tiên",
+    "marker": {
+     "x": 34,
+     "y": 32,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 900,
+   "reputation": 10,
+   "flags": [
+    "landmark:cat-tien"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Đồng Nai! Ghé Trung tâm Pokémon trước nha con.",
+    "Rồi lên Cát Tiên hỏi kiểm lâm, đàn bò tót đang làm loạn."
+   ],
+   "progress": [
+    "Cát Tiên ở phía bắc, theo đường đất vào rừng."
+   ],
+   "complete": [
+    "Có người đặt bẫy trong rừng, con đầu đàn nổi giận... Phải tìm cách làm nó nguôi."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-2",
+  "kind": "main",
+  "title": "Rẫy điều bị phá",
+  "giver": "dn-guide",
+  "requires": [
+   "vn-dn-1"
+  ],
+  "description": "Đàn bò tót chạy ra phá rẫy điều Bình Phước. Hỏi Cô Năm hạt điều xem chúng đi đâu.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dn-binhphuoc",
+    "count": 1,
+    "text": "Đến đồi điều Bình Phước (phía đông bắc)",
+    "marker": {
+     "x": 114,
+     "y": 25,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-cashew",
+    "count": 1,
+    "text": "Hỏi Cô Năm hạt điều",
+    "marker": {
+     "x": 110,
+     "y": 19,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-croc",
+    "count": 1,
+    "text": "Hỏi Chú Sáu Bàu Sấu",
+    "marker": {
+     "x": 84,
+     "y": 27,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 950,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Đồi điều phía đông bắc bị phá mấy đêm rồi. Con qua hỏi Cô Năm, rồi ghé Bàu Sấu hỏi Chú Sáu."
+   ],
+   "progress": [
+    "Đồi điều ở phía đông bắc, Bàu Sấu ở giữa đường."
+   ],
+   "complete": [
+    "Chú Sáu thấy đàn bò tót chạy ngược về rừng sâu. Con đầu đàn ở bãi cỏ phía tây bắc Cát Tiên."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-3",
+  "kind": "main",
+  "title": "Bò Tót Cát Tiên",
+  "giver": "dn-guide",
+  "requires": [
+   "vn-dn-2"
+  ],
+  "description": "Thắng Kiểm lâm trưởng Hải để vào rừng sâu, rồi làm Tauros đầu đàn nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dn-ranger-t",
+    "count": 1,
+    "text": "Thắng Kiểm lâm trưởng Hải",
+    "marker": {
+     "x": 24,
+     "y": 27,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "tauros",
+    "count": 1,
+    "text": "Đánh bại Tauros — Bò Tót Cát Tiên",
+    "marker": {
+     "x": 15,
+     "y": 12,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1200,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Kiểm lâm trưởng Hải canh lối vào rừng sâu. Ảnh chỉ cho người đủ sức vào thôi."
+   ],
+   "progress": [
+    "Bãi cỏ sâu nhất phía tây bắc Cát Tiên."
+   ],
+   "complete": [
+    "Đàn bò tót về rừng rồi! Huy hiệu Bò Tót là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-rescue",
+  "kind": "side",
+  "title": "Chatot bị vây",
+  "giver": "dn-ranger",
+  "requires": [
+   "vn-dn-1"
+  ],
+  "description": "Một con Chatot mắc bẫy, bị bầy rắn vây trong rừng Cát Tiên.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "dn-bird-rescue",
+    "count": 1,
+    "text": "Giải cứu Chatot trong rừng Cát Tiên",
+    "marker": {
+     "x": 44,
+     "y": 12,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cát Tiên",
+    "marker": {
+     "x": 34,
+     "y": 32,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 800,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con Chatot mắc bẫy bị rắn vây ở phía bắc. Con giúp anh với!"
+   ],
+   "progress": [
+    "Phía bắc rừng, gần lối mòn."
+   ],
+   "complete": [
+    "Chatot bay đi rồi, còn hót lại mấy câu nghe vui tai ghê."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-stone",
+  "kind": "side",
+  "title": "Đá Biên Hòa",
+  "giver": "dn-monk",
+  "requires": [
+   "vn-dn-1"
+  ],
+  "description": "Thợ đá Biên Hòa muốn thử sức người lạ ở Bửu Long.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dn-buulong",
+    "count": 1,
+    "text": "Đến khu du lịch Bửu Long (phía tây)",
+    "marker": {
+     "x": 17,
+     "y": 65,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "dn-rock-t",
+    "count": 1,
+    "text": "Thắng Thợ đá Biên Hòa",
+    "marker": {
+     "x": 14,
+     "y": 72,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-monk",
+    "count": 1,
+    "text": "Báo cho Thầy chùa Bửu Phong",
+    "marker": {
+     "x": 20,
+     "y": 62,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "hard-stone": 1
+   },
+   "worldExp": 800,
+   "reputation": 12,
+   "flags": [
+    "landmark:buu-long"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Ông thợ đá dưới chân núi ham đấu lắm. Con thử với ông một trận."
+   ],
+   "progress": [
+    "Ông ở bãi đá phía nam chùa."
+   ],
+   "complete": [
+    "Ông thợ đá phục con rồi. Nam mô A Di Đà Phật."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-falls",
+  "kind": "side",
+  "title": "Mỏm đá Giang Điền",
+  "giver": "dn-falls",
+  "requires": [
+   "vn-dn-1"
+  ],
+  "description": "Dân phượt Khang đứng trên mỏm đá thách đấu khách tham quan thác.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dn-giangdien",
+    "count": 1,
+    "text": "Đến thác Giang Điền (phía đông)",
+    "marker": {
+     "x": 109,
+     "y": 65,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "dn-falls-t",
+    "count": 1,
+    "text": "Thắng Dân phượt Khang",
+    "marker": {
+     "x": 118,
+     "y": 74,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-falls",
+    "count": 1,
+    "text": "Báo cho Anh hướng dẫn Giang Điền",
+    "marker": {
+     "x": 108,
+     "y": 70,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "ultraball": 1
+   },
+   "worldExp": 800,
+   "reputation": 12,
+   "flags": [
+    "landmark:giang-dien"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Khang đứng trên mỏm đá cạnh thác, nguy hiểm lắm. Con thắng nó thì nó mới chịu xuống."
+   ],
+   "progress": [
+    "Mỏm đá phía đông thác."
+   ],
+   "complete": [
+    "Khang xuống rồi. Thác Giang Điền đẹp hơn khi không ai đứng chắn."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-cashew",
+  "kind": "side",
+  "title": "Lò rang điều",
+  "giver": "dn-cashew",
+  "requires": [
+   "vn-dn-2"
+  ],
+  "description": "Thợ rang điều Lộc khoe Pokémon lửa của mình. Cô Năm muốn ai đó trị anh ta.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dn-cashew-t",
+    "count": 1,
+    "text": "Thắng Thợ rang điều Lộc",
+    "marker": {
+     "x": 118,
+     "y": 36,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-cashew",
+    "count": 1,
+    "text": "Báo cho Cô Năm hạt điều",
+    "marker": {
+     "x": 110,
+     "y": 19,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "charcoal": 1
+   },
+   "worldExp": 750,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Lộc rang điều giỏi mà khoe quá. Con đấu với nó một trận nha."
+   ],
+   "progress": [
+    "Lộc ở lò rang phía nam đồi điều."
+   ],
+   "complete": [
+    "Lộc chịu rồi! Bịch điều rang muối này cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-croc",
+  "kind": "side",
+  "title": "Người nuôi sấu",
+  "giver": "dn-croc",
+  "requires": [
+   "vn-dn-1"
+  ],
+  "description": "Người nuôi sấu Lực muốn biết có ai đủ gan đấu với Pokémon của anh ta không.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dn-croc-t",
+    "count": 1,
+    "text": "Thắng Người nuôi sấu Lực",
+    "marker": {
+     "x": 70,
+     "y": 30,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-croc",
+    "count": 1,
+    "text": "Báo cho Chú Sáu Bàu Sấu",
+    "marker": {
+     "x": 84,
+     "y": 27,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 2,
+    "exp-candy-s": 2
+   },
+   "worldExp": 750,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Lực nuôi sấu mà Pokémon nó còn dữ hơn sấu. Con dám đấu không?"
+   ],
+   "progress": [
+    "Lực ở bờ phía tây Bàu Sấu."
+   ],
+   "complete": [
+    "Gan dữ ha! Lực phục con rồi."
+   ]
+  }
+ },
+ {
+  "id": "vn-dn-eco",
+  "kind": "side",
+  "title": "Sông Đồng Nai thông thoáng",
+  "giver": "dn-ferry",
+  "requires": [
+   "vn-dn-3"
+  ],
+  "description": "Lưới bỏ hoang mắc khắp bờ sông Đồng Nai, cá chết cả bầy.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:dong-nai",
+    "count": 6,
+    "text": "Gỡ 6 tấm lưới bỏ hoang ven sông",
+    "marker": {
+     "x": 64,
+     "y": 97,
+     "region": "dong-nai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dn-ferry",
+    "count": 1,
+    "text": "Báo cho Lái đò sông Đồng Nai",
+    "marker": {
+     "x": 42,
+     "y": 94,
+     "region": "dong-nai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 800,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rừng yên rồi, giờ tới sông. Con phụ chú gỡ mấy tấm lưới bỏ hoang ven bờ nha."
+   ],
+   "progress": [
+    "Lưới mắc sát mép nước dọc bờ sông."
+   ],
+   "complete": [
+    "Sông thông thoáng rồi, cá về đông lắm!"
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-1",
+  "kind": "main",
+  "title": "Hoa héo trước Tết",
+  "giver": "ld-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:dong-nai"
+  ],
+  "description": "Lên Đà Lạt: ghé Trung tâm Pokémon rồi qua làng hoa Vạn Thành hỏi Bà Ba vì sao hoa héo.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-lam-dong-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Đà Lạt",
+    "marker": {
+     "x": 53,
+     "y": 50,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ld-flowers",
+    "count": 1,
+    "text": "Đến làng hoa Vạn Thành (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 65,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-gardener",
+    "count": 1,
+    "text": "Hỏi Bà Ba làng hoa",
+    "marker": {
+     "x": 22,
+     "y": 64,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 950,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng lên Đà Lạt! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi qua làng hoa phía tây hỏi Bà Ba, hoa héo cả làng rồi."
+   ],
+   "progress": [
+    "Làng hoa ở phía tây thành phố."
+   ],
+   "complete": [
+    "Bà Ba nói có Thần Hoa trong thung lũng... Già làng K'Ho trên núi biết chuyện xưa."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-2",
+  "kind": "main",
+  "title": "Chuyện tình Langbiang",
+  "giver": "ld-guide",
+  "requires": [
+   "vn-ld-1"
+  ],
+  "description": "Lên núi Langbiang nghe Già làng K'Ho kể chuyện chàng Lang và nàng Biang.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ld-langbiang",
+    "count": 1,
+    "text": "Lên núi Langbiang (phía tây bắc)",
+    "marker": {
+     "x": 25,
+     "y": 19,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-kho",
+    "count": 1,
+    "text": "Nghe Già làng K'Ho kể chuyện",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1000,
+   "reputation": 15,
+   "flags": [
+    "landmark:langbiang"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Già làng K'Ho trên núi Langbiang biết nhiều chuyện xưa lắm. Con lên hỏi thử."
+   ],
+   "progress": [
+    "Núi Langbiang ở phía tây bắc, theo đường lên đồi thông."
+   ],
+   "complete": [
+    "Thần Hoa là nước mắt của nàng Biang... Phải có ai đủ sức làm thần thôi khóc."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-3",
+  "kind": "main",
+  "title": "Thần Hoa Đà Lạt",
+  "giver": "ld-guide",
+  "requires": [
+   "vn-ld-2"
+  ],
+  "description": "Thắng Người giữ vườn hoa Linh để vào thung lũng, rồi làm Florges thôi khóc.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ld-flower-t",
+    "count": 1,
+    "text": "Thắng Người giữ vườn hoa Linh",
+    "marker": {
+     "x": 20,
+     "y": 55,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "florges",
+    "count": 1,
+    "text": "Đánh bại Florges — Thần Hoa Đà Lạt",
+    "marker": {
+     "x": 12,
+     "y": 49,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1250,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thung lũng phía bắc làng hoa, chị Linh canh ở cửa. Con cẩn thận nha."
+   ],
+   "progress": [
+    "Thung lũng ở đầu bắc làng hoa."
+   ],
+   "complete": [
+    "Hoa cả làng nở lại rồi! Huy hiệu Ngàn Hoa là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-rescue",
+  "kind": "side",
+  "title": "Nai rừng thông",
+  "giver": "ld-pine",
+  "requires": [
+   "vn-ld-1"
+  ],
+  "description": "Một con Stantler bị bầy Houndoom đuổi vào góc rừng thông.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ld-deer-rescue",
+    "count": 1,
+    "text": "Giải cứu Stantler ở góc rừng thông",
+    "marker": {
+     "x": 112,
+     "y": 8,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-pine",
+    "count": 1,
+    "text": "Báo cho Anh kiểm lâm rừng thông",
+    "marker": {
+     "x": 90,
+     "y": 28,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 850,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con nai bị chó lửa đuổi vào góc rừng phía đông bắc. Con giúp anh!"
+   ],
+   "progress": [
+    "Góc đông bắc rừng thông."
+   ],
+   "complete": [
+    "Nai về rừng rồi. Rừng thông yên tiếng lại."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-lake",
+  "kind": "side",
+  "title": "Thuyền vịt hồ Xuân Hương",
+  "giver": "ld-lake",
+  "requires": [
+   "vn-ld-1"
+  ],
+  "description": "Ông đạp vịt muốn có người đi một vòng hồ Xuân Hương cho biết.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ld-lake",
+    "count": 1,
+    "text": "Dạo quanh hồ Xuân Hương (phía nam thành phố)",
+    "marker": {
+     "x": 63,
+     "y": 87,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-lake",
+    "count": 1,
+    "text": "Nói chuyện với Ông đạp vịt",
+    "marker": {
+     "x": 48,
+     "y": 80,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3
+   },
+   "worldExp": 700,
+   "reputation": 10,
+   "flags": [
+    "landmark:xuan-huong"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Đi một vòng hồ đi con, chiều Đà Lạt trên hồ đẹp nhất."
+   ],
+   "progress": [
+    "Hồ ở ngay phía nam thành phố."
+   ],
+   "complete": [
+    "Đẹp không con? Lần sau ông cho thuê thuyền miễn phí."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-pine",
+  "kind": "side",
+  "title": "Thợ rừng Biang",
+  "giver": "ld-pine",
+  "requires": [
+   "vn-ld-1"
+  ],
+  "description": "Thợ rừng Biang muốn thử sức người lạ vào rừng thông.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ld-pine-t",
+    "count": 1,
+    "text": "Thắng Thợ rừng Biang",
+    "marker": {
+     "x": 100,
+     "y": 20,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-pine",
+    "count": 1,
+    "text": "Báo cho Anh kiểm lâm rừng thông",
+    "marker": {
+     "x": 90,
+     "y": 28,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "leaf-stone": 1
+   },
+   "worldExp": 800,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Anh Biang giữ rừng lâu năm, ai vào cũng bị thử. Con đấu một trận nha."
+   ],
+   "progress": [
+    "Anh ấy ở đồi thông phía đông bắc."
+   ],
+   "complete": [
+    "Biang phục rồi. Rừng thông chào đón con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-tea",
+  "kind": "side",
+  "title": "Búp chè Cầu Đất",
+  "giver": "ld-tea",
+  "requires": [
+   "vn-ld-1"
+  ],
+  "description": "Cô hái chè Mai muốn có bạn đấu sau buổi hái chè.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ld-tea",
+    "count": 1,
+    "text": "Đến đồi chè Cầu Đất (phía đông)",
+    "marker": {
+     "x": 109,
+     "y": 65,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ld-tea-t",
+    "count": 1,
+    "text": "Thắng Cô hái chè Mai",
+    "marker": {
+     "x": 116,
+     "y": 78,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-tea",
+    "count": 1,
+    "text": "Báo cho Chú Tám đồi chè",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 2,
+    "superpotion": 2
+   },
+   "worldExp": 800,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Con Mai hái chè giỏi mà đấu cũng giỏi. Con thử với nó một trận."
+   ],
+   "progress": [
+    "Mai ở góc đông nam đồi chè."
+   ],
+   "complete": [
+    "Mai mời con ly chè rồi hả? Uống cho ấm bụng nha."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-dunes",
+  "kind": "side",
+  "title": "Đua trên đồi cát",
+  "giver": "ld-muine",
+  "requires": [
+   "vn-ld-1"
+  ],
+  "description": "Dân đua xe cát Nam thách mọi người trên đồi cát Mũi Né.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ld-muine",
+    "count": 1,
+    "text": "Đến đồi cát Mũi Né (phía nam)",
+    "marker": {
+     "x": 63,
+     "y": 102,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ld-muine-t",
+    "count": 1,
+    "text": "Thắng Dân đua xe cát Nam",
+    "marker": {
+     "x": 40,
+     "y": 104,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-muine",
+    "count": 1,
+    "text": "Báo cho Cô bán nước mắm Phan Thiết",
+    "marker": {
+     "x": 90,
+     "y": 101,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 800,
+   "reputation": 12,
+   "flags": [
+    "landmark:mui-ne"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Nam đua xe trên đồi cát, cát bay vô hàng của cô hoài. Con trị nó giùm cô."
+   ],
+   "progress": [
+    "Nam ở đồi cát phía tây."
+   ],
+   "complete": [
+    "Nam chịu đua chỗ khác rồi. Cảm ơn con, chai nước mắm này cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-ld-eco",
+  "kind": "side",
+  "title": "Hồ Xuân Hương trong xanh",
+  "giver": "ld-lake",
+  "requires": [
+   "vn-ld-3"
+  ],
+  "description": "Rác dạt vào bờ hồ Xuân Hương sau mùa lễ hội.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:lam-dong",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 63,
+     "y": 87,
+     "region": "lam-dong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ld-lake",
+    "count": 1,
+    "text": "Báo cho Ông đạp vịt",
+    "marker": {
+     "x": 48,
+     "y": 80,
+     "region": "lam-dong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 800,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Lễ hội hoa xong là rác đầy bờ hồ. Con phụ ông nhặt nha."
+   ],
+   "progress": [
+    "Mấy chỗ rác dồn lại sát mép nước."
+   ],
+   "complete": [
+    "Hồ trong veo rồi! Cảm ơn con nhiều."
+   ]
+  }
  }
 ]

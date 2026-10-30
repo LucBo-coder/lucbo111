@@ -130,8 +130,9 @@
    "requires": ["beat:sg-engineer"],
    "hint": "Không khí bên bến sông rè rè tiếng điện... Kỹ sư điện Tín đang chặn lối vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "magnet": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 6500, "flag": "badge:ho-chi-minh", "message": "Nhận Huy hiệu Sài Gòn (TP. Hồ Chí Minh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 6500, "flag": "badge:ho-chi-minh", "message": "Nhận Huy hiệu Sài Gòn (TP. Hồ Chí Minh)! Đường tới Đồng Nai đã mở: Quốc lộ 1." } },
  "portals": [
+  {"id": "portal-sg-next", "name": "Quốc lộ 1 — đường tới Đồng Nai", "x": 123, "y": 14, "to": "dong-nai", "toX": 7, "toY": 90, "requires": ["badge:ho-chi-minh"], "hint": "Đường tới Đồng Nai mở cho người có Huy hiệu Sài Gòn — hạ boss TP. Hồ Chí Minh trước."},
   { "id": "portal-sg-tn", "name": "Quốc lộ 22 — về Tây Ninh", "x": 5, "y": 20, "to": "tay-ninh", "toX": 120, "toY": 96 }
  ],
  "docks": [],

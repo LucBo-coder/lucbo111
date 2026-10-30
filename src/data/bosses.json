@@ -987,5 +987,111 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "tauros",
+  "name": "Tauros — Bò Tót Cát Tiên",
+  "types": [
+   "normal"
+  ],
+  "baseStats": {
+   "hp": 75,
+   "atk": 100,
+   "def": 95,
+   "spa": 40,
+   "spd": 70,
+   "spe": 110
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "take_down",
+   "horn_attack"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "deerling",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Bò Tót đầu đàn rống lên — cả đàn lao ra khỏi rừng!",
+  "exp": 150,
+  "sprite": "tauros",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "hyper_beam",
+   "volley": "swift",
+   "nova": "bulldoze",
+   "field": "rock_tomb",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "hyper_voice",
+   "ultimateName": "Đàn Bò Tót Lồng Lộn",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
+ },
+ {
+  "id": "florges",
+  "name": "Florges — Thần Hoa Đà Lạt",
+  "types": [
+   "fairy"
+  ],
+  "baseStats": {
+   "hp": 78,
+   "atk": 65,
+   "def": 68,
+   "spa": 112,
+   "spd": 154,
+   "spe": 75
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "moonblast",
+   "petal_blizzard"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "flabebe",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Hoa rơi lệ — cánh hoa xoáy khắp thung lũng!",
+  "exp": 150,
+  "sprite": "florges",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "moonblast",
+   "volley": "fairy_wind",
+   "nova": "dazzling_gleam",
+   "field": "petal_blizzard",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "petal_dance",
+   "ultimateName": "Mưa Hoa Đà Lạt",
+   "ultimateStyle": "safe",
+   "power": 0.33
+  }
  }
 ]

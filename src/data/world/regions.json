@@ -1515,5 +1515,281 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-dn-cattien",
+  "name": "Vườn quốc gia Cát Tiên",
+  "areas": [
+   "dn-cattien"
+  ],
+  "biome": "forest",
+  "level": [
+   45,
+   48
+  ],
+  "elite": [
+   49,
+   51
+  ],
+  "boss": null,
+  "recommended": 47,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dn-bausau",
+  "name": "Bàu Sấu",
+  "areas": [
+   "dn-bausau"
+  ],
+  "biome": "lake",
+  "level": [
+   44,
+   47
+  ],
+  "elite": [
+   48,
+   50
+  ],
+  "boss": null,
+  "recommended": 46,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dn-binhphuoc",
+  "name": "Đồi điều Bình Phước",
+  "areas": [
+   "dn-binhphuoc"
+  ],
+  "biome": "farm",
+  "level": [
+   44,
+   47
+  ],
+  "elite": [
+   48,
+   50
+  ],
+  "boss": null,
+  "recommended": 46,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dn-buulong",
+  "name": "Khu du lịch Bửu Long",
+  "areas": [
+   "dn-buulong"
+  ],
+  "biome": "rocky",
+  "level": [
+   43,
+   46
+  ],
+  "elite": [
+   47,
+   49
+  ],
+  "boss": null,
+  "recommended": 45,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dn-giangdien",
+  "name": "Thác Giang Điền",
+  "areas": [
+   "dn-giangdien"
+  ],
+  "biome": "forest",
+  "level": [
+   43,
+   46
+  ],
+  "elite": [
+   47,
+   49
+  ],
+  "boss": null,
+  "recommended": 45,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dn-river",
+  "name": "Bờ sông Đồng Nai",
+  "areas": [
+   "dn-river"
+  ],
+  "biome": "meadow",
+  "level": [
+   42,
+   44
+  ],
+  "elite": [
+   45,
+   47
+  ],
+  "boss": null,
+  "recommended": 43,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ld-langbiang",
+  "name": "Núi Langbiang",
+  "areas": [
+   "ld-langbiang"
+  ],
+  "biome": "rocky",
+  "level": [
+   47,
+   50
+  ],
+  "elite": [
+   51,
+   53
+  ],
+  "boss": null,
+  "recommended": 49,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ld-pine",
+  "name": "Đồi thông Đà Lạt",
+  "areas": [
+   "ld-pine"
+  ],
+  "biome": "forest",
+  "level": [
+   46,
+   49
+  ],
+  "elite": [
+   50,
+   52
+  ],
+  "boss": null,
+  "recommended": 48,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ld-flowers",
+  "name": "Làng hoa Vạn Thành",
+  "areas": [
+   "ld-flowers"
+  ],
+  "biome": "meadow",
+  "level": [
+   46,
+   50
+  ],
+  "elite": [
+   51,
+   53
+  ],
+  "boss": null,
+  "recommended": 48,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ld-lake",
+  "name": "Hồ Xuân Hương",
+  "areas": [
+   "ld-lake"
+  ],
+  "biome": "lake",
+  "level": [
+   45,
+   47
+  ],
+  "elite": [
+   48,
+   50
+  ],
+  "boss": null,
+  "recommended": 46,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ld-tea",
+  "name": "Đồi chè Cầu Đất",
+  "areas": [
+   "ld-tea"
+  ],
+  "biome": "farm",
+  "level": [
+   45,
+   48
+  ],
+  "elite": [
+   49,
+   51
+  ],
+  "boss": null,
+  "recommended": 47,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ld-muine",
+  "name": "Đồi cát Mũi Né",
+  "areas": [
+   "ld-muine"
+  ],
+  "biome": "coast",
+  "level": [
+   44,
+   46
+  ],
+  "elite": [
+   47,
+   49
+  ],
+  "boss": null,
+  "recommended": 45,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]
