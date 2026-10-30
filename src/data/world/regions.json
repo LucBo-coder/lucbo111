@@ -1791,5 +1791,143 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-kh-pass",
+  "name": "Đèo Khánh Lê",
+  "areas": [
+   "kh-pass"
+  ],
+  "biome": "forest",
+  "level": [
+   48,
+   51
+  ],
+  "elite": [
+   52,
+   54
+  ],
+  "boss": null,
+  "recommended": 50,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-kh-ponagar",
+  "name": "Tháp Bà Ponagar",
+  "areas": [
+   "kh-ponagar"
+  ],
+  "biome": "ruins",
+  "level": [
+   48,
+   51
+  ],
+  "elite": [
+   52,
+   54
+  ],
+  "boss": null,
+  "recommended": 50,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-kh-bay",
+  "name": "Vịnh Nha Trang",
+  "areas": [
+   "kh-bay"
+  ],
+  "biome": "coast",
+  "level": [
+   49,
+   52
+  ],
+  "elite": [
+   53,
+   55
+  ],
+  "boss": null,
+  "recommended": 51,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-kh-vineyard",
+  "name": "Vườn nho Ninh Thuận",
+  "areas": [
+   "kh-vineyard"
+  ],
+  "biome": "farm",
+  "level": [
+   46,
+   49
+  ],
+  "elite": [
+   50,
+   52
+  ],
+  "boss": null,
+  "recommended": 48,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-kh-poklong",
+  "name": "Tháp Po Klong Garai",
+  "areas": [
+   "kh-poklong"
+  ],
+  "biome": "ruins",
+  "level": [
+   47,
+   50
+  ],
+  "elite": [
+   51,
+   53
+  ],
+  "boss": null,
+  "recommended": 49,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-kh-camranh",
+  "name": "Vịnh Cam Ranh",
+  "areas": [
+   "kh-camranh"
+  ],
+  "biome": "coast",
+  "level": [
+   47,
+   50
+  ],
+  "elite": [
+   51,
+   53
+  ],
+  "boss": null,
+  "recommended": 49,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

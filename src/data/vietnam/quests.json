@@ -6776,5 +6776,545 @@
     "Hồ trong veo rồi! Cảm ơn con nhiều."
    ]
   }
+ },
+ {
+  "id": "vn-kh-1",
+  "kind": "main",
+  "title": "Biển động không bão",
+  "giver": "kh-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:lam-dong"
+  ],
+  "description": "Tới Nha Trang: ghé Trung tâm Pokémon rồi lên tháp Bà Ponagar hỏi ông từ vì sao biển động.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-khanh-hoa-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Nha Trang",
+    "marker": {
+     "x": 58,
+     "y": 40,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "kh-ponagar",
+    "count": 1,
+    "text": "Đến tháp Bà Ponagar (phía bắc)",
+    "marker": {
+     "x": 75,
+     "y": 14,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-cham",
+    "count": 1,
+    "text": "Hỏi Ông từ tháp Bà",
+    "marker": {
+     "x": 68,
+     "y": 10,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1000,
+   "reputation": 10,
+   "flags": [
+    "landmark:ponagar"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Nha Trang! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên tháp Bà hỏi ông từ, biển động mấy tuần nay rồi."
+   ],
+   "progress": [
+    "Tháp Bà ở phía bắc thành phố."
+   ],
+   "complete": [
+    "Ông từ nói Thần Biển ngoài vịnh đang giận... Mấy anh thợ lặn ngoài bãi biết rõ hơn."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-2",
+  "kind": "main",
+  "title": "Xoáy nước Hòn Mun",
+  "giver": "kh-guide",
+  "requires": [
+   "vn-kh-1"
+  ],
+  "description": "Ra bãi biển hỏi Anh thợ lặn Hòn Mun và Ngư dân Cam Ranh xem dưới vịnh có gì.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "kh-bay",
+    "count": 1,
+    "text": "Ra vịnh Nha Trang (phía đông)",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-diver",
+    "count": 1,
+    "text": "Hỏi Anh thợ lặn Hòn Mun",
+    "marker": {
+     "x": 103,
+     "y": 52,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-fisher",
+    "count": 1,
+    "text": "Hỏi Ngư dân Cam Ranh",
+    "marker": {
+     "x": 78,
+     "y": 90,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1050,
+   "reputation": 15,
+   "flags": [
+    "landmark:hon-mun"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Mấy anh thợ lặn ngoài bãi biển thấy gì đó dưới đáy vịnh. Con ra hỏi, rồi xuống Cam Ranh hỏi thêm."
+   ],
+   "progress": [
+    "Bãi biển ở phía đông, Cam Ranh ở phía nam."
+   ],
+   "complete": [
+    "Rác lưới mắc kín rạn Hòn Mun, Thần Vịnh nổi giận. Muốn gặp thần phải qua thợ lặn trưởng Hải."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-3",
+  "kind": "main",
+  "title": "Thần Vịnh Nha Trang",
+  "giver": "kh-guide",
+  "requires": [
+   "vn-kh-2"
+  ],
+  "description": "Thắng Thợ lặn trưởng Hải để ra mũi đá, rồi làm Kingdra nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "kh-diver-t",
+    "count": 1,
+    "text": "Thắng Thợ lặn trưởng Hải",
+    "marker": {
+     "x": 100,
+     "y": 85,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "kingdra",
+    "count": 1,
+    "text": "Đánh bại Kingdra — Thần Vịnh Nha Trang",
+    "marker": {
+     "x": 104,
+     "y": 92,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1300,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Anh Hải canh mũi đá cuối bãi phía nam. Con cẩn thận, sóng lớn lắm."
+   ],
+   "progress": [
+    "Mũi đá ở cuối bãi biển phía đông nam."
+   ],
+   "complete": [
+    "Biển lặng rồi, ghe ra khơi được rồi! Huy hiệu Vịnh Biển là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-rescue",
+  "kind": "side",
+  "title": "Rùa biển mắc cạn",
+  "giver": "kh-fisher",
+  "requires": [
+   "vn-kh-1"
+  ],
+  "description": "Một con Tirtouga mắc lưới trên bãi, bầy chim săn mồi bu quanh.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "kh-turtle-rescue",
+    "count": 1,
+    "text": "Giải cứu Tirtouga ở bãi biển phía nam",
+    "marker": {
+     "x": 106,
+     "y": 104,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-fisher",
+    "count": 1,
+    "text": "Báo cho Ngư dân Cam Ranh",
+    "marker": {
+     "x": 78,
+     "y": 90,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 900,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con rùa mắc lưới ở góc bãi phía đông nam, chim bu quanh rồi. Con giúp chú!"
+   ],
+   "progress": [
+    "Góc đông nam bãi biển."
+   ],
+   "complete": [
+    "Rùa bò ra biển rồi. Chú sẽ dọn lưới ở bãi đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-dance",
+  "kind": "side",
+  "title": "Điệu múa Apsara",
+  "giver": "kh-cham",
+  "requires": [
+   "vn-kh-1"
+  ],
+  "description": "Vũ công Chăm Ly muốn thử sức người lạ trước sân tháp.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "kh-ponagar-t",
+    "count": 1,
+    "text": "Thắng Vũ công Chăm Ly",
+    "marker": {
+     "x": 80,
+     "y": 14,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-cham",
+    "count": 1,
+    "text": "Báo cho Ông từ tháp Bà",
+    "marker": {
+     "x": 68,
+     "y": 10,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "moon-stone": 1
+   },
+   "worldExp": 850,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Cô Ly múa đẹp mà đấu cũng giỏi. Con thử một trận nha."
+   ],
+   "progress": [
+    "Ly ở sân phía đông tháp."
+   ],
+   "complete": [
+    "Ly mời con xem múa tối nay đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-nest",
+  "kind": "side",
+  "title": "Đường ra đảo yến",
+  "giver": "kh-swift",
+  "requires": [
+   "vn-kh-1"
+  ],
+  "description": "Chú khai thác yến muốn biết đường đèo Khánh Lê còn đi được không để chở tổ yến lên Đà Lạt.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "kh-pass",
+    "count": 1,
+    "text": "Đi đèo Khánh Lê (phía tây bắc)",
+    "marker": {
+     "x": 24,
+     "y": 25,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "kh-pass-t",
+    "count": 1,
+    "text": "Thắng Người gác đèo Khánh Lê",
+    "marker": {
+     "x": 24,
+     "y": 30,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-swift",
+    "count": 1,
+    "text": "Báo cho Chú khai thác yến",
+    "marker": {
+     "x": 98,
+     "y": 18,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "sitrus-berry": 3
+   },
+   "worldExp": 850,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Đèo Khánh Lê sạt lở hoài. Con đi coi giùm chú, ông gác đèo khó tính lắm."
+   ],
+   "progress": [
+    "Ông gác đèo ở giữa đèo phía tây bắc."
+   ],
+   "complete": [
+    "Đèo đi được rồi, cảm ơn con. Lọ yến này cho con bồi bổ."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-grape",
+  "kind": "side",
+  "title": "Đàn cừu Phan Rang",
+  "giver": "kh-grape",
+  "requires": [
+   "vn-kh-1"
+  ],
+  "description": "Người chăn cừu thả đàn vào vườn nho. Cô Nhung nhờ bạn nói chuyện với anh ta.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "kh-vineyard",
+    "count": 1,
+    "text": "Đến vườn nho Ninh Thuận (phía tây nam)",
+    "marker": {
+     "x": 24,
+     "y": 70,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "kh-sheep-t",
+    "count": 1,
+    "text": "Thắng Người chăn cừu Phan Rang",
+    "marker": {
+     "x": 36,
+     "y": 80,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-grape",
+    "count": 1,
+    "text": "Báo cho Cô Nhung vườn nho",
+    "marker": {
+     "x": 20,
+     "y": 66,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "greatball": 2
+   },
+   "worldExp": 800,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Cừu ăn hết lá nho của cô rồi! Con đấu với anh chăn cừu cho ảnh chịu lùa đi chỗ khác."
+   ],
+   "progress": [
+    "Anh chăn cừu ở phía đông vườn nho."
+   ],
+   "complete": [
+    "Đàn cừu đi rồi. Chùm nho ngọt này cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-kate",
+  "kind": "side",
+  "title": "Lễ Katê",
+  "giver": "kh-weaver",
+  "requires": [
+   "vn-kh-1"
+  ],
+  "description": "Bà dệt thổ cẩm nhờ bạn lên tháp Po Klong Garai, rồi xuống Cam Ranh mời thủy thủ dự lễ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "kh-poklong",
+    "count": 1,
+    "text": "Lên tháp Po Klong Garai (phía tây nam)",
+    "marker": {
+     "x": 24,
+     "y": 100,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "kh-camranh-t",
+    "count": 1,
+    "text": "Thắng Thủy thủ Cam Ranh",
+    "marker": {
+     "x": 86,
+     "y": 96,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-weaver",
+    "count": 1,
+    "text": "Báo cho Bà dệt thổ cẩm Mỹ Nghiệp",
+    "marker": {
+     "x": 14,
+     "y": 98,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 850,
+   "reputation": 12,
+   "flags": [
+    "landmark:po-klong-garai"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Lễ Katê sắp tới, con lên tháp coi người ta chuẩn bị, rồi xuống Cam Ranh rủ anh thủy thủ về dự.",
+    "Ảnh chỉ chịu đi nếu thua con."
+   ],
+   "progress": [
+    "Tháp ở đồi Trầu, thủy thủ ở vịnh Cam Ranh."
+   ],
+   "complete": [
+    "Lễ Katê đông vui rồi! Tấm khăn thổ cẩm này bà tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-kh-eco",
+  "kind": "side",
+  "title": "Bãi biển cho rùa",
+  "giver": "kh-diver",
+  "requires": [
+   "vn-kh-3"
+  ],
+  "description": "Rác nhựa dạt đầy bãi biển, rùa biển không có chỗ lên đẻ trứng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:khanh-hoa",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "khanh-hoa"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "kh-diver",
+    "count": 1,
+    "text": "Báo cho Anh thợ lặn Hòn Mun",
+    "marker": {
+     "x": 103,
+     "y": 52,
+     "region": "khanh-hoa"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 850,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Biển lặng rồi, giờ tới bãi. Con phụ anh nhặt rác cho rùa lên đẻ nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Đêm nay chắc có rùa lên đẻ."
+   ]
+  }
  }
 ]

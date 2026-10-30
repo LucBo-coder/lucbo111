@@ -126,8 +126,9 @@
    "requires": ["beat:ld-flower-t"],
    "hint": "Cánh hoa rơi lả tả trong thung lũng, có tiếng ai khóc... Người giữ vườn hoa Linh chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "shiny-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 7500, "flag": "badge:lam-dong", "message": "Nhận Huy hiệu Ngàn Hoa (Lâm Đồng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 7500, "flag": "badge:lam-dong", "message": "Nhận Huy hiệu Ngàn Hoa (Lâm Đồng)! Đường tới Khánh Hòa đã mở: Đèo Khánh Lê." } },
  "portals": [
+  {"id": "portal-ld-next", "name": "Đèo Khánh Lê — đường xuống Khánh Hòa", "x": 123, "y": 62, "to": "khanh-hoa", "toX": 7, "toY": 56, "requires": ["badge:lam-dong"], "hint": "Đường tới Khánh Hòa mở cho người có Huy hiệu Ngàn Hoa — hạ boss Lâm Đồng trước."},
   { "id": "portal-ld-dn", "name": "Quốc lộ 20 — về Đồng Nai", "x": 5, "y": 100, "to": "dong-nai", "toX": 120, "toY": 26 }
  ],
  "docks": [],

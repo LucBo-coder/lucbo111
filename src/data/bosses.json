@@ -1093,5 +1093,59 @@
    "ultimateStyle": "safe",
    "power": 0.33
   }
+ },
+ {
+  "id": "kingdra",
+  "name": "Kingdra — Thần Vịnh Nha Trang",
+  "types": [
+   "water",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 75,
+   "atk": 95,
+   "def": 95,
+   "spa": 95,
+   "spd": 95,
+   "spe": 85
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "hydro_pump",
+   "dragon_pulse"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "horsea",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Vịnh nổi giận — sóng cuộn trắng cả bãi!",
+  "exp": 150,
+  "sprite": "kingdra",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "hydro_pump",
+   "volley": "water_pulse",
+   "nova": "surf",
+   "field": "whirlpool",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "dragon_pulse",
+   "ultimateName": "Xoáy Nước Hòn Mun",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

@@ -430,6 +430,52 @@
     }
    ]
   },
+  "khanh-hoa": {
+   "id": "khanh-hoa",
+   "name": "Khánh Hòa",
+   "area": "kh-bay",
+   "action": "trash",
+   "unlock": "vn-kh-3",
+   "boss": "kingdra",
+   "label": "Nhặt rác nhựa trên bãi biển",
+   "done": "Bạn nhặt chai nhựa và lưới rách dạt vào bãi. Rùa biển có chỗ lên đẻ trứng.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "khanh-hoa-1",
+     "x": 108,
+     "y": 57
+    },
+    {
+     "id": "khanh-hoa-2",
+     "x": 107,
+     "y": 43
+    },
+    {
+     "id": "khanh-hoa-3",
+     "x": 106,
+     "y": 71
+    },
+    {
+     "id": "khanh-hoa-4",
+     "x": 107,
+     "y": 29
+    },
+    {
+     "id": "khanh-hoa-5",
+     "x": 111,
+     "y": 85
+    },
+    {
+     "id": "khanh-hoa-6",
+     "x": 115,
+     "y": 17
+    }
+   ]
+  },
   "lam-dong": {
    "id": "lam-dong",
    "name": "Lâm Đồng",
