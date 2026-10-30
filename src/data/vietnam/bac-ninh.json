@@ -121,8 +121,9 @@
    "requires": ["beat:bn-gate-t"],
    "hint": "Tiếng hát ngọt lịm vọng lên từ mép ao... Liền anh Cả chưa cho ai ra.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "mystic-water": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 14500, "flag": "badge:bac-ninh", "message": "Nhận Huy hiệu Quan Họ (Bắc Ninh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 14500, "flag": "badge:bac-ninh", "message": "Nhận Huy hiệu Quan Họ (Bắc Ninh)! Đường tới Quảng Ninh đã mở: Quốc lộ 18." } },
  "portals": [
+  {"id": "portal-bn-next", "name": "Quốc lộ 18 — đường ra Quảng Ninh", "x": 112, "y": 5, "to": "quang-ninh", "toX": 24, "toY": 104, "requires": ["badge:bac-ninh"], "hint": "Đường tới Quảng Ninh mở cho người có Huy hiệu Quan Họ — hạ boss Bắc Ninh trước."},
   { "id": "portal-bn-hp", "name": "Quốc lộ 18 — về Hải Phòng", "x": 100, "y": 107, "to": "hai-phong", "toX": 22, "toY": 8 }
  ],
  "docks": [],

@@ -1028,6 +1028,52 @@
     }
    ]
   },
+  "quang-ninh": {
+   "id": "quang-ninh",
+   "name": "Quảng Ninh",
+   "area": "ql-baichay",
+   "action": "trash",
+   "unlock": "vn-ql-3",
+   "boss": "dragonite",
+   "label": "Vớt rác trên vịnh Hạ Long",
+   "done": "Bạn vớt phao xốp và chai nhựa trôi dạt bờ vịnh. Nước vịnh xanh lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "quang-ninh-1",
+     "x": 109,
+     "y": 56
+    },
+    {
+     "id": "quang-ninh-2",
+     "x": 109,
+     "y": 42
+    },
+    {
+     "id": "quang-ninh-3",
+     "x": 107,
+     "y": 70
+    },
+    {
+     "id": "quang-ninh-4",
+     "x": 112,
+     "y": 28
+    },
+    {
+     "id": "quang-ninh-5",
+     "x": 113,
+     "y": 83
+    },
+    {
+     "id": "quang-ninh-6",
+     "x": 115,
+     "y": 97
+    }
+   ]
+  },
   "quang-tri": {
    "id": "quang-tri",
    "name": "Quảng Trị",

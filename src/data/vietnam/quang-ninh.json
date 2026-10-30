@@ -1,0 +1,144 @@
+{
+ "id": "quang-ninh",
+ "name": "Quảng Ninh",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 24, "y": 104 },
+ "areas": [
+  { "id": "ql-yentu", "name": "Núi Yên Tử", "rect": [0, 0, 45, 45], "habitat": "forest", "level": [76, 79] },
+  { "id": "ql-campha", "name": "Mỏ than Cẩm Phả", "rect": [46, 0, 90, 35], "habitat": "rocky", "level": [76, 79] },
+  { "id": "ql-halong", "name": "Thành phố Hạ Long", "rect": [40, 36, 90, 70], "habitat": "village", "level": [76, 76] },
+  { "id": "ql-baichay", "name": "Bãi Cháy — vịnh Hạ Long", "rect": [91, 0, 127, 111], "habitat": "coast", "level": [77, 80] },
+  { "id": "ql-vandon", "name": "Vân Đồn", "rect": [0, 46, 39, 111], "habitat": "meadow", "level": [74, 77] },
+  { "id": "ql-mangrove", "name": "Rừng ngập mặn Đồng Rui", "rect": [40, 71, 90, 111], "habitat": "swamp", "level": [74, 77] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[24, 107], [24, 84], [50, 76], [62, 62]] },
+  { "w": 3, "pts": [[60, 50], [40, 30], [22, 16], [22, 5]] },
+  { "w": 3, "pts": [[68, 50], [70, 14]] },
+  { "w": 3, "pts": [[74, 56], [100, 56], [100, 24]] },
+  { "w": 3, "pts": [[100, 56], [102, 96]] },
+  { "w": 3, "pts": [[24, 84], [10, 70]] },
+  { "w": 3, "pts": [[50, 76], [70, 96]] }
+ ],
+ "plaza": [58, 50, 74, 62],
+ "lake": { "cx": 150, "cy": 56, "rx": 40, "ry": 80 },
+ "islands": [{ "cx": 120, "cy": 30, "rx": 3, "ry": 3 }, { "cx": 123, "cy": 58, "rx": 3, "ry": 4 }, { "cx": 121, "cy": 86, "rx": 2, "ry": 3 }],
+ "buildings": [
+  { "id": "ql-center", "name": "Trung tâm Pokémon", "x": 42, "y": 42, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "ql-mart", "name": "Cửa hàng Hạ Long", "x": 76, "y": 40, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "ql-museum", "name": "Bảo tàng Quảng Ninh", "x": 82, "y": 44, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3 },
+  { "id": "ql-pagoda", "name": "Chùa Đồng", "x": 8, "y": 22, "w": 5, "h": 4, "roof": "gold", "wall": "stone", "door": 2 },
+  { "id": "ql-house-1", "name": "Nhà chị Hạ", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "ql-house-2", "name": "Quán chả mực", "x": 84, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 68 },
+  { "kind": "log", "x": 34, "y": 8 },
+  { "kind": "bucket", "x": 96, "y": 70 },
+  { "kind": "haystack", "x": 20, "y": 96 },
+  { "kind": "target", "x": 80, "y": 24 }
+ ],
+ "signs": [
+  { "x": 62, "y": 60, "text": ["THÀNH PHỐ HẠ LONG", "Phía tây bắc: Yên Tử · Phía bắc: mỏ than Cẩm Phả · Phía đông: Bãi Cháy, vịnh Hạ Long · Phía tây: Vân Đồn · Phía nam: rừng ngập mặn."] },
+  { "x": 96, "y": 40, "text": ["VỊNH HẠ LONG", "Gần hai ngàn hòn đảo đá vôi. Truyền thuyết kể Rồng Mẹ dẫn đàn rồng con xuống phun ngọc chống giặc, ngọc hóa thành đảo."] },
+  { "x": 18, "y": 30, "text": ["YÊN TỬ", "Đất Phật, nơi vua Trần Nhân Tông lập Thiền phái Trúc Lâm. Chùa Đồng trên đỉnh mây."] }
+ ],
+ "npcs": [
+  { "id": "ql-guide", "name": "Chị Hạ Hạ Long", "sprite": "girl", "x": 70, "y": 60, "lines": [
+    "Chào mừng tới Hạ Long! Ăn miếng chả mực giã tay đã em.",
+    "Mấy bữa nay vịnh nổi sóng dữ, có bóng rồng lớn lượn trên trời, tàu du lịch không dám ra.",
+    "Anh lái tàu ở Bãi Cháy biết chuyện, em ra hỏi."] },
+  { "id": "ql-boat", "name": "Lái tàu du lịch Hạ Long", "sprite": "villager", "x": 104, "y": 44, "lines": [
+    "Tui chạy tàu hai chục năm, chưa thấy vịnh dữ vậy.",
+    "Có con rồng to như cái tàu bay quanh hòn Gà Chọi, ai tới gần là nó quẫy sóng."] },
+  { "id": "ql-monk", "name": "Sư chùa Đồng Yên Tử", "sprite": "elder", "x": 30, "y": 34, "lines": [
+    "Rồng Mẹ Hạ Long là rồng hiền, chỉ giận khi vịnh bị ô nhiễm.",
+    "Than đá, rác thải đổ ra vịnh nhiều quá, Rồng Mẹ không chịu nổi."] },
+  { "id": "ql-miner", "name": "Thợ mỏ Cẩm Phả", "sprite": "hiker", "x": 56, "y": 20, "lines": [
+    "Than Quảng Ninh sưởi ấm cả miền Bắc.",
+    "Mà nước thải mỏ chảy ra vịnh, tui cũng thấy áy náy."] },
+  { "id": "ql-vandon", "name": "Ngư dân Vân Đồn", "sprite": "villager", "x": 14, "y": 60, "lines": [
+    "Vân Đồn ngày xưa là thương cảng đầu tiên của Đại Việt.",
+    "Bầy chim săn mồi kéo về đầy, chim biển nhỏ trốn hết."] },
+  { "id": "ql-mangrove", "name": "Kiểm lâm rừng ngập mặn", "sprite": "ranger", "x": 60, "y": 88, "lines": [
+    "Rừng ngập mặn là lá chắn sóng của cả vùng.",
+    "Có kẻ chặt đước làm củi, rừng thưa dần."] },
+  { "id": "ql-pearl", "name": "Cô nuôi ngọc trai", "sprite": "girl", "x": 104, "y": 80, "lines": [
+    "Ngọc trai Hạ Long sáng lắm, nuôi ba năm mới được một viên.",
+    "Có con cá đuối bị lưới quấn ở bãi phía nam, cô không gỡ được."] }
+ ],
+ "trainers": [
+  { "id": "ql-gate-t", "name": "Thuyền trưởng tàu Hạ Long", "sprite": "knight", "x": 100, "y": 30,
+    "team": [["garchomp", 79], ["goodra", 79], ["haxorus", 79]],
+    "challenge": ["Rồng Mẹ đang giận. Ai muốn ra hòn Gà Chọi phải qua tôi!"],
+    "win": ["Bạn đủ sức rồi. Rồng Mẹ đáp ở mũi đất phía bắc bãi."],
+    "lose": ["Sóng lớn lắm, về đi."],
+    "rewards": { "items": { "superpotion": 2, "dragon-scale": 1 }, "exp": 3700 } },
+  { "id": "ql-yentu-t", "name": "Thiền sư Trúc Lâm", "sprite": "elder", "x": 14, "y": 12,
+    "team": [["gallade", 77], ["bronzong", 77], ["metagross", 77]],
+    "challenge": ["Tâm tĩnh thì đấu mới hay. Mời thí chủ."],
+    "win": ["Thí chủ tâm vững. Mô Phật."],
+    "lose": ["Tâm còn động rồi."],
+    "rewards": { "items": { "ultraball": 2, "moon-stone": 1 }, "exp": 3600 } },
+  { "id": "ql-miner-t", "name": "Tổ trưởng mỏ than", "sprite": "hiker", "x": 82, "y": 12,
+    "team": [["coalossal", 77], ["excadrill", 77], ["rhyperior", 77]],
+    "challenge": ["Đào than cả đời, Pokémon tôi cứng như đá!"],
+    "win": ["Bạn còn cứng hơn than."],
+    "lose": ["Lọ lem rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "hard-stone": 1 }, "exp": 3600 } },
+  { "id": "ql-vandon-t", "name": "Người nuôi chim săn Vân Đồn", "sprite": "youngster", "x": 8, "y": 100,
+    "team": [["skarmory", 76], ["corviknight", 76], ["mandibuzz", 76]],
+    "challenge": ["Chim săn của tôi bắt cá giỏi lắm!"],
+    "win": ["Thôi được, tôi thả bớt chim về núi."],
+    "lose": ["Chim tôi bay cao hơn!"],
+    "rewards": { "items": { "ultraball": 2, "sharp-beak": 1 }, "exp": 3500 } },
+  { "id": "ql-mangrove-t", "name": "Kẻ chặt đước", "sprite": "knight", "x": 70, "y": 97,
+    "team": [["toxicroak", 76], ["scolipede", 76], ["drapion", 76]],
+    "challenge": ["Củi đước cháy đượm lắm! Tránh ra!"],
+    "win": ["Thôi được, tao không chặt nữa."],
+    "lose": ["Cút!"],
+    "rewards": { "items": { "superpotion": 2, "poison-barb": 1 }, "exp": 3500 } }
+ ],
+ "rescue": { "id": "ql-ray-rescue", "x": 104, "y": 100, "species": "mantine", "level": 77,
+   "guards": [["mandibuzz", 76], ["honchkrow", 76], ["honchkrow", 76]], "quest": "vn-ql-rescue", "reporter": "Cô nuôi ngọc trai" },
+ "chests": [
+  { "id": "chest-ql-yentu", "x": 6, "y": 6, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-ql-campha", "x": 88, "y": 6, "items": { "superpotion": 3, "hard-stone": 1 } },
+  { "id": "chest-ql-vandon", "x": 6, "y": 106, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-ql-mangrove", "x": 84, "y": 106, "items": { "ultraball": 2, "mystic-water": 1 } },
+  { "id": "chest-ql-baichay", "x": 108, "y": 104, "items": { "netball": 3, "shiny-stone": 1 } },
+  { "id": "chest-ql-nook", "x": 48, "y": 26, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:quang-ninh:ql-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-quang-ninh-center", "name": "Trung tâm Pokémon Hạ Long", "x": 45, "y": 49 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "dragonite", "name": "Dragonite — Rồng Mẹ Hạ Long", "x": 100, "y": 12, "level": 80, "respawn": 600, "arena": 260,
+   "requires": ["beat:ql-gate-t"],
+   "hint": "Bóng rồng khổng lồ lượn trên mũi đất... Thuyền trưởng chưa cho ai ra.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 15000, "flag": "badge:quang-ninh", "message": "Nhận Huy hiệu Rồng Hạ Long (Quảng Ninh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-ql-bn", "name": "Quốc lộ 18 — về Bắc Ninh", "x": 24, "y": 107, "to": "bac-ninh", "toX": 112, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "ql-forest-1", "table": "forest-forage", "x": 30, "y": 8 },
+  { "id": "ql-meadow-1", "table": "meadow-forage", "x": 60, "y": 10 },
+  { "id": "ql-sea-1", "table": "lake-fish", "x": 106, "y": 70 },
+  { "id": "ql-meadow-2", "table": "meadow-forage", "x": 20, "y": 90 },
+  { "id": "ql-mangrove-1", "table": "mangrove-forage", "x": 60, "y": 100 }
+ ],
+ "field": [
+  { "id": "ql-boulder", "ability": "smash", "x": 52, "y": 26, "nook": { "cx": 48.5, "cy": 26.5, "r": 3, "wall": "boulder" } }
+ ]
+}

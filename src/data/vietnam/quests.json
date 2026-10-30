@@ -14167,5 +14167,534 @@
     "Ao trong rồi! Tối nay anh hát tặng em một bài."
    ]
   }
+ },
+ {
+  "id": "vn-ql-1",
+  "kind": "main",
+  "title": "Bóng rồng trên vịnh",
+  "giver": "ql-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:bac-ninh"
+  ],
+  "description": "Tới Hạ Long: ghé Trung tâm Pokémon rồi ra Bãi Cháy hỏi anh lái tàu về bóng rồng trên vịnh.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-quang-ninh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Hạ Long",
+    "marker": {
+     "x": 45,
+     "y": 49,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ql-baichay",
+    "count": 1,
+    "text": "Ra Bãi Cháy (phía đông)",
+    "marker": {
+     "x": 109,
+     "y": 55,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-boat",
+    "count": 1,
+    "text": "Hỏi Lái tàu du lịch Hạ Long",
+    "marker": {
+     "x": 104,
+     "y": 44,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1700,
+   "reputation": 10,
+   "flags": [
+    "landmark:ha-long"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Hạ Long! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi ra Bãi Cháy hỏi anh lái tàu, vịnh nổi sóng dữ mấy bữa nay."
+   ],
+   "progress": [
+    "Bãi Cháy ở phía đông thành phố."
+   ],
+   "complete": [
+    "Có con rồng lớn bay quanh hòn Gà Chọi... Sư chùa Đồng và thợ mỏ có thể biết vì sao."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-2",
+  "kind": "main",
+  "title": "Rồng Mẹ nổi giận",
+  "giver": "ql-guide",
+  "requires": [
+   "vn-ql-1"
+  ],
+  "description": "Lên Yên Tử hỏi sư chùa Đồng, rồi qua mỏ Cẩm Phả hỏi thợ mỏ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ql-yentu",
+    "count": 1,
+    "text": "Lên núi Yên Tử (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-monk",
+    "count": 1,
+    "text": "Hỏi Sư chùa Đồng Yên Tử",
+    "marker": {
+     "x": 30,
+     "y": 34,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-miner",
+    "count": 1,
+    "text": "Hỏi Thợ mỏ Cẩm Phả",
+    "marker": {
+     "x": 56,
+     "y": 20,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1750,
+   "reputation": 15,
+   "flags": [
+    "landmark:yen-tu"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Sư chùa Đồng hiểu chuyện Rồng Mẹ. Em lên hỏi, rồi qua mỏ hỏi thêm."
+   ],
+   "progress": [
+    "Yên Tử ở phía tây bắc, mỏ ở phía bắc."
+   ],
+   "complete": [
+    "Rồng Mẹ giận vì vịnh ô nhiễm. Phải qua thuyền trưởng tàu Hạ Long mới ra mũi đất được."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-3",
+  "kind": "main",
+  "title": "Rồng Mẹ Hạ Long",
+  "giver": "ql-guide",
+  "requires": [
+   "vn-ql-2"
+  ],
+  "description": "Thắng Thuyền trưởng tàu Hạ Long để ra mũi đất, rồi làm Dragonite nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ql-gate-t",
+    "count": 1,
+    "text": "Thắng Thuyền trưởng tàu Hạ Long",
+    "marker": {
+     "x": 100,
+     "y": 30,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "dragonite",
+    "count": 1,
+    "text": "Đánh bại Dragonite — Rồng Mẹ Hạ Long",
+    "marker": {
+     "x": 100,
+     "y": 12,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2000,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thuyền trưởng canh mũi đất phía bắc Bãi Cháy. Em đủ sức thì ra."
+   ],
+   "progress": [
+    "Mũi đất ở phía bắc Bãi Cháy."
+   ],
+   "complete": [
+    "Rồng Mẹ bay về trời, vịnh yên sóng rồi! Huy hiệu Rồng Hạ Long là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-rescue",
+  "kind": "side",
+  "title": "Cá đuối mắc lưới",
+  "giver": "ql-pearl",
+  "requires": [
+   "vn-ql-1"
+  ],
+  "description": "Một con Mantine mắc lưới ở bãi phía nam, bầy quạ bu quanh.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ql-ray-rescue",
+    "count": 1,
+    "text": "Giải cứu Mantine ở bãi phía nam",
+    "marker": {
+     "x": 104,
+     "y": 100,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-pearl",
+    "count": 1,
+    "text": "Báo cho Cô nuôi ngọc trai",
+    "marker": {
+     "x": 104,
+     "y": 80,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1550,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con cá đuối mắc lưới ở bãi phía nam. Em giúp cô!"
+   ],
+   "progress": [
+    "Bãi phía nam Bãi Cháy."
+   ],
+   "complete": [
+    "Cá đuối bơi ra vịnh rồi. Viên ngọc nhỏ này cô tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-zen",
+  "kind": "side",
+  "title": "Thiền Trúc Lâm",
+  "giver": "ql-monk",
+  "requires": [
+   "vn-ql-1"
+  ],
+  "description": "Thiền sư Trúc Lâm muốn thử tâm người lên núi.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ql-yentu-t",
+    "count": 1,
+    "text": "Thắng Thiền sư Trúc Lâm",
+    "marker": {
+     "x": 14,
+     "y": 12,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-monk",
+    "count": 1,
+    "text": "Báo cho Sư chùa Đồng Yên Tử",
+    "marker": {
+     "x": 30,
+     "y": 34,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "moon-stone": 1
+   },
+   "worldExp": 1400,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thiền sư muốn đấu với thí chủ. Mời thí chủ."
+   ],
+   "progress": [
+    "Thiền sư ở góc tây bắc núi."
+   ],
+   "complete": [
+    "Mô Phật. Tâm thí chủ vững lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-coal",
+  "kind": "side",
+  "title": "Than Cẩm Phả",
+  "giver": "ql-miner",
+  "requires": [
+   "vn-ql-2"
+  ],
+  "description": "Tổ trưởng mỏ than muốn thử sức người lạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ql-campha",
+    "count": 1,
+    "text": "Đến mỏ than Cẩm Phả (phía bắc)",
+    "marker": {
+     "x": 68,
+     "y": 17,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ql-miner-t",
+    "count": 1,
+    "text": "Thắng Tổ trưởng mỏ than",
+    "marker": {
+     "x": 82,
+     "y": 12,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-miner",
+    "count": 1,
+    "text": "Báo cho Thợ mỏ Cẩm Phả",
+    "marker": {
+     "x": 56,
+     "y": 20,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1400,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Tổ trưởng ham đấu lắm. Em thử một trận."
+   ],
+   "progress": [
+    "Tổ trưởng ở góc đông bắc mỏ."
+   ],
+   "complete": [
+    "Tổ trưởng hứa lọc nước thải trước khi đổ ra vịnh rồi."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-vandon",
+  "kind": "side",
+  "title": "Thương cảng Vân Đồn",
+  "giver": "ql-vandon",
+  "requires": [
+   "vn-ql-1"
+  ],
+  "description": "Người nuôi chim săn thả chim làm chim biển nhỏ bỏ đi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ql-vandon",
+    "count": 1,
+    "text": "Đến Vân Đồn (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ql-vandon-t",
+    "count": 1,
+    "text": "Thắng Người nuôi chim săn Vân Đồn",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-vandon",
+    "count": 1,
+    "text": "Báo cho Ngư dân Vân Đồn",
+    "marker": {
+     "x": 14,
+     "y": 60,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sharp-beak": 1
+   },
+   "worldExp": 1350,
+   "reputation": 12,
+   "flags": [
+    "landmark:van-don"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chim săn của anh ta đuổi hết chim biển. Em nói chuyện với ảnh giùm chú."
+   ],
+   "progress": [
+    "Anh ta ở góc tây nam bãi."
+   ],
+   "complete": [
+    "Chim biển về lại rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-mangrove",
+  "kind": "side",
+  "title": "Rừng đước Đồng Rui",
+  "giver": "ql-mangrove",
+  "requires": [
+   "vn-ql-1"
+  ],
+  "description": "Kẻ chặt đước phá rừng ngập mặn.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ql-mangrove-t",
+    "count": 1,
+    "text": "Thắng Kẻ chặt đước",
+    "marker": {
+     "x": 70,
+     "y": 97,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-mangrove",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm rừng ngập mặn",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "poison-barb": 1
+   },
+   "worldExp": 1350,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa chặt đước ở phía nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Nó ở phía nam rừng ngập mặn."
+   ],
+   "complete": [
+    "Rừng đước còn nguyên. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ql-eco",
+  "kind": "side",
+  "title": "Vịnh Hạ Long xanh",
+  "giver": "ql-boat",
+  "requires": [
+   "vn-ql-3"
+  ],
+  "description": "Phao xốp và rác nhựa trôi dạt bờ vịnh.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:quang-ninh",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven vịnh",
+    "marker": {
+     "x": 109,
+     "y": 56,
+     "region": "quang-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ql-boat",
+    "count": 1,
+    "text": "Báo cho Lái tàu du lịch Hạ Long",
+    "marker": {
+     "x": 104,
+     "y": 44,
+     "region": "quang-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1400,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rồng Mẹ yên rồi, giờ dọn vịnh cho Rồng Mẹ vui. Em phụ anh nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Vịnh xanh rồi! Mai anh chở em đi hang Sửng Sốt."
+   ]
+  }
  }
 ]

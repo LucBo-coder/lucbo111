@@ -3470,5 +3470,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-ql-yentu",
+  "name": "Núi Yên Tử",
+  "areas": [
+   "ql-yentu"
+  ],
+  "biome": "forest",
+  "level": [
+   76,
+   79
+  ],
+  "elite": [
+   80,
+   82
+  ],
+  "boss": null,
+  "recommended": 78,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ql-campha",
+  "name": "Mỏ than Cẩm Phả",
+  "areas": [
+   "ql-campha"
+  ],
+  "biome": "rocky",
+  "level": [
+   76,
+   79
+  ],
+  "elite": [
+   80,
+   82
+  ],
+  "boss": null,
+  "recommended": 78,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ql-baichay",
+  "name": "Bãi Cháy — vịnh Hạ Long",
+  "areas": [
+   "ql-baichay"
+  ],
+  "biome": "coast",
+  "level": [
+   77,
+   80
+  ],
+  "elite": [
+   81,
+   83
+  ],
+  "boss": null,
+  "recommended": 79,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ql-vandon",
+  "name": "Vân Đồn",
+  "areas": [
+   "ql-vandon"
+  ],
+  "biome": "meadow",
+  "level": [
+   74,
+   77
+  ],
+  "elite": [
+   78,
+   80
+  ],
+  "boss": null,
+  "recommended": 76,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ql-mangrove",
+  "name": "Rừng ngập mặn Đồng Rui",
+  "areas": [
+   "ql-mangrove"
+  ],
+  "biome": "swamp",
+  "level": [
+   74,
+   77
+  ],
+  "elite": [
+   78,
+   80
+  ],
+  "boss": null,
+  "recommended": 76,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

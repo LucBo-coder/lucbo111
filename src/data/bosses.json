@@ -1845,5 +1845,59 @@
    "ultimateStyle": "safe",
    "power": 0.33
   }
+ },
+ {
+  "id": "dragonite",
+  "name": "Dragonite — Rồng Mẹ Hạ Long",
+  "types": [
+   "dragon",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 91,
+   "atk": 134,
+   "def": 95,
+   "spa": 100,
+   "spd": 100,
+   "spe": 80
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "dragon_claw",
+   "hurricane"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "dratini",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Rồng Mẹ hạ xuống vịnh — sóng dựng cao như núi đá!",
+  "exp": 150,
+  "sprite": "dragonite",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "hyper_beam",
+   "volley": "dragon_pulse",
+   "nova": "outrage",
+   "field": "thunder",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "dragon_rush",
+   "ultimateName": "Rồng Mẹ Phun Ngọc",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]
