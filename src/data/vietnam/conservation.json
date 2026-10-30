@@ -752,6 +752,52 @@
     }
    ]
   },
+  "nghe-an": {
+   "id": "nghe-an",
+   "name": "Nghệ An",
+   "area": "na-cualo",
+   "action": "trash",
+   "unlock": "vn-na-3",
+   "boss": "decidueye",
+   "label": "Nhặt rác trên bãi Cửa Lò",
+   "done": "Bạn nhặt chai nhựa và túi nilon dạt vào bãi. Biển Cửa Lò sạch lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "nghe-an-1",
+     "x": 108,
+     "y": 57
+    },
+    {
+     "id": "nghe-an-2",
+     "x": 107,
+     "y": 43
+    },
+    {
+     "id": "nghe-an-3",
+     "x": 105,
+     "y": 73
+    },
+    {
+     "id": "nghe-an-4",
+     "x": 107,
+     "y": 29
+    },
+    {
+     "id": "nghe-an-5",
+     "x": 111,
+     "y": 86
+    },
+    {
+     "id": "nghe-an-6",
+     "x": 115,
+     "y": 17
+    }
+   ]
+  },
   "quang-ngai": {
    "id": "quang-ngai",
    "name": "Quảng Ngãi",

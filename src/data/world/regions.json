@@ -2780,5 +2780,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-na-pumat",
+  "name": "Rừng Pù Mát",
+  "areas": [
+   "na-pumat"
+  ],
+  "biome": "forest",
+  "level": [
+   65,
+   68
+  ],
+  "elite": [
+   69,
+   71
+  ],
+  "boss": null,
+  "recommended": 67,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-na-tea",
+  "name": "Đảo chè Thanh Chương",
+  "areas": [
+   "na-tea"
+  ],
+  "biome": "farm",
+  "level": [
+   63,
+   66
+  ],
+  "elite": [
+   67,
+   69
+  ],
+  "boss": null,
+  "recommended": 65,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-na-langsen",
+  "name": "Làng Sen — Kim Liên",
+  "areas": [
+   "na-langsen"
+  ],
+  "biome": "meadow",
+  "level": [
+   62,
+   65
+  ],
+  "elite": [
+   66,
+   68
+  ],
+  "boss": null,
+  "recommended": 64,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-na-quychau",
+  "name": "Mỏ đá quý Quỳ Châu",
+  "areas": [
+   "na-quychau"
+  ],
+  "biome": "rocky",
+  "level": [
+   62,
+   65
+  ],
+  "elite": [
+   66,
+   68
+  ],
+  "boss": null,
+  "recommended": 64,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-na-cualo",
+  "name": "Biển Cửa Lò",
+  "areas": [
+   "na-cualo"
+  ],
+  "biome": "coast",
+  "level": [
+   63,
+   66
+  ],
+  "elite": [
+   67,
+   69
+  ],
+  "boss": null,
+  "recommended": 65,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

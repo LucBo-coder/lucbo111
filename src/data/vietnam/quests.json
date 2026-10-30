@@ -10987,5 +10987,532 @@
     "Bãi sạch rồi! Nghe gió thổi như tiếng đàn chưa con?"
    ]
   }
+ },
+ {
+  "id": "vn-na-1",
+  "kind": "main",
+  "title": "Mũi tên lá trong rừng",
+  "giver": "na-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:ha-tinh"
+  ],
+  "description": "Tới Vinh: ghé Trung tâm Pokémon rồi lên rừng Pù Mát hỏi kiểm lâm về những mũi tên lá.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-nghe-an-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Vinh",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "na-pumat",
+    "count": 1,
+    "text": "Vào rừng Pù Mát (phía tây bắc)",
+    "marker": {
+     "x": 25,
+     "y": 22,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-ranger",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Pù Mát",
+    "marker": {
+     "x": 36,
+     "y": 30,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1400,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Vinh! Con ghé Trung tâm Pokémon trước nghe.",
+    "Rồi lên Pù Mát hỏi kiểm lâm, mũi tên lá bay ra cắm đầy đường."
+   ],
+   "progress": [
+    "Rừng Pù Mát ở phía tây bắc."
+   ],
+   "complete": [
+    "Có Cú Thần giữ rừng đang giận... Cụ bà làng Sen và cô hái chè có thể biết vì sao."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-2",
+  "kind": "main",
+  "title": "Rừng là mẹ",
+  "giver": "na-guide",
+  "requires": [
+   "vn-na-1"
+  ],
+  "description": "Về làng Sen hỏi cụ bà, rồi qua đảo chè hỏi cô hái chè.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "na-langsen",
+    "count": 1,
+    "text": "Về làng Sen (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-sen",
+    "count": 1,
+    "text": "Hỏi Cụ bà làng Sen",
+    "marker": {
+     "x": 22,
+     "y": 66,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-tea",
+    "count": 1,
+    "text": "Hỏi Cô hái chè Thanh Chương",
+    "marker": {
+     "x": 60,
+     "y": 20,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1450,
+   "reputation": 15,
+   "flags": [
+    "landmark:lang-sen",
+    "landmark:dao-che"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cụ bà làng Sen biết nhiều chuyện xưa. Con về hỏi, rồi qua đảo chè hỏi thêm."
+   ],
+   "progress": [
+    "Làng Sen ở phía tây, đảo chè ở phía bắc."
+   ],
+   "complete": [
+    "Cú Thần giận vì lâm tặc phá rừng. Phải qua thợ ảnh chim mới vào được cây cổ thụ."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-3",
+  "kind": "main",
+  "title": "Cú Thần Pù Mát",
+  "giver": "na-guide",
+  "requires": [
+   "vn-na-2"
+  ],
+  "description": "Thắng Thợ ảnh chim Pù Mát để vào sâu trong rừng, rồi làm Decidueye hạ cung.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "na-gate-t",
+    "count": 1,
+    "text": "Thắng Thợ ảnh chim Pù Mát",
+    "marker": {
+     "x": 30,
+     "y": 24,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "decidueye",
+    "count": 1,
+    "text": "Đánh bại Decidueye — Cú Thần Pù Mát",
+    "marker": {
+     "x": 16,
+     "y": 12,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1700,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thợ ảnh chim canh lối vào cây cổ thụ. Con đủ sức thì vào."
+   ],
+   "progress": [
+    "Cây cổ thụ ở góc tây bắc rừng."
+   ],
+   "complete": [
+    "Cú Thần hạ cung, rừng yên rồi! Huy hiệu Sông Lam là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-rescue",
+  "kind": "side",
+  "title": "Chồn rừng Pù Mát",
+  "giver": "na-ranger",
+  "requires": [
+   "vn-na-1"
+  ],
+  "description": "Một con Furret bị bầy rắn vây ở bìa rừng.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "na-furret-rescue",
+    "count": 1,
+    "text": "Giải cứu Furret ở bìa rừng phía tây",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Pù Mát",
+    "marker": {
+     "x": 36,
+     "y": 30,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1250,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con chồn bị rắn vây ở bìa rừng phía tây. Con giúp anh!"
+   ],
+   "progress": [
+    "Bìa rừng phía tây."
+   ],
+   "complete": [
+    "Chồn về hang rồi. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-tea",
+  "kind": "side",
+  "title": "Chủ đồi chè",
+  "giver": "na-tea",
+  "requires": [
+   "vn-na-1"
+  ],
+  "description": "Chủ đồi chè Thanh muốn thử sức người lạ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "na-tea-t",
+    "count": 1,
+    "text": "Thắng Chủ đồi chè Thanh",
+    "marker": {
+     "x": 88,
+     "y": 12,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-tea",
+    "count": 1,
+    "text": "Báo cho Cô hái chè Thanh Chương",
+    "marker": {
+     "x": 60,
+     "y": 20,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "leaf-stone": 1
+   },
+   "worldExp": 1100,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Ông chủ đồi ham đấu lắm. Con thử với ông một trận nghe."
+   ],
+   "progress": [
+    "Ông ở phía đông đảo chè."
+   ],
+   "complete": [
+    "Ông phục rồi. Gói chè xanh này cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-lotus",
+  "kind": "side",
+  "title": "Hoa sen làng Sen",
+  "giver": "na-sen",
+  "requires": [
+   "vn-na-1"
+  ],
+  "description": "Cô bé hái sen muốn đấu với người lạ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "na-sen-t",
+    "count": 1,
+    "text": "Thắng Cô bé hái sen",
+    "marker": {
+     "x": 12,
+     "y": 100,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-sen",
+    "count": 1,
+    "text": "Báo cho Cụ bà làng Sen",
+    "marker": {
+     "x": 22,
+     "y": 66,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 2
+   },
+   "worldExp": 1050,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Con bé hái sen muốn đấu với con. Con chiều nó nghe."
+   ],
+   "progress": [
+    "Nó ở góc tây nam làng."
+   ],
+   "complete": [
+    "Nó vui lắm. Bông sen này cụ tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-gem",
+  "kind": "side",
+  "title": "Hồng ngọc Quỳ Châu",
+  "giver": "na-gem",
+  "requires": [
+   "vn-na-2"
+  ],
+  "description": "Kẻ đào đá lậu đào bới làm sạt lở cả suối.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "na-quychau",
+    "count": 1,
+    "text": "Đến mỏ Quỳ Châu (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 88,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "na-gem-t",
+    "count": 1,
+    "text": "Thắng Kẻ đào đá lậu",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-gem",
+    "count": 1,
+    "text": "Báo cho Thợ đá quý Quỳ Châu",
+    "marker": {
+     "x": 60,
+     "y": 90,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1150,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa đào lậu ở góc đông nam mỏ. Con đuổi nó giùm chú."
+   ],
+   "progress": [
+    "Góc đông nam mỏ."
+   ],
+   "complete": [
+    "Nó lấp hố bỏ đi rồi. Viên đá nhỏ này chú tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-sup",
+  "kind": "side",
+  "title": "Ván chèo Cửa Lò",
+  "giver": "na-fisher",
+  "requires": [
+   "vn-na-1"
+  ],
+  "description": "Dân chèo SUP chiếm chỗ ghe neo. Ngư dân nhờ bạn dẹp.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "na-cualo",
+    "count": 1,
+    "text": "Ra biển Cửa Lò (phía đông)",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "na-beach-t",
+    "count": 1,
+    "text": "Thắng Dân chèo SUP Cửa Lò",
+    "marker": {
+     "x": 104,
+     "y": 86,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-fisher",
+    "count": 1,
+    "text": "Báo cho Ngư dân Cửa Lò",
+    "marker": {
+     "x": 104,
+     "y": 70,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "protein": 1
+   },
+   "worldExp": 1100,
+   "reputation": 12,
+   "flags": [
+    "landmark:cua-lo"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng chèo ván cứ chèo vô chỗ ghe neo. Con trị nó giùm chú."
+   ],
+   "progress": [
+    "Nó ở giữa bãi phía nam."
+   ],
+   "complete": [
+    "Ghe neo yên rồi. Mực nháy này chú cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-na-eco",
+  "kind": "side",
+  "title": "Cửa Lò sạch đẹp",
+  "giver": "na-fisher",
+  "requires": [
+   "vn-na-3"
+  ],
+  "description": "Rác nhựa dạt vào bãi Cửa Lò sau mùa du lịch.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:nghe-an",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "nghe-an"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "na-fisher",
+    "count": 1,
+    "text": "Báo cho Ngư dân Cửa Lò",
+    "marker": {
+     "x": 104,
+     "y": 70,
+     "region": "nghe-an"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1100,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rừng yên rồi, giờ tới bãi biển. Con phụ chú nhặt rác nghe."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Cảm ơn con."
+   ]
+  }
  }
 ]

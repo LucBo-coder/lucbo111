@@ -1523,5 +1523,59 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "decidueye",
+  "name": "Decidueye — Cú Thần Pù Mát",
+  "types": [
+   "grass",
+   "ghost"
+  ],
+  "baseStats": {
+   "hp": 78,
+   "atk": 107,
+   "def": 75,
+   "spa": 100,
+   "spd": 100,
+   "spe": 70
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "leaf_blade",
+   "shadow_sneak"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "rowlet",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Cú Thần giương cung lá — mũi tên xé gió khắp rừng!",
+  "exp": 150,
+  "sprite": "decidueye",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "energy_ball",
+   "volley": "razor_leaf",
+   "nova": "leaf_storm",
+   "field": "shadow_ball",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "spirit_shackle",
+   "ultimateName": "Mũi Tên Hồn Rừng",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

@@ -124,8 +124,9 @@
    "requires": ["beat:ht-gate-t"],
    "hint": "Bóng cánh khổng lồ lượn trên mỏm đá... Người nuôi chim ưng chưa cho ai lên.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "sharp-beak": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 11500, "flag": "badge:ha-tinh", "message": "Nhận Huy hiệu Hồng Lĩnh (Hà Tĩnh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 11500, "flag": "badge:ha-tinh", "message": "Nhận Huy hiệu Hồng Lĩnh (Hà Tĩnh)! Đường tới Nghệ An đã mở: Quốc lộ 1." } },
  "portals": [
+  {"id": "portal-ht-next", "name": "Quốc lộ 1 — đường ra Nghệ An", "x": 76, "y": 5, "to": "nghe-an", "toX": 40, "toY": 104, "requires": ["badge:ha-tinh"], "hint": "Đường tới Nghệ An mở cho người có Huy hiệu Hồng Lĩnh — hạ boss Hà Tĩnh trước."},
   { "id": "portal-ht-qt", "name": "Quốc lộ 1 — về Quảng Trị", "x": 64, "y": 107, "to": "quang-tri", "toX": 80, "toY": 8 }
  ],
  "docks": [],

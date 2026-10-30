@@ -1,0 +1,143 @@
+{
+ "id": "nghe-an",
+ "name": "Nghệ An",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 40, "y": 104 },
+ "areas": [
+  { "id": "na-pumat", "name": "Rừng Pù Mát", "rect": [0, 0, 50, 45], "habitat": "forest", "level": [65, 68] },
+  { "id": "na-tea", "name": "Đảo chè Thanh Chương", "rect": [51, 0, 100, 30], "habitat": "farm", "level": [63, 66], "orchard": { "period": 7, "gap": 8 } },
+  { "id": "na-vinh", "name": "Thành phố Vinh", "rect": [40, 31, 100, 65], "habitat": "village", "level": [64, 64] },
+  { "id": "na-langsen", "name": "Làng Sen — Kim Liên", "rect": [0, 46, 39, 111], "habitat": "meadow", "level": [62, 65] },
+  { "id": "na-quychau", "name": "Mỏ đá quý Quỳ Châu", "rect": [40, 66, 100, 111], "habitat": "rocky", "level": [62, 65] },
+  { "id": "na-cualo", "name": "Biển Cửa Lò", "rect": [101, 0, 127, 111], "habitat": "coast", "level": [63, 66] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[40, 107], [40, 80], [56, 66], [62, 58]] },
+  { "w": 3, "pts": [[60, 46], [40, 32], [24, 20]] },
+  { "w": 3, "pts": [[68, 46], [72, 14], [72, 5]] },
+  { "w": 3, "pts": [[74, 52], [104, 52], [106, 24]] },
+  { "w": 3, "pts": [[104, 52], [106, 96]] },
+  { "w": 3, "pts": [[40, 80], [16, 70]] },
+  { "w": 3, "pts": [[56, 66], [80, 96]] }
+ ],
+ "plaza": [58, 46, 74, 58],
+ "lake": { "cx": 150, "cy": 56, "rx": 42, "ry": 80 },
+ "buildings": [
+  { "id": "na-center", "name": "Trung tâm Pokémon", "x": 42, "y": 40, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "na-mart", "name": "Cửa hàng Vinh", "x": 80, "y": 36, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "na-citadel", "name": "Thành cổ Vinh", "x": 87, "y": 38, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "na-langsen-house", "name": "Nhà tranh làng Sen", "x": 14, "y": 56, "w": 5, "h": 3, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "na-house-1", "name": "Nhà o Hoa", "x": 46, "y": 60, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "na-house-2", "name": "Quán súp lươn", "x": 88, "y": 58, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 62 },
+  { "kind": "log", "x": 40, "y": 10 },
+  { "kind": "bucket", "x": 102, "y": 30 },
+  { "kind": "haystack", "x": 24, "y": 96 },
+  { "kind": "target", "x": 60, "y": 100 }
+ ],
+ "signs": [
+  { "x": 62, "y": 56, "text": ["THÀNH PHỐ VINH", "Thành phố bên dòng sông Lam. Phía tây bắc: rừng Pù Mát · Phía bắc: đảo chè Thanh Chương · Phía đông: biển Cửa Lò · Phía tây: làng Sen · Phía nam: Quỳ Châu."] },
+  { "x": 22, "y": 62, "text": ["LÀNG SEN", "Quê nội của Chủ tịch Hồ Chí Minh ở Kim Liên. Ao sen trước ngõ, nhà tranh mái lá."] },
+  { "x": 76, "y": 22, "text": ["ĐẢO CHÈ THANH CHƯƠNG", "Hàng chục quả đồi chè nổi giữa hồ, như những hòn đảo xanh."] }
+ ],
+ "npcs": [
+  { "id": "na-guide", "name": "O Hoa xứ Nghệ", "sprite": "girl", "x": 70, "y": 56, "lines": [
+    "Chào mừng tới Vinh! Ăn bát súp lươn cho ấm bụng nghe.",
+    "Mấy đêm ni trong rừng Pù Mát có tiếng cú kêu rợn người, mũi tên lá bay ra cắm đầy đường.",
+    "Kiểm lâm Pù Mát biết chuyện, con lên hỏi."] },
+  { "id": "na-ranger", "name": "Kiểm lâm Pù Mát", "sprite": "ranger", "x": 36, "y": 30, "lines": [
+    "Pù Mát là rừng nguyên sinh lớn nhất Bắc Trung Bộ.",
+    "Có Cú Thần giữ rừng, bắn mũi tên lá vào lâm tặc. Giờ hắn bắn cả người đi đường."] },
+  { "id": "na-tea", "name": "Cô hái chè Thanh Chương", "sprite": "girl", "x": 60, "y": 20, "lines": [
+    "Đi thuyền giữa các đảo chè, mát lắm nghe.",
+    "Mấy bữa ni lá chè bị mũi tên lá cắt rụng cả."] },
+  { "id": "na-sen", "name": "Cụ bà làng Sen", "sprite": "elder", "x": 22, "y": 66, "lines": [
+    "Làng Sen mùa hè hoa nở thơm cả xóm.",
+    "Ngày xưa ông bà dặn: rừng là mẹ, ai phá rừng thì thần rừng giận."] },
+  { "id": "na-gem", "name": "Thợ đá quý Quỳ Châu", "sprite": "hiker", "x": 60, "y": 90, "lines": [
+    "Quỳ Châu có hồng ngọc, đá quý đẹp nhất nước.",
+    "Người ta đào bới tràn lan, đất lở xuống cả suối."] },
+  { "id": "na-fisher", "name": "Ngư dân Cửa Lò", "sprite": "villager", "x": 104, "y": 70, "lines": [
+    "Biển Cửa Lò cát mịn, sóng êm, mực nháy tươi ngon nhất.",
+    "Rác trôi vô bãi nhiều quá, khách chê hoài."] },
+  { "id": "na-singer", "name": "Nghệ nhân ví giặm", "sprite": "elder", "x": 84, "y": 46, "lines": [
+    "Dân ca ví giặm xứ Nghệ là di sản thế giới đó con.",
+    "Ai ơi về miền ví giặm, nghe câu hò mà nhớ quê..."] }
+ ],
+ "trainers": [
+  { "id": "na-gate-t", "name": "Thợ ảnh chim Pù Mát", "sprite": "youngster", "x": 30, "y": 24,
+    "team": [["noctowl", 67], ["honchkrow", 67], ["chandelure", 67]],
+    "challenge": ["Tôi chụp ảnh Cú Thần ba năm chưa được. Muốn gặp nó thì phải qua tôi!"],
+    "win": ["Bạn đủ sức rồi. Cú Thần ở cây cổ thụ phía tây bắc."],
+    "lose": ["Rừng tối lắm, cẩn thận."],
+    "rewards": { "items": { "superpotion": 2, "reaper-cloth": 1 }, "exp": 3100 } },
+  { "id": "na-tea-t", "name": "Chủ đồi chè Thanh", "sprite": "farmer", "x": 88, "y": 12,
+    "team": [["leafeon", 65], ["roserade", 65], ["meganium", 65]],
+    "challenge": ["Đồi chè của tôi xanh nhất Thanh Chương. Pokémon tôi cũng mạnh nhất!"],
+    "win": ["Gói chè này tặng bạn."],
+    "lose": ["Về uống chè cho tỉnh rồi đấu lại."],
+    "rewards": { "items": { "sitrus-berry": 3, "leaf-stone": 1 }, "exp": 3000 } },
+  { "id": "na-sen-t", "name": "Cô bé hái sen", "sprite": "girl", "x": 12, "y": 100,
+    "team": [["lilligant", 64], ["whimsicott", 64], ["comfey", 64]],
+    "challenge": ["Hoa sen làng em thơm lắm, Pokémon em cũng xinh lắm!"],
+    "win": ["Bông sen này tặng bạn nè."],
+    "lose": ["Bạn về tập thêm nha."],
+    "rewards": { "items": { "superpotion": 2, "greatball": 2 }, "exp": 2900 } },
+  { "id": "na-gem-t", "name": "Kẻ đào đá lậu", "sprite": "knight", "x": 84, "y": 104,
+    "team": [["carbink", 65], ["probopass", 65], ["golem", 65]],
+    "challenge": ["Hồng ngọc dưới này là của tao! Cút!"],
+    "win": ["Thôi được, tao lấp hố lại rồi đi."],
+    "lose": ["Đã bảo cút mà!"],
+    "rewards": { "items": { "ultraball": 2, "hard-stone": 1 }, "exp": 3000 } },
+  { "id": "na-beach-t", "name": "Dân chèo SUP Cửa Lò", "sprite": "youngster", "x": 104, "y": 86,
+    "team": [["hawlucha", 65], ["lucario", 65], ["zangoose", 65]],
+    "challenge": ["Chèo ván cả ngày, tay tui cứng như thép!"],
+    "win": ["Tay bạn còn cứng hơn tui."],
+    "lose": ["Rớt ván rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "protein": 1 }, "exp": 3000 } }
+ ],
+ "rescue": { "id": "na-furret-rescue", "x": 8, "y": 40, "species": "furret", "level": 65,
+   "guards": [["arbok", 63], ["arbok", 63], ["toxicroak", 64]], "quest": "vn-na-rescue", "reporter": "Kiểm lâm Pù Mát" },
+ "chests": [
+  { "id": "chest-na-pumat", "x": 6, "y": 6, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-na-tea", "x": 90, "y": 26, "items": { "superpotion": 3, "leaf-stone": 1 } },
+  { "id": "chest-na-langsen", "x": 6, "y": 106, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-na-quychau", "x": 96, "y": 106, "items": { "ultraball": 2, "shiny-stone": 1 } },
+  { "id": "chest-na-cualo", "x": 108, "y": 104, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-na-nook", "x": 92, "y": 80, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:nghe-an:na-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-nghe-an-center", "name": "Trung tâm Pokémon Vinh", "x": 45, "y": 47 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "decidueye", "name": "Decidueye — Cú Thần Pù Mát", "x": 16, "y": 12, "level": 68, "respawn": 600, "arena": 260,
+   "requires": ["beat:na-gate-t"],
+   "hint": "Mũi tên lá cắm đầy gốc cây cổ thụ... Thợ ảnh chim chưa cho ai vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "miracle-seed": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 12000, "flag": "badge:nghe-an", "message": "Nhận Huy hiệu Sông Lam (Nghệ An)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-na-ht", "name": "Quốc lộ 1 — về Hà Tĩnh", "x": 40, "y": 107, "to": "ha-tinh", "toX": 76, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "na-forest-1", "table": "forest-forage", "x": 36, "y": 8 },
+  { "id": "na-orchard-1", "table": "orchard-forage", "x": 80, "y": 20 },
+  { "id": "na-meadow-1", "table": "meadow-forage", "x": 24, "y": 88 },
+  { "id": "na-sea-1", "table": "lake-fish", "x": 104, "y": 40 },
+  { "id": "na-meadow-2", "table": "meadow-forage", "x": 70, "y": 96 }
+ ],
+ "field": [
+  { "id": "na-boulder", "ability": "smash", "x": 96, "y": 80, "nook": { "cx": 92.5, "cy": 80.5, "r": 3, "wall": "boulder" } }
+ ]
+}
