@@ -61,6 +61,27 @@ export const EX = {
 } as const;
 export const TILESET_ROWS = 31;
 
+/**
+ * Adventure Awaits by Ishtar Pixels (CC0): cottages and old trees, separate images (outside 'ow_tiles') drawn at the
+ * same ×3 as the tiles. ax / ay = anchor in image pixels — cottages: the footprint's left edge (the wall starts at
+ * x 3) and bottom (the doorstep ends at y 76); trees: the trunk's base. Roof, canopy and soft shadow overhang.
+ */
+export const AA_DIR = 'assets/ishtar/adventure-awaits/';
+export const AA_ART = {
+  'aa-house-red': { file: 'house-red.png', ax: 3, ay: 77 },
+  'aa-house-brown': { file: 'house-brown.png', ax: 3, ay: 77 },
+  'aa-house-blue': { file: 'house-blue.png', ax: 3, ay: 77 },
+  'aa-tree-round': { file: 'tree-round.png', ax: 23, ay: 49 },
+  'aa-tree-wide': { file: 'tree-wide.png', ax: 27, ay: 54 },
+} as const;
+export type AaKey = keyof typeof AA_ART;
+
+/** The Adventure Awaits image of a map object (cottage / old tree), if it has one. */
+export function worldArtKey(o: { data?: Record<string, unknown> }): AaKey | null {
+  const key = o.data?.cottage ? `aa-house-${o.data.cottage}` : o.data?.big ? `aa-tree-${o.data.big}` : null;
+  return key && key in AA_ART ? key as AaKey : null;
+}
+
 /** Terrain codes produced by map providers. */
 export const T = {
   Grass: 0, Tuft: 1, Flowers: 2, TallGrass: 3, Path: 4, Water: 5, Sand: 6, Rocky: 7, Ruin: 8, Plaza: 9, Farm: 10, Deep: 11,

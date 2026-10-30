@@ -6,6 +6,7 @@ import { net } from '../net/session';
 import type { DuelMon } from '../net/protocol';
 import { WorldRenderer, SCALE } from '../render/WorldRenderer';
 import { ChunkView, type ChunkRecord } from '../render/ChunkView';
+import { addWorldArt } from '../render/tileset';
 import { ValleyMap } from '../core/map/valley';
 import { regionDef } from '../core/map/regionDefs';
 import { DungeonMap } from '../core/map/dungeonMap';
@@ -178,7 +179,10 @@ export class CoopGuestScene extends Phaser.Scene {
   private decorate(rec: ChunkRecord): void {
     for (const o of rec.mapObjects) {
       const x = o.x * TILE_PX, y = o.y * TILE_PX;
-      if (o.kind === 'building' && o.tiles) {
+      // cottages / old trees: the same Adventure Awaits image as the host, else the tile fallback
+      const art = (o.kind === 'building' || o.kind === 'tree') ? addWorldArt(this, o) : null;
+      if (art) rec.objects.push(art.setDepth(o.kind === 'building' ? y + (o.h ?? 1) * TILE_PX - 4 : y + 22));
+      else if (o.kind === 'building' && o.tiles) {
         o.tiles.forEach((row, ry) => row.forEach((t, rx) => rec.objects.push(this.add.image(x + rx * TILE_PX, y + ry * TILE_PX, 'ow_tiles', t).setOrigin(0).setScale(SCALE).setDepth(y + (o.h ?? 1) * TILE_PX - 4))));
       } else if (o.kind === 'tree') rec.objects.push(this.add.image(x, y + 22, 'ow_tiles', o.tile).setOrigin(0.5, 1).setScale(SCALE).setDepth(y + 22));
       else if (o.kind === 'boulder') rec.objects.push(this.add.image(x, y + 6, 'boulder').setScale(SCALE).setDepth(y + 6));

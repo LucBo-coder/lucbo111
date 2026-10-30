@@ -1,6 +1,7 @@
 // Exports the overworld maps to Tiled (https://www.mapeditor.org) so the tile art can be reviewed in a real map editor:
 //   tiled/ow_tiles.png  the composite 'ow_tiles' atlas exactly as the game builds it (src/render/tileset.ts)
 //   tiled/ow_tiles.tsx  that atlas as a Tiled tileset, with the water / tall grass / shore / lava… animations
+//   tiled/aa_art.tsx    the Adventure Awaits cottages / old trees as an image-collection tileset
 //   tiled/<map>.tmx     Ground layer (frame 0 of MapProvider.tileIndexAt), Buildings layer, and an object layer with
 //                       the trees / props / fences / signs as tile objects and everything else as labelled points
 // Maps are generated procedurally at runtime, so these files are a view, not a source: edit the art in tileset.ts
@@ -8,11 +9,11 @@
 // Usage: npx tsx scripts/export-tiled.ts [map ids…]   (default: every overworld map)
 //        --maps-only   skip the atlas (it needs a browser: a Vite dev server + Edge headless renders the canvas)
 import { spawn, spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { ValleyMap } from '../src/core/map/valley';
 import { chunkCols, chunkRows, type MapObject } from '../src/core/map/mapProvider';
-import { COLS, EX, TILE, TILE_PX, TILESET_ROWS } from '../src/core/map/tiles';
+import { AA_ART, AA_DIR, type AaKey, COLS, EX, TILE, TILE_PX, TILESET_ROWS, worldArtKey } from '../src/core/map/tiles';
 
 const OUT = 'tiled';
 const args = process.argv.slice(2);
@@ -39,6 +40,26 @@ ${anims}
 `;
 }
 
+// Adventure Awaits images: one image-collection tileset after ow_tiles; tile id = order in AA_ART
+const AA_KEYS = Object.keys(AA_ART) as AaKey[];
+const AA_FIRST = COLS * TILESET_ROWS + 1;
+const pngSize = (path: string): [number, number] => { const b = readFileSync(path); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
+const aaSize = Object.fromEntries(AA_KEYS.map((k) => [k, pngSize('public/' + AA_DIR + AA_ART[k].file)])) as Record<AaKey, [number, number]>;
+
+function aaTsx(): string {
+  const tiles = AA_KEYS.map((k, i) => {
+    const [w, h] = aaSize[k];
+    return `  <tile id="${i}">\n   <image source="../public/${AA_DIR}${AA_ART[k].file}" width="${w}" height="${h}"/>\n  </tile>`;
+  }).join('\n');
+  const mw = Math.max(...AA_KEYS.map((k) => aaSize[k][0])), mh = Math.max(...AA_KEYS.map((k) => aaSize[k][1]));
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<tileset ${TILED} name="aa_art" tilewidth="${mw}" tileheight="${mh}" tilecount="${AA_KEYS.length}" columns="0">
+ <grid orientation="orthogonal" width="1" height="1"/>
+${tiles}
+</tileset>
+`;
+}
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 const csv = (g: number[][]) => g.map((r) => r.join(',')).join(',\n');
 
@@ -57,7 +78,13 @@ function tmx(id: string): string {
   for (let cy = 0; cy < chunkRows(map); cy++) for (let cx = 0; cx < chunkCols(map); cx++) {
     for (const o of map.objectsInChunk(cx, cy)) {
       // positions mirror AdventureScene.onChunkLoad; Tiled anchors tile objects at their bottom-left corner
-      if (o.kind === 'building' && o.tiles) {
+      const art = worldArtKey(o);
+      if (art) {
+        // cottage / old tree: the image's anchor on the footprint's bottom-left corner / the tree's base
+        const [w, h] = aaSize[art], a = AA_ART[art];
+        const ax = px(o.x), ay = o.kind === 'building' ? px(o.y + o.h!) : px(o.y) + scene(22);
+        objs.push(` <object id="${oid++}" name="${esc(o.id)}" type="${o.kind}" gid="${AA_FIRST + AA_KEYS.indexOf(art)}" x="${ax - a.ax}" y="${ay - a.ay + h}" width="${w}" height="${h}"/>`);
+      } else if (o.kind === 'building' && o.tiles) {
         o.tiles.forEach((row, ry) => row.forEach((t, rx) => { if (o.y + ry < H && o.x + rx < W) buildings[o.y + ry][o.x + rx] = t + 1; }));
       } else if (o.kind === 'tree' && o.tile !== undefined) {
         tileObj(o, px(o.x) - TILE / 2, px(o.y) + scene(22)); // origin (0.5, 1) at (px, py + 22)
@@ -81,9 +108,10 @@ function tmx(id: string): string {
   <property name="generated" value="npx tsx scripts/export-tiled.ts — do not edit, export again"/>
  </properties>
  <tileset firstgid="1" source="ow_tiles.tsx"/>
+ <tileset firstgid="${AA_FIRST}" source="aa_art.tsx"/>
 ${layer(1, 'Ground', ground)}
 ${layer(2, 'Buildings', buildings)}
- <objectgroup id="3" name="Objects">
+ <objectgroup id="3" name="Objects" draworder="topdown">
 ${objs.join('\n')}
  </objectgroup>
 </map>
@@ -118,6 +146,7 @@ async function exportAtlas(): Promise<void> {
 
 mkdirSync(OUT, { recursive: true });
 writeFileSync(`${OUT}/ow_tiles.tsx`, tsx());
+writeFileSync(`${OUT}/aa_art.tsx`, aaTsx());
 for (const id of ids.length ? ids : Object.keys(REGION_DEFS)) {
   writeFileSync(`${OUT}/${id}.tmx`, tmx(id));
   console.log(`${OUT}/${id}.tmx`);

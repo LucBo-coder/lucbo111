@@ -1,6 +1,6 @@
 {
   "version": 7,
-  "updated": "2026-10-24",
+  "updated": "2026-10-30",
   "pixelStandard": {
     "tileSize": 16,
     "creatureSize": 16,
@@ -117,6 +117,44 @@
         "UI objects"
       ],
       "verified": "repo metadata via GitHub API, README read, all PNG sizes checked",
+      "status": "integrated"
+    },
+    {
+      "id": "ishtar-adventure-awaits",
+      "path": "public/assets/ishtar/adventure-awaits/",
+      "type": "images",
+      "files": [
+        "public/assets/ishtar/adventure-awaits/house-blue.png",
+        "public/assets/ishtar/adventure-awaits/house-brown.png",
+        "public/assets/ishtar/adventure-awaits/house-red.png",
+        "public/assets/ishtar/adventure-awaits/tree-round.png",
+        "public/assets/ishtar/adventure-awaits/tree-wide.png"
+      ],
+      "source": "https://opengameart.org/content/adventure-awaits-asset-pack-10",
+      "download": "https://opengameart.org/sites/default/files/adventure_awaits_asset_pack_1.0.zip",
+      "author": "Ishtar Pixels",
+      "license": "CC0-1.0",
+      "licenseFile": "public/assets/ishtar/adventure-awaits/License.txt",
+      "attributionRequired": false,
+      "attribution": "Adventure Awaits Asset Pack by Ishtar Pixels (CC0)",
+      "cost": "free",
+      "sha256": {
+        "house-blue.png": "01cec9288ff720b98f4e62ff7dfdf572f6983a1f6447287a1c1ea283800ef192",
+        "house-brown.png": "e7b921628e42f991cc4faed0bd113b112cc01af8d1916ac1fb44b907b7478423",
+        "house-red.png": "001d90963a17b1522ff1f8d7b067d258a1ebaabff9da079c4da9a697b0782bf6",
+        "tree-round.png": "4015ce4b4c4d6aa8e06f0cafd8b699d4aa8ecf1641dfe544303de1c82949e3a7",
+        "tree-wide.png": "4c7901943d1f0fe0af6e505fda3b99cd3136490aa43d460e21c6d310e1520740"
+      },
+      "usedFor": [
+        "cottages (3 roof colours, 55x83 incl. ground shadow): buildings with style \"cottage\" on a 4-wide footprint, the roof rises above the footprint",
+        "old broadleaf trees (48x54, 55x60 incl. shadow): lone meadow trees with 2 free tiles around them (valley / Mekong themes)"
+      ],
+      "pipeline": "sliced files from the pack (Tiles/Slice 9-13.png) copied unchanged; drawn at the same x3 scale as every tile, origin bottom-centre, depth by base",
+      "notIntegrated": [
+        "ground / cliff / pond / cave tiles (olive palette differs from the GBA ground of tileset.ts)",
+        "fence, crates"
+      ],
+      "verified": "OpenGameArt page lists CC0; License.txt in the zip reads CC0 (2023-10-20); PNG sizes and alpha checked",
       "status": "integrated"
     },
     {
@@ -455,6 +493,14 @@
     }
   ],
   "candidates": [
+    {
+      "source": "https://opengameart.org/content/roguelikerpg-pack-1700-tiles (Kenney Roguelike/RPG pack)",
+      "note": "CC0 (License.txt in zip read, 2026-10-30). 16x16 with 1 px spacing, 968x526 sheet: walls, roofs, doors, windows, tents, market stalls, graves, wells, trees, hedges. Flat style without dark outlines — fits Tiny Town, less the GBA ground. Not integrated yet."
+    },
+    {
+      "source": "https://pixel-boy.itch.io/ninja-adventure-asset-pack (Ninja Adventure, Pixel-boy & AAA)",
+      "note": "Stated CC0 by the author (itch.io comment) and repos crediting it; itch.io blocks scripted download (403), license page not read directly. 16x16 top-down: many houses, trees, props. Needs a manual download + reading its license file before use."
+    },
     {
       "source": "https://opengameart.org/ (search: 16x16 water/cave/snow tilesets)",
       "note": "Licenses vary per asset (CC0/CC-BY/CC-BY-SA/GPL). Must be checked per file before use; none integrated yet."

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { COLS, EX, TILE, TILESET_ROWS, TOWN } from '../core/map/tiles';
+import { AA_ART, AA_DIR, type AaKey, worldArtKey, COLS, EX, SCALE, TILE, TILE_PX, TILESET_ROWS, TOWN } from '../core/map/tiles';
+import type { MapObject } from '../core/map/mapProvider';
 
 // Builds the composite 'ow_tiles' texture: Kenney Tiny Town + Tiny Dungeon (CC0) + procedural
 // extras for things those packs lack (water + shores, tall grass, sand, rocky ground...).
@@ -19,6 +20,21 @@ function seeded(seed: number) {
 /** IcyEthics floor tiles used by the tileset (loaded with the boot). */
 export function preloadIcyTiles(scene: Phaser.Scene): void {
   for (const n of ['cave_gray', 'cave_blue']) for (let i = 0; i < 4; i++) scene.load.image(`icy-${n}-${i}`, `assets/icyethics/tiles/${n}_${i}.png`);
+}
+
+/** Adventure Awaits (CC0) cottages and old trees — AA_ART in core/map/tiles.ts. */
+export function preloadWorldArt(scene: Phaser.Scene): void {
+  for (const [key, a] of Object.entries(AA_ART)) scene.load.image(key, AA_DIR + a.file);
+}
+
+/** The Adventure Awaits image of a map object (cottage / old tree) at its anchor, or null: draw the tile fallback. */
+export function addWorldArt(scene: Phaser.Scene, o: MapObject): Phaser.GameObjects.Image | null {
+  const key: AaKey | null = worldArtKey(o);
+  if (!key || !scene.textures.exists(key)) return null;
+  // cottage: the footprint's bottom-left corner · tree: where the 1-tile tree's base stands
+  const x = o.x * TILE_PX, y = o.data?.cottage ? (o.y + o.h!) * TILE_PX : o.y * TILE_PX + 22;
+  const src = scene.textures.get(key).getSourceImage();
+  return scene.add.image(x, y, key).setOrigin(AA_ART[key].ax / src.width, AA_ART[key].ay / src.height).setScale(SCALE);
 }
 
 export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
@@ -65,7 +81,7 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
 
   // Ground: Kenney's grass and dirt cells are repainted in place (same indices, so the map code is unchanged)
   const dot = (c: { x: number; y: number }, x: number, y: number, col: string) => { ctx.fillStyle = col; ctx.fillRect(c.x + x, c.y + y, 1, 1); };
-  const gbaGrass = (idx: number, seed: number, tufts: number, flowers: string[] = []) => {
+  const gbaGrass = (idx: number, seed: number, tufts: number, flowers: string[] = [], sprigs = 0) => {
     const c = cell(idx);
     fill(idx, GBA.grass);
     const rnd = seeded(seed);
@@ -74,7 +90,11 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       const x = 1 + Math.floor(rnd() * 13), y = 1 + Math.floor(rnd() * 13);
       dot(c, x, y, GBA.light); dot(c, x, y + 1, GBA.dark); dot(c, x - 1, y + 2, GBA.dark); dot(c, x + 1, y + 2, GBA.dark); dot(c, x, y + 2, GBA.mid);
     }
-    for (const col of flowers) {
+    // clover sprigs: two light leaves in a V over a dark stem
+    for (let i = 0; i < sprigs; i++) {
+      const x = 1 + Math.floor(rnd() * 13), y = 1 + Math.floor(rnd() * 12);
+      dot(c, x - 1, y, GBA.light); dot(c, x + 1, y, GBA.light); dot(c, x - 1, y + 1, GBA.mid); dot(c, x, y + 1, GBA.light); dot(c, x + 1, y + 1, GBA.mid); dot(c, x, y + 2, GBA.dark);
+    }    for (const col of flowers) {
       const x = 2 + Math.floor(rnd() * 11), y = 2 + Math.floor(rnd() * 11);
       dot(c, x, y - 1, col); dot(c, x - 1, y, col); dot(c, x + 1, y, col); dot(c, x, y + 1, col); dot(c, x, y, '#fff4a0');
     }
@@ -96,9 +116,9 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       dot(c, x, y, edge ? GBA.pathRim : r < 0.1 ? GBA.pathLight : r > 0.93 ? GBA.pathDark : GBA.path);
     }
   };
-  gbaGrass(TOWN.grass[0], 21, 16);
-  gbaGrass(TOWN.grass[1], 22, 30);
-  gbaGrass(TOWN.grass[2], 23, 10, ['#ffffff', '#ffe060', '#f8a0c8']);
+  gbaGrass(TOWN.grass[0], 21, 14, [], 3);
+  gbaGrass(TOWN.grass[1], 22, 24, [], 5);
+  gbaGrass(TOWN.grass[2], 23, 10, ['#ffffff', '#ffe060', '#f8a0c8'], 2);
   const D = TOWN.dirt;
   const pathTiles: [number, string][] = [[D.c, ''], [D.tl, 'tl'], [D.t, 't'], [D.tr, 'tr'], [D.l, 'l'], [D.r, 'r'], [D.bl, 'bl'], [D.b, 'b'], [D.br, 'br']];
   pathTiles.forEach(([idx, sides], i) => gbaPath(idx, sides, 31 + i));
@@ -135,6 +155,42 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       }
     }
   }
+
+  // Trees: Kenney's flat 1-tile trees repainted GBA-style — dark outline, a 4-tone crown lit from the top-left with
+  // highlight clusters, a 3-tone trunk. Same indices; the scene adds the ground shadow.
+  const paint = (idx: number, rows: string[], pal: Record<string, string>) => {
+    const c = cell(idx);
+    ctx.clearRect(c.x, c.y, TILE, TILE);
+    rows.forEach((r, y) => { for (let x = 0; x < TILE; x++) { const col = pal[r[x]]; if (col) dot(c, x, y, col); } });
+  };
+  const trunk = { t: '#4a2e1a', T: '#7a4e2a', b: '#a0703c' };
+  const summer = { o: '#1e4a2a', D: '#2e6e34', M: '#3f8f3c', G: '#5cae48', L: '#8ed06a', H: '#c4ec90', ...trunk };
+  const autumn = { o: '#5a2a14', D: '#a04a1a', M: '#c8662a', G: '#e08a34', L: '#f0b050', H: '#f8d888', ...trunk };
+  const conifer = { o: '#163a26', D: '#1f5a34', M: '#2e7a40', G: '#45984c', L: '#6ab860', H: '#9ad07a', ...trunk };
+  const ROUND = [
+    '.....oooooo.....', '...ooLLHLGGoo...', '..oLLHHLGGGMMo..', '.oLLHHLLGGMMMDo.', '.oLHLLGGGMGMMDo.', 'oGLLGGGMGGMMMDDo',
+    'oGGGGMGGMMMMDDDo', 'oMGGMMMMMMMDDDDo', '.oMMMDMMMDDDDDo.', '.oDMMDDDDDDDDDo.', '..ooDDDDDDDDoo..', '....ooDtTDoo....',
+    '......tTbt......', '......tTbt......', '.....ttTbtt.....', '................',
+  ];
+  const TALL = [
+    '......oooo......', '.....oLHLGo.....', '....oLHHLGMo....', '....oLHLGGMo....', '...oLLLGGMMDo...', '...oLGGGMGMDo...',
+    '...oGLGGMMMDo...', '...oGGGMGMDDo...', '...oMGGMMMDDo...', '...oMMGMMDDDo...', '....oMMMDDDo....', '....oDMDDDDo....',
+    '.....ooDDoo.....', '.......tT.......', '......ttTb......', '................',
+  ];
+  const PINE = [
+    '.......oo.......', '......oLMo......', '.....oLGMDo.....', '....oLGGMDDo....', '...ooLGMMDDoo...', '.....oLGMDo.....',
+    '....oLGGMMDo....', '...oLGGMMMDDo...', '..ooLGGMMDDDoo..', '....oLGGMMDo....', '...oLGGMMMDDo...', '..oLGGGMMMDDDo..',
+    '.oLGGGMMMMDDDDo.', '.oooooDTtDooooo.', '......tTbt......', '......tTbt......',
+  ];
+  const BUSH = [
+    '................', '................', '................', '................', '................', '................',
+    '.....oooooo.....', '...ooLHLGGMoo...', '..oLLHLGGMMDDo..', '.oLGGLGGMMMDDDo.', '.oGGGGMMMDMDDDo.', '.oMGMMMDDMDDDDo.',
+    '..oMMDDDDDDDDo..', '...oooooooooo...', '................', '................',
+  ];
+  paint(TOWN.round, ROUND, summer); paint(TOWN.roundAutumn, ROUND, autumn);
+  paint(TOWN.tall, TALL, summer); paint(TOWN.tallAutumn, TALL, autumn);
+  paint(TOWN.pine, PINE, conifer); paint(TOWN.pineAutumn, PINE, autumn);
+  paint(TOWN.bush, BUSH, summer);
 
   const speckle = (idx: number, base: string, dots: string[], n: number, seed: number) => {
     const c = cell(idx);
@@ -326,17 +382,19 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   }
   {
     // mangrove (cây đước): low dense crown on arching prop roots standing in the mud
-    const c = cell(EX.mangrove);
-    const rows = ['................', '....gggGgg......', '..gggGggGggg....', '.ggGgggggGgggg..', '.gggggGgggggGg..', '..gGgggggggggg..', '...gggGgggggg...', '.....bbbbbb.....', '....b.b..b.b....', '...b..b..b..b...', '..b..b....b..b..', '..b..b....b..b..', '.b...b....b...b.', 'mmmmmmmmmmmmmmmm', '................', '................'];
-    const pal: Record<string, string> = { g: '#2e7a3a', G: '#1e5a2a', b: '#6a4a30', m: '#5a4a32' };
-    rows.forEach((r, y) => { for (let x = 0; x < 16; x++) if (pal[r[x]]) { ctx.fillStyle = pal[r[x]]; ctx.fillRect(c.x + x, c.y + y, 1, 1); } });
+    paint(EX.mangrove, [
+      '................', '...ooooooooo....', '..oLLGGLGGMMo...', '.oLHLGGGMGMMDo..', '.oGLGGMGGMMDDDo.', '.oMGGMMMGMDDDDo.',
+      '..oMMDMMDDDDDo..', '...ooobBbbooo...', '....b.B..b.b....', '...b..B..b..b...', '..b..b....B..b..', '..b..b....B..b..',
+      '.b...b....B...b.', 'mmmmmmmmmmmmmmmm', '................', '................',
+    ], { o: '#123a1e', D: '#1e5a2a', M: '#2e7a3a', G: '#3e9446', L: '#62b05a', H: '#9ad07a', b: '#5a3a24', B: '#8a6040', m: '#5a4a32' });
   }
   {
     // melaleuca (cây tràm): slender pale trunk with peeling bark, narrow airy crown
-    const c = cell(EX.melaleuca);
-    const rows = ['......gg........', '.....gGgg.......', '....ggggGg......', '....gGgggg......', '.....gggGg......', '....gGggggg.....', '.....ggGgg......', '.......wk.......', '.......ww.......', '.......kw.......', '.......ww.......', '.......wk.......', '.......ww.......', '......wwww......', '................', '................'];
-    const pal: Record<string, string> = { g: '#5a9a48', G: '#3a7a38', w: '#e8e0d0', k: '#a89880' };
-    rows.forEach((r, y) => { for (let x = 0; x < 16; x++) if (pal[r[x]]) { ctx.fillStyle = pal[r[x]]; ctx.fillRect(c.x + x, c.y + y, 1, 1); } });
+    paint(EX.melaleuca, [
+      '......ooo.......', '.....oLGGo......', '....oLGLGMo.....', '...oLGGMGMDo....', '....oGMLGMDo....', '...oLGGMGMMDo...',
+      '....oMGMDMDo....', '.....ooDnDoo....', '.......nWk......', '.......nkW......', '.......nWk......', '.......nWW......',
+      '.......nkW......', '......nnWkn.....', '................', '................',
+    ], { o: '#1e4a2a', D: '#2e6e34', M: '#3f8f3c', G: '#5cae48', L: '#8ed06a', W: '#ece4d4', k: '#b0a088', n: '#6a5a48' });
   }
   {
     // coconut palm

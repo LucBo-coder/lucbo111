@@ -30,6 +30,7 @@ import { REGION_DEFS } from '../core/map/regionDefs';
 import { chunkCols, chunkRows, MapObject, MapProvider } from '../core/map/mapProvider';
 import { DUNGEON, EX, SCALE, T, TILE_PX, TOWN } from '../core/map/tiles';
 import { PortalDef, RegionDef, ValleyMap } from '../core/map/valley';
+import { addWorldArt } from '../render/tileset';
 import { regionDef } from '../core/map/regionDefs';
 import { itemIconKey } from '../render/spriteRegistry';
 import { starterTabs } from '../core/starters';
@@ -535,11 +536,12 @@ export class AdventureScene extends Phaser.Scene {
       const add = <T extends Phaser.GameObjects.GameObject>(g: T) => { rec.objects.push(g); return g; };
       switch (o.kind) {
         case 'tree': {
-          add(this.add.image(px, py + 22, 'shadow').setScale(2.6, 2.2).setDepth(py + 21.9));
-          const img = add(this.add.image(px, py + 22, 'ow_tiles', o.tile).setOrigin(0.5, 1).setScale(SCALE).setDepth(py + 22));
-          // Kenney's pines share the grass colour; a slight shade keeps the silhouette readable
-          if (o.tile === 4 || o.tile === 28) img.setTint(0xc4dcb8);
-          if (q.sway) this.sway.push(this.tweens.add({ targets: img, angle: { from: -1.6, to: 1.6 }, duration: 1600 + (o.x * 37 % 900), yoyo: true, repeat: -1, ease: 'Sine.inOut' }));
+          // old meadow trees (Adventure Awaits) carry their own soft shadow and sway less (bigger crown)
+          const bigImg = addWorldArt(this, o);
+          if (!bigImg) add(this.add.image(px, py + 22, 'shadow').setScale(2.6, 2.2).setDepth(py + 21.9));
+          const img = add(bigImg ?? this.add.image(px, py + 22, 'ow_tiles', o.tile).setOrigin(0.5, 1).setScale(SCALE)).setDepth(py + 22);
+          const swing = bigImg ? 0.6 : 1.6;
+          if (q.sway) this.sway.push(this.tweens.add({ targets: img, angle: { from: -swing, to: swing }, duration: 1600 + (o.x * 37 % 900), yoyo: true, repeat: -1, ease: 'Sine.inOut' }));
           this.world.addObstacle({ x: px, y: py + 6, r: o.collideR ?? 15, kind: 'tree', tag });
           break;
         }
@@ -549,7 +551,10 @@ export class AdventureScene extends Phaser.Scene {
           break;
         case 'building': {
           const bottom = (o.y + o.h!) * TILE_PX;
-          o.tiles!.forEach((row, ry) => row.forEach((t, rx) => {
+          const house = addWorldArt(this, o);
+          if (house) add(house.setDepth(bottom - 4));
+          // Tiny Town tile grid (a cottage keeps one as the fallback if its image failed to load)
+          else o.tiles!.forEach((row, ry) => row.forEach((t, rx) => {
             add(this.add.image((o.x + rx) * TILE_PX, (o.y + ry) * TILE_PX, 'ow_tiles', t).setOrigin(0).setScale(SCALE).setDepth(bottom - 4));
           }));
           const dx = (o.data!.doorX as number + 0.5) * TILE_PX, dy = (o.data!.doorY as number + 0.5) * TILE_PX;

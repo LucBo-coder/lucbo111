@@ -14,7 +14,8 @@ Danh mục máy-đọc-được: [`ASSET_MANIFEST.json`](ASSET_MANIFEST.json).
 ## Tài nguyên đang dùng
 | Tài nguyên | Nguồn | Giấy phép | Dùng cho |
 |---|---|---|---|
-| `public/assets/kenney/tiny-town/tilemap_packed.png` | Kenney Tiny Town 1.1 | CC0 | đất, đường đất 9-slice, lát đá, cây (thông/tròn/cao/thu), hàng rào, mái + tường nhà, biển báo, giếng, tổ ong, khúc gỗ |
+| `public/assets/kenney/tiny-town/tilemap_packed.png` | Kenney Tiny Town 1.1 | CC0 | mái + tường nhà, hàng rào, biển báo, giếng, tổ ong, khúc gỗ (cỏ, đường đất, lát đá và cây đã được vẽ lại kiểu GBA trong `tileset.ts`, cùng chỉ số ô) |
+| `public/assets/ishtar/adventure-awaits/*.png` | [Adventure Awaits Asset Pack 1.0](https://opengameart.org/content/adventure-awaits-asset-pack-10), Ishtar Pixels | CC0 (License.txt trong gói) | 3 nhà cottage (mái đỏ / nâu / xanh, kiểu nhà `style: "cottage"`, khung rộng 3 ô) và 2 cây cổ thụ (cây đứng riêng trên cỏ, còn 2 ô trống quanh gốc). Vẽ ×3 như mọi ô; ô đất / vách / hồ của gói chưa dùng (bảng màu ô-liu khác nền GBA) |
 | `public/assets/kenney/tiny-dungeon/tilemap_packed.png` | Kenney Tiny Dungeon 1.0 | CC0 | sàn/tường hang, đuốc, cột, cửa, rương đóng/mở, phiến đá, NPC (giáo sư, nông dân, kiểm lâm…), bình thuốc |
 | Sprite 11 Pokémon + HLV + Onix | vẽ bằng pixel map trong `src/render/pixelArt.ts` | nguyên bản | sinh vật |
 | Khung animation | `src/render/animation.ts` sinh từ bản vẽ gốc | nguyên bản | xem mục dưới |
@@ -47,5 +48,11 @@ Mỗi Pokémon có **một** bản vẽ gốc 16×16. Lúc khởi động, hệ 
 - Tileset tuyết, dung nham, phế tích lớn cho các vùng tương lai.
 - Nhạc nền.
 
+## Ứng viên đã thẩm định (chưa tích hợp) — 2026-10-30
+| Gói | Giấy phép | Kiểm chứng | Ghi chú |
+|---|---|---|---|
+| [Kenney Roguelike/RPG pack](https://opengameart.org/content/roguelikerpg-pack-1700-tiles) | CC0 | đã tải, đọc License.txt | 16×16 cách 1 px, 1700 ô: tường, mái, cửa, cửa sổ, lều, sạp chợ, mộ, giếng, cây, hàng rào cây. Phong cách phẳng, không viền tối — hợp Tiny Town, kém hợp nền GBA |
+| [Ninja Adventure](https://pixel-boy.itch.io/ninja-adventure-asset-pack) (Pixel-boy & AAA) | CC0 theo lời tác giả | itch.io chặn tải tự động (403); chưa đọc file giấy phép | nhiều nhà, cây, đạo cụ 16×16 top-down; cần tải tay + đọc giấy phép trước khi dùng |
+
 ## Fallback
-`src/systems/assets.ts` ghi lại file tải lỗi; `buildTileset` thay ô bị thiếu bằng lưới màu phẳng để game vẫn chơi được, đồng thời in cảnh báo console.
+`src/systems/assets.ts` ghi lại file tải lỗi; `buildTileset` thay ô bị thiếu bằng lưới màu phẳng để game vẫn chơi được, đồng thời in cảnh báo console. Nhà cottage / cây cổ thụ (Adventure Awaits) không tải được thì vẽ bằng ô Tiny Town (nhà ghép ô, cây tròn 1 ô).

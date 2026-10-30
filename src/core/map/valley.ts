@@ -46,7 +46,12 @@ export interface RegionDef {
   lake: { cx: number; cy: number; rx: number; ry: number };
   /** Land inside the lake / sea (islands, e.g. Phú Quốc) — the ring of an island is beach */
   islands?: { cx: number; cy: number; rx: number; ry: number }[];
-  buildings: { id: string; name: string; x: number; y: number; w: number; h: number; roof: 'red' | 'grey'; wall: 'wood' | 'stone'; door: number }[];
+  /**
+   * Houses built from Tiny Town roof / wall tiles — or, with style 'cottage', one Adventure Awaits cottage image
+   * (3 wide, door in the middle column: w 3, door 1; the roof rises above the footprint; `color` = roof colour)
+   */
+  buildings: { id: string; name: string; x: number; y: number; w: number; h: number; roof: 'red' | 'grey'; wall: 'wood' | 'stone'; door: number;
+    style?: 'cottage'; color?: CottageColor }[];
   fences: number[][];
   props: { kind: string; x: number; y: number }[];
   signs: { x: number; y: number; text: string[] }[];
@@ -108,6 +113,10 @@ export interface PortalDef {
   requires?: string[];
   hint?: string;
 }
+
+export type CottageColor = 'red' | 'brown' | 'blue';
+/** Old broadleaf trees (Adventure Awaits) that replace some lone meadow trees */
+export type BigTree = 'round' | 'wide';
 
 const PROP_TILE: Record<string, number> = {
   well: TOWN.well, beehive: TOWN.beehive, haystack: TOWN.haystack, log: TOWN.log, target: TOWN.target, bucket: TOWN.bucket,
@@ -189,7 +198,9 @@ export class ValleyMap implements MapProvider {
           return (i % 2 === 1) ? wall.window : wall.c;
         }));
       }
-      this.add({ kind: 'building', id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, tiles, data: { name: b.name, doorX: b.x + b.door, doorY: b.y + b.h - 1 } });
+      // a cottage is drawn as one image (AdventureScene); the tile grid stays as its fallback
+      const cottage = b.style === 'cottage' ? { cottage: b.color ?? (b.roof === 'red' ? 'red' : 'blue') } : {};
+      this.add({ kind: 'building', id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, tiles, data: { name: b.name, doorX: b.x + b.door, doorY: b.y + b.h - 1, ...cottage } });
       for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) this.solid.add(this.key(x, y));
       this.clear.push({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: Math.max(b.w, b.h) / 2 + 2 });
     }
@@ -679,10 +690,31 @@ export class ValleyMap implements MapProvider {
         if (hab === 'coast' && t === T.Rocky && h < 0.08) { out.push({ kind: 'boulder', id: `b-${tx}-${ty}`, x: tx + 0.5, y: ty + 0.5, collideR: 20 }); continue; }
         const density = hab === 'mangrove' ? 0.08 : hab === 'swamp' ? 0.05 : hab === 'coast' ? (t === T.Sand ? 0.02 : 0.03) : hab === 'forest' ? (t === T.TallGrass ? 0.06 : 0.3) : hab === 'village' || hab === 'farm' ? 0 : hab === 'rocky' ? 0.03
           : hab === 'snow' ? (t === T.SnowDeep ? 0.02 : 0.06) : hab === 'volcano' ? 0.02 : hab === 'sanctuary' ? 0.015 : 0.025;
-        if (h < density) out.push(this.tree(tx, ty, hab));
+        if (h < density) out.push(h < density / 2 && this.bigTreeRoom(tx, ty, hab) ? this.bigTree(tx, ty) : this.tree(tx, ty, hab));
       }
     }
     return out;
+  }
+
+  /** A lone meadow tree with two open tiles all around (its canopy is 3 tiles wide) may grow into an old tree. */
+  private bigTreeRoom(tx: number, ty: number, hab: string): boolean {
+    const theme = this.def.theme ?? 'valley';
+    if (theme !== 'valley' && theme !== 'mekong') return false;
+    if (['forest', 'mangrove', 'swamp', 'coast', 'rocky', 'snow', 'volcano', 'sanctuary'].includes(hab)) return false;
+    // on lawn only (not on ruin flagstones, sand or rock)
+    const ground = this.terrainAt(tx, ty);
+    if (ground !== T.Grass && ground !== T.Tuft && ground !== T.Flowers && ground !== T.Deep) return false;
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+      const x = tx + dx, y = ty + dy, t = this.terrainAt(x, y);
+      if (t === T.Path || t === T.Plaza || t === T.Water || t === T.Bridge || t === T.Farm || this.solid.has(this.key(x, y)) || !this.isClear(x, y)) return false;
+    }
+    return true;
+  }
+
+  private bigTree(tx: number, ty: number): MapObject {
+    const big: BigTree = hash2(tx, ty, 43) < 0.5 ? 'round' : 'wide';
+    // `tile` stays a small round tree: minimap, Tiled export and a missing image fall back to it
+    return { kind: 'tree', id: `t-${tx}-${ty}`, x: tx + 0.5, y: ty + 0.5, tile: TOWN.round, collideR: 20, data: { big } };
   }
 
   /** Open floor of a plane's shrine (court `.` / outer ground `,` in `chars`), `r` tiles all around, off the paths. */

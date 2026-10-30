@@ -10,7 +10,7 @@ import { installLazyCreatures, registerOfficialLazy } from '../render/lazyCreatu
 import { buildAvatarSheets, buildCreatureAnimations } from '../render/animation';
 import { REGISTRY, loadOfficialIndex, officialPack, officialItemFiles, preloadIcyEthics, registerIcyEthics, registerPlaceholders, registerProcedural } from '../render/spriteRegistry';
 import { generateTextures } from '../render/pixelArt';
-import { buildTileset, buildWorldProps, preloadIcyTiles } from '../render/tileset';
+import { buildTileset, buildWorldProps, preloadIcyTiles, preloadWorldArt } from '../render/tileset';
 import { loadImagesInBackground, missingAssets, preloadManifest } from '../systems/assets';
 import { audio } from '../systems/audio';
 import { saveStore } from '../systems/save';
@@ -25,6 +25,7 @@ export class BootScene extends Phaser.Scene {
     preloadManifest(this);
     preloadIcyEthics(this);
     preloadIcyTiles(this);
+    preloadWorldArt(this);
   }
 
   async create(): Promise<void> {
