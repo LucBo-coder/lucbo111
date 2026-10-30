@@ -1,5 +1,11 @@
 # Changelog
 
+## Chưa phát hành — V27: Việt Nam Odyssey mở rộng ra cả nước
+
+- **Tỉnh 7 — Đồng Tháp** (gồm Tiền Giang cũ, Lv 36–42): qua cầu Rạch Miễu từ Bến Tre (cổng mới ở bờ bắc Bến Tre, mở bằng Huy hiệu Dừa Xiêm); Mỹ Tho bên sông Tiền, chợ nổi Cái Bè (2 bến ghe), làng hoa Sa Đéc, Gò Tháp, vườn xoài Cao Lãnh, Vườn quốc gia Tràm Chim, đồng sen Tháp Mười; 7 NPC, 5 huấn luyện viên, giải cứu Swanna, 8 nhiệm vụ, 6 điểm trồng tràm; boss Ludicolo — Thần Sen Tháp Mười → Huy hiệu Sen Hồng.
+- **Làm tỉnh mới nhanh hơn**: mỗi tỉnh = 1 bản đồ (`src/data/vietnam/<id>.json`) + 1 spec cốt truyện (`scripts/provinces/<id>.ts`); `npx tsx scripts/gen-province.ts <id>` sinh trang hộ chiếu (`src/data/vietnam/provinces.json`), vùng gặp Pokémon, boss, danh tiếng, nhiệm vụ (điểm đánh dấu lấy từ bản đồ), điểm bảo tồn, cổng trên bản đồ tỉnh trước và mục "Có gì mới". `scripts/ascii-map.ts <id>` in bản đồ dạng chữ để soát bố cục. Test chung `tests/vn_provinces.test.ts` + e2e `e2e/vn_provinces.spec.ts` cho mọi tỉnh làm theo cách này.
+- **Giao diện cho hành trình dài**: danh sách tỉnh cạnh bản đồ chỉ hiện các tỉnh quanh tỉnh đang đứng (phần còn lại trong Hộ chiếu); bảng danh tiếng chia trang (6 tỉnh / trang); Hộ chiếu và bảng danh tiếng mở đúng trang của tỉnh hiện tại.
+
 ## Chưa phát hành — V22–V26: AI huấn luyện viên, danh tiếng theo tỉnh, Việt Nam Odyssey (đến Bến Tre), online
 
 - **Đồ họa nền kiểu GBA (Ruby/Emerald)** (`src/render/tileset.ts`): cỏ 3 tông có búi và hoa, đường đất màu cát có viền và sỏi (kể cả góc trong), quảng trường lát đá, cỏ cao (ô gặp Pokémon hoang dã) thành các búi lá nhọn xếp so le và lắc theo gió, cỏ sâu cùng kiểu với cỏ thường (không còn mảng sọc tối), bờ nước có dải nước nông và cát ướt. Áp dụng cho mọi bản đồ ngoài trời; chỉ số ô không đổi.

@@ -1,0 +1,152 @@
+{
+ "id": "dong-thap",
+ "name": "Đồng Tháp",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": { "x": 64, "y": 104 },
+ "areas": [
+  { "id": "dt-mytho", "name": "Bờ sông Tiền – Mỹ Tho", "rect": [0, 89, 127, 111], "habitat": "meadow", "level": [36, 38] },
+  { "id": "dt-town", "name": "Thành phố Cao Lãnh", "rect": [42, 38, 86, 62], "habitat": "village", "level": [38, 38] },
+  { "id": "dt-caibe", "name": "Chợ nổi Cái Bè", "rect": [58, 63, 127, 88], "habitat": "lake", "level": [37, 39] },
+  { "id": "dt-sadec", "name": "Làng hoa Sa Đéc", "rect": [0, 62, 56, 88], "habitat": "farm", "level": [37, 40], "orchard": { "period": 6, "gap": 10 } },
+  { "id": "dt-xoai", "name": "Vườn xoài Cao Lãnh", "rect": [88, 38, 127, 62], "habitat": "farm", "level": [38, 41], "orchard": { "period": 7, "gap": 12 } },
+  { "id": "dt-gothap", "name": "Khu di tích Gò Tháp", "rect": [0, 38, 40, 61], "habitat": "ruins", "level": [39, 42] },
+  { "id": "dt-tramchim", "name": "Vườn quốc gia Tràm Chim", "rect": [60, 0, 127, 37], "habitat": "mangrove", "level": [39, 42] },
+  { "id": "dt-sen", "name": "Đồng sen Tháp Mười", "rect": [0, 0, 59, 37], "habitat": "lake", "level": [40, 42], "paddy": { "cell": 6, "rice": 0.4 } }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[64, 106], [64, 88], [64, 62], [64, 50]] },
+  { "w": 3, "pts": [[64, 50], [64, 36], [40, 24], [24, 16], [24, 4]] },
+  { "w": 3, "pts": [[64, 36], [90, 28], [110, 22]] },
+  { "w": 3, "pts": [[50, 50], [20, 50]] },
+  { "w": 3, "pts": [[78, 50], [112, 50]] },
+  { "w": 3, "pts": [[64, 74], [26, 74]] },
+  { "w": 3, "pts": [[64, 78], [96, 78], [118, 80]] }
+ ],
+ "plaza": [56, 44, 72, 56],
+ "lake": { "cx": 98, "cy": 12, "rx": 9, "ry": 5 },
+ "buildings": [
+  { "id": "dt-center", "name": "Trung tâm Pokémon", "x": 52, "y": 39, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "dt-mart", "name": "Cửa hàng Cao Lãnh", "x": 66, "y": 39, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "dt-museum", "name": "Bảo tàng Đồng Tháp", "x": 75, "y": 39, "w": 6, "h": 4, "roof": "teal", "wall": "stone", "door": 2 },
+  { "id": "dt-house-1", "name": "Nhà cô Hai Sen", "x": 46, "y": 53, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "brown" },
+  { "id": "dt-house-2", "name": "Nhà ông Mười", "x": 79, "y": 54, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 60, "y": 58 },
+  { "kind": "beehive", "x": 16, "y": 66 },
+  { "kind": "haystack", "x": 107, "y": 43 },
+  { "kind": "bucket", "x": 92, "y": 82 },
+  { "kind": "log", "x": 30, "y": 100 }
+ ],
+ "signs": [
+  { "x": 60, "y": 48, "text": ["THÀNH PHỐ CAO LÃNH", "Đất sen hồng. Phía bắc: Đồng sen Tháp Mười và Vườn quốc gia Tràm Chim · Phía tây: Gò Tháp, làng hoa Sa Đéc · Phía đông: vườn xoài, chợ nổi Cái Bè · Phía nam: sông Tiền, Mỹ Tho."] },
+  { "x": 30, "y": 72, "text": ["LÀNG HOA SA ĐÉC", "Hoa trồng trên giàn cao, nước kênh chảy bên dưới. Tết đến cả làng đỏ rực cúc mâm xôi và hồng."] },
+  { "x": 66, "y": 100, "text": ["CẦU RẠCH MIỄU", "Nối Bến Tre với Mỹ Tho qua sông Tiền. Ngược lên phía bắc là đất Đồng Tháp Mười."] }
+ ],
+ "npcs": [
+  { "id": "dt-guide", "name": "Cô Hai Sen", "sprite": "girl", "x": 62, "y": 47, "lines": [
+    "Chào mừng tới Đồng Tháp — xứ sen hồng của miền Tây!",
+    "Đồng sen Tháp Mười ở phía bắc, sếu đầu đỏ về Tràm Chim mỗi mùa khô, còn chợ nổi Cái Bè thì ở phía đông nam.",
+    "Mấy bữa nay sen nở rồi lại héo, người ta đồn Thần Sen giận chuyện gì đó."] },
+  { "id": "dt-ferry", "name": "Lái đò Tám", "sprite": "youngster", "x": 58, "y": 101, "lines": [
+    "Sông Tiền đây con! Bên kia cầu Rạch Miễu là Bến Tre, còn đây là đất Mỹ Tho.",
+    "Hồi xưa qua sông phải đi phà, giờ có cầu rồi mà tui vẫn nhớ tiếng còi phà."] },
+  { "id": "dt-elder", "name": "Ông Ba Gò Tháp", "sprite": "elder", "x": 20, "y": 47, "lines": [
+    "Gò Tháp này là dấu tích người Óc Eo, hơn ngàn năm trước họ dựng đền trên gò cao giữa đồng nước.",
+    "Mùa nước nổi mênh mông, chỉ có gò này là không ngập. Người xưa nói Thần Sen giữ cho nó."] },
+  { "id": "dt-florist", "name": "Chị Út làng hoa", "sprite": "girl", "x": 22, "y": 72, "lines": [
+    "Làng hoa Sa Đéc trồng hoa trên giàn tre, nước lên cũng không sợ.",
+    "Có mấy con Pokémon côn trùng cứ đêm là vô cắn nụ. Ai giúp chị dẹp tụi nó thì chị tặng chậu cúc."] },
+  { "id": "dt-trader", "name": "Bà Năm chợ nổi", "sprite": "girl", "x": 98, "y": 76, "lines": [
+    "Chợ nổi Cái Bè bán gì thì treo lên cây bẹo — treo khóm là bán khóm, treo xoài là bán xoài.",
+    "Ghe hàng Chín hay thách người lạ lắm, con coi chừng."] },
+  { "id": "dt-crane", "name": "Chú Bảy đếm sếu", "sprite": "villager", "x": 81, "y": 25, "lines": [
+    "Mùa khô sếu đầu đỏ bay về Tràm Chim ăn củ năng. Năm nay chú đếm được ít quá.",
+    "Đồng cỏ năng mà khô, mà rác, là sếu không về nữa đâu con."] },
+  { "id": "dt-mango", "name": "Chú Tư xoài", "sprite": "farmer", "x": 104, "y": 47, "lines": [
+    "Xoài cát Hòa Lộc, xoài cát chu — Cao Lãnh là thủ phủ xoài đó con.",
+    "Trái chín cây thơm cả vườn, Pokémon trong vùng mê lắm."] }
+ ],
+ "trainers": [
+  { "id": "dt-florist-t", "name": "Cô bán hoa Mười", "sprite": "girl", "x": 36, "y": 80,
+    "team": [["bellossom", 38], ["roserade", 39], ["lilligant", 39]],
+    "challenge": ["Hoa của tui đẹp mà gai cũng nhọn lắm đó nha!"],
+    "win": ["Thôi được, con đi coi hoa thoải mái. Nhớ đừng bẻ nụ."],
+    "lose": ["Hoa nở thì cũng phải biết chờ, con ơi."],
+    "rewards": { "items": { "superpotion": 2, "sitrus-berry": 1 }, "exp": 1400 } },
+  { "id": "dt-boatman", "name": "Ghe hàng Chín", "sprite": "knight", "x": 88, "y": 72,
+    "team": [["zangoose", 38], ["linoone", 39], ["ambipom", 39]],
+    "challenge": ["Ghe tui chở đầy khóm, ai muốn mua rẻ thì phải thắng tui trước!"],
+    "win": ["Chịu thua! Khóm này tui bán giá gốc cho con."],
+    "lose": ["Chợ nổi không dành cho người chậm tay đâu nghen."],
+    "rewards": { "items": { "greatball": 3 }, "exp": 1400 } },
+  { "id": "dt-mango-t", "name": "Thợ hái xoài Tâm", "sprite": "bald", "x": 116, "y": 56,
+    "team": [["tropius", 39], ["sudowoodo", 39], ["breloom", 40]],
+    "challenge": ["Hái xoài phải có sức. Thử sức với tui coi!"],
+    "win": ["Con khỏe thiệt! Lấy trái xoài này ăn lấy sức."],
+    "lose": ["Leo cây chưa quen thì té đau lắm đó."],
+    "rewards": { "items": { "sitrus-berry": 2, "ultraball": 1 }, "exp": 1500 } },
+  { "id": "dt-ruins", "name": "Nhà khảo cổ Hạnh", "sprite": "wizard", "x": 10, "y": 44,
+    "team": [["claydol", 40], ["sigilyph", 40], ["cofagrigus", 41]],
+    "challenge": ["Gò Tháp còn nhiều điều chưa ai giải được. Muốn biết thì đấu với tôi trước!"],
+    "win": ["Giỏi lắm. Mấy mảnh gốm Óc Eo này con xem thử đi."],
+    "lose": ["Lịch sử dạy ta kiên nhẫn đó."],
+    "rewards": { "items": { "ultraball": 2, "hard-stone": 1 }, "exp": 1600 } },
+  { "id": "dt-sen-keeper", "name": "Người giữ đầm sen Lành", "sprite": "ranger", "x": 36, "y": 25,
+    "team": [["victreebel", 41], ["vileplume", 41], ["shiinotic", 40]],
+    "challenge": ["Đầm sen đang yên giấc, ai muốn vào gặp Thần Sen phải qua tui."],
+    "win": ["Con đủ sức rồi. Thần Sen ở giữa đầm, đi nhẹ chân thôi."],
+    "lose": ["Sen mọc từ bùn mà thơm, con cũng phải bền như sen."],
+    "rewards": { "items": { "superpotion": 2, "leaf-stone": 1 }, "exp": 1700 } }
+ ],
+ "rescue": { "id": "dt-swan-rescue", "x": 112, "y": 28, "species": "swanna", "level": 40,
+   "guards": [["skuntank", 38], ["skuntank", 38], ["toxicroak", 40]], "quest": "vn-dt-rescue", "reporter": "Chú Bảy đếm sếu" },
+ "chests": [
+  { "id": "chest-dt-sadec", "x": 6, "y": 66, "items": { "superpotion": 3, "miracle-seed": 1 } },
+  { "id": "chest-dt-xoai", "x": 124, "y": 42, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-dt-mytho", "x": 8, "y": 104, "items": { "ultraball": 2, "superpotion": 2 } },
+  { "id": "chest-dt-tramchim", "x": 72, "y": 6, "items": { "netball": 3, "dusk-stone": 1 } },
+  { "id": "chest-dt-gothap", "x": 4, "y": 40, "items": { "ultraball": 2, "moon-stone": 1 } },
+  { "id": "chest-dt-nook", "x": 26, "y": 57, "items": { "exp-candy-m": 2, "leaf-stone": 1 }, "requiresFlag": "field:dong-thap:dt-thicket" }
+ ],
+ "waypoints": [
+  { "id": "wp-dong-thap-center", "name": "Trung tâm Pokémon Cao Lãnh", "x": 55, "y": 46 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "ludicolo", "name": "Ludicolo — Thần Sen Tháp Mười", "x": 24, "y": 9, "level": 42, "respawn": 600, "arena": 260,
+   "requires": ["beat:dt-sen-keeper"],
+   "hint": "Mặt đầm sen gợn sóng rồi lặng... Người giữ đầm sen Lành chưa cho ai vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "water-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 5500, "flag": "badge:dong-thap", "message": "Nhận Huy hiệu Sen Hồng (Đồng Tháp)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-dt-bt", "name": "Cầu Rạch Miễu — về Bến Tre", "x": 64, "y": 108, "to": "ben-tre", "toX": 56, "toY": 7 }
+ ],
+ "docks": [
+  { "id": "dt-dock-caibe", "name": "Bến chợ nổi Cái Bè", "x": 102, "y": 84, "wx": 104, "wy": 84 },
+  { "id": "dt-dock-mytho", "name": "Bến Mỹ Tho", "x": 70, "y": 95, "wx": 70, "wy": 94 }
+ ],
+ "rivers": [
+  { "w": 4, "pts": [[0, 93], [40, 95], [86, 92], [127, 94]] },
+  { "w": 2, "pts": [[106, 64], [108, 78], [106, 92]] }
+ ],
+ "nodes": [
+  { "id": "dt-river-1", "table": "canal-fish", "x": 40, "y": 98 },
+  { "id": "dt-river-2", "table": "canal-fish", "x": 88, "y": 96 },
+  { "id": "dt-lotus-1", "table": "paddy-fish", "x": 46, "y": 20 },
+  { "id": "dt-orchard-1", "table": "orchard-forage", "x": 100, "y": 58 },
+  { "id": "dt-flower-1", "table": "meadow-forage", "x": 12, "y": 82 },
+  { "id": "dt-marsh-1", "table": "mangrove-forage", "x": 76, "y": 30 }
+ ],
+ "field": [
+  { "id": "dt-thicket", "ability": "cut", "x": 30, "y": 57, "nook": { "cx": 26.5, "cy": 57.5, "r": 3, "wall": "tree" } }
+ ]
+}

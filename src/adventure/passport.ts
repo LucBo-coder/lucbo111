@@ -1,5 +1,6 @@
 import { REGION_DEFS } from '../core/map/regionDefs';
 import type { AdventureSave } from '../systems/saveSchema';
+import provincesJson from '../data/vietnam/provinces.json';
 
 // Journey Passport of the Vietnam Odyssey: one page per province, every number derived from the save
 // (flags, chests, areas, quests, explored chunks) plus the first-visit stamp.
@@ -16,15 +17,8 @@ export interface ProvinceDef {
   landmarks: { flag: string; name: string }[];
 }
 
-// Playable provinces + the next one on the route (shown locked)
-export const VN_PROVINCES: ProvinceDef[] = [
-  { id: 'ca-mau', name: 'Cà Mau', need: [], hint: '', questPrefix: 'vn-cm-', badge: { flag: 'badge:ca-mau', name: 'Huy hiệu Rừng Tràm' }, landmarks: [{ flag: 'landmark:mui-ca-mau', name: 'Mũi Cà Mau' }] },
-  { id: 'an-giang', name: 'An Giang', need: ['badge:ca-mau'], hint: 'Cần Huy hiệu Rừng Tràm (Cà Mau)', questPrefix: 'vn-ag-', badge: { flag: 'badge:an-giang', name: 'Huy hiệu Bảy Núi' }, landmarks: [{ flag: 'landmark:phu-quoc', name: 'Đảo Phú Quốc' }] },
-  { id: 'can-tho', name: 'Cần Thơ', need: ['badge:an-giang'], hint: 'Cần Huy hiệu Bảy Núi (An Giang)', questPrefix: 'vn-ct-', badge: { flag: 'badge:can-tho', name: 'Huy hiệu Sông Hậu' }, landmarks: [{ flag: 'landmark:cai-rang', name: 'Chợ nổi Cái Răng' }, { flag: 'landmark:ninh-kieu', name: 'Bến Ninh Kiều' }] },
-  { id: 'vinh-long', name: 'Vĩnh Long', need: ['badge:can-tho'], hint: 'Cần Huy hiệu Sông Hậu (Cần Thơ)', questPrefix: 'vn-vl-', badge: { flag: 'badge:vinh-long', name: 'Huy hiệu Gốm Đỏ' }, landmarks: [{ flag: 'landmark:van-thanh', name: 'Văn Thánh Miếu' }, { flag: 'landmark:an-binh', name: 'Cù lao An Bình' }, { flag: 'landmark:mang-thit', name: 'Lò gạch Mang Thít' }] },
-  { id: 'tra-vinh', name: 'Trà Vinh', need: ['badge:vinh-long'], hint: 'Cần Huy hiệu Gốm Đỏ (Vĩnh Long)', questPrefix: 'vn-tv-', badge: { flag: 'badge:tra-vinh', name: 'Huy hiệu Cây Dầu' }, landmarks: [{ flag: 'landmark:ao-ba-om', name: 'Ao Bà Om' }, { flag: 'landmark:chua-hang', name: 'Chùa Hang' }, { flag: 'landmark:ba-dong', name: 'Biển Ba Động' }] },
-  { id: 'ben-tre', name: 'Bến Tre', need: ['badge:tra-vinh'], hint: 'Cần Huy hiệu Cây Dầu (Trà Vinh)', questPrefix: 'vn-bt-', badge: { flag: 'badge:ben-tre', name: 'Huy hiệu Dừa Xiêm' }, landmarks: [{ flag: 'landmark:keo-dua', name: 'Làng kẹo dừa' }, { flag: 'landmark:cau-co-chien', name: 'Cầu Cổ Chiên' }, { flag: 'landmark:ham-luong', name: 'Sông Hàm Luông' }] },
-];
+// Playable provinces + the next ones on the route (shown locked), in the order of the journey
+export const VN_PROVINCES = provincesJson as ProvinceDef[];
 
 export interface Count { done: number; total: number }
 export interface ProvincePage {

@@ -8,9 +8,10 @@ import { ValleyMap } from '../src/core/map/valley';
 import { STEP, World } from '../src/core/world';
 import vnQuests from '../src/data/vietnam/quests.json';
 import type { QuestDef } from '../src/core/quests';
+import { VN_PROVINCES } from '../src/adventure/passport';
 import { defaultSave, migrate, newAdventure } from '../src/systems/saveSchema';
 
-const VN = ['ca-mau', 'an-giang', 'can-tho', 'vinh-long', 'tra-vinh', 'ben-tre'];
+const VN = VN_PROVINCES.filter((p) => REGION_DEFS[p.id]).map((p) => p.id);
 const quests = vnQuests as unknown as QuestDef[];
 
 describe('Vietnam Odyssey mode', () => {
@@ -47,13 +48,15 @@ describe('Vietnam Odyssey mode', () => {
     expect(water).toBeGreaterThan(200); // sea at the southern tip
   });
 
-  it('spawns: Lv1–18 (Cần Thơ ≤ 26, Vĩnh Long ≤ 30, Trà Vinh ≤ 34, Bến Tre ≤ 40), no Ice types in the tropical provinces, never legendaries', () => {
+  it('spawns: never above the levels of their province, no Ice types outside the northern snow peaks, never legendaries', () => {
     for (const r of [...REGIONS.values()].filter((x) => x.id.startsWith('vn-'))) {
       const pool = eligible({ biome: r.biome, night: false, weather: 'clear' } as never, r);
       expect(pool.length, r.id).toBeGreaterThan(8);
-      expect(pool.some((e) => POKEMON.get(e.id)?.types.includes('ice')), r.id).toBe(false);
+      if (r.biome !== 'snow') expect(pool.some((e) => POKEMON.get(e.id)?.types.includes('ice')), r.id).toBe(false);
       expect(pool.every((e) => !e.legendary && !e.mythical)).toBe(true);
-      expect(r.level[1]).toBeLessThanOrEqual(r.id.startsWith('vn-bt-') ? 40 : r.id.startsWith('vn-tv-') ? 34 : r.id.startsWith('vn-vl-') ? 30 : r.id.startsWith('vn-ct-') ? 26 : 18);
+      // never above the levels of the province's own areas (the campaign climbs province by province)
+      const prov = VN.find((id) => REGION_DEFS[id].areas.some((a) => r.areas.includes(a.id)))!;
+      expect(r.level[1], r.id).toBeLessThanOrEqual(Math.max(18, ...REGION_DEFS[prov].areas.map((a) => (a.level ?? [0, 0])[1])));
     }
   });
 
@@ -77,7 +80,7 @@ describe('Vietnam Odyssey mode', () => {
         // explore: an area, or 'dock:<id>' = landing at a boat dock
         if (o.type === 'explore') expect(areas.has(t) || docks.has(t), `${q.id} ${t}`).toBe(true);
         // activate: a waypoint, or 'eco:<province>' = a conservation site of that province
-        if (o.type === 'activate') expect(wps.has(t) || ['eco:ca-mau', 'eco:an-giang', 'eco:can-tho', 'eco:vinh-long', 'eco:tra-vinh', 'eco:ben-tre'].includes(t), `${q.id} ${t}`).toBe(true);
+        if (o.type === 'activate') expect(wps.has(t) || VN.map((id) => 'eco:' + id).includes(t), `${q.id} ${t}`).toBe(true);
         if (o.type === 'boss') expect(BOSSES.has(t), `${q.id} ${t}`).toBe(true);
         if (o.marker) expect(VN).toContain(o.marker.region);
       }

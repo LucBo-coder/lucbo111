@@ -56,6 +56,16 @@
         "3": "Người Trà Vinh mình đây rồi! Rừng dầu Ao Bà Om yên giấc lại cũng nhờ con."
       }
     },
+    "dong-thap": {
+      "name": "Đồng Tháp",
+      "rewards": { "1": { "sitrus-berry": 2, "greatball": 3 }, "2": { "superpotion": 3, "miracle-seed": 1 }, "3": { "ultraball": 3, "water-stone": 1 } },
+      "greet": {
+        "0": "Khách lạ tới Cao Lãnh hả? Uống ly trà sen cho mát nghen.",
+        "1": "Lại gặp con rồi. Ghé làng hoa Sa Đéc chưa?",
+        "2": "Chú Bảy bên Tràm Chim nói sếu về đông lại nhờ con.",
+        "3": "Người Đồng Tháp mình đây rồi! Đầm sen nở rộ lại cũng nhờ con."
+      }
+    },
     "starter-valley": {
       "name": "Thung Lũng Khởi Nguyên",
       "rewards": { "1": { "potion": 3 }, "2": { "greatball": 3 }, "3": { "ultraball": 2 } }

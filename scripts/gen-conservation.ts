@@ -2,7 +2,8 @@
 // to water (mangrove shore, flooded-field banks, the Hậu river banks), spread apart and away from other objects.
 // Usage: npx tsx scripts/gen-conservation.ts   (deterministic). A province already in the file keeps its sites (saves
 // store progress per site, and maps changed since would move them) — pass --all to place every province again.
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import type { ProvinceSpec } from './provinces/types';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { ValleyMap } from '../src/core/map/valley';
 import { T } from '../src/core/map/tiles';
@@ -39,6 +40,13 @@ const PROVINCES = [
     thrivingReward: { 'mystic-water': 1, superpotion: 3 },
   },
 ];
+
+// provinces made with scripts/gen-province.ts carry their own restoration work in their spec
+for (const f of readdirSync('scripts/provinces').filter((x) => x.endsWith('.ts') && x !== 'types.ts')) {
+  const sp = (await import(`./provinces/${f}`)).default as ProvinceSpec;
+  PROVINCES.push({ id: sp.id, name: sp.name, area: sp.eco.area, action: sp.eco.action, unlock: `vn-${sp.prefix}-${sp.eco.unlockQuest}`, boss: sp.boss.id,
+    label: sp.eco.label, done: sp.eco.done, thrivingReward: sp.eco.thrivingReward as never });
+}
 
 const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 const out: Record<string, unknown> = {

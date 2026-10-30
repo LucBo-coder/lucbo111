@@ -19,7 +19,7 @@
   { "w": 3, "pts": [[80, 106], [80, 70], [66, 58], [52, 48], [52, 40]] },
   { "w": 3, "pts": [[52, 48], [30, 50], [12, 50]] },
   { "w": 3, "pts": [[80, 70], [104, 62], [120, 50], [124, 30]] },
-  { "w": 3, "pts": [[52, 40], [52, 24], [56, 14]] },
+  { "w": 3, "pts": [[52, 40], [52, 24], [56, 14], [56, 4]] },
   { "w": 3, "pts": [[52, 50], [40, 76], [20, 84]] }
  ],
  "plaza": [46, 42, 60, 48],
@@ -123,8 +123,9 @@
    "requires": ["beat:bt-forest-ranger"],
    "hint": "Lá dừa rì rào trong rừng tràm... Hỏi chuyện Kiểm lâm Út trước đã.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dusk-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 5000, "flag": "badge:ben-tre", "message": "Nhận Huy hiệu Dừa Xiêm (Bến Tre)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 5000, "flag": "badge:ben-tre", "message": "Nhận Huy hiệu Dừa Xiêm (Bến Tre)! Đường tới Đồng Tháp đã mở: Cầu Rạch Miễu." } },
  "portals": [
+  {"id": "portal-bt-next", "name": "Cầu Rạch Miễu — đường tới Đồng Tháp", "x": 56, "y": 5, "to": "dong-thap", "toX": 64, "toY": 104, "requires": ["badge:ben-tre"], "hint": "Đường tới Đồng Tháp mở cho người có Huy hiệu Dừa Xiêm — hạ boss Bến Tre trước."},
   { "id": "portal-bt-tv", "name": "Cầu Cổ Chiên — về Trà Vinh", "x": 80, "y": 108, "to": "tra-vinh", "toX": 80, "toY": 14 }
  ],
  "docks": [

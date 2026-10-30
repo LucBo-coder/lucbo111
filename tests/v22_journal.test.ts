@@ -4,6 +4,7 @@ import vnQuestsJson from '../src/data/vietnam/quests.json';
 import { questInRegion, repBoard, repRow } from '../src/core/journal';
 import { addRep } from '../src/core/reputation';
 import type { QuestDef } from '../src/core/quests';
+import { VN_PROVINCES } from '../src/adventure/passport';
 
 const VN = vnQuestsJson as unknown as QuestDef[];
 const CLASSIC = questsJson as unknown as QuestDef[];
@@ -11,7 +12,7 @@ const save = () => ({ reputation: 0, repBy: {} as Record<string, number>, flags:
 
 describe('V22 journal: quests of this map', () => {
   it('every Vietnam quest belongs to at least one province; Cần Thơ quests are not listed in Cà Mau', () => {
-    for (const q of VN) expect(['ca-mau', 'an-giang', 'can-tho', 'vinh-long', 'tra-vinh', 'ben-tre'].some((r) => questInRegion(q, r)), q.id).toBe(true);
+    for (const q of VN) expect(VN_PROVINCES.some((p) => questInRegion(q, p.id)), q.id).toBe(true);
     const ct = VN.find((q) => q.id === 'vn-ct-market')!;
     expect(questInRegion(ct, 'can-tho')).toBe(true);
     expect(questInRegion(ct, 'ca-mau')).toBe(false);

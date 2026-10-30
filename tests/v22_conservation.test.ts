@@ -8,10 +8,11 @@ import { ValleyMap } from '../src/core/map/valley';
 import { T } from '../src/core/map/tiles';
 import { Rng } from '../src/core/rng';
 import type { QuestDef } from '../src/core/quests';
+import { VN_PROVINCES } from '../src/adventure/passport';
 
 describe('V22 conservation: data', () => {
   it('every province × 6 sites on dry ground at the water\'s edge, inside their area, spread apart', () => {
-    expect(Object.keys(CONSERVATION).sort()).toEqual(['an-giang', 'ben-tre', 'ca-mau', 'can-tho', 'tra-vinh', 'vinh-long']);
+    expect(Object.keys(CONSERVATION).sort()).toEqual(VN_PROVINCES.filter((p) => REGION_DEFS[p.id]).map((p) => p.id).sort());
     for (const p of Object.values(CONSERVATION)) {
       const d = REGION_DEFS[p.id], m = new ValleyMap(d);
       const [x0, y0, x1, y1] = d.areas.find((a) => a.id === p.area)!.rect;

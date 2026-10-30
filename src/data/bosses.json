@@ -382,7 +382,7 @@
   "exp": 160,
   "sprite": "mamoswine",
   "ai": "legendary",
-  "scale": 4.0,
+  "scale": 4,
   "survivor": false,
   "capture": false,
   "legend": {
@@ -435,7 +435,7 @@
   "exp": 160,
   "sprite": "magmortar",
   "ai": "legendary",
-  "scale": 4.0,
+  "scale": 4,
   "survivor": false,
   "capture": false,
   "legend": {
@@ -489,7 +489,7 @@
   "exp": 160,
   "sprite": "tyranitar",
   "ai": "legendary",
-  "scale": 4.0,
+  "scale": 4,
   "survivor": false,
   "capture": false,
   "legend": {
@@ -772,58 +772,112 @@
    "power": 0.33
   }
  },
-  {
-    "id": "exeggutor",
-    "name": "Exeggutor — Dừa Trăm Thân",
-    "types": [
-      "grass",
-      "psychic"
-    ],
-    "baseStats": {
-      "hp": 95,
-      "atk": 95,
-      "def": 85,
-      "spa": 125,
-      "spd": 65,
-      "spe": 45
-    },
-    "hpMult": 40,
-    "moveSpeed": 70,
-    "radius": 32,
-    "contactPower": 40,
-    "segments": 0,
-    "skills": [
-      "psychic",
-      "seed_bomb"
-    ],
-    "phase2Threshold": 0.5,
-    "phase2Summon": {
-      "enemy": "exeggcute",
-      "count": 2
-    },
-    "phase3Threshold": 0.25,
-    "phase3Banner": "Dừa Trăm Thân lắc lư — cả rừng tràm nổi giận!",
-    "exp": 150,
-    "sprite": "exeggutor",
-    "ai": "legendary",
-    "scale": 3.2,
-    "survivor": false,
-    "capture": false,
-    "legend": {
-      "beam": "psychic",
-      "volley": "seed_bomb",
-      "nova": "ominous_wind",
-      "field": "leaf_tornado",
-      "fieldStatus": {
-        "kind": "slow",
-        "chance": 0.5,
-        "duration": 2,
-        "magnitude": 0.3
-      },
-      "ultimate": "leaf_storm",
-      "ultimateName": "Mưa Dừa Trăm Thân",
-      "ultimateStyle": "safe",
-      "power": 0.33
-    }
+ {
+  "id": "exeggutor",
+  "name": "Exeggutor — Dừa Trăm Thân",
+  "types": [
+   "grass",
+   "psychic"
+  ],
+  "baseStats": {
+   "hp": 95,
+   "atk": 95,
+   "def": 85,
+   "spa": 125,
+   "spd": 65,
+   "spe": 45
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "psychic",
+   "seed_bomb"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "exeggcute",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Dừa Trăm Thân lắc lư — cả rừng tràm nổi giận!",
+  "exp": 150,
+  "sprite": "exeggutor",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "psychic",
+   "volley": "seed_bomb",
+   "nova": "ominous_wind",
+   "field": "leaf_tornado",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "leaf_storm",
+   "ultimateName": "Mưa Dừa Trăm Thân",
+   "ultimateStyle": "safe",
+   "power": 0.33
   }
+ },
+ {
+  "id": "ludicolo",
+  "name": "Ludicolo — Thần Sen Tháp Mười",
+  "types": [
+   "water",
+   "grass"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 70,
+   "def": 70,
+   "spa": 90,
+   "spd": 100,
+   "spe": 70
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "giga_drain",
+   "water_pulse"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "lotad",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Sen nhảy múa — cả đầm sen dậy sóng!",
+  "exp": 150,
+  "sprite": "ludicolo",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "energy_ball",
+   "volley": "water_pulse",
+   "nova": "muddy_water",
+   "field": "leaf_tornado",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "leaf_storm",
+   "ultimateName": "Bão Sen Hồng",
+   "ultimateStyle": "safe",
+   "power": 0.33
+  }
+ }
 ]

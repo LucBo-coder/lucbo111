@@ -84,6 +84,8 @@ const REGIONS = [
   ...(REGION_DEFS['starter-valley'].portals ?? []).map((p) => ({ id: p.to, name: REGION_DEFS[p.to]?.name ?? p.to, need: p.requires ?? [], hint: p.hint ?? '' })),
 ];
 // Vietnam Odyssey provinces (playable so far + the next one on the route)
+/** rows of the region list beside the map */
+const LIST_MAX = 8;
 const VN_REGIONS = VN_PROVINCES.map((p) => REGION_DEFS[p.id] ? p : { ...p, need: ['vn:not-in-this-version'], hint: 'chưa có trong phiên bản này' });
 const SPECIES = { ...(cache.species as unknown as Record<string, SpeciesData>), ...(fakemon as unknown as Record<string, SpeciesData>) };
 const MOVES = (cache as unknown as { moves: Record<string, { power: number | null; accuracy: number | null; shortEffect: string }> }).moves;
@@ -123,7 +125,9 @@ export class AdventureUI extends Phaser.Scene {
   /** the open menu is laid out for a portrait phone (stacked columns) */
   private portraitMenu = false;
   private bagPage = 0;
-  private passportPage = 0;
+  /** -1 = open on the page of the current province */
+  private passportPage = -1;
+  private repPage = -1;
   // PC storage browser
   private pcBox = 0;
   private pcSelected: string | null = null;
@@ -937,6 +941,7 @@ export class AdventureUI extends Phaser.Scene {
     this.menu = null;
     this.menuTab = null;
     this.adv.modal = false;
+    this.passportPage = this.repPage = -1;
   }
 
   openMenu(tab: MenuTab): void {
@@ -1608,8 +1613,19 @@ export class AdventureUI extends Phaser.Scene {
     const rows = repBoard(st.adv, ids);
     c.add(text(this, r.x + 10 * s, r.y + 6 * s, `DANH TIẾNG${vn ? ' — HÀNH TRÌNH VIỆT NAM' : ''} · tổng ${st.adv.reputation}`, 20 * s, '#ffe080'));
     if (!rows.length) { c.add(text(this, r.x + 10 * s, r.y + 40 * s, 'Chưa có vùng nào ghi nhận danh tiếng.', 17 * s, COLORS.dim)); return; }
-    const rowH = Math.min(110 * s, (r.h - 44 * s) / rows.length), bw = Math.min(r.w - 40 * s, 520 * s);
-    rows.forEach((row, i) => {
+    // a page of at most 6 provinces, starting on the page of the current one
+    const per = 6, pages = Math.ceil(rows.length / per);
+    if (this.repPage < 0) this.repPage = Math.max(0, Math.floor(rows.findIndex((x) => x.region === this.adv.regionDef.id) / per));
+    this.repPage = Math.min(this.repPage, pages - 1);
+    const shown = rows.slice(this.repPage * per, this.repPage * per + per);
+    const foot = pages > 1 ? 44 * s : 0;
+    const rowH = Math.min(110 * s, (r.h - 44 * s - foot) / shown.length), bw = Math.min(r.w - 40 * s, 520 * s);
+    if (pages > 1) {
+      c.add(button(this, r.x + 60 * s, r.y + r.h - 18 * s, 100 * s, 30 * s, '◀', () => { this.repPage = (this.repPage + pages - 1) % pages; this.openMenu('quests'); }).container);
+      c.add(text(this, r.x + r.w / 2, r.y + r.h - 18 * s, `${this.repPage + 1}/${pages}`, 16 * s, COLORS.dim).setOrigin(0.5));
+      c.add(button(this, r.x + r.w - 60 * s, r.y + r.h - 18 * s, 100 * s, 30 * s, '▶', () => { this.repPage = (this.repPage + 1) % pages; this.openMenu('quests'); }).container);
+    }
+    shown.forEach((row, i) => {
       const y = r.y + 40 * s + i * rowH, cur = row.region === this.adv.regionDef.id;
       c.add(panel(this, r.x + 6 * s, y, r.w - 12 * s, rowH - 8 * s, cur ? 0x6a8acf : COLORS.panelEdge, cur ? 0x232c48 : 0x1c2134, 1));
       c.add(text(this, r.x + 18 * s, y + 8 * s, `${cur ? '▶ ' : ''}${row.name} — ${row.tierName}`, 19 * s, cur ? '#80ff90' : '#ffffff'));
@@ -1713,7 +1729,10 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     const vn = st.adv.campaign === 'vietnam';
     const head = text(this, sx, stats.y + stats.height + 6 * s, vn ? 'HÀNH TRÌNH VIỆT NAM' : 'CÁC VÙNG', 18 * s, '#ffe080');
     c.add(head);
-    const list = vn ? VN_REGIONS : REGIONS;
+    // the Vietnam route is long: show the provinces around the current one, the rest live in the Passport
+    const all = vn ? VN_REGIONS : REGIONS, here = Math.max(0, all.findIndex((rg) => rg.id === a.regionDef.id));
+    const first = all.length <= LIST_MAX ? 0 : Math.max(0, Math.min(here - 3, all.length - LIST_MAX));
+    const list = all.slice(first, first + LIST_MAX);
     const bottom = r.y + r.h - (vn ? 44 : 4) * s;
     const rows = list.map((rg) => {
       const unlocked = rg.need.every((f) => st.hasFlag(f));
@@ -1743,6 +1762,11 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
       if (y <= bottom) break;
     }
     const last = rows[rows.length - 1];
+    if (all.length > list.length) {
+      const more = text(this, sx, last.hint.y + last.hint.height + 2 * s, `… ${all.length - list.length} tỉnh khác (${first} trước, ${all.length - first - list.length} sau) — xem Hộ chiếu`, 13 * s, COLORS.dim).setWordWrapWidth(side - 8 * s, true);
+      c.add(more);
+      last.hint = more;
+    }
     if (vn) c.add(button(this, sx + 110 * s, Math.min(bottom + 22 * s, last.hint.y + last.hint.height + 24 * s), 200 * s, 34 * s, 'Mở Hộ chiếu (P)', () => this.openMenu('passport'), 0x7a3a2a).container);
     c.add(text(this, r.x + 8 * s, r.y + vh - 22 * s, 'Kéo để di chuyển · cuộn/nút để thu phóng · chạm trạm xanh để dịch chuyển', 14 * s, COLORS.dim));
   }
@@ -1759,6 +1783,7 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     c.add(text(this, r.x, r.y, 'HỘ CHIẾU HÀNH TRÌNH VIỆT NAM', 22 * s, '#ffe080'));
     c.add(text(this, r.x, r.y + 30 * s, `Tỉnh đã đến: ${visited}/${pages.filter((p) => p.playable).length} · Huy hiệu: ${badges} · Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0'));
     const per = this.portraitMenu ? 1 : 3, total = Math.max(1, Math.ceil(pages.length / per));
+    if (this.passportPage < 0) this.passportPage = Math.max(0, Math.floor(pages.findIndex((p) => p.def.id === this.adv.regionDef.id) / per));
     this.passportPage = Math.min(this.passportPage, total - 1);
     const shown = pages.slice(this.passportPage * per, this.passportPage * per + per);
     const top = r.y + 62 * s, ch = r.h - 62 * s - (total > 1 ? 44 * s : 4 * s), gap = 12 * s;

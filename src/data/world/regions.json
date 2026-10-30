@@ -964,142 +964,303 @@
    "ice"
   ]
  },
-  {
-    "id": "vn-bt-south",
-    "name": "Bờ nam sông Cổ Chiên",
-    "areas": [
-      "bt-south"
-    ],
-    "biome": "swamp",
-    "level": [
-      34,
-      37
-    ],
-    "elite": [
-      38,
-      40
-    ],
-    "boss": null,
-    "recommended": 35,
-    "danger": 3,
-    "unlock": null,
-    "excludeTypes": [
-      "ice"
-    ]
-  },
-  {
-    "id": "vn-bt-candy",
-    "name": "Làng kẹo dừa",
-    "areas": [
-      "bt-candy"
-    ],
-    "biome": "meadow",
-    "level": [
-      35,
-      38
-    ],
-    "elite": [
-      39,
-      41
-    ],
-    "boss": null,
-    "recommended": 36,
-    "danger": 3,
-    "unlock": null,
-    "excludeTypes": [
-      "ice"
-    ]
-  },
-  {
-    "id": "vn-bt-coconut",
-    "name": "Vườn dừa Thới Sơn",
-    "areas": [
-      "bt-coconut"
-    ],
-    "biome": "meadow",
-    "level": [
-      36,
-      39
-    ],
-    "elite": [
-      40,
-      42
-    ],
-    "boss": null,
-    "recommended": 37,
-    "danger": 4,
-    "unlock": null,
-    "excludeTypes": [
-      "ice"
-    ]
-  },
-  {
-    "id": "vn-bt-hamluong",
-    "name": "Bờ sông Hàm Luông",
-    "areas": [
-      "bt-hamluong"
-    ],
-    "biome": "lake",
-    "level": [
-      37,
-      40
-    ],
-    "elite": [
-      40,
-      42
-    ],
-    "boss": null,
-    "recommended": 38,
-    "danger": 4,
-    "unlock": null,
-    "excludeTypes": [
-      "ice"
-    ]
-  },
-  {
-    "id": "vn-bt-forest",
-    "name": "Rừng tràm Bến Tre",
-    "areas": [
-      "bt-forest"
-    ],
-    "biome": "forest",
-    "level": [
-      36,
-      40
-    ],
-    "elite": [
-      41,
-      43
-    ],
-    "boss": null,
-    "recommended": 38,
-    "danger": 4,
-    "unlock": null,
-    "excludeTypes": [
-      "ice"
-    ]
-  },
-  {
-    "id": "vn-bt-meadow",
-    "name": "Đồng cỏ Mỏ Cày",
-    "areas": [
-      "bt-meadow"
-    ],
-    "biome": "meadow",
-    "level": [
-      35,
-      38
-    ],
-    "elite": [
-      39,
-      41
-    ],
-    "boss": null,
-    "recommended": 36,
-    "danger": 3,
-    "unlock": null,
-    "excludeTypes": [
-      "ice"
-    ]
-  }
+ {
+  "id": "vn-bt-south",
+  "name": "Bờ nam sông Cổ Chiên",
+  "areas": [
+   "bt-south"
+  ],
+  "biome": "swamp",
+  "level": [
+   34,
+   37
+  ],
+  "elite": [
+   38,
+   40
+  ],
+  "boss": null,
+  "recommended": 35,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bt-candy",
+  "name": "Làng kẹo dừa",
+  "areas": [
+   "bt-candy"
+  ],
+  "biome": "meadow",
+  "level": [
+   35,
+   38
+  ],
+  "elite": [
+   39,
+   41
+  ],
+  "boss": null,
+  "recommended": 36,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bt-coconut",
+  "name": "Vườn dừa Thới Sơn",
+  "areas": [
+   "bt-coconut"
+  ],
+  "biome": "meadow",
+  "level": [
+   36,
+   39
+  ],
+  "elite": [
+   40,
+   42
+  ],
+  "boss": null,
+  "recommended": 37,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bt-hamluong",
+  "name": "Bờ sông Hàm Luông",
+  "areas": [
+   "bt-hamluong"
+  ],
+  "biome": "lake",
+  "level": [
+   37,
+   40
+  ],
+  "elite": [
+   40,
+   42
+  ],
+  "boss": null,
+  "recommended": 38,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bt-forest",
+  "name": "Rừng tràm Bến Tre",
+  "areas": [
+   "bt-forest"
+  ],
+  "biome": "forest",
+  "level": [
+   36,
+   40
+  ],
+  "elite": [
+   41,
+   43
+  ],
+  "boss": null,
+  "recommended": 38,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bt-meadow",
+  "name": "Đồng cỏ Mỏ Cày",
+  "areas": [
+   "bt-meadow"
+  ],
+  "biome": "meadow",
+  "level": [
+   35,
+   38
+  ],
+  "elite": [
+   39,
+   41
+  ],
+  "boss": null,
+  "recommended": 36,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-mytho",
+  "name": "Bờ sông Tiền – Mỹ Tho",
+  "areas": [
+   "dt-mytho"
+  ],
+  "biome": "meadow",
+  "level": [
+   36,
+   38
+  ],
+  "elite": [
+   39,
+   41
+  ],
+  "boss": null,
+  "recommended": 37,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-caibe",
+  "name": "Chợ nổi Cái Bè",
+  "areas": [
+   "dt-caibe"
+  ],
+  "biome": "lake",
+  "level": [
+   37,
+   39
+  ],
+  "elite": [
+   40,
+   42
+  ],
+  "boss": null,
+  "recommended": 38,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-sadec",
+  "name": "Làng hoa Sa Đéc",
+  "areas": [
+   "dt-sadec"
+  ],
+  "biome": "farm",
+  "level": [
+   37,
+   40
+  ],
+  "elite": [
+   41,
+   43
+  ],
+  "boss": null,
+  "recommended": 39,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-xoai",
+  "name": "Vườn xoài Cao Lãnh",
+  "areas": [
+   "dt-xoai"
+  ],
+  "biome": "farm",
+  "level": [
+   38,
+   41
+  ],
+  "elite": [
+   42,
+   44
+  ],
+  "boss": null,
+  "recommended": 40,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-gothap",
+  "name": "Khu di tích Gò Tháp",
+  "areas": [
+   "dt-gothap"
+  ],
+  "biome": "ruins",
+  "level": [
+   39,
+   42
+  ],
+  "elite": [
+   43,
+   45
+  ],
+  "boss": null,
+  "recommended": 41,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-tramchim",
+  "name": "Vườn quốc gia Tràm Chim",
+  "areas": [
+   "dt-tramchim"
+  ],
+  "biome": "swamp",
+  "level": [
+   39,
+   42
+  ],
+  "elite": [
+   43,
+   45
+  ],
+  "boss": null,
+  "recommended": 41,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dt-sen",
+  "name": "Đồng sen Tháp Mười",
+  "areas": [
+   "dt-sen"
+  ],
+  "biome": "lake",
+  "level": [
+   40,
+   42
+  ],
+  "elite": [
+   43,
+   45
+  ],
+  "boss": null,
+  "recommended": 41,
+  "danger": 3,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ }
 ]

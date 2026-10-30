@@ -5,12 +5,13 @@ import { LEGENDS } from '../src/core/legends';
 import { POKEMON } from '../src/core/data';
 import { ITEMS } from '../src/adventure/AdventureState';
 import { REGIONS } from '../src/core/encounters';
+import { VN_PROVINCES } from '../src/adventure/passport';
 
 // Region maps: legendary shrines spread by theme and unlock order, and every authored object (NPC, trainer, chest,
 // sign, prop, waypoint, portal) stands on open ground that the player can reach.
 
 const ADVENTURE = ['starter-valley', 'frozen-mountains', 'volcanic-lands', 'misty-swamp', 'coral-coast', 'legendary-sanctuary'];
-const VIETNAM = ['ca-mau', 'an-giang', 'can-tho', 'vinh-long', 'tra-vinh', 'ben-tre'];
+const VIETNAM = VN_PROVINCES.filter((p) => REGION_DEFS[p.id]).map((p) => p.id);
 const PLANES = Object.keys(REGION_DEFS).filter((id) => REGION_DEFS[id].void);
 
 const maps = new Map<string, ValleyMap>();
