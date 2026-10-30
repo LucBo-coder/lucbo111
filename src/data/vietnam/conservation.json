@@ -568,6 +568,52 @@
     }
    ]
   },
+  "hai-phong": {
+   "id": "hai-phong",
+   "name": "Hải Phòng",
+   "area": "hp-catba",
+   "action": "trash",
+   "unlock": "vn-hp-3",
+   "boss": "talonflame",
+   "label": "Nhặt rác trên bãi Cát Bà",
+   "done": "Bạn nhặt chai nhựa và phao xốp dạt vào bãi. Biển Cát Bà sạch lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "hai-phong-1",
+     "x": 121,
+     "y": 71
+    },
+    {
+     "id": "hai-phong-2",
+     "x": 118,
+     "y": 85
+    },
+    {
+     "id": "hai-phong-3",
+     "x": 117,
+     "y": 99
+    },
+    {
+     "id": "hai-phong-4",
+     "x": 118,
+     "y": 78
+    },
+    {
+     "id": "hai-phong-5",
+     "x": 117,
+     "y": 92
+    },
+    {
+     "id": "hai-phong-6",
+     "x": 118,
+     "y": 106
+    }
+   ]
+  },
   "ho-chi-minh": {
    "id": "ho-chi-minh",
    "name": "TP. Hồ Chí Minh",

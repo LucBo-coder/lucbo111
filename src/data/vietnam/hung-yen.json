@@ -128,8 +128,9 @@
    "requires": ["beat:hy-gate-t"],
    "hint": "Cành nhãn gãy rạp quanh gốc cổ thụ... Thương lái Tâm chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "miracle-seed": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 13500, "flag": "badge:hung-yen", "message": "Nhận Huy hiệu Nhãn Lồng (Hưng Yên)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 13500, "flag": "badge:hung-yen", "message": "Nhận Huy hiệu Nhãn Lồng (Hưng Yên)! Đường tới Hải Phòng đã mở: Quốc lộ 5." } },
  "portals": [
+  {"id": "portal-hy-next", "name": "Quốc lộ 5 — đường ra Hải Phòng", "x": 112, "y": 5, "to": "hai-phong", "toX": 40, "toY": 104, "requires": ["badge:hung-yen"], "hint": "Đường tới Hải Phòng mở cho người có Huy hiệu Nhãn Lồng — hạ boss Hưng Yên trước."},
   { "id": "portal-hy-nb", "name": "Quốc lộ 10 — về Ninh Bình", "x": 100, "y": 107, "to": "ninh-binh", "toX": 112, "toY": 8 }
  ],
  "docks": [],

@@ -1,0 +1,143 @@
+{
+ "id": "hai-phong",
+ "name": "Hải Phòng",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 40, "y": 104 },
+ "areas": [
+  { "id": "hp-conson", "name": "Côn Sơn — Kiếp Bạc", "rect": [0, 0, 45, 45], "habitat": "ruins", "level": [72, 75] },
+  { "id": "hp-thanhha", "name": "Vườn vải Thanh Hà", "rect": [46, 0, 100, 30], "habitat": "farm", "level": [71, 74], "orchard": { "period": 7, "gap": 8 } },
+  { "id": "hp-city", "name": "Thành phố Hải Phòng", "rect": [40, 31, 100, 65], "habitat": "village", "level": [72, 72] },
+  { "id": "hp-port", "name": "Cảng Hải Phòng", "rect": [0, 46, 39, 111], "habitat": "rocky", "level": [70, 73] },
+  { "id": "hp-doson", "name": "Bán đảo Đồ Sơn", "rect": [40, 66, 100, 111], "habitat": "meadow", "level": [70, 73] },
+  { "id": "hp-catba", "name": "Đảo Cát Bà", "rect": [101, 0, 127, 111], "habitat": "forest", "level": [73, 76] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[40, 107], [40, 84], [56, 70], [62, 62]] },
+  { "w": 3, "pts": [[60, 50], [40, 34], [22, 20], [22, 5]] },
+  { "w": 3, "pts": [[68, 50], [72, 14]] },
+  { "w": 3, "pts": [[74, 56], [110, 56], [112, 24]] },
+  { "w": 3, "pts": [[110, 56], [110, 80]] },
+  { "w": 3, "pts": [[40, 84], [16, 74]] },
+  { "w": 3, "pts": [[56, 70], [80, 96]] }
+ ],
+ "plaza": [58, 50, 74, 62],
+ "lake": { "cx": 156, "cy": 90, "rx": 40, "ry": 40 },
+ "buildings": [
+  { "id": "hp-center", "name": "Trung tâm Pokémon", "x": 42, "y": 40, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "hp-mart", "name": "Cửa hàng Hải Phòng", "x": 78, "y": 38, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "hp-opera", "name": "Nhà hát lớn Hải Phòng", "x": 86, "y": 40, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "hp-warehouse", "name": "Kho cảng", "x": 6, "y": 54, "w": 8, "h": 4, "roof": "grey", "wall": "stone", "door": 4 },
+  { "id": "hp-house-1", "name": "Nhà chị Phượng", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "hp-house-2", "name": "Quán bánh đa cua", "x": 90, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 66 },
+  { "kind": "bucket", "x": 24, "y": 66 },
+  { "kind": "log", "x": 116, "y": 46 },
+  { "kind": "haystack", "x": 60, "y": 96 },
+  { "kind": "target", "x": 34, "y": 40 }
+ ],
+ "signs": [
+  { "x": 62, "y": 60, "text": ["THÀNH PHỐ HẢI PHÒNG", "Thành phố hoa phượng đỏ. Phía tây bắc: Côn Sơn — Kiếp Bạc · Phía bắc: vườn vải Thanh Hà · Phía đông: đảo Cát Bà · Phía tây: cảng · Phía nam: Đồ Sơn."] },
+  { "x": 26, "y": 16, "text": ["CÔN SƠN — KIẾP BẠC", "Nơi Nguyễn Trãi ở ẩn và đền thờ Hưng Đạo Đại Vương Trần Quốc Tuấn."] },
+  { "x": 108, "y": 60, "text": ["ĐẢO CÁT BÀ", "Rừng nguyên sinh trên đảo đá vôi, nhà của voọc Cát Bà — loài linh trưởng hiếm nhất Việt Nam."] }
+ ],
+ "npcs": [
+  { "id": "hp-guide", "name": "Chị Phượng Hải Phòng", "sprite": "girl", "x": 70, "y": 60, "lines": [
+    "Chào mừng tới Hải Phòng! Ăn bát bánh đa cua đã em.",
+    "Mùa này hoa phượng chưa nở mà đã có lửa đỏ rực bay ngang trời, cháy cả mấy cây phượng.",
+    "Kiểm lâm Cát Bà thấy nó bay về đảo, em ra hỏi."] },
+  { "id": "hp-ranger", "name": "Kiểm lâm Cát Bà", "sprite": "ranger", "x": 106, "y": 40, "lines": [
+    "Rừng Cát Bà khô quá, chim lửa bay qua là cháy.",
+    "Nó làm tổ trên vách đá phía bắc đảo, giận dữ lắm."] },
+  { "id": "hp-monk", "name": "Sư chùa Côn Sơn", "sprite": "elder", "x": 30, "y": 36, "lines": [
+    "Côn Sơn suối chảy rì rầm, ta nghe như tiếng đàn cầm bên tai... thơ Nguyễn Trãi đó con.",
+    "Chim lửa là chim thiêng giữ mùa hạ. Phượng chưa nở mà nó đến sớm, ắt có chuyện."] },
+  { "id": "hp-lychee", "name": "Chú trồng vải Thanh Hà", "sprite": "farmer", "x": 60, "y": 16, "lines": [
+    "Vải thiều Thanh Hà ngọt lịm, mùa hè bán khắp nơi.",
+    "Năm nay nắng nóng bất thường, vải cháy lá hết."] },
+  { "id": "hp-port", "name": "Công nhân cảng", "sprite": "villager", "x": 20, "y": 62, "lines": [
+    "Cảng Hải Phòng lớn nhất miền Bắc, tàu ra vào tấp nập.",
+    "Khói tàu với khói nhà máy làm trời nóng hầm hập."] },
+  { "id": "hp-doson", "name": "Cô bán hải sản Đồ Sơn", "sprite": "girl", "x": 70, "y": 90, "lines": [
+    "Đồ Sơn có lễ hội chọi trâu nổi tiếng nhất miền Bắc đó.",
+    "Bán đảo đẹp mà rác nhiều quá."] },
+  { "id": "hp-opera", "name": "Nghệ sĩ nhà hát lớn", "sprite": "elder", "x": 84, "y": 46, "lines": [
+    "Nhà hát lớn xây từ thời Pháp, giờ vẫn diễn đều.",
+    "Tối nay có vở cải lương, con ghé xem nha."] }
+ ],
+ "trainers": [
+  { "id": "hp-gate-t", "name": "Thợ leo vách Cát Bà", "sprite": "hiker", "x": 112, "y": 30,
+    "team": [["arcanine", 75], ["delphox", 75], ["blaziken", 75]],
+    "challenge": ["Vách đá phía bắc là tổ chim lửa. Muốn lên phải thắng tôi!"],
+    "win": ["Bạn chịu nóng giỏi đấy. Chim lửa ở đỉnh vách."],
+    "lose": ["Nóng quá hả? Về nghỉ đi."],
+    "rewards": { "items": { "superpotion": 2, "charcoal": 1 }, "exp": 3500 } },
+  { "id": "hp-monk-t", "name": "Hậu duệ nhà Trần", "sprite": "knight", "x": 14, "y": 12,
+    "team": [["bisharp", 73], ["absol", 73], ["houndoom", 73]],
+    "challenge": ["Hịch tướng sĩ còn vang! Ngươi dám đấu với ta?"],
+    "win": ["Ngươi đáng mặt anh hùng."],
+    "lose": ["Lui về luyện binh thư đi."],
+    "rewards": { "items": { "ultraball": 2, "dusk-stone": 1 }, "exp": 3400 } },
+  { "id": "hp-lychee-t", "name": "Cô hái vải Hà", "sprite": "girl", "x": 90, "y": 12,
+    "team": [["tropius", 72], ["shiftry", 72], ["lurantis", 72]],
+    "challenge": ["Hái vải cả mùa, tay em nhanh lắm!"],
+    "win": ["Chùm vải này tặng bạn nè."],
+    "lose": ["Vải chua lắm phải không?"],
+    "rewards": { "items": { "sitrus-berry": 3, "leaf-stone": 1 }, "exp": 3300 } },
+  { "id": "hp-port-t", "name": "Kỹ sư cầu cảng", "sprite": "youngster", "x": 8, "y": 100,
+    "team": [["steelix", 72], ["probopass", 72], ["klinklang", 72]],
+    "challenge": ["Cần cẩu thép, Pokémon thép! Thử xem ai cứng hơn!"],
+    "win": ["Gỉ sét rồi... bạn thắng."],
+    "lose": ["Thép đã tôi thế đấy!"],
+    "rewards": { "items": { "superpotion": 2, "metal-coat": 1 }, "exp": 3300 } },
+  { "id": "hp-doson-t", "name": "Người nuôi chim Đồ Sơn", "sprite": "villager", "x": 84, "y": 104,
+    "team": [["toucannon", 72], ["staraptor", 72], ["swellow", 72]],
+    "challenge": ["Chim của tôi bay qua cả bán đảo không nghỉ!"],
+    "win": ["Chim bạn bay giỏi hơn."],
+    "lose": ["Rụng lông rồi kìa!"],
+    "rewards": { "items": { "ultraball": 2 }, "exp": 3300 } }
+ ],
+ "rescue": { "id": "hp-langur-rescue", "x": 122, "y": 40, "species": "infernape", "level": 73,
+   "guards": [["drapion", 72], ["arbok", 71], ["arbok", 71]], "quest": "vn-hp-rescue", "reporter": "Kiểm lâm Cát Bà" },
+ "chests": [
+  { "id": "chest-hp-conson", "x": 6, "y": 6, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-hp-thanhha", "x": 76, "y": 12, "items": { "sitrus-berry": 3, "leaf-stone": 1 } },
+  { "id": "chest-hp-port", "x": 6, "y": 106, "items": { "superpotion": 3, "metal-coat": 1 } },
+  { "id": "chest-hp-doson", "x": 96, "y": 106, "items": { "ultraball": 2, "protein": 1 } },
+  { "id": "chest-hp-catba", "x": 108, "y": 104, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-hp-nook", "x": 30, "y": 104, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:hai-phong:hp-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-hai-phong-center", "name": "Trung tâm Pokémon Hải Phòng", "x": 45, "y": 47 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "talonflame", "name": "Talonflame — Chim Lửa Hoa Phượng", "x": 114, "y": 12, "level": 76, "respawn": 600, "arena": 260,
+   "requires": ["beat:hp-gate-t"],
+   "hint": "Lửa đỏ rực trên vách đá phía bắc đảo... Thợ leo vách chưa cho ai lên.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "charcoal": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 14000, "flag": "badge:hai-phong", "message": "Nhận Huy hiệu Hoa Phượng (Hải Phòng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-hp-hy", "name": "Quốc lộ 5 — về Hưng Yên", "x": 40, "y": 107, "to": "hung-yen", "toX": 112, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "hp-meadow-1", "table": "meadow-forage", "x": 30, "y": 8 },
+  { "id": "hp-orchard-1", "table": "orchard-forage", "x": 80, "y": 20 },
+  { "id": "hp-sea-1", "table": "lake-fish", "x": 112, "y": 90 },
+  { "id": "hp-meadow-2", "table": "meadow-forage", "x": 60, "y": 104 },
+  { "id": "hp-forest-1", "table": "forest-forage", "x": 118, "y": 22 }
+ ],
+ "field": [
+  { "id": "hp-boulder", "ability": "smash", "x": 34, "y": 104, "nook": { "cx": 30.5, "cy": 104.5, "r": 3, "wall": "boulder" } }
+ ]
+}

@@ -13099,5 +13099,544 @@
     "Sông thông rồi, cá về đông lắm!"
    ]
   }
+ },
+ {
+  "id": "vn-hp-1",
+  "kind": "main",
+  "title": "Lửa đỏ trên trời",
+  "giver": "hp-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:hung-yen"
+  ],
+  "description": "Tới Hải Phòng: ghé Trung tâm Pokémon rồi ra đảo Cát Bà hỏi kiểm lâm về lửa đỏ bay ngang trời.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-hai-phong-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Hải Phòng",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "hp-catba",
+    "count": 1,
+    "text": "Ra đảo Cát Bà (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-ranger",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Cát Bà",
+    "marker": {
+     "x": 106,
+     "y": 40,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1600,
+   "reputation": 10,
+   "flags": [
+    "landmark:cat-ba"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Hải Phòng! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi ra Cát Bà hỏi kiểm lâm, có lửa đỏ bay ngang trời mấy bữa nay."
+   ],
+   "progress": [
+    "Cát Bà ở phía đông."
+   ],
+   "complete": [
+    "Chim lửa làm tổ trên vách đá phía bắc đảo... Sư chùa Côn Sơn và chú trồng vải có thể biết vì sao."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-2",
+  "kind": "main",
+  "title": "Mùa hạ đến sớm",
+  "giver": "hp-guide",
+  "requires": [
+   "vn-hp-1"
+  ],
+  "description": "Lên Côn Sơn hỏi sư, rồi qua vườn vải Thanh Hà hỏi chú trồng vải.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hp-conson",
+    "count": 1,
+    "text": "Lên Côn Sơn — Kiếp Bạc (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-monk",
+    "count": 1,
+    "text": "Hỏi Sư chùa Côn Sơn",
+    "marker": {
+     "x": 30,
+     "y": 36,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-lychee",
+    "count": 1,
+    "text": "Hỏi Chú trồng vải Thanh Hà",
+    "marker": {
+     "x": 60,
+     "y": 16,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1650,
+   "reputation": 15,
+   "flags": [
+    "landmark:con-son"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Sư chùa Côn Sơn hiểu chuyện chim thiêng. Em lên hỏi, rồi qua vườn vải hỏi thêm."
+   ],
+   "progress": [
+    "Côn Sơn ở phía tây bắc, vườn vải ở phía bắc."
+   ],
+   "complete": [
+    "Trời nóng bất thường vì khói nhà máy, chim lửa đến sớm và nổi giận. Phải qua thợ leo vách mới lên tổ được."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-3",
+  "kind": "main",
+  "title": "Chim Lửa Hoa Phượng",
+  "giver": "hp-guide",
+  "requires": [
+   "vn-hp-2"
+  ],
+  "description": "Thắng Thợ leo vách Cát Bà để lên tổ, rồi làm Talonflame nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hp-gate-t",
+    "count": 1,
+    "text": "Thắng Thợ leo vách Cát Bà",
+    "marker": {
+     "x": 112,
+     "y": 30,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "talonflame",
+    "count": 1,
+    "text": "Đánh bại Talonflame — Chim Lửa Hoa Phượng",
+    "marker": {
+     "x": 114,
+     "y": 12,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1900,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thợ leo vách canh đường lên tổ. Em đủ sức thì lên."
+   ],
+   "progress": [
+    "Tổ chim ở vách đá phía bắc đảo."
+   ],
+   "complete": [
+    "Chim lửa nguôi giận, phượng nở đúng mùa rồi! Huy hiệu Hoa Phượng là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-rescue",
+  "kind": "side",
+  "title": "Voọc Cát Bà",
+  "giver": "hp-ranger",
+  "requires": [
+   "vn-hp-1"
+  ],
+  "description": "Một con Infernape bị bầy rắn vây ở mép đông đảo.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "hp-langur-rescue",
+    "count": 1,
+    "text": "Giải cứu Infernape ở mép đông đảo",
+    "marker": {
+     "x": 122,
+     "y": 40,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cát Bà",
+    "marker": {
+     "x": 106,
+     "y": 40,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1450,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con khỉ bị rắn vây ở mép đông đảo. Em giúp anh!"
+   ],
+   "progress": [
+    "Mép đông đảo, giữa rừng."
+   ],
+   "complete": [
+    "Khỉ về đàn rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-tran",
+  "kind": "side",
+  "title": "Hịch tướng sĩ",
+  "giver": "hp-monk",
+  "requires": [
+   "vn-hp-1"
+  ],
+  "description": "Hậu duệ nhà Trần muốn thử sức người đến Kiếp Bạc.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hp-monk-t",
+    "count": 1,
+    "text": "Thắng Hậu duệ nhà Trần",
+    "marker": {
+     "x": 14,
+     "y": 12,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-monk",
+    "count": 1,
+    "text": "Báo cho Sư chùa Côn Sơn",
+    "marker": {
+     "x": 30,
+     "y": 36,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "dusk-stone": 1
+   },
+   "worldExp": 1300,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh hậu duệ nhà Trần ham đấu lắm. Con thử một trận."
+   ],
+   "progress": [
+    "Anh ấy ở góc tây bắc khu đền."
+   ],
+   "complete": [
+    "Anh ấy phục con rồi. Mô Phật."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-lychee",
+  "kind": "side",
+  "title": "Vải thiều Thanh Hà",
+  "giver": "hp-lychee",
+  "requires": [
+   "vn-hp-1"
+  ],
+  "description": "Cô hái vải Hà muốn đấu với người lạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hp-thanhha",
+    "count": 1,
+    "text": "Đến vườn vải Thanh Hà (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 15,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hp-lychee-t",
+    "count": 1,
+    "text": "Thắng Cô hái vải Hà",
+    "marker": {
+     "x": 90,
+     "y": 12,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-lychee",
+    "count": 1,
+    "text": "Báo cho Chú trồng vải Thanh Hà",
+    "marker": {
+     "x": 60,
+     "y": 16,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "leaf-stone": 1
+   },
+   "worldExp": 1250,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Con Hà hái vải giỏi mà đấu cũng giỏi. Em thử với nó nha."
+   ],
+   "progress": [
+    "Hà ở phía đông vườn."
+   ],
+   "complete": [
+    "Chùm vải ngọt này chú tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-port",
+  "kind": "side",
+  "title": "Cần cẩu thép",
+  "giver": "hp-port",
+  "requires": [
+   "vn-hp-2"
+  ],
+  "description": "Kỹ sư cầu cảng thách đấu công nhân trong giờ nghỉ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hp-port",
+    "count": 1,
+    "text": "Đến cảng Hải Phòng (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hp-port-t",
+    "count": 1,
+    "text": "Thắng Kỹ sư cầu cảng",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-port",
+    "count": 1,
+    "text": "Báo cho Công nhân cảng",
+    "marker": {
+     "x": 20,
+     "y": 62,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "metal-coat": 1
+   },
+   "worldExp": 1300,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh kỹ sư thách đấu hoài, tụi anh mệt lắm rồi. Em đấu với ảnh giùm."
+   ],
+   "progress": [
+    "Anh ấy ở góc tây nam cảng."
+   ],
+   "complete": [
+    "Ảnh chịu thua rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-doson",
+  "kind": "side",
+  "title": "Chim bay Đồ Sơn",
+  "giver": "hp-doson",
+  "requires": [
+   "vn-hp-1"
+  ],
+  "description": "Người nuôi chim thả chim bay làm khách sợ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hp-doson",
+    "count": 1,
+    "text": "Đến bán đảo Đồ Sơn (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 88,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hp-doson-t",
+    "count": 1,
+    "text": "Thắng Người nuôi chim Đồ Sơn",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-doson",
+    "count": 1,
+    "text": "Báo cho Cô bán hải sản Đồ Sơn",
+    "marker": {
+     "x": 70,
+     "y": 90,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1250,
+   "reputation": 12,
+   "flags": [
+    "landmark:do-son"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chim của ông ấy sà xuống giật cá của cô hoài. Em trị ổng giùm."
+   ],
+   "progress": [
+    "Ông ở góc đông nam bán đảo."
+   ],
+   "complete": [
+    "Hàng cá yên rồi. Con mực này cô cho em."
+   ]
+  }
+ },
+ {
+  "id": "vn-hp-eco",
+  "kind": "side",
+  "title": "Biển Cát Bà sạch",
+  "giver": "hp-ranger",
+  "requires": [
+   "vn-hp-3"
+  ],
+  "description": "Phao xốp và rác nhựa dạt đầy bãi Cát Bà.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:hai-phong",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 121,
+     "y": 71,
+     "region": "hai-phong"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hp-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cát Bà",
+    "marker": {
+     "x": 106,
+     "y": 40,
+     "region": "hai-phong"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1300,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Chim lửa yên rồi, giờ dọn bãi. Em phụ anh nhặt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước phía nam đảo."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

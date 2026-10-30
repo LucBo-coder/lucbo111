@@ -3240,5 +3240,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-hp-conson",
+  "name": "Côn Sơn — Kiếp Bạc",
+  "areas": [
+   "hp-conson"
+  ],
+  "biome": "ruins",
+  "level": [
+   72,
+   75
+  ],
+  "elite": [
+   76,
+   78
+  ],
+  "boss": null,
+  "recommended": 74,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hp-thanhha",
+  "name": "Vườn vải Thanh Hà",
+  "areas": [
+   "hp-thanhha"
+  ],
+  "biome": "farm",
+  "level": [
+   71,
+   74
+  ],
+  "elite": [
+   75,
+   77
+  ],
+  "boss": null,
+  "recommended": 73,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hp-port",
+  "name": "Cảng Hải Phòng",
+  "areas": [
+   "hp-port"
+  ],
+  "biome": "rocky",
+  "level": [
+   70,
+   73
+  ],
+  "elite": [
+   74,
+   76
+  ],
+  "boss": null,
+  "recommended": 72,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hp-doson",
+  "name": "Bán đảo Đồ Sơn",
+  "areas": [
+   "hp-doson"
+  ],
+  "biome": "meadow",
+  "level": [
+   70,
+   73
+  ],
+  "elite": [
+   74,
+   76
+  ],
+  "boss": null,
+  "recommended": 72,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hp-catba",
+  "name": "Đảo Cát Bà",
+  "areas": [
+   "hp-catba"
+  ],
+  "biome": "forest",
+  "level": [
+   73,
+   76
+  ],
+  "elite": [
+   77,
+   79
+  ],
+  "boss": null,
+  "recommended": 75,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

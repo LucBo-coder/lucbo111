@@ -1737,5 +1737,59 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "talonflame",
+  "name": "Talonflame — Chim Lửa Hoa Phượng",
+  "types": [
+   "fire",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 78,
+   "atk": 81,
+   "def": 71,
+   "spa": 74,
+   "spd": 69,
+   "spe": 126
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "flare_blitz",
+   "brave_bird"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "fletchling",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Chim Lửa sà xuống — trời đỏ rực như mùa phượng nở!",
+  "exp": 150,
+  "sprite": "talonflame",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "flamethrower",
+   "volley": "air_slash",
+   "nova": "heat_wave",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "flare_blitz",
+   "ultimateName": "Mưa Lửa Hoa Phượng",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]
