@@ -15214,5 +15214,531 @@
     "Sông trong rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-cb-1",
+  "kind": "main",
+  "title": "Tiếng hổ trong hang",
+  "giver": "cb-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:lang-son"
+  ],
+  "description": "Lên Cao Bằng: ghé Trung tâm Pokémon rồi tới chân núi Ngườm Ngao hỏi già làng Tày.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-cao-bang-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Cao Bằng",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "cb-nguomngao",
+    "count": 1,
+    "text": "Đến động Ngườm Ngao (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-elder",
+    "count": 1,
+    "text": "Hỏi Già làng Tày",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1800,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng lên Cao Bằng! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi tới chân núi Ngườm Ngao hỏi già làng, có tiếng hổ gầm mấy đêm rồi."
+   ],
+   "progress": [
+    "Động Ngườm Ngao ở phía tây bắc."
+   ],
+   "complete": [
+    "Già làng nói Hổ Lửa thức dậy vì tiếng ồn... Cô lái bè Bản Giốc và cụ giữ Pác Bó có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-2",
+  "kind": "main",
+  "title": "Lửa trên núi tây",
+  "giver": "cb-guide",
+  "requires": [
+   "vn-cb-1"
+  ],
+  "description": "Ra thác Bản Giốc hỏi cô lái bè, rồi qua Pác Bó hỏi cụ giữ di tích.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "cb-bangioc",
+    "count": 1,
+    "text": "Ra thác Bản Giốc (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-falls",
+    "count": 1,
+    "text": "Hỏi Cô lái bè Bản Giốc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-pacbo",
+    "count": 1,
+    "text": "Hỏi Cụ giữ di tích Pác Bó",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1850,
+   "reputation": 15,
+   "flags": [
+    "landmark:ban-gioc",
+    "landmark:pac-bo"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cô lái bè thấy lửa trên núi. Em ra hỏi, rồi qua Pác Bó hỏi thêm."
+   ],
+   "progress": [
+    "Thác ở phía bắc, Pác Bó ở phía tây."
+   ],
+   "complete": [
+    "Muốn vào hang gặp Hổ Lửa, phải qua thợ săn hổ già."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-3",
+  "kind": "main",
+  "title": "Hổ Lửa Ngườm Ngao",
+  "giver": "cb-guide",
+  "requires": [
+   "vn-cb-2"
+  ],
+  "description": "Thắng Thợ săn hổ già để vào cửa hang, rồi làm Incineroar ngủ yên.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "cb-gate-t",
+    "count": 1,
+    "text": "Thắng Thợ săn hổ già",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "incineroar",
+    "count": 1,
+    "text": "Đánh bại Incineroar — Hổ Lửa Ngườm Ngao",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2100,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thợ săn hổ già canh đường vào hang. Em đủ gan thì vào."
+   ],
+   "progress": [
+    "Cửa hang ở góc tây bắc."
+   ],
+   "complete": [
+    "Hổ Lửa ngủ yên trong hang rồi! Huy hiệu Hang Hổ là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-rescue",
+  "kind": "side",
+  "title": "Vượn Cao Vít",
+  "giver": "cb-elder",
+  "requires": [
+   "vn-cb-1"
+  ],
+  "description": "Một con Oranguru bị bầy chó sói vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "cb-gibbon-rescue",
+    "count": 1,
+    "text": "Giải cứu Oranguru ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-elder",
+    "count": 1,
+    "text": "Báo cho Già làng Tày",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1650,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con vượn bị chó sói vây ở góc tây núi. Em giúp già!"
+   ],
+   "progress": [
+    "Góc tây núi Ngườm Ngao."
+   ],
+   "complete": [
+    "Vượn về rừng rồi, hót vang cả núi."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-glide",
+  "kind": "side",
+  "title": "Bay qua thác",
+  "giver": "cb-falls",
+  "requires": [
+   "vn-cb-1"
+  ],
+  "description": "Người bay dù Bản Giốc thách ai dám đấu.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "cb-falls-t",
+    "count": 1,
+    "text": "Thắng Người bay dù Bản Giốc",
+    "marker": {
+     "x": 94,
+     "y": 24,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-falls",
+    "count": 1,
+    "text": "Báo cho Cô lái bè Bản Giốc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1500,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh bay dù ham đấu lắm. Em thử một trận nha."
+   ],
+   "progress": [
+    "Anh ấy ở bờ đông thác."
+   ],
+   "complete": [
+    "Ảnh phục em rồi. Mai cô chở em ra chân thác."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-orchid",
+  "kind": "side",
+  "title": "Lan rừng Pác Bó",
+  "giver": "cb-pacbo",
+  "requires": [
+   "vn-cb-2"
+  ],
+  "description": "Kẻ đào trộm lan rừng phá rừng đầu nguồn.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "cb-pacbo-t",
+    "count": 1,
+    "text": "Thắng Kẻ đào trộm lan rừng",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-pacbo",
+    "count": 1,
+    "text": "Báo cho Cụ giữ di tích Pác Bó",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "leaf-stone": 1
+   },
+   "worldExp": 1450,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa đào trộm lan ở góc tây nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Lan về rừng rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-lake",
+  "kind": "side",
+  "title": "Ba mươi sáu hồ",
+  "giver": "cb-lake",
+  "requires": [
+   "vn-cb-1"
+  ],
+  "description": "Thợ điện bản Thang Hen thả Pokémon điện làm chim nước bỏ đi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "cb-thanghen",
+    "count": 1,
+    "text": "Đến hồ Thang Hen (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 90,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "cb-lake-t",
+    "count": 1,
+    "text": "Thắng Thợ điện bản Thang Hen",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-lake",
+    "count": 1,
+    "text": "Báo cho Người chèo thuyền Thang Hen",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "magnet": 1
+   },
+   "worldExp": 1450,
+   "reputation": 12,
+   "flags": [
+    "landmark:thang-hen"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Pokémon điện của thằng thợ điện làm chim sợ. Em nói chuyện với nó giùm."
+   ],
+   "progress": [
+    "Nó ở góc đông nam hồ."
+   ],
+   "complete": [
+    "Chim nước về rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-smith",
+  "kind": "side",
+  "title": "Lửa rèn Phúc Sen",
+  "giver": "cb-smith",
+  "requires": [
+   "vn-cb-1"
+  ],
+  "description": "Thợ rèn trẻ Phúc Sen muốn thử Pokémon thép của mình.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "cb-maphuc",
+    "count": 1,
+    "text": "Đến đèo Mã Phục (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "cb-pass-t",
+    "count": 1,
+    "text": "Thắng Thợ rèn trẻ Phúc Sen",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-smith",
+    "count": 1,
+    "text": "Báo cho Thợ rèn già Phúc Sen",
+    "marker": {
+     "x": 84,
+     "y": 46,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "metal-coat": 1
+   },
+   "worldExp": 1500,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng học trò tôi rèn Pokémon thép giỏi lắm. Em thử với nó."
+   ],
+   "progress": [
+    "Nó ở phía nam đèo."
+   ],
+   "complete": [
+    "Con dao Phúc Sen này tôi tặng em... để thái rau thôi nha."
+   ]
+  }
+ },
+ {
+  "id": "vn-cb-eco",
+  "kind": "side",
+  "title": "Thác Bản Giốc trong xanh",
+  "giver": "cb-falls",
+  "requires": [
+   "vn-cb-3"
+  ],
+  "description": "Rác du lịch mắc dưới chân thác Bản Giốc.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:cao-bang",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm quanh chân thác",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "cao-bang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "cb-falls",
+    "count": 1,
+    "text": "Báo cho Cô lái bè Bản Giốc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "cao-bang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1500,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Hang yên rồi, giờ dọn thác. Em phụ cô vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ dưới thác."
+   ],
+   "complete": [
+    "Thác trong veo rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

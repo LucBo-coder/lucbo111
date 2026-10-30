@@ -3700,5 +3700,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-cb-nguomngao",
+  "name": "Động Ngườm Ngao",
+  "areas": [
+   "cb-nguomngao"
+  ],
+  "biome": "rocky",
+  "level": [
+   81,
+   84
+  ],
+  "elite": [
+   85,
+   87
+  ],
+  "boss": null,
+  "recommended": 83,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-cb-bangioc",
+  "name": "Thác Bản Giốc",
+  "areas": [
+   "cb-bangioc"
+  ],
+  "biome": "lake",
+  "level": [
+   80,
+   83
+  ],
+  "elite": [
+   84,
+   86
+  ],
+  "boss": null,
+  "recommended": 82,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-cb-pacbo",
+  "name": "Pác Bó — suối Lê-nin",
+  "areas": [
+   "cb-pacbo"
+  ],
+  "biome": "forest",
+  "level": [
+   78,
+   81
+  ],
+  "elite": [
+   82,
+   84
+  ],
+  "boss": null,
+  "recommended": 80,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-cb-thanghen",
+  "name": "Hồ Thang Hen — Non nước Cao Bằng",
+  "areas": [
+   "cb-thanghen"
+  ],
+  "biome": "meadow",
+  "level": [
+   78,
+   81
+  ],
+  "elite": [
+   82,
+   84
+  ],
+  "boss": null,
+  "recommended": 80,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-cb-maphuc",
+  "name": "Đèo Mã Phục",
+  "areas": [
+   "cb-maphuc"
+  ],
+  "biome": "rocky",
+  "level": [
+   79,
+   82
+  ],
+  "elite": [
+   83,
+   85
+  ],
+  "boss": null,
+  "recommended": 81,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

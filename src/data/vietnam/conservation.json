@@ -338,6 +338,52 @@
     }
    ]
   },
+  "cao-bang": {
+   "id": "cao-bang",
+   "name": "Cao Bằng",
+   "area": "cb-bangioc",
+   "action": "trash",
+   "unlock": "vn-cb-3",
+   "boss": "incineroar",
+   "label": "Vớt rác dưới chân thác",
+   "done": "Bạn vớt chai nhựa và túi nilon mắc dưới chân thác. Sông Quây Sơn trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "cao-bang-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "cao-bang-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "cao-bang-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "cao-bang-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "cao-bang-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "cao-bang-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "da-nang": {
    "id": "da-nang",
    "name": "Đà Nẵng",

@@ -124,8 +124,9 @@
    "requires": ["beat:ls-gate-t"],
    "hint": "Tượng đá trên đỉnh như đang cựa mình... Thợ đá Tam Thanh chưa cho ai lên.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "hard-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 15500, "flag": "badge:lang-son", "message": "Nhận Huy hiệu Vọng Phu (Lạng Sơn)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 15500, "flag": "badge:lang-son", "message": "Nhận Huy hiệu Vọng Phu (Lạng Sơn)! Đường tới Cao Bằng đã mở: Quốc lộ 4A." } },
  "portals": [
+  {"id": "portal-ls-next", "name": "Quốc lộ 4A — đường lên Cao Bằng", "x": 80, "y": 5, "to": "cao-bang", "toX": 64, "toY": 104, "requires": ["badge:lang-son"], "hint": "Đường tới Cao Bằng mở cho người có Huy hiệu Vọng Phu — hạ boss Lạng Sơn trước."},
   { "id": "portal-ls-ql", "name": "Quốc lộ 4B — về Quảng Ninh", "x": 104, "y": 107, "to": "quang-ninh", "toX": 22, "toY": 8 }
  ],
  "docks": [],

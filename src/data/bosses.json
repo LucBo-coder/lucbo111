@@ -1952,5 +1952,59 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "incineroar",
+  "name": "Incineroar — Hổ Lửa Ngườm Ngao",
+  "types": [
+   "fire",
+   "dark"
+  ],
+  "baseStats": {
+   "hp": 95,
+   "atk": 115,
+   "def": 90,
+   "spa": 80,
+   "spd": 90,
+   "spe": 60
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "darkest_lariat",
+   "flare_blitz"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "litten",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Hổ Lửa gầm vang — lửa cuộn ra từ cửa hang!",
+  "exp": 150,
+  "sprite": "incineroar",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "flamethrower",
+   "volley": "dark_pulse",
+   "nova": "heat_wave",
+   "field": "fire_spin",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "darkest_lariat",
+   "ultimateName": "Hổ Lửa Ngườm Ngao Gầm",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]
