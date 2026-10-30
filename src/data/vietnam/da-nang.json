@@ -127,8 +127,9 @@
    "requires": ["beat:dg-gate-t"],
    "hint": "Tiếng gầm vọng xuống từ đỉnh Sơn Trà... Kiểm lâm trưởng chưa cho ai lên.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 10000, "flag": "badge:da-nang", "message": "Nhận Huy hiệu Cầu Rồng (Đà Nẵng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 10000, "flag": "badge:da-nang", "message": "Nhận Huy hiệu Cầu Rồng (Đà Nẵng)! Đường tới Huế đã mở: Đèo Hải Vân." } },
  "portals": [
+  {"id": "portal-dg-next", "name": "Đèo Hải Vân — đường ra Huế", "x": 20, "y": 5, "to": "hue", "toX": 100, "toY": 104, "requires": ["badge:da-nang"], "hint": "Đường tới Huế mở cho người có Huy hiệu Cầu Rồng — hạ boss Đà Nẵng trước."},
   { "id": "portal-dg-qn", "name": "Quốc lộ 1 — về Quảng Ngãi", "x": 40, "y": 107, "to": "quang-ngai", "toX": 72, "toY": 8 }
  ],
  "docks": [],

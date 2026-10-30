@@ -568,6 +568,52 @@
     }
    ]
   },
+  "hue": {
+   "id": "hue",
+   "name": "Huế",
+   "area": "hu-tamgiang",
+   "action": "net",
+   "unlock": "vn-hu-3",
+   "boss": "aegislash",
+   "label": "Gỡ sáo lưới bỏ hoang trên phá",
+   "done": "Bạn nhổ cọc sáo mục và kéo tấm lưới lên bờ. Cá trên phá có đường bơi.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "netball": 3
+   },
+   "sites": [
+    {
+     "id": "hue-1",
+     "x": 103,
+     "y": 33
+    },
+    {
+     "id": "hue-2",
+     "x": 122,
+     "y": 36
+    },
+    {
+     "id": "hue-3",
+     "x": 122,
+     "y": 22
+    },
+    {
+     "id": "hue-4",
+     "x": 108,
+     "y": 47
+    },
+    {
+     "id": "hue-5",
+     "x": 105,
+     "y": 19
+    },
+    {
+     "id": "hue-6",
+     "x": 119,
+     "y": 58
+    }
+   ]
+  },
   "khanh-hoa": {
    "id": "khanh-hoa",
    "name": "Khánh Hòa",

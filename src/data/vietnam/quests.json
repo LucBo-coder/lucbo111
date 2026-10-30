@@ -9413,5 +9413,534 @@
     "Bãi sạch rồi! Rùa biển lên đẻ lại rồi đó."
    ]
   }
+ },
+ {
+  "id": "vn-hu-1",
+  "kind": "main",
+  "title": "Tiếng gươm trong Đại Nội",
+  "giver": "hu-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:da-nang"
+  ],
+  "description": "Ra Huế: ghé Trung tâm Pokémon rồi qua chùa Thiên Mụ hỏi sư về tiếng gươm khua trong Đại Nội.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-hue-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Huế",
+    "marker": {
+     "x": 47,
+     "y": 41,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "hu-tombs",
+    "count": 1,
+    "text": "Đến chùa Thiên Mụ (phía tây)",
+    "marker": {
+     "x": 20,
+     "y": 32,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-monk",
+    "count": 1,
+    "text": "Hỏi Sư chùa Thiên Mụ",
+    "marker": {
+     "x": 34,
+     "y": 52,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1250,
+   "reputation": 10,
+   "flags": [
+    "landmark:thien-mu"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng ra Huế, con. Ghé Trung tâm Pokémon trước nha.",
+    "Rồi qua chùa Thiên Mụ hỏi sư, trong Đại Nội có tiếng gươm khua mấy đêm rồi."
+   ],
+   "progress": [
+    "Chùa Thiên Mụ ở phía tây, bên bờ sông Hương."
+   ],
+   "complete": [
+    "Sư nói có thanh gươm báu trấn giữ hoàng thành... Ông giữ Đại Nội và người giữ lăng biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-2",
+  "kind": "main",
+  "title": "Bóng gươm qua lăng",
+  "giver": "hu-guide",
+  "requires": [
+   "vn-hu-1"
+  ],
+  "description": "Hỏi người giữ lăng Tự Đức, rồi vào Đại Nội hỏi ông giữ thành.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "hu-tomb",
+    "count": 1,
+    "text": "Hỏi Người giữ lăng Tự Đức",
+    "marker": {
+     "x": 14,
+     "y": 30,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "hu-dainoi",
+    "count": 1,
+    "text": "Đến Hoàng thành Đại Nội (phía bắc)",
+    "marker": {
+     "x": 68,
+     "y": 14,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-mandarin",
+    "count": 1,
+    "text": "Hỏi Ông giữ Đại Nội",
+    "marker": {
+     "x": 60,
+     "y": 28,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1300,
+   "reputation": 15,
+   "flags": [
+    "landmark:dai-noi"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Người giữ lăng thấy bóng gươm bay ngang. Con hỏi ổng, rồi vào Đại Nội hỏi ông giữ thành."
+   ],
+   "progress": [
+    "Lăng ở phía tây bắc, Đại Nội ở phía bắc."
+   ],
+   "complete": [
+    "Gươm báu giận vì người ta bất kính với hoàng thành. Phải qua thị vệ mới vào sân điện được."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-3",
+  "kind": "main",
+  "title": "Gươm Báu Hoàng Thành",
+  "giver": "hu-guide",
+  "requires": [
+   "vn-hu-2"
+  ],
+  "description": "Thắng Thị vệ Đại Nội để vào sân điện, rồi làm Aegislash tra gươm vào vỏ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hu-gate-t",
+    "count": 1,
+    "text": "Thắng Thị vệ Đại Nội",
+    "marker": {
+     "x": 72,
+     "y": 24,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "aegislash",
+    "count": 1,
+    "text": "Đánh bại Aegislash — Gươm Báu Hoàng Thành",
+    "marker": {
+     "x": 68,
+     "y": 10,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1550,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thị vệ canh trước sân điện, sau Ngọ Môn. Con đủ sức thì vào."
+   ],
+   "progress": [
+    "Sân điện Thái Hòa, phía bắc Ngọ Môn."
+   ],
+   "complete": [
+    "Gươm báu tra vào vỏ, hoàng thành yên rồi! Huy hiệu Cố Đô là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-rescue",
+  "kind": "side",
+  "title": "Gà lôi Bạch Mã",
+  "giver": "hu-ranger",
+  "requires": [
+   "vn-hu-1"
+  ],
+  "description": "Một con Unfezant bị bầy Houndoom đuổi vào góc tây Bạch Mã.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "hu-pheasant-rescue",
+    "count": 1,
+    "text": "Giải cứu Unfezant ở góc tây Bạch Mã",
+    "marker": {
+     "x": 8,
+     "y": 74,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Bạch Mã",
+    "marker": {
+     "x": 30,
+     "y": 86,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1100,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con gà lôi bị chó lửa đuổi vào góc tây rừng. Con giúp anh!"
+   ],
+   "progress": [
+    "Góc tây rừng, sát bờ sông."
+   ],
+   "complete": [
+    "Gà lôi về tổ rồi. Bạch Mã cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-tomb",
+  "kind": "side",
+  "title": "Canh lăng đêm",
+  "giver": "hu-tomb",
+  "requires": [
+   "vn-hu-1"
+  ],
+  "description": "Người canh lăng đêm thử gan người lạ trước khi cho vào lăng.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hu-tomb-t",
+    "count": 1,
+    "text": "Thắng Người canh lăng đêm",
+    "marker": {
+     "x": 20,
+     "y": 14,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-tomb",
+    "count": 1,
+    "text": "Báo cho Người giữ lăng Tự Đức",
+    "marker": {
+     "x": 14,
+     "y": 30,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "dusk-stone": 1
+   },
+   "worldExp": 1050,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Ông canh lăng đêm khó tính lắm. Con đấu với ổng một trận."
+   ],
+   "progress": [
+    "Ông ấy ở góc bắc khu lăng."
+   ],
+   "complete": [
+    "Ông ấy cho con vào lăng rồi. Đi nhẹ thôi nha."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-lagoon",
+  "kind": "side",
+  "title": "Hoàng hôn trên phá",
+  "giver": "hu-lagoon",
+  "requires": [
+   "vn-hu-1"
+  ],
+  "description": "Ngư dân trẻ trên phá Tam Giang muốn thử sức.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hu-tamgiang",
+    "count": 1,
+    "text": "Đến phá Tam Giang (phía đông bắc)",
+    "marker": {
+     "x": 103,
+     "y": 32,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hu-lagoon-t",
+    "count": 1,
+    "text": "Thắng Ngư dân trẻ Tam Giang",
+    "marker": {
+     "x": 100,
+     "y": 20,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-lagoon",
+    "count": 1,
+    "text": "Báo cho Ngư dân phá Tam Giang",
+    "marker": {
+     "x": 98,
+     "y": 40,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 2
+   },
+   "worldExp": 1050,
+   "reputation": 12,
+   "flags": [
+    "landmark:tam-giang"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng nhỏ trên phá ham đấu lắm. Con chơi với nó một trận."
+   ],
+   "progress": [
+    "Nó ở bờ tây bắc phá."
+   ],
+   "complete": [
+    "Chiều nay nó chở con đi coi hoàng hôn trên phá đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-bachma",
+  "kind": "side",
+  "title": "Đỉnh Bạch Mã",
+  "giver": "hu-ranger",
+  "requires": [
+   "vn-hu-2"
+  ],
+  "description": "Người leo núi Bạch Mã muốn có bạn đấu sau chuyến leo.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hu-bachma-t",
+    "count": 1,
+    "text": "Thắng Người leo núi Bạch Mã",
+    "marker": {
+     "x": 16,
+     "y": 100,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Bạch Mã",
+    "marker": {
+     "x": 30,
+     "y": 86,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "leaf-stone": 1
+   },
+   "worldExp": 1000,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Anh leo núi đang nghỉ ở góc tây nam rừng. Con đấu với ảnh nha."
+   ],
+   "progress": [
+    "Anh ấy ở góc tây nam rừng."
+   ],
+   "complete": [
+    "Ảnh phục con rồi. Lần sau rủ con leo cùng."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-langco",
+  "kind": "side",
+  "title": "Cát trắng Lăng Cô",
+  "giver": "hu-langco",
+  "requires": [
+   "vn-hu-1"
+  ],
+  "description": "Thợ lặn Lăng Cô thả Pokémon đào cát khắp bãi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hu-langco",
+    "count": 1,
+    "text": "Đến vịnh Lăng Cô (phía đông nam)",
+    "marker": {
+     "x": 94,
+     "y": 88,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hu-langco-t",
+    "count": 1,
+    "text": "Thắng Thợ lặn Lăng Cô",
+    "marker": {
+     "x": 118,
+     "y": 100,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-langco",
+    "count": 1,
+    "text": "Báo cho Cô bán hải sản Lăng Cô",
+    "marker": {
+     "x": 110,
+     "y": 92,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "soft-sand": 1
+   },
+   "worldExp": 1000,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Pokémon của thằng thợ lặn đào cát lỗ chỗ khắp bãi. Con trị nó giùm cô."
+   ],
+   "progress": [
+    "Nó ở góc đông nam bãi."
+   ],
+   "complete": [
+    "Bãi phẳng lại rồi. Ghẹ Lăng Cô này cô cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-hu-eco",
+  "kind": "side",
+  "title": "Phá Tam Giang thông thoáng",
+  "giver": "hu-lagoon",
+  "requires": [
+   "vn-hu-3"
+  ],
+  "description": "Sáo, lưới bỏ hoang giăng kín phá Tam Giang.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:hue",
+    "count": 6,
+    "text": "Gỡ sáo lưới ở 6 điểm ven phá",
+    "marker": {
+     "x": 103,
+     "y": 33,
+     "region": "hue"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hu-lagoon",
+    "count": 1,
+    "text": "Báo cho Ngư dân phá Tam Giang",
+    "marker": {
+     "x": 98,
+     "y": 40,
+     "region": "hue"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1050,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Hoàng thành yên rồi, giờ tới phá. Con phụ chú gỡ sáo lưới bỏ hoang nha."
+   ],
+   "progress": [
+    "Sáo lưới cắm sát mép nước quanh phá."
+   ],
+   "complete": [
+    "Phá thông rồi, cá về đông lắm!"
+   ]
+  }
  }
 ]

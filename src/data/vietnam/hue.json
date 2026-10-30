@@ -1,0 +1,146 @@
+{
+ "id": "hue",
+ "name": "Huế",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 100, "y": 104 },
+ "areas": [
+  { "id": "hu-tombs", "name": "Lăng tẩm — chùa Thiên Mụ", "rect": [0, 0, 40, 65], "habitat": "ruins", "level": [58, 61] },
+  { "id": "hu-dainoi", "name": "Hoàng thành Đại Nội", "rect": [41, 0, 95, 29], "habitat": "ruins", "level": [59, 62] },
+  { "id": "hu-city", "name": "Thành phố Huế", "rect": [41, 30, 95, 65], "habitat": "village", "level": [58, 58] },
+  { "id": "hu-tamgiang", "name": "Phá Tam Giang", "rect": [96, 0, 127, 65], "habitat": "lake", "level": [57, 60] },
+  { "id": "hu-bachma", "name": "Vườn quốc gia Bạch Mã", "rect": [0, 66, 60, 111], "habitat": "forest", "level": [56, 59] },
+  { "id": "hu-langco", "name": "Vịnh Lăng Cô", "rect": [61, 66, 127, 111], "habitat": "coast", "level": [56, 59] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[100, 107], [100, 80], [80, 70], [70, 56]] },
+  { "w": 3, "pts": [[68, 44], [68, 20]] },
+  { "w": 3, "pts": [[60, 50], [30, 40], [22, 20], [22, 5]] },
+  { "w": 3, "pts": [[76, 50], [96, 50], [98, 30]] },
+  { "w": 3, "pts": [[80, 70], [30, 80], [20, 96]] },
+  { "w": 3, "pts": [[100, 80], [116, 96]] }
+ ],
+ "plaza": [60, 44, 76, 56],
+ "lake": { "cx": 113, "cy": 30, "rx": 10, "ry": 18 },
+ "rivers": [
+  { "w": 3, "pts": [[0, 62], [40, 62], [96, 64], [127, 60]] }
+ ],
+ "buildings": [
+  { "id": "hu-center", "name": "Trung tâm Pokémon", "x": 44, "y": 34, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "hu-mart", "name": "Cửa hàng Huế", "x": 52, "y": 34, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "hu-andinh", "name": "Cung An Định", "x": 80, "y": 36, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "hu-ngomon", "name": "Ngọ Môn", "x": 56, "y": 22, "w": 8, "h": 4, "roof": "gold", "wall": "stone", "door": 4 },
+  { "id": "hu-thienmu", "name": "Chùa Thiên Mụ", "x": 26, "y": 50, "w": 6, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "hu-house-1", "name": "Nhà mệ Tôn Nữ", "x": 46, "y": 56, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "hu-house-2", "name": "Quán bún bò", "x": 86, "y": 55, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 55, "y": 59 },
+  { "kind": "log", "x": 40, "y": 90 },
+  { "kind": "bucket", "x": 96, "y": 40 },
+  { "kind": "target", "x": 84, "y": 18 },
+  { "kind": "haystack", "x": 12, "y": 40 }
+ ],
+ "signs": [
+  { "x": 64, "y": 54, "text": ["THÀNH PHỐ HUẾ", "Cố đô bên sông Hương. Phía bắc: Đại Nội · Phía tây: lăng tẩm, chùa Thiên Mụ · Phía đông bắc: phá Tam Giang · Phía nam: Bạch Mã, Lăng Cô."] },
+  { "x": 72, "y": 30, "text": ["HOÀNG THÀNH HUẾ", "Kinh đô triều Nguyễn hơn trăm năm. Qua Ngọ Môn là điện Thái Hòa, nơi vua thiết triều."] },
+  { "x": 34, "y": 56, "text": ["CHÙA THIÊN MỤ", "Ngôi chùa cổ trên đồi Hà Khê, tháp Phước Duyên bảy tầng soi bóng sông Hương."] }
+ ],
+ "npcs": [
+  { "id": "hu-guide", "name": "Mệ Tôn Nữ", "sprite": "elder", "x": 64, "y": 46, "lines": [
+    "Chào mừng tới Huế, con. Ăn tô bún bò cho ấm bụng đã.",
+    "Mấy đêm nay trong Đại Nội có tiếng gươm khua, lính canh không dám vô.",
+    "Sư chùa Thiên Mụ hiểu chuyện xưa, con qua hỏi thử."] },
+  { "id": "hu-monk", "name": "Sư chùa Thiên Mụ", "sprite": "elder", "x": 34, "y": 52, "lines": [
+    "Tiếng chuông Thiên Mụ vọng khắp sông Hương mỗi sớm.",
+    "Ngày xưa có thanh gươm báu trấn giữ hoàng thành. Gươm có hồn, ai bất kính là gươm giận."] },
+  { "id": "hu-mandarin", "name": "Ông giữ Đại Nội", "sprite": "elder", "x": 60, "y": 28, "lines": [
+    "Tui giữ Đại Nội bốn chục năm, chưa bao giờ nghe gươm khua như vầy.",
+    "Người ta leo trèo, khắc tên lên tường thành... gươm báu giận là phải."] },
+  { "id": "hu-tomb", "name": "Người giữ lăng Tự Đức", "sprite": "villager", "x": 14, "y": 30, "lines": [
+    "Lăng Tự Đức có hồ Lưu Khiêm, vua ngồi làm thơ bên hồ đó con.",
+    "Đêm qua có bóng gươm bay ngang lăng, sáng lấp lánh."] },
+  { "id": "hu-lagoon", "name": "Ngư dân phá Tam Giang", "sprite": "villager", "x": 98, "y": 40, "lines": [
+    "Phá Tam Giang lớn nhất Đông Nam Á, nuôi sống cả vạn ngư dân.",
+    "Sáo, lưới bỏ hoang giăng kín phá, cá không có đường đi."] },
+  { "id": "hu-ranger", "name": "Kiểm lâm Bạch Mã", "sprite": "ranger", "x": 30, "y": 86, "lines": [
+    "Bạch Mã mây phủ quanh năm, có gà lôi trắng quý lắm.",
+    "Bầy chó lửa xuống núi đuổi gà lôi, con giúp anh với."] },
+  { "id": "hu-langco", "name": "Cô bán hải sản Lăng Cô", "sprite": "girl", "x": 110, "y": 92, "lines": [
+    "Vịnh Lăng Cô đẹp nhất thế giới đó con, có tên trong câu lạc bộ luôn.",
+    "Qua đèo Hải Vân là tới Đà Nẵng."] }
+ ],
+ "trainers": [
+  { "id": "hu-gate-t", "name": "Thị vệ Đại Nội", "sprite": "knight", "x": 72, "y": 24,
+    "team": [["bisharp", 61], ["gallade", 61], ["scizor", 61]],
+    "challenge": ["Không ai được vào điện Thái Hòa ban đêm! Trừ khi thắng ta."],
+    "win": ["Ngươi xứng đáng. Gươm báu đang ở sân điện, vào đi."],
+    "lose": ["Lui ra!"],
+    "rewards": { "items": { "superpotion": 2, "metal-coat": 1 }, "exp": 2800 } },
+  { "id": "hu-tomb-t", "name": "Người canh lăng đêm", "sprite": "elder", "x": 20, "y": 14,
+    "team": [["dusknoir", 59], ["chandelure", 59], ["banette", 59]],
+    "challenge": ["Lăng tẩm về đêm không phải chỗ chơi. Muốn qua phải đấu."],
+    "win": ["Bạn gan thật. Đi nhẹ thôi, đừng làm vua thức giấc."],
+    "lose": ["Về đi, trời tối rồi."],
+    "rewards": { "items": { "ultraball": 2, "dusk-stone": 1 }, "exp": 2700 } },
+  { "id": "hu-lagoon-t", "name": "Ngư dân trẻ Tam Giang", "sprite": "youngster", "x": 100, "y": 20,
+    "team": [["noctowl", 59], ["dodrio", 59], ["xatu", 59]],
+    "challenge": ["Chim trên phá này nghe lời tui hết. Thử không?"],
+    "win": ["Thua rồi. Mai tui chở bạn đi coi hoàng hôn trên phá."],
+    "lose": ["Rớt xuống phá rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "greatball": 2 }, "exp": 2700 } },
+  { "id": "hu-bachma-t", "name": "Người leo núi Bạch Mã", "sprite": "hiker", "x": 16, "y": 100,
+    "team": [["sceptile", 58], ["vespiquen", 58], ["heracross", 58]],
+    "challenge": ["Leo Bạch Mã hai ngày, tôi với Pokémon dẻo dai lắm!"],
+    "win": ["Bạn còn dẻo dai hơn tôi."],
+    "lose": ["Mây núi làm bạn lạc hướng rồi."],
+    "rewards": { "items": { "sitrus-berry": 3, "leaf-stone": 1 }, "exp": 2600 } },
+  { "id": "hu-langco-t", "name": "Thợ lặn Lăng Cô", "sprite": "youngster", "x": 118, "y": 100,
+    "team": [["krookodile", 59], ["flygon", 59], ["gliscor", 59]],
+    "challenge": ["Cát Lăng Cô trắng mịn, Pokémon tui sống trong cát đó!"],
+    "win": ["Cát bay vô mắt tui rồi... bạn thắng."],
+    "lose": ["Cát lún chân rồi kìa!"],
+    "rewards": { "items": { "ultraball": 1, "soft-sand": 1 }, "exp": 2700 } }
+ ],
+ "rescue": { "id": "hu-pheasant-rescue", "x": 8, "y": 74, "species": "unfezant", "level": 59,
+   "guards": [["houndoom", 58], ["houndoom", 58], ["mightyena", 58]], "quest": "vn-hu-rescue", "reporter": "Kiểm lâm Bạch Mã" },
+ "chests": [
+  { "id": "chest-hu-tombs", "x": 6, "y": 6, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-hu-dainoi", "x": 92, "y": 6, "items": { "superpotion": 3, "metal-coat": 1 } },
+  { "id": "chest-hu-tamgiang", "x": 124, "y": 6, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-hu-bachma", "x": 6, "y": 104, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-hu-langco", "x": 122, "y": 106, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-hu-nook", "x": 56, "y": 100, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:hue:hu-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-hue-center", "name": "Trung tâm Pokémon Huế", "x": 47, "y": 41 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "aegislash", "name": "Aegislash — Gươm Báu Hoàng Thành", "x": 68, "y": 10, "level": 62, "respawn": 600, "arena": 260,
+   "requires": ["beat:hu-gate-t"],
+   "hint": "Tiếng gươm khua vọng ra từ sân điện... Thị vệ Đại Nội chưa cho ai vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "metal-coat": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 10500, "flag": "badge:hue", "message": "Nhận Huy hiệu Cố Đô (Huế)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-hu-dg", "name": "Đèo Hải Vân — về Đà Nẵng", "x": 100, "y": 107, "to": "da-nang", "toX": 20, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "hu-forest-1", "table": "forest-forage", "x": 22, "y": 88 },
+  { "id": "hu-lake-1", "table": "lake-fish", "x": 101, "y": 46 },
+  { "id": "hu-meadow-1", "table": "meadow-forage", "x": 50, "y": 14 },
+  { "id": "hu-river-1", "table": "canal-fish", "x": 60, "y": 68 },
+  { "id": "hu-meadow-2", "table": "meadow-forage", "x": 10, "y": 50 }
+ ],
+ "field": [
+  { "id": "hu-boulder", "ability": "smash", "x": 60, "y": 100, "nook": { "cx": 56.5, "cy": 100.5, "r": 3, "wall": "boulder" } }
+ ]
+}

@@ -1361,5 +1361,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "aegislash",
+  "name": "Aegislash — Gươm Báu Hoàng Thành",
+  "types": [
+   "steel",
+   "ghost"
+  ],
+  "baseStats": {
+   "hp": 60,
+   "atk": 90,
+   "def": 140,
+   "spa": 90,
+   "spd": 140,
+   "spe": 60
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "sacred_sword",
+   "shadow_sneak"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "honedge",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Gươm báu rời vỏ — ánh thép lóe sáng khắp sân điện!",
+  "exp": 150,
+  "sprite": "aegislash",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "flash_cannon",
+   "volley": "shadow_ball",
+   "nova": "iron_head",
+   "field": "shadow_sneak",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "sacred_sword",
+   "ultimateName": "Thượng Phương Bảo Kiếm",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]
