@@ -2067,5 +2067,143 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-gl-bienho",
+  "name": "Biển Hồ Pleiku",
+  "areas": [
+   "gl-bienho"
+  ],
+  "biome": "lake",
+  "level": [
+   51,
+   54
+  ],
+  "elite": [
+   55,
+   57
+  ],
+  "boss": null,
+  "recommended": 53,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-gl-volcano",
+  "name": "Núi lửa Chư Đăng Ya",
+  "areas": [
+   "gl-volcano"
+  ],
+  "biome": "rocky",
+  "level": [
+   52,
+   55
+  ],
+  "elite": [
+   56,
+   58
+  ],
+  "boss": null,
+  "recommended": 54,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-gl-tayson",
+  "name": "Võ đường Tây Sơn",
+  "areas": [
+   "gl-tayson"
+  ],
+  "biome": "ruins",
+  "level": [
+   53,
+   56
+  ],
+  "elite": [
+   57,
+   59
+  ],
+  "boss": null,
+  "recommended": 55,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-gl-tea",
+  "name": "Đồi chè Biển Hồ",
+  "areas": [
+   "gl-tea"
+  ],
+  "biome": "farm",
+  "level": [
+   50,
+   53
+  ],
+  "elite": [
+   54,
+   56
+  ],
+  "boss": null,
+  "recommended": 52,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-gl-kbang",
+  "name": "Rừng Kon Ka Kinh",
+  "areas": [
+   "gl-kbang"
+  ],
+  "biome": "forest",
+  "level": [
+   50,
+   53
+  ],
+  "elite": [
+   54,
+   56
+  ],
+  "boss": null,
+  "recommended": 52,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-gl-quynhon",
+  "name": "Biển Quy Nhơn — Eo Gió",
+  "areas": [
+   "gl-quynhon"
+  ],
+  "biome": "coast",
+  "level": [
+   51,
+   54
+  ],
+  "elite": [
+   55,
+   57
+  ],
+  "boss": null,
+  "recommended": 53,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

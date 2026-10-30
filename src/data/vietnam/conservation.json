@@ -430,6 +430,52 @@
     }
    ]
   },
+  "gia-lai": {
+   "id": "gia-lai",
+   "name": "Gia Lai",
+   "area": "gl-bienho",
+   "action": "trash",
+   "unlock": "vn-gl-3",
+   "boss": "conkeldurr",
+   "label": "Nhặt rác ven Biển Hồ",
+   "done": "Bạn nhặt chai nhựa trôi dạt ven Biển Hồ. Nguồn nước của Pleiku trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "gia-lai-1",
+     "x": 23,
+     "y": 29
+    },
+    {
+     "id": "gia-lai-2",
+     "x": 18,
+     "y": 12
+    },
+    {
+     "id": "gia-lai-3",
+     "x": 32,
+     "y": 15
+    },
+    {
+     "id": "gia-lai-4",
+     "x": 10,
+     "y": 23
+    },
+    {
+     "id": "gia-lai-5",
+     "x": 32,
+     "y": 25
+    },
+    {
+     "id": "gia-lai-6",
+     "x": 26,
+     "y": 10
+    }
+   ]
+  },
   "ho-chi-minh": {
    "id": "ho-chi-minh",
    "name": "TP. Hồ Chí Minh",

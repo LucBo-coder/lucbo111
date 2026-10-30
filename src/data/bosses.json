@@ -1200,5 +1200,58 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "conkeldurr",
+  "name": "Conkeldurr — Võ Thần Tây Sơn",
+  "types": [
+   "fighting"
+  ],
+  "baseStats": {
+   "hp": 105,
+   "atk": 140,
+   "def": 95,
+   "spa": 55,
+   "spd": 65,
+   "spe": 45
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "hammer_arm",
+   "mach_punch"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "timburr",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Võ Thần vung cột đá — tiếng hô quyền rung chuyển võ đài!",
+  "exp": 150,
+  "sprite": "conkeldurr",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "focus_blast",
+   "volley": "mach_punch",
+   "nova": "superpower",
+   "field": "rock_slide",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "dynamic_punch",
+   "ultimateName": "Quyền Tây Sơn",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

@@ -7843,5 +7843,532 @@
     "Hồ trong rồi! Mai ông chở con đi thuyền độc mộc."
    ]
   }
+ },
+ {
+  "id": "vn-gl-1",
+  "kind": "main",
+  "title": "Đá lăn chắn đường",
+  "giver": "gl-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:dak-lak"
+  ],
+  "description": "Lên Pleiku: ghé Trung tâm Pokémon rồi ra Biển Hồ hỏi cô hướng dẫn vì sao đá lăn khắp núi.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-gia-lai-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Pleiku",
+    "marker": {
+     "x": 45,
+     "y": 49,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "gl-bienho",
+    "count": 1,
+    "text": "Đến Biển Hồ (phía tây bắc)",
+    "marker": {
+     "x": 23,
+     "y": 29,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-lake",
+    "count": 1,
+    "text": "Hỏi Cô hướng dẫn Biển Hồ",
+    "marker": {
+     "x": 40,
+     "y": 26,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1100,
+   "reputation": 10,
+   "flags": [
+    "landmark:bien-ho"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng lên Pleiku! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi ra Biển Hồ hỏi cô hướng dẫn, đá lăn chắn đường mấy bữa nay."
+   ],
+   "progress": [
+    "Biển Hồ ở phía tây bắc thành phố."
+   ],
+   "complete": [
+    "Cô nói có võ sĩ khổng lồ vác cột đá đi khắp núi... Kiểm lâm trên núi lửa thấy dấu chân."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-2",
+  "kind": "main",
+  "title": "Dấu chân trên núi lửa",
+  "giver": "gl-guide",
+  "requires": [
+   "vn-gl-1"
+  ],
+  "description": "Lên núi lửa Chư Đăng Ya hỏi kiểm lâm, rồi sang võ đường Tây Sơn hỏi võ sư già.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "gl-volcano",
+    "count": 1,
+    "text": "Lên núi lửa Chư Đăng Ya (phía bắc)",
+    "marker": {
+     "x": 68,
+     "y": 17,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-volcano",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Chư Đăng Ya",
+    "marker": {
+     "x": 82,
+     "y": 22,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-master",
+    "count": 1,
+    "text": "Hỏi Võ sư già Tây Sơn",
+    "marker": {
+     "x": 98,
+     "y": 30,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1150,
+   "reputation": 15,
+   "flags": [
+    "landmark:chu-dang-ya"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Kiểm lâm trên núi lửa thấy dấu chân lạ. Con lên hỏi, rồi qua võ đường Tây Sơn hỏi thêm."
+   ],
+   "progress": [
+    "Núi lửa ở phía bắc, võ đường ở phía đông bắc."
+   ],
+   "complete": [
+    "Võ Thần Tây Sơn đang thách đấu khắp núi. Muốn gặp phải qua võ sĩ Ngọc trước."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-3",
+  "kind": "main",
+  "title": "Võ Thần Tây Sơn",
+  "giver": "gl-guide",
+  "requires": [
+   "vn-gl-2"
+  ],
+  "description": "Thắng Võ sĩ Tây Sơn Ngọc để lên võ đài, rồi đánh bại Conkeldurr.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "gl-gate-t",
+    "count": 1,
+    "text": "Thắng Võ sĩ Tây Sơn Ngọc",
+    "marker": {
+     "x": 104,
+     "y": 32,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "conkeldurr",
+    "count": 1,
+    "text": "Đánh bại Conkeldurr — Võ Thần Tây Sơn",
+    "marker": {
+     "x": 110,
+     "y": 12,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1400,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Võ sĩ Ngọc canh võ đài phía đông bắc. Con đủ sức thì lên."
+   ],
+   "progress": [
+    "Võ đài ở góc đông bắc, trên đồi."
+   ],
+   "complete": [
+    "Võ Thần chịu thua, đá không lăn nữa! Huy hiệu Võ Tây Sơn là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-rescue",
+  "kind": "side",
+  "title": "Khỉ rừng Kon Ka Kinh",
+  "giver": "gl-forest",
+  "requires": [
+   "vn-gl-1"
+  ],
+  "description": "Một con Passimian bị bầy rắn vây ở góc tây nam rừng Kon Ka Kinh.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "gl-monkey-rescue",
+    "count": 1,
+    "text": "Giải cứu Passimian trong rừng Kon Ka Kinh",
+    "marker": {
+     "x": 44,
+     "y": 100,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-forest",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Kon Ka Kinh",
+    "marker": {
+     "x": 56,
+     "y": 90,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1000,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con khỉ bị rắn vây ở góc tây nam rừng. Con giúp anh với!"
+   ],
+   "progress": [
+    "Góc tây nam rừng, cuối lối mòn."
+   ],
+   "complete": [
+    "Khỉ về đàn rồi. Rừng Kon Ka Kinh cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-logger",
+  "kind": "side",
+  "title": "Lâm tặc trong rừng",
+  "giver": "gl-forest",
+  "requires": [
+   "vn-gl-1"
+  ],
+  "description": "Lâm tặc Đen cưa trộm gỗ trong rừng. Đuổi hắn đi.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "gl-forest-t",
+    "count": 1,
+    "text": "Thắng Lâm tặc Đen",
+    "marker": {
+     "x": 76,
+     "y": 96,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-forest",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Kon Ka Kinh",
+    "marker": {
+     "x": 56,
+     "y": 90,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 950,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Đen cưa gỗ trộm ở phía đông rừng. Con đuổi nó giùm anh."
+   ],
+   "progress": [
+    "Nó ở phía đông nam rừng."
+   ],
+   "complete": [
+    "Đen bỏ cưa chạy rồi! Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-basalt",
+  "kind": "side",
+  "title": "Thợ đá bazan",
+  "giver": "gl-volcano",
+  "requires": [
+   "vn-gl-2"
+  ],
+  "description": "Thợ đá Hùng đục vách núi lửa. Kiểm lâm muốn ai đó nói chuyện với anh ta.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "gl-volcano-t",
+    "count": 1,
+    "text": "Thắng Thợ đá bazan Hùng",
+    "marker": {
+     "x": 68,
+     "y": 12,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-volcano",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Chư Đăng Ya",
+    "marker": {
+     "x": 82,
+     "y": 22,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "fire-stone": 1
+   },
+   "worldExp": 900,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Anh Hùng đục đá bazan làm vách núi lở. Con đấu với ảnh, ảnh chịu thì ngưng."
+   ],
+   "progress": [
+    "Anh ấy ở sườn tây núi lửa."
+   ],
+   "complete": [
+    "Hùng hứa không đục nữa rồi. Mùa dã quỳ con nhớ lên ngắm nha."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-tea",
+  "kind": "side",
+  "title": "Ly chè Biển Hồ",
+  "giver": "gl-tea",
+  "requires": [
+   "vn-gl-1"
+  ],
+  "description": "Cậu bé hái chè Y Đức muốn đấu với người lạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "gl-tea",
+    "count": 1,
+    "text": "Đến đồi chè Biển Hồ (phía tây)",
+    "marker": {
+     "x": 20,
+     "y": 76,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "gl-tea-t",
+    "count": 1,
+    "text": "Thắng Cậu bé hái chè Y Đức",
+    "marker": {
+     "x": 26,
+     "y": 96,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-tea",
+    "count": 1,
+    "text": "Báo cho Chị hái chè Biển Hồ",
+    "marker": {
+     "x": 14,
+     "y": 80,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "greatball": 2
+   },
+   "worldExp": 900,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Đức ham đấu lắm. Con chơi với nó một trận nha."
+   ],
+   "progress": [
+    "Đức ở góc nam đồi chè."
+   ],
+   "complete": [
+    "Gói chè này chị tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-eogio",
+  "kind": "side",
+  "title": "Gió Eo Gió",
+  "giver": "gl-quynhon",
+  "requires": [
+   "vn-gl-1"
+  ],
+  "description": "Dân lướt ván Kỳ Co thả chim bay tứ tung trên bãi. Ngư dân nhờ bạn dẹp.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "gl-quynhon",
+    "count": 1,
+    "text": "Đến biển Quy Nhơn (phía đông nam)",
+    "marker": {
+     "x": 109,
+     "y": 81,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "gl-quynhon-t",
+    "count": 1,
+    "text": "Thắng Dân lướt ván Kỳ Co",
+    "marker": {
+     "x": 118,
+     "y": 100,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-quynhon",
+    "count": 1,
+    "text": "Báo cho Ngư dân Quy Nhơn",
+    "marker": {
+     "x": 106,
+     "y": 96,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 950,
+   "reputation": 12,
+   "flags": [
+    "landmark:eo-gio"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chim của thằng lướt ván làm rối lưới chú hoài. Con trị nó giùm."
+   ],
+   "progress": [
+    "Nó ở mép bãi phía nam."
+   ],
+   "complete": [
+    "Bãi yên rồi. Mai chú chở con ra Kỳ Co."
+   ]
+  }
+ },
+ {
+  "id": "vn-gl-eco",
+  "kind": "side",
+  "title": "Biển Hồ trong xanh",
+  "giver": "gl-lake",
+  "requires": [
+   "vn-gl-3"
+  ],
+  "description": "Rác du lịch dạt vào bờ Biển Hồ, nguồn nước của cả Pleiku.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:gia-lai",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm ven Biển Hồ",
+    "marker": {
+     "x": 23,
+     "y": 29,
+     "region": "gia-lai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "gl-lake",
+    "count": 1,
+    "text": "Báo cho Cô hướng dẫn Biển Hồ",
+    "marker": {
+     "x": 40,
+     "y": 26,
+     "region": "gia-lai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 950,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Núi yên rồi, giờ tới hồ. Con phụ cô nhặt rác ven bờ nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Hồ trong veo rồi! Cả Pleiku cảm ơn con."
+   ]
+  }
  }
 ]

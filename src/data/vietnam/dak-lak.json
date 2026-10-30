@@ -129,8 +129,9 @@
    "requires": ["beat:dl-gate-t"],
    "hint": "Đất rung từng hồi dưới chân... Thợ săn già Ama Kông chưa cho ai vào sâu.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "soft-sand": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 8500, "flag": "badge:dak-lak", "message": "Nhận Huy hiệu Voi Rừng (Đắk Lắk)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 8500, "flag": "badge:dak-lak", "message": "Nhận Huy hiệu Voi Rừng (Đắk Lắk)! Đường tới Gia Lai đã mở: Quốc lộ 14." } },
  "portals": [
+  {"id": "portal-dl-next", "name": "Quốc lộ 14 — đường lên Gia Lai", "x": 72, "y": 5, "to": "gia-lai", "toX": 64, "toY": 104, "requires": ["badge:dak-lak"], "hint": "Đường tới Gia Lai mở cho người có Huy hiệu Voi Rừng — hạ boss Đắk Lắk trước."},
   { "id": "portal-dl-kh", "name": "Quốc lộ 26 — về Khánh Hòa", "x": 30, "y": 107, "to": "khanh-hoa", "toX": 20, "toY": 8 }
  ],
  "docks": [],
