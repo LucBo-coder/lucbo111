@@ -1,0 +1,145 @@
+{
+ "id": "da-nang",
+ "name": "Đà Nẵng",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 40, "y": 104 },
+ "areas": [
+  { "id": "dg-bana", "name": "Bà Nà — Cầu Vàng", "rect": [0, 0, 45, 45], "habitat": "rocky", "level": [57, 60] },
+  { "id": "dg-sontra", "name": "Bán đảo Sơn Trà", "rect": [46, 0, 100, 28], "habitat": "forest", "level": [57, 60] },
+  { "id": "dg-city", "name": "Thành phố Đà Nẵng", "rect": [46, 29, 100, 62], "habitat": "village", "level": [56, 56] },
+  { "id": "dg-myson", "name": "Thánh địa Mỹ Sơn", "rect": [0, 46, 39, 111], "habitat": "ruins", "level": [54, 57] },
+  { "id": "dg-hoian", "name": "Hội An — làng rau Trà Quế", "rect": [40, 63, 100, 111], "habitat": "farm", "level": [54, 57], "orchard": { "period": 6, "gap": 8 } },
+  { "id": "dg-beach", "name": "Biển Mỹ Khê — Ngũ Hành Sơn", "rect": [101, 0, 127, 111], "habitat": "coast", "level": [56, 59] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[40, 107], [40, 80], [56, 62], [64, 56]] },
+  { "w": 3, "pts": [[60, 50], [40, 40], [24, 24], [20, 5]] },
+  { "w": 3, "pts": [[68, 46], [70, 22]] },
+  { "w": 3, "pts": [[76, 52], [104, 52], [106, 30]] },
+  { "w": 3, "pts": [[104, 52], [106, 96]] },
+  { "w": 3, "pts": [[40, 80], [18, 84]] },
+  { "w": 3, "pts": [[56, 62], [80, 90]] }
+ ],
+ "plaza": [60, 46, 76, 58],
+ "lake": { "cx": 150, "cy": 56, "rx": 42, "ry": 80 },
+ "rivers": [
+  { "w": 3, "pts": [[88, 0], [88, 62], [100, 80], [114, 84]], "mouth": true }
+ ],
+ "buildings": [
+  { "id": "dg-center", "name": "Trung tâm Pokémon", "x": 48, "y": 32, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "dg-mart", "name": "Cửa hàng Đà Nẵng", "x": 56, "y": 32, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "dg-museum", "name": "Bảo tàng Điêu khắc Chăm", "x": 74, "y": 32, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3 },
+  { "id": "dg-house-1", "name": "Nhà chị Hạnh", "x": 50, "y": 58, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "dg-house-2", "name": "Quán mì Quảng", "x": 80, "y": 56, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 56, "y": 60 },
+  { "kind": "log", "x": 60, "y": 14 },
+  { "kind": "haystack", "x": 64, "y": 84 },
+  { "kind": "bucket", "x": 106, "y": 43 },
+  { "kind": "target", "x": 30, "y": 60 }
+ ],
+ "signs": [
+  { "x": 64, "y": 54, "text": ["THÀNH PHỐ ĐÀ NẴNG", "Thành phố đáng sống bên sông Hàn. Phía tây bắc: Bà Nà, đèo Hải Vân · Phía bắc: Sơn Trà · Phía đông: biển Mỹ Khê · Phía nam: Hội An, Mỹ Sơn."] },
+  { "x": 92, "y": 50, "text": ["CẦU RỒNG", "Cây cầu hình rồng vắt qua sông Hàn. Tối cuối tuần rồng phun lửa, phun nước."] },
+  { "x": 22, "y": 88, "text": ["THÁNH ĐỊA MỸ SƠN", "Quần thể đền tháp Chăm thờ thần Shiva giữa thung lũng, di sản thế giới."] }
+ ],
+ "npcs": [
+  { "id": "dg-guide", "name": "Chị Hạnh Đà Nẵng", "sprite": "girl", "x": 68, "y": 56, "lines": [
+    "Chào mừng tới Đà Nẵng! Ăn tô mì Quảng chưa em?",
+    "Mấy đêm nay có con rồng thật bay quanh cầu Rồng, phun lửa cháy cả bờ sông.",
+    "Kiểm lâm trên Sơn Trà thấy nó đáp xuống núi, em lên hỏi thử."] },
+  { "id": "dg-sontra", "name": "Kiểm lâm Sơn Trà", "sprite": "ranger", "x": 60, "y": 20, "lines": [
+    "Sơn Trà là nhà của voọc chà vá chân nâu, nữ hoàng linh trưởng đó.",
+    "Con rồng xanh đáp trên đỉnh núi, đêm nào cũng gầm về phía thành phố."] },
+  { "id": "dg-bana", "name": "Hướng dẫn viên Cầu Vàng", "sprite": "youngster", "x": 30, "y": 22, "lines": [
+    "Cầu Vàng có đôi bàn tay đá khổng lồ nâng đỡ, đẹp lắm.",
+    "Từ trên này nhìn thấy cả đèo Hải Vân, đường ra Huế đó."] },
+  { "id": "dg-hoian", "name": "Cô bán đèn lồng Hội An", "sprite": "girl", "x": 70, "y": 80, "lines": [
+    "Đêm rằm phố cổ tắt đèn điện, chỉ thắp đèn lồng, thả hoa đăng trên sông Hoài.",
+    "Ông bà kể rồng ưa ánh lửa, đèn lồng sáng thì rồng hiền."] },
+  { "id": "dg-myson", "name": "Nhà khảo cổ Mỹ Sơn", "sprite": "elder", "x": 20, "y": 78, "lines": [
+    "Người Chăm xây tháp không dùng vữa, đến giờ vẫn chưa ai biết hết bí mật.",
+    "Trên phù điêu có khắc Makara, con thủy quái nửa rồng giữ cửa đền."] },
+  { "id": "dg-beach", "name": "Cứu hộ Mỹ Khê", "sprite": "villager", "x": 104, "y": 60, "lines": [
+    "Mỹ Khê là một trong những bãi biển đẹp nhất hành tinh đó nha.",
+    "Khách đông thì rác nhiều, rùa biển không dám lên bờ."] },
+  { "id": "dg-marble", "name": "Thợ đá Non Nước", "sprite": "hiker", "x": 102, "y": 90, "lines": [
+    "Làng đá Non Nước dưới chân Ngũ Hành Sơn, đục tượng mấy trăm năm rồi.",
+    "Trong núi có động Huyền Không, nắng chiếu xuống như đèn sân khấu."] }
+ ],
+ "trainers": [
+  { "id": "dg-gate-t", "name": "Kiểm lâm trưởng Sơn Trà", "sprite": "ranger", "x": 70, "y": 26,
+    "team": [["garchomp", 59], ["haxorus", 59], ["druddigon", 59]],
+    "challenge": ["Rồng Sông Hàn đang ở đỉnh núi. Ai muốn lên phải thắng tôi!"],
+    "win": ["Bạn đủ sức rồi. Lên đi, rồng ở bãi đá trên đỉnh."],
+    "lose": ["Lửa rồng không đùa được đâu."],
+    "rewards": { "items": { "superpotion": 2, "dragon-scale": 1 }, "exp": 2700 } },
+  { "id": "dg-bana-t", "name": "Phi công dù lượn Bà Nà", "sprite": "youngster", "x": 36, "y": 12,
+    "team": [["aerodactyl", 57], ["archeops", 57], ["togekiss", 57]],
+    "challenge": ["Bay từ đỉnh Bà Nà xuống, tui với Pokémon nhẹ như mây!"],
+    "win": ["Gió đổi hướng rồi. Bạn thắng!"],
+    "lose": ["Bị gió thổi bay rồi kìa!"],
+    "rewards": { "items": { "ultraball": 2 }, "exp": 2600 } },
+  { "id": "dg-myson-t", "name": "Nhà khảo cổ trẻ Vy", "sprite": "girl", "x": 12, "y": 96,
+    "team": [["bronzong", 56], ["runerigus", 56], ["sigilyph", 56]],
+    "challenge": ["Pokémon của tôi ngủ dưới đền tháp cả ngàn năm. Thử xem!"],
+    "win": ["Bạn mạnh quá. Tấm bản đồ khảo cổ này cho bạn xem."],
+    "lose": ["Lịch sử không tha người hấp tấp."],
+    "rewards": { "items": { "superpotion": 2, "moon-stone": 1 }, "exp": 2500 } },
+  { "id": "dg-hoian-t", "name": "Thợ may Hội An", "sprite": "girl", "x": 84, "y": 96,
+    "team": [["leavanny", 56], ["lilligant", 56], ["whimsicott", 56]],
+    "challenge": ["Một ngày may xong áo dài, một trận hạ xong đối thủ!"],
+    "win": ["Bạn thắng rồi. Để tôi may cho bạn cái áo nha."],
+    "lose": ["Đường kim mũi chỉ của bạn còn non."],
+    "rewards": { "items": { "sitrus-berry": 3, "leaf-stone": 1 }, "exp": 2500 } },
+  { "id": "dg-beach-t", "name": "Dân lướt sóng Mỹ Khê", "sprite": "youngster", "x": 107, "y": 76,
+    "team": [["hawlucha", 57], ["infernape", 57], ["electivire", 57]],
+    "challenge": ["Sóng Mỹ Khê đẹp nhất hành tinh, tui lướt giỏi nhất bãi!"],
+    "win": ["Bạn cưỡi sóng giỏi hơn tui rồi."],
+    "lose": ["Uống nước biển rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "greatball": 2 }, "exp": 2600 } }
+ ],
+ "rescue": { "id": "dg-langur-rescue", "x": 52, "y": 8, "species": "oranguru", "level": 57,
+   "guards": [["honchkrow", 56], ["mightyena", 55], ["mightyena", 55]], "quest": "vn-dg-rescue", "reporter": "Kiểm lâm Sơn Trà" },
+ "chests": [
+  { "id": "chest-dg-bana", "x": 6, "y": 6, "items": { "ultraball": 2, "hard-stone": 1 } },
+  { "id": "chest-dg-sontra", "x": 96, "y": 6, "items": { "superpotion": 3, "leaf-stone": 1 } },
+  { "id": "chest-dg-myson", "x": 6, "y": 104, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-dg-hoian", "x": 50, "y": 106, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-dg-beach", "x": 108, "y": 6, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-dg-nook", "x": 66, "y": 104, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:da-nang:dg-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-da-nang-center", "name": "Trung tâm Pokémon Đà Nẵng", "x": 51, "y": 39 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "salamence", "name": "Salamence — Rồng Sông Hàn", "x": 70, "y": 12, "level": 60, "respawn": 600, "arena": 260,
+   "requires": ["beat:dg-gate-t"],
+   "hint": "Tiếng gầm vọng xuống từ đỉnh Sơn Trà... Kiểm lâm trưởng chưa cho ai lên.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 10000, "flag": "badge:da-nang", "message": "Nhận Huy hiệu Cầu Rồng (Đà Nẵng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-dg-qn", "name": "Quốc lộ 1 — về Quảng Ngãi", "x": 40, "y": 107, "to": "quang-ngai", "toX": 72, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "dg-forest-1", "table": "forest-forage", "x": 56, "y": 12 },
+  { "id": "dg-meadow-1", "table": "meadow-forage", "x": 20, "y": 34 },
+  { "id": "dg-orchard-1", "table": "orchard-forage", "x": 72, "y": 96 },
+  { "id": "dg-sea-1", "table": "lake-fish", "x": 103, "y": 64 },
+  { "id": "dg-meadow-2", "table": "meadow-forage", "x": 28, "y": 100 }
+ ],
+ "field": [
+  { "id": "dg-boulder", "ability": "smash", "x": 70, "y": 104, "nook": { "cx": 66.5, "cy": 104.5, "r": 3, "wall": "boulder" } }
+ ]
+}

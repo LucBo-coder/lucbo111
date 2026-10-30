@@ -8886,5 +8886,532 @@
     "Bãi sạch rồi! Bó tỏi Lý Sơn này cô tặng con."
    ]
   }
+ },
+ {
+  "id": "vn-dg-1",
+  "kind": "main",
+  "title": "Lửa trên sông Hàn",
+  "giver": "dg-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:quang-ngai"
+  ],
+  "description": "Tới Đà Nẵng: ghé Trung tâm Pokémon, ra cầu Rồng xem rồi lên Sơn Trà hỏi kiểm lâm.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-da-nang-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Đà Nẵng",
+    "marker": {
+     "x": 51,
+     "y": 39,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "dg-sontra",
+    "count": 1,
+    "text": "Lên bán đảo Sơn Trà (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 14,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-sontra",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Sơn Trà",
+    "marker": {
+     "x": 60,
+     "y": 20,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1200,
+   "reputation": 10,
+   "flags": [
+    "landmark:cau-rong"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Đà Nẵng! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên Sơn Trà hỏi kiểm lâm, có rồng thật bay quanh cầu Rồng mấy đêm nay."
+   ],
+   "progress": [
+    "Sơn Trà ở phía bắc thành phố."
+   ],
+   "complete": [
+    "Rồng đáp trên đỉnh núi... Người Hội An và nhà khảo cổ Mỹ Sơn biết chuyện rồng xưa."
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-2",
+  "kind": "main",
+  "title": "Đèn lồng và Makara",
+  "giver": "dg-guide",
+  "requires": [
+   "vn-dg-1"
+  ],
+  "description": "Xuống Hội An hỏi cô bán đèn lồng, rồi vào Mỹ Sơn hỏi nhà khảo cổ về rồng giữ đền.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dg-hoian",
+    "count": 1,
+    "text": "Đến Hội An (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 86,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-hoian",
+    "count": 1,
+    "text": "Hỏi Cô bán đèn lồng Hội An",
+    "marker": {
+     "x": 70,
+     "y": 80,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-myson",
+    "count": 1,
+    "text": "Hỏi Nhà khảo cổ Mỹ Sơn",
+    "marker": {
+     "x": 20,
+     "y": 78,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1250,
+   "reputation": 15,
+   "flags": [
+    "landmark:hoi-an"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Ông bà ở Hội An kể chuyện rồng ưa ánh lửa. Em xuống hỏi, rồi vào Mỹ Sơn hỏi thêm."
+   ],
+   "progress": [
+    "Hội An ở phía nam, Mỹ Sơn ở phía tây nam."
+   ],
+   "complete": [
+    "Rồng giận vì đèn điện chói và tiếng ồn. Phải lên đỉnh Sơn Trà làm nó nguôi — qua kiểm lâm trưởng trước."
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-3",
+  "kind": "main",
+  "title": "Rồng Sông Hàn",
+  "giver": "dg-guide",
+  "requires": [
+   "vn-dg-2"
+  ],
+  "description": "Thắng Kiểm lâm trưởng Sơn Trà để lên đỉnh, rồi làm Salamence nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dg-gate-t",
+    "count": 1,
+    "text": "Thắng Kiểm lâm trưởng Sơn Trà",
+    "marker": {
+     "x": 70,
+     "y": 26,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "salamence",
+    "count": 1,
+    "text": "Đánh bại Salamence — Rồng Sông Hàn",
+    "marker": {
+     "x": 70,
+     "y": 12,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1500,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Kiểm lâm trưởng canh đường lên đỉnh Sơn Trà. Em đủ sức thì lên."
+   ],
+   "progress": [
+    "Bãi đá trên đỉnh Sơn Trà."
+   ],
+   "complete": [
+    "Rồng bay về núi, sông Hàn yên rồi! Huy hiệu Cầu Rồng là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-rescue",
+  "kind": "side",
+  "title": "Voọc Sơn Trà",
+  "giver": "dg-sontra",
+  "requires": [
+   "vn-dg-1"
+  ],
+  "description": "Một con Oranguru bị bầy Mightyena vây ở góc tây bán đảo.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "dg-langur-rescue",
+    "count": 1,
+    "text": "Giải cứu Oranguru ở góc tây Sơn Trà",
+    "marker": {
+     "x": 52,
+     "y": 8,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-sontra",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Sơn Trà",
+    "marker": {
+     "x": 60,
+     "y": 20,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1050,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con khỉ bị bầy chó sói vây ở góc tây bán đảo. Em giúp anh!"
+   ],
+   "progress": [
+    "Góc tây bắc Sơn Trà."
+   ],
+   "complete": [
+    "Oranguru về rừng rồi. Sơn Trà cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-bana",
+  "kind": "side",
+  "title": "Gió trên Cầu Vàng",
+  "giver": "dg-bana",
+  "requires": [
+   "vn-dg-1"
+  ],
+  "description": "Phi công dù lượn Bà Nà thả Pokémon bay quanh Cầu Vàng làm khách sợ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dg-bana",
+    "count": 1,
+    "text": "Lên Bà Nà (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "dg-bana-t",
+    "count": 1,
+    "text": "Thắng Phi công dù lượn Bà Nà",
+    "marker": {
+     "x": 36,
+     "y": 12,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-bana",
+    "count": 1,
+    "text": "Báo cho Hướng dẫn viên Cầu Vàng",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1000,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh dù lượn bay sát cầu hoài, khách sợ hết. Em đấu với ảnh giùm."
+   ],
+   "progress": [
+    "Anh ấy ở đỉnh núi phía bắc Cầu Vàng."
+   ],
+   "complete": [
+    "Anh ấy bay chỗ khác rồi. Cảm ơn em!"
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-myson",
+  "kind": "side",
+  "title": "Bí mật gạch Chăm",
+  "giver": "dg-myson",
+  "requires": [
+   "vn-dg-2"
+  ],
+  "description": "Nhà khảo cổ trẻ Vy muốn thử sức người dám vào thánh địa.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dg-myson-t",
+    "count": 1,
+    "text": "Thắng Nhà khảo cổ trẻ Vy",
+    "marker": {
+     "x": 12,
+     "y": 96,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-myson",
+    "count": 1,
+    "text": "Báo cho Nhà khảo cổ Mỹ Sơn",
+    "marker": {
+     "x": 20,
+     "y": 78,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "moon-stone": 1
+   },
+   "worldExp": 950,
+   "reputation": 12,
+   "flags": [
+    "landmark:my-son"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Con bé Vy giỏi lắm, nó muốn đấu với em. Em chơi một trận nha."
+   ],
+   "progress": [
+    "Vy ở cụm tháp phía nam thánh địa."
+   ],
+   "complete": [
+    "Vy phục rồi. Mai nó dẫn em đi xem tháp."
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-tailor",
+  "kind": "side",
+  "title": "Áo dài Hội An",
+  "giver": "dg-hoian",
+  "requires": [
+   "vn-dg-2"
+  ],
+  "description": "Thợ may Hội An hứa may áo nếu có người thắng được cô.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dg-hoian-t",
+    "count": 1,
+    "text": "Thắng Thợ may Hội An",
+    "marker": {
+     "x": 84,
+     "y": 96,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-hoian",
+    "count": 1,
+    "text": "Báo cho Cô bán đèn lồng Hội An",
+    "marker": {
+     "x": 70,
+     "y": 80,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "leaf-stone": 1
+   },
+   "worldExp": 950,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Cô thợ may ở làng rau thách đấu, thắng thì được may áo. Em thử nha."
+   ],
+   "progress": [
+    "Cô ấy ở phía đông làng rau Trà Quế."
+   ],
+   "complete": [
+    "Áo đẹp không em? Chiếc đèn lồng này cô tặng thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-surf",
+  "kind": "side",
+  "title": "Sóng Mỹ Khê",
+  "giver": "dg-beach",
+  "requires": [
+   "vn-dg-1"
+  ],
+  "description": "Dân lướt sóng chiếm bãi tắm. Anh cứu hộ nhờ bạn dẹp.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dg-beach",
+    "count": 1,
+    "text": "Ra biển Mỹ Khê (phía đông)",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "dg-beach-t",
+    "count": 1,
+    "text": "Thắng Dân lướt sóng Mỹ Khê",
+    "marker": {
+     "x": 107,
+     "y": 76,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-beach",
+    "count": 1,
+    "text": "Báo cho Cứu hộ Mỹ Khê",
+    "marker": {
+     "x": 104,
+     "y": 60,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1000,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng lướt sóng chạy ván vô chỗ tắm hoài. Em trị nó giùm anh."
+   ],
+   "progress": [
+    "Nó ở giữa bãi phía nam."
+   ],
+   "complete": [
+    "Bãi tắm an toàn rồi. Cảm ơn em!"
+   ]
+  }
+ },
+ {
+  "id": "vn-dg-eco",
+  "kind": "side",
+  "title": "Mỹ Khê sạch đẹp",
+  "giver": "dg-beach",
+  "requires": [
+   "vn-dg-3"
+  ],
+  "description": "Rác du lịch dạt đầy bãi Mỹ Khê, rùa biển không dám lên.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:da-nang",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "da-nang"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dg-beach",
+    "count": 1,
+    "text": "Báo cho Cứu hộ Mỹ Khê",
+    "marker": {
+     "x": 104,
+     "y": 60,
+     "region": "da-nang"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1000,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rồng yên rồi, giờ tới bãi biển. Em phụ anh nhặt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Rùa biển lên đẻ lại rồi đó."
+   ]
+  }
  }
 ]

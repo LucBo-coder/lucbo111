@@ -2320,5 +2320,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-dg-bana",
+  "name": "Bà Nà — Cầu Vàng",
+  "areas": [
+   "dg-bana"
+  ],
+  "biome": "rocky",
+  "level": [
+   57,
+   60
+  ],
+  "elite": [
+   61,
+   63
+  ],
+  "boss": null,
+  "recommended": 59,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dg-sontra",
+  "name": "Bán đảo Sơn Trà",
+  "areas": [
+   "dg-sontra"
+  ],
+  "biome": "forest",
+  "level": [
+   57,
+   60
+  ],
+  "elite": [
+   61,
+   63
+  ],
+  "boss": null,
+  "recommended": 59,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dg-myson",
+  "name": "Thánh địa Mỹ Sơn",
+  "areas": [
+   "dg-myson"
+  ],
+  "biome": "ruins",
+  "level": [
+   54,
+   57
+  ],
+  "elite": [
+   58,
+   60
+  ],
+  "boss": null,
+  "recommended": 56,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dg-hoian",
+  "name": "Hội An — làng rau Trà Quế",
+  "areas": [
+   "dg-hoian"
+  ],
+  "biome": "farm",
+  "level": [
+   54,
+   57
+  ],
+  "elite": [
+   58,
+   60
+  ],
+  "boss": null,
+  "recommended": 56,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dg-beach",
+  "name": "Biển Mỹ Khê — Ngũ Hành Sơn",
+  "areas": [
+   "dg-beach"
+  ],
+  "biome": "coast",
+  "level": [
+   56,
+   59
+  ],
+  "elite": [
+   60,
+   62
+  ],
+  "boss": null,
+  "recommended": 58,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

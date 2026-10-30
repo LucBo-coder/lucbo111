@@ -124,8 +124,9 @@
    "requires": ["beat:qn-gate-t"],
    "hint": "Mỏ neo rong rêu lấp ló dưới sóng bãi bắc... Thuyền trưởng Tâm chưa cho ai ra.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "reaper-cloth": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 9500, "flag": "badge:quang-ngai", "message": "Nhận Huy hiệu Đảo Tỏi (Quảng Ngãi)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 9500, "flag": "badge:quang-ngai", "message": "Nhận Huy hiệu Đảo Tỏi (Quảng Ngãi)! Đường tới Đà Nẵng đã mở: Quốc lộ 1." } },
  "portals": [
+  {"id": "portal-qn-next", "name": "Quốc lộ 1 — đường ra Đà Nẵng", "x": 72, "y": 5, "to": "da-nang", "toX": 40, "toY": 104, "requires": ["badge:quang-ngai"], "hint": "Đường tới Đà Nẵng mở cho người có Huy hiệu Đảo Tỏi — hạ boss Quảng Ngãi trước."},
   { "id": "portal-qn-gl", "name": "Quốc lộ 14 — về Gia Lai", "x": 30, "y": 107, "to": "gia-lai", "toX": 74, "toY": 8 }
  ],
  "docks": [],

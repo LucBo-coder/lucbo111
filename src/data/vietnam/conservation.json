@@ -292,6 +292,52 @@
     }
    ]
   },
+  "da-nang": {
+   "id": "da-nang",
+   "name": "Đà Nẵng",
+   "area": "dg-beach",
+   "action": "trash",
+   "unlock": "vn-dg-3",
+   "boss": "salamence",
+   "label": "Nhặt rác trên bãi Mỹ Khê",
+   "done": "Bạn nhặt ly nhựa và vỏ chai trên bãi. Mỹ Khê sạch đẹp lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "da-nang-1",
+     "x": 108,
+     "y": 57
+    },
+    {
+     "id": "da-nang-2",
+     "x": 107,
+     "y": 41
+    },
+    {
+     "id": "da-nang-3",
+     "x": 106,
+     "y": 71
+    },
+    {
+     "id": "da-nang-4",
+     "x": 110,
+     "y": 27
+    },
+    {
+     "id": "da-nang-5",
+     "x": 111,
+     "y": 85
+    },
+    {
+     "id": "da-nang-6",
+     "x": 116,
+     "y": 13
+    }
+   ]
+  },
   "dak-lak": {
    "id": "dak-lak",
    "name": "Đắk Lắk",
