@@ -136,6 +136,16 @@
         "3": "Người Gia Lai mình đây rồi! Phố núi luôn chờ con."
       }
     },
+    "quang-ngai": {
+      "name": "Quảng Ngãi",
+      "rewards": { "1": { "sitrus-berry": 2, "greatball": 3 }, "2": { "superpotion": 3, "reaper-cloth": 1 }, "3": { "ultraball": 3, "protein": 1 } },
+      "greet": {
+        "0": "Khách mới tới Quảng Ngãi hả? Ăn chén cá bống sông Trà đã.",
+        "1": "Lại gặp con rồi. Tàu ra Lý Sơn chạy lại chưa?",
+        "2": "Thuyền trưởng Tâm nói nhờ con mà biển yên.",
+        "3": "Người Quảng Ngãi mình đây rồi! Núi Ấn sông Trà luôn chờ con."
+      }
+    },
     "starter-valley": {
       "name": "Thung Lũng Khởi Nguyên",
       "rewards": { "1": { "potion": 3 }, "2": { "greatball": 3 }, "3": { "ultraball": 2 } }

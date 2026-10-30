@@ -125,8 +125,9 @@
    "requires": ["beat:gl-gate-t"],
    "hint": "Tiếng hô quyền vang từ võ đài phía bắc... Võ sĩ Ngọc chưa cho ai lên.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "exp-candy-m": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 9000, "flag": "badge:gia-lai", "message": "Nhận Huy hiệu Võ Tây Sơn (Gia Lai)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 9000, "flag": "badge:gia-lai", "message": "Nhận Huy hiệu Võ Tây Sơn (Gia Lai)! Đường tới Quảng Ngãi đã mở: Quốc lộ 14." } },
  "portals": [
+  {"id": "portal-gl-next", "name": "Quốc lộ 14 — đường tới Quảng Ngãi", "x": 74, "y": 5, "to": "quang-ngai", "toX": 30, "toY": 104, "requires": ["badge:gia-lai"], "hint": "Đường tới Quảng Ngãi mở cho người có Huy hiệu Võ Tây Sơn — hạ boss Gia Lai trước."},
   { "id": "portal-gl-dl", "name": "Quốc lộ 14 — về Đắk Lắk", "x": 64, "y": 107, "to": "dak-lak", "toX": 72, "toY": 8 }
  ],
  "docks": [],

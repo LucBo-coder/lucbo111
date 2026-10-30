@@ -8370,5 +8370,521 @@
     "Hồ trong veo rồi! Cả Pleiku cảm ơn con."
    ]
   }
+ },
+ {
+  "id": "vn-qn-1",
+  "kind": "main",
+  "title": "Tàu Lý Sơn ngưng chạy",
+  "giver": "qn-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:gia-lai"
+  ],
+  "description": "Tới Quảng Ngãi: ghé Trung tâm Pokémon rồi ra bến tàu hỏi anh lái tàu vì sao tàu ngưng chạy.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-quang-ngai-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Quảng Ngãi",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "qn-lyson",
+    "count": 1,
+    "text": "Ra bến tàu Lý Sơn (phía đông)",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-ferry",
+    "count": 1,
+    "text": "Hỏi Anh lái tàu Lý Sơn",
+    "marker": {
+     "x": 100,
+     "y": 40,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1150,
+   "reputation": 10,
+   "flags": [
+    "landmark:ly-son"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Quảng Ngãi! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi ra bến hỏi anh lái tàu, tàu ra đảo ngưng cả tháng rồi."
+   ],
+   "progress": [
+    "Bến tàu ở phía đông thành phố."
+   ],
+   "complete": [
+    "Anh nói có hồn thuyền đắm dưới biển... Già làng Kon Klor biết chuyện người xưa gửi hồn về biển."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-2",
+  "kind": "main",
+  "title": "Chum gốm Sa Huỳnh",
+  "giver": "qn-guide",
+  "requires": [
+   "vn-qn-1"
+  ],
+  "description": "Lên làng Kon Klor hỏi già làng, rồi xuống Sa Huỳnh hỏi diêm dân về chum gốm xưa.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "qn-kontum",
+    "count": 1,
+    "text": "Đến làng Kon Klor (phía tây nam)",
+    "marker": {
+     "x": 19,
+     "y": 81,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-bana",
+    "count": 1,
+    "text": "Hỏi Già làng Kon Klor",
+    "marker": {
+     "x": 16,
+     "y": 76,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-salt",
+    "count": 1,
+    "text": "Hỏi Diêm dân Sa Huỳnh",
+    "marker": {
+     "x": 70,
+     "y": 90,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1200,
+   "reputation": 15,
+   "flags": [
+    "landmark:kon-klor"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Già làng Kon Klor biết chuyện xưa. Con lên hỏi, rồi xuống Sa Huỳnh hỏi thêm."
+   ],
+   "progress": [
+    "Kon Klor ở phía tây nam, Sa Huỳnh ở phía nam."
+   ],
+   "complete": [
+    "Hồn Neo giận vì biển đầy rác, chum gốm bị đào trộm. Phải gặp thuyền trưởng Tâm mới ra được bãi bắc."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-3",
+  "kind": "main",
+  "title": "Hồn Neo Lý Sơn",
+  "giver": "qn-guide",
+  "requires": [
+   "vn-qn-2"
+  ],
+  "description": "Thắng Thuyền trưởng Lý Sơn Tâm để ra bãi bắc, rồi làm Dhelmise yên giấc.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qn-gate-t",
+    "count": 1,
+    "text": "Thắng Thuyền trưởng Lý Sơn Tâm",
+    "marker": {
+     "x": 104,
+     "y": 30,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "dhelmise",
+    "count": 1,
+    "text": "Đánh bại Dhelmise — Hồn Neo Lý Sơn",
+    "marker": {
+     "x": 108,
+     "y": 12,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1450,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thuyền trưởng Tâm canh bãi phía bắc bến tàu. Con đủ gan thì đi."
+   ],
+   "progress": [
+    "Bãi bắc, phía trên bến tàu."
+   ],
+   "complete": [
+    "Hồn Neo yên giấc, tàu chạy lại rồi! Huy hiệu Đảo Tỏi là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-rescue",
+  "kind": "side",
+  "title": "Hoa rừng Măng Đen",
+  "giver": "qn-pine",
+  "requires": [
+   "vn-qn-1"
+  ],
+  "description": "Một con Comfey bị bầy Toxicroak vây ở bìa rừng thông.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "qn-comfey-rescue",
+    "count": 1,
+    "text": "Giải cứu Comfey ở bìa rừng phía tây",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-pine",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Măng Đen",
+    "marker": {
+     "x": 30,
+     "y": 26,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1000,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con Comfey bị bầy ếch độc vây ở bìa rừng phía tây. Con giúp anh!"
+   ],
+   "progress": [
+    "Bìa rừng phía tây."
+   ],
+   "complete": [
+    "Comfey tặng con vòng hoa nè. Rừng thông thơm lại rồi."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-logger",
+  "kind": "side",
+  "title": "Tay đốn gỗ lén",
+  "giver": "qn-pine",
+  "requires": [
+   "vn-qn-1"
+  ],
+  "description": "Tay đốn gỗ Lâm chặt thông trong rừng Măng Đen.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qn-pine-t",
+    "count": 1,
+    "text": "Thắng Tay đốn gỗ Lâm",
+    "marker": {
+     "x": 36,
+     "y": 14,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-pine",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Măng Đen",
+    "marker": {
+     "x": 30,
+     "y": 26,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 950,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Lâm đốn thông ở phía bắc rừng. Con đuổi nó đi."
+   ],
+   "progress": [
+    "Nó ở phía bắc rừng thông."
+   ],
+   "complete": [
+    "Lâm bỏ rìu chạy rồi! Rừng thông còn nguyên."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-ginseng",
+  "kind": "side",
+  "title": "Sâm Ngọc Linh",
+  "giver": "qn-ginseng",
+  "requires": [
+   "vn-qn-1"
+  ],
+  "description": "Kẻ đào trộm sâm lên núi Ngọc Linh. Ngăn hắn lại.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "qn-ngoclinh",
+    "count": 1,
+    "text": "Lên núi Ngọc Linh (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 15,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "qn-ginseng-t",
+    "count": 1,
+    "text": "Thắng Kẻ đào trộm sâm",
+    "marker": {
+     "x": 84,
+     "y": 12,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-ginseng",
+    "count": 1,
+    "text": "Báo cho Người trồng sâm Ngọc Linh",
+    "marker": {
+     "x": 60,
+     "y": 16,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "hard-stone": 1
+   },
+   "worldExp": 1000,
+   "reputation": 12,
+   "flags": [
+    "landmark:ngoc-linh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa lên núi đào sâm trộm. Con đuổi nó giùm chú."
+   ],
+   "progress": [
+    "Nó ở sườn đông núi."
+   ],
+   "complete": [
+    "Sâm còn nguyên rồi. Cảm ơn con nhiều lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-salt",
+  "kind": "side",
+  "title": "Muối Sa Huỳnh",
+  "giver": "qn-salt",
+  "requires": [
+   "vn-qn-2"
+  ],
+  "description": "Cậu bé làm muối Sa muốn có bạn đấu sau giờ cào muối.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qn-salt-t",
+    "count": 1,
+    "text": "Thắng Cậu bé làm muối Sa",
+    "marker": {
+     "x": 60,
+     "y": 96,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-salt",
+    "count": 1,
+    "text": "Báo cho Diêm dân Sa Huỳnh",
+    "marker": {
+     "x": 70,
+     "y": 90,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "soft-sand": 1
+   },
+   "worldExp": 900,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Sa ham đấu lắm. Con chơi với nó một trận nha."
+   ],
+   "progress": [
+    "Sa ở ruộng muối phía tây nam."
+   ],
+   "complete": [
+    "Bịch muối hột này chú cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-rong",
+  "kind": "side",
+  "title": "Tiếng cồng nhà rông",
+  "giver": "qn-bana",
+  "requires": [
+   "vn-qn-1"
+  ],
+  "description": "Thanh niên A Thút muốn thử sức người lạ trước khi làng mở hội.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "qn-kontum-t",
+    "count": 1,
+    "text": "Thắng Thanh niên Ba Na A Thút",
+    "marker": {
+     "x": 14,
+     "y": 96,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-bana",
+    "count": 1,
+    "text": "Báo cho Già làng Kon Klor",
+    "marker": {
+     "x": 16,
+     "y": 76,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 900,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng A Thút muốn đấu với khách. Con chơi với nó một trận."
+   ],
+   "progress": [
+    "A Thút ở bãi phía nam làng."
+   ],
+   "complete": [
+    "Tối nay làng mở hội cồng chiêng, con ở lại nha."
+   ]
+  }
+ },
+ {
+  "id": "vn-qn-eco",
+  "kind": "side",
+  "title": "Biển Lý Sơn sạch",
+  "giver": "qn-garlic",
+  "requires": [
+   "vn-qn-3"
+  ],
+  "description": "Rác nhựa dạt đầy bãi biển, Hồn Neo mới nguôi giận.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:quang-ngai",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm trên bãi biển",
+    "marker": {
+     "x": 108,
+     "y": 57,
+     "region": "quang-ngai"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "qn-garlic",
+    "count": 1,
+    "text": "Báo cho Cô trồng tỏi Lý Sơn",
+    "marker": {
+     "x": 104,
+     "y": 72,
+     "region": "quang-ngai"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 950,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Biển yên rồi, giờ dọn bãi kẻo Hồn Neo giận lại. Con phụ cô nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước dọc bãi."
+   ],
+   "complete": [
+    "Bãi sạch rồi! Bó tỏi Lý Sơn này cô tặng con."
+   ]
+  }
  }
 ]

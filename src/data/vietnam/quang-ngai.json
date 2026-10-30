@@ -1,0 +1,143 @@
+{
+ "id": "quang-ngai",
+ "name": "Quảng Ngãi",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 30, "y": 104 },
+ "areas": [
+  { "id": "qn-mangden", "name": "Rừng thông Măng Đen", "rect": [0, 0, 45, 50], "habitat": "forest", "level": [54, 57] },
+  { "id": "qn-ngoclinh", "name": "Núi Ngọc Linh", "rect": [46, 0, 100, 30], "habitat": "rocky", "level": [55, 58] },
+  { "id": "qn-city", "name": "Thành phố Quảng Ngãi", "rect": [40, 31, 100, 65], "habitat": "village", "level": [54, 54] },
+  { "id": "qn-kontum", "name": "Kon Tum — làng Kon Klor", "rect": [0, 51, 39, 111], "habitat": "meadow", "level": [52, 55] },
+  { "id": "qn-sahuynh", "name": "Sa Huỳnh", "rect": [40, 66, 100, 111], "habitat": "ruins", "level": [52, 55] },
+  { "id": "qn-lyson", "name": "Biển Lý Sơn", "rect": [101, 0, 127, 111], "habitat": "coast", "level": [54, 57] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[30, 107], [30, 70], [50, 56], [62, 52]] },
+  { "w": 3, "pts": [[30, 80], [12, 80]] },
+  { "w": 3, "pts": [[62, 44], [50, 30], [24, 20]] },
+  { "w": 3, "pts": [[68, 44], [72, 14], [72, 5]] },
+  { "w": 3, "pts": [[76, 50], [104, 50], [106, 22]] },
+  { "w": 3, "pts": [[76, 50], [90, 80], [104, 96]] }
+ ],
+ "plaza": [60, 44, 76, 56],
+ "lake": { "cx": 150, "cy": 56, "rx": 42, "ry": 80 },
+ "islands": [{ "cx": 121, "cy": 40, "rx": 4, "ry": 3 }],
+ "buildings": [
+  { "id": "qn-center", "name": "Trung tâm Pokémon", "x": 42, "y": 40, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "qn-mart", "name": "Cửa hàng Quảng Ngãi", "x": 80, "y": 36, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "qn-museum", "name": "Bảo tàng Văn hóa Sa Huỳnh", "x": 87, "y": 38, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3 },
+  { "id": "qn-house-1", "name": "Nhà bác Tư", "x": 44, "y": 58, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "qn-house-2", "name": "Quán cá bống sông Trà", "x": 90, "y": 56, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 52, "y": 62 },
+  { "kind": "haystack", "x": 22, "y": 70 },
+  { "kind": "log", "x": 36, "y": 30 },
+  { "kind": "bucket", "x": 96, "y": 90 },
+  { "kind": "target", "x": 58, "y": 20 }
+ ],
+ "signs": [
+  { "x": 64, "y": 54, "text": ["THÀNH PHỐ QUẢNG NGÃI", "Đất núi Ấn sông Trà. Phía tây: Kon Tum, Măng Đen · Phía bắc: núi Ngọc Linh · Phía đông: biển Lý Sơn · Phía nam: Sa Huỳnh."] },
+  { "x": 18, "y": 84, "text": ["LÀNG KON KLOR", "Nhà rông cao vút của người Ba Na bên cầu treo sông Đắk Bla."] },
+  { "x": 100, "y": 36, "text": ["BẾN TÀU LÝ SƠN", "Đảo tỏi ngoài khơi, có Cổng Tò Vò và chùa Hang. Sóng lớn mấy tuần nay, tàu không chạy."] }
+ ],
+ "npcs": [
+  { "id": "qn-guide", "name": "Bác Tư Quảng Ngãi", "sprite": "elder", "x": 70, "y": 54, "lines": [
+    "Chào mừng tới Quảng Ngãi! Ăn chén cá bống kho chưa con?",
+    "Tàu ra Lý Sơn ngưng chạy cả tháng rồi. Đêm nào ngư dân cũng thấy bóng mỏ neo dưới nước.",
+    "Anh lái tàu ở bến biết rõ, con ra hỏi."] },
+  { "id": "qn-ferry", "name": "Anh lái tàu Lý Sơn", "sprite": "villager", "x": 100, "y": 40, "lines": [
+    "Có cái mỏ neo cũ trôi dưới đáy, kéo tàu lật mấy chiếc rồi.",
+    "Ông bà nói đó là hồn mấy chiếc thuyền đắm, giận vì biển đầy rác."] },
+  { "id": "qn-garlic", "name": "Cô trồng tỏi Lý Sơn", "sprite": "girl", "x": 104, "y": 72, "lines": [
+    "Tỏi Lý Sơn trồng trên cát san hô, thơm nhất nước đó.",
+    "Tàu không chạy, tỏi kẹt ngoài đảo, buồn lắm con."] },
+  { "id": "qn-bana", "name": "Già làng Kon Klor", "sprite": "elder", "x": 16, "y": 76, "lines": [
+    "Nhà rông là nơi cả làng họp, mái cao để thần linh nghe thấy.",
+    "Ngày xưa người Sa Huỳnh chôn người chết trong chum, gửi linh hồn về biển."] },
+  { "id": "qn-pine", "name": "Kiểm lâm Măng Đen", "sprite": "ranger", "x": 30, "y": 26, "lines": [
+    "Măng Đen là Đà Lạt thứ hai, thông xanh với hồ nước.",
+    "Có tay đốn gỗ lén trong rừng, anh chưa bắt được."] },
+  { "id": "qn-ginseng", "name": "Người trồng sâm Ngọc Linh", "sprite": "farmer", "x": 60, "y": 16, "lines": [
+    "Sâm Ngọc Linh là quốc bảo, mọc dưới tán rừng trên 1.500 mét.",
+    "Có người lạ lên núi đào trộm sâm, chú canh cả đêm."] },
+  { "id": "qn-salt", "name": "Diêm dân Sa Huỳnh", "sprite": "villager", "x": 70, "y": 90, "lines": [
+    "Ruộng muối Sa Huỳnh trắng xóa, nắng càng gắt muối càng ngon.",
+    "Ở đây đào được chum gốm của người Sa Huỳnh xưa đó."] }
+ ],
+ "trainers": [
+  { "id": "qn-gate-t", "name": "Thuyền trưởng Lý Sơn Tâm", "sprite": "knight", "x": 104, "y": 30,
+    "team": [["corviknight", 57], ["cofagrigus", 57], ["mismagius", 57]],
+    "challenge": ["Hồn Neo dưới biển kéo lật tàu của tôi. Bạn muốn ra đó thì phải qua tôi!"],
+    "win": ["Bạn đủ gan rồi. Hồn Neo hiện ở bãi phía bắc mỗi khi sóng nổi."],
+    "lose": ["Biển không thương người yếu."],
+    "rewards": { "items": { "superpotion": 2, "reaper-cloth": 1 }, "exp": 2600 } },
+  { "id": "qn-pine-t", "name": "Tay đốn gỗ Lâm", "sprite": "hiker", "x": 36, "y": 14,
+    "team": [["gourgeist", 55], ["chesnaught", 55], ["ferrothorn", 55]],
+    "challenge": ["Rừng thông này ai đốn chẳng được! Muốn cản thì đấu!"],
+    "win": ["Thôi được, tao bỏ rìu lại."],
+    "lose": ["Tránh ra cho tao làm việc."],
+    "rewards": { "items": { "ultraball": 2 }, "exp": 2500 } },
+  { "id": "qn-ginseng-t", "name": "Kẻ đào trộm sâm", "sprite": "knight", "x": 84, "y": 12,
+    "team": [["rhyperior", 56], ["probopass", 56], ["steelix", 56]],
+    "challenge": ["Củ sâm này giá bằng vàng! Đứa nào cản là tao đánh!"],
+    "win": ["Trả lại sâm đây... tao đi."],
+    "lose": ["Núi này của tao!"],
+    "rewards": { "items": { "ultraball": 1, "hard-stone": 1 }, "exp": 2500 } },
+  { "id": "qn-salt-t", "name": "Cậu bé làm muối Sa", "sprite": "youngster", "x": 60, "y": 96,
+    "team": [["sandaconda", 54], ["palossand", 54], ["hippowdon", 54]],
+    "challenge": ["Pokémon của tui lớn lên trên cát muối, mạnh lắm nha!"],
+    "win": ["Thua rồi. Bịch muối này cho bạn nè."],
+    "lose": ["Nắng quá hả bạn?"],
+    "rewards": { "items": { "soft-sand": 1, "greatball": 2 }, "exp": 2400 } },
+  { "id": "qn-kontum-t", "name": "Thanh niên Ba Na A Thút", "sprite": "youngster", "x": 14, "y": 96,
+    "team": [["exploud", 54], ["ursaring", 54], ["zangoose", 54]],
+    "challenge": ["Tiếng cồng nhà rông vang xa, Pokémon tui hét còn to hơn!"],
+    "win": ["Bạn giỏi quá! Tối nay mời bạn vô nhà rông."],
+    "lose": ["Về luyện thêm nha."],
+    "rewards": { "items": { "sitrus-berry": 3 }, "exp": 2400 } }
+ ],
+ "rescue": { "id": "qn-comfey-rescue", "x": 8, "y": 40, "species": "comfey", "level": 55,
+   "guards": [["toxicroak", 54], ["toxicroak", 54], ["scolipede", 56]], "quest": "vn-qn-rescue", "reporter": "Kiểm lâm Măng Đen" },
+ "chests": [
+  { "id": "chest-qn-mangden", "x": 6, "y": 6, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-qn-ngoclinh", "x": 96, "y": 6, "items": { "superpotion": 3, "hard-stone": 1 } },
+  { "id": "chest-qn-lyson", "x": 110, "y": 104, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-qn-kontum", "x": 6, "y": 98, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-qn-sahuynh", "x": 44, "y": 106, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-qn-nook", "x": 92, "y": 100, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:quang-ngai:qn-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-quang-ngai-center", "name": "Trung tâm Pokémon Quảng Ngãi", "x": 45, "y": 47 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "dhelmise", "name": "Dhelmise — Hồn Neo Lý Sơn", "x": 108, "y": 12, "level": 58, "respawn": 600, "arena": 260,
+   "requires": ["beat:qn-gate-t"],
+   "hint": "Mỏ neo rong rêu lấp ló dưới sóng bãi bắc... Thuyền trưởng Tâm chưa cho ai ra.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "reaper-cloth": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 9500, "flag": "badge:quang-ngai", "message": "Nhận Huy hiệu Đảo Tỏi (Quảng Ngãi)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-qn-gl", "name": "Quốc lộ 14 — về Gia Lai", "x": 30, "y": 107, "to": "gia-lai", "toX": 74, "toY": 8 }
+ ],
+ "docks": [],
+ "rivers": [],
+ "nodes": [
+  { "id": "qn-forest-1", "table": "forest-forage", "x": 20, "y": 40 },
+  { "id": "qn-meadow-1", "table": "meadow-forage", "x": 22, "y": 90 },
+  { "id": "qn-meadow-2", "table": "meadow-forage", "x": 80, "y": 24 },
+  { "id": "qn-sea-1", "table": "lake-fish", "x": 106, "y": 60 },
+  { "id": "qn-meadow-3", "table": "meadow-forage", "x": 56, "y": 84 }
+ ],
+ "field": [
+  { "id": "qn-boulder", "ability": "smash", "x": 96, "y": 100, "nook": { "cx": 92.5, "cy": 100.5, "r": 3, "wall": "boulder" } }
+ ]
+}

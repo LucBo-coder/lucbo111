@@ -614,6 +614,52 @@
     }
    ]
   },
+  "quang-ngai": {
+   "id": "quang-ngai",
+   "name": "Quảng Ngãi",
+   "area": "qn-lyson",
+   "action": "trash",
+   "unlock": "vn-qn-3",
+   "boss": "dhelmise",
+   "label": "Nhặt rác trên bãi biển",
+   "done": "Bạn nhặt chai nhựa và lưới rách dạt vào bãi. Biển Lý Sơn xanh lại một chút.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "quang-ngai-1",
+     "x": 108,
+     "y": 57
+    },
+    {
+     "id": "quang-ngai-2",
+     "x": 107,
+     "y": 43
+    },
+    {
+     "id": "quang-ngai-3",
+     "x": 108,
+     "y": 75
+    },
+    {
+     "id": "quang-ngai-4",
+     "x": 107,
+     "y": 29
+    },
+    {
+     "id": "quang-ngai-5",
+     "x": 113,
+     "y": 89
+    },
+    {
+     "id": "quang-ngai-6",
+     "x": 115,
+     "y": 17
+    }
+   ]
+  },
   "tay-ninh": {
    "id": "tay-ninh",
    "name": "Tây Ninh",

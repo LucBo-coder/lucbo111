@@ -1253,5 +1253,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "dhelmise",
+  "name": "Dhelmise — Hồn Neo Lý Sơn",
+  "types": [
+   "ghost",
+   "grass"
+  ],
+  "baseStats": {
+   "hp": 70,
+   "atk": 131,
+   "def": 100,
+   "spa": 86,
+   "spd": 90,
+   "spe": 40
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "anchor_shot",
+   "shadow_ball"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "shuppet",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Mỏ neo rong rêu trồi lên — Hồn Neo kéo sóng ập vào bờ!",
+  "exp": 150,
+  "sprite": "dhelmise",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "shadow_ball",
+   "volley": "energy_ball",
+   "nova": "hex",
+   "field": "power_whip",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "phantom_force",
+   "ultimateName": "Neo Thần Lý Sơn",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

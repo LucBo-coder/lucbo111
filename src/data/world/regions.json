@@ -2205,5 +2205,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-qn-mangden",
+  "name": "Rừng thông Măng Đen",
+  "areas": [
+   "qn-mangden"
+  ],
+  "biome": "forest",
+  "level": [
+   54,
+   57
+  ],
+  "elite": [
+   58,
+   60
+  ],
+  "boss": null,
+  "recommended": 56,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-qn-ngoclinh",
+  "name": "Núi Ngọc Linh",
+  "areas": [
+   "qn-ngoclinh"
+  ],
+  "biome": "rocky",
+  "level": [
+   55,
+   58
+  ],
+  "elite": [
+   59,
+   61
+  ],
+  "boss": null,
+  "recommended": 57,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-qn-kontum",
+  "name": "Kon Tum — làng Kon Klor",
+  "areas": [
+   "qn-kontum"
+  ],
+  "biome": "meadow",
+  "level": [
+   52,
+   55
+  ],
+  "elite": [
+   56,
+   58
+  ],
+  "boss": null,
+  "recommended": 54,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-qn-sahuynh",
+  "name": "Sa Huỳnh",
+  "areas": [
+   "qn-sahuynh"
+  ],
+  "biome": "ruins",
+  "level": [
+   52,
+   55
+  ],
+  "elite": [
+   56,
+   58
+  ],
+  "boss": null,
+  "recommended": 54,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-qn-lyson",
+  "name": "Biển Lý Sơn",
+  "areas": [
+   "qn-lyson"
+  ],
+  "biome": "coast",
+  "level": [
+   54,
+   57
+  ],
+  "elite": [
+   58,
+   60
+  ],
+  "boss": null,
+  "recommended": 56,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]
