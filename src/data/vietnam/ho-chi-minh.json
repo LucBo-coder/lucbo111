@@ -1,0 +1,152 @@
+{
+ "id": "ho-chi-minh",
+ "name": "TP. Hồ Chí Minh",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": { "x": 7, "y": 20 },
+ "areas": [
+  { "id": "sg-cuchi", "name": "Địa đạo Củ Chi", "rect": [0, 0, 50, 40], "habitat": "forest", "level": [43, 46] },
+  { "id": "sg-laithieu", "name": "Vườn trái Lái Thiêu", "rect": [51, 0, 127, 30], "habitat": "farm", "level": [42, 45], "orchard": { "period": 7, "gap": 12 } },
+  { "id": "sg-zoo", "name": "Thảo Cầm Viên", "rect": [0, 41, 29, 77], "habitat": "meadow", "level": [40, 42] },
+  { "id": "sg-city", "name": "Trung tâm Sài Gòn", "rect": [30, 41, 96, 77], "habitat": "village", "level": [42, 42] },
+  { "id": "sg-river", "name": "Bến Bạch Đằng – sông Sài Gòn", "rect": [97, 31, 127, 77], "habitat": "lake", "level": [41, 44] },
+  { "id": "sg-cangio", "name": "Rừng Sác Cần Giờ", "rect": [0, 78, 70, 111], "habitat": "mangrove", "level": [41, 44] },
+  { "id": "sg-vungtau", "name": "Bãi biển Vũng Tàu", "rect": [71, 78, 127, 111], "habitat": "coast", "level": [42, 45] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[5, 20], [24, 20], [34, 30], [34, 58], [60, 58]] },
+  { "w": 3, "pts": [[60, 58], [96, 58], [110, 50], [112, 44]] },
+  { "w": 3, "pts": [[60, 58], [60, 20], [90, 14], [123, 14]] },
+  { "w": 3, "pts": [[34, 60], [12, 60]] },
+  { "w": 3, "pts": [[60, 58], [60, 78], [40, 94], [20, 98]] },
+  { "w": 3, "pts": [[60, 78], [92, 88], [104, 94]] }
+ ],
+ "plaza": [50, 52, 78, 66],
+ "lake": { "cx": 122, "cy": 108, "rx": 22, "ry": 11 },
+ "buildings": [
+  { "id": "sg-center", "name": "Trung tâm Pokémon", "x": 40, "y": 46, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "sg-mart", "name": "Cửa hàng Sài Gòn", "x": 48, "y": 46, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "sg-ben-thanh", "name": "Chợ Bến Thành", "x": 62, "y": 45, "w": 8, "h": 5, "roof": "red", "wall": "stone", "door": 4 },
+  { "id": "sg-nha-tho", "name": "Nhà thờ Đức Bà", "x": 76, "y": 43, "w": 6, "h": 6, "roof": "red", "wall": "stone", "door": 3 },
+  { "id": "sg-buu-dien", "name": "Bưu điện Thành phố", "x": 84, "y": 62, "w": 7, "h": 4, "roof": "grey", "wall": "stone", "door": 3 },
+  { "id": "sg-dinh", "name": "Dinh Độc Lập", "x": 62, "y": 69, "w": 9, "h": 4, "roof": "grey", "wall": "stone", "door": 4 },
+  { "id": "sg-house-1", "name": "Nhà anh Ba xe ôm", "x": 38, "y": 66, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "sg-house-2", "name": "Nhà cô Mai", "x": 44, "y": 70, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 70 },
+  { "kind": "bucket", "x": 74, "y": 60 },
+  { "kind": "target", "x": 18, "y": 48 },
+  { "kind": "log", "x": 26, "y": 34 },
+  { "kind": "haystack", "x": 83, "y": 23 }
+ ],
+ "signs": [
+  { "x": 57, "y": 61, "text": ["TRUNG TÂM SÀI GÒN", "Chợ Bến Thành, Nhà thờ Đức Bà, Bưu điện Thành phố, Dinh Độc Lập. Phía bắc: vườn trái Lái Thiêu · Phía tây bắc: địa đạo Củ Chi · Phía đông: bến Bạch Đằng · Phía nam: rừng Sác Cần Giờ, biển Vũng Tàu."] },
+  { "x": 14, "y": 18, "text": ["ĐỊA ĐẠO CỦ CHI", "Hơn 200 km đường hầm đào tay dưới rừng cao su, có giếng nước, bếp Hoàng Cầm và hầm chỉ huy."] },
+  { "x": 98, "y": 92, "text": ["BÃI BIỂN VŨNG TÀU", "Bãi Sau sóng lớn, Bãi Trước có ghe đánh cá. Trên Núi Nhỏ là ngọn hải đăng cổ nhất miền Nam."] }
+ ],
+ "npcs": [
+  { "id": "sg-guide", "name": "Anh Ba xe ôm", "sprite": "youngster", "x": 57, "y": 55, "lines": [
+    "Lên xe anh chở! Sài Gòn này đi đâu anh cũng biết đường.",
+    "Mấy bữa nay đèn đường chớp tắt hoài, máy móc chập điện tứ tung. Người ta đồn có con Pokémon điện ở bên sông.",
+    "Muốn biết thêm thì ghé Củ Chi hỏi Chú Bảy, ổng biết nhiều chuyện lắm."] },
+  { "id": "sg-tunnel", "name": "Chú Bảy địa đạo", "sprite": "villager", "x": 20, "y": 23, "lines": [
+    "Địa đạo này chú đào hồi còn trai trẻ. Dưới đất mát mà tối lắm.",
+    "Đêm qua chú nghe dưới hầm có tiếng rè rè như máy phát điện. Lạ thiệt."] },
+  { "id": "sg-zoo", "name": "Cô Mai Thảo Cầm Viên", "sprite": "girl", "x": 14, "y": 56, "lines": [
+    "Thảo Cầm Viên hơn trăm năm tuổi rồi, cây cổ thụ còn lớn hơn cả nhà.",
+    "Mấy con Pokémon ở đây quen người lắm, nhưng đừng cho tụi nó ăn bánh nha."] },
+  { "id": "sg-ranger", "name": "Kiểm lâm Cần Giờ", "sprite": "ranger", "x": 30, "y": 95, "lines": [
+    "Rừng Sác Cần Giờ là lá phổi xanh của thành phố.",
+    "Bầy khỉ ở đây giành đồ du khách dữ lắm. Giữ chặt túi nghe con!"] },
+  { "id": "sg-fruit", "name": "Bà Tám Lái Thiêu", "sprite": "girl", "x": 82, "y": 17, "lines": [
+    "Măng cụt, sầu riêng, chôm chôm — vườn Lái Thiêu cái gì cũng có.",
+    "Ăn trái tại vườn là ngon nhất, con hái thử đi."] },
+  { "id": "sg-boat", "name": "Lái tàu Bạch Đằng", "sprite": "villager", "x": 106, "y": 62, "lines": [
+    "Tàu buýt sông chạy từ Bạch Đằng ngược lên Bình Dương đó.",
+    "Tối qua cả bến cúp điện, mà dưới sông thì sáng rực. Có thứ gì đó dưới ấy."] },
+  { "id": "sg-lifeguard", "name": "Chú cứu hộ Vũng Tàu", "sprite": "knight", "x": 96, "y": 98, "lines": [
+    "Bãi Sau sóng lớn, tắm phải trong vùng cờ.",
+    "Rác trên bãi nhiều quá, chú nhặt hoài không hết."] },
+  { "id": "sg-coffee", "name": "Cô bán cà phê bệt", "sprite": "girl", "x": 72, "y": 62, "lines": [
+    "Cà phê sữa đá đây! Ngồi bệt bên nhà thờ uống mới đúng điệu Sài Gòn.",
+    "Đèn quảng cáo phố đi bộ chớp tắt suốt, khách ngồi uống mà sợ."] }
+ ],
+ "trainers": [
+  { "id": "sg-tunnel-t", "name": "Thợ đào hầm Ba", "sprite": "bald", "x": 14, "y": 30,
+    "team": [["excadrill", 44], ["krookodile", 44], ["gabite", 43]],
+    "challenge": ["Dưới hầm tối om, đánh nhau phải nghe bằng tai. Thử đi!"],
+    "win": ["Giỏi! Con đi trong hầm được rồi đó."],
+    "lose": ["Lần sau mang theo đèn pin nha."],
+    "rewards": { "items": { "ultraball": 2, "soft-sand": 1 }, "exp": 1800 } },
+  { "id": "sg-zoo-t", "name": "Người giữ thú Hòa", "sprite": "ranger", "x": 20, "y": 68,
+    "team": [["tauros", 42], ["kangaskhan", 43], ["zebstrika", 43]],
+    "challenge": ["Thú ở đây khỏe lắm, đấu một trận cho tụi nó vận động nè!"],
+    "win": ["Tụi nó mệt rồi, cảm ơn con nha."],
+    "lose": ["Tụi nó còn sung sức lắm!"],
+    "rewards": { "items": { "superpotion": 2, "sitrus-berry": 2 }, "exp": 1600 } },
+  { "id": "sg-cangio-t", "name": "Ngư dân Cần Giờ", "sprite": "farmer", "x": 47, "y": 98,
+    "team": [["primeape", 42], ["passimian", 43], ["oranguru", 43]],
+    "challenge": ["Bầy khỉ rừng Sác theo tui riết rồi biết đánh nhau luôn!"],
+    "win": ["Tụi khỉ chịu thua con rồi kìa."],
+    "lose": ["Coi chừng tụi nó giành túi đó!"],
+    "rewards": { "items": { "greatball": 3 }, "exp": 1600 } },
+  { "id": "sg-beach-t", "name": "Dân lướt ván Tú", "sprite": "youngster", "x": 110, "y": 92,
+    "team": [["hawlucha", 44], ["arcanine", 44], ["raichu", 43]],
+    "challenge": ["Sóng Bãi Sau hôm nay đẹp lắm. Đấu xong rồi lướt!"],
+    "win": ["Con lướt trận này còn hay hơn tui lướt sóng."],
+    "lose": ["Té sóng hoài rồi quen à!"],
+    "rewards": { "items": { "ultraball": 1, "superpotion": 2 }, "exp": 1700 } },
+  { "id": "sg-engineer", "name": "Kỹ sư điện Tín", "sprite": "wizard", "x": 108, "y": 48,
+    "team": [["magneton", 45], ["electivire", 45], ["rotom", 44]],
+    "challenge": ["Cả thành phố chập điện vì thứ đang ngủ dưới bến này. Chưa đủ sức thì đừng lại gần!"],
+    "win": ["Được rồi, con đủ sức. Nó ở ngay bờ sông phía trước — đừng để nó hút hết điện của thành phố."],
+    "lose": ["Điện mạnh lắm, đừng liều."],
+    "rewards": { "items": { "superpotion": 2, "magnet": 1 }, "exp": 1900 } }
+ ],
+ "rescue": { "id": "sg-otter-rescue", "x": 10, "y": 102, "species": "buizel", "level": 44,
+   "guards": [["seviper", 42], ["seviper", 42], ["arbok", 44]], "quest": "vn-sg-rescue", "reporter": "Kiểm lâm Cần Giờ" },
+ "chests": [
+  { "id": "chest-sg-cuchi", "x": 5, "y": 6, "items": { "ultraball": 2, "superpotion": 2 } },
+  { "id": "chest-sg-laithieu", "x": 121, "y": 5, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-sg-river", "x": 122, "y": 40, "items": { "ultraball": 2, "thunder-stone": 1 } },
+  { "id": "chest-sg-cangio", "x": 6, "y": 88, "items": { "netball": 3, "miracle-seed": 1 } },
+  { "id": "chest-sg-vungtau", "x": 80, "y": 104, "items": { "superpotion": 3, "mystic-water": 1 } },
+  { "id": "chest-sg-nook", "x": 36, "y": 10, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:ho-chi-minh:sg-thicket" }
+ ],
+ "waypoints": [
+  { "id": "wp-ho-chi-minh-center", "name": "Trung tâm Pokémon Sài Gòn", "x": 43, "y": 52 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "magnezone", "name": "Magnezone — Thần Điện Sài Gòn", "x": 112, "y": 40, "level": 46, "respawn": 600, "arena": 260,
+   "requires": ["beat:sg-engineer"],
+   "hint": "Không khí bên bến sông rè rè tiếng điện... Kỹ sư điện Tín đang chặn lối vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "magnet": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 6500, "flag": "badge:ho-chi-minh", "message": "Nhận Huy hiệu Sài Gòn (TP. Hồ Chí Minh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-sg-tn", "name": "Quốc lộ 22 — về Tây Ninh", "x": 5, "y": 20, "to": "tay-ninh", "toX": 120, "toY": 96 }
+ ],
+ "docks": [],
+ "rivers": [
+  { "w": 4, "pts": [[112, 0], [104, 30], [100, 60], [102, 82], [110, 98]], "mouth": true }
+ ],
+ "nodes": [
+  { "id": "sg-forest-1", "table": "forest-forage", "x": 30, "y": 8 },
+  { "id": "sg-orchard-1", "table": "orchard-forage", "x": 70, "y": 25 },
+  { "id": "sg-river-1", "table": "canal-fish", "x": 106, "y": 70 },
+  { "id": "sg-mangrove-1", "table": "mangrove-fish", "x": 22, "y": 88 },
+  { "id": "sg-mangrove-2", "table": "mangrove-forage", "x": 50, "y": 104 },
+  { "id": "sg-zoo-1", "table": "meadow-forage", "x": 8, "y": 46 }
+ ],
+ "field": [
+  { "id": "sg-thicket", "ability": "cut", "x": 40, "y": 10, "nook": { "cx": 36.5, "cy": 10.5, "r": 3, "wall": "tree" } }
+ ]
+}

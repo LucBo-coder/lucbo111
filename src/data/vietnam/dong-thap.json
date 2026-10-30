@@ -20,7 +20,7 @@
   { "w": 3, "pts": [[64, 106], [64, 88], [64, 62], [64, 50]] },
   { "w": 3, "pts": [[64, 50], [64, 36], [40, 24], [24, 16], [24, 4]] },
   { "w": 3, "pts": [[64, 36], [90, 28], [110, 22]] },
-  { "w": 3, "pts": [[50, 50], [20, 50]] },
+  { "w": 3, "pts": [[50, 50], [4, 50]] },
   { "w": 3, "pts": [[78, 50], [112, 50]] },
   { "w": 3, "pts": [[64, 74], [26, 74]] },
   { "w": 3, "pts": [[64, 78], [96, 78], [118, 80]] }
@@ -126,8 +126,9 @@
    "requires": ["beat:dt-sen-keeper"],
    "hint": "Mặt đầm sen gợn sóng rồi lặng... Người giữ đầm sen Lành chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "water-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 5500, "flag": "badge:dong-thap", "message": "Nhận Huy hiệu Sen Hồng (Đồng Tháp)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 5500, "flag": "badge:dong-thap", "message": "Nhận Huy hiệu Sen Hồng (Đồng Tháp)! Đường tới Tây Ninh đã mở: Quốc lộ." } },
  "portals": [
+  {"id": "portal-dt-next", "name": "Quốc lộ — đường tới Tây Ninh", "x": 4, "y": 50, "to": "tay-ninh", "toX": 64, "toY": 104, "requires": ["badge:dong-thap"], "hint": "Đường tới Tây Ninh mở cho người có Huy hiệu Sen Hồng — hạ boss Đồng Tháp trước."},
   { "id": "portal-dt-bt", "name": "Cầu Rạch Miễu — về Bến Tre", "x": 64, "y": 108, "to": "ben-tre", "toX": 56, "toY": 7 }
  ],
  "docks": [

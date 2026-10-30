@@ -27,6 +27,8 @@ import vinhLongJson from '../../data/vietnam/vinh-long.json';
 import traVinhJson from '../../data/vietnam/tra-vinh.json';
 import benTreJson from '../../data/vietnam/ben-tre.json';
 import dongThapJson from '../../data/vietnam/dong-thap.json';
+import tayNinhJson from '../../data/vietnam/tay-ninh.json';
+import hoChiMinhJson from '../../data/vietnam/ho-chi-minh.json';
 import type { RegionDef } from './valley';
 
 // Every overworld map of the game. The valley is the hub; the other regions are reached through portals.
@@ -63,6 +65,8 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'tra-vinh': traVinhJson as unknown as RegionDef,
   'ben-tre': benTreJson as unknown as RegionDef,
   'dong-thap': dongThapJson as unknown as RegionDef,
+  'tay-ninh': tayNinhJson as unknown as RegionDef,
+  'ho-chi-minh': hoChiMinhJson as unknown as RegionDef,
 };
 
 export function regionDef(id: string | null | undefined): RegionDef {

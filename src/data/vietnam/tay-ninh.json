@@ -1,0 +1,148 @@
+{
+ "id": "tay-ninh",
+ "name": "Tây Ninh",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": { "x": 64, "y": 104 },
+ "areas": [
+  { "id": "tn-longan", "name": "Cánh đồng lúa Long An", "rect": [0, 84, 127, 111], "habitat": "lake", "level": [38, 40], "paddy": { "cell": 7, "rice": 0.6 } },
+  { "id": "tn-town", "name": "Thành phố Tây Ninh", "rect": [40, 52, 86, 83], "habitat": "village", "level": [40, 40] },
+  { "id": "tn-tanlap", "name": "Làng nổi Tân Lập", "rect": [87, 52, 127, 83], "habitat": "forest", "level": [39, 42] },
+  { "id": "tn-caodai", "name": "Tòa Thánh Cao Đài", "rect": [0, 52, 39, 83], "habitat": "ruins", "level": [40, 42] },
+  { "id": "tn-dautieng", "name": "Hồ Dầu Tiếng", "rect": [0, 0, 51, 51], "habitat": "lake", "level": [41, 43] },
+  { "id": "tn-baden", "name": "Núi Bà Đen", "rect": [52, 0, 127, 51], "habitat": "rocky", "level": [42, 44] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[64, 106], [64, 80], [64, 66]] },
+  { "w": 3, "pts": [[64, 66], [30, 66], [18, 66], [18, 62]] },
+  { "w": 3, "pts": [[64, 66], [100, 66], [118, 70]] },
+  { "w": 3, "pts": [[64, 58], [64, 40], [80, 28], [96, 16], [100, 11]] },
+  { "w": 3, "pts": [[64, 40], [44, 34], [42, 30]] },
+  { "w": 3, "pts": [[64, 96], [123, 96]] }
+ ],
+ "plaza": [56, 58, 72, 72],
+ "lake": { "cx": 22, "cy": 22, "rx": 15, "ry": 10 },
+ "buildings": [
+  { "id": "tn-center", "name": "Trung tâm Pokémon", "x": 50, "y": 53, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "tn-mart", "name": "Cửa hàng Tây Ninh", "x": 66, "y": 53, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "tn-market", "name": "Chợ Long Hoa", "x": 75, "y": 53, "w": 6, "h": 4, "roof": "grey", "wall": "wood", "door": 3 },
+  { "id": "tn-holy-see", "name": "Tòa Thánh Tây Ninh", "x": 14, "y": 56, "w": 9, "h": 5, "roof": "gold", "wall": "stone", "door": 4 },
+  { "id": "tn-house-1", "name": "Nhà cô Bảy bánh tráng", "x": 44, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" },
+  { "id": "tn-house-2", "name": "Nhà chú Năm", "x": 80, "y": 74, "w": 3, "h": 3, "roof": "grey", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 60, "y": 76 },
+  { "kind": "haystack", "x": 28, "y": 91 },
+  { "kind": "haystack", "x": 100, "y": 90 },
+  { "kind": "bucket", "x": 50, "y": 70 },
+  { "kind": "log", "x": 110, "y": 60 },
+  { "kind": "target", "x": 70, "y": 44 }
+ ],
+ "signs": [
+  { "x": 60, "y": 69, "text": ["THÀNH PHỐ TÂY NINH", "Phía bắc: Núi Bà Đen, nóc nhà Nam Bộ, và hồ Dầu Tiếng · Phía tây: Tòa Thánh Cao Đài · Phía đông: làng nổi Tân Lập · Phía nam: cánh đồng Long An."] },
+  { "x": 22, "y": 64, "text": ["TÒA THÁNH TÂY NINH", "Thánh thất của đạo Cao Đài. Mỗi ngày bốn thời cúng, chuông trống vang khắp vùng."] },
+  { "x": 66, "y": 38, "text": ["NÚI BÀ ĐEN", "Cao 986 m, nóc nhà Nam Bộ. Đường mòn lên đỉnh qua chùa Bà và những bãi đá lớn."] }
+ ],
+ "npcs": [
+  { "id": "tn-guide", "name": "Chị Sáu Tây Ninh", "sprite": "girl", "x": 61, "y": 63, "lines": [
+    "Chào mừng tới Tây Ninh! Nhìn lên phía bắc kìa — Núi Bà Đen đó.",
+    "Mấy bữa nay đá trên núi lăn xuống hoài, người ta nói Thần Núi đang giận.",
+    "Muốn hiểu chuyện thì ghé Tòa Thánh phía tây hỏi Ông Đạo Chín."] },
+  { "id": "tn-monk", "name": "Ông Đạo Chín", "sprite": "elder", "x": 22, "y": 62, "lines": [
+    "Tòa Thánh này xây gần trăm năm, mái vàng cột rồng, ai tới cũng được vào.",
+    "Núi Bà có thần giữ từ xưa. Ai lên núi mà quấy phá là đá lăn xuống ngay."] },
+  { "id": "tn-pilgrim", "name": "Bà hành hương Tư", "sprite": "girl", "x": 84, "y": 27, "lines": [
+    "Năm nào bà cũng lên chùa Bà Đen cầu bình an.",
+    "Năm nay lên tới lưng chừng đã nghe đá rung. Con có sức thì lên coi giùm bà."] },
+  { "id": "tn-boat", "name": "Cô Út Tân Lập", "sprite": "girl", "x": 108, "y": 73, "lines": [
+    "Làng nổi Tân Lập là rừng tràm giữa đồng nước, đi xuồng len giữa hàng cây mát rượi.",
+    "Có tay lái xuồng hay chặn khách, cô ngán quá."] },
+  { "id": "tn-farmer", "name": "Chú Năm ruộng", "sprite": "farmer", "x": 40, "y": 97, "lines": [
+    "Lúa Long An thơm lắm con, gạo nấu cơm dẻo mà không dính.",
+    "Mùa gặt tới rồi, mà có thằng thợ gặt cứ đòi đấu với ai đi ngang."] },
+  { "id": "tn-fisher", "name": "Ông Hai Dầu Tiếng", "sprite": "villager", "x": 46, "y": 32, "lines": [
+    "Hồ Dầu Tiếng lớn nhất miền Nam, nước tưới cho cả mấy tỉnh.",
+    "Rác trôi vô bờ nhiều quá, cá về ít hẳn."] },
+  { "id": "tn-cake", "name": "Cô Bảy bánh tráng", "sprite": "girl", "x": 48, "y": 66, "lines": [
+    "Bánh tráng phơi sương Trảng Bàng đây con! Phơi nắng rồi phơi sương mới dẻo.",
+    "Cuốn với thịt luộc, rau rừng, chấm mắm nêm — ăn một lần là nhớ."] }
+ ],
+ "trainers": [
+  { "id": "tn-farmer-t", "name": "Thợ gặt Long", "sprite": "farmer", "x": 90, "y": 97,
+    "team": [["sawsbuck", 40], ["girafarig", 40], ["miltank", 41]],
+    "challenge": ["Gặt lúa cả ngày mà còn sức đấu với con nữa nè!"],
+    "win": ["Con giỏi hơn tui tưởng. Lúa này tui gặt tiếp đây."],
+    "lose": ["Ruộng Long An rộng lắm, con đi từ từ."],
+    "rewards": { "items": { "superpotion": 2, "sitrus-berry": 1 }, "exp": 1500 } },
+  { "id": "tn-canal-t", "name": "Lái xuồng Tân Lập", "sprite": "knight", "x": 116, "y": 62,
+    "team": [["mightyena", 41], ["ninjask", 40], ["yanmega", 41]],
+    "challenge": ["Xuồng tui chở khách vô rừng tràm. Muốn đi thì đấu với tui!"],
+    "win": ["Thôi được, con đi xuồng tui miễn phí."],
+    "lose": ["Rừng tràm sâu lắm, lạc là khó ra."],
+    "rewards": { "items": { "greatball": 3 }, "exp": 1500 } },
+  { "id": "tn-caodai-t", "name": "Đạo sinh Thanh", "sprite": "youngster", "x": 28, "y": 72,
+    "team": [["medicham", 41], ["grumpig", 41], ["bronzong", 42]],
+    "challenge": ["Tâm có tĩnh thì đánh mới hay. Mời bạn!"],
+    "win": ["Bạn tĩnh tâm hơn tôi rồi. Cảm ơn bạn đã chỉ giáo."],
+    "lose": ["Thở chậm lại, lần sau sẽ khác."],
+    "rewards": { "items": { "ultraball": 1, "superpotion": 2 }, "exp": 1600 } },
+  { "id": "tn-lake-t", "name": "Thợ đào cát Phước", "sprite": "bald", "x": 36, "y": 40,
+    "team": [["sandslash", 42], ["dugtrio", 41], ["hippowdon", 42]],
+    "challenge": ["Bờ hồ này cát tốt lắm, ai tới đây là phải đấu với tôi!"],
+    "win": ["Thua rồi! Cát này để dành xây nhà vậy."],
+    "lose": ["Lún cát rồi hả bạn?"],
+    "rewards": { "items": { "ultraball": 2, "soft-sand": 1 }, "exp": 1600 } },
+  { "id": "tn-mountain-t", "name": "Người leo núi Hùng", "sprite": "bald", "x": 92, "y": 20,
+    "team": [["golem", 43], ["rhydon", 43], ["lycanroc", 43]],
+    "challenge": ["Đỉnh Núi Bà không dành cho người yếu chân. Qua tôi trước đã!"],
+    "win": ["Bạn đủ sức lên đỉnh rồi. Thần Núi ở trên bãi đá, cẩn thận đá lăn."],
+    "lose": ["Leo núi cần sức bền, bạn nghỉ một chút đi."],
+    "rewards": { "items": { "superpotion": 2, "hard-stone": 1 }, "exp": 1800 } }
+ ],
+ "rescue": { "id": "tn-bell-rescue", "x": 72, "y": 31, "species": "chimecho", "level": 42,
+   "guards": [["mightyena", 40], ["mightyena", 40], ["houndoom", 42]], "quest": "vn-tn-rescue", "reporter": "Bà hành hương Tư" },
+ "chests": [
+  { "id": "chest-tn-caodai", "x": 6, "y": 56, "items": { "superpotion": 3, "moon-stone": 1 } },
+  { "id": "chest-tn-tanlap", "x": 122, "y": 56, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-tn-longan", "x": 6, "y": 102, "items": { "ultraball": 2, "superpotion": 2 } },
+  { "id": "chest-tn-summit", "x": 118, "y": 6, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-tn-lake", "x": 44, "y": 6, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-tn-nook", "x": 76, "y": 36, "items": { "exp-candy-m": 2, "hard-stone": 1 }, "requiresFlag": "field:tay-ninh:tn-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-tay-ninh-center", "name": "Trung tâm Pokémon Tây Ninh", "x": 53, "y": 59 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "golurk", "name": "Golurk — Thần Núi Bà Đen", "x": 100, "y": 10, "level": 44, "respawn": 600, "arena": 260,
+   "requires": ["beat:tn-mountain-t"],
+   "hint": "Đá trên đỉnh rung lên rồi lặng... Người leo núi Hùng đang canh lối lên đỉnh.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "hard-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 6000, "flag": "badge:tay-ninh", "message": "Nhận Huy hiệu Núi Bà (Tây Ninh)! Đường tới TP. Hồ Chí Minh đã mở: Quốc lộ 22." } },
+ "portals": [
+  {"id": "portal-tn-next", "name": "Quốc lộ 22 — đường tới TP. Hồ Chí Minh", "x": 123, "y": 96, "to": "ho-chi-minh", "toX": 7, "toY": 20, "requires": ["badge:tay-ninh"], "hint": "Đường tới TP. Hồ Chí Minh mở cho người có Huy hiệu Núi Bà — hạ boss Tây Ninh trước."},
+  { "id": "portal-tn-dt", "name": "Quốc lộ — về Đồng Tháp", "x": 64, "y": 107, "to": "dong-thap", "toX": 7, "toY": 50 }
+ ],
+ "docks": [],
+ "rivers": [
+  { "w": 3, "pts": [[52, 49], [86, 51], [127, 48]] },
+  { "w": 2, "pts": [[96, 52], [100, 70], [96, 84]] }
+ ],
+ "nodes": [
+  { "id": "tn-lake-1", "table": "lake-fish", "x": 40, "y": 24 },
+  { "id": "tn-paddy-1", "table": "paddy-fish", "x": 30, "y": 96 },
+  { "id": "tn-forest-1", "table": "forest-forage", "x": 112, "y": 78 },
+  { "id": "tn-canal-1", "table": "canal-fish", "x": 94, "y": 76 },
+  { "id": "tn-meadow-1", "table": "meadow-forage", "x": 106, "y": 40 }
+ ],
+ "field": [
+  { "id": "tn-boulder", "ability": "smash", "x": 80, "y": 36, "nook": { "cx": 76.5, "cy": 36.5, "r": 3, "wall": "boulder" } }
+ ]
+}

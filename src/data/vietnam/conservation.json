@@ -337,6 +337,98 @@
      "y": 5
     }
    ]
+  },
+  "ho-chi-minh": {
+   "id": "ho-chi-minh",
+   "name": "TP. Hồ Chí Minh",
+   "area": "sg-cangio",
+   "action": "plant",
+   "unlock": "vn-sg-3",
+   "boss": "magnezone",
+   "label": "Trồng cây đước con",
+   "done": "Bạn cắm cây đước con xuống bùn ven kênh. Rừng Sác sẽ dày thêm một chút.",
+   "thrivingReward": {
+    "miracle-seed": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "ho-chi-minh-1",
+     "x": 35,
+     "y": 96
+    },
+    {
+     "id": "ho-chi-minh-2",
+     "x": 35,
+     "y": 82
+    },
+    {
+     "id": "ho-chi-minh-3",
+     "x": 48,
+     "y": 90
+    },
+    {
+     "id": "ho-chi-minh-4",
+     "x": 24,
+     "y": 105
+    },
+    {
+     "id": "ho-chi-minh-5",
+     "x": 16,
+     "y": 93
+    },
+    {
+     "id": "ho-chi-minh-6",
+     "x": 55,
+     "y": 103
+    }
+   ]
+  },
+  "tay-ninh": {
+   "id": "tay-ninh",
+   "name": "Tây Ninh",
+   "area": "tn-dautieng",
+   "action": "trash",
+   "unlock": "vn-tn-3",
+   "boss": "golurk",
+   "label": "Vớt rác bờ hồ Dầu Tiếng",
+   "done": "Bạn gom túi nilon và chai nhựa dạt vào bờ. Nước hồ Dầu Tiếng trong hơn một chút.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "tay-ninh-1",
+     "x": 29,
+     "y": 30
+    },
+    {
+     "id": "tay-ninh-2",
+     "x": 30,
+     "y": 14
+    },
+    {
+     "id": "tay-ninh-3",
+     "x": 15,
+     "y": 32
+    },
+    {
+     "id": "tay-ninh-4",
+     "x": 16,
+     "y": 13
+    },
+    {
+     "id": "tay-ninh-5",
+     "x": 50,
+     "y": 48
+    },
+    {
+     "id": "tay-ninh-6",
+     "x": 7,
+     "y": 22
+    }
+   ]
   }
  }
 }

@@ -4687,5 +4687,1049 @@
     "Tràm con lên xanh rồi! Mùa khô tới chắc sếu về đông lắm."
    ]
   }
+ },
+ {
+  "id": "vn-tn-1",
+  "kind": "main",
+  "title": "Đất thánh Tây Ninh",
+  "giver": "tn-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:dong-thap"
+  ],
+  "description": "Tới Tây Ninh: ghé Trung tâm Pokémon rồi sang Tòa Thánh Cao Đài hỏi Ông Đạo Chín vì sao đá Núi Bà cứ lăn.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-tay-ninh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Tây Ninh",
+    "marker": {
+     "x": 53,
+     "y": 59,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "tn-caodai",
+    "count": 1,
+    "text": "Đến Tòa Thánh Cao Đài (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 67,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-monk",
+    "count": 1,
+    "text": "Hỏi chuyện Ông Đạo Chín",
+    "marker": {
+     "x": 22,
+     "y": 62,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 800,
+   "reputation": 10,
+   "flags": [
+    "landmark:toa-thanh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Tây Ninh! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi qua Tòa Thánh phía tây, Ông Đạo Chín biết chuyện Núi Bà rõ nhất."
+   ],
+   "progress": [
+    "Tòa Thánh ở cuối con đường phía tây, mái vàng nhìn là thấy."
+   ],
+   "complete": [
+    "Ông Đạo nói Thần Núi giận vì người lên núi xả rác, bẻ cây... Chuyện này phải lên tận nơi mới biết."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-2",
+  "kind": "main",
+  "title": "Lên Núi Bà",
+  "giver": "tn-guide",
+  "requires": [
+   "vn-tn-1"
+  ],
+  "description": "Theo đường mòn lên Núi Bà Đen, gặp Bà hành hương Tư ở lưng chừng núi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tn-baden",
+    "count": 1,
+    "text": "Lên Núi Bà Đen (phía bắc)",
+    "marker": {
+     "x": 89,
+     "y": 25,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-pilgrim",
+    "count": 1,
+    "text": "Gặp Bà hành hương Tư",
+    "marker": {
+     "x": 84,
+     "y": 27,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 850,
+   "reputation": 15,
+   "flags": [
+    "landmark:nui-ba-den"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Núi Bà Đen ở phía bắc thành phố. Bà Tư năm nào cũng lên, con hỏi bà đường lên đỉnh."
+   ],
+   "progress": [
+    "Đường mòn lên núi bắt đầu ở bờ sông phía bắc thành phố."
+   ],
+   "complete": [
+    "Bà Tư nói tiếng đá rung từ trên đỉnh. Người leo núi Hùng đang canh lối lên đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-3",
+  "kind": "main",
+  "title": "Thần Núi Bà Đen",
+  "giver": "tn-guide",
+  "requires": [
+   "vn-tn-2"
+  ],
+  "description": "Qua được Người leo núi Hùng để lên đỉnh, rồi làm Thần Núi nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tn-mountain-t",
+    "count": 1,
+    "text": "Thắng Người leo núi Hùng",
+    "marker": {
+     "x": 92,
+     "y": 20,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "golurk",
+    "count": 1,
+    "text": "Đánh bại Golurk — Thần Núi Bà Đen",
+    "marker": {
+     "x": 100,
+     "y": 10,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1100,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thần Núi ở trên bãi đá đỉnh núi. Anh Hùng chỉ cho người đủ sức lên thôi."
+   ],
+   "progress": [
+    "Đi hết đường mòn lên tới đỉnh, bãi đá lớn ở đó."
+   ],
+   "complete": [
+    "Đá trên núi nằm yên rồi! Huy hiệu Núi Bà là của con — đi đường xa nhớ giữ sức."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-rescue",
+  "kind": "side",
+  "title": "Chuông gió Núi Bà",
+  "giver": "tn-pilgrim",
+  "requires": [
+   "vn-tn-2"
+  ],
+  "description": "Một con Chimecho treo ở mái chùa bị bầy Mightyena đuổi ra bãi đá lưng núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "tn-bell-rescue",
+    "count": 1,
+    "text": "Giải cứu Chimecho ở bãi đá lưng núi",
+    "marker": {
+     "x": 72,
+     "y": 31,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-pilgrim",
+    "count": 1,
+    "text": "Báo cho Bà hành hương Tư",
+    "marker": {
+     "x": 84,
+     "y": 27,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 750,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Con Chimecho ở chùa bị bầy chó sói đuổi ra bãi đá rồi. Con cứu nó giùm bà!"
+   ],
+   "progress": [
+    "Bãi đá phía tây đường mòn đó con."
+   ],
+   "complete": [
+    "Chuông gió kêu lại rồi! Bà nghe là biết nó về chùa bình an."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-tanlap",
+  "kind": "side",
+  "title": "Xuồng qua rừng tràm",
+  "giver": "tn-boat",
+  "requires": [
+   "vn-tn-1"
+  ],
+  "description": "Lái xuồng Tân Lập chặn khách vào làng nổi. Cô Út nhờ con nói chuyện.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tn-tanlap",
+    "count": 1,
+    "text": "Đến làng nổi Tân Lập (phía đông)",
+    "marker": {
+     "x": 107,
+     "y": 67,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tn-canal-t",
+    "count": 1,
+    "text": "Thắng Lái xuồng Tân Lập",
+    "marker": {
+     "x": 116,
+     "y": 62,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-boat",
+    "count": 1,
+    "text": "Báo cho Cô Út Tân Lập",
+    "marker": {
+     "x": 108,
+     "y": 73,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 2,
+    "exp-candy-s": 2
+   },
+   "worldExp": 750,
+   "reputation": 12,
+   "flags": [
+    "landmark:tan-lap"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Rừng tràm Tân Lập đẹp lắm mà có tay lái xuồng cứ đòi đấu mới cho qua. Con giúp cô nha."
+   ],
+   "progress": [
+    "Anh ta đứng ở bến phía bắc làng nổi."
+   ],
+   "complete": [
+    "Khách vô làng nổi thoải mái rồi. Lần sau cô chở con đi xuồng miễn phí!"
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-harvest",
+  "kind": "side",
+  "title": "Mùa gặt Long An",
+  "giver": "tn-farmer",
+  "requires": [
+   "vn-tn-1"
+  ],
+  "description": "Thợ gặt Long đòi đấu với mọi người đi ngang ruộng. Chú Năm muốn yên ổn mà gặt.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "tn-longan",
+    "count": 1,
+    "text": "Đến cánh đồng lúa Long An",
+    "marker": {
+     "x": 63,
+     "y": 97,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "tn-farmer-t",
+    "count": 1,
+    "text": "Thắng Thợ gặt Long",
+    "marker": {
+     "x": 90,
+     "y": 97,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-farmer",
+    "count": 1,
+    "text": "Báo cho Chú Năm ruộng",
+    "marker": {
+     "x": 40,
+     "y": 97,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "superpotion": 2
+   },
+   "worldExp": 700,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Long gặt nhanh mà ham đấu quá. Con đấu với nó một trận cho nó chịu nghỉ."
+   ],
+   "progress": [
+    "Long ở bờ ruộng phía đông."
+   ],
+   "complete": [
+    "Long chịu gặt tiếp rồi. Bao gạo mới này chú tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-caodai",
+  "kind": "side",
+  "title": "Tĩnh tâm",
+  "giver": "tn-monk",
+  "requires": [
+   "vn-tn-1"
+  ],
+  "description": "Đạo sinh Thanh muốn thử xem người lạ có giữ được bình tĩnh trong trận đấu không.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tn-caodai-t",
+    "count": 1,
+    "text": "Thắng Đạo sinh Thanh",
+    "marker": {
+     "x": 28,
+     "y": 72,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-monk",
+    "count": 1,
+    "text": "Báo cho Ông Đạo Chín",
+    "marker": {
+     "x": 22,
+     "y": 62,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "sitrus-berry": 2
+   },
+   "worldExp": 700,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thanh nó đang học tĩnh tâm. Con đấu với nó một trận, cho nó thấy giữ bình tĩnh khó thế nào."
+   ],
+   "progress": [
+    "Thanh ở sân phía nam Tòa Thánh."
+   ],
+   "complete": [
+    "Thua mà vẫn cười — Thanh học được rồi đó. Cảm ơn con."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-lake",
+  "kind": "side",
+  "title": "Cát bờ Dầu Tiếng",
+  "giver": "tn-fisher",
+  "requires": [
+   "vn-tn-1"
+  ],
+  "description": "Thợ đào cát Phước làm sạt bờ hồ. Ông Hai muốn có người khuyên anh ta.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "tn-lake-t",
+    "count": 1,
+    "text": "Thắng Thợ đào cát Phước",
+    "marker": {
+     "x": 36,
+     "y": 40,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-fisher",
+    "count": 1,
+    "text": "Báo cho Ông Hai Dầu Tiếng",
+    "marker": {
+     "x": 46,
+     "y": 32,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 750,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Phước đào cát nhiều quá, bờ hồ sạt hết. Con nói chuyện với nó giùm ông."
+   ],
+   "progress": [
+    "Nó ở bãi cát phía đông nam hồ."
+   ],
+   "complete": [
+    "Phước hứa đào ít lại rồi. Bờ hồ còn giữ được là nhờ con."
+   ]
+  }
+ },
+ {
+  "id": "vn-tn-eco",
+  "kind": "side",
+  "title": "Hồ Dầu Tiếng sạch",
+  "giver": "tn-fisher",
+  "requires": [
+   "vn-tn-3"
+  ],
+  "description": "Rác trôi vào bờ hồ Dầu Tiếng sau mùa mưa. Vớt sạch để cá về.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:tay-ninh",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 29,
+     "y": 30,
+     "region": "tay-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "tn-fisher",
+    "count": 1,
+    "text": "Báo cho Ông Hai Dầu Tiếng",
+    "marker": {
+     "x": 46,
+     "y": 32,
+     "region": "tay-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 750,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Núi yên rồi, giờ tới hồ. Con phụ ông vớt rác ven bờ nha."
+   ],
+   "progress": [
+    "Mấy chỗ rác dồn lại sát mép nước đó con."
+   ],
+   "complete": [
+    "Bờ hồ sạch trơn rồi! Cá về đông lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-1",
+  "kind": "main",
+  "title": "Sài Gòn chập điện",
+  "giver": "sg-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:tay-ninh"
+  ],
+  "description": "Tới TP. Hồ Chí Minh: ghé Trung tâm Pokémon rồi lên Củ Chi hỏi Chú Bảy về tiếng rè rè dưới địa đạo.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-ho-chi-minh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Sài Gòn",
+    "marker": {
+     "x": 43,
+     "y": 52,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "sg-cuchi",
+    "count": 1,
+    "text": "Đến địa đạo Củ Chi (phía tây bắc)",
+    "marker": {
+     "x": 25,
+     "y": 20,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-tunnel",
+    "count": 1,
+    "text": "Hỏi Chú Bảy địa đạo",
+    "marker": {
+     "x": 20,
+     "y": 23,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 850,
+   "reputation": 10,
+   "flags": [
+    "landmark:cu-chi"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Lên xe anh chở! Mà khoan, ghé Trung tâm Pokémon trước đã.",
+    "Rồi lên Củ Chi hỏi Chú Bảy — ổng nghe được tiếng lạ dưới hầm."
+   ],
+   "progress": [
+    "Củ Chi ở phía tây bắc, theo quốc lộ là tới."
+   ],
+   "complete": [
+    "Tiếng rè rè dưới hầm chạy dọc theo đường điện về phía sông... Chắc chắn có thứ gì đó ở bến Bạch Đằng."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-2",
+  "kind": "main",
+  "title": "Phố đi bộ mất điện",
+  "giver": "sg-guide",
+  "requires": [
+   "vn-sg-1"
+  ],
+  "description": "Đèn quảng cáo quanh chợ Bến Thành chớp tắt. Hỏi Cô bán cà phê bệt rồi ra bến Bạch Đằng.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "sg-coffee",
+    "count": 1,
+    "text": "Hỏi Cô bán cà phê bệt cạnh nhà thờ",
+    "marker": {
+     "x": 72,
+     "y": 62,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "sg-river",
+    "count": 1,
+    "text": "Ra bến Bạch Đằng (phía đông)",
+    "marker": {
+     "x": 112,
+     "y": 54,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-boat",
+    "count": 1,
+    "text": "Hỏi Lái tàu Bạch Đằng",
+    "marker": {
+     "x": 106,
+     "y": 62,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 900,
+   "reputation": 15,
+   "flags": [
+    "landmark:ben-thanh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chợ Bến Thành với phố đi bộ chớp đèn suốt đêm qua. Con hỏi cô cà phê bệt, cô ngồi đó cả ngày."
+   ],
+   "progress": [
+    "Bến Bạch Đằng ở phía đông, qua cầu là tới."
+   ],
+   "complete": [
+    "Anh lái tàu thấy dưới sông sáng rực khi cả bến cúp điện... Kỹ sư Tín đang canh chỗ đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-3",
+  "kind": "main",
+  "title": "Thần Điện Sài Gòn",
+  "giver": "sg-guide",
+  "requires": [
+   "vn-sg-2"
+  ],
+  "description": "Kỹ sư điện Tín chặn lối vào bờ sông. Thắng anh ấy rồi đối mặt Magnezone.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "sg-engineer",
+    "count": 1,
+    "text": "Thắng Kỹ sư điện Tín",
+    "marker": {
+     "x": 108,
+     "y": 48,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "magnezone",
+    "count": 1,
+    "text": "Đánh bại Magnezone — Thần Điện Sài Gòn",
+    "marker": {
+     "x": 112,
+     "y": 40,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1150,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Kỹ sư Tín ở bờ sông phía bắc bến. Ảnh chỉ cho người đủ sức đi qua thôi."
+   ],
+   "progress": [
+    "Bờ sông phía bắc bến Bạch Đằng, nghe tiếng điện rè rè là tới."
+   ],
+   "complete": [
+    "Đèn cả thành phố sáng lại rồi! Huy hiệu Sài Gòn là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-rescue",
+  "kind": "side",
+  "title": "Rái cá Cần Giờ",
+  "giver": "sg-ranger",
+  "requires": [
+   "vn-sg-1"
+  ],
+  "description": "Một con Buizel bị bầy Seviper vây trong rừng Sác.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "sg-otter-rescue",
+    "count": 1,
+    "text": "Giải cứu Buizel ở rừng Sác Cần Giờ",
+    "marker": {
+     "x": 10,
+     "y": 102,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cần Giờ",
+    "marker": {
+     "x": 30,
+     "y": 95,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 750,
+   "reputation": 25,
+   "flags": [
+    "landmark:can-gio"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Có con Buizel bị rắn vây ở góc rừng phía tây. Con cứu nó giùm anh!"
+   ],
+   "progress": [
+    "Góc tây nam rừng Sác, gần kênh nước."
+   ],
+   "complete": [
+    "Buizel về kênh rồi! Rừng Sác còn giữ được tụi nó là mừng."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-tunnel",
+  "kind": "side",
+  "title": "Thợ đào hầm",
+  "giver": "sg-tunnel",
+  "requires": [
+   "vn-sg-1"
+  ],
+  "description": "Thợ đào hầm Ba muốn thử sức người lạ trước khi dẫn xuống địa đạo.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "sg-tunnel-t",
+    "count": 1,
+    "text": "Thắng Thợ đào hầm Ba",
+    "marker": {
+     "x": 14,
+     "y": 30,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-tunnel",
+    "count": 1,
+    "text": "Báo cho Chú Bảy địa đạo",
+    "marker": {
+     "x": 20,
+     "y": 23,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "soft-sand": 1
+   },
+   "worldExp": 750,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Ba nó đào hầm giỏi mà ham đấu. Con thử với nó một trận nha."
+   ],
+   "progress": [
+    "Ba ở dưới tán cao su phía nam địa đạo."
+   ],
+   "complete": [
+    "Ba phục con rồi. Lần sau nó dẫn con đi hết đường hầm."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-zoo",
+  "kind": "side",
+  "title": "Giờ vận động",
+  "giver": "sg-zoo",
+  "requires": [
+   "vn-sg-1"
+  ],
+  "description": "Pokémon ở Thảo Cầm Viên cần vận động. Người giữ thú Hòa muốn có người đấu cùng.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "sg-zoo",
+    "count": 1,
+    "text": "Đến Thảo Cầm Viên (phía tây)",
+    "marker": {
+     "x": 14,
+     "y": 59,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "sg-zoo-t",
+    "count": 1,
+    "text": "Thắng Người giữ thú Hòa",
+    "marker": {
+     "x": 20,
+     "y": 68,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-zoo",
+    "count": 1,
+    "text": "Báo cho Cô Mai Thảo Cầm Viên",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3
+   },
+   "worldExp": 700,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Tụi thú ở đây mập quá rồi! Con đấu với anh Hòa một trận cho tụi nó chạy nhảy."
+   ],
+   "progress": [
+    "Anh Hòa ở bãi cỏ phía nam vườn."
+   ],
+   "complete": [
+    "Tụi nó ngủ ngon rồi kìa. Cảm ơn con nha!"
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-beach",
+  "kind": "side",
+  "title": "Sóng Bãi Sau",
+  "giver": "sg-lifeguard",
+  "requires": [
+   "vn-sg-1"
+  ],
+  "description": "Dân lướt ván Tú thách đấu cả bãi biển. Chú cứu hộ muốn có người trị anh ta.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "sg-vungtau",
+    "count": 1,
+    "text": "Đến bãi biển Vũng Tàu (phía đông nam)",
+    "marker": {
+     "x": 99,
+     "y": 94,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "sg-beach-t",
+    "count": 1,
+    "text": "Thắng Dân lướt ván Tú",
+    "marker": {
+     "x": 110,
+     "y": 92,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-lifeguard",
+    "count": 1,
+    "text": "Báo cho Chú cứu hộ Vũng Tàu",
+    "marker": {
+     "x": 96,
+     "y": 98,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 800,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Tú lướt ván ngoài vùng cờ hoài. Con thắng nó thì nó mới chịu nghe chú."
+   ],
+   "progress": [
+    "Tú ở mé nước phía đông bãi."
+   ],
+   "complete": [
+    "Tú hứa tắm trong vùng cờ rồi. Cảm ơn con!"
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-monkeys",
+  "kind": "side",
+  "title": "Bầy khỉ rừng Sác",
+  "giver": "sg-ranger",
+  "requires": [
+   "vn-sg-1"
+  ],
+  "description": "Ngư dân Cần Giờ nuôi cả bầy khỉ quen đánh nhau. Kiểm lâm nhờ con dạy chúng biết điều.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "sg-cangio-t",
+    "count": 1,
+    "text": "Thắng Ngư dân Cần Giờ",
+    "marker": {
+     "x": 47,
+     "y": 98,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cần Giờ",
+    "marker": {
+     "x": 30,
+     "y": 95,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 2,
+    "exp-candy-s": 2
+   },
+   "worldExp": 700,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Bầy khỉ của ông ngư dân giành đồ du khách quá trời. Con đấu với ổng một trận nha."
+   ],
+   "progress": [
+    "Ông ở bờ kênh phía đông rừng Sác."
+   ],
+   "complete": [
+    "Tụi khỉ ngoan lại rồi. Du khách mừng lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-sg-eco",
+  "kind": "side",
+  "title": "Lá phổi xanh",
+  "giver": "sg-ranger",
+  "requires": [
+   "vn-sg-3"
+  ],
+  "description": "Bãi bồi Cần Giờ cần thêm cây đước để giữ đất.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:ho-chi-minh",
+    "count": 6,
+    "text": "Trồng 6 cây đước con ven kênh Cần Giờ",
+    "marker": {
+     "x": 35,
+     "y": 96,
+     "region": "ho-chi-minh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "sg-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Cần Giờ",
+    "marker": {
+     "x": 30,
+     "y": 95,
+     "region": "ho-chi-minh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "miracle-seed": 1
+   },
+   "worldExp": 750,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Thành phố có điện lại rồi, giờ tới lượt rừng. Con trồng giùm anh mấy cây đước ven kênh nha."
+   ],
+   "progress": [
+    "Chỗ bùn sát mép kênh trong rừng Sác đó con."
+   ],
+   "complete": [
+    "Đước con bám rễ rồi! Rừng Sác sẽ còn xanh lâu."
+   ]
+  }
  }
 ]

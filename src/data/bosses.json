@@ -879,5 +879,113 @@
    "ultimateStyle": "safe",
    "power": 0.33
   }
+ },
+ {
+  "id": "golurk",
+  "name": "Golurk — Thần Núi Bà Đen",
+  "types": [
+   "ground",
+   "ghost"
+  ],
+  "baseStats": {
+   "hp": 89,
+   "atk": 124,
+   "def": 80,
+   "spa": 55,
+   "spd": 80,
+   "spe": 55
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "shadow_punch",
+   "bulldoze"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "golett",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Núi Bà Đen gầm vang — đá lăn khắp sườn núi!",
+  "exp": 150,
+  "sprite": "golurk",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "earth_power",
+   "volley": "shadow_ball",
+   "nova": "bulldoze",
+   "field": "mud_shot",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "earthquake",
+   "ultimateName": "Núi Bà Rung Chuyển",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
+ },
+ {
+  "id": "magnezone",
+  "name": "Magnezone — Thần Điện Sài Gòn",
+  "types": [
+   "electric",
+   "steel"
+  ],
+  "baseStats": {
+   "hp": 70,
+   "atk": 70,
+   "def": 115,
+   "spa": 130,
+   "spd": 90,
+   "spe": 60
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "thunderbolt",
+   "flash_cannon"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "magnemite",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Điện hút sạch đèn đường — cả bến sông tối om!",
+  "exp": 150,
+  "sprite": "magnezone",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "zap_cannon",
+   "volley": "electro_ball",
+   "nova": "discharge",
+   "field": "electroweb",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "thunder",
+   "ultimateName": "Sài Gòn Mất Điện",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

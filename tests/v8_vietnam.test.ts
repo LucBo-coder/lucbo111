@@ -127,7 +127,7 @@ describe('Vietnam Odyssey: rendering', () => {
   it('Mekong maps use green ground, dirt paths, mangrove / melaleuca trees — never another theme\'s tiles', async () => {
     const { EX, TOWN } = await import('../src/core/map/tiles');
     const foreign = new Set<number>([EX.sanctum, EX.sanctum2, EX.snow, EX.snow2, EX.ash, EX.ash2, EX.ruin, EX.ruin2]);
-    for (const id of VN) {
+    for (const id of VN.filter((x) => REGION_DEFS[x].theme === 'mekong')) {
       const m = new ValleyMap(REGION_DEFS[id]);
       const used = new Set<number>();
       for (let y = 0; y < m.heightTiles; y += 2) for (let x = 0; x < m.widthTiles; x += 2) {

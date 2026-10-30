@@ -1,5 +1,23 @@
 [
   {
+    "id": "vn-ho-chi-minh",
+    "title": "Việt Nam Odyssey: tỉnh thứ chín — TP. Hồ Chí Minh",
+    "items": [
+      "Theo quốc lộ 22 từ Tây Ninh sau khi có Huy hiệu Núi Bà.",
+      "Địa đạo Củ Chi, vườn trái Lái Thiêu, Thảo Cầm Viên, chợ Bến Thành, bến Bạch Đằng, rừng Sác Cần Giờ và biển Vũng Tàu: 9 nhiệm vụ.",
+      "Thần Điện Sài Gòn làm cả thành phố chập điện: đánh bại để nhận Huy hiệu Sài Gòn."
+    ]
+  },
+  {
+    "id": "vn-tay-ninh",
+    "title": "Việt Nam Odyssey: tỉnh thứ tám — Tây Ninh",
+    "items": [
+      "Đi từ Gò Tháp (Đồng Tháp) theo quốc lộ sau khi có Huy hiệu Sen Hồng.",
+      "Cánh đồng lúa Long An, làng nổi Tân Lập, Tòa Thánh Cao Đài, hồ Dầu Tiếng và Núi Bà Đen: 9 nhiệm vụ, 5 huấn luyện viên.",
+      "Thần Núi Bà Đen chờ trên đỉnh: đánh bại để nhận Huy hiệu Núi Bà."
+    ]
+  },
+  {
     "id": "vn-dong-thap",
     "title": "Việt Nam Odyssey: tỉnh thứ bảy — Đồng Tháp",
     "items": [
