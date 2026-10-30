@@ -2166,5 +2166,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "altaria",
+  "name": "Altaria — Chim Mây Bạch Mộc",
+  "types": [
+   "dragon",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 75,
+   "atk": 70,
+   "def": 90,
+   "spa": 70,
+   "spd": 105,
+   "spe": 80
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "dragon_pulse",
+   "moonblast"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "swablu",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Chim Mây sải cánh — biển mây cuộn thành bão!",
+  "exp": 150,
+  "sprite": "altaria",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "dragon_pulse",
+   "volley": "air_slash",
+   "nova": "hurricane",
+   "field": "twister",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "sky_attack",
+   "ultimateName": "Biển Mây Bạch Mộc Cuộn Trào",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

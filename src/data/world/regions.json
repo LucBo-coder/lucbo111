@@ -4157,5 +4157,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-lh-bachmoc",
+  "name": "Đỉnh Bạch Mộc Lương Tử",
+  "areas": [
+   "lh-bachmoc"
+  ],
+  "biome": "rocky",
+  "level": [
+   89,
+   92
+  ],
+  "elite": [
+   93,
+   95
+  ],
+  "boss": null,
+  "recommended": 91,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lh-lake",
+  "name": "Hồ thủy điện Lai Châu",
+  "areas": [
+   "lh-lake"
+  ],
+  "biome": "lake",
+  "level": [
+   88,
+   91
+  ],
+  "elite": [
+   92,
+   94
+  ],
+  "boss": null,
+  "recommended": 90,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lh-pusamcap",
+  "name": "Rừng Pu Sam Cáp",
+  "areas": [
+   "lh-pusamcap"
+  ],
+  "biome": "forest",
+  "level": [
+   86,
+   89
+  ],
+  "elite": [
+   90,
+   92
+  ],
+  "boss": null,
+  "recommended": 88,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lh-tamduong",
+  "name": "Đồi chè Tam Đường",
+  "areas": [
+   "lh-tamduong"
+  ],
+  "biome": "farm",
+  "level": [
+   86,
+   89
+  ],
+  "elite": [
+   90,
+   92
+  ],
+  "boss": null,
+  "recommended": 88,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lh-sinho",
+  "name": "Cao nguyên Sìn Hồ",
+  "areas": [
+   "lh-sinho"
+  ],
+  "biome": "meadow",
+  "level": [
+   87,
+   90
+  ],
+  "elite": [
+   91,
+   93
+  ],
+  "boss": null,
+  "recommended": 89,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

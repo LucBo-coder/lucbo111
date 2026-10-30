@@ -17325,5 +17325,534 @@
     "Thác trong veo rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-lh-1",
+  "kind": "main",
+  "title": "Bão trong biển mây",
+  "giver": "lh-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:lao-cai"
+  ],
+  "description": "Tới Lai Châu: ghé Trung tâm Pokémon rồi lên Bạch Mộc Lương Tử hỏi ông già người Dao.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-lai-chau-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Lai Châu",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "lh-bachmoc",
+    "count": 1,
+    "text": "Lên Bạch Mộc Lương Tử (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-elder",
+    "count": 1,
+    "text": "Hỏi Ông già người Dao",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 2200,
+   "reputation": 10,
+   "flags": [
+    "landmark:bach-moc"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Lai Châu! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên Bạch Mộc hỏi ông già người Dao, biển mây cuộn bão mấy hôm rồi."
+   ],
+   "progress": [
+    "Bạch Mộc Lương Tử ở phía tây bắc."
+   ],
+   "complete": [
+    "Ông nói Chim Mây giận vì rác trong mây... Cô lái thuyền lòng hồ và cụ thầy lang có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-2",
+  "kind": "main",
+  "title": "Mây đen xuống hồ",
+  "giver": "lh-guide",
+  "requires": [
+   "vn-lh-1"
+  ],
+  "description": "Ra lòng hồ hỏi cô lái thuyền, rồi vào rừng Pu Sam Cáp hỏi cụ thầy lang.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "lh-lake",
+    "count": 1,
+    "text": "Ra hồ thủy điện (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-lake",
+    "count": 1,
+    "text": "Hỏi Cô lái thuyền lòng hồ",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-forest",
+    "count": 1,
+    "text": "Hỏi Cụ thầy lang Pu Sam Cáp",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 2250,
+   "reputation": 15,
+   "flags": [
+    "landmark:pu-sam-cap"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cô lái thuyền thấy mây đen kéo xuống hồ. Em ra hỏi, rồi vào rừng hỏi thêm."
+   ],
+   "progress": [
+    "Hồ ở phía bắc, rừng ở phía tây."
+   ],
+   "complete": [
+    "Muốn lên đỉnh gặp Chim Mây, phải qua người săn mây."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-3",
+  "kind": "main",
+  "title": "Chim Mây Bạch Mộc",
+  "giver": "lh-guide",
+  "requires": [
+   "vn-lh-2"
+  ],
+  "description": "Thắng Người săn mây Bạch Mộc để lên đỉnh, rồi làm Altaria nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "lh-gate-t",
+    "count": 1,
+    "text": "Thắng Người săn mây Bạch Mộc",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "altaria",
+    "count": 1,
+    "text": "Đánh bại Altaria — Chim Mây Bạch Mộc",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2500,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Người săn mây canh lối lên đỉnh. Em đủ sức thì lên."
+   ],
+   "progress": [
+    "Đỉnh núi ở góc tây bắc."
+   ],
+   "complete": [
+    "Chim Mây hót lại, biển mây êm rồi! Huy hiệu Biển Mây là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-rescue",
+  "kind": "side",
+  "title": "Gấu trúc lạc rừng",
+  "giver": "lh-elder",
+  "requires": [
+   "vn-lh-1"
+  ],
+  "description": "Một con Pangoro bị bầy cáo vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "lh-panda-rescue",
+    "count": 1,
+    "text": "Giải cứu Pangoro ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-elder",
+    "count": 1,
+    "text": "Báo cho Ông già người Dao",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1850,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con gấu bị bầy cáo vây ở góc tây núi. Em giúp ông!"
+   ],
+   "progress": [
+    "Góc tây Bạch Mộc."
+   ],
+   "complete": [
+    "Gấu về rừng rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-power",
+  "kind": "side",
+  "title": "Điện lòng hồ",
+  "giver": "lh-lake",
+  "requires": [
+   "vn-lh-1"
+  ],
+  "description": "Thợ thủy điện thả Pokémon điện làm cá hồ chết.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "lh-lake-t",
+    "count": 1,
+    "text": "Thắng Thợ thủy điện Lai Châu",
+    "marker": {
+     "x": 94,
+     "y": 24,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái thuyền lòng hồ",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "magnet": 1
+   },
+   "worldExp": 1700,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Pokémon điện của anh thợ làm cá chết. Em nói chuyện với ảnh giùm cô."
+   ],
+   "progress": [
+    "Anh ấy ở bờ đông hồ."
+   ],
+   "complete": [
+    "Ảnh hứa không thả nữa rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-ginseng",
+  "kind": "side",
+  "title": "Sâm rừng Pu Sam Cáp",
+  "giver": "lh-forest",
+  "requires": [
+   "vn-lh-2"
+  ],
+  "description": "Kẻ đào trộm sâm phá rừng Pu Sam Cáp.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "lh-forest-t",
+    "count": 1,
+    "text": "Thắng Kẻ đào trộm sâm",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-forest",
+    "count": 1,
+    "text": "Báo cho Cụ thầy lang Pu Sam Cáp",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   },
+   "worldExp": 1650,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa đào trộm sâm ở góc tây nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Rừng yên rồi. Củ sâm nhỏ này cụ tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-tea",
+  "kind": "side",
+  "title": "Chè sạch Tam Đường",
+  "giver": "lh-farm",
+  "requires": [
+   "vn-lh-1"
+  ],
+  "description": "Kẻ phun thuốc bừa bãi trên đồi chè Tam Đường.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "lh-tamduong",
+    "count": 1,
+    "text": "Đến đồi chè Tam Đường (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 89,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "lh-farm-t",
+    "count": 1,
+    "text": "Thắng Kẻ phun thuốc Tam Đường",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-farm",
+    "count": 1,
+    "text": "Báo cho Cô hái chè Tam Đường",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "poison-barb": 1
+   },
+   "worldExp": 1650,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng phun thuốc làm chè đắng ngắt. Em nói chuyện với nó giùm cô."
+   ],
+   "progress": [
+    "Nó ở góc đông nam đồi chè."
+   ],
+   "complete": [
+    "Nó hứa làm chè sạch rồi. Gói chè này cô tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-martial",
+  "kind": "side",
+  "title": "Võ Sìn Hồ",
+  "giver": "lh-plateau",
+  "requires": [
+   "vn-lh-1"
+  ],
+  "description": "Võ sĩ Sìn Hồ muốn thử sức người lạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "lh-sinho",
+    "count": 1,
+    "text": "Đến cao nguyên Sìn Hồ (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "lh-plateau-t",
+    "count": 1,
+    "text": "Thắng Võ sĩ Sìn Hồ",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-plateau",
+    "count": 1,
+    "text": "Báo cho Người Mông Sìn Hồ",
+    "marker": {
+     "x": 116,
+     "y": 40,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "protein": 1
+   },
+   "worldExp": 1700,
+   "reputation": 12,
+   "flags": [
+    "landmark:sin-ho"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Anh võ sĩ ham đấu lắm. Em thử với ảnh."
+   ],
+   "progress": [
+    "Anh ấy ở phía nam cao nguyên."
+   ],
+   "complete": [
+    "Phiên chợ tới em ghé, uống chén rượu... à nước chè nha."
+   ]
+  }
+ },
+ {
+  "id": "vn-lh-eco",
+  "kind": "side",
+  "title": "Lòng hồ trong xanh",
+  "giver": "lh-lake",
+  "requires": [
+   "vn-lh-3"
+  ],
+  "description": "Rác trôi dạt bờ hồ thủy điện.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:lai-chau",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "lai-chau"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "lh-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái thuyền lòng hồ",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "lai-chau"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1700,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Biển mây yên rồi, giờ dọn hồ. Em phụ cô vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Hồ trong veo rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

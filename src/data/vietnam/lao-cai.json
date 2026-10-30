@@ -712,10 +712,11 @@
    },
    "money": 17500,
    "flag": "badge:lao-cai",
-   "message": "Nhận Huy hiệu Nóc Nhà Đông Dương (Lào Cai)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Nóc Nhà Đông Dương (Lào Cai)! Đường tới Lai Châu đã mở: Quốc lộ 4D."
   }
  },
  "portals": [
+  {"id": "portal-lc-next", "name": "Quốc lộ 4D — đường sang Lai Châu", "x": 112, "y": 5, "to": "lai-chau", "toX": 64, "toY": 104, "requires": ["badge:lao-cai"], "hint": "Đường tới Lai Châu mở cho người có Huy hiệu Nóc Nhà Đông Dương — hạ boss Lào Cai trước."},
   {
    "id": "portal-lc-tq",
    "name": "Quốc lộ 279 — về Tuyên Quang",

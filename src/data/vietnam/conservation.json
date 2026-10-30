@@ -890,6 +890,52 @@
     }
    ]
   },
+  "lai-chau": {
+   "id": "lai-chau",
+   "name": "Lai Châu",
+   "area": "lh-lake",
+   "action": "trash",
+   "unlock": "vn-lh-3",
+   "boss": "altaria",
+   "label": "Vớt rác trên lòng hồ",
+   "done": "Bạn vớt chai nhựa và túi nilon dạt bờ hồ. Lòng hồ trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "lai-chau-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "lai-chau-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "lai-chau-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "lai-chau-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "lai-chau-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "lai-chau-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "lam-dong": {
    "id": "lam-dong",
    "name": "Lâm Đồng",
