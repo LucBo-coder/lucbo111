@@ -10,7 +10,7 @@ import { REGIONS } from '../src/core/encounters';
 // sign, prop, waypoint, portal) stands on open ground that the player can reach.
 
 const ADVENTURE = ['starter-valley', 'frozen-mountains', 'volcanic-lands', 'misty-swamp', 'coral-coast', 'legendary-sanctuary'];
-const VIETNAM = ['ca-mau', 'an-giang', 'can-tho', 'vinh-long', 'tra-vinh'];
+const VIETNAM = ['ca-mau', 'an-giang', 'can-tho', 'vinh-long', 'tra-vinh', 'ben-tre'];
 const PLANES = Object.keys(REGION_DEFS).filter((id) => REGION_DEFS[id].void);
 
 const maps = new Map<string, ValleyMap>();

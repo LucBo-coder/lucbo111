@@ -1,0 +1,150 @@
+{
+ "id": "ben-tre",
+ "name": "Bến Tre",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "mekong",
+ "spawn": { "x": 80, "y": 102 },
+ "areas": [
+  { "id": "bt-south", "name": "Bờ nam sông Cổ Chiên", "rect": [0, 94, 127, 111], "habitat": "mangrove", "level": [34, 37] },
+  { "id": "bt-town", "name": "Thành phố Bến Tre", "rect": [34, 30, 70, 58], "habitat": "village", "level": [36, 36] },
+  { "id": "bt-candy", "name": "Làng kẹo dừa", "rect": [0, 38, 33, 62], "habitat": "meadow", "level": [35, 38] },
+  { "id": "bt-coconut", "name": "Vườn dừa Thới Sơn", "rect": [100, 0, 127, 86], "habitat": "meadow", "level": [36, 39] },
+  { "id": "bt-hamluong", "name": "Bờ sông Hàm Luông", "rect": [0, 0, 99, 22], "habitat": "lake", "level": [37, 40] },
+  { "id": "bt-forest", "name": "Rừng tràm Bến Tre", "rect": [0, 66, 34, 88], "habitat": "forest", "level": [36, 40] },
+  { "id": "bt-meadow", "name": "Đồng cỏ Mỏ Cày", "rect": [71, 50, 99, 86], "habitat": "meadow", "level": [35, 38] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[80, 106], [80, 70], [66, 58], [52, 48], [52, 40]] },
+  { "w": 3, "pts": [[52, 48], [30, 50], [12, 50]] },
+  { "w": 3, "pts": [[80, 70], [104, 62], [120, 50], [124, 30]] },
+  { "w": 3, "pts": [[52, 40], [52, 24], [56, 14]] },
+  { "w": 3, "pts": [[52, 50], [40, 76], [20, 84]] }
+ ],
+ "plaza": [46, 42, 60, 48],
+ "lake": { "cx": 90, "cy": 76, "rx": 4, "ry": 3 },
+ "buildings": [
+  { "id": "bt-center", "name": "Trung tâm Pokémon", "x": 48, "y": 34, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "bt-shop", "name": "Tiệm kẹo dừa", "x": 62, "y": 34, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 1 },
+  { "id": "bt-school", "name": "Trường Sóc Sơn", "x": 36, "y": 32, "w": 5, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "bt-house-1", "name": "Nhà cô Ba Lựu", "x": 34, "y": 44, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1 },
+  { "id": "bt-house-2", "name": "Nhà ông Năm", "x": 64, "y": 44, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1 }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 44, "y": 40 },
+  { "kind": "beehive", "x": 58, "y": 40 },
+  { "kind": "haystack", "x": 26, "y": 42 },
+  { "kind": "log", "x": 14, "y": 58 },
+  { "kind": "bucket", "x": 72, "y": 62 },
+  { "kind": "target", "x": 112, "y": 56 }
+ ],
+ "signs": [
+  { "x": 54, "y": 50, "text": ["THÀNH PHỐ BẾN TRE", "Xứ dừa của miền Tây: nước dừa, kẹo dừa và những con kênh chằng chịt. Phía tây: làng kẹo dừa · Phía đông: vườn dừa Thới Sơn · Phía bắc: sông Hàm Luông · Phía nam: sông Cổ Chiên."] },
+  { "x": 12, "y": 48, "text": ["LÀNG KẸO DỪA", "Kẹo dừa nấu trong chảo đồng, quết tay cho đến khi kẹo dẻo và thơm mùi nước dừa."] },
+  { "x": 80, "y": 100, "text": ["CẦU CỔ CHIÊN", "Nối Trà Vinh với Bến Tre qua dòng Cổ Chiên. Đò ngang bến Rạch Miễu đi về phía đông."] }
+ ],
+ "npcs": [
+  { "id": "bt-guide", "name": "Cô Ba Lựu", "sprite": "girl", "x": 58, "y": 45, "lines": [
+    "Chào mừng về Bến Tre — xứ dừa của miền Tây!",
+    "Kẹo dừa ở làng phía tây, dừa ở vườn phía đông, và nước sông Hàm Luông phía bắc còn rất nhiều cá.",
+    "Vào rừng tràm phía tây nam thì coi chừng Thần Dừa Trăm Thân nha con."] },
+  { "id": "bt-candy-seller", "name": "Bà bán kẹo Tư", "sprite": "girl", "x": 68, "y": 38, "lines": [
+    "Kẹo dừa đây con! Kẹo mềm, kẹo gừng, kẹo đậu phộng — ngon lắm!",
+    "Kẹo của bà làm từ dừa Thới Sơn, không pha hóa chất."] },
+  { "id": "bt-elder", "name": "Ông Sáu Sóc", "sprite": "youngster", "x": 12, "y": 52, "lines": [
+    "Làng kẹo dừa này có từ mấy đời rồi con.",
+    "Người xưa kể: dừa nào già trăm năm thì thành thần, đứng thành cả bụi, lắc lư khi gió đổi chiều."] },
+  { "id": "bt-ferry", "name": "Lái đò Hai", "sprite": "youngster", "x": 79, "y": 98, "lines": [
+    "Đò ngang qua Cổ Chiên đây! Đi Trà Vinh thì đi cầu, đi Cồn Phụng thì đi đò.",
+    "Ngày nước lớn, cá đối nhảy đầy mặt sông."] },
+  { "id": "bt-coco", "name": "Chú Tư Dừa", "sprite": "youngster", "x": 110, "y": 40, "lines": [
+    "Vườn dừa này trồng gần trăm năm rồi, cây nào cũng có tên.",
+    "Mấy con chim sẻ dừa ở đây tranh nhau trái. Ai ăn dừa rớt thì tụi nó hốt sạch."] },
+  { "id": "bt-fisher", "name": "Ông Năm Lưới", "sprite": "youngster", "x": 40, "y": 16, "lines": [
+    "Sông Hàm Luông rộng lắm, nước đục mà nhiều cá.",
+    "Con cá lóc dưới bờ này lớn lắm, cẩn thận đừng để nó kéo xuống nước."] },
+  { "id": "bt-seller", "name": "Cô Út nước dừa", "sprite": "girl", "x": 98, "y": 58, "lines": [
+    "Nước dừa tươi đây! Uống cho mát, đi đường xa mới chịu nổi.",
+    "Bờ sông Hàm Luông hôm trước dơ quá — mấy bạn trẻ nhặt rác giúp cô là cô mừng lắm."] }
+ ],
+ "trainers": [
+  { "id": "bt-candy-keeper", "name": "Thợ kẹo Bảy", "sprite": "youngster", "x": 22, "y": 56,
+    "team": [["ludicolo", 36], ["tangela", 36], ["tropius", 38]],
+    "challenge": ["Kẹo dừa của tôi nấu lâu lắm rồi, ai qua được làng này phải qua tôi trước!"],
+    "win": ["Hết kẹo rồi... thôi, con đi tiếp đi. Làng kẹo bình yên nhờ con."],
+    "lose": ["Kẹo của tôi ngọt hơn, nhưng con đánh cũng giỏi đó!"],
+    "rewards": { "items": { "superpotion": 2 }, "exp": 1200 } },
+  { "id": "bt-ferry-tough", "name": "Lái đò Sáu", "sprite": "knight", "x": 78, "y": 102,
+    "team": [["marowak", 38], ["ninetales", 38], ["golem", 39]],
+    "challenge": ["Qua sông được không? Phải đánh được tao đã!"],
+    "win": ["Đúng là gan dạ! Đò này con đi được rồi."],
+    "lose": ["Sóng sông nó đánh mạnh lắm nha con."],
+    "rewards": { "items": { "greatball": 2 }, "exp": 1300 } },
+  { "id": "bt-coconut-climber", "name": "Hái dừa Tám", "sprite": "bald", "x": 112, "y": 46,
+    "team": [["machamp", 38], ["hitmonchan", 38], ["pinsir", 39]],
+    "challenge": ["Leo dừa cả ngày, sức tao dư lắm. Thử đi!"],
+    "win": ["Trời ơi, con khỏe hơn tao nữa! Dừa trên cao cho con đó."],
+    "lose": ["Lần sau nhớ đi dưới bóng dừa cho mát nha!"],
+    "rewards": { "items": { "ultraball": 1 }, "exp": 1300 } },
+  { "id": "bt-forest-ranger", "name": "Kiểm lâm Út", "sprite": "ranger", "x": 18, "y": 76,
+    "team": [["breloom", 38], ["sawsbuck", 38], ["pineco", 37]],
+    "challenge": ["Rừng tràm này có thần canh giữ. Muốn vào thì cho tôi xem con có đủ sức không!"],
+    "win": ["Thần dừa ở trong sâu. Con đi đi, nhưng đừng phá cây nha."],
+    "lose": ["Cây tràm cũng có linh hồn đó con, phải biết tôn trọng."],
+    "rewards": { "items": { "sitrus-berry": 2 }, "exp": 1400 } },
+  { "id": "bt-meadow-rider", "name": "Chú nuôi trâu Năm", "sprite": "farmer", "x": 100, "y": 68,
+    "team": [["tauros", 37], ["stantler", 37], ["rhyhorn", 36]],
+    "challenge": ["Trâu tôi đi đồng quen rồi, con có dám đua với nó không?"],
+    "win": ["Trâu tôi chịu thua con rồi! Đồng cỏ Mỏ Cày này con đi thoải mái."],
+    "lose": ["Trâu nó húc mạnh quá hả con? Lần sau đi chậm lại nha."],
+    "rewards": { "items": { "superpotion": 2 }, "exp": 1200 } }
+ ],
+ "rescue": { "id": "bt-pelican-rescue", "x": 112, "y": 100, "species": "pelipper", "level": 38,
+   "guards": [["wingull", 36], ["wingull", 36], ["swellow", 38]], "quest": "vn-bt-rescue", "reporter": "Chú Tư Dừa" },
+ "chests": [
+  { "id": "chest-bt-candy", "x": 10, "y": 44, "items": { "superpotion": 3, "ultraball": 1 } },
+  { "id": "chest-bt-coconut", "x": 124, "y": 16, "items": { "greatball": 2, "sitrus-berry": 2 } },
+  { "id": "chest-bt-river", "x": 60, "y": 102, "items": { "superpotion": 2, "sitrus-berry": 1 } },
+  { "id": "chest-bt-forest", "x": 6, "y": 80, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-bt-hamluong", "x": 92, "y": 14, "items": { "dusk-stone": 1, "greatball": 2 } }
+ ],
+ "waypoints": [
+  { "id": "wp-ben-tre-center", "name": "Trung tâm Pokémon Bến Tre", "x": 51, "y": 41 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "exeggutor", "name": "Exeggutor — Dừa Trăm Thân", "x": 8, "y": 72, "level": 40, "respawn": 600, "arena": 260,
+   "requires": ["beat:bt-forest-ranger"],
+   "hint": "Lá dừa rì rào trong rừng tràm... Hỏi chuyện Kiểm lâm Út trước đã.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dusk-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 5000, "flag": "badge:ben-tre", "message": "Nhận Huy hiệu Dừa Xiêm (Bến Tre)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-bt-tv", "name": "Cầu Cổ Chiên — về Trà Vinh", "x": 80, "y": 108, "to": "tra-vinh", "toX": 80, "toY": 14 }
+ ],
+ "docks": [
+  { "id": "bt-dock-river", "name": "Bến đò Rạch Miễu", "x": 72, "y": 93, "wx": 72, "wy": 92 }
+ ],
+ "rivers": [
+  { "w": 3, "pts": [[0, 91], [40, 90], [80, 92], [127, 90]], "mouth": true },
+  { "w": 4, "pts": [[0, 10], [40, 12], [80, 9], [127, 11]], "mouth": true }
+ ],
+ "nodes": [
+  { "id": "bt-canal-1", "table": "canal-fish", "x": 66, "y": 93 },
+  { "id": "bt-canal-2", "table": "canal-fish", "x": 76, "y": 93 },
+  { "id": "bt-mangrove-1", "table": "mangrove-forage", "x": 20, "y": 102 },
+  { "id": "bt-orchard-1", "table": "orchard-forage", "x": 110, "y": 24 },
+  { "id": "bt-orchard-2", "table": "orchard-forage", "x": 116, "y": 66 },
+  { "id": "bt-lake-1", "table": "lake-fish", "x": 26, "y": 13 },
+  { "id": "bt-honey-1", "table": "melaleuca-honey", "x": 16, "y": 70 }
+ ],
+ "field": [
+  { "id": "bt-thicket", "ability": "cut", "x": 30, "y": 60, "nook": { "cx": 26.5, "cy": 60.5, "r": 3, "wall": "tree" } },
+  { "id": "bt-boulder", "ability": "smash", "x": 118, "y": 64, "nook": { "cx": 114.5, "cy": 64.5, "r": 3, "wall": "boulder" } }
+ ]
+}

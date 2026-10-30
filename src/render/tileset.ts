@@ -42,9 +42,9 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   draw('kenney-tiny-town', 0, '#5aa850');
   draw('kenney-tiny-dungeon', 11 * TILE, '#6a5a4a');
 
-  // Sample Kenney's grass colour so procedural tiles blend seamlessly
-  const px = ctx.getImageData(1, 1, 1, 1).data;
-  const grass: [number, number, number] = missing.has('kenney-tiny-town') ? [90, 168, 80] : [px[0], px[1], px[2]];
+  // GBA-style palette (Ruby/Emerald feel): saturated 3-tone grass and a tan path with a dark rim
+  const GBA = { grass: '#7cc458', mid: '#68ae48', dark: '#3f8a3c', light: '#a4dc78', path: '#e8c48a', pathLight: '#f6e2b4', pathDark: '#b88a54', pathRim: '#9c6e3e' };
+  const grass: [number, number, number] = [124, 196, 88];
 
   const cell = (idx: number) => ({ x: (idx % COLS) * TILE, y: Math.floor(idx / COLS) * TILE });
   const fill = (idx: number, color: string) => { const c = cell(idx); ctx.fillStyle = color; ctx.fillRect(c.x, c.y, TILE, TILE); };
@@ -62,6 +62,46 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   };
   water(EX.water, 0);
   water(EX.water + 1, 1);
+
+  // Ground: Kenney's grass and dirt cells are repainted in place (same indices, so the map code is unchanged)
+  const dot = (c: { x: number; y: number }, x: number, y: number, col: string) => { ctx.fillStyle = col; ctx.fillRect(c.x + x, c.y + y, 1, 1); };
+  const gbaGrass = (idx: number, seed: number, tufts: number, flowers: string[] = []) => {
+    const c = cell(idx);
+    fill(idx, GBA.grass);
+    const rnd = seeded(seed);
+    for (let i = 0; i < 6; i++) { ctx.fillStyle = rnd() < 0.5 ? GBA.mid : GBA.light; ctx.fillRect(c.x + Math.floor(rnd() * 14), c.y + Math.floor(rnd() * 14), 2, 2); }
+    for (let i = 0; i < tufts; i++) {
+      const x = 1 + Math.floor(rnd() * 13), y = 1 + Math.floor(rnd() * 13);
+      dot(c, x, y, GBA.light); dot(c, x, y + 1, GBA.dark); dot(c, x - 1, y + 2, GBA.dark); dot(c, x + 1, y + 2, GBA.dark); dot(c, x, y + 2, GBA.mid);
+    }
+    for (const col of flowers) {
+      const x = 2 + Math.floor(rnd() * 11), y = 2 + Math.floor(rnd() * 11);
+      dot(c, x, y - 1, col); dot(c, x - 1, y, col); dot(c, x + 1, y, col); dot(c, x, y + 1, col); dot(c, x, y, '#fff4a0');
+    }
+  };
+  // Path tile: the grass sides (t/r/b/l letters) get a jagged grass band, the rest is tan path with pebbles and a dark rim
+  const gbaPath = (idx: number, sides: string, seed: number) => {
+    const c = cell(idx), g = cell(TOWN.grass[0]);
+    ctx.drawImage(tex.getSourceImage() as CanvasImageSource, g.x, g.y, TILE, TILE, c.x, c.y, TILE, TILE);
+    const band = (x: number, y: number) =>
+      (sides.includes('t') && y < 4 + (x % 3 === 0 ? 1 : 0)) ||
+      (sides.includes('b') && y > 11 - (x % 3 === 1 ? 1 : 0)) ||
+      (sides.includes('l') && x < 4 + (y % 3 === 0 ? 1 : 0)) ||
+      (sides.includes('r') && x > 11 - (y % 3 === 1 ? 1 : 0));
+    const rnd = seeded(seed);
+    for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
+      if (band(x, y)) continue;
+      const r = rnd();
+      const edge = band(x - 1, y) || band(x + 1, y) || band(x, y - 1) || band(x, y + 1);
+      dot(c, x, y, edge ? GBA.pathRim : r < 0.1 ? GBA.pathLight : r > 0.93 ? GBA.pathDark : GBA.path);
+    }
+  };
+  gbaGrass(TOWN.grass[0], 21, 16);
+  gbaGrass(TOWN.grass[1], 22, 30);
+  gbaGrass(TOWN.grass[2], 23, 10, ['#ffffff', '#ffe060', '#f8a0c8']);
+  const D = TOWN.dirt;
+  const pathTiles: [number, string][] = [[D.c, ''], [D.tl, 'tl'], [D.t, 't'], [D.tr, 'tr'], [D.l, 'l'], [D.r, 'r'], [D.bl, 'bl'], [D.b, 'b'], [D.br, 'br']];
+  pathTiles.forEach(([idx, sides], i) => gbaPath(idx, sides, 31 + i));
 
   // Tall grass: dense blades swaying between 2 frames
   for (let f = 0; f < 2; f++) {
@@ -267,12 +307,10 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   {
     // Dirt-path inner corners (Kenney has outer corners only): the dirt centre tile with a small grass notch +
     // the path's own rim colour, in the corner where the diagonal neighbour is grass
-    const dc = cell(TOWN.dirt.c), top = cell(TOWN.dirt.t), g0 = cell(TOWN.grass[0]);
+    const dc = cell(TOWN.dirt.c), g0 = cell(TOWN.grass[0]);
     const img = ctx.getImageData(0, 0, W, H).data;
     const at = (x: number, y: number) => { const i = (y * W + x) * 4; return `rgb(${img[i]},${img[i + 1]},${img[i + 2]})`; };
-    // rim = the darkest pixel of the top edge tile's boundary column
-    let rim = at(top.x + 8, top.y + 3), dark = 999;
-    for (let y = 0; y < 8; y++) { const i = ((top.y + y) * W + top.x + 8) * 4; const v = img[i] + img[i + 1] + img[i + 2]; if (v < dark) { dark = v; rim = at(top.x + 8, top.y + y); } }
+    const rim = GBA.pathRim;
     const corners = [[EX.dirtInner.ne, 15, 0], [EX.dirtInner.nw, 0, 0], [EX.dirtInner.se, 15, 15], [EX.dirtInner.sw, 0, 15]] as const;
     for (const [idx, cx, cy] of corners) {
       const c = cell(idx);

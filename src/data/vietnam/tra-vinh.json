@@ -905,13 +905,13 @@
    "name": "Cầu Cổ Chiên — đường tới Bến Tre",
    "x": 80,
    "y": 12,
-   "to": "tra-vinh",
-   "toX": 78,
-   "toY": 15,
+   "to": "ben-tre",
+   "toX": 80,
+   "toY": 104,
    "requires": [
-    "vn:ben-tre-open"
+    "badge:tra-vinh"
    ],
-   "hint": "Đường tới Bến Tre chưa có trong phiên bản này."
+   "hint": "Đường tới Bến Tre mở cho người có Huy hiệu Cây Dầu — hạ Thần Cây Dầu trước."
   }
  ],
  "docks": [

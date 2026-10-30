@@ -245,6 +245,52 @@
      "y": 97
     }
    ]
+  },
+  "ben-tre": {
+   "id": "ben-tre",
+   "name": "Bến Tre",
+   "area": "bt-hamluong",
+   "action": "trash",
+   "unlock": "vn-bt-3",
+   "boss": "exeggutor",
+   "label": "Dọn rác bờ sông Hàm Luông",
+   "done": "Bạn gom bao nilon và lục bình mắc dưới bờ. Nước sông Hàm Luông trong hơn một chút.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "superpotion": 3
+   },
+   "sites": [
+    {
+     "id": "ben-tre-1",
+     "x": 50,
+     "y": 13
+    },
+    {
+     "id": "ben-tre-2",
+     "x": 36,
+     "y": 14
+    },
+    {
+     "id": "ben-tre-3",
+     "x": 64,
+     "y": 12
+    },
+    {
+     "id": "ben-tre-4",
+     "x": 22,
+     "y": 13
+    },
+    {
+     "id": "ben-tre-5",
+     "x": 78,
+     "y": 11
+    },
+    {
+     "id": "ben-tre-6",
+     "x": 8,
+     "y": 12
+    }
+   ]
   }
  }
 }

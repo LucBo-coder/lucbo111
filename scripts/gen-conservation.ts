@@ -33,6 +33,11 @@ const PROVINCES = [
     label: 'Nhặt rác trên bãi biển', done: 'Bạn nhặt chai nhựa và lưới rách dạt lên bãi. Cát Ba Động sạch hơn một chút.',
     thrivingReward: { 'mystic-water': 1, netball: 3 },
   },
+  {
+    id: 'ben-tre', name: 'Bến Tre', area: 'bt-hamluong', action: 'trash', unlock: 'vn-bt-3', boss: 'exeggutor',
+    label: 'Dọn rác bờ sông Hàm Luông', done: 'Bạn gom bao nilon và lục bình mắc dưới bờ. Nước sông Hàm Luông trong hơn một chút.',
+    thrivingReward: { 'mystic-water': 1, superpotion: 3 },
+  },
 ];
 
 const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];

@@ -1,7 +1,8 @@
 # Changelog
 
-## Chưa phát hành — V22: AI huấn luyện viên, tái đấu, danh tiếng theo tỉnh
+## Chưa phát hành — V22–V26: AI huấn luyện viên, danh tiếng theo tỉnh, Việt Nam Odyssey (đến Bến Tre), online
 
+- **Việt Nam Odyssey — tỉnh thứ sáu: Bến Tre** (`data/vietnam/ben-tre.json`, Lv 34–40): đi từ Trà Vinh qua cầu Cổ Chiên khi có Huy hiệu Cây Dầu; làng kẹo dừa, vườn dừa Thới Sơn, rừng tràm, bờ sông Hàm Luông; boss Exeggutor — Dừa Trăm Thân (Huy hiệu Dừa Xiêm); 7 nhiệm vụ và 6 điểm bảo tồn.
 - **Hết đơ game, không mất tiến trình** (`src/systems/crashGuard.ts`): trước đây chỉ một lỗi trong một khung hình là vòng lặp game dừng hẳn (màn hình đứng, phải tải lại trang). Giờ game chạy tiếp; lỗi lặp liên tục thì lưu ngay và hiện bảng "Lưu và tải lại / Tiếp tục". Game lưu ngay khi ẩn tab, đóng hoặc tải lại trang (thêm bản cứu hộ localStorage), nên tải lại không còn mất tới 20 s tiến trình. Hội thoại / tiến hóa / chọn starter lỗi không còn khóa nhân vật.
 - **Khởi động nhanh hơn ~30 %**: ảnh vật phẩm và HUD boss tải nền sau khi vào menu, font không còn chặn khởi động, biểu tượng chiêu thức vẽ khi cần.
 - **NPC về nhân vật pixel có hoạt ảnh, đa dạng hơn** (`src/core/npcLooks.ts`): thay ảnh trainer Pokémon Showdown bằng 15 dáng pixel 16×16 có hoạt ảnh thở / bước (nón lá, áo dài, trẻ em, cụ ông / cụ bà, kiểm lâm, nhà khoa học, cựu binh…), mỗi NPC một bộ màu riêng cố định; giới / tuổi theo danh xưng (Cô, Bà, Chú, Bé…), miền Tây dùng nón lá. Chân dung hội thoại, HLV phục kích, thương nhân cũng dùng mẫu này.

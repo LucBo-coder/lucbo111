@@ -3834,5 +3834,404 @@
     "Bãi sạch trơn rồi! Wingull với Krabby sẽ về đông."
    ]
   }
- }
+ },
+  {
+    "id": "vn-bt-1",
+    "kind": "main",
+    "title": "Xứ dừa",
+    "giver": "bt-guide",
+    "autoStart": true,
+    "requiresFlags": [
+      "badge:tra-vinh"
+    ],
+    "description": "Đến Bến Tre: ghé Trung tâm Pokémon, vào làng kẹo dừa và nghe Ông Sáu Sóc kể chuyện.",
+    "objectives": [
+      {
+        "type": "activate",
+        "target": "wp-ben-tre-center",
+        "count": 1,
+        "text": "Kích hoạt trạm Trung tâm Pokémon Bến Tre",
+        "marker": {
+          "x": 51,
+          "y": 41,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "explore",
+        "target": "bt-candy",
+        "count": 1,
+        "text": "Đến làng kẹo dừa (phía tây thành phố)",
+        "marker": {
+          "x": 16,
+          "y": 50,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "talk",
+        "target": "bt-elder",
+        "count": 1,
+        "text": "Nghe Ông Sáu Sóc kể chuyện trong làng kẹo",
+        "marker": {
+          "x": 12,
+          "y": 52,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "ultraball": 2
+      },
+      "worldExp": 600,
+      "reputation": 10,
+      "flags": [
+        "landmark:keo-dua"
+      ]
+    },
+    "dialogue": {
+      "offer": [
+        "Chào mừng về Bến Tre! Xứ dừa này đẹp lắm, con đi thăm một vòng nha.",
+        "Ghé Trung tâm Pokémon trước, rồi qua làng kẹo phía tây gặp Ông Sáu Sóc."
+      ],
+      "progress": [
+        "Làng kẹo ở phía tây, đi theo đường đất từ thành phố là tới."
+      ],
+      "complete": [
+        "Ông Sáu kể cho con nghe về dừa thành thần rồi đó. Nhớ coi chừng nha!"
+      ]
+    }
+  },
+  {
+    "id": "vn-bt-2",
+    "kind": "main",
+    "title": "Vườn dừa Thới Sơn",
+    "giver": "bt-guide",
+    "requires": [
+      "vn-bt-1"
+    ],
+    "description": "Vườn dừa phía đông trăm năm tuổi, nơi có tay hái dừa đang thách đấu người qua đường.",
+    "objectives": [
+      {
+        "type": "explore",
+        "target": "bt-coconut",
+        "count": 1,
+        "text": "Đến vườn dừa Thới Sơn (phía đông)",
+        "marker": {
+          "x": 112,
+          "y": 40,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "trainer",
+        "target": "bt-coconut-climber",
+        "count": 1,
+        "text": "Thắng Hái dừa Tám",
+        "marker": {
+          "x": 112,
+          "y": 46,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "talk",
+        "target": "bt-coco",
+        "count": 1,
+        "text": "Chào Chú Tư Dừa ở giữa vườn",
+        "marker": {
+          "x": 110,
+          "y": 40,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "greatball": 2
+      },
+      "worldExp": 700,
+      "reputation": 15,
+      "flags": [
+        "landmark:cau-co-chien"
+      ]
+    },
+    "dialogue": {
+      "offer": [
+        "Vườn dừa phía đông có hái dừa Tám, anh ấy leo dừa như leo thang. Ai qua đó cũng bị anh ấy thách."
+      ],
+      "progress": [
+        "Hái dừa Tám ở giữa vườn đó con, đừng sợ."
+      ],
+      "complete": [
+        "Con giỏi quá! Chú Tư Dừa nhờ con một việc nữa đó."
+      ]
+    }
+  },
+  {
+    "id": "vn-bt-3",
+    "kind": "main",
+    "title": "Thần Dừa Trăm Thân",
+    "giver": "bt-guide",
+    "requires": [
+      "vn-bt-2"
+    ],
+    "description": "Rừng tràm phía tây nam có một cây dừa già trăm năm. Muốn gặp nó thì phải qua Kiểm lâm Út trước.",
+    "objectives": [
+      {
+        "type": "trainer",
+        "target": "bt-forest-ranger",
+        "count": 1,
+        "text": "Thắng Kiểm lâm Út ở rừng tràm",
+        "marker": {
+          "x": 18,
+          "y": 76,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "boss",
+        "target": "exeggutor",
+        "count": 1,
+        "text": "Đánh bại Exeggutor — Dừa Trăm Thân",
+        "marker": {
+          "x": 8,
+          "y": 72,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "ultraball": 3
+      },
+      "worldExp": 900,
+      "reputation": 20
+    },
+    "dialogue": {
+      "offer": [
+        "Trong rừng tràm có một cây dừa già như thần. Muốn gặp thì qua Kiểm lâm Út trước đã con."
+      ],
+      "progress": [
+        "Kiểm lâm Út đứng ở đầu lối vào rừng tràm đó con."
+      ],
+      "complete": [
+        "Dừa Trăm Thân lắc lư rồi lặng xuống. Huy hiệu Dừa Xiêm là của con rồi!"
+      ]
+    }
+  },
+  {
+    "id": "vn-bt-rescue",
+    "kind": "side",
+    "title": "Pelipper lạc đàn",
+    "giver": "bt-coco",
+    "requires": [
+      "vn-bt-1"
+    ],
+    "description": "Một chú Pelipper bị bầy Wingull và Tentacruel vây ở rìa bờ sông Cổ Chiên.",
+    "objectives": [
+      {
+        "type": "rescue",
+        "target": "bt-pelican-rescue",
+        "count": 1,
+        "text": "Giải cứu Pelipper ở bờ sông Cổ Chiên (phía đông nam)",
+        "marker": {
+          "x": 112,
+          "y": 100,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "talk",
+        "target": "bt-coco",
+        "count": 1,
+        "text": "Báo cho Chú Tư Dừa",
+        "marker": {
+          "x": 110,
+          "y": 40,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "greatball": 3,
+        "superpotion": 2
+      },
+      "worldExp": 650,
+      "reputation": 25
+    },
+    "dialogue": {
+      "offer": [
+        "Có con Pelipper bị đàn Wingull vây ở bờ sông kìa. Con giúp chú với!"
+      ],
+      "progress": [
+        "Bờ sông phía đông nam đó con, gần chỗ đò ngang."
+      ],
+      "complete": [
+        "Pelipper bay về với đàn rồi! Cảm ơn con nhiều lắm."
+      ]
+    }
+  },
+  {
+    "id": "vn-bt-candy",
+    "kind": "side",
+    "title": "Hũ kẹo của bà Tư",
+    "giver": "bt-candy-seller",
+    "requires": [
+      "vn-bt-1"
+    ],
+    "description": "Thợ kẹo Bảy đang giữ mẻ kẹo bà Tư đặt làm cho khách Trà Vinh, và muốn thử tài con trước khi giao.",
+    "objectives": [
+      {
+        "type": "trainer",
+        "target": "bt-candy-keeper",
+        "count": 1,
+        "text": "Thắng Thợ kẹo Bảy trong làng kẹo",
+        "marker": {
+          "x": 22,
+          "y": 56,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "talk",
+        "target": "bt-candy-seller",
+        "count": 1,
+        "text": "Giao mẻ kẹo cho Bà bán kẹo Tư",
+        "marker": {
+          "x": 68,
+          "y": 38,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "superpotion": 3
+      },
+      "worldExp": 600,
+      "reputation": 12
+    },
+    "dialogue": {
+      "offer": [
+        "Mẻ kẹo dừa của tôi bị Thợ kẹo Bảy giữ rồi. Con thử đánh với ổng đi, ổng đòi đấu mới chịu trả."
+      ],
+      "progress": [
+        "Thợ kẹo Bảy ở trong làng kẹo đó con."
+      ],
+      "complete": [
+        "Ngon quá! Con cầm mấy gói kẹo này đi đường cho đỡ mệt."
+      ]
+    }
+  },
+  {
+    "id": "vn-bt-river",
+    "kind": "side",
+    "title": "Cá lóc sông Hàm Luông",
+    "giver": "bt-fisher",
+    "requires": [
+      "vn-bt-1"
+    ],
+    "description": "Ông Năm Lưới muốn biết con cá lóc to dưới bờ Hàm Luông có thật không.",
+    "objectives": [
+      {
+        "type": "explore",
+        "target": "bt-hamluong",
+        "count": 1,
+        "text": "Đến bờ sông Hàm Luông (phía bắc)",
+        "marker": {
+          "x": 60,
+          "y": 12,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "talk",
+        "target": "bt-fisher",
+        "count": 1,
+        "text": "Báo cho Ông Năm Lưới bên bờ sông",
+        "marker": {
+          "x": 40,
+          "y": 16,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "greatball": 2
+      },
+      "worldExp": 650,
+      "reputation": 12,
+      "flags": [
+        "landmark:ham-luong"
+      ]
+    },
+    "dialogue": {
+      "offer": [
+        "Sông Hàm Luông phía bắc có con cá lóc to lắm. Con đi xem giúp chú được không?"
+      ],
+      "progress": [
+        "Bờ sông phía bắc đó con, đi lên khỏi thành phố là thấy."
+      ],
+      "complete": [
+        "Con thấy rồi hả? Con cá đó lớn lắm, mai mốt chú dạy con câu nha."
+      ]
+    }
+  },
+  {
+    "id": "vn-bt-eco",
+    "kind": "side",
+    "title": "Bờ sông Hàm Luông sạch",
+    "giver": "bt-seller",
+    "requires": [
+      "vn-bt-3"
+    ],
+    "description": "Rác mắc lại trên bờ Hàm Luông sau mùa nước lớn. Dọn sạch để cá quay về.",
+    "objectives": [
+      {
+        "type": "activate",
+        "target": "eco:ben-tre",
+        "count": 6,
+        "text": "Dọn 6 điểm rác trên bờ sông Hàm Luông",
+        "marker": {
+          "x": 50,
+          "y": 13,
+          "region": "ben-tre"
+        }
+      },
+      {
+        "type": "talk",
+        "target": "bt-seller",
+        "count": 1,
+        "text": "Báo cho Cô Út nước dừa",
+        "marker": {
+          "x": 98,
+          "y": 58,
+          "region": "ben-tre"
+        }
+      }
+    ],
+    "rewards": {
+      "items": {
+        "ultraball": 2,
+        "sitrus-berry": 2
+      },
+      "worldExp": 650,
+      "reputation": 15
+    },
+    "dialogue": {
+      "offer": [
+        "Nước mùa lớn đẩy rác vô bờ hết trơn. Con phụ cô dọn với, sông sạch thì cá mới về."
+      ],
+      "progress": [
+        "Mấy chỗ rác dồn lại ở bờ sông phía bắc đó con."
+      ],
+      "complete": [
+        "Bờ sông sạch trơn rồi! Cá lóc với cá rô sẽ về đông nữa."
+      ]
+    }
+  }
 ]

@@ -41,8 +41,8 @@ describe('Vietnam Odyssey: Trà Vinh', () => {
     const back = tv.portals!.find((x) => x.to === 'vinh-long')!;
     expect(new ValleyMap(REGION_DEFS['vinh-long']).solidAt(back.toX, back.toY)).toBe(false);
     expect(REGION_DEFS['vinh-long'].worldBoss!.rewards!.message).toMatch(/Trà Vinh/);
-    // the next road (Bến Tre) is there but sealed
-    expect(tv.portals!.find((x) => x.id === 'portal-tv-next')!.requires).toEqual(['vn:ben-tre-open']);
+    // the next road (Bến Tre) opens with the Cây Dầu badge (see v26_ben_tre.test.ts)
+    expect(tv.portals!.find((x) => x.id === 'portal-tv-next')!.requires).toEqual(['badge:tra-vinh']);
   });
 
   it('every NPC, trainer, chest, waypoint, portal, gathering spot and the boss grove is reachable on foot', () => {
