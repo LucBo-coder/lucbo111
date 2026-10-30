@@ -2006,5 +2006,58 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "polteageist",
+  "name": "Polteageist — Hồn Ấm Chè Tân Cương",
+  "types": [
+   "ghost"
+  ],
+  "baseStats": {
+   "hp": 60,
+   "atk": 65,
+   "def": 65,
+   "spa": 134,
+   "spd": 114,
+   "spe": 70
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "shadow_ball",
+   "giga_drain"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "sinistea",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Ấm chè cổ reo vang — hơi chè lạnh buốt tràn khắp hang!",
+  "exp": 150,
+  "sprite": "polteageist",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "shadow_ball",
+   "volley": "ominous_wind",
+   "nova": "hex",
+   "field": "will_o_wisp",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "phantom_force",
+   "ultimateName": "Ấm Chè Ma Tân Cương",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

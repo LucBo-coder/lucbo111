@@ -15740,5 +15740,532 @@
     "Thác trong veo rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-ty-1",
+  "kind": "main",
+  "title": "Ấm reo không lửa",
+  "giver": "ty-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:cao-bang"
+  ],
+  "description": "Tới Thái Nguyên: ghé Trung tâm Pokémon rồi tới chân hang Phượng Hoàng hỏi cụ sao chè.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-thai-nguyen-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Thái Nguyên",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ty-phuonghoang",
+    "count": 1,
+    "text": "Đến hang Phượng Hoàng (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-elder",
+    "count": 1,
+    "text": "Hỏi Cụ sao chè",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1900,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Thái Nguyên! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi tới hang Phượng Hoàng hỏi cụ sao chè, đồi chè có tiếng ấm reo mấy đêm rồi."
+   ],
+   "progress": [
+    "Hang Phượng Hoàng ở phía tây bắc."
+   ],
+   "complete": [
+    "Cụ nói hồn ấm cổ hờn dỗi... Cô lái đò Núi Cốc và cụ giữ ATK có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-2",
+  "kind": "main",
+  "title": "Khói chè bay về hang",
+  "giver": "ty-guide",
+  "requires": [
+   "vn-ty-1"
+  ],
+  "description": "Ra hồ Núi Cốc hỏi cô lái đò, rồi lên ATK Định Hóa hỏi cụ giữ di tích.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ty-nuicoc",
+    "count": 1,
+    "text": "Ra hồ Núi Cốc (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-lake",
+    "count": 1,
+    "text": "Hỏi Cô lái đò Núi Cốc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-atk",
+    "count": 1,
+    "text": "Hỏi Cụ giữ di tích ATK",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1950,
+   "reputation": 15,
+   "flags": [
+    "landmark:nui-coc",
+    "landmark:atk-dinh-hoa"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Cô lái đò thấy khói chè bay về hang. Em ra hỏi, rồi lên ATK hỏi thêm."
+   ],
+   "progress": [
+    "Hồ ở phía bắc, ATK ở phía tây."
+   ],
+   "complete": [
+    "Muốn vào hang gặp hồn ấm, phải qua thầy mo canh cửa."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-3",
+  "kind": "main",
+  "title": "Hồn Ấm Chè Tân Cương",
+  "giver": "ty-guide",
+  "requires": [
+   "vn-ty-2"
+  ],
+  "description": "Thắng Thầy mo hang Phượng Hoàng để vào cửa hang, rồi làm Polteageist nguôi hờn.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ty-gate-t",
+    "count": 1,
+    "text": "Thắng Thầy mo hang Phượng Hoàng",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "polteageist",
+    "count": 1,
+    "text": "Đánh bại Polteageist — Hồn Ấm Chè Tân Cương",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2200,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thầy mo canh cửa hang. Em đủ vía thì vào."
+   ],
+   "progress": [
+    "Cửa hang ở góc tây bắc."
+   ],
+   "complete": [
+    "Hồn ấm về làng rồi, chè lại thơm! Huy hiệu Đệ Nhất Danh Trà là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-rescue",
+  "kind": "side",
+  "title": "Hươu rừng Phượng Hoàng",
+  "giver": "ty-elder",
+  "requires": [
+   "vn-ty-1"
+  ],
+  "description": "Một con Sawsbuck bị bầy quạ vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ty-deer-rescue",
+    "count": 1,
+    "text": "Giải cứu Sawsbuck ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-elder",
+    "count": 1,
+    "text": "Báo cho Cụ sao chè",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1700,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con hươu bị bầy quạ vây ở góc tây núi. Em giúp cụ!"
+   ],
+   "progress": [
+    "Góc tây núi Phượng Hoàng."
+   ],
+   "complete": [
+    "Hươu về rừng rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-kite",
+  "kind": "side",
+  "title": "Diều trên hồ",
+  "giver": "ty-lake",
+  "requires": [
+   "vn-ty-1"
+  ],
+  "description": "Người thả diều Núi Cốc thách ai dám đấu.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ty-lake-t",
+    "count": 1,
+    "text": "Thắng Người thả diều Núi Cốc",
+    "marker": {
+     "x": 94,
+     "y": 24,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái đò Núi Cốc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sharp-beak": 1
+   },
+   "worldExp": 1550,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh thả diều ham đấu lắm. Em thử một trận nha."
+   ],
+   "progress": [
+    "Anh ấy ở bờ đông hồ."
+   ],
+   "complete": [
+    "Ảnh phục em rồi. Mai cô chở em ra đảo."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-atk",
+  "kind": "side",
+  "title": "Gió ngàn Định Hóa",
+  "giver": "ty-atk",
+  "requires": [
+   "vn-ty-2"
+  ],
+  "description": "Kẻ săn trộm đặt bẫy trong rừng Định Hóa.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ty-atk-t",
+    "count": 1,
+    "text": "Thắng Kẻ săn trộm rừng Định Hóa",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-atk",
+    "count": 1,
+    "text": "Báo cho Cụ giữ di tích ATK",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "protein": 1
+   },
+   "worldExp": 1500,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa đặt bẫy ở góc tây nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Rừng yên rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-tea",
+  "kind": "side",
+  "title": "Chè sạch Tân Cương",
+  "giver": "ty-farm",
+  "requires": [
+   "vn-ty-1"
+  ],
+  "description": "Kẻ phun thuốc trừ sâu bừa bãi trên đồi chè.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ty-tancuong",
+    "count": 1,
+    "text": "Đến đồi chè Tân Cương (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 89,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ty-farm-t",
+    "count": 1,
+    "text": "Thắng Kẻ phun thuốc trừ sâu",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-farm",
+    "count": 1,
+    "text": "Báo cho Chú trồng chè Tân Cương",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "poison-barb": 1
+   },
+   "worldExp": 1500,
+   "reputation": 12,
+   "flags": [
+    "landmark:tan-cuong"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng phun thuốc làm ong bướm chết hết. Em nói chuyện với nó giùm chú."
+   ],
+   "progress": [
+    "Nó ở góc đông nam đồi chè."
+   ],
+   "complete": [
+    "Nó hứa làm chè sạch rồi. Gói chè búp này chú tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-mine",
+  "kind": "side",
+  "title": "Lò cũ Trại Cau",
+  "giver": "ty-smith",
+  "requires": [
+   "vn-ty-1"
+  ],
+  "description": "Thợ mỏ Trại Cau muốn thử Pokémon đào sắt của mình.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ty-traicau",
+    "count": 1,
+    "text": "Đến mỏ sắt Trại Cau (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ty-mine-t",
+    "count": 1,
+    "text": "Thắng Thợ mỏ Trại Cau",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-smith",
+    "count": 1,
+    "text": "Báo cho Kỹ sư gang thép",
+    "marker": {
+     "x": 84,
+     "y": 46,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1550,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh thợ mỏ ham đấu lắm. Em thử với ảnh."
+   ],
+   "progress": [
+    "Anh ấy ở phía nam mỏ."
+   ],
+   "complete": [
+    "Gang thép Thái Nguyên cảm ơn em!"
+   ]
+  }
+ },
+ {
+  "id": "vn-ty-eco",
+  "kind": "side",
+  "title": "Hồ Núi Cốc trong xanh",
+  "giver": "ty-lake",
+  "requires": [
+   "vn-ty-3"
+  ],
+  "description": "Rác du lịch dạt bờ hồ Núi Cốc.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:thai-nguyen",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "thai-nguyen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ty-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái đò Núi Cốc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "thai-nguyen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1550,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Hồn ấm yên rồi, giờ dọn hồ. Em phụ cô vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Hồ trong veo rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

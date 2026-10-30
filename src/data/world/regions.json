@@ -3815,5 +3815,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-ty-phuonghoang",
+  "name": "Hang Phượng Hoàng",
+  "areas": [
+   "ty-phuonghoang"
+  ],
+  "biome": "rocky",
+  "level": [
+   83,
+   86
+  ],
+  "elite": [
+   87,
+   89
+  ],
+  "boss": null,
+  "recommended": 85,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ty-nuicoc",
+  "name": "Hồ Núi Cốc",
+  "areas": [
+   "ty-nuicoc"
+  ],
+  "biome": "lake",
+  "level": [
+   82,
+   85
+  ],
+  "elite": [
+   86,
+   88
+  ],
+  "boss": null,
+  "recommended": 84,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ty-dinhhoa",
+  "name": "ATK Định Hóa",
+  "areas": [
+   "ty-dinhhoa"
+  ],
+  "biome": "forest",
+  "level": [
+   80,
+   83
+  ],
+  "elite": [
+   84,
+   86
+  ],
+  "boss": null,
+  "recommended": 82,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ty-tancuong",
+  "name": "Đồi chè Tân Cương",
+  "areas": [
+   "ty-tancuong"
+  ],
+  "biome": "farm",
+  "level": [
+   80,
+   83
+  ],
+  "elite": [
+   84,
+   86
+  ],
+  "boss": null,
+  "recommended": 82,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ty-traicau",
+  "name": "Mỏ sắt Trại Cau",
+  "areas": [
+   "ty-traicau"
+  ],
+  "biome": "rocky",
+  "level": [
+   81,
+   84
+  ],
+  "elite": [
+   85,
+   87
+  ],
+  "boss": null,
+  "recommended": 83,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

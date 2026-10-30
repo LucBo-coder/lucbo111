@@ -1258,6 +1258,52 @@
     }
    ]
   },
+  "thai-nguyen": {
+   "id": "thai-nguyen",
+   "name": "Thái Nguyên",
+   "area": "ty-nuicoc",
+   "action": "trash",
+   "unlock": "vn-ty-3",
+   "boss": "polteageist",
+   "label": "Vớt rác trên hồ Núi Cốc",
+   "done": "Bạn vớt chai nhựa và túi nilon dạt bờ hồ. Hồ Núi Cốc trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "thai-nguyen-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "thai-nguyen-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "thai-nguyen-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "thai-nguyen-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "thai-nguyen-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "thai-nguyen-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "thanh-hoa": {
    "id": "thanh-hoa",
    "name": "Thanh Hóa",

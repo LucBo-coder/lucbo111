@@ -123,8 +123,9 @@
    "requires": ["beat:cb-gate-t"],
    "hint": "Lửa lóe sáng cửa hang, tiếng gầm rung vách đá... Thợ săn hổ già chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "charcoal": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 16000, "flag": "badge:cao-bang", "message": "Nhận Huy hiệu Hang Hổ (Cao Bằng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 16000, "flag": "badge:cao-bang", "message": "Nhận Huy hiệu Hang Hổ (Cao Bằng)! Đường tới Thái Nguyên đã mở: Quốc lộ 3." } },
  "portals": [
+  {"id": "portal-cb-next", "name": "Quốc lộ 3 — đường xuống Thái Nguyên", "x": 112, "y": 5, "to": "thai-nguyen", "toX": 64, "toY": 104, "requires": ["badge:cao-bang"], "hint": "Đường tới Thái Nguyên mở cho người có Huy hiệu Hang Hổ — hạ boss Cao Bằng trước."},
   { "id": "portal-cb-ls", "name": "Quốc lộ 4A — về Lạng Sơn", "x": 64, "y": 107, "to": "lang-son", "toX": 80, "toY": 8 }
  ],
  "docks": [],

@@ -1,0 +1,776 @@
+{
+ "id": "thai-nguyen",
+ "name": "Thái Nguyên",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": {
+  "x": 64,
+  "y": 104
+ },
+ "areas": [
+  {
+   "id": "ty-phuonghoang",
+   "name": "Hang Phượng Hoàng",
+   "rect": [
+    0,
+    0,
+    45,
+    45
+   ],
+   "habitat": "rocky",
+   "level": [
+    83,
+    86
+   ]
+  },
+  {
+   "id": "ty-nuicoc",
+   "name": "Hồ Núi Cốc",
+   "rect": [
+    46,
+    0,
+    100,
+    32
+   ],
+   "habitat": "lake",
+   "level": [
+    82,
+    85
+   ]
+  },
+  {
+   "id": "ty-city",
+   "name": "Thành phố Thái Nguyên",
+   "rect": [
+    40,
+    33,
+    100,
+    68
+   ],
+   "habitat": "village",
+   "level": [
+    82,
+    82
+   ]
+  },
+  {
+   "id": "ty-dinhhoa",
+   "name": "ATK Định Hóa",
+   "rect": [
+    0,
+    46,
+    39,
+    111
+   ],
+   "habitat": "forest",
+   "level": [
+    80,
+    83
+   ]
+  },
+  {
+   "id": "ty-tancuong",
+   "name": "Đồi chè Tân Cương",
+   "rect": [
+    40,
+    69,
+    100,
+    111
+   ],
+   "habitat": "farm",
+   "level": [
+    80,
+    83
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 8
+   }
+  },
+  {
+   "id": "ty-traicau",
+   "name": "Mỏ sắt Trại Cau",
+   "rect": [
+    101,
+    0,
+    127,
+    111
+   ],
+   "habitat": "rocky",
+   "level": [
+    81,
+    84
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     107
+    ],
+    [
+     64,
+     60
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     48
+    ],
+    [
+     40,
+     30
+    ],
+    [
+     24,
+     18
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     68,
+     48
+    ],
+    [
+     68,
+     26
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     74,
+     54
+    ],
+    [
+     110,
+     54
+    ],
+    [
+     112,
+     14
+    ],
+    [
+     112,
+     5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     54
+    ],
+    [
+     24,
+     62
+    ],
+    [
+     16,
+     92
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     80
+    ],
+    [
+     84,
+     96
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  58,
+  48,
+  74,
+  60
+ ],
+ "lake": {
+  "cx": 74,
+  "cy": 14,
+  "rx": 18,
+  "ry": 8
+ },
+ "buildings": [
+  {
+   "id": "ty-center",
+   "name": "Trung tâm Pokémon",
+   "x": 42,
+   "y": 40,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "ty-mart",
+   "name": "Cửa hàng Thái Nguyên",
+   "x": 78,
+   "y": 38,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "ty-museum",
+   "name": "Bảo tàng Văn hóa các dân tộc Việt Nam",
+   "x": 86,
+   "y": 40,
+   "w": 7,
+   "h": 4,
+   "roof": "teal",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "ty-house-1",
+   "name": "Nhà cô Hà sao chè",
+   "x": 46,
+   "y": 62,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "blue"
+  },
+  {
+   "id": "ty-house-2",
+   "name": "Quán bánh chưng Bờ Đậu",
+   "x": 90,
+   "y": 60,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "red"
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "well",
+   "x": 54,
+   "y": 66
+  },
+  {
+   "kind": "log",
+   "x": 24,
+   "y": 80
+  },
+  {
+   "kind": "haystack",
+   "x": 24,
+   "y": 96
+  },
+  {
+   "kind": "target",
+   "x": 116,
+   "y": 30
+  },
+  {
+   "kind": "bucket",
+   "x": 54,
+   "y": 26
+  }
+ ],
+ "signs": [
+  {
+   "x": 62,
+   "y": 58,
+   "text": [
+    "THÀNH PHỐ THÁI NGUYÊN",
+    "Đệ nhất danh trà. Phía tây bắc: hang Phượng Hoàng · Phía bắc: hồ Núi Cốc · Phía tây: ATK Định Hóa · Phía nam: đồi chè Tân Cương · Phía đông: mỏ sắt Trại Cau."
+   ]
+  },
+  {
+   "x": 62,
+   "y": 26,
+   "text": [
+    "HỒ NÚI CỐC",
+    "Chuyện tình chàng Cốc nàng Công: nước mắt nàng hóa thành hồ, chàng hóa thành núi."
+   ]
+  },
+  {
+   "x": 28,
+   "y": 14,
+   "text": [
+    "HANG PHƯỢNG HOÀNG",
+    "Cửa hang như chim phượng dang cánh. Trong hang thạch nhũ lấp lánh."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "ty-guide",
+   "name": "Cô Hà Tân Cương",
+   "sprite": "girl",
+   "x": 70,
+   "y": 58,
+   "lines": [
+    "Chào mừng tới Thái Nguyên! Uống chén chè Tân Cương đã em.",
+    "Mấy đêm nay đồi chè có tiếng ấm reo dù chẳng ai đun nước.",
+    "Chè hái về để qua đêm là sáng ra bay hết hương. Lạ lắm."
+   ]
+  },
+  {
+   "id": "ty-elder",
+   "name": "Cụ sao chè",
+   "sprite": "elder",
+   "x": 34,
+   "y": 30,
+   "lines": [
+    "Cái ấm đất cổ của làng mất từ hồi người ta bỏ sao chè tay, chuyển sang máy.",
+    "Ấm hờn, hồn ấm mới đi lang thang. Nó trốn trong hang Phượng Hoàng."
+   ]
+  },
+  {
+   "id": "ty-lake",
+   "name": "Cô lái đò Núi Cốc",
+   "sprite": "girl",
+   "x": 52,
+   "y": 24,
+   "lines": [
+    "Hồ Núi Cốc trong xanh, đảo nhỏ nối nhau.",
+    "Đêm qua thấy khói chè bay về phía hang tây bắc."
+   ]
+  },
+  {
+   "id": "ty-atk",
+   "name": "Cụ giữ di tích ATK",
+   "sprite": "elder",
+   "x": 14,
+   "y": 56,
+   "lines": [
+    "ATK Định Hóa là thủ đô gió ngàn ngày trước.",
+    "Rừng Định Hóa mà mất thì gió ngàn cũng tắt, cụ lo lắm."
+   ]
+  },
+  {
+   "id": "ty-farm",
+   "name": "Chú trồng chè Tân Cương",
+   "sprite": "villager",
+   "x": 60,
+   "y": 88,
+   "lines": [
+    "Chè Tân Cương lá nhỏ, nước xanh, vị chát rồi ngọt hậu.",
+    "Có đứa phun thuốc trừ sâu bừa bãi, ong bướm chết hết."
+   ]
+  },
+  {
+   "id": "ty-mine",
+   "name": "Thợ lò Trại Cau",
+   "sprite": "villager",
+   "x": 116,
+   "y": 40,
+   "lines": [
+    "Mỏ sắt Trại Cau nuôi khu gang thép Thái Nguyên mấy chục năm.",
+    "Giờ nhiều lò bỏ hoang rồi, Pokémon đá về ở."
+   ]
+  },
+  {
+   "id": "ty-smith",
+   "name": "Kỹ sư gang thép",
+   "sprite": "elder",
+   "x": 84,
+   "y": 46,
+   "lines": [
+    "Lò cao số một của khu gang thép đỏ lửa từ năm sáu mươi ba.",
+    "Thép Thái Nguyên ra xây khắp nước đấy em."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "ty-gate-t",
+   "name": "Thầy mo hang Phượng Hoàng",
+   "sprite": "hiker",
+   "x": 30,
+   "y": 22,
+   "team": [
+    [
+     "gengar",
+     85
+    ],
+    [
+     "chandelure",
+     85
+    ],
+    [
+     "mismagius",
+     85
+    ]
+   ],
+   "challenge": [
+    "Hồn ấm đang ngủ trong hang. Ai muốn vào phải qua ta!"
+   ],
+   "win": [
+    "Bạn vững vía lắm. Vào đi, hồn ấm ở cửa hang tây bắc."
+   ],
+   "lose": [
+    "Hồn bay mất rồi kìa."
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "dusk-stone": 1
+    },
+    "exp": 4100
+   }
+  },
+  {
+   "id": "ty-lake-t",
+   "name": "Người thả diều Núi Cốc",
+   "sprite": "youngster",
+   "x": 94,
+   "y": 24,
+   "team": [
+    [
+     "staraptor",
+     83
+    ],
+    [
+     "honchkrow",
+     83
+    ],
+    [
+     "crobat",
+     83
+    ]
+   ],
+   "challenge": [
+    "Diều tôi bay cao nhất hồ! Thử đấu không?"
+   ],
+   "win": [
+    "Diều đứt dây rồi... bạn thắng."
+   ],
+   "lose": [
+    "Gió lộng quá ha!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "sharp-beak": 1
+    },
+    "exp": 4000
+   }
+  },
+  {
+   "id": "ty-atk-t",
+   "name": "Kẻ săn trộm rừng Định Hóa",
+   "sprite": "knight",
+   "x": 8,
+   "y": 100,
+   "team": [
+    [
+     "ursaluna",
+     82
+    ],
+    [
+     "bewear",
+     82
+    ],
+    [
+     "heracross",
+     82
+    ]
+   ],
+   "challenge": [
+    "Rừng này lắm thú, tao săn đấy! Tránh ra!"
+   ],
+   "win": [
+    "Thôi được, tao bỏ bẫy."
+   ],
+   "lose": [
+    "Cút!"
+   ],
+   "rewards": {
+    "items": {
+     "sitrus-berry": 3,
+     "protein": 1
+    },
+    "exp": 3900
+   }
+  },
+  {
+   "id": "ty-farm-t",
+   "name": "Kẻ phun thuốc trừ sâu",
+   "sprite": "youngster",
+   "x": 84,
+   "y": 104,
+   "team": [
+    [
+     "toxicroak",
+     82
+    ],
+    [
+     "drapion",
+     82
+    ],
+    [
+     "roserade",
+     82
+    ]
+   ],
+   "challenge": [
+    "Phun thuốc cho chè xanh mướt! Mắc gì cản tao?"
+   ],
+   "win": [
+    "Thôi... tao chuyển sang chè sạch."
+   ],
+   "lose": [
+    "Ngộ độc chưa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "poison-barb": 1
+    },
+    "exp": 3900
+   }
+  },
+  {
+   "id": "ty-mine-t",
+   "name": "Thợ mỏ Trại Cau",
+   "sprite": "knight",
+   "x": 118,
+   "y": 90,
+   "team": [
+    [
+     "excadrill",
+     83
+    ],
+    [
+     "rhyperior",
+     83
+    ],
+    [
+     "probopass",
+     83
+    ]
+   ],
+   "challenge": [
+    "Pokémon tôi đào sắt cả đời! Đấu không?"
+   ],
+   "win": [
+    "Cứng hơn quặng sắt đấy."
+   ],
+   "lose": [
+    "Sập lò rồi kìa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "hard-stone": 1
+    },
+    "exp": 4000
+   }
+  }
+ ],
+ "rescue": {
+  "id": "ty-deer-rescue",
+  "x": 8,
+  "y": 40,
+  "species": "sawsbuck",
+  "level": 83,
+  "guards": [
+   [
+    "honchkrow",
+    82
+   ],
+   [
+    "murkrow",
+    81
+   ],
+   [
+    "murkrow",
+    81
+   ]
+  ],
+  "quest": "vn-ty-rescue",
+  "reporter": "Cụ sao chè"
+ },
+ "chests": [
+  {
+   "id": "chest-ty-phuonghoang",
+   "x": 6,
+   "y": 6,
+   "items": {
+    "ultraball": 2,
+    "dusk-stone": 1
+   }
+  },
+  {
+   "id": "chest-ty-nuicoc",
+   "x": 96,
+   "y": 6,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-ty-traicau",
+   "x": 122,
+   "y": 104,
+   "items": {
+    "superpotion": 3,
+    "metal-coat": 1
+   }
+  },
+  {
+   "id": "chest-ty-dinhhoa",
+   "x": 6,
+   "y": 106,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-ty-tancuong",
+   "x": 96,
+   "y": 106,
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-ty-nook",
+   "x": 116,
+   "y": 70,
+   "items": {
+    "exp-candy-m": 2,
+    "ultraball": 1
+   },
+   "requiresFlag": "field:thai-nguyen:ty-boulder"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-thai-nguyen-center",
+   "name": "Trung tâm Pokémon Thái Nguyên",
+   "x": 45,
+   "y": 47
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "polteageist",
+  "name": "Polteageist — Hồn Ấm Chè Tân Cương",
+  "x": 16,
+  "y": 10,
+  "level": 86,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:ty-gate-t"
+  ],
+  "hint": "Tiếng ấm reo trong hang, hương chè thoảng lạnh... Thầy mo chưa cho ai vào.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "dusk-stone": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 16500,
+   "flag": "badge:thai-nguyen",
+   "message": "Nhận Huy hiệu Đệ Nhất Danh Trà (Thái Nguyên)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-ty-cb",
+   "name": "Quốc lộ 3 — về Cao Bằng",
+   "x": 64,
+   "y": 107,
+   "to": "cao-bang",
+   "toX": 112,
+   "toY": 8
+  }
+ ],
+ "docks": [],
+ "nodes": [
+  {
+   "id": "ty-meadow-1",
+   "table": "meadow-forage",
+   "x": 20,
+   "y": 30
+  },
+  {
+   "id": "ty-lake-1",
+   "table": "falls-fish",
+   "x": 52,
+   "y": 16
+  },
+  {
+   "id": "ty-forest-1",
+   "table": "forest-forage",
+   "x": 20,
+   "y": 84
+  },
+  {
+   "id": "ty-meadow-2",
+   "table": "meadow-forage",
+   "x": 72,
+   "y": 100
+  },
+  {
+   "id": "ty-meadow-3",
+   "table": "meadow-forage",
+   "x": 112,
+   "y": 80
+  }
+ ],
+ "field": [
+  {
+   "id": "ty-boulder",
+   "ability": "smash",
+   "x": 120,
+   "y": 70,
+   "nook": {
+    "cx": 116.5,
+    "cy": 70.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}
