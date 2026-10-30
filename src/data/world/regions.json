@@ -2895,5 +2895,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-th-puluong",
+  "name": "Ruộng bậc thang Pù Luông",
+  "areas": [
+   "th-puluong"
+  ],
+  "biome": "farm",
+  "level": [
+   66,
+   69
+  ],
+  "elite": [
+   70,
+   72
+  ],
+  "boss": null,
+  "recommended": 68,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-th-camluong",
+  "name": "Suối cá thần Cẩm Lương",
+  "areas": [
+   "th-camluong"
+  ],
+  "biome": "forest",
+  "level": [
+   67,
+   70
+  ],
+  "elite": [
+   71,
+   73
+  ],
+  "boss": null,
+  "recommended": 69,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-th-hocitadel",
+  "name": "Thành nhà Hồ",
+  "areas": [
+   "th-hocitadel"
+  ],
+  "biome": "ruins",
+  "level": [
+   64,
+   67
+  ],
+  "elite": [
+   68,
+   70
+  ],
+  "boss": null,
+  "recommended": 66,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-th-benen",
+  "name": "Hồ Bến En — Lam Kinh",
+  "areas": [
+   "th-benen"
+  ],
+  "biome": "meadow",
+  "level": [
+   64,
+   67
+  ],
+  "elite": [
+   68,
+   70
+  ],
+  "boss": null,
+  "recommended": 66,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-th-samson",
+  "name": "Biển Sầm Sơn",
+  "areas": [
+   "th-samson"
+  ],
+  "biome": "coast",
+  "level": [
+   65,
+   68
+  ],
+  "elite": [
+   69,
+   71
+  ],
+  "boss": null,
+  "recommended": 67,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

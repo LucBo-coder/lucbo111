@@ -125,8 +125,9 @@
    "requires": ["beat:na-gate-t"],
    "hint": "Mũi tên lá cắm đầy gốc cây cổ thụ... Thợ ảnh chim chưa cho ai vào.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "miracle-seed": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 12000, "flag": "badge:nghe-an", "message": "Nhận Huy hiệu Sông Lam (Nghệ An)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 12000, "flag": "badge:nghe-an", "message": "Nhận Huy hiệu Sông Lam (Nghệ An)! Đường tới Thanh Hóa đã mở: Quốc lộ 1." } },
  "portals": [
+  {"id": "portal-na-next", "name": "Quốc lộ 1 — đường ra Thanh Hóa", "x": 72, "y": 5, "to": "thanh-hoa", "toX": 64, "toY": 104, "requires": ["badge:nghe-an"], "hint": "Đường tới Thanh Hóa mở cho người có Huy hiệu Sông Lam — hạ boss Nghệ An trước."},
   { "id": "portal-na-ht", "name": "Quốc lộ 1 — về Hà Tĩnh", "x": 40, "y": 107, "to": "ha-tinh", "toX": 76, "toY": 8 }
  ],
  "docks": [],

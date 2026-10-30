@@ -1,0 +1,143 @@
+{
+ "id": "thanh-hoa",
+ "name": "Thanh Hóa",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "coast",
+ "spawn": { "x": 64, "y": 104 },
+ "areas": [
+  { "id": "th-puluong", "name": "Ruộng bậc thang Pù Luông", "rect": [0, 0, 45, 45], "habitat": "farm", "level": [66, 69], "orchard": { "period": 6, "gap": 8 } },
+  { "id": "th-camluong", "name": "Suối cá thần Cẩm Lương", "rect": [46, 0, 100, 30], "habitat": "forest", "level": [67, 70] },
+  { "id": "th-city", "name": "Thành phố Thanh Hóa", "rect": [40, 31, 100, 65], "habitat": "village", "level": [66, 66] },
+  { "id": "th-hocitadel", "name": "Thành nhà Hồ", "rect": [0, 46, 39, 111], "habitat": "ruins", "level": [64, 67] },
+  { "id": "th-benen", "name": "Hồ Bến En — Lam Kinh", "rect": [40, 66, 100, 111], "habitat": "meadow", "level": [64, 67] },
+  { "id": "th-samson", "name": "Biển Sầm Sơn", "rect": [101, 0, 127, 111], "habitat": "coast", "level": [65, 68] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[64, 107], [64, 58]] },
+  { "w": 3, "pts": [[60, 46], [40, 32], [24, 20], [24, 5]] },
+  { "w": 3, "pts": [[68, 46], [72, 16]] },
+  { "w": 3, "pts": [[74, 52], [104, 52], [106, 24]] },
+  { "w": 3, "pts": [[104, 52], [106, 96]] },
+  { "w": 3, "pts": [[60, 52], [24, 62], [16, 92]] },
+  { "w": 3, "pts": [[64, 80], [84, 96]] }
+ ],
+ "plaza": [58, 46, 74, 58],
+ "lake": { "cx": 150, "cy": 56, "rx": 42, "ry": 80 },
+ "buildings": [
+  { "id": "th-center", "name": "Trung tâm Pokémon", "x": 42, "y": 40, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "th-mart", "name": "Cửa hàng Thanh Hóa", "x": 80, "y": 36, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "th-trieu", "name": "Đền Bà Triệu", "x": 87, "y": 38, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "th-gate", "name": "Cổng thành nhà Hồ", "x": 6, "y": 76, "w": 7, "h": 4, "roof": "grey", "wall": "stone", "door": 3 },
+  { "id": "th-house-1", "name": "Nhà chị Mai", "x": 46, "y": 60, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "th-house-2", "name": "Quán nem chua", "x": 88, "y": 58, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 62 },
+  { "kind": "log", "x": 90, "y": 22 },
+  { "kind": "bucket", "x": 102, "y": 30 },
+  { "kind": "haystack", "x": 50, "y": 86 },
+  { "kind": "target", "x": 28, "y": 100 }
+ ],
+ "signs": [
+  { "x": 62, "y": 56, "text": ["THÀNH PHỐ THANH HÓA", "Xứ Thanh. Phía tây bắc: Pù Luông · Phía bắc: suối cá thần Cẩm Lương · Phía đông: biển Sầm Sơn · Phía tây: thành nhà Hồ · Phía nam: hồ Bến En, Lam Kinh."] },
+  { "x": 76, "y": 18, "text": ["SUỐI CÁ THẦN CẨM LƯƠNG", "Hàng ngàn con cá dày đặc trong suối, người Mường coi là cá thần, không ai dám bắt."] },
+  { "x": 20, "y": 70, "text": ["THÀNH NHÀ HỒ", "Tòa thành đá xây năm 1397, những khối đá nặng hàng chục tấn ghép không cần vữa. Di sản thế giới."] }
+ ],
+ "npcs": [
+  { "id": "th-guide", "name": "Chị Mai xứ Thanh", "sprite": "girl", "x": 70, "y": 56, "lines": [
+    "Chào mừng tới xứ Thanh! Ăn chiếc nem chua cho biết.",
+    "Suối cá thần Cẩm Lương cạn dần, đàn cá thần bỏ đi đâu hết.",
+    "Người giữ suối biết chuyện, em lên hỏi."] },
+  { "id": "th-keeper", "name": "Người giữ suối cá thần", "sprite": "elder", "x": 60, "y": 16, "lines": [
+    "Đàn cá thần sống ở đây cả ngàn năm, có Nữ Thần Suối che chở.",
+    "Người trên nguồn chặt rừng, suối đục, Nữ Thần giận dâng nước cuốn trôi bản."] },
+  { "id": "th-terrace", "name": "Cô gái Thái Pù Luông", "sprite": "girl", "x": 30, "y": 12, "lines": [
+    "Ruộng bậc thang Pù Luông mùa lúa chín vàng như thang lên trời.",
+    "Nước suối đục, lúa trên ruộng vàng úa hết."] },
+  { "id": "th-hist", "name": "Nhà sử học thành nhà Hồ", "sprite": "elder", "x": 22, "y": 84, "lines": [
+    "Hồ Quý Ly xây thành chỉ trong ba tháng, đá cắt khít tới mức lưỡi dao không lách vào được.",
+    "Sử chép: thời đó có rắn thần dưới suối Cẩm Lương phù hộ dân Mường."] },
+  { "id": "th-lake", "name": "Ông lái đò Bến En", "sprite": "villager", "x": 60, "y": 90, "lines": [
+    "Hồ Bến En có hơn hai chục đảo, rừng nguyên sinh bao quanh.",
+    "Lam Kinh gần đây là quê vua Lê Lợi."] },
+  { "id": "th-samson", "name": "Ngư dân Sầm Sơn", "sprite": "villager", "x": 104, "y": 70, "lines": [
+    "Hòn Trống Mái ở Sầm Sơn là chuyện tình chàng ngư dân và cô gái hóa đá.",
+    "Rác trôi vô bãi nhiều quá con ơi."] },
+  { "id": "th-bard", "name": "Nghệ nhân trống đồng Đông Sơn", "sprite": "elder", "x": 84, "y": 46, "lines": [
+    "Trống đồng Đông Sơn tìm thấy đầu tiên ở xứ Thanh này đó.",
+    "Trên mặt trống có hình chim Lạc bay quanh mặt trời."] }
+ ],
+ "trainers": [
+  { "id": "th-gate-t", "name": "Thầy mo bản Lương", "sprite": "elder", "x": 72, "y": 22,
+    "team": [["gardevoir", 69], ["togekiss", 69], ["sylveon", 69]],
+    "challenge": ["Nữ Thần Suối đang giận. Ai muốn lên gặp Người phải qua ta!"],
+    "win": ["Con có tâm và có sức. Nữ Thần ở vũng suối phía trên."],
+    "lose": ["Về đi, Nữ Thần chưa muốn gặp ai."],
+    "rewards": { "items": { "superpotion": 2, "prism-scale": 1 }, "exp": 3200 } },
+  { "id": "th-terrace-t", "name": "Chàng trai Thái Pù Luông", "sprite": "youngster", "x": 36, "y": 10,
+    "team": [["tangrowth", 67], ["gogoat", 67], ["sceptile", 67]],
+    "challenge": ["Leo ruộng bậc thang cả ngày, chân tui khỏe lắm!"],
+    "win": ["Bạn còn khỏe hơn tui."],
+    "lose": ["Trượt bờ ruộng rồi kìa!"],
+    "rewards": { "items": { "sitrus-berry": 3, "leaf-stone": 1 }, "exp": 3100 } },
+  { "id": "th-hist-t", "name": "Thợ đá thành Tây Đô", "sprite": "hiker", "x": 12, "y": 100,
+    "team": [["bronzong", 66], ["cofagrigus", 66], ["runerigus", 66]],
+    "challenge": ["Đá thành này nặng chục tấn, Pokémon tôi còn nặng hơn!"],
+    "win": ["Bạn mạnh thật. Tôi phục."],
+    "lose": ["Đá đè rồi kìa!"],
+    "rewards": { "items": { "ultraball": 2, "hard-stone": 1 }, "exp": 3000 } },
+  { "id": "th-lake-t", "name": "Kỹ sư thủy điện Bến En", "sprite": "youngster", "x": 84, "y": 104,
+    "team": [["ampharos", 66], ["luxray", 66], ["electivire", 66]],
+    "challenge": ["Pokémon điện của tôi đủ thắp sáng cả huyện!"],
+    "win": ["Cúp điện rồi... bạn thắng."],
+    "lose": ["Giật điện rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "magnet": 1 }, "exp": 3000 } },
+  { "id": "th-samson-t", "name": "Dân bóng chuyền bãi biển", "sprite": "youngster", "x": 104, "y": 86,
+    "team": [["heracross", 67], ["scizor", 67], ["vikavolt", 67]],
+    "challenge": ["Đập bóng trên cát như đập đối thủ!"],
+    "win": ["Bạn chắn bóng giỏi quá."],
+    "lose": ["Bóng trúng mặt rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "protein": 1 }, "exp": 3100 } }
+ ],
+ "rescue": { "id": "th-langur-rescue", "x": 8, "y": 52, "species": "ambipom", "level": 67,
+   "guards": [["houndoom", 66], ["mightyena", 65], ["mightyena", 65]], "quest": "vn-th-rescue", "reporter": "Nhà sử học thành nhà Hồ" },
+ "chests": [
+  { "id": "chest-th-puluong", "x": 6, "y": 4, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-th-camluong", "x": 96, "y": 6, "items": { "superpotion": 3, "water-stone": 1 } },
+  { "id": "chest-th-hocitadel", "x": 6, "y": 106, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-th-benen", "x": 96, "y": 106, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-th-samson", "x": 108, "y": 104, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-th-nook", "x": 30, "y": 104, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:thanh-hoa:th-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-thanh-hoa-center", "name": "Trung tâm Pokémon Thanh Hóa", "x": 45, "y": 47 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "milotic", "name": "Milotic — Nữ Thần Suối Cẩm Lương", "x": 74, "y": 8, "level": 70, "respawn": 600, "arena": 260,
+   "requires": ["beat:th-gate-t"],
+   "hint": "Nước suối cuộn xoáy lấp lánh vảy ngũ sắc... Thầy mo chưa cho ai lên.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "prism-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 12500, "flag": "badge:thanh-hoa", "message": "Nhận Huy hiệu Cá Thần (Thanh Hóa)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-th-na", "name": "Quốc lộ 1 — về Nghệ An", "x": 64, "y": 107, "to": "nghe-an", "toX": 72, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "th-orchard-1", "table": "orchard-forage", "x": 30, "y": 30 },
+  { "id": "th-forest-1", "table": "forest-forage", "x": 90, "y": 14 },
+  { "id": "th-meadow-1", "table": "meadow-forage", "x": 26, "y": 90 },
+  { "id": "th-sea-1", "table": "lake-fish", "x": 104, "y": 40 },
+  { "id": "th-meadow-2", "table": "meadow-forage", "x": 70, "y": 96 }
+ ],
+ "field": [
+  { "id": "th-boulder", "ability": "smash", "x": 34, "y": 104, "nook": { "cx": 30.5, "cy": 104.5, "r": 3, "wall": "boulder" } }
+ ]
+}

@@ -935,6 +935,52 @@
      "y": 22
     }
    ]
+  },
+  "thanh-hoa": {
+   "id": "thanh-hoa",
+   "name": "Thanh Hóa",
+   "area": "th-samson",
+   "action": "trash",
+   "unlock": "vn-th-3",
+   "boss": "milotic",
+   "label": "Nhặt rác trên bãi Sầm Sơn",
+   "done": "Bạn nhặt chai nhựa và túi nilon dạt vào bãi. Biển Sầm Sơn sạch lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "thanh-hoa-1",
+     "x": 108,
+     "y": 57
+    },
+    {
+     "id": "thanh-hoa-2",
+     "x": 107,
+     "y": 43
+    },
+    {
+     "id": "thanh-hoa-3",
+     "x": 105,
+     "y": 73
+    },
+    {
+     "id": "thanh-hoa-4",
+     "x": 107,
+     "y": 29
+    },
+    {
+     "id": "thanh-hoa-5",
+     "x": 111,
+     "y": 86
+    },
+    {
+     "id": "thanh-hoa-6",
+     "x": 115,
+     "y": 17
+    }
+   ]
   }
  }
 }

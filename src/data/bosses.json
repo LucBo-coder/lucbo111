@@ -1577,5 +1577,58 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "milotic",
+  "name": "Milotic — Nữ Thần Suối Cẩm Lương",
+  "types": [
+   "water"
+  ],
+  "baseStats": {
+   "hp": 95,
+   "atk": 60,
+   "def": 79,
+   "spa": 100,
+   "spd": 125,
+   "spe": 81
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "hydro_pump",
+   "aqua_tail"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "feebas",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Nữ Thần Suối trỗi dậy — nước suối cuộn xoáy ngũ sắc!",
+  "exp": 150,
+  "sprite": "milotic",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "hydro_pump",
+   "volley": "water_pulse",
+   "nova": "surf",
+   "field": "whirlpool",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "muddy_water",
+   "ultimateName": "Lũ Suối Cẩm Lương",
+   "ultimateStyle": "safe",
+   "power": 0.33
+  }
  }
 ]
