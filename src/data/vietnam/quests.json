@@ -13638,5 +13638,534 @@
     "Bãi sạch rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-bn-1",
+  "kind": "main",
+  "title": "Tiếng hát trên ao",
+  "giver": "bn-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:hai-phong"
+  ],
+  "description": "Tới Bắc Ninh: ghé Trung tâm Pokémon rồi ra đồi Lim hỏi liền anh Hai về tiếng hát lạ.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-bac-ninh-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Bắc Ninh",
+    "marker": {
+     "x": 45,
+     "y": 49,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "bn-lim",
+    "count": 1,
+    "text": "Đến đồi Lim (phía tây bắc)",
+    "marker": {
+     "x": 24,
+     "y": 30,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-singer",
+    "count": 1,
+    "text": "Hỏi Liền anh Hai",
+    "marker": {
+     "x": 30,
+     "y": 34,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1650,
+   "reputation": 10,
+   "flags": [
+    "landmark:doi-lim"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Bắc Ninh! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi ra đồi Lim hỏi liền anh Hai, ao làng có tiếng hát lạ."
+   ],
+   "progress": [
+    "Đồi Lim ở phía tây bắc."
+   ],
+   "complete": [
+    "Tiếng hát làm người ta ngủ mê... Nghệ nhân Đông Hồ và sư Tây Yên Tử có thể biết."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-2",
+  "kind": "main",
+  "title": "Tranh cổ nàng tiên ao",
+  "giver": "bn-guide",
+  "requires": [
+   "vn-bn-1"
+  ],
+  "description": "Về làng tranh Đông Hồ hỏi nghệ nhân, rồi lên Tây Yên Tử hỏi sư.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "bn-dongho",
+    "count": 1,
+    "text": "Đến làng tranh Đông Hồ (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-painter",
+    "count": 1,
+    "text": "Hỏi Nghệ nhân tranh Đông Hồ",
+    "marker": {
+     "x": 20,
+     "y": 74,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-monk",
+    "count": 1,
+    "text": "Hỏi Sư Tây Yên Tử",
+    "marker": {
+     "x": 100,
+     "y": 20,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1700,
+   "reputation": 15,
+   "flags": [
+    "landmark:dong-ho"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Nghệ nhân Đông Hồ giữ tranh cổ về ao Lim. Em hỏi, rồi lên Tây Yên Tử hỏi sư."
+   ],
+   "progress": [
+    "Đông Hồ ở phía tây, Tây Yên Tử ở phía bắc."
+   ],
+   "complete": [
+    "Nàng Quan Họ buồn vì làng bỏ hát. Phải đối đáp với liền anh Cả mới ra được mép ao."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-3",
+  "kind": "main",
+  "title": "Nàng Quan Họ",
+  "giver": "bn-guide",
+  "requires": [
+   "vn-bn-2"
+  ],
+  "description": "Thắng Liền anh Cả để ra mép ao, rồi làm Primarina vui trở lại.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "bn-gate-t",
+    "count": 1,
+    "text": "Thắng Liền anh Cả",
+    "marker": {
+     "x": 46,
+     "y": 22,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "primarina",
+    "count": 1,
+    "text": "Đánh bại Primarina — Nàng Quan Họ",
+    "marker": {
+     "x": 42,
+     "y": 6,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1950,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Liền anh Cả canh bờ ao. Em đối đáp được thì ra."
+   ],
+   "progress": [
+    "Mép ao phía bắc đồi Lim."
+   ],
+   "complete": [
+    "Nàng hát vui rồi, làng lại mở hội! Huy hiệu Quan Họ là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-rescue",
+  "kind": "side",
+  "title": "Dế mèn Đông Hồ",
+  "giver": "bn-painter",
+  "requires": [
+   "vn-bn-1"
+  ],
+  "description": "Một con Kricketune bị bầy quạ vây ở góc làng tranh.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "bn-cricket-rescue",
+    "count": 1,
+    "text": "Giải cứu Kricketune ở góc tây làng tranh",
+    "marker": {
+     "x": 8,
+     "y": 90,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-painter",
+    "count": 1,
+    "text": "Báo cho Nghệ nhân tranh Đông Hồ",
+    "marker": {
+     "x": 20,
+     "y": 74,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1500,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con dế bị quạ vây ở góc tây làng. Em giúp ông!"
+   ],
+   "progress": [
+    "Góc tây làng tranh."
+   ],
+   "complete": [
+    "Dế gáy lại rồi, nghe vui tai ghê."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-print",
+  "kind": "side",
+  "title": "Ván in tranh",
+  "giver": "bn-painter",
+  "requires": [
+   "vn-bn-2"
+  ],
+  "description": "Thợ in tranh muốn đấu bằng Pokémon biết vẽ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "bn-dongho-t",
+    "count": 1,
+    "text": "Thắng Thợ in tranh Đông Hồ",
+    "marker": {
+     "x": 12,
+     "y": 100,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-painter",
+    "count": 1,
+    "text": "Báo cho Nghệ nhân tranh Đông Hồ",
+    "marker": {
+     "x": 20,
+     "y": 74,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "greatball": 2
+   },
+   "worldExp": 1350,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng thợ in muốn đấu với em. Em chơi với nó nha."
+   ],
+   "progress": [
+    "Nó ở góc tây nam làng."
+   ],
+   "complete": [
+    "Nó tặng em bức Đám cưới chuột đó."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-yentu",
+  "kind": "side",
+  "title": "Đường lên Yên Tử",
+  "giver": "bn-monk",
+  "requires": [
+   "vn-bn-1"
+  ],
+  "description": "Người hành hương muốn đấu một trận giữa đường lên núi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "bn-yentu",
+    "count": 1,
+    "text": "Lên Tây Yên Tử (phía bắc)",
+    "marker": {
+     "x": 89,
+     "y": 17,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "bn-yentu-t",
+    "count": 1,
+    "text": "Thắng Người hành hương Yên Tử",
+    "marker": {
+     "x": 116,
+     "y": 20,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-monk",
+    "count": 1,
+    "text": "Báo cho Sư Tây Yên Tử",
+    "marker": {
+     "x": 100,
+     "y": 20,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   },
+   "worldExp": 1350,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Người hành hương muốn thử sức. Thí chủ chiều họ nha."
+   ],
+   "progress": [
+    "Họ ở phía đông đường núi."
+   ],
+   "complete": [
+    "Mô Phật. Thí chủ bền chí lắm."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-lychee",
+  "kind": "side",
+  "title": "Vải thiều Lục Ngạn",
+  "giver": "bn-lychee",
+  "requires": [
+   "vn-bn-1"
+  ],
+  "description": "Cậu bé hái vải buồn ngủ vì đêm nào cũng nghe hát.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "bn-lychee-t",
+    "count": 1,
+    "text": "Thắng Cậu bé hái vải Lục Ngạn",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-lychee",
+    "count": 1,
+    "text": "Báo cho Chú trồng vải Lục Ngạn",
+    "marker": {
+     "x": 70,
+     "y": 90,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "greatball": 2
+   },
+   "worldExp": 1300,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng nhỏ ngủ gục hoài. Em đấu với nó cho nó tỉnh."
+   ],
+   "progress": [
+    "Nó ở phía đông nam vườn."
+   ],
+   "complete": [
+    "Nó tỉnh rồi! Chùm vải này chú cho em."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-dau",
+  "kind": "side",
+  "title": "Võ Luy Lâu",
+  "giver": "bn-pagoda",
+  "requires": [
+   "vn-bn-1"
+  ],
+  "description": "Võ sư Luy Lâu muốn thử sức người đến chùa Dâu.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "bn-pagoda",
+    "count": 1,
+    "text": "Đến chùa Dâu (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 73,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "bn-pagoda-t",
+    "count": 1,
+    "text": "Thắng Võ sư Luy Lâu",
+    "marker": {
+     "x": 118,
+     "y": 100,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-pagoda",
+    "count": 1,
+    "text": "Báo cho Sư chùa Dâu",
+    "marker": {
+     "x": 112,
+     "y": 76,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "protein": 1
+   },
+   "worldExp": 1350,
+   "reputation": 12,
+   "flags": [
+    "landmark:chua-dau"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Võ sư muốn đấu với thí chủ. Mời thí chủ."
+   ],
+   "progress": [
+    "Võ sư ở góc đông nam sân chùa."
+   ],
+   "complete": [
+    "Mô Phật. Thí chủ có võ."
+   ]
+  }
+ },
+ {
+  "id": "vn-bn-eco",
+  "kind": "side",
+  "title": "Ao Lim trong xanh",
+  "giver": "bn-singer",
+  "requires": [
+   "vn-bn-3"
+  ],
+  "description": "Rác sau hội trôi đầy ao làng Lim.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:bac-ninh",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm quanh ao",
+    "marker": {
+     "x": 24,
+     "y": 30,
+     "region": "bac-ninh"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "bn-singer",
+    "count": 1,
+    "text": "Báo cho Liền anh Hai",
+    "marker": {
+     "x": 30,
+     "y": 34,
+     "region": "bac-ninh"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1350,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Nàng hát vui rồi, giờ dọn ao cho nàng. Em phụ anh nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép ao."
+   ],
+   "complete": [
+    "Ao trong rồi! Tối nay anh hát tặng em một bài."
+   ]
+  }
  }
 ]

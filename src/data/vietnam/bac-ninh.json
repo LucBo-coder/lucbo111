@@ -1,0 +1,139 @@
+{
+ "id": "bac-ninh",
+ "name": "Bắc Ninh",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 100, "y": 104 },
+ "areas": [
+  { "id": "bn-lim", "name": "Đồi Lim — làng quan họ", "rect": [0, 0, 50, 45], "habitat": "lake", "level": [75, 78] },
+  { "id": "bn-yentu", "name": "Tây Yên Tử", "rect": [51, 0, 127, 35], "habitat": "forest", "level": [74, 77] },
+  { "id": "bn-city", "name": "Thành phố Bắc Ninh", "rect": [40, 36, 100, 70], "habitat": "village", "level": [74, 74] },
+  { "id": "bn-dongho", "name": "Làng tranh Đông Hồ", "rect": [0, 46, 39, 111], "habitat": "meadow", "level": [72, 75] },
+  { "id": "bn-lucngan", "name": "Vườn vải Lục Ngạn", "rect": [40, 71, 100, 111], "habitat": "farm", "level": [72, 75], "orchard": { "period": 7, "gap": 8 } },
+  { "id": "bn-pagoda", "name": "Chùa Dâu — Phật Tích", "rect": [101, 36, 127, 111], "habitat": "ruins", "level": [73, 76] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[100, 107], [100, 86], [80, 74], [70, 64]] },
+  { "w": 3, "pts": [[60, 52], [50, 30], [44, 14]] },
+  { "w": 3, "pts": [[68, 52], [80, 20], [90, 10], [110, 8], [112, 5]] },
+  { "w": 3, "pts": [[74, 58], [110, 58], [112, 90]] },
+  { "w": 3, "pts": [[60, 58], [24, 66], [16, 92]] },
+  { "w": 3, "pts": [[80, 74], [64, 96]] }
+ ],
+ "plaza": [58, 52, 74, 64],
+ "lake": { "cx": 24, "cy": 20, "rx": 14, "ry": 10 },
+ "buildings": [
+  { "id": "bn-center", "name": "Trung tâm Pokémon", "x": 42, "y": 42, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "bn-mart", "name": "Cửa hàng Bắc Ninh", "x": 78, "y": 40, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "bn-do", "name": "Đền Đô", "x": 86, "y": 42, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "bn-dau", "name": "Chùa Dâu", "x": 114, "y": 66, "w": 6, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "bn-house-1", "name": "Nhà liền chị Thơm", "x": 46, "y": 66, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "bn-house-2", "name": "Quán bánh phu thê", "x": 90, "y": 66, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 68 },
+  { "kind": "haystack", "x": 26, "y": 80 },
+  { "kind": "log", "x": 70, "y": 14 },
+  { "kind": "target", "x": 108, "y": 96 },
+  { "kind": "bucket", "x": 6, "y": 36 }
+ ],
+ "signs": [
+  { "x": 62, "y": 62, "text": ["THÀNH PHỐ BẮC NINH", "Quê hương quan họ. Phía tây bắc: đồi Lim · Phía bắc: Tây Yên Tử · Phía tây: làng tranh Đông Hồ · Phía nam: vải Lục Ngạn · Phía đông: chùa Dâu."] },
+  { "x": 40, "y": 34, "text": ["ĐỒI LIM", "Hội Lim mùng mười ba tháng Giêng, liền anh liền chị hát quan họ trên thuyền giữa ao làng."] },
+  { "x": 22, "y": 70, "text": ["LÀNG TRANH ĐÔNG HỒ", "Tranh in trên giấy điệp, màu từ lá cây, sỏi son: Đám cưới chuột, Lợn ăn cây ráy..."] }
+ ],
+ "npcs": [
+  { "id": "bn-guide", "name": "Liền chị Thơm", "sprite": "girl", "x": 70, "y": 62, "lines": [
+    "Người ơi người ở đừng về... Chào mừng tới Bắc Ninh!",
+    "Mấy đêm nay ao làng Lim có tiếng hát lạ, ai nghe cũng ngủ mê, thuyền trôi mất cả.",
+    "Liền anh Hai ở bờ ao biết chuyện, em qua hỏi."] },
+  { "id": "bn-singer", "name": "Liền anh Hai", "sprite": "villager", "x": 30, "y": 34, "lines": [
+    "Tiếng hát ấy hay lắm, hay hơn cả quan họ làng mình.",
+    "Mà nghe xong ai cũng buồn ngủ, có người suýt chìm xuống ao."] },
+  { "id": "bn-monk", "name": "Sư Tây Yên Tử", "sprite": "elder", "x": 100, "y": 20, "lines": [
+    "Tây Yên Tử là đường vua Trần Nhân Tông lên núi tu hành.",
+    "Tiếng hát dưới ao là của Nàng Quan Họ, linh vật giữ ao làng. Nàng buồn vì làng bỏ hát, chỉ mở loa."] },
+  { "id": "bn-painter", "name": "Nghệ nhân tranh Đông Hồ", "sprite": "elder", "x": 20, "y": 74, "lines": [
+    "Tranh Đông Hồ in bằng ván gỗ, mỗi màu một ván.",
+    "Có bức tranh cổ vẽ nàng tiên cá hát trên ao Lim đó con."] },
+  { "id": "bn-lychee", "name": "Chú trồng vải Lục Ngạn", "sprite": "farmer", "x": 70, "y": 90, "lines": [
+    "Vải thiều Lục Ngạn mùa hè đỏ rực cả đồi.",
+    "Mấy đứa hái vải đêm nào cũng ra ao Lim nghe hát, sáng ra ngủ gục."] },
+  { "id": "bn-pagoda", "name": "Sư chùa Dâu", "sprite": "elder", "x": 112, "y": 76, "lines": [
+    "Chùa Dâu là ngôi chùa cổ nhất Việt Nam, gần hai ngàn năm tuổi.",
+    "Phật pháp vào nước ta đầu tiên ở đất Luy Lâu này."] }
+ ],
+ "trainers": [
+  { "id": "bn-gate-t", "name": "Liền anh Cả", "sprite": "elder", "x": 46, "y": 22,
+    "team": [["gardevoir", 77], ["sylveon", 77], ["hatterene", 77]],
+    "challenge": ["Muốn ra ao gặp Nàng Quan Họ, phải đối đáp với ta trước!"],
+    "win": ["Con đối đáp giỏi lắm. Nàng ở mép ao phía bắc."],
+    "lose": ["Chưa thuộc lời rồi, về tập thêm."],
+    "rewards": { "items": { "superpotion": 2, "mystic-water": 1 }, "exp": 3600 } },
+  { "id": "bn-yentu-t", "name": "Người hành hương Yên Tử", "sprite": "hiker", "x": 116, "y": 20,
+    "team": [["ferrothorn", 75], ["tangrowth", 75], ["chesnaught", 75]],
+    "challenge": ["Leo núi Yên Tử cần bền chí. Đấu cũng vậy!"],
+    "win": ["Bạn bền chí thật."],
+    "lose": ["Về tịnh tâm đã."],
+    "rewards": { "items": { "ultraball": 2, "leaf-stone": 1 }, "exp": 3500 } },
+  { "id": "bn-dongho-t", "name": "Thợ in tranh Đông Hồ", "sprite": "youngster", "x": 12, "y": 100,
+    "team": [["smeargle", 74], ["exploud", 74], ["zoroark", 74]],
+    "challenge": ["Pokémon của tôi vẽ được mọi chiêu thức đó!"],
+    "win": ["Bức tranh này tặng bạn làm kỷ niệm."],
+    "lose": ["Lem màu rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "greatball": 2 }, "exp": 3400 } },
+  { "id": "bn-lychee-t", "name": "Cậu bé hái vải Lục Ngạn", "sprite": "youngster", "x": 84, "y": 104,
+    "team": [["tropius", 74], ["shiftry", 74], ["breloom", 74]],
+    "challenge": ["Hái vải buồn ngủ quá, đấu cho tỉnh nè!"],
+    "win": ["Tỉnh rồi! Cảm ơn bạn."],
+    "lose": ["Ngủ gục rồi kìa!"],
+    "rewards": { "items": { "sitrus-berry": 3 }, "exp": 3400 } },
+  { "id": "bn-pagoda-t", "name": "Võ sư Luy Lâu", "sprite": "knight", "x": 118, "y": 100,
+    "team": [["sawk", 75], ["throh", 75], ["mienshao", 75]],
+    "challenge": ["Đất Luy Lâu có võ từ ngàn năm. Mời!"],
+    "win": ["Bạn có võ thật."],
+    "lose": ["Tập thêm đi."],
+    "rewards": { "items": { "superpotion": 2, "protein": 1 }, "exp": 3500 } }
+ ],
+ "rescue": { "id": "bn-cricket-rescue", "x": 8, "y": 90, "species": "kricketune", "level": 75,
+   "guards": [["mandibuzz", 74], ["honchkrow", 74], ["honchkrow", 74]], "quest": "vn-bn-rescue", "reporter": "Nghệ nhân tranh Đông Hồ" },
+ "chests": [
+  { "id": "chest-bn-lim", "x": 6, "y": 6, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-bn-yentu", "x": 122, "y": 28, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-bn-dongho", "x": 6, "y": 106, "items": { "superpotion": 3, "moon-stone": 1 } },
+  { "id": "chest-bn-lucngan", "x": 63, "y": 97, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-bn-pagoda", "x": 122, "y": 104, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-bn-nook", "x": 116, "y": 50, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:bac-ninh:bn-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-bac-ninh-center", "name": "Trung tâm Pokémon Bắc Ninh", "x": 45, "y": 49 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "primarina", "name": "Primarina — Nàng Quan Họ", "x": 42, "y": 6, "level": 78, "respawn": 600, "arena": 260,
+   "requires": ["beat:bn-gate-t"],
+   "hint": "Tiếng hát ngọt lịm vọng lên từ mép ao... Liền anh Cả chưa cho ai ra.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "mystic-water": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 14500, "flag": "badge:bac-ninh", "message": "Nhận Huy hiệu Quan Họ (Bắc Ninh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-bn-hp", "name": "Quốc lộ 18 — về Hải Phòng", "x": 100, "y": 107, "to": "hai-phong", "toX": 22, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "bn-lake-1", "table": "lake-fish", "x": 42, "y": 22 },
+  { "id": "bn-forest-1", "table": "forest-forage", "x": 100, "y": 28 },
+  { "id": "bn-meadow-1", "table": "meadow-forage", "x": 20, "y": 90 },
+  { "id": "bn-orchard-1", "table": "orchard-forage", "x": 70, "y": 100 },
+  { "id": "bn-meadow-2", "table": "meadow-forage", "x": 114, "y": 84 }
+ ],
+ "field": [
+  { "id": "bn-boulder", "ability": "smash", "x": 120, "y": 50, "nook": { "cx": 116.5, "cy": 50.5, "r": 3, "wall": "boulder" } }
+ ]
+}

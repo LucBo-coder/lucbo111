@@ -292,6 +292,52 @@
     }
    ]
   },
+  "bac-ninh": {
+   "id": "bac-ninh",
+   "name": "Bắc Ninh",
+   "area": "bn-lim",
+   "action": "trash",
+   "unlock": "vn-bn-3",
+   "boss": "primarina",
+   "label": "Vớt rác ao làng Lim",
+   "done": "Bạn vớt chai nhựa và túi nilon trôi trên ao. Nước ao Lim trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "bac-ninh-1",
+     "x": 24,
+     "y": 30
+    },
+    {
+     "id": "bac-ninh-2",
+     "x": 28,
+     "y": 11
+    },
+    {
+     "id": "bac-ninh-3",
+     "x": 38,
+     "y": 22
+    },
+    {
+     "id": "bac-ninh-4",
+     "x": 11,
+     "y": 24
+    },
+    {
+     "id": "bac-ninh-5",
+     "x": 15,
+     "y": 12
+    },
+    {
+     "id": "bac-ninh-6",
+     "x": 32,
+     "y": 28
+    }
+   ]
+  },
   "da-nang": {
    "id": "da-nang",
    "name": "Đà Nẵng",

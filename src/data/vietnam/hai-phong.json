@@ -125,8 +125,9 @@
    "requires": ["beat:hp-gate-t"],
    "hint": "Lửa đỏ rực trên vách đá phía bắc đảo... Thợ leo vách chưa cho ai lên.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "charcoal": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 14000, "flag": "badge:hai-phong", "message": "Nhận Huy hiệu Hoa Phượng (Hải Phòng)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 14000, "flag": "badge:hai-phong", "message": "Nhận Huy hiệu Hoa Phượng (Hải Phòng)! Đường tới Bắc Ninh đã mở: Quốc lộ 18." } },
  "portals": [
+  {"id": "portal-hp-next", "name": "Quốc lộ 18 — đường tới Bắc Ninh", "x": 22, "y": 5, "to": "bac-ninh", "toX": 100, "toY": 104, "requires": ["badge:hai-phong"], "hint": "Đường tới Bắc Ninh mở cho người có Huy hiệu Hoa Phượng — hạ boss Hải Phòng trước."},
   { "id": "portal-hp-hy", "name": "Quốc lộ 5 — về Hưng Yên", "x": 40, "y": 107, "to": "hung-yen", "toX": 112, "toY": 8 }
  ],
  "docks": [],

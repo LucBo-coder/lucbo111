@@ -1791,5 +1791,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "primarina",
+  "name": "Primarina — Nàng Quan Họ",
+  "types": [
+   "water",
+   "fairy"
+  ],
+  "baseStats": {
+   "hp": 80,
+   "atk": 74,
+   "def": 74,
+   "spa": 126,
+   "spd": 116,
+   "spe": 60
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "sparkling_aria",
+   "moonblast"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "popplio",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Nàng Quan Họ cất tiếng hát — sóng nước ao Lim dâng cao!",
+  "exp": 150,
+  "sprite": "primarina",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "moonblast",
+   "volley": "water_pulse",
+   "nova": "dazzling_gleam",
+   "field": "whirlpool",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "sparkling_aria",
+   "ultimateName": "Khúc Quan Họ Ngàn Năm",
+   "ultimateStyle": "safe",
+   "power": 0.33
+  }
  }
 ]

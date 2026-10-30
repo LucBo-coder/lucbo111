@@ -3355,5 +3355,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-bn-lim",
+  "name": "Đồi Lim — làng quan họ",
+  "areas": [
+   "bn-lim"
+  ],
+  "biome": "lake",
+  "level": [
+   75,
+   78
+  ],
+  "elite": [
+   79,
+   81
+  ],
+  "boss": null,
+  "recommended": 77,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bn-yentu",
+  "name": "Tây Yên Tử",
+  "areas": [
+   "bn-yentu"
+  ],
+  "biome": "forest",
+  "level": [
+   74,
+   77
+  ],
+  "elite": [
+   78,
+   80
+  ],
+  "boss": null,
+  "recommended": 76,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bn-dongho",
+  "name": "Làng tranh Đông Hồ",
+  "areas": [
+   "bn-dongho"
+  ],
+  "biome": "meadow",
+  "level": [
+   72,
+   75
+  ],
+  "elite": [
+   76,
+   78
+  ],
+  "boss": null,
+  "recommended": 74,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bn-lucngan",
+  "name": "Vườn vải Lục Ngạn",
+  "areas": [
+   "bn-lucngan"
+  ],
+  "biome": "farm",
+  "level": [
+   72,
+   75
+  ],
+  "elite": [
+   76,
+   78
+  ],
+  "boss": null,
+  "recommended": 74,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-bn-pagoda",
+  "name": "Chùa Dâu — Phật Tích",
+  "areas": [
+   "bn-pagoda"
+  ],
+  "biome": "ruins",
+  "level": [
+   73,
+   76
+  ],
+  "elite": [
+   77,
+   79
+  ],
+  "boss": null,
+  "recommended": 75,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]
