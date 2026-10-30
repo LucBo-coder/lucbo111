@@ -126,8 +126,9 @@
    "requires": ["beat:ql-gate-t"],
    "hint": "Bóng rồng khổng lồ lượn trên mũi đất... Thuyền trưởng chưa cho ai ra.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 15000, "flag": "badge:quang-ninh", "message": "Nhận Huy hiệu Rồng Hạ Long (Quảng Ninh)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 15000, "flag": "badge:quang-ninh", "message": "Nhận Huy hiệu Rồng Hạ Long (Quảng Ninh)! Đường tới Lạng Sơn đã mở: Quốc lộ 4B." } },
  "portals": [
+  {"id": "portal-ql-next", "name": "Quốc lộ 4B — đường lên Lạng Sơn", "x": 22, "y": 5, "to": "lang-son", "toX": 104, "toY": 104, "requires": ["badge:quang-ninh"], "hint": "Đường tới Lạng Sơn mở cho người có Huy hiệu Rồng Hạ Long — hạ boss Quảng Ninh trước."},
   { "id": "portal-ql-bn", "name": "Quốc lộ 18 — về Bắc Ninh", "x": 24, "y": 107, "to": "bac-ninh", "toX": 112, "toY": 8 }
  ],
  "docks": [],

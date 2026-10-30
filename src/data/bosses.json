@@ -1899,5 +1899,58 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "gigalith",
+  "name": "Gigalith — Nàng Tô Thị Hóa Đá",
+  "types": [
+   "rock"
+  ],
+  "baseStats": {
+   "hp": 85,
+   "atk": 135,
+   "def": 130,
+   "spa": 60,
+   "spd": 80,
+   "spe": 25
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "stone_edge",
+   "rock_slide"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "roggenrola",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Hồn đá Tô Thị thức giấc — đá núi đổ ào như thác!",
+  "exp": 150,
+  "sprite": "gigalith",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "stone_edge",
+   "volley": "rock_blast",
+   "nova": "earthquake",
+   "field": "rock_tomb",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "head_smash",
+   "ultimateName": "Vọng Phu Đá Đổ",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

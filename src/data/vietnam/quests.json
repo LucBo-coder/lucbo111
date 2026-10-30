@@ -14696,5 +14696,523 @@
     "Vịnh xanh rồi! Mai anh chở em đi hang Sửng Sốt."
    ]
   }
+ },
+ {
+  "id": "vn-ls-1",
+  "kind": "main",
+  "title": "Đá lăn núi Tô Thị",
+  "giver": "ls-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:quang-ninh"
+  ],
+  "description": "Lên xứ Lạng: ghé Trung tâm Pokémon rồi tới chân núi Tô Thị hỏi bà cụ kể chuyện.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-lang-son-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Lạng Sơn",
+    "marker": {
+     "x": 45,
+     "y": 49,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ls-tothi",
+    "count": 1,
+    "text": "Đến núi Tô Thị (phía tây bắc)",
+    "marker": {
+     "x": 25,
+     "y": 22,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-tothi",
+    "count": 1,
+    "text": "Hỏi Bà cụ kể chuyện Tô Thị",
+    "marker": {
+     "x": 34,
+     "y": 32,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1750,
+   "reputation": 10,
+   "flags": [
+    "landmark:to-thi"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng lên xứ Lạng! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi tới chân núi Tô Thị hỏi bà cụ, đá lăn ầm ầm mấy đêm rồi."
+   ],
+   "progress": [
+    "Núi Tô Thị ở phía tây bắc."
+   ],
+   "complete": [
+    "Bà nói nàng Tô Thị không yên vì người ta leo trèo... Sư chùa Tam Thanh biết cách."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-2",
+  "kind": "main",
+  "title": "Hồn đá thức giấc",
+  "giver": "ls-guide",
+  "requires": [
+   "vn-ls-1"
+  ],
+  "description": "Vào chùa Tam Thanh hỏi sư, rồi xuống ải Chi Lăng hỏi người giữ ải.",
+  "objectives": [
+   {
+    "type": "talk",
+    "target": "ls-cave",
+    "count": 1,
+    "text": "Hỏi Sư chùa Tam Thanh",
+    "marker": {
+     "x": 44,
+     "y": 16,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "ls-chilang",
+    "count": 1,
+    "text": "Đến ải Chi Lăng (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-chilang",
+    "count": 1,
+    "text": "Hỏi Người giữ ải Chi Lăng",
+    "marker": {
+     "x": 14,
+     "y": 76,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1800,
+   "reputation": 15,
+   "flags": [
+    "landmark:chi-lang"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Sư chùa Tam Thanh hiểu chuyện hồn đá. Em hỏi sư, rồi xuống Chi Lăng hỏi thêm."
+   ],
+   "progress": [
+    "Chùa ở sườn núi Tô Thị, ải Chi Lăng ở phía tây."
+   ],
+   "complete": [
+    "Muốn lên đỉnh làm nàng yên, phải qua thợ đá Tam Thanh trước."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-3",
+  "kind": "main",
+  "title": "Nàng Tô Thị Hóa Đá",
+  "giver": "ls-guide",
+  "requires": [
+   "vn-ls-2"
+  ],
+  "description": "Thắng Thợ đá Tam Thanh để lên đỉnh, rồi làm Gigalith yên giấc.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ls-gate-t",
+    "count": 1,
+    "text": "Thắng Thợ đá Tam Thanh",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "gigalith",
+    "count": 1,
+    "text": "Đánh bại Gigalith — Nàng Tô Thị Hóa Đá",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2050,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thợ đá canh đường lên đỉnh. Em đủ sức thì lên."
+   ],
+   "progress": [
+    "Đỉnh núi ở góc tây bắc."
+   ],
+   "complete": [
+    "Nàng Tô Thị yên giấc, đá thôi lăn rồi! Huy hiệu Vọng Phu là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-rescue",
+  "kind": "side",
+  "title": "Dê núi Tô Thị",
+  "giver": "ls-tothi",
+  "requires": [
+   "vn-ls-1"
+  ],
+  "description": "Một con Gogoat bị bầy chó sói vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "ls-goat-rescue",
+    "count": 1,
+    "text": "Giải cứu Gogoat ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-tothi",
+    "count": 1,
+    "text": "Báo cho Bà cụ kể chuyện Tô Thị",
+    "marker": {
+     "x": 34,
+     "y": 32,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1600,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con dê núi bị chó sói vây ở góc tây. Em giúp bà!"
+   ],
+   "progress": [
+    "Góc tây núi Tô Thị."
+   ],
+   "complete": [
+    "Dê về đàn rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-mauson",
+  "kind": "side",
+  "title": "Rét Mẫu Sơn",
+  "giver": "ls-mauson",
+  "requires": [
+   "vn-ls-1"
+  ],
+  "description": "Thợ săn Mẫu Sơn thách ai chịu được lạnh.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "ls-mauson",
+    "count": 1,
+    "text": "Lên núi Mẫu Sơn (phía bắc)",
+    "marker": {
+     "x": 89,
+     "y": 17,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "ls-mauson-t",
+    "count": 1,
+    "text": "Thắng Thợ săn Mẫu Sơn",
+    "marker": {
+     "x": 116,
+     "y": 12,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-mauson",
+    "count": 1,
+    "text": "Báo cho Người Dao Mẫu Sơn",
+    "marker": {
+     "x": 100,
+     "y": 20,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   },
+   "worldExp": 1450,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Ông thợ săn ham đấu lắm. Em thử với ổng nha."
+   ],
+   "progress": [
+    "Ông ở góc đông bắc núi."
+   ],
+   "complete": [
+    "Ông phục em rồi. Chén rượu ngô... à nước chè nóng này mời em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-battle",
+  "kind": "side",
+  "title": "Diễn trận Chi Lăng",
+  "giver": "ls-chilang",
+  "requires": [
+   "vn-ls-2"
+  ],
+  "description": "Người diễn trận Chi Lăng mời bạn đấu một trận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ls-chilang-t",
+    "count": 1,
+    "text": "Thắng Người diễn trận Chi Lăng",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-chilang",
+    "count": 1,
+    "text": "Báo cho Người giữ ải Chi Lăng",
+    "marker": {
+     "x": 14,
+     "y": 76,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "metal-coat": 1
+   },
+   "worldExp": 1450,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Mấy đứa diễn trận muốn đấu thật. Em chơi với tụi nó nha."
+   ],
+   "progress": [
+    "Tụi nó ở góc tây nam ải."
+   ],
+   "complete": [
+    "Trận này hay lắm! Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-market",
+  "kind": "side",
+  "title": "Chợ Kỳ Lừa",
+  "giver": "ls-market",
+  "requires": [
+   "vn-ls-1"
+  ],
+  "description": "Tay buôn lậu trà trộn hàng giả vào chợ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ls-kylua-t",
+    "count": 1,
+    "text": "Thắng Tay buôn lậu",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-market",
+    "count": 1,
+    "text": "Báo cho Cô bán hàng chợ Kỳ Lừa",
+    "marker": {
+     "x": 60,
+     "y": 84,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "black-glasses": 1
+   },
+   "worldExp": 1400,
+   "reputation": 12,
+   "flags": [
+    "landmark:ky-lua"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Tay buôn lậu bán hàng giả ở đồi hồi phía nam. Em trị nó giùm cô."
+   ],
+   "progress": [
+    "Nó ở góc đông nam đồi hồi."
+   ],
+   "complete": [
+    "Chợ sạch hàng giả rồi. Gói hoa hồi này cô tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-pump",
+  "kind": "side",
+  "title": "Trạm bơm Kỳ Cùng",
+  "giver": "ls-river",
+  "requires": [
+   "vn-ls-1"
+  ],
+  "description": "Kỹ sư trạm bơm thả Pokémon điện làm cá sông chết.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "ls-river-t",
+    "count": 1,
+    "text": "Thắng Kỹ sư trạm bơm Kỳ Cùng",
+    "marker": {
+     "x": 110,
+     "y": 96,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-river",
+    "count": 1,
+    "text": "Báo cho Ông lái đò Kỳ Cùng",
+    "marker": {
+     "x": 102,
+     "y": 60,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "magnet": 1
+   },
+   "worldExp": 1400,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Pokémon điện của anh kỹ sư làm cá chết. Em nói chuyện với ảnh giùm ông."
+   ],
+   "progress": [
+    "Anh ấy ở phía nam bờ sông."
+   ],
+   "complete": [
+    "Ảnh hứa không thả nữa rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-ls-eco",
+  "kind": "side",
+  "title": "Sông Kỳ Cùng trong xanh",
+  "giver": "ls-river",
+  "requires": [
+   "vn-ls-3"
+  ],
+  "description": "Rác trôi đầy bến sông Kỳ Cùng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:lang-son",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven sông",
+    "marker": {
+     "x": 106,
+     "y": 77,
+     "region": "lang-son"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "ls-river",
+    "count": 1,
+    "text": "Báo cho Ông lái đò Kỳ Cùng",
+    "marker": {
+     "x": 102,
+     "y": 60,
+     "region": "lang-son"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1450,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Núi yên rồi, giờ dọn sông. Em phụ ông vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước."
+   ],
+   "complete": [
+    "Sông trong rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

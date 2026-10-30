@@ -1,0 +1,142 @@
+{
+ "id": "lang-son",
+ "name": "Lạng Sơn",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 104, "y": 104 },
+ "areas": [
+  { "id": "ls-tothi", "name": "Núi Tô Thị — động Tam Thanh", "rect": [0, 0, 50, 45], "habitat": "rocky", "level": [79, 82] },
+  { "id": "ls-mauson", "name": "Núi Mẫu Sơn", "rect": [51, 0, 127, 35], "habitat": "forest", "level": [78, 81] },
+  { "id": "ls-city", "name": "Thành phố Lạng Sơn", "rect": [40, 36, 100, 70], "habitat": "village", "level": [78, 78] },
+  { "id": "ls-chilang", "name": "Ải Chi Lăng", "rect": [0, 46, 39, 111], "habitat": "ruins", "level": [76, 79] },
+  { "id": "ls-kylua", "name": "Đồi hồi Kỳ Lừa", "rect": [40, 71, 100, 111], "habitat": "farm", "level": [76, 79], "orchard": { "period": 7, "gap": 8 } },
+  { "id": "ls-river", "name": "Sông Kỳ Cùng", "rect": [101, 36, 127, 111], "habitat": "lake", "level": [77, 80] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[104, 107], [104, 96], [86, 80], [70, 62]] },
+  { "w": 3, "pts": [[60, 50], [40, 30], [24, 18]] },
+  { "w": 3, "pts": [[68, 50], [80, 20], [80, 5]] },
+  { "w": 3, "pts": [[74, 56], [100, 56], [104, 46]] },
+  { "w": 3, "pts": [[60, 56], [24, 66], [16, 92]] },
+  { "w": 3, "pts": [[86, 80], [64, 98]] }
+ ],
+ "plaza": [58, 50, 74, 62],
+ "lake": { "cx": 114, "cy": 70, "rx": 9, "ry": 16 },
+ "buildings": [
+  { "id": "ls-center", "name": "Trung tâm Pokémon", "x": 42, "y": 42, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "ls-mart", "name": "Cửa hàng Lạng Sơn", "x": 78, "y": 42, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "ls-market", "name": "Chợ Kỳ Lừa", "x": 86, "y": 44, "w": 8, "h": 4, "roof": "grey", "wall": "stone", "door": 4 },
+  { "id": "ls-pagoda", "name": "Chùa Tam Thanh", "x": 38, "y": 8, "w": 5, "h": 4, "roof": "gold", "wall": "stone", "door": 2 },
+  { "id": "ls-house-1", "name": "Nhà chị Tày Hoa", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "ls-house-2", "name": "Quán vịt quay", "x": 90, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 68 },
+  { "kind": "log", "x": 100, "y": 24 },
+  { "kind": "haystack", "x": 26, "y": 96 },
+  { "kind": "target", "x": 30, "y": 40 },
+  { "kind": "bucket", "x": 100, "y": 64 }
+ ],
+ "signs": [
+  { "x": 62, "y": 60, "text": ["THÀNH PHỐ LẠNG SƠN", "Xứ Lạng. Phía tây bắc: núi Tô Thị, động Tam Thanh · Phía bắc: Mẫu Sơn · Phía tây: ải Chi Lăng · Phía nam: đồi hồi · Phía đông: sông Kỳ Cùng."] },
+  { "x": 28, "y": 12, "text": ["NÚI TÔ THỊ", "Nàng Tô Thị bồng con đứng chờ chồng đi lính, lâu ngày hóa đá. Đồng Đăng có phố Kỳ Lừa, có nàng Tô Thị, có chùa Tam Thanh."] },
+  { "x": 20, "y": 62, "text": ["ẢI CHI LĂNG", "Hẻm núi hiểm trở, nơi Lê Lợi phục binh chém Liễu Thăng năm 1427."] }
+ ],
+ "npcs": [
+  { "id": "ls-guide", "name": "Chị Tày Hoa", "sprite": "girl", "x": 70, "y": 60, "lines": [
+    "Chào mừng tới xứ Lạng! Ăn miếng vịt quay mắc mật cho biết.",
+    "Mấy đêm nay đá trên núi Tô Thị lăn xuống ầm ầm, tượng nàng Tô Thị như cựa mình.",
+    "Bà cụ dưới chân núi kể chuyện nàng rành nhất, em qua hỏi."] },
+  { "id": "ls-tothi", "name": "Bà cụ kể chuyện Tô Thị", "sprite": "elder", "x": 34, "y": 32, "lines": [
+    "Nàng Tô Thị chờ chồng tới hóa đá, mấy trăm năm vẫn đứng trông.",
+    "Người ta leo lên tượng chụp ảnh, khắc tên... nàng không yên được."] },
+  { "id": "ls-cave", "name": "Sư chùa Tam Thanh", "sprite": "elder", "x": 44, "y": 16, "lines": [
+    "Động Tam Thanh có tượng Phật A Di Đà khắc vào vách đá từ thời Lê.",
+    "Hồn đá Tô Thị thức dậy, đá lăn khắp núi. Phải có người đủ sức mới làm nàng yên."] },
+  { "id": "ls-mauson", "name": "Người Dao Mẫu Sơn", "sprite": "villager", "x": 100, "y": 20, "lines": [
+    "Mẫu Sơn mùa đông có băng tuyết, mây phủ quanh năm.",
+    "Đào Mẫu Sơn nở đẹp lắm, mà đá lăn làm gãy cả vườn."] },
+  { "id": "ls-chilang", "name": "Người giữ ải Chi Lăng", "sprite": "elder", "x": 14, "y": 76, "lines": [
+    "Ải Chi Lăng hai bên núi dựng, giữa là thung lũng hẹp.",
+    "Ngày xưa quân ta phục ở đây đánh tan giặc."] },
+  { "id": "ls-market", "name": "Cô bán hàng chợ Kỳ Lừa", "sprite": "girl", "x": 60, "y": 84, "lines": [
+    "Chợ Kỳ Lừa họp từ thời Lê, bán đủ thứ: hồi, quế, vải thổ cẩm.",
+    "Có tay buôn lậu hàng giả trà trộn vào chợ."] },
+  { "id": "ls-river", "name": "Ông lái đò Kỳ Cùng", "sprite": "villager", "x": 102, "y": 60, "lines": [
+    "Sông Kỳ Cùng chảy ngược lên phương Bắc, khác hẳn sông khác.",
+    "Rác trôi đầy bến, cá chết nổi trắng."] }
+ ],
+ "trainers": [
+  { "id": "ls-gate-t", "name": "Thợ đá Tam Thanh", "sprite": "hiker", "x": 30, "y": 22,
+    "team": [["golem", 81], ["rhyperior", 81], ["coalossal", 81]],
+    "challenge": ["Đá núi Tô Thị lăn như mưa. Ai muốn lên phải đủ cứng như tôi!"],
+    "win": ["Bạn đủ cứng rồi. Nàng đứng trên đỉnh phía tây bắc."],
+    "lose": ["Đá đè rồi kìa, về đi."],
+    "rewards": { "items": { "superpotion": 2, "hard-stone": 1 }, "exp": 3800 } },
+  { "id": "ls-mauson-t", "name": "Thợ săn Mẫu Sơn", "sprite": "hiker", "x": 116, "y": 12,
+    "team": [["ursaring", 79], ["bewear", 79], ["stoutland", 79]],
+    "challenge": ["Rừng Mẫu Sơn lạnh lắm, chỉ người khỏe mới ở được!"],
+    "win": ["Bạn chịu lạnh giỏi đấy."],
+    "lose": ["Cóng rồi hả?"],
+    "rewards": { "items": { "ultraball": 2, "leaf-stone": 1 }, "exp": 3700 } },
+  { "id": "ls-chilang-t", "name": "Người diễn trận Chi Lăng", "sprite": "knight", "x": 8, "y": 100,
+    "team": [["bisharp", 78], ["scizor", 78], ["lucario", 78]],
+    "challenge": ["Phục binh! Xông lên!"],
+    "win": ["Trận này bạn thắng rồi."],
+    "lose": ["Trúng phục kích rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "metal-coat": 1 }, "exp": 3600 } },
+  { "id": "ls-kylua-t", "name": "Tay buôn lậu", "sprite": "knight", "x": 84, "y": 104,
+    "team": [["zoroark", 78], ["liepard", 78], ["krookodile", 78]],
+    "challenge": ["Hàng của tao rẻ nhất chợ! Đừng xía vô!"],
+    "win": ["Thôi được, tao dẹp hàng."],
+    "lose": ["Cút đi!"],
+    "rewards": { "items": { "ultraball": 2, "black-glasses": 1 }, "exp": 3600 } },
+  { "id": "ls-river-t", "name": "Kỹ sư trạm bơm Kỳ Cùng", "sprite": "youngster", "x": 110, "y": 96,
+    "team": [["electivire", 79], ["luxray", 79], ["ampharos", 79]],
+    "challenge": ["Trạm bơm chạy bằng Pokémon điện đó nha!"],
+    "win": ["Cúp điện rồi... bạn thắng."],
+    "lose": ["Giật tê rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "magnet": 1 }, "exp": 3700 } }
+ ],
+ "rescue": { "id": "ls-goat-rescue", "x": 8, "y": 40, "species": "gogoat", "level": 79,
+   "guards": [["houndoom", 78], ["mightyena", 77], ["mightyena", 77]], "quest": "vn-ls-rescue", "reporter": "Bà cụ kể chuyện Tô Thị" },
+ "chests": [
+  { "id": "chest-ls-tothi", "x": 6, "y": 6, "items": { "ultraball": 2, "hard-stone": 1 } },
+  { "id": "chest-ls-mauson", "x": 122, "y": 6, "items": { "superpotion": 3, "leaf-stone": 1 } },
+  { "id": "chest-ls-chilang", "x": 6, "y": 106, "items": { "ultraball": 2, "metal-coat": 1 } },
+  { "id": "chest-ls-kylua", "x": 64, "y": 100, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-ls-river", "x": 122, "y": 104, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-ls-nook", "x": 44, "y": 26, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:lang-son:ls-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-lang-son-center", "name": "Trung tâm Pokémon Lạng Sơn", "x": 45, "y": 49 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "gigalith", "name": "Gigalith — Nàng Tô Thị Hóa Đá", "x": 16, "y": 10, "level": 82, "respawn": 600, "arena": 260,
+   "requires": ["beat:ls-gate-t"],
+   "hint": "Tượng đá trên đỉnh như đang cựa mình... Thợ đá Tam Thanh chưa cho ai lên.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "hard-stone": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 15500, "flag": "badge:lang-son", "message": "Nhận Huy hiệu Vọng Phu (Lạng Sơn)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-ls-ql", "name": "Quốc lộ 4B — về Quảng Ninh", "x": 104, "y": 107, "to": "quang-ninh", "toX": 22, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "ls-meadow-1", "table": "meadow-forage", "x": 20, "y": 30 },
+  { "id": "ls-forest-1", "table": "forest-forage", "x": 90, "y": 10 },
+  { "id": "ls-lake-1", "table": "lake-fish", "x": 102, "y": 72 },
+  { "id": "ls-meadow-2", "table": "meadow-forage", "x": 22, "y": 90 },
+  { "id": "ls-orchard-1", "table": "orchard-forage", "x": 72, "y": 92 }
+ ],
+ "field": [
+  { "id": "ls-boulder", "ability": "smash", "x": 48, "y": 26, "nook": { "cx": 44.5, "cy": 26.5, "r": 3, "wall": "boulder" } }
+ ]
+}

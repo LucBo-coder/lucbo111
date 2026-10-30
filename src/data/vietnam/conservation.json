@@ -890,6 +890,52 @@
     }
    ]
   },
+  "lang-son": {
+   "id": "lang-son",
+   "name": "Lạng Sơn",
+   "area": "ls-river",
+   "action": "trash",
+   "unlock": "vn-ls-3",
+   "boss": "gigalith",
+   "label": "Vớt rác trên sông Kỳ Cùng",
+   "done": "Bạn vớt chai nhựa và túi nilon trôi dạt bến. Sông Kỳ Cùng trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "lang-son-1",
+     "x": 106,
+     "y": 77
+    },
+    {
+     "id": "lang-son-2",
+     "x": 122,
+     "y": 78
+    },
+    {
+     "id": "lang-son-3",
+     "x": 105,
+     "y": 63
+    },
+    {
+     "id": "lang-son-4",
+     "x": 122,
+     "y": 60
+    },
+    {
+     "id": "lang-son-5",
+     "x": 112,
+     "y": 53
+    },
+    {
+     "id": "lang-son-6",
+     "x": 113,
+     "y": 86
+    }
+   ]
+  },
   "nghe-an": {
    "id": "nghe-an",
    "name": "Nghệ An",

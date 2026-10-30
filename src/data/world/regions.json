@@ -3585,5 +3585,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-ls-tothi",
+  "name": "Núi Tô Thị — động Tam Thanh",
+  "areas": [
+   "ls-tothi"
+  ],
+  "biome": "rocky",
+  "level": [
+   79,
+   82
+  ],
+  "elite": [
+   83,
+   85
+  ],
+  "boss": null,
+  "recommended": 81,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ls-mauson",
+  "name": "Núi Mẫu Sơn",
+  "areas": [
+   "ls-mauson"
+  ],
+  "biome": "forest",
+  "level": [
+   78,
+   81
+  ],
+  "elite": [
+   82,
+   84
+  ],
+  "boss": null,
+  "recommended": 80,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ls-chilang",
+  "name": "Ải Chi Lăng",
+  "areas": [
+   "ls-chilang"
+  ],
+  "biome": "ruins",
+  "level": [
+   76,
+   79
+  ],
+  "elite": [
+   80,
+   82
+  ],
+  "boss": null,
+  "recommended": 78,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ls-kylua",
+  "name": "Đồi hồi Kỳ Lừa",
+  "areas": [
+   "ls-kylua"
+  ],
+  "biome": "farm",
+  "level": [
+   76,
+   79
+  ],
+  "elite": [
+   80,
+   82
+  ],
+  "boss": null,
+  "recommended": 78,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-ls-river",
+  "name": "Sông Kỳ Cùng",
+  "areas": [
+   "ls-river"
+  ],
+  "biome": "lake",
+  "level": [
+   77,
+   80
+  ],
+  "elite": [
+   81,
+   83
+  ],
+  "boss": null,
+  "recommended": 79,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]
