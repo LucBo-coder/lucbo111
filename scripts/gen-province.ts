@@ -68,7 +68,7 @@ async function gen(id: string): Promise<void> {
     if (!a) { errors.push(`biome of unknown area ${area}`); continue; }
     const [lo, hi] = a.level;
     regions.push({ id: `vn-${area}`, name: a.name, areas: [area], biome, level: [lo, hi], elite: [hi + 1, hi + 3], boss: null,
-      recommended: Math.round((lo + hi) / 2), danger: Math.min(5, 3 + Math.floor((hi - lo) / 3)), unlock: null, ...(spec.noIce === false ? {} : { excludeTypes: ['ice'] }) });
+      recommended: Math.round((lo + hi) / 2), danger: Math.min(5, 3 + Math.floor((hi - lo) / 3)), unlock: null, ...(spec.noIce === false && biome === 'snow' ? {} : { excludeTypes: ['ice'] }) });
   }
   write('src/data/world/regions.json', JSON.stringify(regions, null, 1) + '\n');
 

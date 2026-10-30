@@ -4045,5 +4045,117 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-lc-fansipan",
+  "name": "Đỉnh Fansipan",
+  "areas": [
+   "lc-fansipan"
+  ],
+  "biome": "snow",
+  "level": [
+   87,
+   90
+  ],
+  "elite": [
+   91,
+   93
+  ],
+  "boss": null,
+  "recommended": 89,
+  "danger": 4,
+  "unlock": null
+ },
+ {
+  "id": "vn-lc-thacbac",
+  "name": "Thác Bạc — hồ Sa Pa",
+  "areas": [
+   "lc-thacbac"
+  ],
+  "biome": "lake",
+  "level": [
+   86,
+   89
+  ],
+  "elite": [
+   90,
+   92
+  ],
+  "boss": null,
+  "recommended": 88,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lc-catcat",
+  "name": "Bản Cát Cát",
+  "areas": [
+   "lc-catcat"
+  ],
+  "biome": "forest",
+  "level": [
+   84,
+   87
+  ],
+  "elite": [
+   88,
+   90
+  ],
+  "boss": null,
+  "recommended": 86,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lc-muonghoa",
+  "name": "Thung lũng Mường Hoa",
+  "areas": [
+   "lc-muonghoa"
+  ],
+  "biome": "farm",
+  "level": [
+   84,
+   87
+  ],
+  "elite": [
+   88,
+   90
+  ],
+  "boss": null,
+  "recommended": 86,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-lc-oquyho",
+  "name": "Đèo Ô Quy Hồ",
+  "areas": [
+   "lc-oquyho"
+  ],
+  "biome": "rocky",
+  "level": [
+   85,
+   88
+  ],
+  "elite": [
+   89,
+   91
+  ],
+  "boss": null,
+  "recommended": 87,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

@@ -982,6 +982,52 @@
     }
    ]
   },
+  "lao-cai": {
+   "id": "lao-cai",
+   "name": "Lào Cai",
+   "area": "lc-thacbac",
+   "action": "trash",
+   "unlock": "vn-lc-3",
+   "boss": "abomasnow",
+   "label": "Vớt rác dưới thác Bạc",
+   "done": "Bạn vớt chai nhựa và túi nilon mắc dưới chân thác. Suối Sa Pa trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "lao-cai-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "lao-cai-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "lao-cai-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "lao-cai-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "lao-cai-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "lao-cai-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "nghe-an": {
    "id": "nghe-an",
    "name": "Nghệ An",

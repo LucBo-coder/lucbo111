@@ -2112,5 +2112,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "abomasnow",
+  "name": "Abomasnow — Thần Tuyết Fansipan",
+  "types": [
+   "grass",
+   "ice"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 92,
+   "def": 75,
+   "spa": 92,
+   "spd": 85,
+   "spe": 60
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "blizzard",
+   "wood_hammer"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "snover",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Tuyết thức giấc — bão tuyết trùm kín đỉnh Fansipan!",
+  "exp": 150,
+  "sprite": "abomasnow",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "ice_beam",
+   "volley": "ice_shard",
+   "nova": "blizzard",
+   "field": "icy_wind",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "avalanche",
+   "ultimateName": "Bão Tuyết Nóc Nhà Đông Dương",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

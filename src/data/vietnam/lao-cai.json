@@ -1,0 +1,776 @@
+{
+ "id": "lao-cai",
+ "name": "Lào Cai",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": {
+  "x": 64,
+  "y": 104
+ },
+ "areas": [
+  {
+   "id": "lc-fansipan",
+   "name": "Đỉnh Fansipan",
+   "rect": [
+    0,
+    0,
+    45,
+    45
+   ],
+   "habitat": "snow",
+   "level": [
+    87,
+    90
+   ]
+  },
+  {
+   "id": "lc-thacbac",
+   "name": "Thác Bạc — hồ Sa Pa",
+   "rect": [
+    46,
+    0,
+    100,
+    32
+   ],
+   "habitat": "lake",
+   "level": [
+    86,
+    89
+   ]
+  },
+  {
+   "id": "lc-city",
+   "name": "Thị trấn Sa Pa",
+   "rect": [
+    40,
+    33,
+    100,
+    68
+   ],
+   "habitat": "village",
+   "level": [
+    86,
+    86
+   ]
+  },
+  {
+   "id": "lc-catcat",
+   "name": "Bản Cát Cát",
+   "rect": [
+    0,
+    46,
+    39,
+    111
+   ],
+   "habitat": "forest",
+   "level": [
+    84,
+    87
+   ]
+  },
+  {
+   "id": "lc-muonghoa",
+   "name": "Thung lũng Mường Hoa",
+   "rect": [
+    40,
+    69,
+    100,
+    111
+   ],
+   "habitat": "farm",
+   "level": [
+    84,
+    87
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 8
+   }
+  },
+  {
+   "id": "lc-oquyho",
+   "name": "Đèo Ô Quy Hồ",
+   "rect": [
+    101,
+    0,
+    127,
+    111
+   ],
+   "habitat": "rocky",
+   "level": [
+    85,
+    88
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     107
+    ],
+    [
+     64,
+     60
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     48
+    ],
+    [
+     40,
+     30
+    ],
+    [
+     24,
+     18
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     68,
+     48
+    ],
+    [
+     68,
+     26
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     74,
+     54
+    ],
+    [
+     110,
+     54
+    ],
+    [
+     112,
+     14
+    ],
+    [
+     112,
+     5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     54
+    ],
+    [
+     24,
+     62
+    ],
+    [
+     16,
+     92
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     80
+    ],
+    [
+     84,
+     96
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  58,
+  48,
+  74,
+  60
+ ],
+ "lake": {
+  "cx": 74,
+  "cy": 14,
+  "rx": 18,
+  "ry": 8
+ },
+ "buildings": [
+  {
+   "id": "lc-center",
+   "name": "Trung tâm Pokémon",
+   "x": 42,
+   "y": 40,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "lc-mart",
+   "name": "Cửa hàng Sa Pa",
+   "x": 78,
+   "y": 38,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "lc-museum",
+   "name": "Nhà thờ đá Sa Pa",
+   "x": 86,
+   "y": 40,
+   "w": 7,
+   "h": 4,
+   "roof": "teal",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "lc-house-1",
+   "name": "Nhà chị Giàng Thị Mai",
+   "x": 46,
+   "y": 62,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "blue"
+  },
+  {
+   "id": "lc-house-2",
+   "name": "Quán lẩu cá hồi",
+   "x": 90,
+   "y": 60,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "red"
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "well",
+   "x": 54,
+   "y": 66
+  },
+  {
+   "kind": "log",
+   "x": 24,
+   "y": 80
+  },
+  {
+   "kind": "haystack",
+   "x": 24,
+   "y": 96
+  },
+  {
+   "kind": "target",
+   "x": 116,
+   "y": 30
+  },
+  {
+   "kind": "bucket",
+   "x": 54,
+   "y": 26
+  }
+ ],
+ "signs": [
+  {
+   "x": 62,
+   "y": 58,
+   "text": [
+    "THỊ TRẤN SA PA",
+    "Thành phố trong sương. Phía tây bắc: đỉnh Fansipan · Phía bắc: thác Bạc · Phía tây: bản Cát Cát · Phía nam: thung lũng Mường Hoa · Phía đông: đèo Ô Quy Hồ."
+   ]
+  },
+  {
+   "x": 62,
+   "y": 26,
+   "text": [
+    "THÁC BẠC",
+    "Dòng thác trắng như dải bạc đổ từ độ cao hơn hai trăm mét."
+   ]
+  },
+  {
+   "x": 28,
+   "y": 14,
+   "text": [
+    "ĐỈNH FANSIPAN",
+    "Nóc nhà Đông Dương, cao 3.143 mét. Mùa đông tuyết phủ trắng đỉnh."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "lc-guide",
+   "name": "Chị Mai Sa Pa",
+   "sprite": "girl",
+   "x": 70,
+   "y": 58,
+   "lines": [
+    "Chào mừng lên Sa Pa! Ăn xiên nướng cho ấm bụng đã em.",
+    "Mấy hôm nay tuyết rơi dày bất thường trên Fansipan, cáp treo phải dừng.",
+    "Ông thầy cúng người Mông ở chân núi biết chuyện, em lên hỏi."
+   ]
+  },
+  {
+   "id": "lc-elder",
+   "name": "Thầy cúng người Mông",
+   "sprite": "elder",
+   "x": 34,
+   "y": 30,
+   "lines": [
+    "Trên đỉnh Fansipan có Thần Tuyết ngủ, trăm năm mới dậy.",
+    "Người ta đổ rác trên đường lên đỉnh. Thần Tuyết giận, gọi bão tuyết về."
+   ]
+  },
+  {
+   "id": "lc-falls",
+   "name": "Cô bán hàng thác Bạc",
+   "sprite": "girl",
+   "x": 52,
+   "y": 24,
+   "lines": [
+    "Thác Bạc mùa này lạnh buốt, nước như băng.",
+    "Đêm qua thấy gió tuyết cuộn từ đỉnh núi xuống."
+   ]
+  },
+  {
+   "id": "lc-catcat",
+   "name": "Cụ già bản Cát Cát",
+   "sprite": "elder",
+   "x": 14,
+   "y": 56,
+   "lines": [
+    "Bản Cát Cát dệt vải lanh nhuộm chàm.",
+    "Rừng pơ mu quanh bản mà mất thì suối cạn, cụ lo lắm."
+   ]
+  },
+  {
+   "id": "lc-farm",
+   "name": "Chú trồng lúa Mường Hoa",
+   "sprite": "villager",
+   "x": 60,
+   "y": 88,
+   "lines": [
+    "Ruộng bậc thang Mường Hoa đẹp nhất mùa nước đổ.",
+    "Có đứa đốt nương bừa bãi, khói mù cả thung lũng."
+   ]
+  },
+  {
+   "id": "lc-pass",
+   "name": "Người lái xe đèo Ô Quy Hồ",
+   "sprite": "villager",
+   "x": 116,
+   "y": 40,
+   "lines": [
+    "Ô Quy Hồ là một trong tứ đại đỉnh đèo.",
+    "Chiều tà mây trôi dưới chân, đẹp như tranh."
+   ]
+  },
+  {
+   "id": "lc-cable",
+   "name": "Kỹ sư cáp treo",
+   "sprite": "elder",
+   "x": 84,
+   "y": 46,
+   "lines": [
+    "Cáp treo Fansipan dài hơn sáu nghìn mét.",
+    "Bão tuyết thế này phải dừng cáp, khách kẹt hết."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "lc-gate-t",
+   "name": "Người dẫn đường Fansipan",
+   "sprite": "hiker",
+   "x": 30,
+   "y": 22,
+   "team": [
+    [
+     "gallade",
+     89
+    ],
+    [
+     "lucario",
+     89
+    ],
+    [
+     "infernape",
+     89
+    ]
+   ],
+   "challenge": [
+    "Lên Fansipan giữa bão tuyết là liều! Muốn lên phải qua tôi!"
+   ],
+   "win": [
+    "Bạn đủ sức rồi. Thần Tuyết ở đỉnh tây bắc."
+   ],
+   "lose": [
+    "Lạnh cóng rồi kìa."
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "never-melt-ice": 1
+    },
+    "exp": 4500
+   }
+  },
+  {
+   "id": "lc-falls-t",
+   "name": "Người chụp ảnh thác Bạc",
+   "sprite": "youngster",
+   "x": 94,
+   "y": 24,
+   "team": [
+    [
+     "togekiss",
+     87
+    ],
+    [
+     "noctowl",
+     87
+    ],
+    [
+     "pidgeot",
+     87
+    ]
+   ],
+   "challenge": [
+    "Ảnh đẹp phải có trận đấu đẹp! Thử không?"
+   ],
+   "win": [
+    "Bạn chụp... à đấu đẹp hơn tôi."
+   ],
+   "lose": [
+    "Mờ hết ảnh rồi!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "sharp-beak": 1
+    },
+    "exp": 4400
+   }
+  },
+  {
+   "id": "lc-catcat-t",
+   "name": "Kẻ bẫy chim Cát Cát",
+   "sprite": "knight",
+   "x": 8,
+   "y": 100,
+   "team": [
+    [
+     "scolipede",
+     86
+    ],
+    [
+     "vespiquen",
+     86
+    ],
+    [
+     "yanmega",
+     86
+    ]
+   ],
+   "challenge": [
+    "Chim rừng bán được giá lắm! Tránh ra!"
+   ],
+   "win": [
+    "Thôi được, tao thả chim."
+   ],
+   "lose": [
+    "Cút!"
+   ],
+   "rewards": {
+    "items": {
+     "sitrus-berry": 3,
+     "silver-powder": 1
+    },
+    "exp": 4300
+   }
+  },
+  {
+   "id": "lc-farm-t",
+   "name": "Kẻ đốt nương Mường Hoa",
+   "sprite": "youngster",
+   "x": 84,
+   "y": 104,
+   "team": [
+    [
+     "camerupt",
+     86
+    ],
+    [
+     "typhlosion",
+     86
+    ],
+    [
+     "houndoom",
+     86
+    ]
+   ],
+   "challenge": [
+    "Đốt nương cho nhanh! Mắc gì cản tao?"
+   ],
+   "win": [
+    "Thôi... tao dập lửa."
+   ],
+   "lose": [
+    "Cháy rồi kìa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "charcoal": 1
+    },
+    "exp": 4300
+   }
+  },
+  {
+   "id": "lc-pass-t",
+   "name": "Tay đua đèo Ô Quy Hồ",
+   "sprite": "knight",
+   "x": 118,
+   "y": 90,
+   "team": [
+    [
+     "electivire",
+     87
+    ],
+    [
+     "jolteon",
+     87
+    ],
+    [
+     "manectric",
+     87
+    ]
+   ],
+   "challenge": [
+    "Đổ đèo nhanh như chớp! Đấu không?"
+   ],
+   "win": [
+    "Phanh gấp rồi... bạn thắng."
+   ],
+   "lose": [
+    "Bụi mù rồi kìa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "magnet": 1
+    },
+    "exp": 4400
+   }
+  }
+ ],
+ "rescue": {
+  "id": "lc-bear-rescue",
+  "x": 8,
+  "y": 40,
+  "species": "ursaring",
+  "level": 87,
+  "guards": [
+   [
+    "honchkrow",
+    86
+   ],
+   [
+    "murkrow",
+    85
+   ],
+   [
+    "murkrow",
+    85
+   ]
+  ],
+  "quest": "vn-lc-rescue",
+  "reporter": "Thầy cúng người Mông"
+ },
+ "chests": [
+  {
+   "id": "chest-lc-fansipan",
+   "x": 6,
+   "y": 6,
+   "items": {
+    "ultraball": 2,
+    "never-melt-ice": 1
+   }
+  },
+  {
+   "id": "chest-lc-thacbac",
+   "x": 96,
+   "y": 6,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-lc-oquyho",
+   "x": 122,
+   "y": 104,
+   "items": {
+    "superpotion": 3,
+    "hard-stone": 1
+   }
+  },
+  {
+   "id": "chest-lc-catcat",
+   "x": 6,
+   "y": 106,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-lc-muonghoa",
+   "x": 96,
+   "y": 106,
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-lc-nook",
+   "x": 116,
+   "y": 70,
+   "items": {
+    "exp-candy-m": 2,
+    "ultraball": 1
+   },
+   "requiresFlag": "field:lao-cai:lc-boulder"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-lao-cai-center",
+   "name": "Trung tâm Pokémon Sa Pa",
+   "x": 45,
+   "y": 47
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "abomasnow",
+  "name": "Abomasnow — Thần Tuyết Fansipan",
+  "x": 16,
+  "y": 10,
+  "level": 90,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:lc-gate-t"
+  ],
+  "hint": "Bão tuyết cuộn trên đỉnh, gió rít như tiếng gầm... Người dẫn đường chưa cho ai lên.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "never-melt-ice": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 17500,
+   "flag": "badge:lao-cai",
+   "message": "Nhận Huy hiệu Nóc Nhà Đông Dương (Lào Cai)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-lc-tq",
+   "name": "Quốc lộ 279 — về Tuyên Quang",
+   "x": 64,
+   "y": 107,
+   "to": "tuyen-quang",
+   "toX": 112,
+   "toY": 8
+  }
+ ],
+ "docks": [],
+ "nodes": [
+  {
+   "id": "lc-meadow-1",
+   "table": "meadow-forage",
+   "x": 20,
+   "y": 30
+  },
+  {
+   "id": "lc-lake-1",
+   "table": "falls-fish",
+   "x": 52,
+   "y": 16
+  },
+  {
+   "id": "lc-forest-1",
+   "table": "forest-forage",
+   "x": 20,
+   "y": 84
+  },
+  {
+   "id": "lc-meadow-2",
+   "table": "meadow-forage",
+   "x": 72,
+   "y": 100
+  },
+  {
+   "id": "lc-meadow-3",
+   "table": "meadow-forage",
+   "x": 112,
+   "y": 80
+  }
+ ],
+ "field": [
+  {
+   "id": "lc-boulder",
+   "ability": "smash",
+   "x": 120,
+   "y": 70,
+   "nook": {
+    "cx": 116.5,
+    "cy": 70.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}

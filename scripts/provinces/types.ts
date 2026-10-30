@@ -37,7 +37,7 @@ export interface ProvinceSpec {
   landmarks: [flag: string, name: string][];
   /** encounter biome of every area that has wild Pokémon (village areas: none) */
   biomes: Record<string, 'meadow' | 'farm' | 'forest' | 'lake' | 'rocky' | 'ruins' | 'swamp' | 'coast' | 'snow' | 'volcano'>;
-  /** tropical provinces keep Ice types out (default true) */
+  /** tropical provinces keep Ice types out (default true); false lets them into this province's snow areas only */
   noIce?: boolean;
   boss: {
     id: string; name: string; types: string[];

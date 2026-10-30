@@ -712,10 +712,11 @@
    },
    "money": 17000,
    "flag": "badge:tuyen-quang",
-   "message": "Nhận Huy hiệu Mã Pí Lèng (Tuyên Quang)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Mã Pí Lèng (Tuyên Quang)! Đường tới Lào Cai đã mở: Quốc lộ 279."
   }
  },
  "portals": [
+  {"id": "portal-tq-next", "name": "Quốc lộ 279 — đường sang Lào Cai", "x": 112, "y": 5, "to": "lao-cai", "toX": 64, "toY": 104, "requires": ["badge:tuyen-quang"], "hint": "Đường tới Lào Cai mở cho người có Huy hiệu Mã Pí Lèng — hạ boss Tuyên Quang trước."},
   {
    "id": "portal-tq-ty",
    "name": "Quốc lộ 37 — về Thái Nguyên",
