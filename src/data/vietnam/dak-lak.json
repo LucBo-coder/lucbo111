@@ -1,0 +1,148 @@
+{
+ "id": "dak-lak",
+ "name": "Đắk Lắk",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 30, "y": 104 },
+ "areas": [
+  { "id": "dl-yokdon", "name": "Rừng Yok Đôn", "rect": [0, 0, 49, 45], "habitat": "forest", "level": [51, 54] },
+  { "id": "dl-buondon", "name": "Buôn Đôn", "rect": [50, 0, 94, 35], "habitat": "meadow", "level": [50, 53] },
+  { "id": "dl-bmt", "name": "Thành phố Buôn Ma Thuột", "rect": [40, 36, 94, 70], "habitat": "village", "level": [50, 50] },
+  { "id": "dl-coffee", "name": "Đồi cà phê", "rect": [0, 46, 39, 111], "habitat": "farm", "level": [48, 51], "orchard": { "period": 7, "gap": 9 } },
+  { "id": "dl-lak", "name": "Hồ Lắk", "rect": [40, 71, 94, 111], "habitat": "lake", "level": [48, 51] },
+  { "id": "dl-draynur", "name": "Thác Dray Nur", "rect": [95, 0, 127, 55], "habitat": "rocky", "level": [50, 53] },
+  { "id": "dl-phuyen", "name": "Gành Đá Đĩa (Phú Yên)", "rect": [95, 56, 127, 111], "habitat": "coast", "level": [49, 52] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[30, 107], [30, 88], [50, 74], [60, 62]] },
+  { "w": 3, "pts": [[60, 52], [60, 30], [30, 20]] },
+  { "w": 3, "pts": [[66, 48], [72, 24], [72, 5]] },
+  { "w": 3, "pts": [[72, 56], [110, 56], [112, 30]] },
+  { "w": 3, "pts": [[110, 56], [112, 92]] },
+  { "w": 3, "pts": [[50, 74], [54, 80]] },
+  { "w": 3, "pts": [[30, 88], [14, 70]] }
+ ],
+ "plaza": [56, 48, 72, 60],
+ "lake": { "cx": 70, "cy": 92, "rx": 14, "ry": 8 },
+ "buildings": [
+  { "id": "dl-center", "name": "Trung tâm Pokémon", "x": 44, "y": 40, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "dl-mart", "name": "Cửa hàng Buôn Ma Thuột", "x": 51, "y": 40, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "dl-museum", "name": "Bảo tàng Cà phê", "x": 76, "y": 40, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3 },
+  { "id": "dl-longhouse", "name": "Nhà dài Ê Đê", "x": 80, "y": 62, "w": 8, "h": 3, "roof": "grey", "wall": "wood", "door": 4 },
+  { "id": "dl-house-1", "name": "Nhà chị H'Linh", "x": 44, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "brown" },
+  { "id": "dl-house-2", "name": "Quán cà phê", "x": 88, "y": 46, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 66 },
+  { "kind": "haystack", "x": 22, "y": 59 },
+  { "kind": "log", "x": 38, "y": 8 },
+  { "kind": "bucket", "x": 46, "y": 80 },
+  { "kind": "target", "x": 84, "y": 28 }
+ ],
+ "signs": [
+  { "x": 62, "y": 58, "text": ["THÀNH PHỐ BUÔN MA THUỘT", "Thủ phủ cà phê. Phía bắc: Buôn Đôn · Phía tây bắc: rừng Yok Đôn · Phía đông: thác Dray Nur, biển Phú Yên · Phía nam: hồ Lắk."] },
+  { "x": 76, "y": 18, "text": ["BUÔN ĐÔN", "Xứ săn voi, thuần voi của người M'nông, Ê Đê, Lào. Cầu treo bắc qua sông Sêrêpốk."] },
+  { "x": 114, "y": 88, "text": ["GÀNH ĐÁ ĐĨA", "Những cột đá bazan xếp như chồng đĩa, do dung nham nguội đột ngột bên bờ biển Phú Yên."] }
+ ],
+ "npcs": [
+  { "id": "dl-guide", "name": "Chị H'Linh", "sprite": "girl", "x": 66, "y": 58, "lines": [
+    "Chào mừng tới Buôn Ma Thuột! Ghé uống ly cà phê đã.",
+    "Mấy đêm nay voi rừng phá buôn làng, giẫm nát rẫy cà phê.",
+    "Anh quản tượng ở Buôn Đôn hiểu voi nhất, con lên hỏi thử."] },
+  { "id": "dl-mahout", "name": "Anh quản tượng Y Khu", "sprite": "villager", "x": 82, "y": 18, "lines": [
+    "Voi nhà tui cũng bồn chồn, đêm nào cũng rống về phía rừng.",
+    "Ông bà nói trong rừng Yok Đôn có Voi Thần giữ rừng."] },
+  { "id": "dl-elder", "name": "Già làng M'nông", "sprite": "elder", "x": 64, "y": 12, "lines": [
+    "Tiếng cồng chiêng gọi thần linh về giữ buôn làng.",
+    "Rừng bị chặt, Voi Thần không còn chỗ ở thì phải nổi giận."] },
+  { "id": "dl-farmer", "name": "Chú Ba rẫy cà phê", "sprite": "farmer", "x": 18, "y": 80, "lines": [
+    "Cà phê Robusta ở đây đậm nhất nước đó con.",
+    "Voi giẫm nát nửa rẫy rồi, mà tui không nỡ đuổi."] },
+  { "id": "dl-ranger", "name": "Kiểm lâm Yok Đôn", "sprite": "ranger", "x": 40, "y": 30, "lines": [
+    "Yok Đôn là rừng khộp lớn nhất nước, mùa khô lá rụng vàng cả rừng.",
+    "Lâm tặc vào chặt gỗ, đặt bẫy thú. Voi con mắc bẫy hoài."] },
+  { "id": "dl-lakeman", "name": "Ông lái thuyền độc mộc", "sprite": "villager", "x": 50, "y": 90, "lines": [
+    "Thuyền độc mộc đẽo từ một thân cây, đi trên hồ Lắk êm lắm.",
+    "Khách du lịch xả rác xuống hồ nhiều quá."] },
+  { "id": "dl-falls", "name": "Anh hướng dẫn Dray Nur", "sprite": "youngster", "x": 104, "y": 26, "lines": [
+    "Dray Nur là thác vợ, Dray Sáp là thác chồng. Chuyện tình buồn lắm.",
+    "Có người đứng trên vách đá thách đấu khách hoài."] },
+  { "id": "dl-ganh", "name": "Chị bán cá ngừ Phú Yên", "sprite": "girl", "x": 106, "y": 96, "lines": [
+    "Cá ngừ đại dương Phú Yên nổi tiếng khắp nơi.",
+    "Có anh thanh niên đứng trên gành đá thách đấu, khách sợ không dám xuống."] }
+ ],
+ "trainers": [
+  { "id": "dl-gate-t", "name": "Thợ săn già Ama Kông", "sprite": "elder", "x": 44, "y": 24,
+    "team": [["excadrill", 53], ["krookodile", 53], ["drapion", 53]],
+    "challenge": ["Ta săn voi cả đời, giờ ta giữ rừng. Muốn gặp Voi Thần phải qua ta!"],
+    "win": ["Con đủ sức rồi. Voi Thần ở khoảng trống giữa rừng, đi nhẹ thôi."],
+    "lose": ["Rừng không thương người yếu."],
+    "rewards": { "items": { "superpotion": 2, "soft-sand": 1 }, "exp": 2400 } },
+  { "id": "dl-elephant-t", "name": "Quản tượng trẻ Y Bhin", "sprite": "youngster", "x": 88, "y": 26,
+    "team": [["rhydon", 52], ["ursaring", 52], ["bouffalant", 52]],
+    "challenge": ["Voi của tui khỏe nhất buôn. Pokémon của tui cũng vậy!"],
+    "win": ["Thua rồi... để tui đánh cồng mời bạn vô buôn."],
+    "lose": ["Về tập thêm đi bạn."],
+    "rewards": { "items": { "ultraball": 2 }, "exp": 2300 } },
+  { "id": "dl-coffee-t", "name": "Cô hái cà phê H'Mai", "sprite": "girl", "x": 26, "y": 96,
+    "team": [["arcanine", 51], ["sawsbuck", 51], ["bewear", 50]],
+    "challenge": ["Hái cà phê cả ngày mà vẫn còn sức đấu nè!"],
+    "win": ["Bạn giỏi quá. Bịch cà phê này tặng bạn."],
+    "lose": ["Uống ly cà phê cho tỉnh rồi đấu lại nha."],
+    "rewards": { "items": { "sitrus-berry": 3 }, "exp": 2200 } },
+  { "id": "dl-falls-t", "name": "Dân leo núi Tùng", "sprite": "hiker", "x": 116, "y": 40,
+    "team": [["golem", 52], ["crustle", 52], ["lycanroc", 52]],
+    "challenge": ["Vách đá thác Dray Nur là của tôi! Thử leo lên đi."],
+    "win": ["Bạn leo giỏi hơn tôi. Tôi xuống đây."],
+    "lose": ["Trượt chân rồi kìa!"],
+    "rewards": { "items": { "ultraball": 1, "hard-stone": 1 }, "exp": 2300 } },
+  { "id": "dl-ganh-t", "name": "Thanh niên Tuy Hòa", "sprite": "youngster", "x": 118, "y": 100,
+    "team": [["sandslash", 51], ["skarmory", 51], ["toucannon", 51]],
+    "challenge": ["Gành Đá Đĩa này tui canh! Đấu với tui mới được xuống."],
+    "win": ["Thôi được, mời bạn xuống chơi."],
+    "lose": ["Đá trơn lắm, coi chừng té."],
+    "rewards": { "items": { "superpotion": 2, "greatball": 2 }, "exp": 2200 } }
+ ],
+ "rescue": { "id": "dl-calf-rescue", "x": 10, "y": 40, "species": "phanpy", "level": 51,
+   "guards": [["liepard", 50], ["liepard", 50], ["scrafty", 52]], "quest": "vn-dl-rescue", "reporter": "Kiểm lâm Yok Đôn" },
+ "chests": [
+  { "id": "chest-dl-yokdon", "x": 6, "y": 6, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-dl-draynur", "x": 120, "y": 6, "items": { "superpotion": 3, "hard-stone": 1 } },
+  { "id": "chest-dl-coffee", "x": 8, "y": 104, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-dl-lak", "x": 90, "y": 106, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-dl-buondon", "x": 90, "y": 6, "items": { "ultraball": 2, "protein": 1 } },
+  { "id": "chest-dl-nook", "x": 100, "y": 70, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:dak-lak:dl-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-dak-lak-center", "name": "Trung tâm Pokémon Buôn Ma Thuột", "x": 47, "y": 47 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "donphan", "name": "Donphan — Voi Thần Yok Đôn", "x": 22, "y": 14, "level": 54, "respawn": 600, "arena": 260,
+   "requires": ["beat:dl-gate-t"],
+   "hint": "Đất rung từng hồi dưới chân... Thợ săn già Ama Kông chưa cho ai vào sâu.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "soft-sand": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 8500, "flag": "badge:dak-lak", "message": "Nhận Huy hiệu Voi Rừng (Đắk Lắk)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-dl-kh", "name": "Quốc lộ 26 — về Khánh Hòa", "x": 30, "y": 107, "to": "khanh-hoa", "toX": 20, "toY": 8 }
+ ],
+ "docks": [],
+ "rivers": [],
+ "nodes": [
+  { "id": "dl-forest-1", "table": "forest-forage", "x": 34, "y": 10 },
+  { "id": "dl-orchard-1", "table": "orchard-forage", "x": 20, "y": 92 },
+  { "id": "dl-meadow-1", "table": "meadow-forage", "x": 60, "y": 20 },
+  { "id": "dl-lake-1", "table": "lake-fish", "x": 52, "y": 96 },
+  { "id": "dl-falls-1", "table": "falls-fish", "x": 108, "y": 14 }
+ ],
+ "field": [
+  { "id": "dl-boulder", "ability": "smash", "x": 104, "y": 70, "nook": { "cx": 100.5, "cy": 70.5, "r": 3, "wall": "boulder" } }
+ ]
+}

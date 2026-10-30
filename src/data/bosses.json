@@ -1147,5 +1147,58 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "donphan",
+  "name": "Donphan — Voi Thần Yok Đôn",
+  "types": [
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 90,
+   "atk": 120,
+   "def": 120,
+   "spa": 60,
+   "spd": 60,
+   "spe": 50
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "earthquake",
+   "rollout"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "phanpy",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Voi Thần rống vang — cả rừng khộp rung chuyển!",
+  "exp": 150,
+  "sprite": "donphan",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "earth_power",
+   "volley": "rock_blast",
+   "nova": "earthquake",
+   "field": "bulldoze",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "rollout",
+   "ultimateName": "Đàn Voi Lăn Núi",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

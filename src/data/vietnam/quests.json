@@ -7316,5 +7316,532 @@
     "Bãi sạch rồi! Đêm nay chắc có rùa lên đẻ."
    ]
   }
+ },
+ {
+  "id": "vn-dl-1",
+  "kind": "main",
+  "title": "Voi về phá buôn",
+  "giver": "dl-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:khanh-hoa"
+  ],
+  "description": "Tới Buôn Ma Thuột: ghé Trung tâm Pokémon rồi lên Buôn Đôn hỏi anh quản tượng vì sao voi phá buôn làng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-dak-lak-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Buôn Ma Thuột",
+    "marker": {
+     "x": 47,
+     "y": 47,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "dl-buondon",
+    "count": 1,
+    "text": "Đến Buôn Đôn (phía bắc)",
+    "marker": {
+     "x": 72,
+     "y": 17,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-mahout",
+    "count": 1,
+    "text": "Hỏi Anh quản tượng Y Khu",
+    "marker": {
+     "x": 82,
+     "y": 18,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1050,
+   "reputation": 10,
+   "flags": [
+    "landmark:buon-don"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Buôn Ma Thuột! Con ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên Buôn Đôn hỏi anh quản tượng, voi phá buôn mấy đêm rồi."
+   ],
+   "progress": [
+    "Buôn Đôn ở phía bắc thành phố."
+   ],
+   "complete": [
+    "Anh Y Khu nói trong rừng Yok Đôn có Voi Thần... Già làng và chú Ba rẫy cà phê có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-2",
+  "kind": "main",
+  "title": "Dấu chân trên rẫy",
+  "giver": "dl-guide",
+  "requires": [
+   "vn-dl-1"
+  ],
+  "description": "Theo dấu voi qua rẫy cà phê, hỏi chú Ba rồi vào rừng Yok Đôn hỏi kiểm lâm.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dl-coffee",
+    "count": 1,
+    "text": "Đến đồi cà phê (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-farmer",
+    "count": 1,
+    "text": "Hỏi Chú Ba rẫy cà phê",
+    "marker": {
+     "x": 18,
+     "y": 80,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-ranger",
+    "count": 1,
+    "text": "Hỏi Kiểm lâm Yok Đôn",
+    "marker": {
+     "x": 40,
+     "y": 30,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1100,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rẫy cà phê phía tây bị giẫm nát. Con qua hỏi chú Ba, rồi vào rừng hỏi kiểm lâm."
+   ],
+   "progress": [
+    "Rẫy ở phía tây, rừng Yok Đôn ở phía tây bắc."
+   ],
+   "complete": [
+    "Lâm tặc phá rừng, Voi Thần nổi giận. Thợ săn già Ama Kông canh lối vào khoảng trống giữa rừng."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-3",
+  "kind": "main",
+  "title": "Voi Thần Yok Đôn",
+  "giver": "dl-guide",
+  "requires": [
+   "vn-dl-2"
+  ],
+  "description": "Thắng Thợ săn già Ama Kông để vào sâu trong rừng, rồi làm Donphan nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dl-gate-t",
+    "count": 1,
+    "text": "Thắng Thợ săn già Ama Kông",
+    "marker": {
+     "x": 44,
+     "y": 24,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "donphan",
+    "count": 1,
+    "text": "Đánh bại Donphan — Voi Thần Yok Đôn",
+    "marker": {
+     "x": 22,
+     "y": 14,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1350,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Ông Ama Kông ở bìa rừng Yok Đôn. Ông chỉ cho người đủ sức vào thôi."
+   ],
+   "progress": [
+    "Khoảng trống giữa rừng, phía tây bắc."
+   ],
+   "complete": [
+    "Voi về rừng rồi, buôn làng yên! Huy hiệu Voi Rừng là của con."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-rescue",
+  "kind": "side",
+  "title": "Voi con mắc bẫy",
+  "giver": "dl-ranger",
+  "requires": [
+   "vn-dl-1"
+  ],
+  "description": "Một con Phanpy mắc bẫy lâm tặc ở bìa rừng, bị bầy Liepard vây.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "dl-calf-rescue",
+    "count": 1,
+    "text": "Giải cứu Phanpy ở bìa rừng phía tây",
+    "marker": {
+     "x": 10,
+     "y": 40,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-ranger",
+    "count": 1,
+    "text": "Báo cho Kiểm lâm Yok Đôn",
+    "marker": {
+     "x": 40,
+     "y": 30,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 950,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con voi con mắc bẫy ở bìa rừng phía tây. Con giúp anh với!"
+   ],
+   "progress": [
+    "Bìa rừng phía tây, gần rẫy cà phê."
+   ],
+   "complete": [
+    "Voi con về với mẹ rồi. Anh sẽ đi gỡ hết bẫy."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-gong",
+  "kind": "side",
+  "title": "Cồng chiêng Buôn Đôn",
+  "giver": "dl-elder",
+  "requires": [
+   "vn-dl-1"
+  ],
+  "description": "Già làng muốn quản tượng trẻ Y Bhin bớt kiêu. Thắng cậu ấy một trận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dl-elephant-t",
+    "count": 1,
+    "text": "Thắng Quản tượng trẻ Y Bhin",
+    "marker": {
+     "x": 88,
+     "y": 26,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-elder",
+    "count": 1,
+    "text": "Báo cho Già làng M'nông",
+    "marker": {
+     "x": 64,
+     "y": 12,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 900,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng Y Bhin cưỡi voi giỏi mà kiêu quá. Con đấu với nó một trận."
+   ],
+   "progress": [
+    "Y Bhin ở bãi voi phía đông buôn."
+   ],
+   "complete": [
+    "Tối nay buôn đánh cồng mời con uống rượu cần... à, nước suối thôi."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-falls",
+  "kind": "side",
+  "title": "Vách đá Dray Nur",
+  "giver": "dl-falls",
+  "requires": [
+   "vn-dl-1"
+  ],
+  "description": "Dân leo núi Tùng đứng trên vách thác thách khách tham quan.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dl-draynur",
+    "count": 1,
+    "text": "Đến thác Dray Nur (phía đông bắc)",
+    "marker": {
+     "x": 111,
+     "y": 27,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "dl-falls-t",
+    "count": 1,
+    "text": "Thắng Dân leo núi Tùng",
+    "marker": {
+     "x": 116,
+     "y": 40,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-falls",
+    "count": 1,
+    "text": "Báo cho Anh hướng dẫn Dray Nur",
+    "marker": {
+     "x": 104,
+     "y": 26,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "hard-stone": 1
+   },
+   "worldExp": 900,
+   "reputation": 12,
+   "flags": [
+    "landmark:dray-nur"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Anh Tùng leo vách thác nguy hiểm lắm. Con thắng ảnh thì ảnh mới chịu xuống."
+   ],
+   "progress": [
+    "Vách đá phía đông thác."
+   ],
+   "complete": [
+    "Tùng xuống rồi. Thác Dray Nur đẹp nhất mùa mưa đó con."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-coffee",
+  "kind": "side",
+  "title": "Mùa hái cà phê",
+  "giver": "dl-farmer",
+  "requires": [
+   "vn-dl-2"
+  ],
+  "description": "Cô hái cà phê H'Mai muốn có bạn đấu sau giờ hái.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "dl-coffee-t",
+    "count": 1,
+    "text": "Thắng Cô hái cà phê H'Mai",
+    "marker": {
+     "x": 26,
+     "y": 96,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-farmer",
+    "count": 1,
+    "text": "Báo cho Chú Ba rẫy cà phê",
+    "marker": {
+     "x": 18,
+     "y": 80,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "superpotion": 2
+   },
+   "worldExp": 850,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "H'Mai hái cà phê nhanh nhất rẫy, đấu cũng giỏi. Con thử với nó nha."
+   ],
+   "progress": [
+    "H'Mai ở góc nam rẫy."
+   ],
+   "complete": [
+    "Bịch cà phê rang mộc này chú tặng con."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-ganh",
+  "kind": "side",
+  "title": "Gành Đá Đĩa",
+  "giver": "dl-ganh",
+  "requires": [
+   "vn-dl-1"
+  ],
+  "description": "Thanh niên Tuy Hòa chắn lối xuống gành đá. Chị bán cá ngừ nhờ bạn dẹp đường.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "dl-phuyen",
+    "count": 1,
+    "text": "Đến Gành Đá Đĩa (phía đông nam)",
+    "marker": {
+     "x": 111,
+     "y": 83,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "dl-ganh-t",
+    "count": 1,
+    "text": "Thắng Thanh niên Tuy Hòa",
+    "marker": {
+     "x": 118,
+     "y": 100,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-ganh",
+    "count": 1,
+    "text": "Báo cho Chị bán cá ngừ Phú Yên",
+    "marker": {
+     "x": 106,
+     "y": 96,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 900,
+   "reputation": 12,
+   "flags": [
+    "landmark:ganh-da-dia"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng nhỏ đứng trên gành thách đấu, khách sợ không dám xuống. Con trị nó giùm chị."
+   ],
+   "progress": [
+    "Nó ở mép gành phía nam."
+   ],
+   "complete": [
+    "Khách xuống gành đông rồi! Con cá ngừ này chị cho con."
+   ]
+  }
+ },
+ {
+  "id": "vn-dl-eco",
+  "kind": "side",
+  "title": "Hồ Lắk trong xanh",
+  "giver": "dl-lakeman",
+  "requires": [
+   "vn-dl-3"
+  ],
+  "description": "Rác du lịch dạt vào bờ hồ Lắk, cá chết nổi trắng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:dak-lak",
+    "count": 6,
+    "text": "Nhặt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 66,
+     "y": 84,
+     "region": "dak-lak"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "dl-lakeman",
+    "count": 1,
+    "text": "Báo cho Ông lái thuyền độc mộc",
+    "marker": {
+     "x": 50,
+     "y": 90,
+     "region": "dak-lak"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 900,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Rừng yên rồi, giờ tới hồ. Con phụ ông nhặt rác ven bờ nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Hồ trong rồi! Mai ông chở con đi thuyền độc mộc."
+   ]
+  }
  }
 ]

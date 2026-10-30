@@ -292,6 +292,52 @@
     }
    ]
   },
+  "dak-lak": {
+   "id": "dak-lak",
+   "name": "Đắk Lắk",
+   "area": "dl-lak",
+   "action": "trash",
+   "unlock": "vn-dl-3",
+   "boss": "donphan",
+   "label": "Nhặt rác ven hồ Lắk",
+   "done": "Bạn vớt chai nhựa và túi nilon dạt vào bờ. Mặt hồ Lắk trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "dak-lak-1",
+     "x": 66,
+     "y": 84
+    },
+    {
+     "id": "dak-lak-2",
+     "x": 63,
+     "y": 99
+    },
+    {
+     "id": "dak-lak-3",
+     "x": 77,
+     "y": 100
+    },
+    {
+     "id": "dak-lak-4",
+     "x": 80,
+     "y": 85
+    },
+    {
+     "id": "dak-lak-5",
+     "x": 57,
+     "y": 90
+    },
+    {
+     "id": "dak-lak-6",
+     "x": 85,
+     "y": 93
+    }
+   ]
+  },
   "dong-nai": {
    "id": "dong-nai",
    "name": "Đồng Nai",

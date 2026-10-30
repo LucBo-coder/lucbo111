@@ -1929,5 +1929,143 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-dl-yokdon",
+  "name": "Rừng Yok Đôn",
+  "areas": [
+   "dl-yokdon"
+  ],
+  "biome": "forest",
+  "level": [
+   51,
+   54
+  ],
+  "elite": [
+   55,
+   57
+  ],
+  "boss": null,
+  "recommended": 53,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dl-buondon",
+  "name": "Buôn Đôn",
+  "areas": [
+   "dl-buondon"
+  ],
+  "biome": "meadow",
+  "level": [
+   50,
+   53
+  ],
+  "elite": [
+   54,
+   56
+  ],
+  "boss": null,
+  "recommended": 52,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dl-coffee",
+  "name": "Đồi cà phê",
+  "areas": [
+   "dl-coffee"
+  ],
+  "biome": "farm",
+  "level": [
+   48,
+   51
+  ],
+  "elite": [
+   52,
+   54
+  ],
+  "boss": null,
+  "recommended": 50,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dl-lak",
+  "name": "Hồ Lắk",
+  "areas": [
+   "dl-lak"
+  ],
+  "biome": "lake",
+  "level": [
+   48,
+   51
+  ],
+  "elite": [
+   52,
+   54
+  ],
+  "boss": null,
+  "recommended": 50,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dl-draynur",
+  "name": "Thác Dray Nur",
+  "areas": [
+   "dl-draynur"
+  ],
+  "biome": "rocky",
+  "level": [
+   50,
+   53
+  ],
+  "elite": [
+   54,
+   56
+  ],
+  "boss": null,
+  "recommended": 52,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-dl-phuyen",
+  "name": "Gành Đá Đĩa (Phú Yên)",
+  "areas": [
+   "dl-phuyen"
+  ],
+  "biome": "coast",
+  "level": [
+   49,
+   52
+  ],
+  "elite": [
+   53,
+   55
+  ],
+  "boss": null,
+  "recommended": 51,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

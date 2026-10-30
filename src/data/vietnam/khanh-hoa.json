@@ -126,8 +126,9 @@
    "requires": ["beat:kh-diver-t"],
    "hint": "Sóng cuộn lên ở mũi đá dù trời lặng gió... Thợ lặn trưởng Hải chưa cho ai ra.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 8000, "flag": "badge:khanh-hoa", "message": "Nhận Huy hiệu Vịnh Biển (Khánh Hòa)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 8000, "flag": "badge:khanh-hoa", "message": "Nhận Huy hiệu Vịnh Biển (Khánh Hòa)! Đường tới Đắk Lắk đã mở: Quốc lộ 26." } },
  "portals": [
+  {"id": "portal-kh-next", "name": "Quốc lộ 26 — đường lên Đắk Lắk", "x": 20, "y": 5, "to": "dak-lak", "toX": 30, "toY": 104, "requires": ["badge:khanh-hoa"], "hint": "Đường tới Đắk Lắk mở cho người có Huy hiệu Vịnh Biển — hạ boss Khánh Hòa trước."},
   { "id": "portal-kh-ld", "name": "Đèo Khánh Lê — về Lâm Đồng", "x": 5, "y": 56, "to": "lam-dong", "toX": 120, "toY": 62 }
  ],
  "docks": [],
