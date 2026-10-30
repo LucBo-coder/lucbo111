@@ -124,8 +124,9 @@
    "requires": ["beat:nb-gate-t"],
    "hint": "Ba tiếng gầm cùng lúc vang từ đỉnh núi... Người leo núi chưa cho ai lên.",
    "rewards": { "first": { "ultraball": 3, "superpotion": 3, "dragon-scale": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
-     "money": 13000, "flag": "badge:ninh-binh", "message": "Nhận Huy hiệu Hạ Long Cạn (Ninh Bình)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+     "money": 13000, "flag": "badge:ninh-binh", "message": "Nhận Huy hiệu Hạ Long Cạn (Ninh Bình)! Đường tới Hưng Yên đã mở: Quốc lộ 10." } },
  "portals": [
+  {"id": "portal-nb-next", "name": "Quốc lộ 10 — đường tới Hưng Yên", "x": 112, "y": 5, "to": "hung-yen", "toX": 100, "toY": 104, "requires": ["badge:ninh-binh"], "hint": "Đường tới Hưng Yên mở cho người có Huy hiệu Hạ Long Cạn — hạ boss Ninh Bình trước."},
   { "id": "portal-nb-th", "name": "Quốc lộ 1 — về Thanh Hóa", "x": 24, "y": 107, "to": "thanh-hoa", "toX": 24, "toY": 8 }
  ],
  "docks": [],

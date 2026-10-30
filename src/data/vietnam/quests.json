@@ -12572,5 +12572,532 @@
     "Nước trong veo rồi! Mai cô chở con đi hang miễn phí."
    ]
   }
+ },
+ {
+  "id": "vn-hy-1",
+  "kind": "main",
+  "title": "Cành nhãn gãy",
+  "giver": "hy-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:ninh-binh"
+  ],
+  "description": "Tới Phố Hiến: ghé Trung tâm Pokémon rồi qua vườn nhãn hỏi bà trồng nhãn ai đá gãy cành.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-hung-yen-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Phố Hiến",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "hy-longan",
+    "count": 1,
+    "text": "Đến vườn nhãn lồng (phía tây bắc)",
+    "marker": {
+     "x": 25,
+     "y": 22,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-farmer",
+    "count": 1,
+    "text": "Hỏi Bà trồng nhãn",
+    "marker": {
+     "x": 30,
+     "y": 40,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 1550,
+   "reputation": 10,
+   "flags": [
+    "landmark:pho-hien"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Hưng Yên! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi qua vườn nhãn hỏi bà, cành nhãn gãy hết rồi."
+   ],
+   "progress": [
+    "Vườn nhãn ở phía tây bắc."
+   ],
+   "complete": [
+    "Có con Pokémon chân dài tự xưng nữ hoàng... Ông từ đền Chử Đồng Tử và sư chùa Keo biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-2",
+  "kind": "main",
+  "title": "Nữ hoàng vườn nhãn",
+  "giver": "hy-guide",
+  "requires": [
+   "vn-hy-1"
+  ],
+  "description": "Qua sông Hồng hỏi ông từ đền Chử Đồng Tử, rồi về chùa Keo hỏi sư.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hy-chudong",
+    "count": 1,
+    "text": "Qua bãi sông Hồng (phía bắc)",
+    "marker": {
+     "x": 89,
+     "y": 15,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-temple",
+    "count": 1,
+    "text": "Hỏi Ông từ đền Chử Đồng Tử",
+    "marker": {
+     "x": 80,
+     "y": 12,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-keo",
+    "count": 1,
+    "text": "Hỏi Sư chùa Keo",
+    "marker": {
+     "x": 20,
+     "y": 82,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 1600,
+   "reputation": 15,
+   "flags": [
+    "landmark:chu-dong-tu",
+    "landmark:chua-keo"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Ông từ bên kia sông nghe nhiều chuyện. Em qua hỏi, rồi về chùa Keo hỏi sư."
+   ],
+   "progress": [
+    "Đền ở bãi sông phía bắc, chùa Keo ở phía tây nam."
+   ],
+   "complete": [
+    "Nữ Hoàng giận vì thuốc trừ sâu. Muốn gặp phải qua thương lái Tâm."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-3",
+  "kind": "main",
+  "title": "Nữ Hoàng Nhãn Lồng",
+  "giver": "hy-guide",
+  "requires": [
+   "vn-hy-2"
+  ],
+  "description": "Thắng Thương lái nhãn Tâm để vào gốc nhãn cổ thụ, rồi làm Tsareena nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hy-gate-t",
+    "count": 1,
+    "text": "Thắng Thương lái nhãn Tâm",
+    "marker": {
+     "x": 34,
+     "y": 32,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "tsareena",
+    "count": 1,
+    "text": "Đánh bại Tsareena — Nữ Hoàng Nhãn Lồng",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 1850,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Thương lái Tâm canh lối vào gốc nhãn cổ thụ. Em đủ sức thì vào."
+   ],
+   "progress": [
+    "Gốc nhãn cổ thụ ở góc tây bắc, bên kia sông."
+   ],
+   "complete": [
+    "Nữ Hoàng nguôi giận, nhãn lại sai quả! Huy hiệu Nhãn Lồng là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-rescue",
+  "kind": "side",
+  "title": "Tằm vườn nhãn",
+  "giver": "hy-farmer",
+  "requires": [
+   "vn-hy-1"
+  ],
+  "description": "Một con Swadloon bị bầy quạ vây ở góc tây vườn nhãn.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "hy-silk-rescue",
+    "count": 1,
+    "text": "Giải cứu Swadloon ở góc tây vườn",
+    "marker": {
+     "x": 8,
+     "y": 34,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-farmer",
+    "count": 1,
+    "text": "Báo cho Bà trồng nhãn",
+    "marker": {
+     "x": 30,
+     "y": 40,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1400,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con tằm bị quạ vây ở góc tây vườn. Cháu giúp bà!"
+   ],
+   "progress": [
+    "Góc tây vườn, gần bờ sông."
+   ],
+   "complete": [
+    "Tằm bò vào lá rồi. Cảm ơn cháu."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-hatvan",
+  "kind": "side",
+  "title": "Hát văn đền Đa Hòa",
+  "giver": "hy-temple",
+  "requires": [
+   "vn-hy-1"
+  ],
+  "description": "Cô đồng hát văn muốn đấu với người lạ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hy-temple-t",
+    "count": 1,
+    "text": "Thắng Cô đồng hát văn",
+    "marker": {
+     "x": 96,
+     "y": 12,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-temple",
+    "count": 1,
+    "text": "Báo cho Ông từ đền Chử Đồng Tử",
+    "marker": {
+     "x": 80,
+     "y": 12,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "moon-stone": 1
+   },
+   "worldExp": 1250,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Cô đồng hát văn muốn đấu với cháu. Cháu chiều cô nha."
+   ],
+   "progress": [
+    "Cô ở phía đông đền."
+   ],
+   "complete": [
+    "Cô vui lắm, hát tặng cháu một bài."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-carpenter",
+  "kind": "side",
+  "title": "Mộng gỗ chùa Keo",
+  "giver": "hy-keo",
+  "requires": [
+   "vn-hy-2"
+  ],
+  "description": "Thợ mộc chùa Keo muốn thử sức người lạ.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "hy-keo-t",
+    "count": 1,
+    "text": "Thắng Thợ mộc chùa Keo",
+    "marker": {
+     "x": 12,
+     "y": 100,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-keo",
+    "count": 1,
+    "text": "Báo cho Sư chùa Keo",
+    "marker": {
+     "x": 20,
+     "y": 82,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1250,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thợ mộc ham đấu lắm. Thí chủ thử một trận."
+   ],
+   "progress": [
+    "Thợ mộc ở góc tây nam chùa."
+   ],
+   "complete": [
+    "Thợ mộc phục rồi. Mô Phật."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-rice",
+  "kind": "side",
+  "title": "Quê lúa Thái Bình",
+  "giver": "hy-paddy",
+  "requires": [
+   "vn-hy-1"
+  ],
+  "description": "Chàng trai cấy lúa muốn có bạn đấu.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hy-paddy",
+    "count": 1,
+    "text": "Ra đồng lúa Thái Bình (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 91,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hy-paddy-t",
+    "count": 1,
+    "text": "Thắng Chàng trai cấy lúa",
+    "marker": {
+     "x": 66,
+     "y": 94,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-paddy",
+    "count": 1,
+    "text": "Báo cho Bác nông dân Thái Bình",
+    "marker": {
+     "x": 70,
+     "y": 88,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "greatball": 2
+   },
+   "worldExp": 1200,
+   "reputation": 10
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng nhỏ cấy lúa muốn đấu. Cháu chơi với nó nha."
+   ],
+   "progress": [
+    "Nó ở giữa đồng phía nam."
+   ],
+   "complete": [
+    "Nắm cơm gạo mới này bác cho cháu."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-beach",
+  "kind": "side",
+  "title": "Rừng phi lao Đồng Châu",
+  "giver": "hy-beach",
+  "requires": [
+   "vn-hy-1"
+  ],
+  "description": "Người trồng phi lao thách đấu ai đi qua bãi.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "hy-dongchau",
+    "count": 1,
+    "text": "Ra biển Đồng Châu (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 71,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "hy-beach-t",
+    "count": 1,
+    "text": "Thắng Người trồng phi lao",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-beach",
+    "count": 1,
+    "text": "Báo cho Ngư dân Đồng Châu",
+    "marker": {
+     "x": 112,
+     "y": 70,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 1,
+    "soft-sand": 1
+   },
+   "worldExp": 1250,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh trồng phi lao ham đấu lắm. Cháu thử một trận."
+   ],
+   "progress": [
+    "Anh ấy ở phía nam bãi."
+   ],
+   "complete": [
+    "Ảnh phục rồi. Mai ảnh dắt cháu đi trồng phi lao."
+   ]
+  }
+ },
+ {
+  "id": "vn-hy-eco",
+  "kind": "side",
+  "title": "Sông Hồng thông thoáng",
+  "giver": "hy-temple",
+  "requires": [
+   "vn-hy-3"
+  ],
+  "description": "Lưới bỏ hoang mắc khắp bãi sông Hồng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:hung-yen",
+    "count": 6,
+    "text": "Gỡ 6 tấm lưới bỏ hoang ven sông",
+    "marker": {
+     "x": 89,
+     "y": 21,
+     "region": "hung-yen"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "hy-temple",
+    "count": 1,
+    "text": "Báo cho Ông từ đền Chử Đồng Tử",
+    "marker": {
+     "x": 80,
+     "y": 12,
+     "region": "hung-yen"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1250,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Vườn nhãn yên rồi, giờ tới sông. Cháu phụ ông gỡ lưới nha."
+   ],
+   "progress": [
+    "Lưới mắc sát mép nước dọc bãi sông."
+   ],
+   "complete": [
+    "Sông thông rồi, cá về đông lắm!"
+   ]
+  }
  }
 ]

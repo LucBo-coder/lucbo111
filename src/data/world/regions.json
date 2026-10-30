@@ -3125,5 +3125,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-hy-longan",
+  "name": "Vườn nhãn lồng",
+  "areas": [
+   "hy-longan"
+  ],
+  "biome": "farm",
+  "level": [
+   71,
+   74
+  ],
+  "elite": [
+   75,
+   77
+  ],
+  "boss": null,
+  "recommended": 73,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hy-chudong",
+  "name": "Bãi sông Hồng — đền Chử Đồng Tử",
+  "areas": [
+   "hy-chudong"
+  ],
+  "biome": "meadow",
+  "level": [
+   70,
+   73
+  ],
+  "elite": [
+   74,
+   76
+  ],
+  "boss": null,
+  "recommended": 72,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hy-chuakeo",
+  "name": "Chùa Keo",
+  "areas": [
+   "hy-chuakeo"
+  ],
+  "biome": "ruins",
+  "level": [
+   68,
+   71
+  ],
+  "elite": [
+   72,
+   74
+  ],
+  "boss": null,
+  "recommended": 70,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hy-paddy",
+  "name": "Đồng lúa Thái Bình",
+  "areas": [
+   "hy-paddy"
+  ],
+  "biome": "lake",
+  "level": [
+   68,
+   71
+  ],
+  "elite": [
+   72,
+   74
+  ],
+  "boss": null,
+  "recommended": 70,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-hy-dongchau",
+  "name": "Biển Đồng Châu",
+  "areas": [
+   "hy-dongchau"
+  ],
+  "biome": "coast",
+  "level": [
+   69,
+   72
+  ],
+  "elite": [
+   73,
+   75
+  ],
+  "boss": null,
+  "recommended": 71,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

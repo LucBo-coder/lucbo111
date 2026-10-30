@@ -1684,5 +1684,58 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "tsareena",
+  "name": "Tsareena — Nữ Hoàng Nhãn Lồng",
+  "types": [
+   "grass"
+  ],
+  "baseStats": {
+   "hp": 72,
+   "atk": 120,
+   "def": 98,
+   "spa": 50,
+   "spd": 98,
+   "spe": 72
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "trop_kick",
+   "high_jump_kick"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "bounsweet",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Nữ Hoàng vườn nhãn tung chân — lá nhãn bay rợp trời!",
+  "exp": 150,
+  "sprite": "tsareena",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "solar_beam",
+   "volley": "razor_leaf",
+   "nova": "petal_blizzard",
+   "field": "stomp",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "trop_kick",
+   "ultimateName": "Cú Đá Nhãn Lồng Tiến Vua",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

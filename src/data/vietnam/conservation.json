@@ -660,6 +660,52 @@
     }
    ]
   },
+  "hung-yen": {
+   "id": "hung-yen",
+   "name": "Hưng Yên",
+   "area": "hy-chudong",
+   "action": "net",
+   "unlock": "vn-hy-3",
+   "boss": "tsareena",
+   "label": "Gỡ lưới bỏ hoang trên sông Hồng",
+   "done": "Bạn kéo tấm lưới mục lên bãi. Cá sông Hồng lại có đường bơi.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "netball": 3
+   },
+   "sites": [
+    {
+     "id": "hung-yen-1",
+     "x": 89,
+     "y": 21
+    },
+    {
+     "id": "hung-yen-2",
+     "x": 103,
+     "y": 20
+    },
+    {
+     "id": "hung-yen-3",
+     "x": 75,
+     "y": 21
+    },
+    {
+     "id": "hung-yen-4",
+     "x": 117,
+     "y": 19
+    },
+    {
+     "id": "hung-yen-5",
+     "x": 61,
+     "y": 22
+    },
+    {
+     "id": "hung-yen-6",
+     "x": 52,
+     "y": 27
+    }
+   ]
+  },
   "khanh-hoa": {
    "id": "khanh-hoa",
    "name": "Khánh Hòa",

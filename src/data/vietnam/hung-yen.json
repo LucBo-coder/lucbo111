@@ -1,0 +1,146 @@
+{
+ "id": "hung-yen",
+ "name": "Hưng Yên",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": { "x": 100, "y": 104 },
+ "areas": [
+  { "id": "hy-longan", "name": "Vườn nhãn lồng", "rect": [0, 0, 50, 45], "habitat": "farm", "level": [71, 74], "orchard": { "period": 6, "gap": 9 } },
+  { "id": "hy-chudong", "name": "Bãi sông Hồng — đền Chử Đồng Tử", "rect": [51, 0, 127, 30], "habitat": "meadow", "level": [70, 73] },
+  { "id": "hy-phohien", "name": "Phố Hiến", "rect": [40, 31, 100, 70], "habitat": "village", "level": [70, 70] },
+  { "id": "hy-chuakeo", "name": "Chùa Keo", "rect": [0, 46, 39, 111], "habitat": "ruins", "level": [68, 71] },
+  { "id": "hy-paddy", "name": "Đồng lúa Thái Bình", "rect": [40, 71, 100, 111], "habitat": "lake", "level": [68, 71], "paddy": { "cell": 6, "rice": 0.35 } },
+  { "id": "hy-dongchau", "name": "Biển Đồng Châu", "rect": [101, 31, 127, 111], "habitat": "coast", "level": [69, 72] }
+ ],
+ "paths": [
+  { "w": 3, "pts": [[100, 107], [100, 86], [80, 70], [70, 62]] },
+  { "w": 3, "pts": [[60, 50], [40, 36], [24, 20]] },
+  { "w": 3, "pts": [[68, 50], [72, 14], [110, 10], [112, 5]] },
+  { "w": 3, "pts": [[74, 56], [110, 56], [112, 40]] },
+  { "w": 3, "pts": [[110, 56], [114, 96]] },
+  { "w": 3, "pts": [[60, 56], [24, 62], [16, 92]] },
+  { "w": 3, "pts": [[80, 70], [66, 94]] }
+ ],
+ "plaza": [58, 50, 74, 62],
+ "lake": { "cx": 150, "cy": 80, "rx": 30, "ry": 40 },
+ "rivers": [
+  { "w": 4, "pts": [[0, 26], [60, 25], [127, 22]] }
+ ],
+ "buildings": [
+  { "id": "hy-center", "name": "Trung tâm Pokémon", "x": 42, "y": 40, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
+  { "id": "hy-mart", "name": "Cửa hàng Phố Hiến", "x": 78, "y": 38, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "hy-vanmieu", "name": "Văn Miếu Xích Đằng", "x": 86, "y": 40, "w": 7, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
+  { "id": "hy-keo", "name": "Gác chuông chùa Keo", "x": 22, "y": 74, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
+  { "id": "hy-house-1", "name": "Nhà chị Huệ", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
+  { "id": "hy-house-2", "name": "Quán bánh cáy", "x": 90, "y": 62, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+ ],
+ "fences": [],
+ "props": [
+  { "kind": "well", "x": 54, "y": 66 },
+  { "kind": "haystack", "x": 52, "y": 80 },
+  { "kind": "log", "x": 96, "y": 18 },
+  { "kind": "target", "x": 118, "y": 70 },
+  { "kind": "bucket", "x": 62, "y": 30 }
+ ],
+ "signs": [
+  { "x": 62, "y": 60, "text": ["PHỐ HIẾN", "Thứ nhất Kinh Kỳ, thứ nhì Phố Hiến. Phía tây bắc: vườn nhãn · Phía bắc: sông Hồng, đền Chử Đồng Tử · Phía tây: chùa Keo · Phía nam: đồng lúa Thái Bình · Phía đông: biển Đồng Châu."] },
+  { "x": 76, "y": 18, "text": ["ĐỀN CHỬ ĐỒNG TỬ", "Thờ chàng trai nghèo Chử Đồng Tử và công chúa Tiên Dung gặp nhau bên bãi sông Hồng."] },
+  { "x": 30, "y": 72, "text": ["CHÙA KEO", "Gác chuông ba tầng mái làm hoàn toàn bằng gỗ, ghép mộng không dùng một cây đinh."] }
+ ],
+ "npcs": [
+  { "id": "hy-guide", "name": "Chị Huệ Phố Hiến", "sprite": "girl", "x": 70, "y": 60, "lines": [
+    "Chào mừng tới Hưng Yên! Ăn miếng bánh cáy cho biết.",
+    "Vườn nhãn lồng mùa này bị ai đá gãy cành, quả rụng đầy gốc.",
+    "Bà trồng nhãn ở phía tây bắc biết chuyện, em qua hỏi."] },
+  { "id": "hy-farmer", "name": "Bà trồng nhãn", "sprite": "elder", "x": 30, "y": 40, "lines": [
+    "Nhãn lồng Hưng Yên ngày xưa tiến vua đó cháu, cùi dày, hạt nhỏ.",
+    "Có con Pokémon cao như người, chân dài, đá một phát gãy cả cành nhãn."] },
+  { "id": "hy-temple", "name": "Ông từ đền Chử Đồng Tử", "sprite": "elder", "x": 80, "y": 12, "lines": [
+    "Chử Đồng Tử nghèo đến chỉ có một cái khố, vậy mà nên duyên với công chúa.",
+    "Ông nghe nói con Pokémon kia tự xưng nữ hoàng vườn nhãn, đuổi hết người hái."] },
+  { "id": "hy-keo", "name": "Sư chùa Keo", "sprite": "elder", "x": 20, "y": 82, "lines": [
+    "Gác chuông chùa Keo đứng bốn trăm năm, gió bão không lay.",
+    "Vạn vật đều có chỗ của nó. Nữ hoàng vườn nhãn giận vì người ta phun thuốc trừ sâu tràn lan."] },
+  { "id": "hy-paddy", "name": "Bác nông dân Thái Bình", "sprite": "farmer", "x": 70, "y": 88, "lines": [
+    "Thái Bình là quê lúa, đất chín mươi chín ngọn... à không, đồng lúa thẳng cánh cò bay.",
+    "Cò về đồng ít hẳn, bác lo lắm."] },
+  { "id": "hy-beach", "name": "Ngư dân Đồng Châu", "sprite": "villager", "x": 112, "y": 70, "lines": [
+    "Biển Đồng Châu hoang sơ, rừng phi lao chắn gió.",
+    "Rác trôi từ sông Hồng ra biển dạt hết vào đây."] },
+  { "id": "hy-scholar", "name": "Cụ đồ Văn Miếu", "sprite": "elder", "x": 84, "y": 46, "lines": [
+    "Văn Miếu Xích Đằng thờ Khổng Tử, nơi học trò xứ Sơn Nam về cầu thi đỗ.",
+    "Phố Hiến ngày xưa là thương cảng sầm uất, thuyền buôn khắp nơi về."] }
+ ],
+ "trainers": [
+  { "id": "hy-gate-t", "name": "Thương lái nhãn Tâm", "sprite": "villager", "x": 34, "y": 32,
+    "team": [["lurantis", 73], ["ferrothorn", 73], ["sceptile", 73]],
+    "challenge": ["Vườn nhãn đó giờ là của Nữ Hoàng! Muốn vào phải thắng tôi."],
+    "win": ["Bạn mạnh thật. Nữ Hoàng ở gốc nhãn cổ thụ phía tây bắc."],
+    "lose": ["Về đi, nhãn chưa chín đâu."],
+    "rewards": { "items": { "superpotion": 2, "miracle-seed": 1 }, "exp": 3400 } },
+  { "id": "hy-temple-t", "name": "Cô đồng hát văn", "sprite": "girl", "x": 96, "y": 12,
+    "team": [["togekiss", 71], ["sylveon", 71], ["hatterene", 71]],
+    "challenge": ["Hát văn mời thánh về... Thánh mượn Pokémon của ta đấu với ngươi!"],
+    "win": ["Thánh đã về trời. Ngươi thắng."],
+    "lose": ["Thánh phạt rồi kìa!"],
+    "rewards": { "items": { "ultraball": 2, "moon-stone": 1 }, "exp": 3300 } },
+  { "id": "hy-keo-t", "name": "Thợ mộc chùa Keo", "sprite": "hiker", "x": 12, "y": 100,
+    "team": [["bronzong", 70], ["chandelure", 70], ["cofagrigus", 70]],
+    "challenge": ["Ghép mộng không cần đinh, ghép đội không cần xin! Đấu đi!"],
+    "win": ["Đội bạn ghép khít hơn đội tôi."],
+    "lose": ["Lỏng mộng rồi kìa!"],
+    "rewards": { "items": { "superpotion": 2, "hard-stone": 1 }, "exp": 3200 } },
+  { "id": "hy-paddy-t", "name": "Chàng trai cấy lúa", "sprite": "farmer", "x": 66, "y": 94,
+    "team": [["stoutland", 70], ["bewear", 70], ["ursaring", 70]],
+    "challenge": ["Cấy lúa cả ngày, lưng tui dẻo lắm nha!"],
+    "win": ["Thua rồi. Nắm cơm này mời bạn."],
+    "lose": ["Sa lầy rồi kìa!"],
+    "rewards": { "items": { "sitrus-berry": 3 }, "exp": 3200 } },
+  { "id": "hy-beach-t", "name": "Người trồng phi lao", "sprite": "ranger", "x": 118, "y": 90,
+    "team": [["krookodile", 71], ["garchomp", 71], ["excadrill", 71]],
+    "challenge": ["Rừng phi lao chắn cát, Pokémon tôi chắn mọi đối thủ!"],
+    "win": ["Cát lấn rồi... bạn thắng."],
+    "lose": ["Cát vùi rồi kìa!"],
+    "rewards": { "items": { "ultraball": 1, "soft-sand": 1 }, "exp": 3300 } }
+ ],
+ "rescue": { "id": "hy-silk-rescue", "x": 8, "y": 34, "species": "swadloon", "level": 71,
+   "guards": [["honchkrow", 70], ["mandibuzz", 70], ["mandibuzz", 70]], "quest": "vn-hy-rescue", "reporter": "Bà trồng nhãn" },
+ "chests": [
+  { "id": "chest-hy-longan", "x": 10, "y": 5, "items": { "ultraball": 2, "leaf-stone": 1 } },
+  { "id": "chest-hy-chudong", "x": 122, "y": 6, "items": { "superpotion": 3, "moon-stone": 1 } },
+  { "id": "chest-hy-chuakeo", "x": 6, "y": 106, "items": { "ultraball": 2, "dusk-stone": 1 } },
+  { "id": "chest-hy-paddy", "x": 100, "y": 100, "items": { "sitrus-berry": 3, "greatball": 2 } },
+  { "id": "chest-hy-dongchau", "x": 122, "y": 104, "items": { "netball": 3, "mystic-water": 1 } },
+  { "id": "chest-hy-nook", "x": 30, "y": 104, "items": { "exp-candy-m": 2, "ultraball": 1 }, "requiresFlag": "field:hung-yen:hy-boulder" }
+ ],
+ "waypoints": [
+  { "id": "wp-hung-yen-center", "name": "Trung tâm Pokémon Phố Hiến", "x": 45, "y": 47 }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+   "id": "tsareena", "name": "Tsareena — Nữ Hoàng Nhãn Lồng", "x": 16, "y": 10, "level": 74, "respawn": 600, "arena": 260,
+   "requires": ["beat:hy-gate-t"],
+   "hint": "Cành nhãn gãy rạp quanh gốc cổ thụ... Thương lái Tâm chưa cho ai vào.",
+   "rewards": { "first": { "ultraball": 3, "superpotion": 3, "miracle-seed": 1 }, "repeat": { "superpotion": 1, "ultraball": 1 },
+     "money": 13500, "flag": "badge:hung-yen", "message": "Nhận Huy hiệu Nhãn Lồng (Hưng Yên)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau." } },
+ "portals": [
+  { "id": "portal-hy-nb", "name": "Quốc lộ 10 — về Ninh Bình", "x": 100, "y": 107, "to": "ninh-binh", "toX": 112, "toY": 8 }
+ ],
+ "docks": [],
+ "nodes": [
+  { "id": "hy-orchard-1", "table": "orchard-forage", "x": 30, "y": 10 },
+  { "id": "hy-meadow-1", "table": "meadow-forage", "x": 90, "y": 14 },
+  { "id": "hy-river-1", "table": "canal-fish", "x": 60, "y": 30 },
+  { "id": "hy-paddy-1", "table": "paddy-fish", "x": 70, "y": 100 },
+  { "id": "hy-meadow-2", "table": "meadow-forage", "x": 114, "y": 80 }
+ ],
+ "field": [
+  { "id": "hy-boulder", "ability": "smash", "x": 34, "y": 104, "nook": { "cx": 30.5, "cy": 104.5, "r": 3, "wall": "boulder" } }
+ ]
+}
