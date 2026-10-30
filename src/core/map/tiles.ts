@@ -58,8 +58,12 @@ export const EX = {
   // legendary shrines (V22, LEGENDARY_SHRINES.md §4): statue, summoning core, themed pillars, small ritual props
   statue: 352, altar: 353, icePillar: 354, rodPillar: 355, whitePillar: 356, brokenPillar: 357,
   runeStone: 358, starStone: 359, flowerWilt: 360, flowerBloom: 361, moonPlate: 362, pad: 363, crack: 364, regiSlot: 365,
+  // themed paths (V26): packed-snow trail (frozen), basalt flagstones (volcanic) — 2 variants each
+  snowPath: 366, basaltPath: 368,
+  /** sand / rocky ground with a jagged grass fringe on the sides that touch grass: + mask (N=1, E=2, S=4, W=8; 1..15) */
+  sandEdge: 372, rockyEdge: 388,
 } as const;
-export const TILESET_ROWS = 31;
+export const TILESET_ROWS = 34;
 
 /**
  * Adventure Awaits by Ishtar Pixels (CC0): cottages and old trees, separate images (outside 'ow_tiles') drawn at the

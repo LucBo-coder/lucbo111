@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { chunkCols, chunkRows, type MapObject } from '../src/core/map/mapProvider';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
-import { AA_ART, AA_DIR, T, worldArtKey } from '../src/core/map/tiles';
+import { AA_ART, AA_DIR, EX, T, worldArtKey } from '../src/core/map/tiles';
 import { ValleyMap } from '../src/core/map/valley';
 
 // Adventure Awaits (CC0) cottages and old trees: where they appear, and that their footprints still play like houses /
@@ -53,5 +53,39 @@ describe('world art (Adventure Awaits)', () => {
     expect(count['ben-tre']).toBeGreaterThan(10);
     expect(count['ca-mau']).toBe(0);
     expect(count['frozen-mountains']).toBe(0);
+  });
+});
+
+describe('ground transitions and themed paths', () => {
+  const lawn = [T.Grass, T.Tuft, T.Flowers, T.Deep, T.TallGrass] as number[];
+
+  it('sand / rocky on green ground take the fringe tile of exactly the sides that touch grass', () => {
+    let edges = 0;
+    for (const id of ['coral-coast', 'starter-valley', 'ben-tre']) {
+      const map = new ValleyMap(REGION_DEFS[id]);
+      for (let y = 1; y < map.heightTiles - 1; y++) for (let x = 1; x < map.widthTiles - 1; x++) {
+        const t = map.terrainAt(x, y);
+        if (t !== T.Sand && t !== T.Rocky) continue;
+        const g = (dx: number, dy: number) => lawn.includes(map.terrainAt(x + dx, y + dy));
+        const mask = (g(0, -1) ? 1 : 0) | (g(1, 0) ? 2 : 0) | (g(0, 1) ? 4 : 0) | (g(-1, 0) ? 8 : 0);
+        const tile = map.tileIndexAt(x, y, 0);
+        if (mask) { edges++; expect(tile, `${id} ${x},${y}`).toBe((t === T.Sand ? EX.sandEdge : EX.rockyEdge) + mask); }
+        else expect(t === T.Sand ? [EX.sand, EX.sand2] : [EX.rocky, EX.rocky2], `${id} ${x},${y}`).toContain(tile);
+      }
+    }
+    expect(edges).toBeGreaterThan(100);
+  });
+
+  it('paths are a snow trail in the mountains and basalt in the volcanic lands', () => {
+    for (const [id, base] of [['frozen-mountains', EX.snowPath], ['volcanic-lands', EX.basaltPath]] as const) {
+      const map = new ValleyMap(REGION_DEFS[id]);
+      let n = 0;
+      for (let y = 0; y < map.heightTiles; y++) for (let x = 0; x < map.widthTiles; x++) {
+        if (map.terrainAt(x, y) !== T.Path) continue;
+        n++;
+        expect([base, base + 1], `${id} ${x},${y}`).toContain(map.tileIndexAt(x, y, 0));
+      }
+      expect(n, id).toBeGreaterThan(50);
+    }
   });
 });

@@ -552,8 +552,17 @@ export class ValleyMap implements MapProvider {
       if (theme === 'volcanic') return hash2(tx, ty, 4) < 0.3 ? EX.ash2 : EX.ash;
       return hash2(tx, ty, 6) < 0.25 ? EX.sanctum2 : EX.sanctum;
     }
-    // themed regions: paths / camp plaza are flagstones (the Kenney dirt & plaza tiles have green rims)
-    if (!green && (t === T.Path || t === T.Plaza)) return hash2(tx, ty, 8) < 0.3 ? EX.ruin2 : EX.ruin;
+    // themed regions: paths / camp plaza are a packed-snow trail, basalt slabs or (sanctuary) flagstones
+    if (!green && (t === T.Path || t === T.Plaza)) {
+      const v = hash2(tx, ty, 8) < 0.3 ? 1 : 0;
+      return theme === 'frozen' ? EX.snowPath + v : theme === 'volcanic' ? EX.basaltPath + v : v ? EX.ruin2 : EX.ruin;
+    }
+    // sand / rocky patches on green ground: a grass fringe on every side that touches grass
+    if (green && (t === T.Sand || t === T.Rocky)) {
+      const lawn = (dx: number, dy: number) => { const q = this.terrainAt(tx + dx, ty + dy); return q === T.Grass || q === T.Tuft || q === T.Flowers || q === T.Deep || q === T.TallGrass; };
+      const mask = (lawn(0, -1) ? 1 : 0) | (lawn(1, 0) ? 2 : 0) | (lawn(0, 1) ? 4 : 0) | (lawn(-1, 0) ? 8 : 0);
+      if (mask) return (t === T.Sand ? EX.sandEdge : EX.rockyEdge) + mask;
+    }
     switch (t) {
       case T.Water: {
         const land = (dx: number, dy: number) => this.terrainAt(tx + dx, ty + dy) !== T.Water;

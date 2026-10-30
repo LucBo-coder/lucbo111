@@ -8,10 +8,6 @@ import type { MapObject } from '../core/map/mapProvider';
 
 export const TILESET_KEY = 'ow_tiles';
 
-function rgb(c: [number, number, number], d = 0): string {
-  return `rgb(${Math.max(0, Math.min(255, c[0] + d))},${Math.max(0, Math.min(255, c[1] + d))},${Math.max(0, Math.min(255, c[2] + d))})`;
-}
-
 function seeded(seed: number) {
   let s = seed;
   return () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
@@ -60,7 +56,6 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
 
   // GBA-style palette (Ruby/Emerald feel): saturated 3-tone grass and a tan path with a dark rim
   const GBA = { grass: '#7cc458', mid: '#68ae48', dark: '#3f8a3c', light: '#a4dc78', path: '#e8c48a', pathLight: '#f6e2b4', pathDark: '#b88a54', pathRim: '#9c6e3e' };
-  const grass: [number, number, number] = [124, 196, 88];
 
   const cell = (idx: number) => ({ x: (idx % COLS) * TILE, y: Math.floor(idx / COLS) * TILE });
   const fill = (idx: number, color: string) => { const c = cell(idx); ctx.fillStyle = color; ctx.fillRect(c.x, c.y, TILE, TILE); };
@@ -81,26 +76,31 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
 
   // Ground: Kenney's grass and dirt cells are repainted in place (same indices, so the map code is unchanged)
   const dot = (c: { x: number; y: number }, x: number, y: number, col: string) => { ctx.fillStyle = col; ctx.fillRect(c.x + x, c.y + y, 1, 1); };
-  const gbaGrass = (idx: number, seed: number, tufts: number, flowers: string[] = [], sprigs = 0) => {
+  type GroundPal = { grass: string; mid: string; dark: string; light: string };
+  // `pal` reuses the same tuft / sprig shapes for other ground (swamp grass, ash-covered grass)
+  const gbaGrass = (idx: number, seed: number, tufts: number, flowers: string[] = [], sprigs = 0, pal: GroundPal = GBA) => {
     const c = cell(idx);
-    fill(idx, GBA.grass);
+    fill(idx, pal.grass);
     const rnd = seeded(seed);
-    for (let i = 0; i < 6; i++) { ctx.fillStyle = rnd() < 0.5 ? GBA.mid : GBA.light; ctx.fillRect(c.x + Math.floor(rnd() * 14), c.y + Math.floor(rnd() * 14), 2, 2); }
+    for (let i = 0; i < 6; i++) { ctx.fillStyle = rnd() < 0.5 ? pal.mid : pal.light; ctx.fillRect(c.x + Math.floor(rnd() * 14), c.y + Math.floor(rnd() * 14), 2, 2); }
     for (let i = 0; i < tufts; i++) {
       const x = 1 + Math.floor(rnd() * 13), y = 1 + Math.floor(rnd() * 13);
-      dot(c, x, y, GBA.light); dot(c, x, y + 1, GBA.dark); dot(c, x - 1, y + 2, GBA.dark); dot(c, x + 1, y + 2, GBA.dark); dot(c, x, y + 2, GBA.mid);
+      dot(c, x, y, pal.light); dot(c, x, y + 1, pal.dark); dot(c, x - 1, y + 2, pal.dark); dot(c, x + 1, y + 2, pal.dark); dot(c, x, y + 2, pal.mid);
     }
     // clover sprigs: two light leaves in a V over a dark stem
     for (let i = 0; i < sprigs; i++) {
       const x = 1 + Math.floor(rnd() * 13), y = 1 + Math.floor(rnd() * 12);
-      dot(c, x - 1, y, GBA.light); dot(c, x + 1, y, GBA.light); dot(c, x - 1, y + 1, GBA.mid); dot(c, x, y + 1, GBA.light); dot(c, x + 1, y + 1, GBA.mid); dot(c, x, y + 2, GBA.dark);
-    }    for (const col of flowers) {
+      dot(c, x - 1, y, pal.light); dot(c, x + 1, y, pal.light); dot(c, x - 1, y + 1, pal.mid); dot(c, x, y + 1, pal.light); dot(c, x + 1, y + 1, pal.mid); dot(c, x, y + 2, pal.dark);
+    }
+    for (const col of flowers) {
       const x = 2 + Math.floor(rnd() * 11), y = 2 + Math.floor(rnd() * 11);
       dot(c, x, y - 1, col); dot(c, x - 1, y, col); dot(c, x + 1, y, col); dot(c, x, y + 1, col); dot(c, x, y, '#fff4a0');
     }
   };
-  // Path tile: the grass sides (t/r/b/l letters) get a jagged grass band, the rest is tan path with pebbles and a dark rim
-  const gbaPath = (idx: number, sides: string, seed: number) => {
+  // Path tile: the grass sides (t/r/b/l letters) get a jagged grass band, the rest is tan path with pebbles and a dark
+  // rim; `pal` swaps the ground (sand / rocky patches use the same fringe against the grass)
+  const PATH_PAL = { base: GBA.path, light: GBA.pathLight, dark: GBA.pathDark, rim: GBA.pathRim };
+  const gbaPath = (idx: number, sides: string, seed: number, pal = PATH_PAL) => {
     const c = cell(idx), g = cell(TOWN.grass[0]);
     ctx.drawImage(tex.getSourceImage() as CanvasImageSource, g.x, g.y, TILE, TILE, c.x, c.y, TILE, TILE);
     const band = (x: number, y: number) =>
@@ -113,7 +113,7 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       if (band(x, y)) continue;
       const r = rnd();
       const edge = band(x - 1, y) || band(x + 1, y) || band(x, y - 1) || band(x, y + 1);
-      dot(c, x, y, edge ? GBA.pathRim : r < 0.1 ? GBA.pathLight : r > 0.93 ? GBA.pathDark : GBA.path);
+      dot(c, x, y, edge ? pal.rim : r < 0.1 ? pal.light : r > 0.93 ? pal.dark : pal.base);
     }
   };
   gbaGrass(TOWN.grass[0], 21, 14, [], 3);
@@ -122,6 +122,14 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   const D = TOWN.dirt;
   const pathTiles: [number, string][] = [[D.c, ''], [D.tl, 'tl'], [D.t, 't'], [D.tr, 'tr'], [D.l, 'l'], [D.r, 'r'], [D.bl, 'bl'], [D.b, 'b'], [D.br, 'br']];
   pathTiles.forEach(([idx, sides], i) => gbaPath(idx, sides, 31 + i));
+  // sand / rocky patches on green ground: one tile per mask of grass sides (N=1 E=2 S=4 W=8)
+  const SAND_PAL = { base: '#e8d49c', light: '#f4e4b8', dark: '#c8ac78', rim: '#b89870' };
+  const ROCKY_PAL = { base: '#9c9280', light: '#b8b09c', dark: '#6e6658', rim: '#5e5848' };
+  for (let mask = 1; mask < 16; mask++) {
+    const sides = (mask & 1 ? 't' : '') + (mask & 2 ? 'r' : '') + (mask & 4 ? 'b' : '') + (mask & 8 ? 'l' : '');
+    gbaPath(EX.sandEdge + mask, sides, 200 + mask, SAND_PAL);
+    gbaPath(EX.rockyEdge + mask, sides, 220 + mask, ROCKY_PAL);
+  }
 
   // Plaza: GBA town paving — warm grey slabs in a running bond, dark mortar, a light top edge per slab
   {
@@ -240,7 +248,9 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
     const rnd = seeded(seed);
     for (let i = 0; i < 10; i++) { ctx.fillStyle = rnd() < 0.5 ? '#a49a84' : '#c4bca6'; ctx.fillRect(c.x + Math.floor(rnd() * 15), c.y + Math.floor(rnd() * 15), 1, 1); }
     if (idx === EX.ruin2) {
-      ctx.fillStyle = rgb(grass, -20); ctx.fillRect(c.x + 2, c.y + 10, 3, 2); ctx.fillRect(c.x + 12, c.y + 3, 2, 3);
+      // moss: a muted olive that sits on stone in any region (the bright meadow green read as paint on snow / ash)
+      ctx.fillStyle = '#7a8a58'; ctx.fillRect(c.x + 2, c.y + 10, 3, 2); ctx.fillRect(c.x + 12, c.y + 3, 2, 3);
+      ctx.fillStyle = '#5e6e44'; ctx.fillRect(c.x + 2, c.y + 11, 3, 1); ctx.fillRect(c.x + 12, c.y + 5, 2, 1);
       ctx.fillStyle = '#6e6658'; ctx.fillRect(c.x + 4, c.y + 3, 3, 1); ctx.fillRect(c.x + 6, c.y + 4, 1, 2);
     }
   }
@@ -273,37 +283,91 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       if (mask & 8) ctx.fillRect(c.x + 2, c.y, 1, 16);
     }
   }
-  // ── snow / volcanic / sanctuary tiles (0.7.0) ──
-  speckle(EX.snow, '#eef4fb', ['#d8e4f0', '#ffffff', '#c8d8ea'], 18, 41);
-  speckle(EX.snow2, '#e8f0f8', ['#c8d8ea', '#b8cce0', '#ffffff'], 26, 42);
+  // ── snow / volcanic / sanctuary tiles (0.7.0; V26: GBA-style detail) ──
+  // Snow: soft drift crests (white top, blue shadow under) and sparkles; snow2 is the windier variant
+  const drift = (c: { x: number; y: number }, x: number, y: number, w: number) => {
+    for (let i = 0; i < w; i++) {
+      const lift = i === 0 || i === w - 1 ? 1 : 0;
+      dot(c, (x + i) & 15, y + lift, '#ffffff'); dot(c, (x + i) & 15, y + lift + 1, '#c8d8ec');
+    }
+  };
+  for (const [idx, seed, n] of [[EX.snow, 41, 3], [EX.snow2, 42, 5]] as const) {
+    const c = cell(idx);
+    fill(idx, '#e6eef8');
+    const rnd = seeded(seed);
+    for (let i = 0; i < n; i++) drift(c, Math.floor(rnd() * 16), 1 + Math.floor(rnd() * 12), 4 + Math.floor(rnd() * 3));
+    for (let i = 0; i < 4; i++) dot(c, Math.floor(rnd() * 16), Math.floor(rnd() * 16), rnd() < 0.5 ? '#ffffff' : '#d4e0ee');
+  }
+  // Deep snow: rounded mounds (white crown, blue-grey shadow at the foot); the sparkle moves between frames
   for (let f = 0; f < 2; f++) {
     const idx = EX.snowDeep + f, c = cell(idx);
-    fill(idx, '#dfe9f4');
-    for (let x = 1; x < 16; x += 3) {
-      const h = 4 + ((x * 7 + f * 3) % 5);
-      ctx.fillStyle = '#ffffff'; ctx.fillRect(c.x + x, c.y + 16 - h, 2, h);
-      ctx.fillStyle = '#b8cce0'; ctx.fillRect(c.x + x + (f ? 1 : 0), c.y + 16 - h, 1, 2);
+    fill(idx, '#d8e4f2');
+    for (const [mx, my] of [[1, 1], [9, 4], [4, 9], [12, 11]] as const) {
+      const mound = ['.wwww.', 'wwwwww', 'wwwwss', '.ssss.'];
+      mound.forEach((r, y) => { for (let x = 0; x < 6; x++) if (r[x] !== '.') dot(c, (mx + x) & 15, (my + y) & 15, r[x] === 'w' ? '#ffffff' : '#b4c8de'); });
     }
+    dot(c, f ? 11 : 3, f ? 5 : 2, '#a8d8ff');
   }
   {
     const c = cell(EX.ice); fill(EX.ice, '#a8d8f0');
     ctx.fillStyle = '#d0ecff'; ctx.fillRect(c.x + 2, c.y + 3, 6, 1); ctx.fillRect(c.x + 9, c.y + 10, 5, 1); ctx.fillRect(c.x + 3, c.y + 12, 2, 1);
     ctx.fillStyle = '#80b8d8'; ctx.fillRect(c.x + 11, c.y + 4, 1, 4); ctx.fillRect(c.x + 5, c.y + 7, 4, 1);
   }
-  speckle(EX.ash, '#5a5250', ['#4a4240', '#6e6462', '#3a3432'], 24, 43);
-  speckle(EX.ash2, '#544c4a', ['#7a4030', '#3a3432', '#6e6462'], 28, 44);
-  {
-    const c = cell(EX.ashRock); fill(EX.ashRock, '#3e3634');
-    ctx.fillStyle = '#5e5452'; ctx.fillRect(c.x + 2, c.y + 2, 6, 5); ctx.fillRect(c.x + 9, c.y + 8, 5, 6);
-    ctx.fillStyle = '#d05020'; ctx.fillRect(c.x + 7, c.y + 6, 3, 1); ctx.fillRect(c.x + 3, c.y + 12, 2, 1);
+  // Ash (Route 113 feel): grey ground with ash-covered grass tufts and cinders; ash2 has glowing embers
+  const ASH = { grass: '#6a6462', mid: '#5c5654', dark: '#3e3836', light: '#8e8884' };
+  gbaGrass(EX.ash, 43, 8, [], 1, ASH);
+  gbaGrass(EX.ash2, 44, 6, [], 1, ASH);
+  for (const [idx, seed] of [[EX.ash, 45], [EX.ash2, 46]] as const) {
+    const c = cell(idx), rnd = seeded(seed);
+    for (let i = 0; i < 2; i++) dot(c, Math.floor(rnd() * 16), Math.floor(rnd() * 16), '#2e2826');
+    if (idx === EX.ash2) { dot(c, 9, 10, '#ff9040'); dot(c, 10, 10, '#d05020'); }
   }
+  // Volcanic rock: cracked basalt sheet — cracks wrap around the tile edges so a rock field reads as one surface;
+  // a lit edge below each crack, two glowing seams
+  paint(EX.ashRock, [
+    'MMMMMMkLMMMMMMMM', 'MMMMMMkLMMMMDMMM', 'MMMDMMkLMMMMMMMM', 'MMMMMMMkLMMMMMMM', 'kkkMMMMkLMMMMMMM', 'LLLkkMMMkkkkLLLL',
+    'kMMLLkkkeLLLkkkk', 'MMMMMLLkLMMMMMMM', 'MMDMMMMkLMMMMDMM', 'MMMMMMMkLMMMMMMM', 'MMMMMMkLMMMMMMMM', 'MMMMMMkLMMMDMMMM',
+    'kkkkMMkLMMMMMMMk', 'LLLLkkkeLLLLLkkL', 'MMMMLLkLMMMMMLLM', 'MMMMMMkLMMMMMMMM',
+  ], { k: '#1e1816', L: '#6e6462', M: '#4e4644', D: '#3e3634', e: '#e06020' });
+  // Lava: dark cooling crust plates drifting on a bright flow; the bright seams and sparks move between frames
   for (let f = 0; f < 2; f++) {
     const idx = EX.lava + f, c = cell(idx);
-    fill(idx, '#d84010');
-    ctx.fillStyle = '#ff8020';
-    for (let i = 0; i < 4; i++) { const y = (i * 4 + f * 2) % 16; for (let x = 0; x < 16; x++) if ((x + i * 5 + f * 4) % 7 < 3) ctx.fillRect(c.x + x, c.y + y, 1, 1); }
-    ctx.fillStyle = '#ffe060'; ctx.fillRect(c.x + ((4 + f * 6) % 13), c.y + ((7 + f * 5) % 13), 2, 1);
-    ctx.fillStyle = '#801808'; ctx.fillRect(c.x + ((9 + f * 3) % 14), c.y + ((2 + f * 7) % 14), 3, 1);
+    fill(idx, '#e05010');
+    for (let i = 0; i < 4; i++) { const y = (i * 4 + f * 2) % 16; for (let x = 0; x < 16; x++) if ((x + i * 5 + f * 4) % 7 < 2) dot(c, x, y, '#ff9030'); }
+    for (const [px, py, w, h] of [[1, 2, 5, 3], [9, 7, 6, 3], [3, 11, 4, 2]] as const) {
+      const ox = (px + f) & 15;
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const edge = y === 0 || x === 0 || x === w - 1 || y === h - 1;
+        dot(c, (ox + x) & 15, py + y, edge ? '#a83010' : '#6a1c08');
+      }
+      dot(c, (ox + 1) & 15, py, '#c84818');
+    }
+    dot(c, (4 + f * 6) % 13, (7 + f * 5) % 13, '#ffe060'); dot(c, ((4 + f * 6) % 13) + 1, (7 + f * 5) % 13, '#fff4b0');
+  }
+  // Themed paths: packed-snow trail with sled / boot ruts (frozen), basalt slabs with dark joints (volcanic)
+  for (const [idx, seed] of [[EX.snowPath, 47], [EX.snowPath + 1, 48]] as const) {
+    const c = cell(idx), rnd = seeded(seed);
+    fill(idx, '#d4e0ee');
+    // boot prints in no particular direction (paths turn and widen): a pressed oval, its lit lower lip
+    for (let i = 0; i < 3; i++) {
+      const x = 1 + Math.floor(rnd() * 12), y = 1 + Math.floor(rnd() * 12);
+      dot(c, x, y, '#b4c4d8'); dot(c, x + 1, y, '#b4c4d8'); dot(c, x, y + 1, '#eef4fa'); dot(c, x + 1, y + 1, '#eef4fa');
+    }
+    for (let i = 0; i < 6; i++) dot(c, Math.floor(rnd() * 16), Math.floor(rnd() * 16), rnd() < 0.5 ? '#c2d0e2' : '#f0f6fc');
+    if (idx !== EX.snowPath) { dot(c, 8, 6, '#8a8a90'); dot(c, 9, 6, '#a8a8b0'); dot(c, 8, 7, '#6a6a70'); }
+  }
+  for (const [idx, seed] of [[EX.basaltPath, 49], [EX.basaltPath + 1, 50]] as const) {
+    const c = cell(idx), rnd = seeded(seed);
+    fill(idx, '#241e1c');
+    // 2×2 slabs of 7×7 with a lit top-left edge and a darker bottom-right
+    for (const [sx, sy] of [[0, 0], [8, 0], [0, 8], [8, 8]] as const) {
+      const off = sy ? 4 : 0; // running bond: the second row is shifted
+      for (let y = 0; y < 7; y++) for (let x = 0; x < 7; x++) {
+        const tx = (sx + x + off) & 15;
+        dot(c, tx, sy + y, y === 0 || x === 0 ? '#7a706c' : y === 6 || x === 6 ? '#3e3634' : rnd() < 0.12 ? '#665e5a' : '#544c4a');
+      }
+    }
+    if (idx !== EX.basaltPath) { dot(c, 7, 4, '#e06020'); dot(c, 7, 5, '#a03818'); dot(c, 3, 15, '#e06020'); }
   }
   for (const [idx, seed] of [[EX.sanctum, 51], [EX.sanctum2, 52]] as const) {
     const c = cell(idx);
@@ -351,9 +415,18 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
     ctx.fillStyle = '#c89868'; for (let y = 2; y < 16; y += 4) ctx.fillRect(c.x + 4, c.y + y, 6, 1);
   }
   // ── swamp & coast (0.9.0) ──
-  speckle(EX.mud, '#5a4a32', ['#4a3c28', '#6a5a3c', '#3e3220'], 26, 61);
-  speckle(EX.mud2, '#564630', ['#6e6040', '#3e3220', '#4a5a30'], 30, 62);
-  speckle(EX.swampGrass, '#3e6a3a', ['#345c32', '#4a7844', '#2e5030'], 22, 63);
+  // Mud: wet ground with small puddles (dark rim, a light glint) and a few cracks; mud2 has grass sprouts
+  for (const [idx, seed] of [[EX.mud, 61], [EX.mud2, 62]] as const) {
+    speckle(idx, '#5a4a32', ['#4a3c28', '#6a5a3c'], 14, seed);
+    const c = cell(idx), rnd = seeded(seed + 100);
+    for (let i = 0; i < 2; i++) {
+      const x = 1 + Math.floor(rnd() * 10), y = 1 + Math.floor(rnd() * 12);
+      for (let k = 0; k < 4; k++) { dot(c, x + k, y, '#3e3220'); dot(c, x + k, y + 1, k === 1 ? '#a89878' : '#6e6048'); }
+    }
+    if (idx === EX.mud2) for (const [x, y] of [[3, 12], [12, 4]] as const) { dot(c, x, y, '#6a9a48'); dot(c, x - 1, y - 1, '#6a9a48'); dot(c, x + 1, y - 1, '#8ab860'); dot(c, x, y + 1, '#3e5a2a'); }
+  }
+  // Swamp grass: the meadow's tufts and sprigs in a dark, damp palette
+  gbaGrass(EX.swampGrass, 63, 14, [], 3, { grass: '#3e6a3a', mid: '#345c32', dark: '#24442a', light: '#5a8a4c' });
   for (let f = 0; f < 2; f++) {
     // toxic puddle: purple-green sludge with a slow bubble
     const idx = EX.bog + f, c = cell(idx);
