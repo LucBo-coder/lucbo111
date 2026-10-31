@@ -85,18 +85,18 @@ describe('Vietnam Odyssey: Vĩnh Long', () => {
     for (const q of quests.filter((x) => x.id.startsWith('vn-vl-'))) for (const o of q.objectives) expect(o.marker?.region, q.id).toBe('vinh-long');
   });
 
-  it('trainer teams live on land and fit Lv22–30; the board asks for species of the kiln area', () => {
+  it('trainer teams live on land and sit a little under the guardian (Lv 18); the board asks for species of the kiln area', () => {
     for (const t of vl.trainers) for (const [sp, lv] of t.team) {
       expect(POKEMON.has(sp), sp).toBe(true);
       expect(isAquatic(sp), `${t.id} ${sp}`).toBe(false);
-      expect(lv).toBeGreaterThanOrEqual(22);
-      expect(lv).toBeLessThanOrEqual(30);
+      expect(lv).toBeGreaterThanOrEqual(vl.worldBoss!.level - 9);
+      expect(lv).toBeLessThanOrEqual(vl.worldBoss!.level);
     }
   });
 
-  it('Torkoal — Thần Lò Mang Thít: no capture, beatable by a party around Lv28–30 (with or without a type edge)', () => {
+  it('Torkoal — Thần Lò Mang Thít: no capture, beatable by a party around Lv16–18 (with or without a type edge)', () => {
     expect(BOSSES.get('torkoal')!.capture).toBe(false);
-    for (const party of [[['marshtomp', 30], ['pelipper', 28], ['quagsire', 28]], [['grovyle', 30], ['staravia', 28], ['breloom', 28]]] as const) {
+    for (const party of [[['marshtomp', 18], ['wingull', 16], ['wooper', 16]], [['grovyle', 18], ['staravia', 16], ['shroomish', 16]]] as const) {
       const w = new World({ mode: 'adventure', seed: 5, width: 5000, height: 5000 });
       sendParty(w, party, BOSSES.get('torkoal')!.types); // one on the field (best match-up), the rest wait in their balls
       const t = w.trainer; t.maxHp = t.hp = 1e9;

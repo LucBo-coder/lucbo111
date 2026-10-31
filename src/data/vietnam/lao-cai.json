@@ -21,8 +21,8 @@
    ],
    "habitat": "snow",
    "level": [
-    87,
-    90
+    79,
+    82
    ]
   },
   {
@@ -36,8 +36,8 @@
    ],
    "habitat": "lake",
    "level": [
-    86,
-    89
+    78,
+    81
    ]
   },
   {
@@ -51,8 +51,8 @@
    ],
    "habitat": "village",
    "level": [
-    86,
-    86
+    78,
+    78
    ]
   },
   {
@@ -66,8 +66,8 @@
    ],
    "habitat": "forest",
    "level": [
-    84,
-    87
+    76,
+    79
    ]
   },
   {
@@ -81,8 +81,8 @@
    ],
    "habitat": "farm",
    "level": [
-    84,
-    87
+    76,
+    79
    ],
    "orchard": {
     "period": 7,
@@ -100,8 +100,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    85,
-    88
+    77,
+    80
    ]
   }
  ],
@@ -373,15 +373,15 @@
    "team": [
     [
      "gallade",
-     89
+     81
     ],
     [
      "lucario",
-     89
+     81
     ],
     [
      "infernape",
-     89
+     81
     ]
    ],
    "challenge": [
@@ -410,15 +410,15 @@
    "team": [
     [
      "togekiss",
-     87
+     79
     ],
     [
      "noctowl",
-     87
+     79
     ],
     [
      "pidgeot",
-     87
+     79
     ]
    ],
    "challenge": [
@@ -447,15 +447,15 @@
    "team": [
     [
      "scolipede",
-     86
+     78
     ],
     [
      "vespiquen",
-     86
+     78
     ],
     [
      "yanmega",
-     86
+     78
     ]
    ],
    "challenge": [
@@ -484,15 +484,15 @@
    "team": [
     [
      "camerupt",
-     86
+     78
     ],
     [
      "typhlosion",
-     86
+     78
     ],
     [
      "houndoom",
-     86
+     78
     ]
    ],
    "challenge": [
@@ -521,15 +521,15 @@
    "team": [
     [
      "electivire",
-     87
+     79
     ],
     [
      "jolteon",
-     87
+     79
     ],
     [
      "manectric",
-     87
+     79
     ]
    ],
    "challenge": [
@@ -555,19 +555,19 @@
   "x": 8,
   "y": 40,
   "species": "ursaring",
-  "level": 87,
+  "level": 79,
   "guards": [
    [
     "honchkrow",
-    86
+    78
    ],
    [
     "murkrow",
-    85
+    77
    ],
    [
     "murkrow",
-    85
+    77
    ]
   ],
   "quest": "vn-lc-rescue",
@@ -648,7 +648,7 @@
   "name": "Abomasnow — Thần Tuyết Fansipan",
   "x": 16,
   "y": 10,
-  "level": 90,
+  "level": 82,
   "respawn": 600,
   "arena": 260,
   "requires": [

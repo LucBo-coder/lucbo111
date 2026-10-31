@@ -92,6 +92,8 @@ test('Trà Vinh: Vĩnh Long gate → Ao Bà Om → Chùa Hang → Thần Cây D�
   await beatTrainer(page, 'tv-dancer');
   await talk(page, 'tv-achar', `window.__adv.state.quests.states['vn-tv-2'].status === 'completed'`);
   expect(await ev(page, `window.__adv.state.hasFlag('landmark:chua-hang')`)).toBe(true);
+  // V30: Thần Cây Dầu waits for the province's story (Linh and the Bình Minh device, played in v29_story.spec.ts)
+  await ev(page, `(() => { const qs = window.__adv.state.quests; qs.states['mn-tv'] = { status: 'completed', step: 9, progress: 0 }; qs.refresh(); })()`);
   await talk(page, 'tv-achar', `window.__adv.state.quests.states['vn-tv-3'].status === 'active'`);
   await closeDialogues(page);
 

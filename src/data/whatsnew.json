@@ -1,5 +1,26 @@
 [
   {
+    "id": "v30-quests",
+    "title": "Nhiệm vụ hợp lý hơn, mạch truyện Việt Nam, hướng dẫn trong game",
+    "items": [
+      "Việc đã làm từ trước (kích hoạt trạm, thắng HLV, hạ boss, mở rương…) được tính khi nhận nhiệm vụ — không còn nhiệm vụ kẹt.",
+      "Đánh, bắt, khám phá làm sớm vẫn được tính khi tới bước; chỉ nói chuyện, lựa chọn và trận cốt truyện phải đúng lượt.",
+      "Mỗi tỉnh đi theo một mạch: đến nơi → cùng Linh phá thiết bị Bình Minh → làm dịu thần hộ vệ → nhận huy hiệu. Mỗi hộ vệ chỉ đánh một lần.",
+      "Cấp các tỉnh Việt Nam dễ thở hơn: Lv 1–25 ở miền Tây, lên dần tới Lv 85–100 ở Tây Bắc và Hà Nội.",
+      "Hướng dẫn trong game: nhấn K (hoặc F1, nút ?) để xem mọi phím và cách chơi. Phím O mở PC."
+    ]
+  },
+  {
+    "id": "v29-story",
+    "title": "Cốt truyện cho cả hai chiến dịch, một Pokémon trên sân",
+    "items": [
+      "Mạch Nguồn: cùng kỹ sư Linh lần theo mạch nước từ Cà Mau tới Hà Nội, đối đầu Dự án Bình Minh.",
+      "Quần Đảo Khởi Nguyên: tìm bảy mảnh Lõi Khởi Nguyên để thắp lại hải đăng.",
+      "Mỗi huấn luyện viên chỉ có một Pokémon trên sân — nhấn T để đổi nhanh.",
+      "Cảnh truyện bỏ qua được và xem lại trong nhật ký."
+    ]
+  },
+  {
     "id": "vn-phu-tho",
     "title": "Việt Nam Odyssey: tỉnh thứ ba mươi lăm — Phú Thọ",
     "items": [

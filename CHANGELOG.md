@@ -8,6 +8,7 @@
   - Sửa: nhiệm vụ An Giang tự bật ngay từ đầu game; Chúa Rừng U Minh, Magnezone, Torterra phải đánh hai lần (hai nhiệm vụ cùng boss); nhiệm vụ Seviper của cốt truyện không nhắc phải thắng Vy.
   - Cà Mau sắp lại: Trạm nước → Lưới → Vào rừng U Minh (Chú Sáu) → Khu làm tổ của Seviper (Kiểm lâm Nam) → *Rừng U Minh bình yên* → Huy hiệu. Sài Gòn / Hà Nội: boss trong cốt truyện, nhiệm vụ tỉnh thành đoạn kết.
   - Save v10 tự chuyển đổi (nhiệm vụ đang dở giữ đúng chỗ).
+- **Cấp tỉnh theo dải**: tỉnh 1–7 Lv 1–25, 8–15 Lv 25–45, 16–24 Lv 45–65, 25–32 Lv 65–85, 33–36 Lv 85–100 (trước đây tăng đều Lv 12 → 100, giữa hành trình quá dốc). Khu, HLV, cứu hộ, boss và vùng gặp Pokémon dời cùng nhau; Pokémon của HLV về dạng tiến hóa hợp cấp.
 - **Hướng dẫn trong game** (K / F1 / nút **?**): bảng phím đầy đủ, điều khiển cảm ứng, 5 trang cách chơi; lời nhắc lần đầu.
 - **Phím O** mở PC. Gõ chữ trong ô nhập (tìm PC, đặt tên hộp) không còn kích hoạt phím tắt (trước đây gõ x / i / m / j làm nhảy tab).
 - `src/core/questAudit.ts`: rà dữ liệu nhiệm vụ của cả hai chiến dịch (0 lỗi).

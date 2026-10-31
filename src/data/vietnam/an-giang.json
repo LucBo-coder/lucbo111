@@ -21,8 +21,8 @@
    ],
    "habitat": "village",
    "level": [
-    8,
-    8
+    2,
+    2
    ]
   },
   {
@@ -36,8 +36,8 @@
    ],
    "habitat": "coast",
    "level": [
-    10,
-    16
+    4,
+    10
    ]
   },
   {
@@ -51,8 +51,8 @@
    ],
    "habitat": "ruins",
    "level": [
-    14,
-    18
+    8,
+    12
    ]
   },
   {
@@ -66,8 +66,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    12,
-    16
+    6,
+    10
    ]
   },
   {
@@ -81,8 +81,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    11,
-    15
+    5,
+    9
    ]
   },
   {
@@ -96,8 +96,8 @@
    ],
    "habitat": "forest",
    "level": [
-    8,
-    12
+    2,
+    6
    ]
   },
   {
@@ -111,8 +111,8 @@
    ],
    "habitat": "lake",
    "level": [
-    9,
-    13
+    3,
+    7
    ],
    "paddy": {
     "cell": 6,
@@ -361,15 +361,15 @@
    "team": [
     [
      "geodude",
-     12
+     6
     ],
     [
      "machop",
-     13
+     7
     ],
     [
      "makuhita",
-     13
+     7
     ]
    ],
    "challenge": [
@@ -398,15 +398,15 @@
    "team": [
     [
      "lotad",
-     11
+     5
     ],
     [
      "buizel",
-     12
+     6
     ],
     [
      "wooper",
-     12
+     6
     ]
    ],
    "challenge": [
@@ -435,15 +435,15 @@
    "team": [
     [
      "staryu",
-     14
+     8
     ],
     [
      "corsola",
-     15
+     9
     ],
     [
      "wingull",
-     14
+     8
     ]
    ],
    "challenge": [
@@ -472,15 +472,15 @@
    "team": [
     [
      "geodude",
-     13
+     7
     ],
     [
      "machop",
-     14
+     8
     ],
     [
      "sandshrew",
-     14
+     8
     ]
    ],
    "challenge": [
@@ -509,15 +509,15 @@
    "team": [
     [
      "lotad",
-     11
+     5
     ],
     [
      "marill",
-     12
+     6
     ],
     [
      "psyduck",
-     12
+     6
     ]
    ],
    "challenge": [
@@ -543,19 +543,19 @@
   "x": 74,
   "y": 30,
   "species": "smeargle",
-  "level": 14,
+  "level": 8,
   "guards": [
    [
     "geodude",
-    13
+    7
    ],
    [
     "geodude",
-    13
+    7
    ],
    [
     "baltoy",
-    14
+    8
    ]
   ],
   "quest": "vn-ag-rescue",
@@ -675,7 +675,7 @@
   "name": "Claydol — Hộ Vệ Đền Cổ",
   "x": 64,
   "y": 11,
-  "level": 20,
+  "level": 14,
   "respawn": 600,
   "arena": 280,
   "requires": [

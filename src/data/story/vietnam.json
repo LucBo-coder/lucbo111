@@ -605,39 +605,39 @@
        [
         [
          "lotad",
-         14
+         8
         ],
         [
          "buizel",
-         14
+         8
         ]
        ],
        [
         [
          "lotad",
-         15
+         9
         ],
         [
          "buizel",
-         15
+         9
         ],
         [
-         "floatzel",
-         16
+         "buizel",
+         10
         ]
        ],
        [
         [
          "buizel",
-         16
+         10
         ],
         [
-         "floatzel",
-         16
+         "buizel",
+         10
         ],
         [
-         "floatzel",
-         17
+         "buizel",
+         11
         ]
        ]
       ],
@@ -662,7 +662,7 @@
     }
    ],
    "rewards": {
-    "exp": 1000,
+    "exp": 760,
     "items": {
      "superpotion": 2,
      "greatball": 3
@@ -730,39 +730,39 @@
        [
         [
          "wooper",
-         19
+         9
         ],
         [
-         "lombre",
-         19
+         "lotad",
+         9
         ]
        ],
        [
         [
          "wooper",
-         20
+         10
         ],
         [
-         "lombre",
-         20
+         "lotad",
+         10
         ],
         [
-         "quagsire",
-         21
+         "wooper",
+         11
         ]
        ],
        [
         [
-         "lombre",
-         21
+         "lotad",
+         11
         ],
         [
-         "quagsire",
-         21
+         "wooper",
+         11
         ],
         [
-         "quagsire",
-         22
+         "wooper",
+         12
         ]
        ]
       ],
@@ -770,8 +770,8 @@
       "device": {
        "name": "Trạm bơm cưỡng chế Bình Minh",
        "species": "klinklang",
-       "level": 24,
-       "hpMult": 3.65
+       "level": 14,
+       "hpMult": 3.4
       }
      },
      "marker": {
@@ -793,7 +793,7 @@
     }
    ],
    "rewards": {
-    "exp": 1240,
+    "exp": 840,
     "items": {
      "superpotion": 2,
      "greatball": 3
@@ -859,39 +859,39 @@
        [
         [
          "slugma",
-         26
+         12
         ],
         [
          "numel",
-         26
+         12
         ]
        ],
        [
         [
          "slugma",
-         27
+         13
         ],
         [
          "numel",
-         27
+         13
         ],
         [
-         "magcargo",
-         28
+         "slugma",
+         14
         ]
        ],
        [
         [
          "numel",
-         28
+         14
         ],
         [
-         "magcargo",
-         28
+         "slugma",
+         14
         ],
         [
-         "magcargo",
-         29
+         "slugma",
+         15
         ]
        ]
       ],
@@ -916,7 +916,7 @@
     }
    ],
    "rewards": {
-    "exp": 1480,
+    "exp": 920,
     "items": {
      "superpotion": 2,
      "greatball": 3
@@ -980,39 +980,39 @@
        [
         [
          "wingull",
-         29
+         14
         ],
         [
-         "pelipper",
-         29
+         "wingull",
+         14
         ]
        ],
        [
         [
          "wingull",
-         30
+         15
         ],
         [
-         "pelipper",
-         30
+         "wingull",
+         15
         ],
         [
-         "kingler",
-         31
+         "krabby",
+         16
         ]
        ],
        [
         [
-         "pelipper",
-         31
+         "wingull",
+         16
         ],
         [
-         "kingler",
-         31
+         "krabby",
+         16
         ],
         [
-         "kingler",
-         32
+         "krabby",
+         17
         ]
        ]
       ],
@@ -1020,8 +1020,8 @@
       "device": {
        "name": "Cột phát sóng Bình Minh",
        "species": "bronzong",
-       "level": 34,
-       "hpMult": 3.9
+       "level": 19,
+       "hpMult": 3.525
       }
      },
      "marker": {
@@ -1043,7 +1043,7 @@
     }
    ],
    "rewards": {
-    "exp": 1640,
+    "exp": 1040,
     "items": {
      "superpotion": 2,
      "greatball": 3
@@ -1118,10 +1118,10 @@
     }
    ],
    "rewards": {
-    "exp": 1800,
+    "exp": 1120,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -1183,39 +1183,39 @@
        [
         [
          "croagunk",
-         36
+         19
         ],
         [
          "marshtomp",
-         36
+         19
         ]
        ],
        [
         [
          "croagunk",
-         37
+         20
         ],
         [
          "marshtomp",
-         37
+         20
         ],
         [
-         "toxicroak",
-         38
+         "croagunk",
+         21
         ]
        ],
        [
         [
          "marshtomp",
-         38
+         21
         ],
         [
-         "toxicroak",
-         38
+         "croagunk",
+         21
         ],
         [
-         "toxicroak",
-         39
+         "croagunk",
+         22
         ]
        ]
       ],
@@ -1240,10 +1240,10 @@
     }
    ],
    "rewards": {
-    "exp": 1880,
+    "exp": 1200,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -1307,39 +1307,39 @@
        [
         [
          "golett",
-         37
+         21
         ],
         [
          "baltoy",
-         37
+         21
         ]
        ],
        [
         [
          "golett",
-         38
+         22
         ],
         [
          "baltoy",
-         38
+         22
         ],
         [
-         "claydol",
-         39
+         "baltoy",
+         23
         ]
        ],
        [
         [
          "baltoy",
-         39
+         23
         ],
         [
-         "claydol",
-         39
+         "baltoy",
+         23
         ],
         [
-         "claydol",
-         40
+         "baltoy",
+         24
         ]
        ]
       ],
@@ -1347,8 +1347,8 @@
       "device": {
        "name": "Ăng-ten dò mạch Bình Minh",
        "species": "bronzong",
-       "level": 42,
-       "hpMult": 4.1
+       "level": 26,
+       "hpMult": 3.7
       }
      },
      "marker": {
@@ -1370,10 +1370,10 @@
     }
    ],
    "rewards": {
-    "exp": 1960,
+    "exp": 1320,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -1439,39 +1439,39 @@
        [
         [
          "houndour",
-         42
+         27
         ],
         [
          "mightyena",
-         42
+         27
         ]
        ],
        [
         [
          "houndour",
-         43
+         28
         ],
         [
          "mightyena",
-         43
+         28
         ],
         [
          "houndoom",
-         44
+         29
         ]
        ],
        [
         [
          "mightyena",
-         44
+         29
         ],
         [
          "houndoom",
-         44
+         29
         ],
         [
          "houndoom",
-         45
+         30
         ]
        ]
       ],
@@ -1496,10 +1496,10 @@
     }
    ],
    "rewards": {
-    "exp": 2120,
+    "exp": 1520,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -1562,39 +1562,39 @@
        [
         [
          "roselia",
-         44
+         30
         ],
         [
          "roserade",
-         44
+         30
         ]
        ],
        [
         [
          "roselia",
-         45
+         31
         ],
         [
          "roserade",
-         45
+         31
         ],
         [
          "floette",
-         46
+         32
         ]
        ],
        [
         [
          "roserade",
-         46
+         32
         ],
         [
          "floette",
-         46
+         32
         ],
         [
          "floette",
-         47
+         33
         ]
        ]
       ],
@@ -1619,10 +1619,10 @@
     }
    ],
    "rewards": {
-    "exp": 2200,
+    "exp": 1640,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -1686,39 +1686,39 @@
        [
         [
          "clauncher",
-         45
+         31
         ],
         [
          "corsola",
-         45
+         31
         ]
        ],
        [
         [
          "clauncher",
-         46
+         32
         ],
         [
          "corsola",
-         46
+         32
         ],
         [
-         "clawitzer",
-         47
+         "clauncher",
+         33
         ]
        ],
        [
         [
          "corsola",
-         47
+         33
         ],
         [
-         "clawitzer",
-         47
+         "clauncher",
+         33
         ],
         [
-         "clawitzer",
-         48
+         "clauncher",
+         34
         ]
        ]
       ],
@@ -1726,8 +1726,8 @@
       "device": {
        "name": "Trạm bơm cưỡng chế Bình Minh",
        "species": "klinklang",
-       "level": 50,
-       "hpMult": 4.3
+       "level": 36,
+       "hpMult": 3.95
       }
      },
      "marker": {
@@ -1749,10 +1749,10 @@
     }
    ],
    "rewards": {
-    "exp": 2280,
+    "exp": 1720,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -1824,7 +1824,7 @@
     }
    ],
    "rewards": {
-    "exp": 2360,
+    "exp": 1840,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -1900,39 +1900,39 @@
        [
         [
          "slugma",
-         50
+         37
         ],
         [
          "magmar",
-         50
+         37
         ]
        ],
        [
         [
          "slugma",
-         51
+         38
         ],
         [
          "magmar",
-         51
+         38
         ],
         [
          "torkoal",
-         52
+         39
         ]
        ],
        [
         [
          "magmar",
-         52
+         39
         ],
         [
          "torkoal",
-         52
+         39
         ],
         [
          "torkoal",
-         53
+         40
         ]
        ]
       ],
@@ -1957,7 +1957,7 @@
     }
    ],
    "rewards": {
-    "exp": 2440,
+    "exp": 1920,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2021,39 +2021,39 @@
        [
         [
          "binacle",
-         51
+         38
         ],
         [
          "frillish",
-         51
+         38
         ]
        ],
        [
         [
          "binacle",
-         52
+         39
         ],
         [
          "frillish",
-         52
+         39
         ],
         [
          "jellicent",
-         53
+         40
         ]
        ],
        [
         [
          "frillish",
-         53
+         40
         ],
         [
          "jellicent",
-         53
+         40
         ],
         [
          "jellicent",
-         54
+         41
         ]
        ]
       ],
@@ -2061,8 +2061,8 @@
       "device": {
        "name": "Phao hút mạch Bình Minh",
        "species": "klinklang",
-       "level": 56,
-       "hpMult": 4.45
+       "level": 43,
+       "hpMult": 4.125
       }
      },
      "marker": {
@@ -2084,7 +2084,7 @@
     }
    ],
    "rewards": {
-    "exp": 2520,
+    "exp": 2000,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2149,39 +2149,39 @@
        [
         [
          "gabite",
-         54
+         41
         ],
         [
          "shelgon",
-         54
+         41
         ]
        ],
        [
         [
          "gabite",
-         55
+         42
         ],
         [
          "shelgon",
-         55
+         42
         ],
         [
          "druddigon",
-         56
+         43
         ]
        ],
        [
         [
          "shelgon",
-         56
+         43
         ],
         [
          "druddigon",
-         56
+         43
         ],
         [
          "druddigon",
-         57
+         44
         ]
        ]
       ],
@@ -2206,7 +2206,7 @@
     }
    ],
    "rewards": {
-    "exp": 2600,
+    "exp": 2080,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2314,39 +2314,39 @@
        [
         [
          "honedge",
-         56
+         44
         ],
         [
          "doublade",
-         56
+         44
         ]
        ],
        [
         [
          "honedge",
-         57
+         45
         ],
         [
          "doublade",
-         57
+         45
         ],
         [
          "dusclops",
-         58
+         46
         ]
        ],
        [
         [
          "doublade",
-         58
+         46
         ],
         [
          "dusclops",
-         58
+         46
         ],
         [
          "dusclops",
-         59
+         47
         ]
        ]
       ],
@@ -2371,7 +2371,7 @@
     }
    ],
    "rewards": {
-    "exp": 2680,
+    "exp": 2200,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2450,7 +2450,7 @@
     }
    ],
    "rewards": {
-    "exp": 2760,
+    "exp": 2280,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2518,39 +2518,39 @@
        [
         [
          "rufflet",
-         60
+         49
         ],
         [
          "staraptor",
-         60
+         49
         ]
        ],
        [
         [
          "rufflet",
-         61
+         50
         ],
         [
          "staraptor",
-         61
+         50
         ],
         [
-         "braviary",
-         62
+         "rufflet",
+         51
         ]
        ],
        [
         [
          "staraptor",
-         62
+         51
         ],
         [
-         "braviary",
-         62
+         "rufflet",
+         51
         ],
         [
-         "braviary",
-         63
+         "rufflet",
+         52
         ]
        ]
       ],
@@ -2575,7 +2575,7 @@
     }
    ],
    "rewards": {
-    "exp": 2840,
+    "exp": 2400,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2653,39 +2653,39 @@
        [
         [
          "dartrix",
-         61
+         50
         ],
         [
          "noctowl",
-         61
+         50
         ]
        ],
        [
         [
          "dartrix",
-         62
+         51
         ],
         [
          "noctowl",
-         62
+         51
         ],
         [
          "honchkrow",
-         63
+         52
         ]
        ],
        [
         [
          "noctowl",
-         63
+         52
         ],
         [
          "honchkrow",
-         63
+         52
         ],
         [
          "honchkrow",
-         64
+         53
         ]
        ]
       ],
@@ -2693,8 +2693,8 @@
       "device": {
        "name": "Bộ khuếch đại Bình Minh",
        "species": "bronzong",
-       "level": 66,
-       "hpMult": 4.7
+       "level": 55,
+       "hpMult": 4.425
       }
      },
      "marker": {
@@ -2716,7 +2716,7 @@
     }
    ],
    "rewards": {
-    "exp": 2920,
+    "exp": 2480,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2792,39 +2792,39 @@
        [
         [
          "psyduck",
-         64
+         53
         ],
         [
          "golduck",
-         64
+         53
         ]
        ],
        [
         [
          "psyduck",
-         65
+         54
         ],
         [
          "golduck",
-         65
+         54
         ],
         [
          "politoed",
-         66
+         55
         ]
        ],
        [
         [
          "golduck",
-         66
+         55
         ],
         [
          "politoed",
-         66
+         55
         ],
         [
          "politoed",
-         67
+         56
         ]
        ]
       ],
@@ -2849,7 +2849,7 @@
     }
    ],
    "rewards": {
-    "exp": 3000,
+    "exp": 2560,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2926,7 +2926,7 @@
     }
    ],
    "rewards": {
-    "exp": 3080,
+    "exp": 2640,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -2990,39 +2990,39 @@
        [
         [
          "steenee",
-         67
+         56
         ],
         [
          "beedrill",
-         67
+         56
         ]
        ],
        [
         [
          "steenee",
-         68
+         57
         ],
         [
          "beedrill",
-         68
+         57
         ],
         [
          "vespiquen",
-         69
+         58
         ]
        ],
        [
         [
          "beedrill",
-         69
+         58
         ],
         [
          "vespiquen",
-         69
+         58
         ],
         [
          "vespiquen",
-         70
+         59
         ]
        ]
       ],
@@ -3030,8 +3030,8 @@
       "device": {
        "name": "Bộ khuếch đại Bình Minh",
        "species": "bronzong",
-       "level": 72,
-       "hpMult": 4.85
+       "level": 61,
+       "hpMult": 4.575
       }
      },
      "marker": {
@@ -3053,7 +3053,7 @@
     }
    ],
    "rewards": {
-    "exp": 3160,
+    "exp": 2720,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3117,39 +3117,39 @@
        [
         [
          "fletchinder",
-         70
+         59
         ],
         [
          "pelipper",
-         70
+         59
         ]
        ],
        [
         [
          "fletchinder",
-         71
+         60
         ],
         [
          "pelipper",
-         71
+         60
         ],
         [
          "talonflame",
-         72
+         61
         ]
        ],
        [
         [
          "pelipper",
-         72
+         61
         ],
         [
          "talonflame",
-         72
+         61
         ],
         [
          "talonflame",
-         73
+         62
         ]
        ]
       ],
@@ -3174,7 +3174,7 @@
     }
    ],
    "rewards": {
-    "exp": 3240,
+    "exp": 2800,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3247,7 +3247,7 @@
     }
    ],
    "rewards": {
-    "exp": 3320,
+    "exp": 2880,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3324,39 +3324,39 @@
        [
         [
          "golem",
-         73
+         63
         ],
         [
          "probopass",
-         73
+         63
         ]
        ],
        [
         [
          "golem",
-         74
+         64
         ],
         [
          "probopass",
-         74
+         64
         ],
         [
          "dragonair",
-         75
+         65
         ]
        ],
        [
         [
          "probopass",
-         75
+         65
         ],
         [
          "dragonair",
-         75
+         65
         ],
         [
          "dragonair",
-         76
+         66
         ]
        ]
       ],
@@ -3364,8 +3364,8 @@
       "device": {
        "name": "Trạm bơm cưỡng chế Bình Minh",
        "species": "klinklang",
-       "level": 78,
-       "hpMult": 5
+       "level": 68,
+       "hpMult": 4.75
       }
      },
      "marker": {
@@ -3387,7 +3387,7 @@
     }
    ],
    "rewards": {
-    "exp": 3400,
+    "exp": 3000,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3452,39 +3452,39 @@
        [
         [
          "boldore",
-         76
+         66
         ],
         [
          "steelix",
-         76
+         66
         ]
        ],
        [
         [
          "boldore",
-         77
+         67
         ],
         [
          "steelix",
-         77
+         67
         ],
         [
          "gigalith",
-         78
+         68
         ]
        ],
        [
         [
          "steelix",
-         78
+         68
         ],
         [
          "gigalith",
-         78
+         68
         ],
         [
          "gigalith",
-         79
+         69
         ]
        ]
       ],
@@ -3509,7 +3509,7 @@
     }
    ],
    "rewards": {
-    "exp": 3480,
+    "exp": 3080,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3584,7 +3584,7 @@
     }
    ],
    "rewards": {
-    "exp": 3560,
+    "exp": 3200,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3648,39 +3648,39 @@
        [
         [
          "haunter",
-         79
+         70
         ],
         [
          "banette",
-         79
+         70
         ]
        ],
        [
         [
          "haunter",
-         80
+         71
         ],
         [
          "banette",
-         80
+         71
         ],
         [
          "polteageist",
-         81
+         72
         ]
        ],
        [
         [
          "banette",
-         81
+         72
         ],
         [
          "polteageist",
-         81
+         72
         ],
         [
          "polteageist",
-         82
+         73
         ]
        ]
       ],
@@ -3688,8 +3688,8 @@
       "device": {
        "name": "Bộ khuếch đại Bình Minh",
        "species": "bronzong",
-       "level": 84,
-       "hpMult": 5.15
+       "level": 75,
+       "hpMult": 4.925
       }
      },
      "marker": {
@@ -3711,7 +3711,7 @@
     }
    ],
    "rewards": {
-    "exp": 3640,
+    "exp": 3280,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3776,39 +3776,39 @@
        [
         [
          "mudbray",
-         82
+         74
         ],
         [
          "rhyhorn",
-         82
+         74
         ]
        ],
        [
         [
          "mudbray",
-         83
+         75
         ],
         [
          "rhyhorn",
-         83
+         75
         ],
         [
          "mudsdale",
-         84
+         76
         ]
        ],
        [
         [
          "rhyhorn",
-         84
+         76
         ],
         [
          "mudsdale",
-         84
+         76
         ],
         [
          "mudsdale",
-         85
+         77
         ]
        ]
       ],
@@ -3833,7 +3833,7 @@
     }
    ],
    "rewards": {
-    "exp": 3720,
+    "exp": 3400,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3908,7 +3908,7 @@
     }
    ],
    "rewards": {
-    "exp": 3800,
+    "exp": 3480,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -3972,39 +3972,39 @@
        [
         [
          "swablu",
-         85
+         78
         ],
         [
          "skarmory",
-         85
+         78
         ]
        ],
        [
         [
          "swablu",
-         86
+         79
         ],
         [
          "skarmory",
-         86
+         79
         ],
         [
          "altaria",
-         87
+         80
         ]
        ],
        [
         [
          "skarmory",
-         87
+         80
         ],
         [
          "altaria",
-         87
+         80
         ],
         [
          "altaria",
-         88
+         81
         ]
        ]
       ],
@@ -4012,8 +4012,8 @@
       "device": {
        "name": "Cọc nối điểm neo Bình Minh",
        "species": "probopass",
-       "level": 90,
-       "hpMult": 5.3
+       "level": 83,
+       "hpMult": 5.125
       }
      },
      "marker": {
@@ -4035,7 +4035,7 @@
     }
    ],
    "rewards": {
-    "exp": 3880,
+    "exp": 3600,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -4099,39 +4099,39 @@
        [
         [
          "lairon",
-         88
+         82
         ],
         [
          "durant",
-         88
+         82
         ]
        ],
        [
         [
          "lairon",
-         89
+         83
         ],
         [
          "durant",
-         89
+         83
         ],
         [
          "aggron",
-         90
+         84
         ]
        ],
        [
         [
          "durant",
-         90
+         84
         ],
         [
          "aggron",
-         90
+         84
         ],
         [
          "aggron",
-         91
+         85
         ]
        ]
       ],
@@ -4156,7 +4156,7 @@
     }
    ],
    "rewards": {
-    "exp": 3960,
+    "exp": 3720,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -4220,39 +4220,39 @@
        [
         [
          "tyrunt",
-         89
+         85
         ],
         [
          "amaura",
-         89
+         85
         ]
        ],
        [
         [
          "tyrunt",
-         90
+         86
         ],
         [
          "amaura",
-         90
+         86
         ],
         [
          "aerodactyl",
-         91
+         87
         ]
        ],
        [
         [
          "amaura",
-         91
+         87
         ],
         [
          "aerodactyl",
-         91
+         87
         ],
         [
          "aerodactyl",
-         92
+         88
         ]
        ]
       ],
@@ -4260,8 +4260,8 @@
       "device": {
        "name": "Máy đào lõi Bình Minh",
        "species": "klinklang",
-       "level": 94,
-       "hpMult": 5.4
+       "level": 90,
+       "hpMult": 5.3
       }
      },
      "marker": {
@@ -4283,7 +4283,7 @@
     }
    ],
    "rewards": {
-    "exp": 4040,
+    "exp": 3880,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -4348,39 +4348,39 @@
        [
         [
          "dragonair",
-         92
+         90
         ],
         [
          "golduck",
-         92
+         90
         ]
        ],
        [
         [
          "dragonair",
-         93
+         91
         ],
         [
          "golduck",
-         93
+         91
         ],
         [
          "dragonite",
-         94
+         92
         ]
        ],
        [
         [
          "golduck",
-         94
+         92
         ],
         [
          "dragonite",
-         94
+         92
         ],
         [
          "dragonite",
-         95
+         93
         ]
        ]
       ],
@@ -4405,7 +4405,7 @@
     }
    ],
    "rewards": {
-    "exp": 4120,
+    "exp": 4040,
     "items": {
      "superpotion": 2,
      "ultraball": 2
@@ -4833,10 +4833,10 @@
     }
    ],
    "rewards": {
-    "exp": 2040,
+    "exp": 1440,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "flags": [
      "mn:khai-joined"
@@ -4895,47 +4895,47 @@
        [
         [
          "voltorb",
-         39
+         24
         ],
         [
-         "electabuzz",
-         39
+         "elekid",
+         24
         ]
        ],
        [
         [
          "voltorb",
-         40
+         25
         ],
         [
-         "electabuzz",
-         40
+         "elekid",
+         25
         ],
         [
-         "electrode",
-         41
+         "voltorb",
+         26
         ]
        ],
        [
         [
-         "electabuzz",
-         41
+         "elekid",
+         26
         ],
         [
-         "electrode",
-         41
+         "voltorb",
+         26
         ],
         [
-         "electrode",
-         42
+         "voltorb",
+         27
         ]
        ]
       ],
       "every": 14,
       "device": {
        "name": "Trạm biến áp cưỡng chế",
-       "species": "klinklang",
-       "level": 44,
+       "species": "klang",
+       "level": 29,
        "hpMult": 4
       }
      },
@@ -4969,10 +4969,10 @@
     }
    ],
    "rewards": {
-    "exp": 2040,
+    "exp": 1440,
     "items": {
      "superpotion": 2,
-     "ultraball": 2
+     "greatball": 3
     },
     "reputation": 2,
     "flags": [
@@ -5562,7 +5562,7 @@
    "y": 93,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 12–20.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 6–14.)"
    ],
    "showIf": [
     "badge:ca-mau"
@@ -5581,7 +5581,7 @@
    "y": 65,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 18–26.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 8–16.)"
    ],
    "showIf": [
     "badge:an-giang"
@@ -5600,7 +5600,7 @@
    "y": 50,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 24–32.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 10–18.)"
    ],
    "showIf": [
     "badge:can-tho"
@@ -5619,7 +5619,7 @@
    "y": 46,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 28–36.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 13–21.)"
    ],
    "showIf": [
     "badge:vinh-long"
@@ -5638,7 +5638,7 @@
    "y": 44,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 32–40.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 15–23.)"
    ],
    "showIf": [
     "badge:tra-vinh"
@@ -5657,7 +5657,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 34–42.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 17–25.)"
    ],
    "showIf": [
     "badge:ben-tre"
@@ -5676,7 +5676,7 @@
    "y": 62,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 36–44.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 20–28.)"
    ],
    "showIf": [
     "badge:dong-thap"
@@ -5695,7 +5695,7 @@
    "y": 57,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 38–46.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 23–31.)"
    ],
    "showIf": [
     "badge:tay-ninh"
@@ -5714,7 +5714,7 @@
    "y": 65,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 40–48.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 25–33.)"
    ],
    "showIf": [
     "badge:ho-chi-minh"
@@ -5733,7 +5733,7 @@
    "y": 52,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 42–50.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 28–36.)"
    ],
    "showIf": [
     "badge:dong-nai"
@@ -5752,7 +5752,7 @@
    "y": 44,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 44–52.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 30–38.)"
    ],
    "showIf": [
     "badge:lam-dong"
@@ -5771,7 +5771,7 @@
    "y": 50,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 46–54.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 33–41.)"
    ],
    "showIf": [
     "badge:khanh-hoa"
@@ -5790,7 +5790,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 48–56.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 35–43.)"
    ],
    "showIf": [
     "badge:dak-lak"
@@ -5809,7 +5809,7 @@
    "y": 48,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 50–58.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 37–45.)"
    ],
    "showIf": [
     "badge:gia-lai"
@@ -5828,7 +5828,7 @@
    "y": 41,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 52–60.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 39–47.)"
    ],
    "showIf": [
     "badge:quang-ngai"
@@ -5847,7 +5847,7 @@
    "y": 44,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 54–62.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 42–50.)"
    ],
    "showIf": [
     "badge:da-nang"
@@ -5866,7 +5866,7 @@
    "y": 54,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 56–64.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 44–52.)"
    ],
    "showIf": [
     "badge:hue"
@@ -5885,7 +5885,7 @@
    "y": 47,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 58–66.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 47–55.)"
    ],
    "showIf": [
     "badge:quang-tri"
@@ -5904,7 +5904,7 @@
    "y": 50,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 60–68.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 49–57.)"
    ],
    "showIf": [
     "badge:ha-tinh"
@@ -5923,7 +5923,7 @@
    "y": 47,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 62–70.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 51–59.)"
    ],
    "showIf": [
     "badge:nghe-an"
@@ -5942,7 +5942,7 @@
    "y": 52,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 64–72.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 53–61.)"
    ],
    "showIf": [
     "badge:thanh-hoa"
@@ -5961,7 +5961,7 @@
    "y": 50,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 66–74.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 55–63.)"
    ],
    "showIf": [
     "badge:ninh-binh"
@@ -5980,7 +5980,7 @@
    "y": 50,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 68–76.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 57–65.)"
    ],
    "showIf": [
     "badge:hung-yen"
@@ -5999,7 +5999,7 @@
    "y": 52,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 70–78.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 59–67.)"
    ],
    "showIf": [
     "badge:hai-phong"
@@ -6018,7 +6018,7 @@
    "y": 52,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 72–80.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 62–70.)"
    ],
    "showIf": [
     "badge:bac-ninh"
@@ -6037,7 +6037,7 @@
    "y": 51,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 74–82.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 64–72.)"
    ],
    "showIf": [
     "badge:quang-ninh"
@@ -6056,7 +6056,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 76–84.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 67–75.)"
    ],
    "showIf": [
     "badge:lang-son"
@@ -6075,7 +6075,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 78–86.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 69–77.)"
    ],
    "showIf": [
     "badge:cao-bang"
@@ -6094,7 +6094,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 80–88.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 72–80.)"
    ],
    "showIf": [
     "badge:thai-nguyen"
@@ -6113,7 +6113,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 82–90.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 74–82.)"
    ],
    "showIf": [
     "badge:tuyen-quang"
@@ -6132,7 +6132,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 84–92.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 77–85.)"
    ],
    "showIf": [
     "badge:lao-cai"
@@ -6151,7 +6151,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 86–94.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 80–88.)"
    ],
    "showIf": [
     "badge:lai-chau"
@@ -6170,7 +6170,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 88–96.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 84–92.)"
    ],
    "showIf": [
     "badge:dien-bien"
@@ -6189,7 +6189,7 @@
    "y": 49,
    "lines": [
     "Máy đo của mình đã sẵn sàng. Nếu còn việc dang dở ở tỉnh trước, bạn quay lại xong đã nhé — mạch nguồn nối liền, bỏ dở một chỗ là cả dòng lệch.",
-    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 90–98.)"
+    "(Gợi ý: cấp tham khảo ở đây khoảng Lv 88–96.)"
    ],
    "showIf": [
     "badge:son-la"
@@ -6350,15 +6350,15 @@
    "team": [
     [
      "luxio",
-     44
+     29
     ],
     [
      "mightyena",
-     43
+     28
     ],
     [
-     "klang",
-     44
+     "klink",
+     29
     ]
    ],
    "challenge": [
@@ -6395,15 +6395,15 @@
    "team": [
     [
      "magmar",
-     54
+     41
     ],
     [
      "klang",
-     53
+     40
     ],
     [
      "porygon2",
-     54
+     41
     ]
    ],
    "challenge": [
@@ -6420,7 +6420,7 @@
      "superpotion": 1,
      "ultraball": 2
     },
-    "exp": 2240
+    "exp": 1720
    },
    "showIf": [
     "badge:dak-lak"
@@ -6440,15 +6440,15 @@
    "team": [
     [
      "bronzong",
-     66
+     55
     ],
     [
      "klang",
-     65
+     54
     ],
     [
      "electabuzz",
-     66
+     55
     ]
    ],
    "challenge": [
@@ -6465,7 +6465,7 @@
      "superpotion": 1,
      "ultraball": 2
     },
-    "exp": 2720
+    "exp": 2280
    },
    "showIf": [
     "badge:ha-tinh"
@@ -6485,15 +6485,15 @@
    "team": [
     [
      "probopass",
-     78
+     68
     ],
     [
      "klinklang",
-     78
+     68
     ],
     [
      "magnezone",
-     79
+     69
     ]
    ],
    "challenge": [
@@ -6510,7 +6510,7 @@
      "superpotion": 1,
      "ultraball": 2
     },
-    "exp": 3200
+    "exp": 2800
    },
    "showIf": [
     "badge:bac-ninh"
@@ -6530,19 +6530,19 @@
    "team": [
     [
      "luxray",
-     78
+     67
     ],
     [
      "mightyena",
-     76
+     65
     ],
     [
      "scizor",
-     77
+     66
     ],
     [
      "houndoom",
-     77
+     66
     ]
    ],
    "challenge": [

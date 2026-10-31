@@ -95,6 +95,8 @@ test('Vĩnh Long: Cần Thơ gate → Văn Thánh Miếu → Cù lao An Bình �
   await beatTrainer(page, 'vl-orchard-girl');
   await talk(page, 'vl-host', `window.__adv.state.quests.states['vn-vl-2'].status === 'completed'`);
   expect(await ev(page, `window.__adv.state.hasFlag('landmark:an-binh')`)).toBe(true);
+  // V30: Thần Lò Mang Thít waits for the province's story (Linh and the Bình Minh device, played in v29_story.spec.ts)
+  await ev(page, `(() => { const qs = window.__adv.state.quests; qs.states['mn-vl'] = { status: 'completed', step: 9, progress: 0 }; qs.refresh(); })()`);
   await talk(page, 'vl-host', `window.__adv.state.quests.states['vn-vl-3'].status === 'active'`);
   await closeDialogues(page);
   await usePortal(page, 'vl-boat-back', near(82, 25));

@@ -21,8 +21,8 @@
    ],
    "habitat": "village",
    "level": [
-    22,
-    22
+    8,
+    8
    ]
   },
   {
@@ -36,8 +36,8 @@
    ],
    "habitat": "village",
    "level": [
-    22,
-    22
+    8,
+    8
    ]
   },
   {
@@ -51,8 +51,8 @@
    ],
    "habitat": "farm",
    "level": [
-    24,
-    28
+    10,
+    14
    ]
   },
   {
@@ -66,8 +66,8 @@
    ],
    "habitat": "lake",
    "level": [
-    24,
-    28
+    10,
+    14
    ]
   },
   {
@@ -81,8 +81,8 @@
    ],
    "habitat": "meadow",
    "level": [
-    22,
-    26
+    8,
+    12
    ]
   },
   {
@@ -96,8 +96,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    25,
-    29
+    11,
+    15
    ]
   },
   {
@@ -111,8 +111,8 @@
    ],
    "habitat": "farm",
    "level": [
-    23,
-    27
+    9,
+    13
    ],
    "orchard": {
     "period": 7,
@@ -130,8 +130,8 @@
    ],
    "habitat": "lake",
    "level": [
-    25,
-    29
+    11,
+    15
    ]
   }
  ],
@@ -465,15 +465,15 @@
    "team": [
     [
      "numel",
-     25
+     11
     ],
     [
      "slugma",
-     25
+     11
     ],
     [
      "torkoal",
-     27
+     13
     ]
    ],
    "challenge": [
@@ -502,15 +502,15 @@
    "team": [
     [
      "tropius",
-     24
+     10
     ],
     [
-     "skiploom",
-     24
+     "hoppip",
+     10
     ],
     [
-     "breloom",
-     26
+     "shroomish",
+     12
     ]
    ],
    "challenge": [
@@ -538,16 +538,16 @@
    "y": 56,
    "team": [
     [
-     "xatu",
-     25
+     "natu",
+     11
     ],
     [
-     "kadabra",
-     25
+     "abra",
+     11
     ],
     [
-     "noctowl",
-     26
+     "hoothoot",
+     12
     ]
    ],
    "challenge": [
@@ -575,16 +575,16 @@
    "y": 36,
    "team": [
     [
-     "sandslash",
-     24
+     "sandshrew",
+     10
     ],
     [
-     "dugtrio",
-     25
+     "diglett",
+     11
     ],
     [
-     "donphan",
-     26
+     "phanpy",
+     12
     ]
    ],
    "challenge": [
@@ -612,16 +612,16 @@
    "y": 52,
    "team": [
     [
-     "quagsire",
-     25
+     "wooper",
+     11
     ],
     [
-     "pelipper",
-     25
+     "wingull",
+     11
     ],
     [
-     "crawdaunt",
-     27
+     "corphish",
+     13
     ]
    ],
    "challenge": [
@@ -647,19 +647,19 @@
   "x": 30,
   "y": 32,
   "species": "phanpy",
-  "level": 24,
+  "level": 10,
   "guards": [
    [
     "sandshrew",
-    24
+    10
    ],
    [
     "sandshrew",
-    24
+    10
    ],
    [
-    "sandslash",
-    27
+    "sandshrew",
+    13
    ]
   ],
   "quest": "vn-vl-rescue",
@@ -750,7 +750,7 @@
   "name": "Torkoal — Thần Lò Mang Thít",
   "x": 24,
   "y": 86,
-  "level": 32,
+  "level": 18,
   "respawn": 600,
   "arena": 260,
   "requires": [

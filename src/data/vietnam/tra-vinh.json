@@ -21,8 +21,8 @@
    ],
    "habitat": "forest",
    "level": [
-    31,
-    34
+    16,
+    19
    ]
   },
   {
@@ -36,8 +36,8 @@
    ],
    "habitat": "village",
    "level": [
-    28,
-    28
+    13,
+    13
    ]
   },
   {
@@ -51,8 +51,8 @@
    ],
    "habitat": "farm",
    "level": [
-    28,
-    32
+    13,
+    17
    ],
    "orchard": {
     "period": 7,
@@ -70,8 +70,8 @@
    ],
    "habitat": "lake",
    "level": [
-    29,
-    33
+    14,
+    18
    ]
   },
   {
@@ -85,8 +85,8 @@
    ],
    "habitat": "meadow",
    "level": [
-    28,
-    31
+    13,
+    16
    ]
   },
   {
@@ -100,8 +100,8 @@
    ],
    "habitat": "meadow",
    "level": [
-    29,
-    32
+    14,
+    17
    ]
   },
   {
@@ -115,8 +115,8 @@
    ],
    "habitat": "meadow",
    "level": [
-    29,
-    33
+    14,
+    18
    ]
   },
   {
@@ -130,8 +130,8 @@
    ],
    "habitat": "coast",
    "level": [
-    30,
-    34
+    15,
+    19
    ]
   },
   {
@@ -145,8 +145,8 @@
    ],
    "habitat": "mangrove",
    "level": [
-    30,
-    34
+    15,
+    19
    ]
   }
  ],
@@ -510,15 +510,15 @@
    "team": [
     [
      "phantump",
-     31
+     16
     ],
     [
      "pumpkaboo",
-     31
+     16
     ],
     [
-     "gourgeist",
-     33
+     "pumpkaboo",
+     18
     ]
    ],
    "challenge": [
@@ -546,16 +546,16 @@
    "y": 78,
    "team": [
     [
-     "kirlia",
-     30
+     "ralts",
+     15
     ],
     [
-     "medicham",
-     31
+     "meditite",
+     16
     ],
     [
-     "gardevoir",
-     32
+     "ralts",
+     17
     ]
    ],
    "challenge": [
@@ -583,16 +583,16 @@
    "y": 26,
    "team": [
     [
-     "exeggutor",
-     30
+     "exeggcute",
+     15
     ],
     [
      "tropius",
-     30
+     15
     ],
     [
-     "sawsbuck",
-     31
+     "deerling",
+     16
     ]
    ],
    "challenge": [
@@ -620,16 +620,16 @@
    "y": 22,
    "team": [
     [
-     "machoke",
-     30
+     "machop",
+     15
     ],
     [
-     "hariyama",
-     31
+     "makuhita",
+     16
     ],
     [
      "sawk",
-     32
+     17
     ]
    ],
    "challenge": [
@@ -658,15 +658,15 @@
    "team": [
     [
      "dwebble",
-     30
+     15
     ],
     [
-     "sandslash",
-     31
+     "sandshrew",
+     16
     ],
     [
-     "crustle",
-     32
+     "dwebble",
+     17
     ]
    ],
    "challenge": [
@@ -692,19 +692,19 @@
   "x": 84,
   "y": 84,
   "species": "ducklett",
-  "level": 30,
+  "level": 15,
   "guards": [
    [
     "murkrow",
-    30
+    15
    ],
    [
     "murkrow",
-    30
+    15
    ],
    [
-    "honchkrow",
-    33
+    "murkrow",
+    18
    ]
   ],
   "quest": "vn-tv-rescue",
@@ -794,7 +794,7 @@
   "name": "Trevenant — Thần Cây Dầu",
   "x": 14,
   "y": 70,
-  "level": 36,
+  "level": 21,
   "respawn": 600,
   "arena": 260,
   "requires": [

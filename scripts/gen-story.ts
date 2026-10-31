@@ -11,6 +11,7 @@ import { validateStory, type StoryDef, type StoryNpc, type StoryTrainer, type En
 import type { ObjectiveDef, QuestDef } from '../src/core/quests';
 import type { Spot, StoryIn } from './story/lib';
 import { vietnam } from './story/vietnam';
+import { stageFor } from './story/stage';
 import { classic } from './story/classic';
 import provincesJson from '../src/data/vietnam/provinces.json';
 
@@ -130,7 +131,7 @@ function build(src: StoryIn, regions: string[]): StoryDef & { npcs: StoryNpc[]; 
     const p = resolve(t.at, 1, t.id);
     placed.set(t.id, { region: t.at.region, ...p });
     for (const [sp] of t.team) if (!POKEMON.has(sp) || isAquatic(sp)) errors.push(`${t.id}: unknown or aquatic species ${sp}`);
-    return { region: t.at.region, id: t.id, name: t.name, sprite: t.sprite, ...(t.look ? { look: t.look } : {}), x: p.x, y: p.y, team: t.team,
+    return { region: t.at.region, id: t.id, name: t.name, sprite: t.sprite, ...(t.look ? { look: t.look } : {}), x: p.x, y: p.y, team: t.team.map(([sp, lv]) => [stageFor(sp, lv), lv] as [string, number]),
       challenge: t.challenge, win: t.win, lose: t.lose, rewards: t.rewards, ...(t.showIf ? { showIf: t.showIf } : {}), ...(t.hideIf ? { hideIf: t.hideIf } : {}) };
   });
 
@@ -164,7 +165,7 @@ function build(src: StoryIn, regions: string[]): StoryDef & { npcs: StoryNpc[]; 
         const e: EncounterDef = { kind: encounter.kind, x: p.x, y: p.y, region: encounter.at.region };
         if (encounter.radius) e.radius = encounter.radius;
         if (encounter.seconds) e.seconds = encounter.seconds;
-        if (encounter.waves) { e.waves = encounter.waves; for (const w of encounter.waves) for (const [sp] of w) if (!POKEMON.has(sp) || isAquatic(sp)) errors.push(`${q.id}: unknown or aquatic (fights on land) species ${sp}`); }
+        if (encounter.waves) { e.waves = encounter.waves.map((w) => w.map(([sp, lv]) => [stageFor(sp, lv), lv] as [string, number])); for (const w of encounter.waves) for (const [sp] of w) if (!POKEMON.has(sp) || isAquatic(sp)) errors.push(`${q.id}: unknown or aquatic (fights on land) species ${sp}`); }
         if (encounter.every) e.every = encounter.every;
         if (encounter.device) { e.device = encounter.device; if (!POKEMON.has(encounter.device.species)) errors.push(`${q.id}: unknown device species ${encounter.device.species}`); }
         if (encounter.npc) {

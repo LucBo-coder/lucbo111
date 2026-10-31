@@ -6,19 +6,20 @@
 // The player, Linh (hydrology engineer), Giáo sư An and Chú Sáu (boatman) follow the veins from Cà Mau to Hà Nội.
 import { waves, type EncounterIn, type NpcIn, type ObjectiveIn, type QuestIn, type StoryIn, type TrainerIn } from './lib';
 import type { Cutscene, StoryChapter } from '../../src/core/story';
+import { BOSS_LEVEL } from './levels';
 
 const P = (region: string, at: string, dx = 0, dy = 0) => ({ region, at, dx, dy });
 
-/** The journey, in order: province id, quest code, story act, level of its guardian (world boss). */
+/** The journey, in order: province id, quest code, story act, level of its guardian (world boss, ./levels.ts). */
 const ROUTE: [string, string, number, number][] = [
-  ['ca-mau', 'cm', 0, 12], ['an-giang', 'ag', 1, 20], ['can-tho', 'ct', 1, 26], ['vinh-long', 'vl', 1, 32], ['tra-vinh', 'tv', 1, 36],
-  ['ben-tre', 'bt', 1, 40], ['dong-thap', 'dt', 1, 42], ['tay-ninh', 'tn', 2, 44], ['ho-chi-minh', 'sg', 2, 46], ['dong-nai', 'dn', 2, 48],
-  ['lam-dong', 'ld', 3, 50], ['khanh-hoa', 'kh', 3, 52], ['dak-lak', 'dl', 3, 54], ['gia-lai', 'gl', 3, 56], ['quang-ngai', 'qn', 3, 58],
-  ['da-nang', 'dg', 3, 60], ['hue', 'hu', 3, 62], ['quang-tri', 'qt', 3, 64], ['ha-tinh', 'ht', 4, 66], ['nghe-an', 'na', 4, 68],
-  ['thanh-hoa', 'th', 4, 70], ['ninh-binh', 'nb', 4, 72], ['hung-yen', 'hy', 4, 74], ['hai-phong', 'hp', 4, 76], ['bac-ninh', 'bn', 4, 78],
-  ['quang-ninh', 'ql', 4, 80], ['lang-son', 'ls', 4, 82], ['cao-bang', 'cb', 4, 84], ['thai-nguyen', 'ty', 4, 86], ['tuyen-quang', 'tq', 4, 88],
-  ['lao-cai', 'lc', 4, 90], ['lai-chau', 'lh', 4, 92], ['dien-bien', 'db', 4, 94], ['son-la', 'sl', 4, 96], ['phu-tho', 'pt', 4, 98],
-  ['ha-noi', 'hn', 5, 100],
+  ['ca-mau', 'cm', 0, BOSS_LEVEL['ca-mau']], ['an-giang', 'ag', 1, BOSS_LEVEL['an-giang']], ['can-tho', 'ct', 1, BOSS_LEVEL['can-tho']], ['vinh-long', 'vl', 1, BOSS_LEVEL['vinh-long']], ['tra-vinh', 'tv', 1, BOSS_LEVEL['tra-vinh']],
+  ['ben-tre', 'bt', 1, BOSS_LEVEL['ben-tre']], ['dong-thap', 'dt', 1, BOSS_LEVEL['dong-thap']], ['tay-ninh', 'tn', 2, BOSS_LEVEL['tay-ninh']], ['ho-chi-minh', 'sg', 2, BOSS_LEVEL['ho-chi-minh']], ['dong-nai', 'dn', 2, BOSS_LEVEL['dong-nai']],
+  ['lam-dong', 'ld', 3, BOSS_LEVEL['lam-dong']], ['khanh-hoa', 'kh', 3, BOSS_LEVEL['khanh-hoa']], ['dak-lak', 'dl', 3, BOSS_LEVEL['dak-lak']], ['gia-lai', 'gl', 3, BOSS_LEVEL['gia-lai']], ['quang-ngai', 'qn', 3, BOSS_LEVEL['quang-ngai']],
+  ['da-nang', 'dg', 3, BOSS_LEVEL['da-nang']], ['hue', 'hu', 3, BOSS_LEVEL['hue']], ['quang-tri', 'qt', 3, BOSS_LEVEL['quang-tri']], ['ha-tinh', 'ht', 4, BOSS_LEVEL['ha-tinh']], ['nghe-an', 'na', 4, BOSS_LEVEL['nghe-an']],
+  ['thanh-hoa', 'th', 4, BOSS_LEVEL['thanh-hoa']], ['ninh-binh', 'nb', 4, BOSS_LEVEL['ninh-binh']], ['hung-yen', 'hy', 4, BOSS_LEVEL['hung-yen']], ['hai-phong', 'hp', 4, BOSS_LEVEL['hai-phong']], ['bac-ninh', 'bn', 4, BOSS_LEVEL['bac-ninh']],
+  ['quang-ninh', 'ql', 4, BOSS_LEVEL['quang-ninh']], ['lang-son', 'ls', 4, BOSS_LEVEL['lang-son']], ['cao-bang', 'cb', 4, BOSS_LEVEL['cao-bang']], ['thai-nguyen', 'ty', 4, BOSS_LEVEL['thai-nguyen']], ['tuyen-quang', 'tq', 4, BOSS_LEVEL['tuyen-quang']],
+  ['lao-cai', 'lc', 4, BOSS_LEVEL['lao-cai']], ['lai-chau', 'lh', 4, BOSS_LEVEL['lai-chau']], ['dien-bien', 'db', 4, BOSS_LEVEL['dien-bien']], ['son-la', 'sl', 4, BOSS_LEVEL['son-la']], ['phu-tho', 'pt', 4, BOSS_LEVEL['phu-tho']],
+  ['ha-noi', 'hn', 5, BOSS_LEVEL['ha-noi']],
 ];
 const IDX = Object.fromEntries(ROUTE.map((r, i) => [r[0], i]));
 const prevOf = (p: string) => ROUTE[IDX[p] - 1]?.[0];
@@ -477,7 +478,7 @@ quests.push(
 // ── Hồi II: TP. Hồ Chí Minh ──
 trainers.push(
   { id: 'mn-khai-ho-chi-minh', name: 'Khải (Bình Minh)', sprite: 'youngster', look: 'mn-khai', at: P('ho-chi-minh', 'wp:wp-ho-chi-minh-center', -3, 4), showIf: ['badge:tay-ninh'], hideIf: ['mn:done:ho-chi-minh'],
-    team: [['luxio', 44], ['mightyena', 43], ['klang', 44]],
+    team: [['luxio', levelOf('ho-chi-minh') - 2], ['mightyena', levelOf('ho-chi-minh') - 3], ['klink', levelOf('ho-chi-minh') - 2]],
     challenge: ['Thấy bộ đồ mới của tôi không? Bình Minh. Cho cậu xem sức mạnh thật sự là gì!'],
     win: ['Không thể nào... với thiết bị tốt nhất mà vẫn thua?'], lose: ['Bình Minh là tương lai. Cậu nên suy nghĩ lại đi.'],
     rewards: { items: { ultraball: 2, superpotion: 1 }, exp: 1800 } },
@@ -490,7 +491,7 @@ quests.push(
       { type: 'trainer', target: 'mn-khai-ho-chi-minh', text: 'Đối mặt với Khải' },
       { type: 'talk', target: linh('ho-chi-minh'), text: 'Nói chuyện với Linh' },
     ],
-    rewards: { ...reward(46), flags: ['mn:khai-joined'] },
+    rewards: { ...reward(levelOf('ho-chi-minh')), flags: ['mn:khai-joined'] },
     dialogue: { offer: ['Lưới điện thành phố bị Bình Minh hút để chạy tổng đài. Mình nghe nói họ tuyển người ở trung tâm.', 'Và... Khải đã nhận lời gia nhập.'],
       progress: ['Khải ở gần trung tâm thành phố.'], complete: ['Khải không chịu nghe. Nhưng ít ra mình biết tổng đài ở đâu: trạm biến áp — nơi Magnezone bị nối vào.'] },
     cutscene: { start: 'mn-c-khai-joins' } },
@@ -499,11 +500,11 @@ quests.push(
     objectives: [
       { type: 'trainer', target: 'sg-engineer', text: 'Thắng Kỹ sư điện Tín (anh ấy giữ lối ra bờ sông)' },
       { type: 'destroy', target: 'mn-sg-2:destroy', text: 'Phá trạm biến áp cưỡng chế',
-        encounter: { kind: 'destroy', at: P('ho-chi-minh', 'boss', 10, 6), every: 14, device: { name: 'Trạm biến áp cưỡng chế', species: 'klinklang', level: 44, hpMult: 4 }, waves: waves(['voltorb', 'electabuzz', 'electrode'], 41) } },
+        encounter: { kind: 'destroy', at: P('ho-chi-minh', 'boss', 10, 6), every: 14, device: { name: 'Trạm biến áp cưỡng chế', species: 'klang', level: levelOf('ho-chi-minh') - 2, hpMult: 4 }, waves: waves(['voltorb', 'electabuzz', 'electrode'], levelOf('ho-chi-minh') - 5) } },
       { type: 'boss', target: 'magnezone', text: 'Làm Magnezone hạ nhiệt (đánh bại Thần Điện Sài Gòn)' },
       { type: 'talk', target: linh('ho-chi-minh'), text: 'Báo lại với Linh' },
     ],
-    rewards: { ...reward(46), reputation: 2, flags: ['mn:done:ho-chi-minh'] },
+    rewards: { ...reward(levelOf('ho-chi-minh')), reputation: 2, flags: ['mn:done:ho-chi-minh'] },
     dialogue: { offer: ['Trạm biến áp ở gần chỗ Magnezone. Phá nó trước, rồi giúp Magnezone hạ nhiệt.'], progress: ['Trạm biến áp ở gần khu của Magnezone.'],
       complete: ['Đèn phố sáng lại rồi! Nhưng kỹ thuật viên nói Tiến sĩ Vũ đã lên Tây Nguyên...'] },
     cutscene: { complete: 'mn-c-overload' } },
@@ -516,11 +517,11 @@ const tech = (p: string, name: string, at: string, team: [string, number][]): Tr
   lose: ['Về đi. Đây là việc của người lớn.'], rewards: { items: { superpotion: 1, ultraball: 2 }, exp: levelOf(p) * 40 },
 });
 trainers.push(
-  tech('gia-lai', 'Kỹ thuật viên Bình Minh Tạ', 'area:gl-volcano', [['magmar', 54], ['klang', 53], ['porygon2', 54]]),
-  tech('nghe-an', 'Kỹ thuật viên Bình Minh Hà', 'area:na-pumat', [['bronzong', 66], ['klang', 65], ['electabuzz', 66]]),
-  tech('quang-ninh', 'Trưởng ca Bình Minh Đạt', 'area:ql-campha', [['probopass', 78], ['klinklang', 78], ['magnezone', 79]]),
+  tech('gia-lai', 'Kỹ thuật viên Bình Minh Tạ', 'area:gl-volcano', [['magmar', levelOf('gia-lai') - 2], ['klang', levelOf('gia-lai') - 3], ['porygon2', levelOf('gia-lai') - 2]]),
+  tech('nghe-an', 'Kỹ thuật viên Bình Minh Hà', 'area:na-pumat', [['bronzong', levelOf('nghe-an') - 2], ['klang', levelOf('nghe-an') - 3], ['electabuzz', levelOf('nghe-an') - 2]]),
+  tech('quang-ninh', 'Trưởng ca Bình Minh Đạt', 'area:ql-campha', [['probopass', levelOf('quang-ninh') - 2], ['klinklang', levelOf('quang-ninh') - 2], ['magnezone', levelOf('quang-ninh') - 1]]),
   { id: 'mn-khai-bac-ninh', name: 'Khải', sprite: 'youngster', look: 'mn-khai', at: P('bac-ninh', 'area:bn-lim', 2, 2), showIf: ['badge:hai-phong'], hideIf: ['mn:done:bac-ninh'],
-    team: [['luxray', 78], ['mightyena', 76], ['scizor', 77], ['houndoom', 77]],
+    team: [['luxray', levelOf('bac-ninh')], ['mightyena', levelOf('bac-ninh') - 2], ['scizor', levelOf('bac-ninh') - 1], ['houndoom', levelOf('bac-ninh') - 1]],
     challenge: ['Không máy móc, không Bình Minh. Chỉ tôi và đồng đội của tôi. Bắt đầu thôi!'],
     win: ['...Cậu mạnh thật. Tôi phục.'], lose: ['Lần này là thật đó. Tập thêm đi rồi đấu lại!'], rewards: { items: { 'rare-candy': 1, ultraball: 3 }, exp: 4000 } },
   { id: 'mn-vu-ha-noi', name: 'Tiến sĩ Vũ', sprite: 'wizard', look: 'mn-vu', at: P('ha-noi', 'area:hn-coloa', -6, 4), showIf: ['badge:phu-tho'], hideIf: ['mn:done:ha-noi'],

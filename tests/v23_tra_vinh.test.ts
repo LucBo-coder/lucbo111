@@ -81,19 +81,19 @@ describe('Vietnam Odyssey: Trà Vinh', () => {
     expect(flags.sort()).toEqual(['landmark:ao-ba-om', 'landmark:ba-dong', 'landmark:chua-hang']);
   });
 
-  it('trainer teams live on land and fit Lv28–34; capture targets live on the Ba Động coast', () => {
+  it('trainer teams live on land and sit a little under the guardian (Lv 21); capture targets live on the Ba Động coast', () => {
     for (const t of tv.trainers) for (const [sp, lv] of t.team) {
       expect(POKEMON.has(sp), sp).toBe(true);
       expect(isAquatic(sp), `${t.id} ${sp}`).toBe(false);
-      expect(lv).toBeGreaterThanOrEqual(28);
-      expect(lv).toBeLessThanOrEqual(34);
+      expect(lv).toBeGreaterThanOrEqual(tv.worldBoss!.level - 9);
+      expect(lv).toBeLessThanOrEqual(tv.worldBoss!.level);
     }
     for (const sp of ['wingull', 'krabby']) expect(POKEMON.has(sp)).toBe(true);
   });
 
-  it('Trevenant — Thần Cây Dầu: no capture, beatable by a party around Lv32–34 (with or without a type edge)', () => {
+  it('Trevenant — Thần Cây Dầu: no capture, beatable by a party around Lv19–21 (with or without a type edge)', () => {
     expect(BOSSES.get('trevenant')!.capture).toBe(false);
-    for (const party of [[['combusken', 34], ['staravia', 32], ['murkrow', 32]], [['marshtomp', 34], ['pelipper', 32], ['quagsire', 32]]] as const) {
+    for (const party of [[['combusken', 21], ['staravia', 19], ['murkrow', 19]], [['marshtomp', 21], ['staravia', 19], ['quagsire', 20]]] as const) {
       const w = new World({ mode: 'adventure', seed: 5, width: 5000, height: 5000 });
       sendParty(w, party, BOSSES.get('trevenant')!.types); // one on the field (best match-up), the rest wait in their balls
       const t = w.trainer; t.maxHp = t.hp = 1e9;

@@ -83,19 +83,19 @@ describe('Vietnam Odyssey: Bến Tre', () => {
     expect(flags.sort()).toEqual(['landmark:cau-co-chien', 'landmark:ham-luong', 'landmark:keo-dua']);
   });
 
-  it('trainer teams live on land and fit Lv34–40; the rescue is a bird of the river', () => {
+  it('trainer teams live on land and sit a little under the guardian (Lv 23); the rescue is a bird of the river', () => {
     for (const t of bt.trainers) for (const [sp, lv] of t.team) {
       expect(POKEMON.has(sp), sp).toBe(true);
       expect(isAquatic(sp), `${t.id} ${sp}`).toBe(false);
-      expect(lv).toBeGreaterThanOrEqual(34);
-      expect(lv).toBeLessThanOrEqual(40);
+      expect(lv).toBeGreaterThanOrEqual(bt.worldBoss!.level - 9);
+      expect(lv).toBeLessThanOrEqual(bt.worldBoss!.level);
     }
     expect(POKEMON.has(bt.rescue.species)).toBe(true);
   });
 
-  it('Exeggutor — Dừa Trăm Thân: no capture, beatable by a party around Lv38–40', () => {
+  it('Exeggutor — Dừa Trăm Thân: no capture, beatable by a party around Lv21–23', () => {
     expect(BOSSES.get('exeggutor')!.capture).toBe(false);
-    for (const party of [[['venusaur', 40], ['quagsire', 38], ['sawsbuck', 38]], [['breloom', 38], ['gyarados', 38], ['pelipper', 38]]] as const) {
+    for (const party of [[['combusken', 23], ['staravia', 21], ['deerling', 21]], [['breloom', 23], ['gyarados', 21], ['wingull', 21]]] as const) {
       const w = new World({ mode: 'adventure', seed: 5, width: 5000, height: 5000 });
       sendParty(w, party, BOSSES.get('exeggutor')!.types); // one on the field (best match-up), the rest wait in their balls
       const t = w.trainer; t.maxHp = t.hp = 1e9;

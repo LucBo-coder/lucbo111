@@ -21,8 +21,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    95,
-    98
+    93,
+    96
    ]
   },
   {
@@ -36,8 +36,8 @@
    ],
    "habitat": "lake",
    "level": [
-    94,
-    97
+    92,
+    95
    ]
   },
   {
@@ -51,8 +51,8 @@
    ],
    "habitat": "village",
    "level": [
-    94,
-    94
+    92,
+    92
    ]
   },
   {
@@ -66,8 +66,8 @@
    ],
    "habitat": "forest",
    "level": [
-    92,
-    95
+    90,
+    93
    ]
   },
   {
@@ -81,8 +81,8 @@
    ],
    "habitat": "farm",
    "level": [
-    92,
-    95
+    90,
+    93
    ],
    "orchard": {
     "period": 7,
@@ -100,8 +100,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    93,
-    96
+    91,
+    94
    ]
   }
  ],
@@ -373,15 +373,15 @@
    "team": [
     [
      "golem",
-     97
+     95
     ],
     [
      "rhyperior",
-     97
+     95
     ],
     [
      "garchomp",
-     97
+     95
     ]
    ],
    "challenge": [
@@ -410,15 +410,15 @@
    "team": [
     [
      "pidgeot",
-     95
+     93
     ],
     [
      "staraptor",
-     95
+     93
     ],
     [
      "swellow",
-     95
+     93
     ]
    ],
    "challenge": [
@@ -447,15 +447,15 @@
    "team": [
     [
      "obstagoon",
-     94
+     92
     ],
     [
      "ursaluna",
-     94
+     92
     ],
     [
      "pangoro",
-     94
+     92
     ]
    ],
    "challenge": [
@@ -484,15 +484,15 @@
    "team": [
     [
      "muk",
-     94
+     92
     ],
     [
      "weezing",
-     94
+     92
     ],
     [
      "garbodor",
-     94
+     92
     ]
    ],
    "challenge": [
@@ -521,15 +521,15 @@
    "team": [
     [
      "lucario",
-     95
+     93
     ],
     [
      "machamp",
-     95
+     93
     ],
     [
      "hariyama",
-     95
+     93
     ]
    ],
    "challenge": [
@@ -555,19 +555,19 @@
   "x": 8,
   "y": 40,
   "species": "noctowl",
-  "level": 95,
+  "level": 93,
   "guards": [
    [
     "mandibuzz",
-    94
+    92
    ],
    [
     "murkrow",
-    93
+    91
    ],
    [
     "murkrow",
-    93
+    91
    ]
   ],
   "quest": "vn-pt-rescue",
@@ -648,7 +648,7 @@
   "name": "Gyarados — Thủy Tinh Nổi Giận",
   "x": 16,
   "y": 10,
-  "level": 98,
+  "level": 96,
   "respawn": 600,
   "arena": 260,
   "requires": [

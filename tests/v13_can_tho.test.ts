@@ -74,20 +74,20 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
     expect(ct.worldBoss!.rewards!.flag).toBe('badge:can-tho');
   });
 
-  it('trainer teams live on land (no fish), levels fit Lv16–26', () => {
+  it('trainer teams live on land (no fish), levels a little under the guardian (Lv 16)', () => {
     for (const t of ct.trainers) for (const [sp, lv] of t.team) {
       expect(POKEMON.has(sp), sp).toBe(true);
       expect(isAquatic(sp), `${t.id} ${sp}`).toBe(false);
-      expect(lv, `${t.id} ${sp}`).toBeGreaterThanOrEqual(16);
-      expect(lv, `${t.id} ${sp}`).toBeLessThanOrEqual(26);
+      expect(lv, `${t.id} ${sp}`).toBeGreaterThanOrEqual(ct.worldBoss!.level - 9);
+      expect(lv, `${t.id} ${sp}`).toBeLessThanOrEqual(ct.worldBoss!.level);
     }
   });
 
-  it('Whiscash — Chúa Sông Hậu: 3 phases, no capture, beatable by a party around Lv22–24', () => {
+  it('Whiscash — Chúa Sông Hậu: 3 phases, no capture, beatable by a party around Lv14–16', () => {
     const b0 = BOSSES.get('whiscash')!;
     expect(b0.capture).toBe(false);
     // a grass party (4× weakness) and a party with no type advantage
-    for (const party of [[['grovyle', 24], ['lombre', 22], ['breloom', 22]], [['marshtomp', 24], ['pelipper', 23], ['staravia', 22]]] as const) {
+    for (const party of [[['grovyle', 16], ['lombre', 14], ['shroomish', 14]], [['marshtomp', 16], ['wingull', 15], ['staravia', 14]]] as const) {
       const w = new World({ mode: 'adventure', seed: 5, width: 5000, height: 5000 });
       sendParty(w, party, BOSSES.get('whiscash')!.types); // one on the field (best match-up), the rest wait in their balls
       const t = w.trainer; t.maxHp = t.hp = 1e9;

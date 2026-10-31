@@ -21,8 +21,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    91,
-    94
+    85,
+    88
    ]
   },
   {
@@ -36,8 +36,8 @@
    ],
    "habitat": "lake",
    "level": [
-    90,
-    93
+    84,
+    87
    ]
   },
   {
@@ -51,8 +51,8 @@
    ],
    "habitat": "village",
    "level": [
-    90,
-    90
+    84,
+    84
    ]
   },
   {
@@ -66,8 +66,8 @@
    ],
    "habitat": "forest",
    "level": [
-    88,
-    91
+    82,
+    85
    ]
   },
   {
@@ -81,8 +81,8 @@
    ],
    "habitat": "farm",
    "level": [
-    88,
-    91
+    82,
+    85
    ],
    "orchard": {
     "period": 7,
@@ -100,8 +100,8 @@
    ],
    "habitat": "rocky",
    "level": [
-    89,
-    92
+    83,
+    86
    ]
   }
  ],
@@ -373,15 +373,15 @@
    "team": [
     [
      "steelix",
-     93
+     87
     ],
     [
      "excadrill",
-     93
+     87
     ],
     [
      "garchomp",
-     93
+     87
     ]
    ],
    "challenge": [
@@ -410,15 +410,15 @@
    "team": [
     [
      "staraptor",
-     91
+     85
     ],
     [
      "honchkrow",
-     91
+     85
     ],
     [
      "togekiss",
-     91
+     85
     ]
    ],
    "challenge": [
@@ -447,15 +447,15 @@
    "team": [
     [
      "obstagoon",
-     90
+     84
     ],
     [
      "ursaluna",
-     90
+     84
     ],
     [
      "machamp",
-     90
+     84
     ]
    ],
    "challenge": [
@@ -484,15 +484,15 @@
    "team": [
     [
      "arcanine",
-     90
+     84
     ],
     [
      "ninetales",
-     90
+     84
     ],
     [
      "flareon",
-     90
+     84
     ]
    ],
    "challenge": [
@@ -521,15 +521,15 @@
    "team": [
     [
      "lucario",
-     91
+     85
     ],
     [
      "gallade",
-     91
+     85
     ],
     [
      "metagross",
-     91
+     85
     ]
    ],
    "challenge": [
@@ -555,19 +555,19 @@
   "x": 8,
   "y": 40,
   "species": "bouffalant",
-  "level": 91,
+  "level": 85,
   "guards": [
    [
     "mightyena",
-    90
+    84
    ],
    [
     "houndoom",
-    89
+    83
    ],
    [
     "houndoom",
-    89
+    83
    ]
   ],
   "quest": "vn-db-rescue",
@@ -648,7 +648,7 @@
   "name": "Aggron — Hộ Thần Đèo Pha Đin",
   "x": 16,
   "y": 10,
-  "level": 94,
+  "level": 88,
   "respawn": 600,
   "arena": 260,
   "requires": [

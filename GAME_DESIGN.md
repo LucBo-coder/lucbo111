@@ -363,40 +363,40 @@ Chiến dịch riêng theo ô lưu. Dùng cùng engine với Phiêu lưu, nhưng
 | # | Tỉnh | Cấp | Khu vực chính | Boss khu vực | Huy hiệu |
 |---|---|---|---|---|---|
 | 1 | **Cà Mau** | 1–10 | Mũi Cà Mau, rừng ngập mặn Đất Mũi, rừng tràm U Minh Hạ | Seviper — Chúa Rừng U Minh (Lv12) | Rừng Tràm |
-| 2 | **An Giang** | 8–18 | Đảo Phú Quốc, Đền Cổ Thất Sơn, Bảy Núi, Núi Sam, Trà Sư, Đồng Nước Nổi | Claydol — Hộ Vệ Đền Cổ (Lv20) | Bảy Núi |
-| 3 | **Cần Thơ** | 16–24 | Cồn Sơn, sông Hậu, chợ nổi Cái Răng, miệt vườn Phong Điền, Thới Lai, vườn cò Bằng Lăng | Whiscash — Chúa Sông Hậu (Lv26) | Sông Hậu |
-| 4 | **Vĩnh Long** | 22–29 | Cù lao An Bình, sông Tiền, ruộng khoai Bình Tân, lò gạch Mang Thít, bưởi Bình Minh | Torkoal — Thần Lò Mang Thít (Lv32) | Gốm Đỏ |
-| 5 | **Trà Vinh** | 28–34 | Rừng dầu cổ thụ, dừa Cầu Kè, sông Cổ Chiên, Ao Bà Om, Chùa Hang | Trevenant — Thần Cây Dầu (Lv36) | Cây Dầu |
-| 6 | **Bến Tre** | 34–40 | Làng kẹo dừa, vườn dừa Thới Sơn, sông Hàm Luông, rừng tràm, đồng cỏ Mỏ Cày | Exeggutor — Dừa Trăm Thân (Lv40) | Dừa Xiêm |
-| 7 | **Đồng Tháp** | 36–42 | Mỹ Tho, chợ nổi Cái Bè, làng hoa Sa Đéc, xoài Cao Lãnh, Gò Tháp, Tràm Chim | Ludicolo — Thần Sen Tháp Mười (Lv42) | Sen Hồng |
-| 8 | **Tây Ninh** | 38–44 | Đồng lúa Long An, làng nổi Tân Lập, Tòa Thánh Cao Đài, hồ Dầu Tiếng, Núi Bà Đen | Golurk — Thần Núi Bà Đen (Lv44) | Núi Bà |
-| 9 | **TP. Hồ Chí Minh** | 40–46 | Củ Chi, Lái Thiêu, Thảo Cầm Viên, bến Bạch Đằng, Cần Giờ, Vũng Tàu | Magnezone — Thần Điện Sài Gòn (Lv46) | Sài Gòn |
-| 10 | **Đồng Nai** | 42–48 | Cát Tiên, Bàu Sấu, đồi điều Bình Phước, Bửu Long, thác Giang Điền | Tauros — Bò Tót Cát Tiên (Lv48) | Bò Tót |
-| 11 | **Lâm Đồng** | 44–50 | Langbiang, đồi thông Đà Lạt, hoa Vạn Thành, hồ Xuân Hương, chè Cầu Đất, đồi cát Mũi Né | Florges — Thần Hoa Đà Lạt (Lv50) | Ngàn Hoa |
-| 12 | **Khánh Hòa** | 46–52 | Đèo Khánh Lê, tháp Bà Ponagar, vịnh Nha Trang, nho Ninh Thuận, Po Klong Garai, Cam Ranh | Kingdra — Thần Vịnh Nha Trang (Lv52) | Vịnh Biển |
-| 13 | **Đắk Lắk** | 48–54 | Yok Đôn, Buôn Đôn, đồi cà phê, hồ Lắk, thác Dray Nur, Gành Đá Đĩa | Donphan — Voi Thần Yok Đôn (Lv54) | Voi Rừng |
-| 14 | **Gia Lai** | 50–56 | Biển Hồ, núi lửa Chư Đăng Ya, võ đường Tây Sơn, Kon Ka Kinh, Quy Nhơn | Conkeldurr — Võ Thần Tây Sơn (Lv56) | Võ Tây Sơn |
-| 15 | **Quảng Ngãi** | 52–58 | Măng Đen, Ngọc Linh, Kon Tum, Sa Huỳnh, đảo Lý Sơn | Dhelmise — Hồn Neo Lý Sơn (Lv58) | Đảo Tỏi |
-| 16 | **Đà Nẵng** | 54–60 | Bà Nà, Sơn Trà, Mỹ Sơn, Hội An, biển Mỹ Khê, cầu Rồng | Salamence — Rồng Sông Hàn (Lv60) | Cầu Rồng |
-| 17 | **Huế** | 56–62 | Lăng tẩm, Đại Nội, phá Tam Giang, Bạch Mã, Lăng Cô | Aegislash — Gươm Báu Hoàng Thành (Lv62) | Cố Đô |
-| 18 | **Quảng Trị** | 58–64 | Phong Nha, Nhật Lệ, Trường Sơn, Vịnh Mốc, cầu Hiền Lương | Noivern — Dơi Thần Sơn Đoòng (Lv64) | Hang Động |
-| 19 | **Hà Tĩnh** | 60–66 | Hồng Lĩnh, chùa Hương Tích, Vũ Quang, bưởi Phúc Trạch, Thiên Cầm | Braviary — Đại Bàng Hồng Lĩnh (Lv66) | Hồng Lĩnh |
-| 20 | **Nghệ An** | 62–68 | Pù Mát, đảo chè Thanh Chương, làng Sen, Quỳ Châu, Cửa Lò | Decidueye — Cú Thần Pù Mát (Lv68) | Sông Lam |
-| 21 | **Thanh Hóa** | 64–70 | Pù Luông, suối cá thần Cẩm Lương, thành nhà Hồ, Bến En, Sầm Sơn | Milotic — Nữ Thần Suối Cẩm Lương (Lv70) | Cá Thần |
-| 22 | **Ninh Bình** | 66–72 | Hang Múa, Tràng An, Bái Đính, Cúc Phương, Tam Cốc | Hydreigon — Rồng Ba Đầu Hang Múa (Lv72) | Hạ Long Cạn |
-| 23 | **Hưng Yên** | 68–74 | Nhãn lồng, bãi sông Hồng, chùa Keo, đồng lúa Thái Bình, Đồng Châu | Tsareena — Nữ Hoàng Nhãn Lồng (Lv74) | Nhãn Lồng |
-| 24 | **Hải Phòng** | 70–76 | Côn Sơn, vải Thanh Hà, cảng Hải Phòng, Đồ Sơn, Cát Bà | Talonflame — Chim Lửa Hoa Phượng (Lv76) | Hoa Phượng |
-| 25 | **Bắc Ninh** | 72–78 | Đồi Lim, Tây Yên Tử, tranh Đông Hồ, vải Lục Ngạn, chùa Dâu | Primarina — Nàng Quan Họ (Lv78) | Quan Họ |
-| 26 | **Quảng Ninh** | 74–80 | Yên Tử, mỏ than Cẩm Phả, Bãi Cháy — vịnh Hạ Long, Vân Đồn, rừng ngập mặn | Dragonite — Rồng Mẹ Hạ Long (Lv80) | Rồng Hạ Long |
-| 27 | **Lạng Sơn** | 76–82 | Núi Tô Thị, Mẫu Sơn, ải Chi Lăng, chợ Kỳ Lừa, sông Kỳ Cùng | Gigalith — Nàng Tô Thị Hóa Đá (Lv82) | Vọng Phu |
-| 28 | **Cao Bằng** | 78–84 | Động Ngườm Ngao, thác Bản Giốc, Pác Bó, hồ Thang Hen, đèo Mã Phục | Incineroar — Hổ Lửa Ngườm Ngao (Lv84) | Hang Hổ |
-| 29 | **Thái Nguyên** | 80–86 | Hang Phượng Hoàng, hồ Núi Cốc, ATK Định Hóa, chè Tân Cương, mỏ sắt Trại Cau | Polteageist — Hồn Ấm Chè Tân Cương (Lv86) | Đệ Nhất Danh Trà |
-| 30 | **Tuyên Quang** | 82–88 | Đèo Mã Pí Lèng, hồ Na Hang, Tân Trào, Hoàng Su Phì, cao nguyên đá Đồng Văn | Mudsdale — Ngựa Thần Mã Pí Lèng (Lv88) | Mã Pí Lèng |
-| 31 | **Lào Cai** | 84–90 | Đỉnh Fansipan (tuyết), thác Bạc, bản Cát Cát, Mường Hoa, đèo Ô Quy Hồ | Abomasnow — Thần Tuyết Fansipan (Lv90) | Nóc Nhà Đông Dương |
-| 32 | **Lai Châu** | 86–92 | Bạch Mộc Lương Tử (biển mây), hồ thủy điện, Pu Sam Cáp, chè Tam Đường, Sìn Hồ | Altaria — Chim Mây Bạch Mộc (Lv92) | Biển Mây |
-| 33 | **Điện Biên** | 88–94 | Đèo Pha Đin, hồ Pá Khoang, Mường Phăng, cánh đồng Mường Thanh, A Pa Chải | Aggron — Hộ Thần Đèo Pha Đin (Lv94) | Pha Đin |
-| 34 | **Sơn La** | 90–96 | Tà Xùa (sống lưng khủng long), Quỳnh Nhai, Bản Áng, đồi chè và thảo nguyên Mộc Châu | Tyrantrum — Bạo Long Tà Xùa (Lv96) | Sống Lưng Khủng Long |
-| 35 | **Phú Thọ** | 92–98 | Đền Hùng — núi Nghĩa Lĩnh, ngã ba Bạch Hạc, Xuân Sơn, chè Long Cốc, Tam Đảo | Gyarados — Thủy Tinh Nổi Giận (Lv98) | Đất Tổ |
+| 2 | **An Giang** | 2–12 | Đảo Phú Quốc, Đền Cổ Thất Sơn, Bảy Núi, Núi Sam, Trà Sư, Đồng Nước Nổi | Claydol — Hộ Vệ Đền Cổ (Lv14) | Bảy Núi |
+| 3 | **Cần Thơ** | 6–14 | Cồn Sơn, sông Hậu, chợ nổi Cái Răng, miệt vườn Phong Điền, Thới Lai, vườn cò Bằng Lăng | Whiscash — Chúa Sông Hậu (Lv16) | Sông Hậu |
+| 4 | **Vĩnh Long** | 8–15 | Cù lao An Bình, sông Tiền, ruộng khoai Bình Tân, lò gạch Mang Thít, bưởi Bình Minh | Torkoal — Thần Lò Mang Thít (Lv18) | Gốm Đỏ |
+| 5 | **Trà Vinh** | 13–19 | Rừng dầu cổ thụ, dừa Cầu Kè, sông Cổ Chiên, Ao Bà Om, Chùa Hang | Trevenant — Thần Cây Dầu (Lv21) | Cây Dầu |
+| 6 | **Bến Tre** | 17–23 | Làng kẹo dừa, vườn dừa Thới Sơn, sông Hàm Luông, rừng tràm, đồng cỏ Mỏ Cày | Exeggutor — Dừa Trăm Thân (Lv23) | Dừa Xiêm |
+| 7 | **Đồng Tháp** | 19–25 | Mỹ Tho, chợ nổi Cái Bè, làng hoa Sa Đéc, xoài Cao Lãnh, Gò Tháp, Tràm Chim | Ludicolo — Thần Sen Tháp Mười (Lv25) | Sen Hồng |
+| 8 | **Tây Ninh** | 22–28 | Đồng lúa Long An, làng nổi Tân Lập, Tòa Thánh Cao Đài, hồ Dầu Tiếng, Núi Bà Đen | Golurk — Thần Núi Bà Đen (Lv28) | Núi Bà |
+| 9 | **TP. Hồ Chí Minh** | 25–31 | Củ Chi, Lái Thiêu, Thảo Cầm Viên, bến Bạch Đằng, Cần Giờ, Vũng Tàu | Magnezone — Thần Điện Sài Gòn (Lv31) | Sài Gòn |
+| 10 | **Đồng Nai** | 27–33 | Cát Tiên, Bàu Sấu, đồi điều Bình Phước, Bửu Long, thác Giang Điền | Tauros — Bò Tót Cát Tiên (Lv33) | Bò Tót |
+| 11 | **Lâm Đồng** | 30–36 | Langbiang, đồi thông Đà Lạt, hoa Vạn Thành, hồ Xuân Hương, chè Cầu Đất, đồi cát Mũi Né | Florges — Thần Hoa Đà Lạt (Lv36) | Ngàn Hoa |
+| 12 | **Khánh Hòa** | 32–38 | Đèo Khánh Lê, tháp Bà Ponagar, vịnh Nha Trang, nho Ninh Thuận, Po Klong Garai, Cam Ranh | Kingdra — Thần Vịnh Nha Trang (Lv38) | Vịnh Biển |
+| 13 | **Đắk Lắk** | 35–41 | Yok Đôn, Buôn Đôn, đồi cà phê, hồ Lắk, thác Dray Nur, Gành Đá Đĩa | Donphan — Voi Thần Yok Đôn (Lv41) | Voi Rừng |
+| 14 | **Gia Lai** | 37–43 | Biển Hồ, núi lửa Chư Đăng Ya, võ đường Tây Sơn, Kon Ka Kinh, Quy Nhơn | Conkeldurr — Võ Thần Tây Sơn (Lv43) | Võ Tây Sơn |
+| 15 | **Quảng Ngãi** | 39–45 | Măng Đen, Ngọc Linh, Kon Tum, Sa Huỳnh, đảo Lý Sơn | Dhelmise — Hồn Neo Lý Sơn (Lv45) | Đảo Tỏi |
+| 16 | **Đà Nẵng** | 41–47 | Bà Nà, Sơn Trà, Mỹ Sơn, Hội An, biển Mỹ Khê, cầu Rồng | Salamence — Rồng Sông Hàn (Lv47) | Cầu Rồng |
+| 17 | **Huế** | 44–50 | Lăng tẩm, Đại Nội, phá Tam Giang, Bạch Mã, Lăng Cô | Aegislash — Gươm Báu Hoàng Thành (Lv50) | Cố Đô |
+| 18 | **Quảng Trị** | 46–52 | Phong Nha, Nhật Lệ, Trường Sơn, Vịnh Mốc, cầu Hiền Lương | Noivern — Dơi Thần Sơn Đoòng (Lv52) | Hang Động |
+| 19 | **Hà Tĩnh** | 49–55 | Hồng Lĩnh, chùa Hương Tích, Vũ Quang, bưởi Phúc Trạch, Thiên Cầm | Braviary — Đại Bàng Hồng Lĩnh (Lv55) | Hồng Lĩnh |
+| 20 | **Nghệ An** | 51–57 | Pù Mát, đảo chè Thanh Chương, làng Sen, Quỳ Châu, Cửa Lò | Decidueye — Cú Thần Pù Mát (Lv57) | Sông Lam |
+| 21 | **Thanh Hóa** | 53–59 | Pù Luông, suối cá thần Cẩm Lương, thành nhà Hồ, Bến En, Sầm Sơn | Milotic — Nữ Thần Suối Cẩm Lương (Lv59) | Cá Thần |
+| 22 | **Ninh Bình** | 55–61 | Hang Múa, Tràng An, Bái Đính, Cúc Phương, Tam Cốc | Hydreigon — Rồng Ba Đầu Hang Múa (Lv61) | Hạ Long Cạn |
+| 23 | **Hưng Yên** | 57–63 | Nhãn lồng, bãi sông Hồng, chùa Keo, đồng lúa Thái Bình, Đồng Châu | Tsareena — Nữ Hoàng Nhãn Lồng (Lv63) | Nhãn Lồng |
+| 24 | **Hải Phòng** | 59–65 | Côn Sơn, vải Thanh Hà, cảng Hải Phòng, Đồ Sơn, Cát Bà | Talonflame — Chim Lửa Hoa Phượng (Lv65) | Hoa Phượng |
+| 25 | **Bắc Ninh** | 61–67 | Đồi Lim, Tây Yên Tử, tranh Đông Hồ, vải Lục Ngạn, chùa Dâu | Primarina — Nàng Quan Họ (Lv67) | Quan Họ |
+| 26 | **Quảng Ninh** | 64–70 | Yên Tử, mỏ than Cẩm Phả, Bãi Cháy — vịnh Hạ Long, Vân Đồn, rừng ngập mặn | Dragonite — Rồng Mẹ Hạ Long (Lv70) | Rồng Hạ Long |
+| 27 | **Lạng Sơn** | 66–72 | Núi Tô Thị, Mẫu Sơn, ải Chi Lăng, chợ Kỳ Lừa, sông Kỳ Cùng | Gigalith — Nàng Tô Thị Hóa Đá (Lv72) | Vọng Phu |
+| 28 | **Cao Bằng** | 69–75 | Động Ngườm Ngao, thác Bản Giốc, Pác Bó, hồ Thang Hen, đèo Mã Phục | Incineroar — Hổ Lửa Ngườm Ngao (Lv75) | Hang Hổ |
+| 29 | **Thái Nguyên** | 71–77 | Hang Phượng Hoàng, hồ Núi Cốc, ATK Định Hóa, chè Tân Cương, mỏ sắt Trại Cau | Polteageist — Hồn Ấm Chè Tân Cương (Lv77) | Đệ Nhất Danh Trà |
+| 30 | **Tuyên Quang** | 74–80 | Đèo Mã Pí Lèng, hồ Na Hang, Tân Trào, Hoàng Su Phì, cao nguyên đá Đồng Văn | Mudsdale — Ngựa Thần Mã Pí Lèng (Lv80) | Mã Pí Lèng |
+| 31 | **Lào Cai** | 76–82 | Đỉnh Fansipan (tuyết), thác Bạc, bản Cát Cát, Mường Hoa, đèo Ô Quy Hồ | Abomasnow — Thần Tuyết Fansipan (Lv82) | Nóc Nhà Đông Dương |
+| 32 | **Lai Châu** | 79–85 | Bạch Mộc Lương Tử (biển mây), hồ thủy điện, Pu Sam Cáp, chè Tam Đường, Sìn Hồ | Altaria — Chim Mây Bạch Mộc (Lv85) | Biển Mây |
+| 33 | **Điện Biên** | 82–88 | Đèo Pha Đin, hồ Pá Khoang, Mường Phăng, cánh đồng Mường Thanh, A Pa Chải | Aggron — Hộ Thần Đèo Pha Đin (Lv88) | Pha Đin |
+| 34 | **Sơn La** | 86–92 | Tà Xùa (sống lưng khủng long), Quỳnh Nhai, Bản Áng, đồi chè và thảo nguyên Mộc Châu | Tyrantrum — Bạo Long Tà Xùa (Lv92) | Sống Lưng Khủng Long |
+| 35 | **Phú Thọ** | 90–96 | Đền Hùng — núi Nghĩa Lĩnh, ngã ba Bạch Hạc, Xuân Sơn, chè Long Cốc, Tam Đảo | Gyarados — Thủy Tinh Nổi Giận (Lv96) | Đất Tổ |
 | 36 | **Hà Nội** | 94–100 | Thành Cổ Loa, Hồ Gươm, Ba Vì, vườn đào Nhật Tân, chùa Hương | Torterra — Thần Kim Quy Cổ Loa (Lv100) | Thăng Long |
 
 Hạ Torterra ở Hà Nội là **kết thúc hành trình xuyên Việt**: nhận Huy hiệu Thăng Long và lời kết.
@@ -463,7 +463,7 @@ Dưới đất nước chảy những **mạch nguồn** cổ giữ nhịp cho s
   - **Sài Gòn / Hà Nội**: trận boss nằm trong nhiệm vụ cốt truyện (có bước thắng người canh cửa); nhiệm vụ tỉnh cùng chặng là đoạn kết (*Sài Gòn sáng đèn*, *Thần Kim Quy trở về*). Mỗi hộ vệ chỉ đánh trong một nhiệm vụ.
   - Thế giới online không có cốt truyện: các điều kiện trỏ tới nhiệm vụ `mn-…` được bỏ qua.
   - `tests/v30_quest_flow.test.ts` chơi trọn mạch chính từ Đất Mũi tới đoạn kết và kiểm tra thứ tự ở cả 36 tỉnh.
-- Cấp tham khảo của từng chặng theo cấp boss tỉnh đó (Linh nhắc khoảng cấp). Bảng cấp tham khảo trong đặc tả (1–7: Lv 1–25 … 33–36: Lv 85–100) **chưa** được áp dụng: các tỉnh vẫn tăng đều từ Lv 12 (Cà Mau) tới Lv 100 (Hà Nội) — xem TASKS.
+- Cấp tham khảo của từng chặng theo cấp boss tỉnh đó (Linh nhắc khoảng cấp). Cấp các tỉnh theo dải (V30): tỉnh 1–7 Lv 1–25 · 8–15 Lv 25–45 · 16–24 Lv 45–65 · 25–32 Lv 65–85 · 33–36 Lv 85–100 (bảng 6.1). Cấp boss từng tỉnh nằm ở `scripts/story/levels.ts`; `scripts/rescale-vn-levels.ts` dời mọi cấp trên bản đồ tỉnh (khu, HLV, cứu hộ, boss) cùng một khoảng nên chênh lệch trong tỉnh giữ nguyên, Pokémon của HLV bị lùi về dạng tiến hóa hợp cấp; vùng gặp Pokémon đi theo khu. Các trận dựng tay trong cốt truyện tính cấp tương đối theo boss tỉnh.
 
 ---
 
