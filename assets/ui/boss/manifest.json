@@ -1,0 +1,221 @@
+{
+ "source": "rayquaza_boss_ui_separated.zip (user-supplied)",
+ "files": {
+  "hud_fill_green": {
+   "w": 407,
+   "h": 25
+  },
+  "hud_frame_blue": {
+   "w": 804,
+   "h": 147,
+   "bar": [
+    231,
+    83,
+    407,
+    25
+   ]
+  },
+  "hud_fill_red": {
+   "w": 329,
+   "h": 25
+  },
+  "hud_frame_red": {
+   "w": 733,
+   "h": 145,
+   "bar": [
+    231,
+    84,
+    329,
+    25
+   ]
+  },
+  "hud_fill_blue": {
+   "w": 407,
+   "h": 25
+  },
+  "hud_fill_purple": {
+   "w": 407,
+   "h": 25
+  },
+  "boss_badge": {
+   "w": 143,
+   "h": 62
+  },
+  "legendary_badge": {
+   "w": 184,
+   "h": 62
+  },
+  "boss_warning_icon": {
+   "w": 84,
+   "h": 76
+  },
+  "phase_indicator": {
+   "w": 623,
+   "h": 103
+  },
+  "phase_change_panel": {
+   "w": 370,
+   "h": 94
+  },
+  "skill_warning_panel": {
+   "w": 731,
+   "h": 116
+  },
+  "warning_panel_small": {
+   "w": 219,
+   "h": 95
+  },
+  "portrait_frame": {
+   "w": 195,
+   "h": 131
+  },
+  "dialogue_panel": {
+   "w": 536,
+   "h": 109
+  },
+  "hp_green_full": {
+   "w": 527,
+   "h": 62
+  },
+  "hp_blue_full": {
+   "w": 523,
+   "h": 62
+  },
+  "hp_purple_full": {
+   "w": 522,
+   "h": 62
+  },
+  "hp_red_full": {
+   "w": 531,
+   "h": 62
+  },
+  "hp_empty_blue": {
+   "w": 527,
+   "h": 52
+  },
+  "hp_empty_blue2": {
+   "w": 520,
+   "h": 52
+  },
+  "hp_empty_purple": {
+   "w": 522,
+   "h": 52
+  },
+  "hp_empty_red": {
+   "w": 529,
+   "h": 52
+  },
+  "element_icon_unknown": {
+   "w": 64,
+   "h": 68
+  },
+  "element_icon_grass": {
+   "w": 62,
+   "h": 63
+  },
+  "element_icon_electric": {
+   "w": 62,
+   "h": 64
+  },
+  "element_icon_water": {
+   "w": 65,
+   "h": 63
+  },
+  "element_icon_fire": {
+   "w": 63,
+   "h": 64
+  },
+  "element_icon_ice": {
+   "w": 64,
+   "h": 63
+  },
+  "element_icon_ghost": {
+   "w": 66,
+   "h": 63
+  },
+  "element_icon_ground": {
+   "w": 68,
+   "h": 63
+  },
+  "element_icon_flying": {
+   "w": 61,
+   "h": 64
+  },
+  "status_icon_atkUp": {
+   "w": 75,
+   "h": 75
+  },
+  "status_icon_defDown": {
+   "w": 76,
+   "h": 75
+  },
+  "status_icon_shield": {
+   "w": 75,
+   "h": 75
+  },
+  "status_icon_poison": {
+   "w": 75,
+   "h": 75
+  },
+  "status_icon_sleep": {
+   "w": 77,
+   "h": 75
+  },
+  "status_icon_burn": {
+   "w": 75,
+   "h": 75
+  },
+  "status_icon_water": {
+   "w": 75,
+   "h": 75
+  },
+  "status_icon_leech": {
+   "w": 75,
+   "h": 75
+  },
+  "status_icon_confusion": {
+   "w": 75,
+   "h": 75
+  },
+  "party_slot_small": {
+   "w": 87,
+   "h": 81
+  },
+  "party_slot_0": {
+   "w": 199,
+   "h": 80
+  },
+  "party_slot_1": {
+   "w": 198,
+   "h": 80
+  },
+  "party_slot_2": {
+   "w": 198,
+   "h": 80
+  },
+  "party_slot_3": {
+   "w": 196,
+   "h": 80
+  },
+  "party_slot_4": {
+   "w": 197,
+   "h": 80
+  },
+  "party_slot_5": {
+   "w": 196,
+   "h": 80
+  },
+  "choice_button_default": {
+   "w": 168,
+   "h": 94
+  },
+  "choice_button_selected": {
+   "w": 155,
+   "h": 95
+  },
+  "choice_button_plain": {
+   "w": 144,
+   "h": 94
+  }
+ }
+}
