@@ -712,10 +712,11 @@
    },
    "money": 18500,
    "flag": "badge:dien-bien",
-   "message": "Nhận Huy hiệu Pha Đin (Điện Biên)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Pha Đin (Điện Biên)! Đường tới Sơn La đã mở: Quốc lộ 6."
   }
  },
  "portals": [
+  {"id": "portal-db-next", "name": "Quốc lộ 6 — đường xuống Sơn La", "x": 112, "y": 5, "to": "son-la", "toX": 64, "toY": 104, "requires": ["badge:dien-bien"], "hint": "Đường tới Sơn La mở cho người có Huy hiệu Pha Đin — hạ boss Điện Biên trước."},
   {
    "id": "portal-db-lh",
    "name": "Quốc lộ 12 — về Lai Châu",

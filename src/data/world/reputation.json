@@ -326,6 +326,16 @@
         "3": "Người Điện Biên mình đây rồi! Mường Thanh luôn chờ em."
       }
     },
+    "son-la": {
+      "name": "Sơn La",
+      "rewards": { "1": { "sitrus-berry": 2, "greatball": 3 }, "2": { "superpotion": 3, "dragon-scale": 1 }, "3": { "ultraball": 3, "protein": 1 } },
+      "greet": {
+        "0": "Em mới tới Sơn La hả? Uống cốc sữa Mộc Châu đã.",
+        "1": "Lại gặp em rồi. Ra lòng hồ Quỳnh Nhai chưa?",
+        "2": "Ông già Tà Xùa nói nhờ em mà Bạo Long ngủ lại.",
+        "3": "Người Sơn La mình đây rồi! Hoa ban luôn chờ em."
+      }
+    },
     "starter-valley": {
       "name": "Thung Lũng Khởi Nguyên",
       "rewards": { "1": { "potion": 3 }, "2": { "greatball": 3 }, "3": { "ultraball": 2 } }

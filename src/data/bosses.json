@@ -2274,5 +2274,59 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "tyrantrum",
+  "name": "Tyrantrum — Bạo Long Tà Xùa",
+  "types": [
+   "rock",
+   "dragon"
+  ],
+  "baseStats": {
+   "hp": 82,
+   "atk": 121,
+   "def": 119,
+   "spa": 69,
+   "spd": 59,
+   "spe": 71
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "dragon_claw",
+   "head_smash"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "tyrunt",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Bạo Long thức giấc — sống lưng núi Tà Xùa dựng đứng!",
+  "exp": 150,
+  "sprite": "tyrantrum",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "ancient_power",
+   "volley": "rock_slide",
+   "nova": "earthquake",
+   "field": "stone_edge",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "outrage",
+   "ultimateName": "Bạo Long Tà Xùa Gầm Thét",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

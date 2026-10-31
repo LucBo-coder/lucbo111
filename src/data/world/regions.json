@@ -4387,5 +4387,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-sl-taxua",
+  "name": "Sống lưng khủng long Tà Xùa",
+  "areas": [
+   "sl-taxua"
+  ],
+  "biome": "rocky",
+  "level": [
+   93,
+   96
+  ],
+  "elite": [
+   97,
+   99
+  ],
+  "boss": null,
+  "recommended": 95,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-sl-quynhnhai",
+  "name": "Lòng hồ Quỳnh Nhai",
+  "areas": [
+   "sl-quynhnhai"
+  ],
+  "biome": "lake",
+  "level": [
+   92,
+   95
+  ],
+  "elite": [
+   96,
+   98
+  ],
+  "boss": null,
+  "recommended": 94,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-sl-banang",
+  "name": "Rừng thông Bản Áng",
+  "areas": [
+   "sl-banang"
+  ],
+  "biome": "forest",
+  "level": [
+   90,
+   93
+  ],
+  "elite": [
+   94,
+   96
+  ],
+  "boss": null,
+  "recommended": 92,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-sl-mocchau",
+  "name": "Đồi chè trái tim Mộc Châu",
+  "areas": [
+   "sl-mocchau"
+  ],
+  "biome": "farm",
+  "level": [
+   90,
+   93
+  ],
+  "elite": [
+   94,
+   96
+  ],
+  "boss": null,
+  "recommended": 92,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-sl-thaonguyen",
+  "name": "Thảo nguyên Mộc Châu",
+  "areas": [
+   "sl-thaonguyen"
+  ],
+  "biome": "meadow",
+  "level": [
+   91,
+   94
+  ],
+  "elite": [
+   95,
+   97
+  ],
+  "boss": null,
+  "recommended": 93,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

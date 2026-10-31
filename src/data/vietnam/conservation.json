@@ -1350,6 +1350,52 @@
     }
    ]
   },
+  "son-la": {
+   "id": "son-la",
+   "name": "Sơn La",
+   "area": "sl-quynhnhai",
+   "action": "trash",
+   "unlock": "vn-sl-3",
+   "boss": "tyrantrum",
+   "label": "Vớt rác trên lòng hồ",
+   "done": "Bạn vớt chai nhựa và túi nilon dạt bờ hồ. Lòng hồ Quỳnh Nhai trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "son-la-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "son-la-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "son-la-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "son-la-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "son-la-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "son-la-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "tay-ninh": {
    "id": "tay-ninh",
    "name": "Tây Ninh",
