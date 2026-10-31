@@ -24,24 +24,47 @@
   { "w": 3, "pts": [[56, 62], [80, 90]] }
  ],
  "plaza": [60, 46, 76, 58],
+ "paved": [[60, 46, 76, 58]],
+ "town": "oriental",
  "lake": { "cx": 150, "cy": 56, "rx": 42, "ry": 80 },
  "rivers": [
   { "w": 3, "pts": [[88, 0], [88, 62], [100, 80], [114, 84]], "mouth": true }
  ],
  "buildings": [
-  { "id": "dg-center", "name": "Trung tâm Pokémon", "x": 48, "y": 32, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
-  { "id": "dg-mart", "name": "Cửa hàng Đà Nẵng", "x": 56, "y": 32, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
-  { "id": "dg-museum", "name": "Bảo tàng Điêu khắc Chăm", "x": 74, "y": 32, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3 },
-  { "id": "dg-house-1", "name": "Nhà chị Hạnh", "x": 50, "y": 58, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
-  { "id": "dg-house-2", "name": "Quán mì Quảng", "x": 80, "y": 56, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+  {"id": "dg-center", "name": "Trung tâm Pokémon", "x": 48, "y": 32, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "dg-mart", "name": "Cửa hàng Đà Nẵng", "x": 56, "y": 32, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2, "style": "oriental"},
+  {"id": "dg-museum", "name": "Bảo tàng Điêu khắc Chăm", "x": 74, "y": 32, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3, "style": "oriental"},
+  {"id": "dg-house-1", "name": "Nhà chị Hạnh", "x": 50, "y": 58, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "oriental"},
+  {"id": "dg-house-2", "name": "Quán mì Quảng", "x": 80, "y": 56, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "oriental"},
+  {"id": "da-nang-gate", "name": "Cổng tam quan Thành phố Đà Nẵng", "x": 66, "y": 43, "w": 5, "h": 1, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "da-nang-pho-1", "name": "Hiệu thuốc bắc", "x": 62, "y": 43, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "da-nang-pho-2", "name": "Tiệm trà", "x": 72, "y": 43, "w": 3, "h": 3, "roof": "grey", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "da-nang-pho-3", "name": "Hiệu may áo dài", "x": 56, "y": 55, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "da-nang-pho-4", "name": "Tiệm bánh", "x": 78, "y": 47, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "da-nang-pho-5", "name": "Hiệu sách cũ", "x": 56, "y": 43, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "da-nang-pho-6", "name": "Tiệm gốm", "x": 82, "y": 47, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "da-nang-pho-7", "name": "Tiệm đèn lồng", "x": 95, "y": 47, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"}
  ],
  "fences": [],
  "props": [
-  { "kind": "well", "x": 56, "y": 60 },
-  { "kind": "log", "x": 60, "y": 14 },
-  { "kind": "haystack", "x": 64, "y": 84 },
-  { "kind": "bucket", "x": 106, "y": 43 },
-  { "kind": "target", "x": 30, "y": 60 }
+  {"kind": "well", "x": 56, "y": 60},
+  {"kind": "log", "x": 60, "y": 14},
+  {"kind": "haystack", "x": 64, "y": 84},
+  {"kind": "bucket", "x": 106, "y": 43},
+  {"kind": "target", "x": 30, "y": 60},
+  {"kind": "lantern", "x": 61, "y": 47},
+  {"kind": "lantern", "x": 75, "y": 47},
+  {"kind": "lantern", "x": 61, "y": 57},
+  {"kind": "lantern", "x": 75, "y": 57},
+  {"kind": "bonsai", "x": 48, "y": 37},
+  {"kind": "bonsai", "x": 52, "y": 37},
+  {"kind": "bonsai", "x": 56, "y": 37},
+  {"kind": "bonsai", "x": 60, "y": 37},
+  {"kind": "stone-lantern", "x": 74, "y": 37},
+  {"kind": "stone-lantern", "x": 80, "y": 37},
+  {"kind": "incense", "x": 75, "y": 39},
+  {"kind": "bonsai", "x": 53, "y": 62},
+  {"kind": "bonsai", "x": 83, "y": 60}
  ],
  "signs": [
   { "x": 64, "y": 54, "text": ["THÀNH PHỐ ĐÀ NẴNG", "Thành phố đáng sống bên sông Hàn. Phía tây bắc: Bà Nà, đèo Hải Vân · Phía bắc: Sơn Trà · Phía đông: biển Mỹ Khê · Phía nam: Hội An, Mỹ Sơn."] },

@@ -575,7 +575,10 @@ export class AdventureScene extends Phaser.Scene {
         case 'pillar':
         case 'sign': {
           const cx = px + (o.kind === 'pillar' || o.kind === 'prop' || o.kind === 'sign' ? TILE_PX / 2 : 0);
-          add(this.add.image(cx, py + TILE_PX / 2, 'ow_tiles', o.tile).setScale(SCALE).setDepth(py + TILE_PX / 2));
+          // oriental street furniture (V28) is an image taller than its tile; lantern posts glow at night
+          const art = o.kind === 'prop' ? addWorldArt(this, o) : null;
+          add(art ?? this.add.image(cx, py + TILE_PX / 2, 'ow_tiles', o.tile).setScale(SCALE)).setDepth(py + TILE_PX / 2);
+          if (art && /lantern/.test(String(o.data?.prop))) this.addLight(rec, cx, py - TILE_PX * 0.4, 110, true, 0xff9050);
           // collideR 0: a shrine altar on the arena centre (the legendary appears on it)
           if (o.collideR !== 0) this.world.addObstacle({ x: cx, y: py + TILE_PX / 2, r: o.collideR ?? 16, kind: o.kind === 'pillar' ? 'rock' : 'prop', tag });
           if (o.kind === 'sign') this.addInteractable(o, cx, py + TILE_PX / 2 + 20, 'Đọc');

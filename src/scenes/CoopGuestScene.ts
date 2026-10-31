@@ -180,8 +180,8 @@ export class CoopGuestScene extends Phaser.Scene {
     for (const o of rec.mapObjects) {
       const x = o.x * TILE_PX, y = o.y * TILE_PX;
       // cottages / old trees: the same Adventure Awaits image as the host, else the tile fallback
-      const art = (o.kind === 'building' || o.kind === 'tree') ? addWorldArt(this, o) : null;
-      if (art) rec.objects.push(art.setDepth(o.kind === 'building' ? y + (o.h ?? 1) * TILE_PX - 4 : y + 22));
+      const art = (o.kind === 'building' || o.kind === 'tree' || o.kind === 'prop') ? addWorldArt(this, o) : null;
+      if (art) rec.objects.push(art.setDepth(o.kind === 'building' ? y + (o.h ?? 1) * TILE_PX - 4 : o.kind === 'prop' ? y + TILE_PX / 2 : y + 22));
       else if (o.kind === 'building' && o.tiles) {
         o.tiles.forEach((row, ry) => row.forEach((t, rx) => rec.objects.push(this.add.image(x + rx * TILE_PX, y + ry * TILE_PX, 'ow_tiles', t).setOrigin(0).setScale(SCALE).setDepth(y + (o.h ?? 1) * TILE_PX - 4))));
       } else if (o.kind === 'tree') rec.objects.push(this.add.image(x, y + 22, 'ow_tiles', o.tile).setOrigin(0.5, 1).setScale(SCALE).setDepth(y + 22));

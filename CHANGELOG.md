@@ -1,5 +1,15 @@
 # Changelog
 
+## Chưa phát hành — V28: Phố cổ phương Đông
+
+- **Thành phố trung tâm của 36 tỉnh Việt Nam Odyssey thành phố cổ phương Đông**: nhà mái ngói cong có đầu đao vút, bờ nóc, cột sơn son, cửa bức bàn sơn đỏ đinh vàng, song cửa giấy, nền đá và đèn lồng đỏ trước cửa. Có 4 màu ngói: đỏ nâu, xám xanh, vàng lưu ly, men xanh. Trung tâm Pokémon và cửa hàng có hoành phi (Poké Ball / túi hàng) trên cửa; đình, chùa, bảo tàng, Văn Miếu dùng mái chồng diêm hai tầng với "lưỡng long chầu nguyệt" trên nóc. Toàn bộ hình vẽ bằng code (`src/render/orientalArt.ts`), không dùng asset bên ngoài.
+- **Cổng tam quan** bắc qua đường dẫn vào quảng trường ở 33/36 tỉnh: hai trụ chặn đường, lối giữa đi qua được; có câu đối và hoành phi.
+- **Quảng trường lát gạch đỏ Bát Tràng** (ô tile mới `EX.brick`, lát kín vùng `paved`, bật bằng `town: 'oriental'`).
+- **Dãy nhà phố** (hiệu thuốc bắc, tiệm trà, hiệu may áo dài, tiệm gốm, tiệm đèn lồng…): tối đa 10 nhà mỗi thành phố (tổng cộng 256), dựng ở chỗ trống cạnh quảng trường và các trục đường, cửa quay ra đường.
+- **Đồ trang trí đường phố**: cột đèn lồng (sáng ấm về đêm) ở các góc quảng trường và hai bên cổng, chậu bonsai bên cửa Trung tâm / cửa hàng / nhà, đèn đá và lư hương trước đình chùa.
+- Script `scripts/orientalize.ts`: chạy lại được nhiều lần cho mọi tỉnh hoặc một tỉnh. Mọi vị trí đều được kiểm tra: không chắn đường, cửa, NPC, rương, cổng; không mọc chồng lên cây hay trong đấu trường boss.
+- Test mới `v28_oriental`; `v26_world_art` giữ trường hợp nhà Adventure Awaits ở Thung lũng Khởi đầu.
+
 ## Chưa phát hành — V27: Việt Nam Odyssey mở rộng ra cả nước
 
 - **Tỉnh 7 — Đồng Tháp** (gồm Tiền Giang cũ, Lv 36–42): qua cầu Rạch Miễu từ Bến Tre (cổng mới ở bờ bắc Bến Tre, mở bằng Huy hiệu Dừa Xiêm); Mỹ Tho bên sông Tiền, chợ nổi Cái Bè (2 bến ghe), làng hoa Sa Đéc, Gò Tháp, vườn xoài Cao Lãnh, Vườn quốc gia Tràm Chim, đồng sen Tháp Mười; 7 NPC, 5 huấn luyện viên, giải cứu Swanna, 8 nhiệm vụ, 6 điểm trồng tràm; boss Ludicolo — Thần Sen Tháp Mười → Huy hiệu Sen Hồng.

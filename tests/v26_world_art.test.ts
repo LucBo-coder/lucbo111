@@ -20,7 +20,8 @@ describe('world art (Adventure Awaits)', () => {
   });
 
   it('cottages: image key, a 3-wide solid footprint, the door in the middle column, the tile grid kept as fallback', () => {
-    const cases: [string, string, string][] = [['ben-tre', 'bt-house-1', 'aa-house-red'], ['ben-tre', 'bt-house-2', 'aa-house-blue'], ['starter-valley', 'elder-hut', 'aa-house-brown']];
+    // (the Vietnam Odyssey towns use the oriental buildings since V28 — tests/v28_oriental.test.ts)
+    const cases: [string, string, string][] = [['starter-valley', 'elder-hut', 'aa-house-brown']];
     for (const [region, id, key] of cases) {
       const map = new ValleyMap(REGION_DEFS[region]);
       const o = objects(map).find((x) => x.id === id)!;

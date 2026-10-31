@@ -191,6 +191,8 @@
   92,
   96
  ],
+ "paved": [[76, 86, 92, 96]],
+ "town": "oriental",
  "lake": {
   "cx": 0,
   "cy": 64,
@@ -206,62 +208,21 @@
   }
  ],
  "buildings": [
-  {
-   "id": "ag-center",
-   "name": "Trung tâm Pokémon",
-   "x": 70,
-   "y": 84,
-   "w": 6,
-   "h": 4,
-   "roof": "red",
-   "wall": "stone",
-   "door": 2
-  },
-  {
-   "id": "ag-mart",
-   "name": "Cửa hàng",
-   "x": 92,
-   "y": 84,
-   "w": 5,
-   "h": 4,
-   "roof": "grey",
-   "wall": "wood",
-   "door": 2
-  },
-  {
-   "id": "ag-camp",
-   "name": "Lều nhóm khảo sát",
-   "x": 62,
-   "y": 40,
-   "w": 4,
-   "h": 3,
-   "roof": "grey",
-   "wall": "wood",
-   "door": 1
-  }
+  {"id": "ag-center", "name": "Trung tâm Pokémon", "x": 70, "y": 84, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "ag-mart", "name": "Cửa hàng", "x": 92, "y": 84, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2, "style": "oriental"},
+  {"id": "ag-camp", "name": "Lều nhóm khảo sát", "x": 62, "y": 40, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "an-giang-gate", "name": "Cổng tam quan Thị trấn Bảy Núi", "x": 87, "y": 83, "w": 4, "h": 1, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "an-giang-pho-1", "name": "Hiệu thuốc bắc", "x": 77, "y": 83, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"}
  ],
  "fences": [],
  "props": [
-  {
-   "kind": "bucket",
-   "x": 66,
-   "y": 43
-  },
-  {
-   "kind": "haystack",
-   "x": 92,
-   "y": 96
-  },
-  {
-   "kind": "bucket",
-   "x": 69,
-   "y": 88
-  },
-  {
-   "kind": "log",
-   "x": 60,
-   "y": 30
-  }
+  {"kind": "bucket", "x": 66, "y": 43},
+  {"kind": "haystack", "x": 92, "y": 96},
+  {"kind": "bucket", "x": 69, "y": 88},
+  {"kind": "log", "x": 60, "y": 30},
+  {"kind": "lantern", "x": 77, "y": 95},
+  {"kind": "lantern", "x": 86, "y": 84},
+  {"kind": "bonsai", "x": 61, "y": 44}
  ],
  "signs": [
   {

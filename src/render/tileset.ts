@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { AA_ART, AA_DIR, type AaKey, worldArtKey, COLS, EX, SCALE, TILE, TILE_PX, TILESET_ROWS, TOWN } from '../core/map/tiles';
 import type { MapObject } from '../core/map/mapProvider';
+import { addOrientalArt } from './orientalArt';
 
 // Builds the composite 'ow_tiles' texture: Kenney Tiny Town + Tiny Dungeon (CC0) + procedural
 // extras for things those packs lack (water + shores, tall grass, sand, rocky ground...).
@@ -23,8 +24,11 @@ export function preloadWorldArt(scene: Phaser.Scene): void {
   for (const [key, a] of Object.entries(AA_ART)) scene.load.image(key, AA_DIR + a.file);
 }
 
-/** The Adventure Awaits image of a map object (cottage / old tree) at its anchor, or null: draw the tile fallback. */
+/** The image of a map object (Adventure Awaits cottage / old tree, oriental building / prop) at its anchor, or null: draw the tile fallback. */
 export function addWorldArt(scene: Phaser.Scene, o: MapObject): Phaser.GameObjects.Image | null {
+  // old oriental town buildings / street furniture (V28), drawn by code
+  const oriental = addOrientalArt(scene, o);
+  if (oriental) return oriental;
   const key: AaKey | null = worldArtKey(o);
   if (!key || !scene.textures.exists(key)) return null;
   // cottage: the footprint's bottom-left corner · tree: where the 1-tile tree's base stands
@@ -141,6 +145,23 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
       const tone = ['#c8bea8', '#bcb29c', '#d2c8b2'][Math.floor(rnd() * 3)];
       for (let y = y0; y < y0 + 3; y++) for (let x = Math.max(0, x0); x < Math.min(16, x0 + 7); x++) {
         dot(c, x, y, y === y0 ? '#e4dcc8' : x === x0 + 6 || y === y0 + 2 ? '#a89e88' : tone);
+      }
+    }
+  }
+
+  // Oriental town squares (V28): red-brown Bát Tràng bricks in a basket weave (pairs turned 90° per 8×8 block),
+  // light mortar; the second variant has a few worn, paler bricks
+  for (let v = 0; v < 2; v++) {
+    const c = cell(EX.brick + v);
+    fill(EX.brick + v, '#b88a6a');
+    const rnd = seeded(71 + v);
+    for (let by = 0; by < 2; by++) for (let bx = 0; bx < 2; bx++) {
+      const across = (bx + by) % 2 === 0;
+      for (let k = 0; k < 2; k++) {
+        const tone = v && rnd() < 0.25 ? '#c08066' : ['#b0644a', '#b86c50', '#a85e46'][Math.floor(rnd() * 3)];
+        const x0 = bx * 8 + (across ? 0 : k * 4), y0 = by * 8 + (across ? k * 4 : 0);
+        const w = across ? 7 : 3, h = across ? 3 : 7;
+        for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) dot(c, x0 + x, y0 + y, y === 0 || x === 0 ? '#c4805e' : y === h - 1 || x === w - 1 ? '#94503a' : tone);
       }
     }
   }

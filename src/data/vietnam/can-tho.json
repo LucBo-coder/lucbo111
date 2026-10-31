@@ -23,15 +23,32 @@
   { "w": 2, "pts": [[30, 62], [26, 40], [22, 16]] }
  ],
  "plaza": [78, 58, 98, 74],
+ "paved": [[78, 58, 98, 74]],
+ "town": "oriental",
  "lake": { "cx": 128, "cy": 6, "rx": 66, "ry": 26 },
  "islands": [{ "cx": 106, "cy": 10, "rx": 10, "ry": 6 }, { "cx": 78, "cy": 11, "rx": 4, "ry": 3 }],
  "buildings": [
-  { "id": "ct-center", "name": "Trung tâm Pokémon", "x": 78, "y": 59, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
-  { "id": "ct-mart", "name": "Cửa hàng", "x": 90, "y": 59, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
-  { "id": "ct-station", "name": "Trạm vườn cò", "x": 26, "y": 20, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1 }
+  {"id": "ct-center", "name": "Trung tâm Pokémon", "x": 78, "y": 59, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "ct-mart", "name": "Cửa hàng", "x": 90, "y": 59, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2, "style": "oriental"},
+  {"id": "ct-station", "name": "Trạm vườn cò", "x": 26, "y": 20, "w": 4, "h": 3, "roof": "grey", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "can-tho-gate", "name": "Cổng tam quan Bến Ninh Kiều", "x": 92, "y": 55, "w": 4, "h": 1, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"}
  ],
  "fences": [],
- "props": [{ "kind": "haystack", "x": 44, "y": 50 }, { "kind": "haystack", "x": 14, "y": 46 }, { "kind": "bucket", "x": 42, "y": 98 }, { "kind": "log", "x": 112, "y": 98 }, { "kind": "haystack", "x": 20, "y": 66 }, { "kind": "bucket", "x": 86, "y": 74 }, { "kind": "log", "x": 26, "y": 82 }],
+ "props": [
+  {"kind": "haystack", "x": 44, "y": 50},
+  {"kind": "haystack", "x": 14, "y": 46},
+  {"kind": "bucket", "x": 42, "y": 98},
+  {"kind": "log", "x": 112, "y": 98},
+  {"kind": "haystack", "x": 20, "y": 66},
+  {"kind": "bucket", "x": 86, "y": 74},
+  {"kind": "log", "x": 26, "y": 82},
+  {"kind": "lantern", "x": 97, "y": 59},
+  {"kind": "lantern", "x": 79, "y": 73},
+  {"kind": "lantern", "x": 97, "y": 73},
+  {"kind": "lantern", "x": 91, "y": 56},
+  {"kind": "lantern", "x": 96, "y": 56},
+  {"kind": "bonsai", "x": 25, "y": 24}
+ ],
  "signs": [
   { "x": 86, "y": 70, "text": ["BẾN NINH KIỀU — CẦN THƠ", "Bến nằm nơi sông Cần Thơ đổ ra sông Hậu. Phía bắc: bờ sông Hậu · Phía đông nam: Chợ nổi Cái Răng · Phía tây nam: miệt vườn · Phía tây: đồng lúa, đường về An Giang."] },
   { "x": 92, "y": 44, "text": ["SÔNG HẬU", "Nhánh lớn của sông Mê Kông. Phía xa là Cầu Cần Thơ bắc qua sông Hậu, khánh thành năm 2010.", "Đò ra Cồn Sơn ở bến phía trước. (Chúa Sông Hậu trong game là sinh vật giả tưởng.)"] },

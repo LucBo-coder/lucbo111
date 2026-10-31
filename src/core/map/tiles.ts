@@ -69,6 +69,8 @@ export const EX = {
   roofTeal: { tl: 442, t: 443, tr: 444, bl: 445, b: 446, br: 447 },
   /** wall tiles carrying a sign above the door: Pokémon Center (Poké Ball) / Mart, on stone or wood */
   signCenter: { stone: 448, wood: 449 }, signMart: { stone: 450, wood: 451 },
+  /** old oriental town squares (V28): red Bát Tràng brick in a basket weave — 2 variants */
+  brick: 452,
 } as const;
 export const TILESET_ROWS = 38;
 

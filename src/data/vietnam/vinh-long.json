@@ -265,6 +265,8 @@
   92,
   58
  ],
+ "paved": [[64, 40, 92, 58]],
+ "town": "oriental",
  "lake": {
   "cx": 100,
   "cy": -4,
@@ -280,116 +282,31 @@
   }
  ],
  "buildings": [
-  {
-   "id": "vl-center",
-   "name": "Trung tâm Pokémon",
-   "x": 66,
-   "y": 41,
-   "w": 6,
-   "h": 4,
-   "roof": "red",
-   "wall": "stone",
-   "door": 2
-  },
-  {
-   "id": "vl-mart",
-   "name": "Cửa hàng",
-   "x": 82,
-   "y": 41,
-   "w": 5,
-   "h": 4,
-   "roof": "grey",
-   "wall": "wood",
-   "door": 2
-  },
-  {
-   "id": "vl-temple",
-   "name": "Văn Thánh Miếu",
-   "x": 45,
-   "y": 41,
-   "w": 7,
-   "h": 4,
-   "roof": "teal",
-   "wall": "stone",
-   "door": 3
-  },
-  {
-   "id": "vl-kiln-1",
-   "name": "Lò gạch",
-   "x": 12,
-   "y": 78,
-   "w": 5,
-   "h": 3,
-   "roof": "red",
-   "wall": "stone",
-   "door": 2
-  },
-  {
-   "id": "vl-kiln-2",
-   "name": "Lò gạch",
-   "x": 30,
-   "y": 96,
-   "w": 5,
-   "h": 3,
-   "roof": "red",
-   "wall": "stone",
-   "door": 2
-  },
-  {
-   "id": "vl-kiln-3",
-   "name": "Lò gốm",
-   "x": 46,
-   "y": 76,
-   "w": 5,
-   "h": 3,
-   "roof": "red",
-   "wall": "stone",
-   "door": 2
-  },
-  {
-   "id": "vl-homestay",
-   "name": "Nhà vườn An Bình",
-   "x": 96,
-   "y": 4,
-   "w": 5,
-   "h": 3,
-   "roof": "grey",
-   "wall": "wood",
-   "door": 2
-  }
+  {"id": "vl-center", "name": "Trung tâm Pokémon", "x": 66, "y": 41, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "vl-mart", "name": "Cửa hàng", "x": 82, "y": 41, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2, "style": "oriental"},
+  {"id": "vl-temple", "name": "Văn Thánh Miếu", "x": 45, "y": 41, "w": 7, "h": 4, "roof": "teal", "wall": "stone", "door": 3, "style": "oriental"},
+  {"id": "vl-kiln-1", "name": "Lò gạch", "x": 12, "y": 78, "w": 5, "h": 3, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "vl-kiln-2", "name": "Lò gạch", "x": 30, "y": 96, "w": 5, "h": 3, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "vl-kiln-3", "name": "Lò gốm", "x": 46, "y": 76, "w": 5, "h": 3, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "vl-homestay", "name": "Nhà vườn An Bình", "x": 96, "y": 4, "w": 5, "h": 3, "roof": "grey", "wall": "wood", "door": 2, "style": "oriental"},
+  {"id": "vinh-long-gate", "name": "Cổng tam quan Bến Vĩnh Long", "x": 66, "y": 61, "w": 4, "h": 1, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"}
  ],
  "fences": [],
  "props": [
-  {
-   "kind": "haystack",
-   "x": 16,
-   "y": 44
-  },
-  {
-   "kind": "bucket",
-   "x": 22,
-   "y": 88
-  },
-  {
-   "kind": "log",
-   "x": 38,
-   "y": 100
-  },
-  {
-   "kind": "haystack",
-   "x": 30,
-   "y": 62
-  },
-  {
-   "kind": "bucket",
-   "x": 90,
-   "y": 56
-  },
-  {
-   "kind": "log",
-   "x": 101,
-   "y": 11
-  }
+  {"kind": "haystack", "x": 16, "y": 44},
+  {"kind": "bucket", "x": 22, "y": 88},
+  {"kind": "log", "x": 38, "y": 100},
+  {"kind": "haystack", "x": 30, "y": 62},
+  {"kind": "bucket", "x": 90, "y": 56},
+  {"kind": "log", "x": 101, "y": 11},
+  {"kind": "lantern", "x": 91, "y": 41},
+  {"kind": "lantern", "x": 65, "y": 57},
+  {"kind": "lantern", "x": 65, "y": 62},
+  {"kind": "lantern", "x": 70, "y": 62},
+  {"kind": "stone-lantern", "x": 45, "y": 46},
+  {"kind": "stone-lantern", "x": 51, "y": 46},
+  {"kind": "bonsai", "x": 12, "y": 82},
+  {"kind": "bonsai", "x": 96, "y": 8}
  ],
  "signs": [
   {

@@ -4,6 +4,7 @@ import { SHRINES, shrineCells, type ShrineDef } from '../shrines';
 import type { SecretDef } from '../secrets';
 import { AreaDef, MapObject, MapProvider, SpawnEntry } from './mapProvider';
 import { DUNGEON, EX, T, TILE_PX, TOWN } from './tiles';
+import { gateSolid, orientalKindOf, roofPalOf } from './oriental';
 
 // Starter Valley: authored layout (JSON) + deterministic procedural detail (noise).
 // Terrain is computed lazily per tile and memoised in a compact byte array; render objects
@@ -43,15 +44,21 @@ export interface RegionDef {
   areas: AreaDef[];
   paths: { w: number; pts: number[][] }[];
   plaza: [number, number, number, number];
+  /** Paved squares (V28): every tile of these rects [x0, y0, x1, y1] is town paving (Plaza) unless it is water */
+  paved?: number[][];
+  /** 'oriental' (V28): the town's paving is red Bát Tràng brick instead of grey slabs */
+  town?: 'oriental';
   lake: { cx: number; cy: number; rx: number; ry: number };
   /** Land inside the lake / sea (islands, e.g. Phú Quốc) — the ring of an island is beach */
   islands?: { cx: number; cy: number; rx: number; ry: number }[];
   /**
    * Houses built from Tiny Town roof / wall tiles — or, with style 'cottage', one Adventure Awaits cottage image
-   * (3 wide, door in the middle column: w 3, door 1; the roof rises above the footprint; `color` = roof colour)
+   * (3 wide, door in the middle column: w 3, door 1; the roof rises above the footprint; `color` = roof colour) —
+   * or, with style 'oriental' (V28), an old oriental building drawn by code (core/map/oriental.ts): kind from the id /
+   * name (Pokémon Center, mart, temple, house, gate — a gate blocks only its two pillars), roof glaze from `roof`
    */
   buildings: { id: string; name: string; x: number; y: number; w: number; h: number; roof: 'red' | 'grey' | 'gold' | 'teal'; wall: 'wood' | 'stone'; door: number;
-    style?: 'cottage'; color?: CottageColor }[];
+    style?: 'cottage' | 'oriental'; color?: CottageColor }[];
   fences: number[][];
   props: { kind: string; x: number; y: number }[];
   signs: { x: number; y: number; text: string[] }[];
@@ -120,6 +127,8 @@ export type BigTree = 'round' | 'wide';
 
 const PROP_TILE: Record<string, number> = {
   well: TOWN.well, beehive: TOWN.beehive, haystack: TOWN.haystack, log: TOWN.log, target: TOWN.target, bucket: TOWN.bucket,
+  // oriental street furniture (V28): drawn as images, these tiles are only the fallback
+  lantern: TOWN.sign, 'stone-lantern': TOWN.well, bonsai: TOWN.bucket, incense: TOWN.bucket,
 };
 
 const UNKNOWN = 255;
@@ -203,8 +212,11 @@ export class ValleyMap implements MapProvider {
       }
       // a cottage is drawn as one image (AdventureScene); the tile grid stays as its fallback
       const cottage = b.style === 'cottage' ? { cottage: b.color ?? (b.roof === 'red' ? 'red' : 'blue') } : {};
-      this.add({ kind: 'building', id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, tiles, data: { name: b.name, doorX: b.x + b.door, doorY: b.y + b.h - 1, ...cottage } });
-      for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) this.solid.add(this.key(x, y));
+      const kind = b.style === 'oriental' ? orientalKindOf(b.id, b.name) : null;
+      const oriental = kind ? { oriental: kind, roofPal: roofPalOf(b.roof), door: b.door } : {};
+      this.add({ kind: 'building', id: b.id, x: b.x, y: b.y, w: b.w, h: b.h, tiles, data: { name: b.name, doorX: b.x + b.door, doorY: b.y + b.h - 1, ...cottage, ...oriental } });
+      if (kind === 'gate') for (const [x, y] of gateSolid(b.x, b.y, b.w, b.h)) this.solid.add(this.key(x, y));
+      else for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) this.solid.add(this.key(x, y));
       this.clear.push({ x: b.x + b.w / 2, y: b.y + b.h / 2, r: Math.max(b.w, b.h) / 2 + 2 });
     }
     for (const [x1, y1, x2, y2] of d.fences) {
@@ -431,6 +443,7 @@ export class ValleyMap implements MapProvider {
       return theme === 'volcanic' ? T.Lava : T.Water;
     }
     if (this.onPath(tx, ty)) return tx >= px0 && tx <= px1 && ty >= py0 && ty <= py1 ? T.Plaza : T.Path;
+    if (this.def.paved?.some(([x0, y0, x1, y1]) => tx >= x0 && tx <= x1 && ty >= y0 && ty <= y1)) return T.Plaza;
     if (tx >= px0 && tx <= px1 && ty >= py0 && ty <= py1 && hash2(tx, ty, 9) < 0.08) return T.Flowers;
     const n = fbm(tx, ty, 7, 11);
     switch (area?.habitat) {
@@ -591,7 +604,7 @@ export class ValleyMap implements MapProvider {
       case T.Farm: return EX.farmland;
       case T.Deep: return EX.deepGrass;
       case T.Ruin: return hash2(tx, ty, 8) < 0.35 ? EX.ruin2 : EX.ruin;
-      case T.Plaza: return TOWN.plaza;
+      case T.Plaza: return this.def.town === 'oriental' ? (hash2(tx, ty, 12) < 0.3 ? EX.brick + 1 : EX.brick) : TOWN.plaza;
       case T.Flowers: return TOWN.grass[2];
       case T.Tuft: return TOWN.grass[1];
       case T.Path: {

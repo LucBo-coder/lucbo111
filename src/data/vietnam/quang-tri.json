@@ -23,24 +23,44 @@
   { "w": 3, "pts": [[40, 90], [16, 70]] }
  ],
  "plaza": [60, 52, 76, 64],
+ "paved": [[60, 52, 76, 64]],
+ "town": "oriental",
  "lake": { "cx": 150, "cy": 30, "rx": 34, "ry": 60 },
  "rivers": [
   { "w": 3, "pts": [[0, 86], [60, 86], [127, 88]] }
  ],
  "buildings": [
-  { "id": "qt-center", "name": "Trung tâm Pokémon", "x": 44, "y": 44, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2 },
-  { "id": "qt-mart", "name": "Cửa hàng Đồng Hới", "x": 84, "y": 44, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2 },
-  { "id": "qt-gate", "name": "Quảng Bình Quan", "x": 90, "y": 50, "w": 6, "h": 4, "roof": "gold", "wall": "stone", "door": 3 },
-  { "id": "qt-house-1", "name": "Nhà chú Hòa", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "blue" },
-  { "id": "qt-house-2", "name": "Quán cháo canh", "x": 90, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "cottage", "color": "red" }
+  {"id": "qt-center", "name": "Trung tâm Pokémon", "x": 44, "y": 44, "w": 6, "h": 4, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "qt-mart", "name": "Cửa hàng Đồng Hới", "x": 84, "y": 44, "w": 5, "h": 4, "roof": "grey", "wall": "wood", "door": 2, "style": "oriental"},
+  {"id": "qt-house-1", "name": "Nhà chú Hòa", "x": 46, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "oriental"},
+  {"id": "qt-house-2", "name": "Quán cháo canh", "x": 90, "y": 64, "w": 3, "h": 3, "roof": "red", "wall": "stone", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-gate", "name": "Cổng tam quan Thành phố Đồng Hới", "x": 63, "y": 67, "w": 5, "h": 1, "roof": "red", "wall": "stone", "door": 2, "style": "oriental"},
+  {"id": "quang-tri-pho-1", "name": "Hiệu thuốc bắc", "x": 65, "y": 49, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-pho-2", "name": "Tiệm trà", "x": 74, "y": 49, "w": 3, "h": 3, "roof": "grey", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-pho-3", "name": "Hiệu may áo dài", "x": 78, "y": 53, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-pho-4", "name": "Tiệm bánh", "x": 82, "y": 53, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-pho-5", "name": "Hiệu sách cũ", "x": 86, "y": 53, "w": 3, "h": 3, "roof": "grey", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-pho-6", "name": "Tiệm gốm", "x": 90, "y": 53, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"},
+  {"id": "quang-tri-pho-7", "name": "Tiệm đèn lồng", "x": 94, "y": 53, "w": 3, "h": 3, "roof": "red", "wall": "wood", "door": 1, "style": "oriental"}
  ],
  "fences": [],
  "props": [
-  { "kind": "well", "x": 56, "y": 68 },
-  { "kind": "log", "x": 24, "y": 56 },
-  { "kind": "bucket", "x": 104, "y": 30 },
-  { "kind": "target", "x": 52, "y": 22 },
-  { "kind": "haystack", "x": 76, "y": 100 }
+  {"kind": "well", "x": 56, "y": 68},
+  {"kind": "log", "x": 24, "y": 56},
+  {"kind": "bucket", "x": 104, "y": 30},
+  {"kind": "target", "x": 52, "y": 22},
+  {"kind": "haystack", "x": 76, "y": 100},
+  {"kind": "lantern", "x": 61, "y": 53},
+  {"kind": "lantern", "x": 61, "y": 63},
+  {"kind": "lantern", "x": 75, "y": 63},
+  {"kind": "lantern", "x": 62, "y": 68},
+  {"kind": "lantern", "x": 68, "y": 68},
+  {"kind": "bonsai", "x": 44, "y": 49},
+  {"kind": "bonsai", "x": 48, "y": 49},
+  {"kind": "bonsai", "x": 84, "y": 49},
+  {"kind": "bonsai", "x": 88, "y": 49},
+  {"kind": "bonsai", "x": 49, "y": 68},
+  {"kind": "bonsai", "x": 93, "y": 68}
  ],
  "signs": [
   { "x": 64, "y": 62, "text": ["THÀNH PHỐ ĐỒNG HỚI", "Phía tây bắc: Phong Nha — Kẻ Bàng · Phía bắc: biển Nhật Lệ · Phía đông: địa đạo Vịnh Mốc · Phía nam: cầu Hiền Lương, Thành cổ."] },
