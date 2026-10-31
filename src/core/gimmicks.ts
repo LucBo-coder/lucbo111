@@ -1,5 +1,6 @@
 import { POKEMON } from './data';
 import { evolutionsOf } from './evolution';
+import { effectiveness } from './typeChart';
 import type { PokeType, StatusKind } from './types';
 
 // Terastal and Dynamax / Gigantamax (V31) — pure rules, no Phaser (unit-tested).
@@ -255,5 +256,47 @@ export function gimmickGifts(bossesBeaten: number, has: (id: string) => boolean)
   const out: string[] = [];
   if (bossesBeaten >= TERA_ORB_AT && !has('tera-orb')) out.push('tera-orb');
   if (bossesBeaten >= DYNAMAX_BAND_AT && !has('dynamax-band')) out.push('dynamax-band');
+  return out;
+}
+
+// ───────────────────────────── trainers who use them (V31) ─────────────────────────────
+
+/** Ace level from which an NPC trainer Terastallizes / Dynamaxes (once per battle). */
+export const TRAINER_TERA_LEVEL = 30;
+export const TRAINER_DYNAMAX_LEVEL = 55;
+
+/** What a trainer of this strength brings: Dynamax for the strongest, Terastal from mid-game, nothing before. */
+export function trainerGimmick(aceLevel: number, species: string): 'dynamax' | 'tera' | null {
+  if (aceLevel >= TRAINER_DYNAMAX_LEVEL && !NO_DYNAMAX.has(species)) return 'dynamax';
+  return aceLevel >= TRAINER_TERA_LEVEL ? 'tera' : null;
+}
+
+/** When: its last Pokémon comes out, or the one on the field drops under half HP. */
+export function trainerGimmickNow(hpFrac: number, benchLeft: number): boolean {
+  return benchLeft === 0 || hpFrac < 0.5;
+}
+
+/**
+ * The Tera Type a trainer picks against the player's Pokémon: among its own types and the types of its moves, the one
+ * that takes the least from the foe's types; a tie goes to a type it has moves of (offence), then to its own type.
+ */
+export function pickTeraType(own: readonly PokeType[], moveTypes: readonly PokeType[], foe: readonly PokeType[] | null): PokeType {
+  const cands = [...new Set([...own, ...moveTypes])];
+  if (!foe?.length || !cands.length) return own[0] ?? 'normal';
+  const taken = (t: PokeType) => Math.max(...foe.map((f) => effectiveness(f, [t])));
+  const score = (t: PokeType) => taken(t) * 10 - (moveTypes.includes(t) ? 1 : 0) - (own.includes(t) ? 0.5 : 0);
+  return cands.reduce((a, b) => (score(b) < score(a) ? b : a));
+}
+
+// ───────────────────────────── Max Raid (V31) ─────────────────────────────
+
+/** A raid boss shrinks back (and can be caught) once its HP falls under this fraction. */
+export const RAID_SHRINK_AT = 0.25;
+export const RAID_HP_MULT = 10;
+
+/** Loot of a won Max Raid: Tera Shards always, Exp. Candy, and the Max Soup from a Gigantamax raid (else a chance). */
+export function raidRewards(gmax: boolean, roll: number): Record<string, number> {
+  const out: Record<string, number> = { 'tera-shard': gmax ? 5 : 3, 'exp-candy-m': 2 };
+  if (gmax || roll < 0.15) out['max-soup'] = 1;
   return out;
 }

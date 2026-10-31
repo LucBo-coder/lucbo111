@@ -7,8 +7,12 @@
   - Kích thước theo chiều cao chính thức của dạng Gigantamax (đối chiếu PokéAPI): tỉ lệ đúng tới 40 m, nén log phía trên. Thân vẫn chạy đủ animation PMD 8 hướng; viền năng lượng đỏ, khói đỏ, Gigantamax có vòng mây đỏ.
   - SpriteCollab chỉ có tư thế đứng (Idle) cho 2/33 dạng Gigantamax, không có Walk/Attack — nên giant dùng bộ animation đầy đủ của loài, phóng to.
 - **Primal Kyogre / Primal Groudon**: có Ngọc Lam / Ngọc Đỏ trong túi thì tự Hồi Quy Nguyên Thủy khi vào trận. Chỉ số theo PokéAPI; sprite PMD 8 hướng tải từ SpriteCollab (Walk, Idle, Attack, Shoot, Charge, Hurt + shiny), ảnh UI và icon từ PokeAPI/sprites; vẽ theo tỉ lệ chiều cao chính thức.
+- **Max Raid — Hang Dynamax** (sự kiện lớn, cần Vòng Dynamax): Pokémon hoang dã khổng lồ (HP ×10 rồi ×2, 40% là loài có dạng Gigantamax); đánh tới dưới 25% máu thì nó thu nhỏ và bắt được. Thưởng 3–5 Mảnh Tera, 2 Kẹo EXP M, Súp Max (chắc chắn ở Hang Gigantamax, 15% ở hang thường); bắt từ Hang Gigantamax thì Pokémon mang luôn Nhân Tố Gigantamax.
+- **HLV dùng Tera / Dynamax**: con mạnh nhất từ Lv30 → Terastal (chọn Hệ Tera chịu đòn tốt nhất trước Pokémon của bạn, trong hệ của nó và hệ chiêu của nó), từ Lv55 → Dynamax (Gigantamax nếu loài có), một lần mỗi trận — khi tung con cuối hoặc con trên sân dưới nửa máu.
+- **Duel online**: Tera (Y) và Dynamax (B) cùng Mega (G) — mỗi bên 1 biến đổi mỗi trận như game gốc; Dynamax 30 s; Hệ Tera và Nhân Tố Gigantamax đi theo Pokémon trong bộ sưu tập; máy khách nhận trạng thái qua snapshot. Đối thủ luyện tập cũng biết Dynamax / Tera.
+- **Hướng dẫn** (K): trang mới *Mega · Tera · Dynamax · Primal* — cách nhận từng vật phẩm và cách lên từng dạng.
 - HUD hiện trạng thái TERA / DYNAMAX dưới dòng MEGA; dùng Mảnh Tera / Súp Max từ Túi; bảng phím (K) thêm Y và B; co-op đồng bộ trạng thái Tera / Dynamax.
-- `src/core/gimmicks.ts` (luật thuần). Test `v31_gimmicks` (unit) và e2e `v31_gimmicks`.
+- `src/core/gimmicks.ts` (luật thuần). Test `v31_gimmicks` (unit) và e2e `v31_gimmicks` (2 kịch bản).
 
 ## Chưa phát hành — V30: Hệ thống nhiệm vụ, mạch nhiệm vụ Việt Nam, hướng dẫn trong game
 

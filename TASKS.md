@@ -119,7 +119,8 @@ Trạng thái theo V6: IMPLEMENTED+TESTED · PARTIAL · DATA ONLY · NOT IMPLEME
 - [x] National Dex Gen 5–9 — xong ở 0.11.0 (1025 loài)
 - [x] IMPLEMENTED+TESTED — EV (0.12.0): yield PokéAPI 1025 loài, 252/510, Power item, Macho Brace, 6 vitamin, 6 berry giảm EV, hiển thị chi tiết Pokémon
 - [x] IMPLEMENTED+TESTED — Dynamax/Gigantamax, Tera, Primal (T31-1 … T31-3)
-- [ ] NOT IMPLEMENTED — Z-Move, Max Raid
+- [x] IMPLEMENTED+TESTED — Max Raid, HLV dùng Tera/Dynamax, Tera/Dynamax trong Duel (T31-4 … T31-6)
+- [ ] NOT IMPLEMENTED — Z-Move (để sau)
 - [ ] NOT IMPLEMENTED — Survivor Equipment (Core/Armor/Relic), Crafting, Battle Rulesets, LegendaryQuestManager 7 giai đoạn, Regional Festivals
 - [x] IMPLEMENTED+TESTED — Held items: thêm Life Orb / Choice Band·Specs·Scarf / Assault Vest / Rocky Helmet / Eviolite / Sitrus / Focus Sash (0.12.0)
 - [x] IMPLEMENTED+TESTED — Hộ chiếu: tab riêng (phím P), dấu "ĐÃ ĐẾN" + ngày đến lần đầu, khu vực / nhiệm vụ / HLV / rương / trạm / câu đố / giải cứu / boss / địa danh / huy hiệu từng tỉnh (0.12.0)
@@ -216,6 +217,9 @@ Trạng thái: `[x]` đã làm + build + unit + e2e · `[~]` một phần · `[ 
 | T31-1 | **Terastal**: phím Y, Quả Cầu Tera (boss thứ 2), 60 s / hồi 90 s, đổi hệ phòng thủ, STAB Tera ×2 / ×1,5, sàn 60; Mảnh Tera đổi hệ; lớp pha lê + vương miện | `core/gimmicks.ts`, `core/damage.ts`, `World.terastallize`, `AdventureScene.tryTera`, `WorldRenderer.gimmickFx` | [x] | unit `v31_gimmicks`; e2e `v31_gimmicks` | — |
 | T31-2 | **Dynamax / Gigantamax**: phím B, Vòng Dynamax (boss thứ 4), 30 s, HP ×2, Chiêu Max (bảng gốc, trần ×1,6) + hiệu ứng 18 hệ, 32 dạng G-Max (chiều cao chính thức, Chiêu G-Max), Súp Max; phóng to theo chiều cao | `core/gimmicks.ts`, `World.dynamax` / `maxMoveEffect`, `AdventureScene.tryDynamax`, `WorldRenderer` | [x] | unit `v31_gimmicks`; e2e `v31_gimmicks` (Charizard ×4,48, mây đỏ, anim chạy) | Max Raid |
 | T31-3 | **Primal Kyogre / Groudon**: tự kích hoạt khi có Ngọc Lam / Ngọc Đỏ trong túi, trở lại sau trận; sprite PMD + ảnh PokeAPI; tỉ lệ chiều cao chính thức | `data/dex/megas.json`, `gimmicks.primalFormOf`, `AdventureScene.updateGimmicks`, `scripts/fetch-pmd-megas.py` | [x] | unit `v31_gimmicks`; e2e `v31_gimmicks` | — |
+| T31-4 | **Max Raid — Hang Dynamax**: sự kiện lớn, giant HP ×10 ×2, thu nhỏ dưới 25% → bắt; thưởng Mảnh Tera / Kẹo / Súp Max; Nhân Tố G-Max khi bắt từ hang G-Max | `core/worldEvents.ts`, `WorldEventController` (raid), `gimmicks.raidRewards` | [x] | unit `v31_gimmicks`; e2e `v31_gimmicks` (raid) | — |
+| T31-5 | **HLV dùng Tera / Dynamax**: Lv30+ Tera (chọn hệ khắc), Lv55+ Dynamax/G-Max, 1 lần mỗi trận | `gimmicks.trainerGimmick` / `pickTeraType`, `AdventureScene.trainerGimmick` | [x] | unit; e2e (Snorlax G-Max của HLV) | — |
+| T31-6 | **Duel: Tera / Dynamax** (Y / B), chung lượt biến đổi với Mega, Hệ Tera + Nhân Tố theo đội, đồng bộ snapshot | `World.duelTera` / `duelDynamax`, `net/duel.ts`, `net/protocol.ts`, `DuelScene`, `DuelUI` | [x] | unit (luật + mirror); e2e `v15_online` không vỡ | — |
 | T30-13 | **Bảng điều kiện hiếm trong Pokédex**: nút ✦ Điều kiện hiếm; nơi / giờ / thời tiết bằng tiếng Việt; dòng đang thỏa ở chỗ đứng sáng xanh; dòng điều kiện trên trang loài | `core/ecologyRules.ts` (`rareRows`), `SpawnManager.rareNow`, `AdventureUI.buildRareTable` | [x] | unit `v30_rare_table`; e2e `v30_rare_table` (U Minh, đêm mưa → Seviper) | — |
 
 Chạy lại dữ liệu cốt truyện sau khi sửa nội dung hoặc bản đồ: `npx tsx scripts/gen-story.ts` (dừng với lỗi nếu loài / vật phẩm không tồn tại, Pokémon nước đánh trên cạn, hay không tìm được ô đứng).

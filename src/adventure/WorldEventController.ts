@@ -13,6 +13,7 @@ import type { AdventureScene } from '../scenes/AdventureScene';
 import { MERCHANT_DISCOUNT, MerchantOffer, merchantStock, shopCatalogue } from '../core/shop';
 import { pickVariant, variantById, type RegionalVariant } from '../core/regionalEvents';
 import { audio } from '../systems/audio';
+import { GMAX, RAID_HP_MULT, RAID_SHRINK_AT, raidRewards } from '../core/gimmicks';
 
 // Gameplay of the random world events (Master Prompt V3 §VI). The director decides *when*; this class makes each
 // event real: spawns, movement, hazards, chests, goals, rewards, map markers and cleanup.
@@ -124,6 +125,24 @@ export class WorldEventController {
         ev.data.species = species; ev.goal = 1;
         this.track(ev, [u]);
         this.announce(`CẢNH BÁO: ${this.name(species)} Alpha Lv${u.level} đang lảng vảng ở ${region.name}!`, '#ff7060');
+        break;
+      }
+      case 'raid': {
+        // only once the player can answer a giant with a giant
+        if (this.scene.state.item('dynamax-band') <= 0) return this.abort(ev);
+        const rng = this.world.rng;
+        const gmaxPool = Object.keys(GMAX).filter((s) => ECOLOGY.has(s) && ECOLOGY.get(s)!.minLevel <= region.level[1] + 10);
+        const species = (ev.data.species as string | undefined) ?? (gmaxPool.length && rng.chance(0.4) ? rng.pick(gmaxPool) : this.pickSpecies(region, (e) => e.stage > 0 || e.rarity !== 'common'));
+        if (!species) return this.abort(ev);
+        const gmax = !!GMAX[species];
+        const u = this.world.spawnWild(species, Math.min(MAX_LEVEL, region.elite[1] + 4), p.x, p.y, {
+          wild: makeWildState(p.x, p.y, 'aggressive', { homeR: 120, aggroR: 300, leash: 600 }), hostile: false, tag: 'event:' + ev.uid, elite: true, hpMult: RAID_HP_MULT, noCapture: true,
+        });
+        u.flinchImmuneT = 1e9;
+        this.world.dynamax(u, gmax);
+        ev.data.species = species; ev.data.gmax = gmax; ev.goal = 1;
+        this.track(ev, [u]);
+        this.announce(`${gmax ? 'Hang Gigantamax' : 'Hang Dynamax'} phát sáng ở ${region.name}: ${this.name(species)} khổng lồ Lv${u.level}! Hạ nó cho tới khi nó thu nhỏ rồi ném bóng.`, '#ff6080');
         break;
       }
       case 'migration': {
@@ -278,6 +297,20 @@ export class WorldEventController {
       case 'alpha':
         if (!alive.length) this.end(ev, true);
         break;
+      case 'raid': {
+        if (!alive.length) { this.end(ev, true); break; }
+        const u = alive[0];
+        // the den's red light column
+        if (Math.random() < dt * 12) this.scene.renderer_.vfx.emit('dyna', (ev.data.x as number) + (Math.random() - 0.5) * 60, (ev.data.y as number) - Math.random() * 40, 1);
+        // worn down: it shrinks back to normal size and can be caught
+        if (u.dyna && u.hp / u.maxHp < RAID_SHRINK_AT) {
+          this.world.endDynamax(u);
+          u.noCapture = false;
+          ev.data.shrunk = true;
+          this.announce(`${u.name} thu nhỏ lại — ném bóng ngay!`, '#ffb0c0');
+        }
+        break;
+      }
       case 'ambush':
         if (!alive.length) this.end(ev, true);
         else if (Math.hypot(this.world.trainer.x - (ev.data.x as number), this.world.trainer.y - (ev.data.y as number)) > 1600) this.end(ev, false); // ran away
@@ -356,6 +389,10 @@ export class WorldEventController {
         if (ev.progress >= ev.goal) this.end(ev, true);
       } else if (ev.type === 'alpha' && mine) {
         ev.data.captured = captured;
+      } else if (ev.type === 'raid' && mine && captured && ev.data.gmax) {
+        // caught from a Gigantamax den: it keeps the Gigantamax Factor (the newest member of that species)
+        const p = [...this.scene.state.save.collection].reverse().find((c) => c.species === defId);
+        if (p) { p.gmax = true; this.scene.ui.banner(`${this.name(defId)} mang Nhân Tố Gigantamax!`, '#ff6080'); }
       } else if (ev.type === 'migration' && mine && captured) {
         this.scene.state.addItems({ ultraball: 1 });
         this.scene.ui.banner('Bắt được Pokémon di cư! +1 Ultra Ball', '#a0e0ff');
@@ -382,6 +419,12 @@ export class WorldEventController {
     if (completed) {
       switch (ev.type) {
         case 'outbreak': st.addItems({ greatball: 5 }); st.earn(800); lines.push('+5 Great Ball', `+800 ${st.unit}`); break;
+        case 'raid': {
+          const loot = raidRewards(!!ev.data.gmax, this.world.rng.next());
+          st.addItems(loot); st.earn(2000);
+          lines.push(...Object.entries(loot).map(([id, n]) => `+${n} ${ITEMS[id]?.name ?? id}`), `+2000 ${st.unit}`);
+          break;
+        }
         case 'alpha': { const loot = this.world.rng.pick(TREASURE_LOOT); st.addItems({ [loot]: 1 }); st.earn(1500); lines.push(`+1 ${ITEMS[loot]?.name ?? loot}`, `+1500 ${st.unit}`); break; }
         case 'ambush': st.earn(700 + (region?.danger ?? 1) * 200); st.addItems({ superpotion: 1 }); lines.push(`+${700 + (region?.danger ?? 1) * 200} ${st.unit}`, '+1 Super Potion'); break;
         case 'treasure': st.addItems({ [ev.data.loot as string]: 1, ultraball: 3 }); st.earn(1200); lines.push(`+1 ${ITEMS[ev.data.loot as string]?.name ?? ev.data.loot}`, '+3 Ultra Ball', `+1200 ${st.unit} (cổ vật)`); break;

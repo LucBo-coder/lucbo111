@@ -4,10 +4,14 @@ import { POKEMON } from '../src/core/data';
 import { ITEM_DEFS, megaFormsOf } from '../src/core/evolution';
 import {
   canDynamax, canTera, DYNAMAX_BAND_AT, DYNAMAX_HP_MULT, giantScale, gimmickGifts, GMAX, gmaxLine, MAX_MOVE_MULT_CAP, MAX_MOVES,
-  maxMoveMult, maxMoveOf, maxMovePower, primalFormOf, primalScale, TERA_ORB_AT, TERA_SHARD_COST, teraPower, teraStab, teraTypeOf,
+  maxMoveMult, maxMoveOf, maxMovePower, pickTeraType, primalFormOf, primalScale, raidRewards, TERA_ORB_AT, TERA_SHARD_COST, teraPower, teraStab, teraTypeOf,
+  TRAINER_DYNAMAX_LEVEL, TRAINER_TERA_LEVEL, trainerGimmick, trainerGimmickNow,
 } from '../src/core/gimmicks';
+import { EVENT_DEFS } from '../src/core/worldEvents';
+import { buildDuel, DuelMirror, packSnapshot, RULESETS, validateParty } from '../src/net/duel';
+import type { DuelMon } from '../src/net/protocol';
 import { categoryOf } from '../src/core/shop';
-import { World } from '../src/core/world';
+import { STEP, World } from '../src/core/world';
 import { AdventureState, ITEMS } from '../src/adventure/AdventureState';
 import { defaultSave } from '../src/systems/saveSchema';
 import type { PokeType } from '../src/core/types';
@@ -193,5 +197,68 @@ describe('the bag', () => {
     expect(categoryOf('tera-shard')).toBe('battle');
     expect(categoryOf('max-soup')).toBe('battle');
     expect(categoryOf('tera-orb')).toBeNull();
+  });
+});
+
+describe('trainers, Max Raid and duels (V31)', () => {
+  it('trainers: Terastal from Lv30, Dynamax from Lv55, when the last one comes out or under half HP', () => {
+    expect(trainerGimmick(20, 'charizard')).toBeNull();
+    expect(trainerGimmick(TRAINER_TERA_LEVEL, 'charizard')).toBe('tera');
+    expect(trainerGimmick(TRAINER_DYNAMAX_LEVEL, 'charizard')).toBe('dynamax');
+    expect(trainerGimmick(90, 'zacian')).toBe('tera');
+    expect(trainerGimmickNow(0.9, 0)).toBe(true);
+    expect(trainerGimmickNow(0.4, 2)).toBe(true);
+    expect(trainerGimmickNow(0.9, 2)).toBe(false);
+  });
+
+  it('a trainer picks the Tera Type that takes least from your Pokémon, among its own and its moves\' types', () => {
+    // Charizard (Fire/Flying, a Dragon move) against a Water Pokémon: Dragon resists Water
+    expect(pickTeraType(['fire', 'flying'], ['fire', 'dragon'], ['water'])).toBe('dragon');
+    // against Grass: Fire resists it and Charizard has Fire moves
+    expect(pickTeraType(['fire', 'flying'], ['fire', 'dragon'], ['grass'])).toBe('fire');
+    expect(pickTeraType(['water'], [], null)).toBe('water');
+  });
+
+  it('Max Raid loot: Tera Shards always, Max Soup from a Gigantamax den (else 15 %)', () => {
+    expect(raidRewards(true, 0.9)).toMatchObject({ 'tera-shard': 5, 'max-soup': 1 });
+    expect(raidRewards(false, 0.9)['max-soup']).toBeUndefined();
+    expect(raidRewards(false, 0.1)['max-soup']).toBe(1);
+    expect(EVENT_DEFS.raid.major).toBe(true);
+  });
+
+  it('duel: one transformation per side (Mega, Tera or Dynamax), the giant shrinks after 30 s', () => {
+    const w = new World({ mode: 'adventure', seed: 1, width: 1600, height: 1000, pvp: {} });
+    const zard = w.addPokemon('charizard', { level: 50 });
+    zard.gmaxFactor = true;
+    w.addPokemon('blastoise', { level: 50, rival: true });
+    expect(w.duelDynamax(w.home, zard)).toBe(true);
+    expect(zard.dyna?.gmax).toBe(true);
+    expect(w.duelTera(w.home, zard)).toBe(false);
+    expect(zard.dyna!.until! - w.time).toBeCloseTo(30);
+    zard.dyna!.until = w.time; // fast-forward to the end of the 30 s
+    w.step(STEP);
+    expect(zard.dyna).toBeFalsy();
+    expect(w.duelTera(w.home, zard)).toBe(false); // already used this duel
+    const r = w.rival!.allies[0];
+    r.teraPick = 'grass';
+    expect(w.duelTera(w.rival!, r)).toBe(true);
+    expect(r.types).toEqual(['grass']);
+  });
+
+  it('duel wire: the Tera Type / Gigantamax Factor travel with the team, the guest mirrors the transformation', () => {
+    const rules = RULESETS.standard;
+    const host: DuelMon[] = [{ species: 'charizard', level: 50, gmax: true, teraType: 'dragon' }];
+    const guest: DuelMon[] = [{ species: 'blastoise', level: 50 }];
+    expect(validateParty(host, rules)).toEqual([]);
+    expect(validateParty([{ species: 'charizard', level: 50, teraType: 'cosmic' }], rules)).toHaveLength(1);
+    const b = buildDuel(7, rules, host, guest);
+    const zard = b.order[0][1];
+    expect(zard.teraPick).toBe('dragon');
+    expect(b.world.duelTera(b.world.home, zard)).toBe(true);
+    const mirror = new DuelMirror(7, rules, host, guest, b.roster);
+    mirror.push(packSnapshot(b.world, 1), 0);
+    const m = mirror.unit(zard.id)!;
+    expect(m.tera?.type).toBe('dragon');
+    expect(m.types).toEqual(['dragon']);
   });
 });

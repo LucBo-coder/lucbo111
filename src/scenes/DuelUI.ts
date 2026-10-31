@@ -30,6 +30,8 @@ export class DuelUI extends Phaser.Scene {
   private bannerLife = 0;
   private cmdButtons: Button[] = [];
   private megaBtn!: Button;
+  private teraBtn!: Button;
+  private dynaBtn!: Button;
   /** field Pokémon picked to leave on the next switch */
   private picked: Unit | null = null;
   private result: Phaser.GameObjects.Container | null = null;
@@ -97,6 +99,8 @@ export class DuelUI extends Phaser.Scene {
       this.cmdButtons.push(b);
     });
     this.megaBtn = button(this, W - 150 * s, H - 30 * s, 110 * s, 40 * s, 'G  MEGA', () => this.duel.megaAny(), 0x7a2f6a);
+    this.teraBtn = button(this, W - 150 * s, H - 76 * s, 110 * s, 40 * s, 'Y  TERA', () => this.duel.teraAny(), 0x2f6a7a);
+    this.dynaBtn = button(this, W - 50 * s, H - 76 * s, 80 * s, 40 * s, 'B  MAX', () => this.duel.dynaAny(), 0x7a2f40);
     button(this, W - 50 * s, H - 30 * s, 80 * s, 40 * s, 'Hàng', () => this.duel.forfeit(), 0x6a2f2f);
     text(this, 12 * s, H - 76 * s, 'Chạm Pokémon đối thủ: cả đội tấn công nó · Chạm con dự bị để đổi (Z X C) · WASD di chuyển', 14 * s, COLORS.dim);
     // active skills of the focused Pokémon: tap = use now · right-click / long-press = keep it for yourself
@@ -159,7 +163,7 @@ export class DuelUI extends Phaser.Scene {
         if (r.icon.texture.key !== key && this.textures.exists(key)) r.icon.setTexture(key);
         r.icon.setVisible(true).setScale(fitScale(this, r.icon.texture.key, 34 * s)).setAlpha(u.fainted ? 0.35 : onField ? 1 : 0.7);
         r.name.setText(`${u.name} Lv${u.level}`);
-        r.state.setText(u.fainted ? 'Gục' : onField ? (u.megaFrom ? 'MEGA' : 'Sân') : 'Dự bị');
+        r.state.setText(u.fainted ? 'Gục' : onField ? (u.megaFrom ? 'MEGA' : u.tera ? 'TERA' : u.dyna ? (u.dyna.gmax ? 'G-MAX' : 'MAX') : 'Sân') : 'Dự bị');
         const f = u.fainted ? 0 : u.hp / u.maxHp;
         g.fillStyle(0x301818, 1).fillRect(x + 44 * s, y + 26 * s, 168 * s, 8 * s);
         g.fillStyle(f > 0.5 ? 0x50d060 : f > 0.2 ? 0xf0c030 : 0xf04040, 1).fillRect(x + 44 * s, y + 26 * s, 168 * s * f, 8 * s);
@@ -170,6 +174,9 @@ export class DuelUI extends Phaser.Scene {
     this.cmdButtons.forEach((b, i) => b.container.setAlpha(mine.command === CMDS[i].id ? 1 : 0.62));
     const megaOk = !mine.megaUsed && mine.allies.some((u) => !u.fainted && d.canMega(u));
     this.megaBtn.container.setAlpha(megaOk ? 1 : 0.35);
+    const gimOk = !mine.megaUsed && mine.allies.some((u) => !u.fainted && !u.megaFrom);
+    this.teraBtn.container.setAlpha(gimOk ? 1 : 0.35);
+    this.dynaBtn.container.setAlpha(gimOk ? 1 : 0.35);
     if (mine.switchCd > 0) {
       g.fillStyle(0x000000, 0.5).fillRect(10 * s, 52 * s + 6 * 46 * s, 220 * s, 18 * s);
       g.fillStyle(0x80b0ff, 1).fillRect(10 * s, 52 * s + 6 * 46 * s, 220 * s * (1 - mine.switchCd / 4), 18 * s);

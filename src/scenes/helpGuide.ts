@@ -108,4 +108,19 @@ export const HELP_PAGES: HelpPage[] = [
       'Hầm ngục: qua các đợt quái, câu đố rồi đánh boss cuối để nhận thưởng.',
     ],
   },
+  {
+    id: 'forms', title: 'Mega · Tera · Dynamax · Primal',
+    lines: [
+      'Mỗi Pokémon chỉ một biến đổi một lúc, và chỉ khi đang chiến đấu. HUD góc phải dưới báo dòng nào đang sẵn sàng.',
+      'MEGA (phím G): hạ Mega Venusaur ở Thung lũng (Phiêu lưu cổ điển) để nhận Vòng Mega; Pokémon cầm đúng đá Mega (cửa hàng, kệ Đá Mega). 90 giây.',
+      'TERA (phím Y): Quả Cầu Tera tự đến khi bạn hạ boss thứ 2 (thần hộ vệ tỉnh, huyền thoại hay Mega Venusaur đều tính). Pokémon đang ra sân khoác pha lê Hệ Tera 60 giây: chỉ còn Hệ Tera để phòng thủ, chiêu cùng hệ mạnh hơn.',
+      'Đổi Hệ Tera: mua 10 Mảnh Tera (cửa hàng, kệ Chiến đấu) hoặc thắng Max Raid → Túi → Mảnh Tera → chọn Pokémon → chọn hệ.',
+      'DYNAMAX (phím B): Vòng Dynamax tự đến khi hạ boss thứ 4. Pokémon hóa khổng lồ 30 giây, HP ×2, mọi chiêu thành Chiêu Max có hiệu ứng phụ.',
+      'GIGANTAMAX: Pokémon cần Nhân Tố Gigantamax — cho ăn Súp Max (cửa hàng, hoặc phần thưởng Max Raid), dùng được cho cả dòng tiến hóa (Charmander cũng được), hoặc bắt từ Hang Gigantamax. Khi Dynamax nó thành dạng G-Max cao đúng như Pokédex, có Chiêu G-Max riêng. 32 loài: Venusaur, Charizard, Blastoise, Pikachu, Snorlax, Gengar, Lapras, Eevee…',
+      'MAX RAID: có Vòng Dynamax thì thỉnh thoảng một Hang Dynamax phát sáng đỏ (sự kiện, phím V). Đánh con khổng lồ tới khi nó thu nhỏ rồi ném bóng. Thưởng Mảnh Tera, Kẹo EXP, Súp Max.',
+      'PRIMAL: có Ngọc Lam (Kyogre) / Ngọc Đỏ (Groudon) trong túi — thánh vật của đền huyền thoại — thì Kyogre / Groudon của bạn tự Hồi Quy Nguyên Thủy khi vào trận.',
+      'HLV mạnh cũng biết dùng: từ cấp 30 họ Terastal (chọn hệ khắc Pokémon của bạn), từ cấp 55 họ Dynamax — khi tung con cuối hoặc con trên sân còn dưới nửa máu.',
+      'Đấu online (Duel): mỗi bên được 1 biến đổi mỗi trận — Mega (G), Tera (Y) hoặc Dynamax (B). Hệ Tera và Nhân Tố Gigantamax đi theo Pokémon trong bộ sưu tập.',
+    ],
+  },
 ];

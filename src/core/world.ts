@@ -22,7 +22,7 @@ import { BossPhaseManager, phaseConfigFor, PhaseSnapshot } from './bossPhases';
 import { RayState, rayAirborne, rayCancel, rayquazaThink } from './bosses/rayquaza';
 import { BallSnapshot, FIELD, restoredCooldown } from './fieldRules';
 import { pickLead } from './trainerAI';
-import { DYNAMAX_HP_MULT, DYNAMAX_RADIUS_MULT, MAX_EFFECT_COOLDOWN, maxMoveMult, maxMoveOf, type MaxEffect } from './gimmicks';
+import { DYNAMAX_DURATION, DYNAMAX_HP_MULT, DYNAMAX_RADIUS_MULT, GMAX, MAX_EFFECT_COOLDOWN, maxMoveMult, maxMoveOf, NO_DYNAMAX, type MaxEffect } from './gimmicks';
 
 export const STEP = 1 / 60;
 export const WORLD_W = 3200;
@@ -212,8 +212,11 @@ export interface Unit {
   megaFrom: string | null;
   /** While Terastallized (V31): the Tera Type (= its only type now) and the types to go back to */
   tera?: { type: PokeType; from: PokeType[] } | null;
-  /** While Dynamaxed (V31): Gigantamax form or not, world time the next Max Move side effect may trigger */
-  dyna?: { gmax: boolean; nextEffect: number } | null;
+  /** While Dynamaxed (V31): Gigantamax form or not, world time the next Max Move side effect may trigger, end (duel) */
+  dyna?: { gmax: boolean; nextEffect: number; until?: number } | null;
+  /** Duel (V31): the Tera Type it takes and whether it has the Gigantamax Factor (from the player's collection) */
+  teraPick?: PokeType | null;
+  gmaxFactor?: boolean;
 }
 
 export interface Projectile {
@@ -667,6 +670,27 @@ export class World {
     return true;
   }
 
+  /** Duel Terastal (V31): shares the side's one transformation per duel with Mega; lasts the whole duel. */
+  duelTera(side: Side, u: Unit): boolean {
+    if (!this.duel || side.megaUsed || !side.allies.includes(u) || u.fainted || u.megaFrom || u.tera || u.dyna) return false;
+    side.megaUsed = true;
+    const type = u.teraPick ?? u.types[0];
+    this.terastallize(u, type);
+    this.emit({ t: 'banner', text: `${u.name} Terastal!`, color: '#a0f0ff' });
+    return true;
+  }
+
+  /** Duel Dynamax / Gigantamax (V31): the side's one transformation; shrinks back after DYNAMAX_DURATION. */
+  duelDynamax(side: Side, u: Unit): boolean {
+    if (!this.duel || side.megaUsed || !side.allies.includes(u) || u.fainted || u.megaFrom || u.tera || u.dyna || NO_DYNAMAX.has(u.defId)) return false;
+    side.megaUsed = true;
+    const gmax = !!u.gmaxFactor && !!GMAX[u.defId];
+    this.dynamax(u, gmax);
+    u.dyna!.until = this.time + DYNAMAX_DURATION;
+    this.emit({ t: 'banner', text: `${u.name} ${gmax ? 'Gigantamax' : 'Dynamax'}!`, color: '#ff6080' });
+    return true;
+  }
+
   /** The player side a unit belongs to (wild Pokémon, trainers' enemies and bosses: none). */
   sideOf(u: Unit): Side | null {
     if (this.companion && (u === this.companion.trainer || this.companion.allies.includes(u))) return this.companion;
@@ -1058,6 +1082,7 @@ export class World {
   // ───────────────────────────── main step ─────────────────────────────
 
   step(dt = STEP): void {
+    if (this.duel) for (const s of this.sides()) for (const a of s.allies) if (a.dyna?.until != null && this.time >= a.dyna.until) this.endDynamax(a);
     this.impactBudget = 12;
     if (this.state !== 'playing') return;
     this.steps++;

@@ -16,7 +16,7 @@ import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventur
 import { repShop, REP_DISCOUNT, SPECIALTY_TIER } from '../core/shop';
 import { canMega, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
 import { TYPE_VI } from '../core/synergy';
-import { canDynamax, canTera, DYNAMAX_COOLDOWN, DYNAMAX_DURATION, GIMMICK_IDLE_REVERT, gmaxOf, primalFormOf, TERA_COOLDOWN, TERA_DURATION, type GimmickCheck, type GimmickUnit } from '../core/gimmicks';
+import { canDynamax, canTera, NO_DYNAMAX, pickTeraType, trainerGimmick, trainerGimmickNow, DYNAMAX_COOLDOWN, DYNAMAX_DURATION, GIMMICK_IDLE_REVERT, gmaxOf, primalFormOf, TERA_COOLDOWN, TERA_DURATION, type GimmickCheck, type GimmickUnit } from '../core/gimmicks';
 import { DungeonController } from '../adventure/DungeonController';
 import { SpawnManager } from '../adventure/SpawnManager';
 import { BALL_ORDER, BallContext, ballMultiplier, BALLS, BallId, fleeChance, rollCapture, statusBonus, captureChance } from '../core/capture';
@@ -124,7 +124,11 @@ interface CaptureFx {
 }
 
 interface BenchMon { sp: string; lv: number; frac: number; types: PokeType[]; name: string }
-interface TrainerBattle { id: string; units: Unit[]; bench: BenchMon[]; potions: number; rematch: boolean; x: number; y: number; nextSend: number; think: number; size: number }
+interface TrainerBattle {
+  id: string; units: Unit[]; bench: BenchMon[]; potions: number; rematch: boolean; x: number; y: number; nextSend: number; think: number; size: number;
+  /** V31: what this trainer brings (by its ace's level), whether it was used, and when its giant shrinks back */
+  gimmick: 'tera' | 'dynamax' | null; gimmickUsed: boolean; dynaEnd: number;
+}
 
 /** A companion fetches a ripe berry bush within this distance of the trainer (px) */
 const ERRAND_RANGE = 260;
@@ -2435,7 +2439,9 @@ export class AdventureScene extends Phaser.Scene {
 
   private startTrainerBattle(tr: RegionDef['trainers'][number], it: Interactable, team: [string, number][], rematch: boolean): void {
     const bench: BenchMon[] = team.map(([sp, lv]) => ({ sp, lv, frac: 1, types: [...(POKEMON.get(sp)?.types ?? [])], name: POKEMON.get(sp)?.name ?? sp }));
-    this.battle = { id: tr.id, units: [], bench, potions: potionsFor(team.length, rematch), rematch, x: it.x, y: it.y, nextSend: 0, think: 0, size: team.length };
+    const ace = team.reduce((a, b) => (b[1] > a[1] ? b : a), team[0]);
+    this.battle = { id: tr.id, units: [], bench, potions: potionsFor(team.length, rematch), rematch, x: it.x, y: it.y, nextSend: 0, think: 0, size: team.length,
+      gimmick: ace ? trainerGimmick(ace[1], ace[0]) : null, gimmickUsed: false, dynaEnd: 0 };
     // lead with the first FIELD_MAX in team order (the trainer's signature opener)
     const lead: string[] = [];
     for (let i = 0; i < FIELD_MAX && bench.length; i++) lead.push(this.sendOut(0)!.name);
@@ -2484,7 +2490,7 @@ export class AdventureScene extends Phaser.Scene {
         if (!foe) continue;
         const k = pickSwitch(u, b.bench.map((m) => ({ types: m.types, hp: m.frac, maxHp: 1 })), foe.types);
         if (k < 0) continue;
-        const back: BenchMon = { sp: u.defId, lv: u.level, frac: u.hp / u.maxHp, types: [...u.types], name: u.name };
+        const back: BenchMon = { sp: u.defId, lv: u.level, frac: u.hp / u.maxHp, types: [...(u.tera?.from ?? u.types)], name: u.name };
         this.world.removeEnemy(u);
         const nu = this.sendOut(k);
         b.bench.push(back);
@@ -2492,6 +2498,7 @@ export class AdventureScene extends Phaser.Scene {
         break;
       }
     }
+    this.trainerGimmick(b, tr.name, now);
     // a slot opened (a Pokémon fainted): the next reserve comes out after a short pause, picked for the match-up
     const alive = b.units.filter((u) => u.alive).length;
     if (alive < FIELD_MAX && b.bench.length) {
@@ -2529,6 +2536,31 @@ export class AdventureScene extends Phaser.Scene {
     audio.play('victory');
     this.persist();
     void this.say(tr.name, tr.win, undefined, this.portraitOf(tr.id));
+  }
+
+  /**
+   * V31: a strong trainer Terastallizes (Tera Type picked against your Pokémon) or Dynamaxes once per battle — when its
+   * last Pokémon comes out or the one on the field falls under half HP. A giant shrinks back after DYNAMAX_DURATION.
+   */
+  private trainerGimmick(b: TrainerBattle, name: string, now: number): void {
+    const giant = b.units.find((u) => u.dyna);
+    if (giant && (now >= b.dynaEnd || !giant.alive)) this.world.endDynamax(giant);
+    if (!b.gimmick || b.gimmickUsed) return;
+    const u = b.units.find((v) => v.alive && trainerGimmickNow(v.hp / v.maxHp, b.bench.length));
+    if (!u) return;
+    b.gimmickUsed = true;
+    if (b.gimmick === 'dynamax' && !NO_DYNAMAX.has(u.defId)) {
+      const gmax = !!gmaxOf(u.defId);
+      this.world.dynamax(u, gmax);
+      b.dynaEnd = now + DYNAMAX_DURATION;
+      this.ui.banner(`${name}: ${u.name} ${gmax ? 'Gigantamax' : 'Dynamax'}!`, '#ff6080');
+    } else {
+      const type = pickTeraType(u.types, u.skills.filter((s) => s.def.power > 0).map((s) => s.def.type), this.battleFoe()?.types ?? null);
+      this.world.terastallize(u, type);
+      this.ui.banner(`${name}: ${u.name} Terastal — Hệ Tera ${TYPE_VI[type] ?? type}!`, '#a0f0ff');
+    }
+    this.cameras.main.flash(250, 255, 200, 220);
+    audio.play('boss');
   }
 
   /** Banner for a reputation milestone reached since the last check. */

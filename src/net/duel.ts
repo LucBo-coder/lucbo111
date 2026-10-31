@@ -5,7 +5,10 @@ import { ITEM_DEFS } from '../core/evolution';
 import { LEGENDS } from '../core/legends';
 import { individualOf, OwnedPokemon } from '../core/progression';
 import { NATURES, STAT_KEYS } from '../core/stats';
-import type { StatusKind, Team } from '../core/types';
+import type { PokeType, StatusKind, Team } from '../core/types';
+import { gmaxLine, MAX_MOVES } from '../core/gimmicks';
+
+const ALL_POKE_TYPES = Object.keys(MAX_MOVES) as PokeType[];
 import { Side, STEP, Unit, World, WorldEvent } from '../core/world';
 import type { DuelMon, DuelRules, PackedUnit, RosterUnit, Snapshot } from './protocol';
 import { applySkills, packSkills } from './skillWire';
@@ -43,7 +46,8 @@ export function isLegendary(species: string): boolean {
 /** Collection entries → wire format (IVs, nature, EVs, held item, shiny travel with them). */
 export function monFromOwned(p: OwnedPokemon): DuelMon {
   const ind = individualOf(p);
-  return { species: p.species, level: p.level, held: p.held ?? null, ivs: ind.ivs, nature: ind.nature, evs: p.evs, shiny: !!p.shiny, nickname: p.nickname };
+  return { species: p.species, level: p.level, held: p.held ?? null, ivs: ind.ivs, nature: ind.nature, evs: p.evs, shiny: !!p.shiny, nickname: p.nickname,
+    ...(p.teraType ? { teraType: p.teraType } : {}), ...(p.gmax ? { gmax: true } : {}) };
 }
 
 /**
@@ -63,6 +67,8 @@ export function validateParty(party: DuelMon[], rules: DuelRules): string[] {
     if (m.ivs && STAT_KEYS.some((k) => !Number.isInteger(m.ivs![k]) || m.ivs![k] < 0 || m.ivs![k] > 31)) err.push(`${def.name}: IV không hợp lệ`);
     if (m.evs && (STAT_KEYS.some((k) => !Number.isInteger(m.evs![k]) || m.evs![k] < 0 || m.evs![k] > EV_MAX_STAT) || evTotal(m.evs) > EV_MAX_TOTAL)) err.push(`${def.name}: EV vượt giới hạn`);
     if (m.nature && !NATURES[m.nature]) err.push(`${def.name}: tính cách không hợp lệ`);
+    if (m.teraType != null && !ALL_POKE_TYPES.includes(m.teraType as PokeType)) err.push(`${def.name}: Hệ Tera không hợp lệ`);
+    if (m.gmax != null && typeof m.gmax !== 'boolean') err.push(`${def.name}: Nhân Tố Gigantamax không hợp lệ`);
     if (m.held) { const it = ITEM_DEFS.get(m.held); if (!it || (it.kind !== 'held' && it.kind !== 'megaStone')) err.push(`${def.name}: vật phẩm không hợp lệ`); }
     if (!rules.allowLegends && isLegendary(m.species)) err.push(`${def.name}: luật này cấm huyền thoại`);
     if (rules.speciesClause) { if (seen.has(m.species)) err.push(`Trùng loài: ${def.name}`); seen.add(m.species); }
@@ -95,6 +101,8 @@ export function buildDuel(seed: number, rules: DuelRules, side0: DuelMon[], side
         ind: m.ivs && m.nature ? { ivs: m.ivs, nature: m.nature, evs: m.evs } : null,
       });
       if (m.nickname) u.name = m.nickname;
+      u.teraPick = (m.teraType as PokeType | undefined) ?? null;
+      u.gmaxFactor = !!m.gmax && gmaxLine(m.species);
       order[side].push(u);
     }
   });
@@ -117,7 +125,8 @@ export function packSnapshot(w: World, n: number): Snapshot {
       let mask = 0;
       for (const s of u.statuses) mask |= 1 << STATUS_KINDS.indexOf(s.kind);
       const flags = (u.fainted ? 1 : 0) | (u.hitFlash > 0 ? 2 : 0) | (u.castSlot >= 0 || u.animCast > 0 ? 4 : 0) | (u.dash ? 8 : 0) | (benched.has(u) ? 16 : 0) | (u.shield > 0 ? 32 : 0);
-      units.push([u.id, r1(u.x), r1(u.y), Math.round(u.hp), u.maxHp, flags, u.castSlot, Math.round(u.energy), u.facing, mask, u.lastSkill || undefined, u.megaFrom ? u.defId : undefined]);
+      const gim = u.tera ? 'T:' + u.tera.type : u.dyna ? (u.dyna.gmax ? 'G' : 'D') : undefined;
+      units.push([u.id, r1(u.x), r1(u.y), Math.round(u.hp), u.maxHp, flags, u.castSlot, Math.round(u.energy), u.facing, mask, u.lastSkill || undefined, u.megaFrom ? u.defId : undefined, gim]);
     }
   }
   return {
@@ -211,8 +220,13 @@ export class DuelMirror {
     for (const p of s.units) {
       const u = this.map.get(p[0]);
       if (!u) continue;
-      const [, , , hp, maxHp, flags, castSlot, energy, facing, mask, lastSkill, megaDef] = p;
+      const [, , , hp, maxHp, flags, castSlot, energy, facing, mask, lastSkill, megaDef, gim] = p;
       if (megaDef && u.defId !== megaDef && POKEMON.has(megaDef)) w.transformAlly(u, megaDef, { mega: true });
+      // Terastal / Dynamax mirrored from the host (HP comes with the snapshot right below)
+      if (gim?.startsWith('T:') && !u.tera) w.terastallize(u, gim.slice(2) as PokeType);
+      else if (!gim?.startsWith('T:') && u.tera) w.endTera(u);
+      if ((gim === 'D' || gim === 'G') && !u.dyna) w.dynamax(u, gim === 'G');
+      else if (gim !== 'D' && gim !== 'G' && u.dyna) w.endDynamax(u);
       u.hp = hp; u.maxHp = maxHp; u.fainted = !!(flags & 1); u.energy = energy; u.facing = -facing; u.castSlot = castSlot;
       if (flags & 2) u.hitFlash = 0.12;
       u.animCast = flags & 4 ? Math.max(u.animCast, 0.2) : 0;

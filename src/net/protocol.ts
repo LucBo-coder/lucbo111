@@ -17,6 +17,9 @@ export const PROTOCOL_VERSION = 3;
 export interface DuelMon {
   species: string;
   level: number;
+  /** V31: Tera Type chosen with Tera Shards / Gigantamax Factor, from the collection */
+  teraType?: string;
+  gmax?: boolean;
   held?: string | null;
   ivs?: Stats;
   nature?: string;
@@ -51,6 +54,9 @@ export type DuelAction =
   | { a: 'cmd'; cmd: AllyCommand; target?: number }
   | { a: 'switch'; out: number | null; inc: number | null }
   | { a: 'mega'; unit: number }
+  /** V31: Terastal / Dynamax (one transformation per side per duel, shared with Mega) */
+  | { a: 'tera'; unit: number }
+  | { a: 'dynamax'; unit: number }
   /** active skill: slot index or the AI's best pick, cast now (or after walking into range) */
   | { a: 'skill'; unit: number; slot: number | 'best' }
   /** skill slots kept for the player (bitmask): the AI stops using them */
@@ -77,7 +83,8 @@ export interface RosterUnit {
  * [id, x, y, hp, maxHp, flags, castSlot, energy, facing, statusMask, lastSkill?, defId?]
  * flags: 1 fainted · 2 hit flash · 4 casting/anim · 8 dash · 16 on bench · 32 shield
  */
-export type PackedUnit = [number, number, number, number, number, number, number, number, number, number, string?, string?];
+/** …, last skill, Mega form, gimmick (V31: 'T:<type>' Terastallized · 'D' Dynamax · 'G' Gigantamax) */
+export type PackedUnit = [number, number, number, number, number, number, number, number, number, number, string?, string?, string?];
 export interface Snapshot {
   /** host step number (monotonic) */
   n: number;

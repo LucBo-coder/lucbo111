@@ -120,6 +120,9 @@ PvP và khách co-op có cùng thanh kỹ năng và phím Q / T: lệnh gửi t�
   - **Gigantamax**: Pokémon có **Nhân Tố Gigantamax** (Súp Max, dùng cho cả dòng tiến hóa) thuộc 32 loài có dạng G-Max; chiêu cùng hệ thành **Chiêu G-Max** riêng (G-Max Wildfire thiêu đốt, G-Max Replenish hồi máu, G-Max Wind Rage hồi chiêu nhanh…).
   - Kích thước khớp nguyên tác: dạng Gigantamax theo **chiều cao chính thức** (Pokédex/PokéAPI: Charizard 28 m, Snorlax 35 m, Corviknight 14 m…), Dynamax thường tính 20 m. Đến 40 m, tỉ lệ giữa hai con đúng bằng tỉ lệ chiều cao (0,16× mỗi mét → Charizard ×4,48); trên 40 m (Centiskorch 75 m) tăng theo log để còn vừa màn hình. Thân phóng to từ từ, vẫn là bộ animation PMD 8 hướng đầy đủ của loài, viền năng lượng đỏ, khói đỏ bốc lên; Gigantamax thêm vòng mây đỏ quay quanh đầu.
   - Zacian, Zamazenta, Eternatus không Dynamax được. Mỗi Pokémon chỉ một biến đổi một lúc (Mega / Tera / Dynamax / Primal).
+- **Max Raid (V31)** — sự kiện *Hang Dynamax* (lớn, 300 s, hồi 900 s), chỉ khi đã có Vòng Dynamax: một Pokémon hoang dã khổng lồ cấp elite+4 (40% chọn loài có Gigantamax). Dưới 25% máu nó thu nhỏ → ném bóng. Thưởng Mảnh Tera, Kẹo EXP, Súp Max, 2000 tiền; bắt từ Hang Gigantamax có sẵn Nhân Tố.
+- **HLV NPC**: con mạnh nhất Lv30+ Terastal (hệ chịu đòn tốt nhất trước Pokémon người chơi), Lv55+ Dynamax/Gigantamax 30 s — một lần mỗi trận, khi ra con cuối hoặc dưới nửa máu.
+- **Duel**: mỗi bên một biến đổi mỗi trận (Mega G / Tera Y / Dynamax B).
 - **Hồi Quy Nguyên Thủy (V31)**: có **Ngọc Lam (Blue Orb)** / **Ngọc Đỏ (Red Orb)** trong túi (thánh vật của đền Kyogre/Groudon), Kyogre / Groudon của bạn tự thành **Primal Kyogre** (Nước, 100/150/90/180/160/90) / **Primal Groudon** (Đất/Lửa, 100/180/160/150/90/90) ngay khi vào trận, trở lại sau trận. Sprite PMD riêng 8 hướng; vẽ theo tỉ lệ chiều cao chính thức (Primal Kyogre 9,8 m / Kyogre 4,5 m → ×2,18; Primal Groudon 5 m / 3,5 m → ×1,43).
 
 ### 2.7 Đội & đồng đội

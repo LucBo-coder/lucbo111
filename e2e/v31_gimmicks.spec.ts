@@ -85,3 +85,46 @@ test('Terastal, Gigantamax and Primal Reversion in the field', async ({ page }) 
   await page.waitForFunction(() => (window as Win).__adv.world.allies.some((u: Win) => u.defId === 'kyogre'), undefined, { timeout: 20_000 });
   expect(errors).toEqual([]);
 });
+
+test('Max Raid den, a trainer who Dynamaxes, and the guide page', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(String(e)));
+  await page.goto('/?debug');
+  await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
+  await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true, 3, 'vietnam')`);
+  await ready(page, 'ca-mau');
+  await closeDialogues(page);
+  await ev(page, `(() => { const st = window.__adv.state; st.addItems({ 'dynamax-band': 1 }); const c = st.addPokemon('charizard', 80, 'gift'); })()`);
+  await setActive(page, 'charizard');
+
+  // Max Raid: a giant wild Pokémon, not catchable until it shrinks under 25 % HP
+  const raid = await ev<{ dyna: boolean; noCapture: boolean } | null>(page, `(() => { const a = window.__adv, we = a.worldEvents;
+    const r = we.currentRegion() ?? we.unlockedRegions()[0];
+    const ev = we.force('raid', r.id); const u = we.units.get(ev.uid)?.[0];
+    window.__raid = { ev, u }; return u ? { dyna: !!u.dyna, noCapture: u.noCapture } : null; })()`);
+  expect(raid).toEqual({ dyna: true, noCapture: true });
+  await ev(page, `(() => { const { u } = window.__raid, t = window.__adv.world.trainer; u.x = t.x + 200; u.y = t.y; u.hp = u.maxHp * 0.2; })()`);
+  await page.waitForFunction(() => { const u = (window as Win).__raid.u; return !u.dyna && !u.noCapture; }, undefined, { timeout: 5000 });
+  // beaten: the den pays Tera Shards
+  const shards0 = await ev<number>(page, `window.__adv.state.item('tera-shard')`);
+  await ev(page, `(() => { const { u } = window.__raid; window.__adv.world.applyDamage(u, 1e9, window.__adv.world.allies[0]); })()`);
+  await page.waitForFunction((s0) => (window as Win).__adv.state.item('tera-shard') > s0, shards0, { timeout: 8000 });
+
+  // a Lv60 trainer: its last Pokémon Dynamaxes as soon as it comes out
+  await ev(page, `(() => { const a = window.__adv, tr = a.regionDef.trainers[0], it = a.interactables.get(tr.id) ?? { x: a.world.trainer.x + 160, y: a.world.trainer.y };
+    a.startTrainerBattle(tr, it, [['snorlax', 60]], false); })()`);
+  await page.waitForFunction(() => (window as Win).__adv.battle?.units.some((u: Win) => u.dyna?.gmax), undefined, { timeout: 5000 });
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: test.info().outputPath('trainer-gmax-snorlax.png') });
+
+  // the guide explains how to get every form
+  await ev(page, `(() => { const u = ${ui}; u.closeMenu?.(); u.helpPage = 7; u.openMenu('help'); })()`);
+  await page.waitForTimeout(300);
+  const shown = await ev<string>(page, `(() => { const out = []; const walk = (o) => { if (o.text) out.push(o.text); (o.list ?? []).forEach(walk); };
+    ${ui}.children.list.forEach(walk); return out.join(' '); })()`);
+  expect(shown).toContain('Súp Max');
+  expect(shown).toContain('Quả Cầu Tera');
+  await page.screenshot({ path: test.info().outputPath('guide-forms.png') });
+  expect(errors).toEqual([]);
+});

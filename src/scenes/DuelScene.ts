@@ -120,6 +120,8 @@ export class DuelScene extends Phaser.Scene {
     const CMD: Record<string, AllyCommand> = { BACKTICK: 'auto', ONE: 'attack', TWO: 'defend', THREE: 'follow', FOUR: 'hold', FIVE: 'retreat' };
     for (const [k, c] of Object.entries(CMD)) kb.on('keydown-' + k, () => this.order(c));
     kb.on('keydown-G', () => this.megaAny());
+    kb.on('keydown-Y', () => this.teraAny());
+    kb.on('keydown-B', () => this.dynaAny());
     kb.on('keydown-Z', () => this.switchIn(0));
     kb.on('keydown-X', () => this.switchIn(1));
     kb.on('keydown-C', () => this.switchIn(2));
@@ -294,6 +296,24 @@ export class DuelScene extends Phaser.Scene {
     else this.ui()?.banner('Không có Pokémon nào Mega Tiến Hóa được (cần Mega Stone đúng loài, 1 lần mỗi trận)', '#ffb080');
   }
 
+  /** V31: Terastal / Dynamax the focused (else first standing) Pokémon — one transformation per duel, shared with Mega. */
+  private gimmickTarget(): Unit | null {
+    const f = this.focusAlly();
+    return f && !f.fainted ? f : this.mine.allies.find((a) => !a.fainted) ?? null;
+  }
+
+  teraAny(): void {
+    const u = this.gimmickTarget();
+    if (u && !this.mine.megaUsed && !u.megaFrom) this.act({ a: 'tera', unit: this.netId(u) });
+    else this.ui()?.banner('Đã dùng biến đổi của trận này (Mega / Tera / Dynamax: 1 lần mỗi trận)', '#ffb080');
+  }
+
+  dynaAny(): void {
+    const u = this.gimmickTarget();
+    if (u && !this.mine.megaUsed && !u.megaFrom) this.act({ a: 'dynamax', unit: this.netId(u) });
+    else this.ui()?.banner('Đã dùng biến đổi của trận này (Mega / Tera / Dynamax: 1 lần mỗi trận)', '#ffb080');
+  }
+
   canMega(u: Unit): boolean {
     if (this.mine.megaUsed || u.megaFrom) return false;
     return !!u.heldId && ITEM_MEGA[u.heldId] === u.defId;
@@ -378,6 +398,8 @@ export class DuelScene extends Phaser.Scene {
         break;
       }
       case 'mega': { const u = unit(a.unit); if (u) w.duelMega(side, u); break; }
+      case 'tera': { const u = unit(a.unit); if (u) w.duelTera(side, u); break; }
+      case 'dynamax': { const u = unit(a.unit); if (u) w.duelDynamax(side, u); break; }
       case 'skill': {
         const u = unit(a.unit);
         const slot = u && side.allies.includes(u) ? remoteSlot(u, a.slot) : null;
@@ -406,6 +428,11 @@ export class DuelScene extends Phaser.Scene {
     const w = this.world, r = w.rival!;
     const mega = r.allies.find((u) => !u.fainted && !r.megaUsed && u.heldId && ITEM_MEGA[u.heldId] === u.defId);
     if (mega) w.duelMega(r, mega);
+    // no Mega Stone: its strongest standing Pokémon Dynamaxes once it is hurt (or Terastallizes if it cannot)
+    else if (!r.megaUsed) {
+      const ace = r.allies.filter((u) => !u.fainted).sort((a, b) => b.level - a.level)[0];
+      if (ace && ace.hp / ace.maxHp < 0.6 && !w.duelDynamax(r, ace)) w.duelTera(r, ace);
+    }
     const hurt = r.allies.find((u) => !u.fainted && u.hp / u.maxHp < 0.25);
     const fresh = r.bench.find((b) => !b.fainted && b.hp / b.maxHp > 0.6);
     if (hurt && fresh && w.rng.chance(0.5)) w.duelSwitch(r, hurt, fresh);
