@@ -57,16 +57,44 @@ test('raid dens: G-Max raid won and caught, Tera raid lost on time', async ({ pa
   expect(won).toEqual({ species: 'charizard', gmax: true, soup: 1, paid: true, dens: 0 });
 
   // the caught Charizard Gigantamaxes with its own G-Max art
+  for (let i = 0; i < 20; i++) {
+    if (!await page.evaluate(() => !!(window as Win).__phaser.scene.getScene('AdvUI').dialogueLayer)) break;
+    await page.keyboard.press('e'); await page.waitForTimeout(200);
+  }
   await page.evaluate(() => {
     const a = (window as Win).__adv, p = a.state.save.collection.at(-1);
-    a.state.adv.party = [p.uid]; a.state.adv.activeUid = p.uid; a.state.adv.recalled = []; a.applyParty();
+    p.shiny = false; a.state.adv.party = [p.uid]; a.state.adv.activeUid = p.uid; a.state.adv.recalled = []; a.applyParty();
     const u = a.world.allies.find((x: Win) => x.ownerUid === p.uid);
     a.world.dynamax(u, true);
   });
   await page.waitForTimeout(1500);
   const art = await page.evaluate(() => (window as Win).__phaser.textures.exists('gmax-charizard'));
   expect(art).toBe(true);
+  // its animation sheet (idle / attack / hurt) is drawn from the picture and plays on the field
+  const anim = await page.evaluate(() => {
+    const a = (window as Win).__adv, p = a.state.save.collection.at(-1);
+    const u = a.world.allies.find((x: Win) => x.ownerUid === p.uid);
+    const v = a.renderer_.views.get(u.id);
+    const g = (window as Win).__phaser;
+    return { idle: g.anims.exists('gmax-charizard-anim:idle'), attack: g.anims.exists('gmax-charizard-anim:attack'), frames: g.textures.get('gmax-charizard-anim').frameTotal, playing: v?.fx?.art?.anims.currentAnim?.key };
+  });
+  expect(anim).toEqual({ idle: true, attack: true, frames: 15, playing: 'gmax-charizard-anim:idle' });
+  await page.waitForTimeout(2800); // the reward panel fades out
   await page.screenshot({ path: test.info().outputPath('gmax-art.png') });
+  await page.evaluate(() => {
+    const a = (window as Win).__adv, p = a.state.save.collection.at(-1);
+    const u = a.world.allies.find((x: Win) => x.ownerUid === p.uid);
+    a.renderer_.views.get(u.id).fx.art.play('gmax-charizard-anim:attack', true);
+    a.renderer_.views.get(u.id).fx.art.anims.pause();
+    a.renderer_.views.get(u.id).fx.art.anims.setCurrentFrame(a.renderer_.views.get(u.id).fx.art.anims.currentAnim.frames[2]);
+  });
+  await page.waitForTimeout(100);
+  await page.screenshot({ path: test.info().outputPath('gmax-attack.png') });
+  await page.evaluate(() => {
+    const a = (window as Win).__adv, p = a.state.save.collection.at(-1);
+    const u = a.world.allies.find((x: Win) => x.ownerUid === p.uid);
+    a.renderer_.views.get(u.id).fx.art.anims.resume();
+  });
 
   const lost = await page.evaluate(() => {
     const a = (window as Win).__adv, t = a.world.trainer;

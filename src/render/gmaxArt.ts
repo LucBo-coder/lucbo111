@@ -1,4 +1,5 @@
 import type Phaser from 'phaser';
+import { GMAX_FLAME, gmaxFrames } from './gmaxAnimFrames';
 
 // Gigantamax form art (V32): 96×96 front sprites of the 32 G-Max forms from the personal official pack
 // (scripts/fetch-gmax-sprites.mjs → public/assets/official/gmax/). PMDCollab has no Gigantamax sheets, so a
@@ -56,4 +57,57 @@ export function loadGmaxArt(species: string, shiny = false): Promise<void> {
     loading.set(key, p);
   }
   return p;
+}
+
+// ───────────────────────────── animation (V32) ─────────────────────────────
+
+export interface GmaxAnim {
+  texture: string;
+  idle: string;
+  attack: string;
+  hurt: string;
+  originX: number;
+  originY: number;
+  /** height of the source picture inside a frame (scale reference) */
+  artH: number;
+}
+
+const anims = new Map<string, GmaxAnim>();
+
+/**
+ * The animated sheet of a G-Max form (render/gmaxAnimFrames: idle / attack / hurt drawn from its picture), built the
+ * first time it is asked for once the picture is loaded; null until then (the loading starts here).
+ */
+export function gmaxAnim(species: string, shiny = false): GmaxAnim | null {
+  const scene = sceneRef;
+  const key = gmaxTexture(species, shiny);
+  if (!scene || !key) return null;
+  const hit = anims.get(key);
+  if (hit) return hit;
+  const src = scene.textures.get(key).getSourceImage() as HTMLImageElement | HTMLCanvasElement;
+  const c = document.createElement('canvas');
+  c.width = src.width; c.height = src.height;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.drawImage(src, 0, 0);
+  const f = gmaxFrames({ w: c.width, h: c.height, data: ctx.getImageData(0, 0, c.width, c.height).data }, GMAX_FLAME.has(species));
+  const texKey = key + '-anim';
+  const tex = scene.textures.exists(texKey) ? scene.textures.get(texKey) as Phaser.Textures.CanvasTexture : scene.textures.createCanvas(texKey, f.w * f.frames.length, f.h)!;
+  const tctx = tex.getContext();
+  f.frames.forEach((px, i) => {
+    tctx.putImageData(new ImageData(new Uint8ClampedArray(px), f.w, f.h), i * f.w, 0);
+    tex.add(i, 0, i * f.w, 0, f.w, f.h);
+  });
+  tex.refresh();
+  const mk = (name: string, frames: number[], rate: number, repeat: number) => {
+    const k = `${texKey}:${name}`;
+    if (!scene.anims.exists(k)) scene.anims.create({ key: k, frames: frames.map((frame) => ({ key: texKey, frame })), frameRate: rate, repeat });
+    return k;
+  };
+  const a: GmaxAnim = {
+    texture: texKey, idle: mk('idle', f.anims.idle, 8, -1), attack: mk('attack', f.anims.attack, 12, 0), hurt: mk('hurt', f.anims.hurt, 10, 0),
+    originX: f.originX, originY: f.originY, artH: c.height,
+  };
+  anims.set(key, a);
+  return a;
 }

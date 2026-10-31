@@ -14,7 +14,7 @@ import { TYPE_PROJECTILE_TEX } from './pixelArt';
 import { moveAssets } from './moveAssets';
 import { shinyKey } from './lazyCreatures';
 import { fieldScale, officialPack } from './spriteRegistry';
-import { gmaxTexture } from './gmaxArt';
+import { gmaxAnim } from './gmaxArt';
 import { Quality, VfxLibrary } from './vfx';
 
 // Shared world renderer used by Survivor and Adventure modes: unit sprites with derived-frame
@@ -45,7 +45,7 @@ export interface UnitView {
   /** Dynamax growth in progress (1 = normal size, eases toward the giant's scale and back) — V31 */
   grow?: number;
   /** Terastal / Dynamax overlays: coloured silhouette behind the body, crystal sheen in front, Tera crown, G-Max clouds */
-  fx?: { halo: Phaser.GameObjects.Sprite; sheen: Phaser.GameObjects.Sprite | null; crown: Phaser.GameObjects.Image | null; clouds: Phaser.GameObjects.Image[]; art?: Phaser.GameObjects.Image | null };
+  fx?: { halo: Phaser.GameObjects.Sprite; sheen: Phaser.GameObjects.Sprite | null; crown: Phaser.GameObjects.Image | null; clouds: Phaser.GameObjects.Image[]; art?: Phaser.GameObjects.Sprite | null };
   /** smoothed velocity for the PMD facing */
   svx?: number;
   svy?: number;
@@ -610,13 +610,19 @@ export class WorldRenderer {
     const fx = (v.fx ??= { halo: this.scene.add.sprite(body.x, body.y, body.texture.key, body.frame.name), sheen: null, crown: null, clouds: [] });
     // Gigantamax with the form's own art (render/gmaxArt): the picture stands in for the animated body, every
     // overlay below follows the picture; without the art the base species' sheet is simply drawn giant
-    const artKey = u.dyna?.gmax ? gmaxTexture(u.defId, !!u.shiny) : null;
-    if (artKey) {
-      const art = (fx.art ??= this.scene.add.image(body.x, body.y, artKey));
-      if (art.texture.key !== artKey) art.setTexture(artKey);
-      // as tall as the giant body stands above its feet, breathing slowly; the art faces left like the field sprites
-      const h = body.displayHeight * body.originY * 0.95, k = h / art.height;
-      art.setOrigin(0.5, 0.94).setPosition(body.x, body.y).setScale(k * (u.facing > 0 ? -1 : 1), k * (1 + Math.sin(now * 0.003 + u.id) * 0.015))
+    const ga = u.dyna?.gmax ? gmaxAnim(u.defId, !!u.shiny) : null;
+    if (ga) {
+      const art = (fx.art ??= this.scene.add.sprite(body.x, body.y, ga.texture, 0));
+      // its own animation: idle loop, a lunge when it attacks / casts, a recoil when hit (one-shots play to the end)
+      const st = unitAnim(u, Math.abs(u.vx) + Math.abs(u.vy) > 12);
+      const want = st === 'hit' ? ga.hurt : st === 'attack' || st === 'cast' ? ga.attack : ga.idle;
+      const cur = art.anims.currentAnim?.key;
+      const oneShot = art.anims.isPlaying && (cur === ga.attack || cur === ga.hurt);
+      if (cur !== want && (!oneShot || want === ga.hurt)) art.play(want, true);
+      else if (!art.anims.isPlaying) art.play(ga.idle, true);
+      // as tall as the giant body stands above its feet; the art faces left like the field sprites
+      const k = (body.displayHeight * body.originY * 0.95) / ga.artH;
+      art.setOrigin(ga.originX, ga.originY).setPosition(body.x, body.y).setScale(k * (u.facing > 0 ? -1 : 1), k)
         .setDepth(body.depth).setVisible(body.visible).setAlpha(body.alpha);
       art.tintFill = body.tintFill;
       if (body.isTinted) art.setTint(body.tintTopLeft); else art.clearTint();
