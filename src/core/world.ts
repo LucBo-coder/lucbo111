@@ -22,6 +22,7 @@ import { BossPhaseManager, phaseConfigFor, PhaseSnapshot } from './bossPhases';
 import { RayState, rayAirborne, rayCancel, rayquazaThink } from './bosses/rayquaza';
 import { BallSnapshot, FIELD, restoredCooldown } from './fieldRules';
 import { pickLead } from './trainerAI';
+import { DYNAMAX_HP_MULT, DYNAMAX_RADIUS_MULT, MAX_EFFECT_COOLDOWN, maxMoveMult, maxMoveOf, type MaxEffect } from './gimmicks';
 
 export const STEP = 1 / 60;
 export const WORLD_W = 3200;
@@ -209,6 +210,10 @@ export interface Unit {
   choiceLock: string | null;
   /** While Mega Evolved: the species to revert to */
   megaFrom: string | null;
+  /** While Terastallized (V31): the Tera Type (= its only type now) and the types to go back to */
+  tera?: { type: PokeType; from: PokeType[] } | null;
+  /** While Dynamaxed (V31): Gigantamax form or not, world time the next Max Move side effect may trigger */
+  dyna?: { gmax: boolean; nextEffect: number } | null;
 }
 
 export interface Projectile {
@@ -281,6 +286,8 @@ export type WorldEvent =
   /** Status feedback: applied status, or a combat outcome (miss, full paralysis, self-hit, wake up, thaw, immune) */
   | { t: 'status'; x: number; y: number; kind: StatusKind | 'miss' | 'fullPara' | 'selfHit' | 'wake' | 'thaw' | 'immune'; team: Team }
   | { t: 'shake'; intensity: number; duration: number }
+  /** a Max / G-Max Move landed with its side effect (V31) */
+  | { t: 'maxMove'; x: number; y: number; name: string; type: PokeType; gmax: boolean; text: string }
   /** Boss phase machine changed state (HUD: phase panel, cinematic, form change) */
   | { t: 'bossPhase'; id: number; phase: number; state: 'transition' | 'cinematic' | 'formChange' | 'ready' | 'active'; name: string; kind: string; banner: string; form?: string }
   /** A named boss skill winds up (HUD cast warning) */
@@ -405,6 +412,8 @@ export class World {
   env = { night: false, weather: 'clear' as WeatherKind };
   /** Weather-anomaly damage multipliers per move type (set by world events) */
   weatherMods: Partial<Record<PokeType, number>> = {};
+  /** Max Move fields (Max Flare's harsh sun, Max Geyser's rain…): type → boost and world time it ends (V31) */
+  maxFields: Partial<Record<PokeType, { mult: number; until: number }>> = {};
   private reviveTime: number;
   private hazardUnit: Unit | null = null;
   /** Per-boss tuned skill slots (boss patterns override radius/power of real moves) */
@@ -699,12 +708,76 @@ export class World {
     else if (!def.mega) u.megaFrom = null;
     u.defId = defId; u.name = def.name; u.types = [...def.types]; u.role = def.role; u.base = def.baseStats;
     u.moveSpeed = def.moveSpeed; u.attackRange = def.attackRange; u.critRate = def.critRate; u.radius = def.radius; u.passive = def.passive;
+    // a Terastallized / Dynamaxed Pokémon that changes species keeps its crystal / its giant size
+    if (u.tera) { u.tera.from = [...def.types]; u.types = [u.tera.type]; }
+    if (u.dyna) u.radius = def.radius * DYNAMAX_RADIUS_MULT;
     const oldLevels = u.skills.map((s) => s.level);
     u.skills = this.kit(defId, u.level).map((id, i) => ({ def: getSkill(id), cd: 0, level: oldLevels[i] ?? 1, powerBonus: 0 }));
     u.castSlot = -1; u.dash = null;
     if (u.kind === 'pokemon') this.refreshAllyStats(u, frac);
     else { u.stats = calcStats(u.base, u.level); u.hp = Math.max(1, Math.round(u.maxHp * frac)); }
     this.emit({ t: 'vfx', name: opts.mega ? 'mega' : 'evolve', x: u.x, y: u.y, r: 80 });
+  }
+
+  // ───────────────────────────── Terastal / Dynamax (V31, rules in core/gimmicks.ts) ─────────────────────────────
+
+  /** Terastal: the unit's only type becomes its Tera Type until endTera (STAB rules in computeDamage). */
+  terastallize(u: Unit, type: PokeType): void {
+    if (u.tera) return;
+    u.tera = { type, from: [...u.types] };
+    u.types = [type];
+    this.emit({ t: 'vfx', name: 'tera', x: u.x, y: u.y, r: 90, type });
+  }
+
+  endTera(u: Unit): void {
+    if (!u.tera) return;
+    u.types = [...u.tera.from];
+    u.tera = null;
+    this.emit({ t: 'vfx', name: 'tera_end', x: u.x, y: u.y, r: 60 });
+  }
+
+  /** Dynamax / Gigantamax: HP ×2 (the ratio is kept), a bigger hitbox, its moves become Max Moves until endDynamax. */
+  dynamax(u: Unit, gmax: boolean): void {
+    if (u.dyna) return;
+    const frac = u.hp / u.maxHp;
+    u.dyna = { gmax, nextEffect: 0 };
+    const def = POKEMON.get(u.defId);
+    u.radius = (def?.radius ?? u.radius) * DYNAMAX_RADIUS_MULT;
+    if (u.kind === 'pokemon') this.refreshAllyStats(u, frac);
+    else { u.maxHp *= DYNAMAX_HP_MULT; u.hp = Math.max(1, Math.round(u.maxHp * frac)); }
+    u.castSlot = -1; u.dash = null;
+    this.emit({ t: 'vfx', name: gmax ? 'gmax' : 'dynamax', x: u.x, y: u.y, r: 140 });
+    this.emit({ t: 'shake', intensity: 0.012, duration: 500 });
+  }
+
+  endDynamax(u: Unit): void {
+    if (!u.dyna) return;
+    const frac = u.hp / u.maxHp;
+    u.dyna = null;
+    u.radius = POKEMON.get(u.defId)?.radius ?? u.radius;
+    if (u.kind === 'pokemon') this.refreshAllyStats(u, frac);
+    else { u.maxHp = Math.round(u.maxHp / DYNAMAX_HP_MULT); u.hp = Math.max(u.fainted ? 0 : 1, Math.round(u.maxHp * frac)); }
+    this.emit({ t: 'vfx', name: 'dynamax_end', x: u.x, y: u.y, r: 100 });
+  }
+
+  /** Side effect of a Max / G-Max Move that just landed (at most every MAX_EFFECT_COOLDOWN s per giant). */
+  private maxMoveEffect(src: Unit, dst: Unit, type: PokeType): void {
+    if (!src.dyna || this.time < src.dyna.nextEffect) return;
+    src.dyna.nextEffect = this.time + MAX_EFFECT_COOLDOWN;
+    const m = maxMoveOf(src.defId, type, src.dyna.gmax);
+    const e: MaxEffect = m.effect;
+    const side = this.sideOf(src);
+    const team = side ? side.allies.filter((a) => a.alive && !a.fainted) : [src];
+    switch (e.kind) {
+      case 'foe': if (dst.alive && !dst.fainted) this.applyStatus(dst, { kind: e.status, chance: 1, duration: e.duration, magnitude: e.magnitude }, src); break;
+      case 'ally': for (const a of team) this.applyStatus(a, { kind: e.status, chance: 1, duration: e.duration, magnitude: e.magnitude }, src); break;
+      case 'shield': for (const a of team) { a.shield = Math.max(a.shield, a.maxHp * e.frac); a.shieldT = Math.max(a.shieldT, 6); } break;
+      case 'heal': for (const a of team) this.heal(a, a.maxHp * e.frac); break;
+      case 'haste': for (const a of team) for (const s of a.skills) s.cd = Math.max(0, s.cd - e.seconds); break;
+      case 'cleanse': for (const a of team) for (const st of [...a.statuses]) if (st.kind !== 'atkUp') this.cureStatus(a, st.kind); break;
+      case 'field': this.maxFields[e.type] = { mult: e.mult, until: this.time + e.duration }; break;
+    }
+    this.emit({ t: 'maxMove', x: dst.x, y: dst.y - dst.radius, name: m.name, type: m.type, gmax: m.gmax, text: e.text });
   }
 
   /** Reverts a Mega Evolved ally to its base form. */
@@ -878,7 +951,7 @@ export class World {
 
   private refreshAllyStats(u: Unit, frac = u.hp / u.maxHp): void {
     u.stats = calcStats(u.base, u.level, u.ind);
-    u.maxHp = Math.floor(u.stats.hp * 4 * (1 + this.mods.hpMult));
+    u.maxHp = Math.floor(u.stats.hp * 4 * (1 + this.mods.hpMult) * (u.dyna ? DYNAMAX_HP_MULT : 1));
     u.hp = Math.max(u.fainted ? 0 : 1, Math.round(u.maxHp * frac));
   }
 
@@ -2471,6 +2544,10 @@ export class World {
       if (atkUp) modifier *= 1 + atkUp.magnitude;
       const wm = this.weatherMods[s.type];
       if (wm) modifier *= wm;
+      const mf = this.maxFields[s.type];
+      if (mf && this.time < mf.until) modifier *= mf.mult;
+      // Dynamax: every move is a Max Move
+      if (src.dyna) modifier *= maxMoveMult(s.power, s.type);
       if (src.alpha) modifier *= 1.25;
       // Burn halves physical damage (Guts ignores it, as in the main series)
       if (s.category === 'physical' && this.hasStatus(src, 'burn') && src.passive?.kind !== 'guts') modifier *= 0.5;
@@ -2509,11 +2586,12 @@ export class World {
       const crit = src.critRate + (s.critBonus ?? 0) + (src.team === 'ally' ? this.mods.critBonus : 0) + (pv?.kind === 'critBonus' ? pv.value ?? 0 : 0) + (src.held?.type === 'crit' ? src.held.value ?? 0 : 0);
       const res = computeDamage({
         level: src.level, power: s.power, category: s.category, skillType: s.type,
-        attackerTypes: src.types, defenderTypes: dst.types,
+        attackerTypes: src.tera ? src.tera.from : src.types, defenderTypes: dst.types, teraType: src.tera?.type,
         atk: src.stats.atk, spa: src.stats.spa, def: dst.stats.def, spd: dst.stats.spd,
         critRoll: this.rng.next(), critRate: crit, varianceRoll: this.rng.next(), modifier,
       });
       this.applyDamage(dst, res.amount, src, res.crit, res.effectiveness);
+      if (src.dyna && res.amount > 0) this.maxMoveEffect(src, dst, s.type);
       if (he?.type === 'lifeOrb' && res.amount > 0 && src.heldCd <= 0 && !src.fainted) {
         src.heldCd = 0.6;
         const recoil = Math.min(src.hp - 1, src.maxHp * (he.value ?? 0.1));

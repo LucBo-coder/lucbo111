@@ -44,6 +44,8 @@ const PRESETS: Record<string, Preset> = {
   steel: { tex: 'p_star', tints: [0xd0d8f0, 0xffffff, 0x8890a8], speed: [100, 260], life: [150, 320] },
   fairy: { tex: 'p_star', tints: [0xffb0d0, 0xffffff, 0xffe0f0], speed: [30, 120], life: [400, 700], gravityY: -50, add: true },
   // utility presets
+  tera: { tex: 'p_star', tints: [0xffffff, 0xc0f4ff, 0xffe0ff], speed: [10, 50], life: [400, 800], gravityY: -40, add: true, scale: [1.1, 0] },
+  dyna: { tex: 'p_smoke', tints: [0xff2050, 0xff6080, 0xa01030], speed: [10, 50], life: [500, 900], gravityY: -90, add: true, scale: [1.4, 2.4] },
   dust: { tex: 'px4', tints: [0xe8e0d0, 0xc8c0b0], speed: [20, 90], life: [250, 550], scale: [1.6, 0] },
   heal: { tex: 'p_star', tints: [0x80ff90, 0xffffff], speed: [10, 50], life: [500, 800], gravityY: -120 },
   gold: { tex: 'px4', tints: [0xffe060, 0xffffff, 0xffa020], speed: [60, 300], life: [400, 900], add: true },
@@ -251,6 +253,19 @@ export class VfxLibrary {
         [0xff4060, 0xffc040, 0x60ff80, 0x40a0ff, 0xc060ff].forEach((c, i) => this.scene.time.delayedCall(i * 90, () => this.ring(x, y, 80 + i * 30, c, 600)));
         this.emit('fairy', x, y, 40);
         return;
+      case 'tera':
+        this.flash(x, y, 110, 0xffffff, 500);
+        this.ring(x, y, 70, 0xc0f4ff, 450);
+        this.scene.time.delayedCall(140, () => this.ring(x, y, 120, 0xffffff, 500));
+        this.emit('tera', x, y, 40);
+        return;
+      case 'tera_end': this.emit('ice', x, y, 18); this.emit('tera', x, y, 12); return;
+      case 'dynamax': case 'gmax':
+        this.flash(x, y, 160, 0xff3060, 700);
+        [0, 1, 2, 3].forEach((i) => this.scene.time.delayedCall(i * 120, () => this.ring(x, y, 90 + i * 45, name === 'gmax' ? 0xff1040 : 0xff5070, 650)));
+        this.emit('dyna', x, y - 20, name === 'gmax' ? 60 : 40);
+        return;
+      case 'dynamax_end': this.ring(x, y, 100, 0xff80a0, 450); this.emit('dyna', x, y, 20); return;
       case 'flame_beam': case 'water_beam': case 'solar_beam': case 'psy_beam': {
         const tint = name === 'flame_beam' ? 0xff7020 : name === 'water_beam' ? 0x60b0ff : name === 'solar_beam' ? 0xfff080 : 0xff70c0;
         this.beam(x, y, angle, len ?? 300, r, tint);

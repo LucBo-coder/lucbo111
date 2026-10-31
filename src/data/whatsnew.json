@@ -1,5 +1,16 @@
 [
   {
+    "id": "v31-gimmicks",
+    "title": "Terastal, Dynamax / Gigantamax và dạng Primal",
+    "items": [
+      "Phím Y — Terastal: Pokémon trên sân khoác lớp pha lê Hệ Tera trong 60 giây, đổi hệ và mạnh hơn với chiêu cùng hệ. Nhận Quả Cầu Tera sau boss thứ 2.",
+      "Phím B — Dynamax: Pokémon hóa khổng lồ 30 giây, HP ×2, mọi chiêu thành Chiêu Max có hiệu ứng riêng. Nhận Vòng Dynamax sau boss thứ 4.",
+      "Súp Max cho Nhân Tố Gigantamax: 32 loài thành dạng Gigantamax cao đúng như Pokédex (Charizard 28 m, Snorlax 35 m…) với Chiêu G-Max riêng.",
+      "Có Ngọc Lam / Ngọc Đỏ, Kyogre và Groudon tự Hồi Quy Nguyên Thủy khi vào trận.",
+      "Mảnh Tera (đổi Hệ Tera) và Súp Max bán ở kệ Chiến đấu."
+    ]
+  },
+  {
     "id": "v30-quests",
     "title": "Nhiệm vụ hợp lý hơn, mạch truyện Việt Nam, hướng dẫn trong game",
     "items": [

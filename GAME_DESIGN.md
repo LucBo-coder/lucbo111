@@ -111,6 +111,16 @@ PvP và khách co-op có cùng thanh kỹ năng và phím Q / T: lệnh gửi t�
   - Kích hoạt bằng phím **G** / nút **MEGA**.
   - Kéo dài tối đa 90 giây (tự trở lại khi rời giao tranh), hồi 120 giây, mỗi lúc chỉ 1 con.
   - Dạng Mega dùng chỉ số, hệ và đặc tính thật từ PokéAPI. Hiện có gần 50 đá Mega.
+- **Terastal (V31)** — phím **Y**, cần **Quả Cầu Tera** (nhận sau boss thứ 2):
+  - Pokémon đang trên sân mang **Hệ Tera** trong 60 s (hồi 90 s): hệ phòng thủ chỉ còn Hệ Tera; chiêu Hệ Tera được STAB (×2 nếu trùng hệ gốc), chiêu hệ gốc vẫn ×1,5; chiêu Hệ Tera yếu hơn 60 sức mạnh được nâng lên 60.
+  - Hệ Tera mặc định là hệ đầu của loài; 10 **Mảnh Tera** (cửa hàng, kệ Chiến đấu) đổi sang hệ bất kỳ.
+  - Hình: giữ nguyên kích thước, phủ lớp pha lê màu hệ (vẫn chạy đủ animation PMD) + vương miện ngọc trên đầu, hạt lấp lánh.
+- **Dynamax / Gigantamax (V31)** — phím **B**, cần **Vòng Dynamax** (nhận sau boss thứ 4):
+  - 30 s (hồi 150 s): HP ×2 (giữ tỉ lệ máu), thân va chạm ×1,5, mọi chiêu thành **Chiêu Max** — sức mạnh theo bảng gốc (40 → 90 … 150; Giác Đấu/Độc bảng thấp), tăng tối đa ×1,6 với chiêu nhanh. Mỗi hệ có hiệu ứng phụ (tối đa 2,5 s một lần): Max Flare nắng gắt / Max Geyser mưa… tăng chiêu cùng hệ 8 s, Max Knuckle tăng công đồng đội, Max Phantasm giảm thủ đối thủ, Max Overgrowth hồi máu, Max Starfall sạch trạng thái…
+  - **Gigantamax**: Pokémon có **Nhân Tố Gigantamax** (Súp Max, dùng cho cả dòng tiến hóa) thuộc 32 loài có dạng G-Max; chiêu cùng hệ thành **Chiêu G-Max** riêng (G-Max Wildfire thiêu đốt, G-Max Replenish hồi máu, G-Max Wind Rage hồi chiêu nhanh…).
+  - Kích thước khớp nguyên tác: dạng Gigantamax theo **chiều cao chính thức** (Pokédex/PokéAPI: Charizard 28 m, Snorlax 35 m, Corviknight 14 m…), Dynamax thường tính 20 m. Đến 40 m, tỉ lệ giữa hai con đúng bằng tỉ lệ chiều cao (0,16× mỗi mét → Charizard ×4,48); trên 40 m (Centiskorch 75 m) tăng theo log để còn vừa màn hình. Thân phóng to từ từ, vẫn là bộ animation PMD 8 hướng đầy đủ của loài, viền năng lượng đỏ, khói đỏ bốc lên; Gigantamax thêm vòng mây đỏ quay quanh đầu.
+  - Zacian, Zamazenta, Eternatus không Dynamax được. Mỗi Pokémon chỉ một biến đổi một lúc (Mega / Tera / Dynamax / Primal).
+- **Hồi Quy Nguyên Thủy (V31)**: có **Ngọc Lam (Blue Orb)** / **Ngọc Đỏ (Red Orb)** trong túi (thánh vật của đền Kyogre/Groudon), Kyogre / Groudon của bạn tự thành **Primal Kyogre** (Nước, 100/150/90/180/160/90) / **Primal Groudon** (Đất/Lửa, 100/180/160/150/90/90) ngay khi vào trận, trở lại sau trận. Sprite PMD riêng 8 hướng; vẽ theo tỉ lệ chiều cao chính thức (Primal Kyogre 9,8 m / Kyogre 4,5 m → ×2,18; Primal Groudon 5 m / 3,5 m → ×1,43).
 
 ### 2.7 Đội & đồng đội
 Đội tối đa 6 con.

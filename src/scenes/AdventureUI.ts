@@ -22,6 +22,10 @@ import { evolutionsOf, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions 
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
 import { rareRows, type RareRow } from '../core/ecologyRules';
+import { DYNAMAX_DURATION, gmaxLine, TERA_DURATION, TERA_SHARD_COST } from '../core/gimmicks';
+import { TYPE_VI } from '../core/synergy';
+import type { PokeType } from '../core/types';
+import { ALL_TYPES } from '../render/icons';
 import { REGION_DEFS } from '../core/map/regionDefs';
 import { passportPages, ProvincePage, VN_PROVINCES } from '../adventure/passport';
 import { LEGENDS } from '../core/legends';
@@ -230,6 +234,8 @@ export class AdventureUI extends Phaser.Scene {
     T('perf', 10, H - 8, 15, '#a0ffa0').setOrigin(0, 1);
     T('boss', W / 2, H - 58 * s, 22, '#ffb0a0').setOrigin(0.5, 1);
     T('mega', 0, 0, 18, '#ffb0ff').setOrigin(0.5, 0);
+    T('tera', 0, 0, 16, '#a0f0ff').setOrigin(0.5, 0);
+    T('dyna', 0, 0, 16, '#ff90a8').setOrigin(0.5, 0);
     T('money', 16 * s, H - 78 * s, 18, '#ffe066');
     T('online', W / 2, 62 * s, 16, '#ffd0a0').setOrigin(0.5, 0);
 
@@ -477,6 +483,18 @@ export class AdventureUI extends Phaser.Scene {
       const ready = !!st.ally && a.state.item('key-stone') > 0;
       this.setMegaText(a.state.item('key-stone') > 0 ? (ready ? '[G] MEGA sẵn sàng' : a.megaCd > 0 ? `MEGA hồi ${Math.ceil(a.megaCd)}s` : '') : '', mx + 5 * s, my);
     }
+    // Terastal / Dynamax HUD (V31): under the Mega line, only once the key item is in the bag
+    const gx = mx + 5 * s;
+    if (a.teraUnit) {
+      g.fillStyle(0x000000, 0.6).fillRect(mx - 80 * s, my + 30 * s, 170 * s, 22 * s);
+      g.fillStyle(0x80e8ff, 1).fillRect(mx - 78 * s, my + 48 * s, 166 * s * Math.max(0, a.teraT / TERA_DURATION), 3 * s);
+      this.texts.tera?.setText(`TERA ${TYPE_VI[a.teraUnit.tera?.type ?? 'normal']} · ${a.teraUnit.name} ${Math.ceil(a.teraT)}s`).setPosition(gx, my + 30 * s);
+    } else this.texts.tera?.setText(a.state.item('tera-orb') > 0 ? (a.teraStatus().ok ? '[Y] TERA sẵn sàng' : a.teraCd > 0 ? `TERA sạc ${Math.ceil(a.teraCd)}s` : '') : '').setPosition(gx, my + 30 * s);
+    if (a.dynaUnit) {
+      g.fillStyle(0x000000, 0.6).fillRect(mx - 80 * s, my + 54 * s, 170 * s, 22 * s);
+      g.fillStyle(0xff3060, 1).fillRect(mx - 78 * s, my + 72 * s, 166 * s * Math.max(0, a.dynaT / DYNAMAX_DURATION), 3 * s);
+      this.texts.dyna?.setText(`${a.dynaUnit.dyna?.gmax ? 'GIGANTAMAX' : 'DYNAMAX'} ${a.dynaUnit.name} ${Math.ceil(a.dynaT)}s`).setPosition(gx, my + 54 * s);
+    } else this.texts.dyna?.setText(a.state.item('dynamax-band') > 0 ? (a.dynaStatus().ok ? `[B] ${a.dynaStatus().gmax ? 'GIGANTAMAX' : 'DYNAMAX'} sẵn sàng` : a.dynaCd > 0 ? `DYNAMAX hồi ${Math.ceil(a.dynaCd)}s` : '') : '').setPosition(gx, my + 54 * s);
     this.texts.money?.setText(`${a.state.money} ${a.state.unit}`);
     this.skillBar.draw(g, !!(this.menu || this.dialogueLayer));
 
@@ -1415,6 +1433,35 @@ export class AdventureUI extends Phaser.Scene {
     else this.openMenu('bag');
   }
 
+  /** Tera Shards (new Tera Type) / Max Soup (Gigantamax Factor) on one Pokémon of the collection (V31). */
+  private async useGimmickItem(id: string): Promise<void> {
+    const st = this.adv.state;
+    this.closeMenu();
+    const name = (p: { species: string; nickname?: string }) => p.nickname || (POKEMON.get(p.species)?.name ?? p.species);
+    if (id === 'max-soup') {
+      const mons = st.save.collection.filter((p) => !p.gmax && gmaxLine(p.species));
+      if (!mons.length) { this.banner('Không có Pokémon nào thuộc dòng có dạng Gigantamax (hoặc đã có Nhân Tố)', '#ff9080'); this.openMenu('bag'); return; }
+      const r = await this.adv.say('Súp Max', ['Cho Pokémon nào ăn? Nó sẽ có Nhân Tố Gigantamax.'], [
+        ...mons.map((p) => ({ label: `${name(p)} Lv${p.level}`, value: p.uid })), { label: 'Hủy', value: 'no' }]);
+      if (r && r !== 'no' && st.giveMaxSoup(r)) { this.banner(`${name(st.owned(r)!)} đã có Nhân Tố Gigantamax!`, '#ff6080'); this.adv.persist(); }
+      this.openMenu('bag');
+      return;
+    }
+    if (st.item('tera-shard') < TERA_SHARD_COST) { this.banner(`Cần ${TERA_SHARD_COST} Mảnh Tera để đổi Hệ Tera`, '#ff9080'); this.openMenu('bag'); return; }
+    const mons = [...st.save.collection].sort((a, b) => Number(st.inParty(b.uid)) - Number(st.inParty(a.uid)) || b.level - a.level);
+    const uid = await this.adv.say('Mảnh Tera', [`Túi có ${st.item('tera-shard')} mảnh (đổi hệ tốn ${TERA_SHARD_COST}). Đổi Hệ Tera cho Pokémon nào?`], [
+      ...mons.slice(0, 12).map((p) => ({ label: `${name(p)} Lv${p.level} · Hệ Tera: ${TYPE_VI[st.teraType(p.uid)!]}`, value: p.uid })), { label: 'Hủy', value: 'no' }]);
+    if (!uid || uid === 'no') { this.openMenu('bag'); return; }
+    const cur = st.teraType(uid);
+    const type = await this.adv.say('Mảnh Tera', ['Chọn Hệ Tera mới:'], [
+      ...ALL_TYPES.filter((t) => t !== cur).map((t) => ({ label: TYPE_VI[t], value: t })), { label: 'Hủy', value: 'no' }]);
+    if (type && type !== 'no' && st.setTeraType(uid, type as PokeType)) {
+      this.banner(`Hệ Tera của ${name(st.owned(uid)!)} giờ là ${TYPE_VI[type as PokeType]}`, '#a0f0ff');
+      this.adv.persist();
+    }
+    this.openMenu('bag');
+  }
+
   private closeCandyDialog(): void {
     this.candyDialog?.destroy();
     this.candyDialog = null;
@@ -1642,6 +1689,7 @@ export class AdventureUI extends Phaser.Scene {
       else if (it.kind === 'held') { label = 'Trang bị'; fn = () => void this.pickEquipTarget(id); }
       else if (it.kind === 'ev') { label = 'Dùng'; fn = () => void this.pickEvTarget(id); }
       else if (it.kind === 'candy') { label = 'Dùng'; fn = () => void this.pickCandyTarget(id); }
+      else if (it.kind === 'gimmick') { label = 'Dùng'; fn = () => void this.useGimmickItem(id); }
       if (fn) c.add(button(this, x + cw - 62 * s, y + rh / 2, 110 * s, 32 * s, label, fn).container);
     });
     if (pages > 1) {

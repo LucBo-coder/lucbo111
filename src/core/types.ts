@@ -115,7 +115,8 @@ export interface PokemonDef {
   evolution: { into: string; level: number } | null;
   /** Mega forms: not catchable/spawnable, entered temporarily from `base` while holding `stone` */
   /** bossOnly: a form a boss changes into (Mega Rayquaza) — never reachable by the player */
-  mega?: { base: string; stone: string; bossOnly?: boolean };
+  /** Mega form (or, with `primal`, a Primal form: automatic in battle while its orb is in the bag — V31) */
+  mega?: { base: string; stone: string; bossOnly?: boolean; primal?: boolean };
   /** Original species not in PokeAPI (IcyEthics fakemon) */
   fakemon?: boolean;
   /** Produced by scripts/build-dex.mjs from PokéAPI data (not hand-tuned) */

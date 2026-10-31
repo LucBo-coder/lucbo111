@@ -140310,6 +140310,55 @@
    ],
    "heightDm": 11,
    "weightHg": 278
+  },
+  "kyogre-primal": {
+   "id": 10077,
+   "name": "kyogre-primal",
+   "baseSpecies": "kyogre",
+   "types": [
+    "water"
+   ],
+   "baseStats": {
+    "hp": 100,
+    "atk": 150,
+    "def": 90,
+    "spa": 180,
+    "spd": 160,
+    "spe": 90
+   },
+   "abilities": [
+    {
+     "name": "primordial-sea",
+     "hidden": false
+    }
+   ],
+   "heightDm": 98,
+   "weightHg": 4300
+  },
+  "groudon-primal": {
+   "id": 10078,
+   "name": "groudon-primal",
+   "baseSpecies": "groudon",
+   "types": [
+    "ground",
+    "fire"
+   ],
+   "baseStats": {
+    "hp": 100,
+    "atk": 180,
+    "def": 160,
+    "spa": 150,
+    "spd": 90,
+    "spe": 90
+   },
+   "abilities": [
+    {
+     "name": "desolate-land",
+     "hidden": false
+    }
+   ],
+   "heightDm": 50,
+   "weightHg": 9997
   }
  },
  "moves": {

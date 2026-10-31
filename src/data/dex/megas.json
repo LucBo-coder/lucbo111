@@ -1656,5 +1656,108 @@
    "base": "diancie",
    "stone": "diancite"
   }
+ },
+ {
+  "id": "kyogre-primal",
+  "name": "Primal Kyogre",
+  "types": [
+   "water"
+  ],
+  "rarity": "legendary",
+  "role": "marksman",
+  "baseStats": {
+   "hp": 100,
+   "atk": 150,
+   "def": 90,
+   "spa": 180,
+   "spd": 160,
+   "spe": 90
+  },
+  "moveSpeed": 214,
+  "attackRange": 260,
+  "critRate": 0.05,
+  "radius": 28,
+  "skills": [
+   "body_slam",
+   "water_spout",
+   "hydro_pump",
+   "calm_mind"
+  ],
+  "passive": {
+   "id": "primordial-sea",
+   "name": "Primordial Sea",
+   "description": "Mô phỏng Biển Nguyên Thủy: kỹ năng hệ Nước +50%, đòn hệ Lửa nhận vào chỉ còn một nửa.",
+   "kind": "typeBoost",
+   "type": "water",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "kyogre-primal",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "water",
+   "aura": "water"
+  },
+  "generated": true,
+  "mega": {
+   "base": "kyogre",
+   "stone": "blue-orb",
+   "primal": true
+  }
+ },
+ {
+  "id": "groudon-primal",
+  "name": "Primal Groudon",
+  "types": [
+   "ground",
+   "fire"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 100,
+   "atk": 180,
+   "def": 160,
+   "spa": 150,
+   "spd": 90,
+   "spe": 90
+  },
+  "moveSpeed": 214,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 28,
+  "skills": [
+   "earthquake",
+   "fissure",
+   "eruption",
+   "bulk_up"
+  ],
+  "passive": {
+   "id": "desolate-land",
+   "name": "Desolate Land",
+   "description": "Mô phỏng Đất Hoang Tàn: kỹ năng hệ Lửa +50%.",
+   "kind": "typeBoost",
+   "type": "fire",
+   "mult": 1.5
+  },
+  "evolution": null,
+  "sprite": "groudon-primal",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "ground",
+   "aura": "fire"
+  },
+  "generated": true,
+  "mega": {
+   "base": "groudon",
+   "stone": "red-orb",
+   "primal": true
+  }
  }
 ]

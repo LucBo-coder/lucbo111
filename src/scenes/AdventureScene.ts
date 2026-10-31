@@ -15,6 +15,8 @@ import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
 import { repShop, REP_DISCOUNT, SPECIALTY_TIER } from '../core/shop';
 import { canMega, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
+import { TYPE_VI } from '../core/synergy';
+import { canDynamax, canTera, DYNAMAX_COOLDOWN, DYNAMAX_DURATION, GIMMICK_IDLE_REVERT, gmaxOf, primalFormOf, TERA_COOLDOWN, TERA_DURATION, type GimmickCheck, type GimmickUnit } from '../core/gimmicks';
 import { DungeonController } from '../adventure/DungeonController';
 import { SpawnManager } from '../adventure/SpawnManager';
 import { BALL_ORDER, BallContext, ballMultiplier, BALLS, BallId, fleeChance, rollCapture, statusBonus, captureChance } from '../core/capture';
@@ -184,6 +186,17 @@ export class AdventureScene extends Phaser.Scene {
   megaT = 0;
   megaIdle = 0;
   megaCd = 0;
+  /** Terastal / Dynamax runtime state (V31): the unit, seconds left, seconds out of combat, cooldown */
+  teraUnit: Unit | null = null;
+  teraT = 0;
+  teraCd = 0;
+  dynaUnit: Unit | null = null;
+  dynaT = 0;
+  dynaCd = 0;
+  private gimmickIdle = 0;
+  /** party members in their Primal form (automatic while the orb is in the bag, reverts after the fight) */
+  private primals = new Set<Unit>();
+  private giftT = 0;
   worldBoss: Unit | null = null;
   /** Sealed shrines already hinted at this session */
   private sealedHinted = new Set<string>();
@@ -254,6 +267,10 @@ export class AdventureScene extends Phaser.Scene {
     this.megaUnit = null;
     this.megaT = 0;
     this.megaIdle = 0;
+    this.teraUnit = null;
+    this.dynaUnit = null;
+    this.primals = new Set();
+    this.giftT = 0;
     this.worldBoss = null;
     this.evoQueue = new Set();
     this.evoBusy = false;
@@ -954,6 +971,8 @@ export class AdventureScene extends Phaser.Scene {
     kb.on('keydown-R', guard(() => this.cycleBall()));
     kb.on('keydown-H', guard(() => this.quickHeal()));
     kb.on('keydown-G', guard(() => this.tryMega()));
+    kb.on('keydown-Y', guard(() => this.tryTera()));
+    kb.on('keydown-B', guard(() => this.tryDynamax()));
     // Q = the Pokémon on the field uses its best ready skill now · T = quick switch wheel (one Pokémon per trainer)
     kb.on('keydown-Q', guard(() => this.manualSkill('best')));
     kb.on('keydown-T', guard(() => this.ui?.toggleSwitchWheel()));
@@ -1127,7 +1146,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateBattle();
     this.updateDowned(dt);
     this.updateCapture(dt);
-    if (!this.modal) this.updateMega(dt);
+    if (!this.modal) { this.updateMega(dt); this.updateGimmicks(dt); }
     if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); this.secrets?.update(dt); this.story?.update(dt); this.updateStoryPeople(dt); }
     // Evolution prompts wait for a calm moment (never between dungeon waves / before the boss)
     const dungeonCalm = !this.dungeon || this.dungeon.phase === 'reward' || this.dungeon.phase === 'done';
@@ -1820,7 +1839,7 @@ export class AdventureScene extends Phaser.Scene {
     const hasKey = this.state.item('key-stone') > 0;
     let reason = 'Không có Pokémon nào có thể Mega Tiến Hóa';
     for (const a of this.world.allies) {
-      if (a.fainted || !megaFormsOf(a.megaFrom ?? a.defId).length) continue;
+      if (a.fainted || a.tera || a.dyna || this.primals.has(a) || !megaFormsOf(a.megaFrom ?? a.defId).length) continue;
       const c = canMega(a.defId, a.heldId ?? undefined, hasKey, !!this.megaUnit, this.megaCd);
       if (c.ok) return { ally: a, form: c.form };
       reason = c.reason ?? reason;
@@ -1851,6 +1870,111 @@ export class AdventureScene extends Phaser.Scene {
     this.megaUnit = null;
     if (startCooldown) this.megaCd = MEGA_COOLDOWN;
     this.ui.banner(`${u.name} trở lại hình dạng ban đầu`, '#e0c0ff');
+  }
+
+  // ───────────────────────────── Terastal / Dynamax / Primal (V31, rules in core/gimmicks.ts) ─────────────────────────────
+
+  /** The party member the trainer transforms: the first one standing on the field. */
+  private gimmickLead(): Unit | null {
+    return this.world.allies.find((a) => a.kind === 'pokemon' && !a.fainted) ?? null;
+  }
+
+  private gimmickUnit(u: Unit | null): GimmickUnit | null {
+    return u ? { species: u.defId, fainted: u.fainted, mega: !!u.megaFrom, tera: !!u.tera, dyna: !!u.dyna } : null;
+  }
+
+  teraStatus(): GimmickCheck & { ally?: Unit } {
+    const u = this.gimmickLead();
+    return { ...canTera(this.gimmickUnit(u), this.state.item('tera-orb') > 0, !!this.teraUnit, this.teraCd), ally: u ?? undefined };
+  }
+
+  dynaStatus(): GimmickCheck & { ally?: Unit } {
+    const u = this.gimmickLead();
+    const factor = !!(u?.ownerUid && this.state.owned(u.ownerUid)?.gmax);
+    return { ...canDynamax(this.gimmickUnit(u), this.state.item('dynamax-band') > 0, !!this.dynaUnit, this.dynaCd, factor), ally: u ?? undefined };
+  }
+
+  tryTera(): void {
+    const st = this.teraStatus();
+    if (!st.ok || !st.ally) { this.ui.banner(st.reason ?? 'Không thể Terastal', '#ff9080'); return; }
+    if (!this.inCombat()) { this.ui.banner('Chỉ có thể Terastal khi đang chiến đấu', '#ff9080'); return; }
+    const u = st.ally;
+    const type = (u.ownerUid && this.state.teraType(u.ownerUid)) || u.types[0];
+    this.world.terastallize(u, type);
+    this.teraUnit = u;
+    this.teraT = TERA_DURATION;
+    this.gimmickIdle = 0;
+    this.cameras.main.flash(260, 200, 250, 255);
+    audio.play('boss');
+    this.ui.banner(`${u.name} Terastal — Hệ Tera ${TYPE_VI[type] ?? type}!`, '#a0f0ff');
+  }
+
+  endTera(startCooldown = true): void {
+    const u = this.teraUnit;
+    if (!u) return;
+    this.world.endTera(u);
+    this.teraUnit = null;
+    if (startCooldown) this.teraCd = TERA_COOLDOWN;
+    this.ui.banner(`Lớp pha lê Tera của ${u.name} vỡ ra`, '#c0e8ff');
+  }
+
+  tryDynamax(): void {
+    const st = this.dynaStatus();
+    if (!st.ok || !st.ally) { this.ui.banner(st.reason ?? 'Không thể Dynamax', '#ff9080'); return; }
+    if (!this.inCombat()) { this.ui.banner('Chỉ có thể Dynamax khi đang chiến đấu', '#ff9080'); return; }
+    const u = st.ally;
+    this.world.dynamax(u, !!st.gmax);
+    this.dynaUnit = u;
+    this.dynaT = DYNAMAX_DURATION;
+    this.gimmickIdle = 0;
+    this.cameras.main.flash(400, 255, 60, 100);
+    audio.play('boss');
+    this.ui.banner(st.gmax ? `${u.name} Gigantamax! (${gmaxOf(u.defId)!.move})` : `${u.name} Dynamax!`, '#ff6080');
+  }
+
+  endDynamax(startCooldown = true): void {
+    const u = this.dynaUnit;
+    if (!u) return;
+    this.world.endDynamax(u);
+    this.dynaUnit = null;
+    if (startCooldown) this.dynaCd = DYNAMAX_COOLDOWN;
+    this.ui.banner(`${u.name} trở lại kích thước bình thường`, '#ffc0d0');
+  }
+
+  private updateGimmicks(dt: number): void {
+    if (this.teraCd > 0) this.teraCd -= dt;
+    if (this.dynaCd > 0) this.dynaCd -= dt;
+    const fighting = this.inCombat();
+    this.gimmickIdle = fighting ? 0 : this.gimmickIdle + dt;
+    const gone = (u: Unit) => u.fainted || !this.world.allies.includes(u) || this.gimmickIdle > GIMMICK_IDLE_REVERT;
+    if (this.teraUnit && ((this.teraT -= dt) <= 0 || gone(this.teraUnit))) this.endTera();
+    if (this.dynaUnit && ((this.dynaT -= dt) <= 0 || gone(this.dynaUnit))) this.endDynamax();
+    // Primal Reversion: Kyogre / Groudon with their orb in the bag revert as soon as they fight, back after the fight
+    for (const u of [...this.primals]) {
+      if (!this.world.allies.includes(u)) this.primals.delete(u);
+      else if (this.gimmickIdle > GIMMICK_IDLE_REVERT) { this.world.revertMega(u); this.primals.delete(u); }
+    }
+    if (fighting) {
+      for (const a of this.world.allies) {
+        if (a.kind !== 'pokemon' || a.fainted || a.megaFrom || a.tera || a.dyna) continue;
+        const form = primalFormOf(a.defId, (id) => this.state.item(id) > 0);
+        if (!form) continue;
+        const from = a.name;
+        this.world.transformAlly(a, form, { mega: true });
+        this.primals.add(a);
+        this.cameras.main.shake(500, 0.012);
+        this.ui.banner(`${from} Hồi Quy Nguyên Thủy → ${a.name}!`, form.startsWith('kyogre') ? '#60a0ff' : '#ff7040');
+      }
+    }
+    // the Tera Orb / Dynamax Band come with the bosses beaten (any campaign, any kind of boss)
+    if ((this.giftT -= dt) <= 0) {
+      this.giftT = 3;
+      const got = this.state.claimGimmickGifts();
+      if (got.length) {
+        this.ui.questComplete('Vật phẩm mới!', got.map((id) => `+1 ${ITEMS[id]?.name ?? id} — ${id === 'tera-orb' ? 'phím Y: Terastal' : 'phím B: Dynamax'}`));
+        this.persist();
+      }
+    }
   }
 
   private updateMega(dt: number): void {

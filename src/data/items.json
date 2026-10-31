@@ -1564,7 +1564,7 @@
   "kind": "key",
   "price": 0,
   "color": "#4080ff",
-  "desc": "Mở Xoáy Nước Sâu dẫn xuống Vực Nguyên Hải (Kyogre)."
+  "desc": "Mở Xoáy Nước Sâu dẫn xuống Vực Nguyên Hải (Kyogre). Có nó trong túi, Kyogre của bạn tự Hồi Quy Nguyên Thủy khi vào trận."
  },
  {
   "id": "red-orb",
@@ -1572,7 +1572,7 @@
   "kind": "key",
   "price": 0,
   "color": "#ff4030",
-  "desc": "Thánh vật của Đại Điện Dung Nham (Groudon)."
+  "desc": "Thánh vật của Đại Điện Dung Nham (Groudon). Có nó trong túi, Groudon của bạn tự Hồi Quy Nguyên Thủy khi vào trận."
  },
  {
   "id": "jade-orb",
@@ -1645,5 +1645,37 @@
   "price": 0,
   "color": "#fff0c0",
   "desc": "Ghép từ ba mảnh của Dialga, Palkia, Giratina. Thổi trước Ngai Khởi Nguyên."
+ },
+ {
+  "id": "tera-orb",
+  "name": "Quả Cầu Tera (Tera Orb)",
+  "kind": "key",
+  "price": 0,
+  "color": "#60e0ff",
+  "desc": "Kết tinh Pokémon đang ra trận thành Hệ Tera của nó trong 60 giây (phím Y)."
+ },
+ {
+  "id": "dynamax-band",
+  "name": "Vòng Dynamax (Dynamax Band)",
+  "kind": "key",
+  "price": 0,
+  "color": "#ff3060",
+  "desc": "Biến Pokémon đang ra trận thành khổng lồ trong 30 giây: HP ×2, chiêu thành Chiêu Max (phím B)."
+ },
+ {
+  "id": "tera-shard",
+  "name": "Mảnh Tera (Tera Shard)",
+  "kind": "gimmick",
+  "price": 1000,
+  "color": "#a0f0ff",
+  "desc": "Đủ 10 mảnh để đổi Hệ Tera của một Pokémon sang hệ bạn chọn."
+ },
+ {
+  "id": "max-soup",
+  "name": "Súp Max (Max Soup)",
+  "kind": "gimmick",
+  "price": 20000,
+  "color": "#d04040",
+  "desc": "Cho Pokémon có dạng Gigantamax (cả dòng tiến hóa) Nhân Tố Gigantamax: khi Dynamax nó thành dạng Gigantamax."
  }
 ]

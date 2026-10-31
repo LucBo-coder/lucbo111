@@ -22,7 +22,8 @@ const SPECIES = (cache as unknown as { species: Record<string, { evolutions: Evo
 export interface ItemDef {
   id: string;
   name: string;
-  kind: 'held' | 'evoStone' | 'megaStone' | 'key' | 'evItem';
+  /** gimmick: used on one Pokémon from the bag (Tera Shard, Max Soup — V31) */
+  kind: 'held' | 'evoStone' | 'megaStone' | 'key' | 'evItem' | 'gimmick';
   price: number;
   color: string;
   desc: string;
@@ -207,7 +208,7 @@ export const MEGA_IDLE_REVERT = 10; // s without combat → revert
 
 /** Mega forms a species can reach, with the stone each requires. */
 export function megaFormsOf(species: string): { form: string; stone: string }[] {
-  return [...POKEMON.values()].filter((p) => p.mega?.base === species && !p.mega.bossOnly).map((p) => ({ form: p.id, stone: p.mega!.stone }));
+  return [...POKEMON.values()].filter((p) => p.mega?.base === species && !p.mega.bossOnly && !p.mega.primal).map((p) => ({ form: p.id, stone: p.mega!.stone }));
 }
 
 export interface MegaCheck {

@@ -1,4 +1,4 @@
-"""PERSONAL USE ONLY — adds the Mega forms to the PMD animation pack in public/assets/pmd/.
+"""PERSONAL USE ONLY — adds the Mega and Primal forms to the PMD animation pack in public/assets/pmd/.
 
     python -I scripts/fetch-pmd-megas.py [tracker.json]
 
@@ -22,7 +22,7 @@ from PIL import Image
 OUT = 'public/assets/pmd'
 RAW = 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/sprite/'
 ANIMS = ['Walk', 'Idle', 'Attack', 'Shoot', 'Charge', 'Hurt', 'Faint']
-FORM_NAME = {'mega': 'Mega', 'mega-x': 'Mega_X', 'mega-y': 'Mega_Y'}
+FORM_NAME = {'mega': 'Mega', 'mega-x': 'Mega_X', 'mega-y': 'Mega_Y', 'primal': 'Primal'}
 
 
 def get(url):
@@ -70,7 +70,7 @@ def anim_meta(xml):
 def main():
     # every Mega form of the game: data/pokemon.json, data/dex/pokemon.json and data/dex/megas.json
     megas = [p for f in ('src/data/pokemon.json', 'src/data/dex/pokemon.json', 'src/data/dex/megas.json') for p in json.load(open(f, encoding='utf8'))
-             if '-mega' in p['id'] and p['id'].split('-mega')[1] in ('', '-x', '-y')]
+             if ('-mega' in p['id'] and p['id'].split('-mega')[1] in ('', '-x', '-y')) or p['id'].endswith('-primal')]
     only = set(os.environ.get('MEGAS', '').split(',')) - {''}
     if only:
         megas = [m for m in megas if m['id'] in only]
@@ -82,8 +82,11 @@ def main():
     added, missing = [], []
     for m in megas:
         mid = m['id']
-        base, _, suffix = mid.partition('-mega')
-        form_name = FORM_NAME['mega' + suffix]
+        if mid.endswith('-primal'):
+            base, form_name = mid[:-len('-primal')], FORM_NAME['primal']
+        else:
+            base, _, suffix = mid.partition('-mega')
+            form_name = FORM_NAME['mega' + suffix]
         dex = cache['species'].get(base, {}).get('id')
         entry = tr.get(f'{dex:04d}') if dex else None
         form = next((k for k, v in (entry or {}).get('subgroups', {}).items() if v.get('name') == form_name), None)

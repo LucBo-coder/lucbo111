@@ -17,7 +17,7 @@ export interface CoopMap {
   height: number;
   doors?: [boolean, boolean];
 }
-const UNIT_FIELDS = ['id', 'team', 'kind', 'defId', 'avatar', 'name', 'types', 'x', 'y', 'vx', 'vy', 'radius', 'facing', 'level', 'maxHp', 'hp', 'energy', 'maxEnergy', 'castSlot', 'castT', 'shield', 'alive', 'fainted', 'hitFlash', 'iframes', 'elite', 'animCast', 'lastSkill', 'shiny', 'alpha', 'hostile', 'captured', 'megaFrom', 'moveSpeed'] as const;
+const UNIT_FIELDS = ['id', 'team', 'kind', 'defId', 'avatar', 'name', 'types', 'x', 'y', 'vx', 'vy', 'radius', 'facing', 'level', 'maxHp', 'hp', 'energy', 'maxEnergy', 'castSlot', 'castT', 'shield', 'alive', 'fainted', 'hitFlash', 'iframes', 'elite', 'animCast', 'lastSkill', 'shiny', 'alpha', 'hostile', 'captured', 'megaFrom', 'tera', 'dyna', 'moveSpeed'] as const;
 type VisualUnit = Pick<Unit, typeof UNIT_FIELDS[number]> & { boss: Unit['boss']; statuses: Unit['statuses'] };
 export interface CoopSnapshot {
   epoch: string; n: number; map: CoopMap; time: number; state: WorldState; paused: boolean;

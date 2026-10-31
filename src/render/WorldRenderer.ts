@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { PmdAnim, pmdAnimKey, pmdDir, pmdHas, pmdReady, pumpPmd } from './pmdPack';
+import { giantScale, primalScale } from '../core/gimmicks';
+import { TYPE_COLOR_HEX } from './icons';
 import { groundPose, pmdFootAnchor, visualProfile } from './overworldVisual';
 import { createGroundSprite } from './groundSprite';
 import { SKILLS } from '../core/data';
@@ -39,6 +41,10 @@ export interface UnitView {
   pturn?: number;
   pmove?: boolean;
   pstill?: number;
+  /** Dynamax growth in progress (1 = normal size, eases toward the giant's scale and back) — V31 */
+  grow?: number;
+  /** Terastal / Dynamax overlays: coloured silhouette behind the body, crystal sheen in front, Tera crown, G-Max clouds */
+  fx?: { halo: Phaser.GameObjects.Sprite; sheen: Phaser.GameObjects.Sprite | null; crown: Phaser.GameObjects.Image | null; clouds: Phaser.GameObjects.Image[] };
   /** smoothed velocity for the PMD facing */
   svx?: number;
   svy?: number;
@@ -161,12 +167,12 @@ export class WorldRenderer {
       if (show) this.syncUnit(e);
       else {
         const v = this.views.get(e.id);
-        if (v) { v.body.setVisible(false); v.shadow.setVisible(false); v.deco?.setVisible(false); v.ring?.setVisible(false); v.sicons.forEach((i) => i.setVisible(false)); v.label?.setVisible(false); v.stamp = this.frameNo; }
+        if (v) { v.body.setVisible(false); v.shadow.setVisible(false); v.deco?.setVisible(false); v.ring?.setVisible(false); v.sicons.forEach((i) => i.setVisible(false)); v.label?.setVisible(false); this.dropFx(v); v.stamp = this.frameNo; }
       }
     }
     for (const [id, v] of this.views) {
       if (v.stamp !== this.frameNo) {
-        v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); v.label?.destroy();
+        v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); v.label?.destroy(); this.dropFx(v);
         this.views.delete(id);
       }
     }
@@ -219,8 +225,10 @@ export class WorldRenderer {
     const species = isBoss ? u.boss!.form ?? bdef!.sprite : u.defId;
     const pmdOn = !segmented && pmdReady(species, !!u.shiny);
     const profile = visualProfile(species, pmdOn, fieldScale(key));
-    const size = isBoss ? Math.min(1.5, (bdef!.scale ?? 5.5) / 3) : u.alpha ? 1.7 : u.elite ? 1.35 : 1;
-    const base = profile.visualScale * size;
+    // Primal forms stand at their official height ratio to the base species (their PMD sheets are drawn the same size)
+    const formSize = !isBoss && u.megaFrom ? primalScale(species) : 1;
+    const size = (isBoss ? Math.min(1.5, (bdef!.scale ?? 5.5) / 3) : u.alpha ? 1.7 : u.elite ? 1.35 : 1) * formSize;
+    let base = profile.visualScale * size;
     if (!v) {
       const shadow = this.scene.add.image(u.x, u.y, 'shadow').setScale(base * 0.9, base * 0.9);
       if (u.elite) shadow.setTint(0xffd040).setAlpha(1);
@@ -231,6 +239,11 @@ export class WorldRenderer {
       v = { body, shadow, ring: null, segs, stamp: 0, anim: '', faintT: 0, deco: null, sicons: [] };
       this.views.set(u.id, v);
     }
+    // Dynamax / Gigantamax: the whole animated body grows to the giant's height (core/gimmicks giantScale), eased
+    const giant = u.dyna && !isBoss ? giantScale(species, u.dyna.gmax) : 1;
+    v.grow = (v.grow ?? 1) + (giant - (v.grow ?? 1)) * Math.min(1, this.scene.game.loop.delta / 220);
+    if (Math.abs(v.grow - giant) < 0.01) v.grow = giant;
+    base *= v.grow;
     // Species changed in place (evolution / Mega): swap the sprite sheet
     if (!pmdOn && (!isBoss || u.boss!.form) && v.body.texture.key !== sheetKey(key) && this.scene.textures.exists(sheetKey(key))) {
       v.body.setTexture(sheetKey(key), 0);
@@ -301,13 +314,13 @@ export class WorldRenderer {
     v.body.setPosition(pose.x, pose.y).setDepth(pose.depth)
       .setScale(base * (pmdOn ? 1 : u.facing), base);
     v.shadow.setPosition(pose.shadowX, pose.shadowY).setDepth(u.y - 0.1)
-      .setScale(profile.shadowScale * size * (1 - air * 0.5)).setAlpha(0.65).clearTint();
+      .setScale(profile.shadowScale * size * v.grow * (1 - air * 0.5)).setAlpha(0.65).clearTint();
     if (u.elite) v.shadow.setTint(0xffd040);
     if (u.fainted) {
       // Faint plays once, holds briefly, then the Pokémon returns to its ball (hidden)
       v.faintT += this.scene.game.loop.delta;
       v.body.setAlpha(Math.max(0, 1 - Math.max(0, v.faintT - 500) / 400));
-      v.shadow.setVisible(false); v.ring?.setVisible(false); v.deco?.setVisible(false); v.sicons.forEach((i) => i.setVisible(false));
+      v.shadow.setVisible(false); v.ring?.setVisible(false); v.deco?.setVisible(false); v.sicons.forEach((i) => i.setVisible(false)); this.dropFx(v);
       v.body.setVisible(v.faintT < 900);
       if (pmdOn && !pmdHas(species, 'Faint')) v.body.anims.stop();
       if (this.debugVisuals) this.drawVisualDebug(u, v, profile.flightHeight + air * 160);
@@ -323,7 +336,7 @@ export class WorldRenderer {
     if (u.aquatic) {
       // swimming: no ground shadow — a pale ripple around the waterline, the body bobs on the surface
       const k = 1 + Math.sin(now * 0.006 + u.id) * 0.12;
-      v.shadow.setTintFill(0xd8f0ff).setAlpha(0.55).setScale(profile.shadowScale * size * k, profile.shadowScale * size * 0.5 * k);
+      v.shadow.setTintFill(0xd8f0ff).setAlpha(0.55).setScale(profile.shadowScale * size * v.grow * k, profile.shadowScale * size * v.grow * 0.5 * k);
       v.body.setY(pose.y + Math.sin(now * 0.004 + u.id) * 2);
     }
     if (this.debugVisuals) this.drawVisualDebug(u, v, profile.flightHeight + air * 160);
@@ -343,6 +356,7 @@ export class WorldRenderer {
       v.deco.setVisible(true).setPosition(u.x, u.y - 4).setScale((u.radius * 3.6) / 64 * (1 + Math.sin(now * 0.01) * 0.08)).setTint(0xff3020).setAlpha(0.6).setDepth(u.y - 2);
     }
     if (u.shiny && !u.fainted && this.frameNo % 20 === u.id % 20) this.vfx.emit('fairy', u.x + (Math.random() - 0.5) * u.radius * 2, u.y - u.radius, 1);
+    this.gimmickFx(u, v, now);
     if (u.megaFrom && !isBoss) {
       // Mega aura: rainbow-tinted ring pulse
       if (!v.deco) v.deco = this.scene.add.image(u.x, u.y, 'ringTex');
@@ -532,6 +546,12 @@ export class WorldRenderer {
           break;
         }
         case 'banner': this.hooks.banner(e.text, e.color); break;
+        case 'maxMove':
+          this.spawnText(e.x, e.y - 34, `${e.name}!`, e.gmax ? '#ff3060' : '#ff80a0', e.gmax ? 24 : 21);
+          if (dmgBudget-- > 0) this.spawnText(e.x, e.y - 12, e.text, '#ffd0d8', 14);
+          this.vfx.ring(e.x, e.y + 10, e.gmax ? 110 : 80, e.gmax ? 0xff1040 : 0xff4070, 420);
+          this.vfx.emit(e.type, e.x, e.y, 14);
+          break;
         case 'shake': this.scene.cameras.main.shake(e.duration, e.intensity); break;
       }
     }
@@ -552,6 +572,75 @@ export class WorldRenderer {
     // PMD corpse stays in its own art family; derived faint is only for derived sheets.
     if (!g.texture.key.startsWith('pmd:') && this.scene.anims.exists(`${defId}:faint`)) g.play(`${defId}:faint`);
     this.scene.tweens.add({ targets: g, alpha: 0, delay: 250, duration: 260, onComplete: () => { g.destroy(); this.ghosts--; } });
+  }
+
+  // ───────────────────────────── Terastal / Dynamax looks (V31) ─────────────────────────────
+
+  private dropFx(v: UnitView): void {
+    if (!v.fx) return;
+    v.fx.halo.destroy(); v.fx.sheen?.destroy(); v.fx.crown?.destroy(); v.fx.clouds.forEach((c) => c.destroy());
+    v.fx = undefined;
+  }
+
+  /** Faceted jewel crown (white, tinted with the Tera Type's colour when drawn). */
+  private crownTexture(): string {
+    const key = 'teraCrown';
+    if (this.scene.textures.exists(key)) return key;
+    const g = this.scene.make.graphics({ x: 0, y: 0 }, false);
+    const pts = [[2, 22], [0, 6], [8, 13], [12, 0], [16, 11], [20, 0], [24, 13], [32, 6], [30, 22]];
+    g.fillStyle(0xffffff, 1).fillPoints(pts.map(([x, y]) => new Phaser.Geom.Point(x, y)), true);
+    g.fillStyle(0xd8e4ff, 1).fillTriangle(8, 13, 12, 0, 16, 22).fillTriangle(20, 0, 24, 13, 16, 22);
+    g.fillStyle(0xa8b8e0, 1).fillTriangle(2, 22, 8, 13, 16, 22).fillTriangle(16, 22, 24, 13, 30, 22);
+    g.lineStyle(1.5, 0x5a6890, 1).strokePoints(pts.map(([x, y]) => new Phaser.Geom.Point(x, y)), true);
+    g.fillStyle(0xffffff, 1).fillCircle(12, 2, 2).fillCircle(20, 2, 2).fillCircle(16, 15, 3);
+    g.generateTexture(key, 33, 24);
+    g.destroy();
+    return key;
+  }
+
+  /**
+   * Terastal: a crystal sheen over the body (same animation frame, additive, faceted colours) + the jewel crown of
+   * its Tera Type. Dynamax: a red energy silhouette around the giant; Gigantamax adds the swirl of red clouds above
+   * it. Every overlay copies the body's current frame, so all the PMD animations keep playing underneath.
+   */
+  private gimmickFx(u: Unit, v: UnitView, now: number): void {
+    if (!(u.tera || u.dyna) || u.fainted || u.kind === 'boss') { this.dropFx(v); return; }
+    const b = v.body;
+    const fx = (v.fx ??= { halo: this.scene.add.sprite(b.x, b.y, b.texture.key, b.frame.name), sheen: null, crown: null, clouds: [] });
+    const col = u.tera ? Number.parseInt((TYPE_COLOR_HEX[u.tera.type] ?? '#ffffff').slice(1), 16) : u.dyna!.gmax ? 0xff1040 : 0xff3070;
+    const copy = (s: Phaser.GameObjects.Sprite, k: number) => s.setTexture(b.texture.key, b.frame.name).setOrigin(b.originX, b.originY)
+      .setPosition(b.x, b.y).setScale(b.scaleX * k, b.scaleY * k).setVisible(b.visible);
+    copy(fx.halo, u.dyna ? 1.07 : 1.05).setDepth(b.depth - 0.01).setTintFill(col).setAlpha((u.dyna ? 0.5 : 0.35) + Math.sin(now * 0.008) * 0.15);
+    fx.sheen ??= this.scene.add.sprite(b.x, b.y, b.texture.key, b.frame.name).setBlendMode(Phaser.BlendModes.ADD);
+    copy(fx.sheen, 1).setDepth(b.depth + 0.01);
+    if (u.tera) {
+      // facets: the four corners shift between the type colour and white
+      const p = now * 0.002;
+      const c = (o: number) => (Math.sin(p + o) > 0 ? col : 0xffffff);
+      fx.sheen.setTint(c(0), c(1.6), c(3.1), c(4.7)).setAlpha(0.45 + Math.sin(now * 0.005) * 0.12);
+      fx.crown ??= this.scene.add.image(b.x, b.y, this.crownTexture());
+      const top = b.y - b.displayHeight * b.originY * 0.82;
+      fx.crown.setPosition(b.x, top + Math.sin(now * 0.004) * 2).setScale(Math.max(1, b.scaleY * 0.55)).setTint(col, 0xffffff, col, col)
+        .setDepth(b.depth + 0.02).setVisible(b.visible);
+      if (this.frameNo % 10 === u.id % 10) this.vfx.emit('tera', b.x + (Math.random() - 0.5) * b.displayWidth * 0.5, b.y - Math.random() * b.displayHeight * 0.7, 1);
+    } else {
+      fx.crown?.destroy(); fx.crown = null;
+      fx.sheen.setTint(0xff4060).setAlpha(0.18 + Math.sin(now * 0.006) * 0.08);
+      // red Dynamax energy rising from the giant
+      if (this.frameNo % 5 === u.id % 5) this.vfx.emit('dyna', b.x + (Math.random() - 0.5) * b.displayWidth * 0.6, b.y - Math.random() * b.displayHeight * 0.6, 1);
+      if (u.dyna!.gmax) {
+        // Gigantamax: a slowly turning crown of red clouds above its head
+        while (fx.clouds.length < 12) fx.clouds.push(this.scene.add.image(b.x, b.y, 'p_smoke'));
+        const top = b.y - b.displayHeight * b.originY * 0.8, rx = b.displayWidth * 0.4;
+        fx.clouds.forEach((cl, i) => {
+          // soft puffs of dark-red cloud orbiting on a flattened ring, the ones behind the head drawn behind it
+          const a = now * 0.0009 + (i / fx.clouds.length) * Math.PI * 2;
+          const front = Math.sin(a) > 0, puff = 1 + 0.25 * Math.sin(now * 0.003 + i * 1.7);
+          cl.setPosition(b.x + Math.cos(a) * rx, top + Math.sin(a) * rx * 0.25).setScale((rx / 8) * 0.38 * puff, (rx / 8) * 0.26 * puff)
+            .setTint(i % 3 ? 0xd01840 : 0x60081c).setAlpha(front ? 0.85 : 0.6).setDepth(b.depth + (front ? 0.03 : -0.02)).setVisible(b.visible);
+        });
+      } else { fx.clouds.forEach((c) => c.destroy()); fx.clouds = []; }
+    }
   }
 
   spawnText(x: number, y: number, str: string, color: string, size: number): void {
@@ -580,7 +669,7 @@ export class WorldRenderer {
 
   /** Drops every view (used when swapping World instances, e.g. entering a dungeon). */
   reset(world: World): void {
-    for (const v of this.views.values()) { v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); v.label?.destroy(); }
+    for (const v of this.views.values()) { v.body.destroy(); v.shadow.destroy(); v.ring?.destroy(); v.deco?.destroy(); v.segs.forEach((s) => s.destroy()); v.sicons.forEach((i) => i.destroy()); v.label?.destroy(); this.dropFx(v); }
     this.views.clear();
     this.projImgs.forEach((p) => p?.destroy());
     this.gemImgs.forEach((p) => p?.destroy());

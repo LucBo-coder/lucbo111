@@ -1,5 +1,15 @@
 # Changelog
 
+## Chưa phát hành — V31: Terastal, Dynamax / Gigantamax, dạng Primal
+
+- **Terastal** (phím **Y**, Quả Cầu Tera nhận sau boss thứ 2): Pokémon trên sân thành Hệ Tera 60 s — đổi hệ phòng thủ, STAB Tera (×2 nếu trùng hệ gốc), sức mạnh tối thiểu 60. Lớp pha lê màu hệ + vương miện Tera, kích thước giữ nguyên. **Mảnh Tera** (10 mảnh) đổi Hệ Tera.
+- **Dynamax / Gigantamax** (phím **B**, Vòng Dynamax nhận sau boss thứ 4): khổng lồ 30 s, HP ×2, Chiêu Max theo bảng sức mạnh gốc với hiệu ứng phụ từng hệ. **Súp Max** cho Nhân Tố Gigantamax (32 loài, cả dòng tiến hóa) → dạng Gigantamax với Chiêu G-Max riêng.
+  - Kích thước theo chiều cao chính thức của dạng Gigantamax (đối chiếu PokéAPI): tỉ lệ đúng tới 40 m, nén log phía trên. Thân vẫn chạy đủ animation PMD 8 hướng; viền năng lượng đỏ, khói đỏ, Gigantamax có vòng mây đỏ.
+  - SpriteCollab chỉ có tư thế đứng (Idle) cho 2/33 dạng Gigantamax, không có Walk/Attack — nên giant dùng bộ animation đầy đủ của loài, phóng to.
+- **Primal Kyogre / Primal Groudon**: có Ngọc Lam / Ngọc Đỏ trong túi thì tự Hồi Quy Nguyên Thủy khi vào trận. Chỉ số theo PokéAPI; sprite PMD 8 hướng tải từ SpriteCollab (Walk, Idle, Attack, Shoot, Charge, Hurt + shiny), ảnh UI và icon từ PokeAPI/sprites; vẽ theo tỉ lệ chiều cao chính thức.
+- HUD hiện trạng thái TERA / DYNAMAX dưới dòng MEGA; dùng Mảnh Tera / Súp Max từ Túi; bảng phím (K) thêm Y và B; co-op đồng bộ trạng thái Tera / Dynamax.
+- `src/core/gimmicks.ts` (luật thuần). Test `v31_gimmicks` (unit) và e2e `v31_gimmicks`.
+
 ## Chưa phát hành — V30: Hệ thống nhiệm vụ, mạch nhiệm vụ Việt Nam, hướng dẫn trong game
 
 - **Không còn nhiệm vụ kẹt**: việc chỉ xảy ra một lần trong save (kích hoạt trạm, thắng HLV, hạ boss, mở rương, giải câu đố, dọn chướng ngại, điểm bảo tồn) giờ được tính cả khi đã làm trước lúc nhận nhiệm vụ. Nhận nhiệm vụ khám phá khi đang đứng trong khu đó thì tính ngay. Save có nhiệm vụ vượt quá số bước được kéo về bước cuối.

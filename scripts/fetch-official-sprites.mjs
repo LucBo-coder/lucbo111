@@ -52,6 +52,8 @@ const ITEM_NAME = {
   'feather-ice': 'resist-wing', 'feather-thunder': 'swift-wing', 'feather-fire': 'muscle-wing', 'silver-feather': 'silver-wing', 'rainbow-feather': 'rainbow-wing',
   'lunar-feather': 'lunar-wing', 'platinum-orb': 'griseous-orb', 'dew-cup': 'fresh-water', 'regi-core-rock': 'hard-stone', 'regi-core-ice': 'icy-rock',
   'regi-core-steel': 'iron-ball',
+  // V31: Tera Shard → a Normal Tera Shard, Max Soup → the Max Mushrooms it is cooked from
+  'tera-shard': 'normal-tera-shard', 'max-soup': 'max-mushrooms',
 };
 for (const it of JSON.parse(readFileSync('src/data/items.json', 'utf8'))) ITEM_NAME[it.id] ??= it.id;
 mkdirSync(`${OUT}/items`, { recursive: true });

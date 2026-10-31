@@ -17,6 +17,8 @@ import {
 } from '../core/pc';
 import { AdventureSave, Difficulty, newAdventure, registerCaught, SaveData } from '../systems/saveSchema';
 import { MAX_STACK, shopCatalogue } from '../core/shop';
+import { gimmickGifts, gmaxLine, TERA_SHARD_COST, teraTypeOf } from '../core/gimmicks';
+import type { PokeType } from '../core/types';
 import { addRep, REP_REGIONS, REP_TIERS, tierReward, type RepGain } from '../core/reputation';
 import { balance, campaignWallet, earnTo, spendFrom, Wallet, WALLETS } from '../core/wallet';
 
@@ -29,7 +31,7 @@ export interface EvoEnv {
   raining?: boolean;
 }
 
-export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 'heal' | 'held' | 'stone' | 'key' | 'ev' | 'candy' }> = {
+export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 'heal' | 'held' | 'stone' | 'key' | 'ev' | 'candy' | 'gimmick' }> = {
   pokeball: { name: 'Poké Ball', desc: 'Bóng thu phục cơ bản (×1.0).', kind: 'ball' },
   greatball: { name: 'Great Ball', desc: 'Tỉ lệ thu phục cao hơn (×1.5).', kind: 'ball' },
   ultraball: { name: 'Ultra Ball', desc: 'Tỉ lệ thu phục rất cao (×2.0).', kind: 'ball' },
@@ -43,7 +45,7 @@ export const ITEMS: Record<string, { name: string; desc: string; kind: 'ball' | 
   oranberry: { name: 'Oran Berry', desc: 'Hồi 40 HP cho huấn luyện viên và 20% cho đội.', kind: 'heal' },
 };
 // Held items, evolution stones, Mega Stones and the Key Stone come from items.json
-for (const it of ITEM_DEFS.values()) ITEMS[it.id] = { name: it.name, desc: it.desc, kind: it.kind === 'held' || it.kind === 'megaStone' ? 'held' : it.kind === 'evoStone' ? 'stone' : it.kind === 'evItem' ? 'ev' : 'key' } as never;
+for (const it of ITEM_DEFS.values()) ITEMS[it.id] = { name: it.name, desc: it.desc, kind: it.kind === 'held' || it.kind === 'megaStone' ? 'held' : it.kind === 'evoStone' ? 'stone' : it.kind === 'evItem' ? 'ev' : it.kind === 'gimmick' ? 'gimmick' : 'key' } as never;
 // Exp. Candy / Rare Candy (V7). Their use is validated by AdventureState.useCandy / the server.
 for (const c of CANDY_DEFS) ITEMS[c.id] = { name: c.name, desc: c.desc, kind: 'candy' };
 /** Everything the Poké Mart sells (catalogue, prices and shelves live in core/shop.ts). */
@@ -376,6 +378,43 @@ export class AdventureState {
     this.consume(itemId);
     if (ev.amount < 0) addFriendship(p, 'item');
     return applied;
+  }
+
+  // ───────────────────────────── Terastal / Gigantamax (V31) ─────────────────────────────
+
+  /** Tera Type of a collection member (chosen one, else its species' first type). */
+  teraType(uid: string): PokeType | null {
+    const p = this.owned(uid);
+    return p ? teraTypeOf(p.species, p.teraType) : null;
+  }
+
+  /** Tera Shards ×TERA_SHARD_COST → a new Tera Type. Nothing is spent when the type does not change. */
+  setTeraType(uid: string, type: PokeType): boolean {
+    const p = this.owned(uid);
+    if (!p || this.item('tera-shard') < TERA_SHARD_COST || teraTypeOf(p.species, p.teraType) === type) return false;
+    this.save.inventory['tera-shard'] -= TERA_SHARD_COST;
+    p.teraType = type;
+    return true;
+  }
+
+  /** Max Soup: the Gigantamax Factor for a Pokémon of a Gigantamax line that does not have it yet. */
+  giveMaxSoup(uid: string): boolean {
+    const p = this.owned(uid);
+    if (!p || p.gmax || !gmaxLine(p.species) || !this.consume('max-soup')) return false;
+    p.gmax = true;
+    return true;
+  }
+
+  /** Bosses beaten (regional guardians, legendaries, Mega Venusaur): what unlocks the Tera Orb / Dynamax Band. */
+  bossesBeaten(): number {
+    return this.adv.flags.filter((f) => f.startsWith('boss:')).length;
+  }
+
+  /** Key items the bosses beaten have earned and the bag does not hold yet (added now; returned for the notice). */
+  claimGimmickGifts(): string[] {
+    const ids = gimmickGifts(this.bossesBeaten(), (id) => this.item(id) > 0);
+    for (const id of ids) this.addItems({ [id]: 1 });
+    return ids;
   }
 
   // ───────────────────────────── money & shop ─────────────────────────────

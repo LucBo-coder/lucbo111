@@ -69,6 +69,10 @@ export interface OwnedPokemon {
   status?: { kind: string; t: number };
   /** Locked / favourite in the PC: protected against accidental release and sorted first */
   favorite?: boolean;
+  /** Tera Type chosen with Tera Shards (absent = the species' first type) — V31 */
+  teraType?: string;
+  /** Gigantamax Factor (Max Soup): Dynamax turns it into its Gigantamax form — V31 */
+  gmax?: boolean;
 }
 
 export const MAX_FRIENDSHIP = 255;

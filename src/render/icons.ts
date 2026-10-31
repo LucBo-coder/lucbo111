@@ -137,6 +137,11 @@ const ITEM_ART: Record<string, { pal: Record<string, string>; rows: string[] }> 
   'linking-cord': { pal: { b: '#8a5a20', y: '#e0b060' }, rows: ['..bbbb....', '.by..yb...', 'by....yb..', 'by.....b..', '.by...yb..', '..bbybb...', '....by....', '....by.bb.', '.....yyyb.', '......bb..'] },
   // star shard of the meteor-shower event (world pickup, not an inventory item)
   'star-shard': { pal: { k: '#806020', y: '#ffe060', l: '#fff8c0', w: '#ffffff' }, rows: ['....kk....', '....kyk...', '...kyyk...', 'kkkkylykkk', 'kyyywlyyyk', '.kyylwyyk.', '..kyyyyk..', '.kyykkyyk.', '.kyk..kyk.', '.kk....kk.'] },
+  // V31: Terastal / Dynamax
+  'tera-orb': { pal: { k: '#304060', c: '#60e0ff', l: '#c0f8ff', p: '#ff80e0', w: '#ffffff' }, rows: ['...kkkk...', '..kclpck..', '.kclwlpck.', '.kllwwlck.', '.kcllllpk.', '.kpcllcck.', '..kcppck..', '...kkkk...', '..kk..kk..', '..........'] },
+  'dynamax-band': { pal: { k: '#401020', r: '#ff3060', d: '#a01838', w: '#ffffff', g: '#d0d0e0' }, rows: ['..........', '..kkkkkk..', '.kggggggk.', 'kgkkkkkkgk', 'kgkrwrrkgk', 'kgkrrrdkgk', 'kgkkkkkkgk', '.kggggggk.', '..kkkkkk..', '..........'] },
+  'tera-shard': { pal: { k: '#305070', c: '#80e8ff', l: '#d0f8ff', w: '#ffffff' }, rows: ['....k.....', '...kck....', '...kclk...', '..kclwk...', '..kcllck..', '.kcclwlk..', '.kccllck..', '..kcclk...', '...kkk....', '..........'] },
+  'max-soup': { pal: { k: '#402018', b: '#c0a080', r: '#e04030', o: '#ff9040', w: '#ffffff' }, rows: ['..........', '...w.w....', '....w.w...', '.kkkkkkkk.', 'kbrrorrobk', 'kbrorrorbk', '.kbbbbbbk.', '..kkkkkk..', '...kkkk...', '..........'] },
   'key-stone': { pal: { k: '#404050', r: '#ff4060', y: '#ffe040', g: '#60ff80', b: '#40a0ff', w: '#ffffff' }, rows: ['...kkkk...', '..kryybk..', '.krwyygbk.', '.kryyggbk.', '.krygggbk.', '.kbgggbbk.', '..kbbbbk..', '...kkkk...', '..........', '..........'] },
 };
 

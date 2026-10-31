@@ -47,6 +47,7 @@ export function categoryOf(id: string): ShopCategory | null {
   const d = ITEM_DEFS.get(id);
   if (!d) return null;
   if (d.kind === 'evoStone') return 'evolution';
+  if (d.kind === 'gimmick') return 'battle';
   if (d.kind === 'megaStone') return 'mega';
   if (d.kind === 'evItem' || d.effect?.type === 'evPower') return 'training';
   if (d.kind === 'held') {
