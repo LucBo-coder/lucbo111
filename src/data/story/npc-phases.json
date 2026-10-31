@@ -1,12 +1,321 @@
 [
- { "region": "starter-valley", "npc": "elder", "if": ["ck:shard-1"], "lines": ["Máy khoan ở tàn tích im rồi. Ta ngủ được một giấc trọn đêm.", "Tàn tích này có từ thời xa xưa, trước cả khi làng được dựng lên. Mảnh Lõi cháu tìm thấy chắc cũng già như nó."] },
- { "region": "starter-valley", "npc": "elder", "if": ["ck:end"], "lines": ["Đêm qua ta thấy ánh hải đăng từ tận đây. Mấy chục năm rồi mới thấy lại.", "Cháu làm được điều mà ông bà ta chỉ kể trong truyện."] },
- { "region": "starter-valley", "npc": "prof", "if": ["ck:end"], "lines": ["Hải Đăng Khởi Nguyên sáng lại rồi! Pokémon di cư theo mùa đang quay về thung lũng.", "Hãy nhớ: Pokémon của cháu tự chiến đấu, cháu chỉ cần chỉ huy và di chuyển."] },
- { "region": "emerald-woods", "npc": "ef-ranger", "if": ["ck:shard-2"], "lines": ["Rừng yên hẳn từ hôm cháu ghé. Pokémon ra tận đường mòn kiếm ăn.", "Bên suối có chỗ câu cá, cá ở đây to hơn ngoài Hồ Pha Lê nhiều."] },
- { "region": "misty-swamp", "npc": "swamp-witch", "if": ["ck:shard-3"], "lines": ["Sương mỏng đi rồi... lần đầu tiên ta thấy được bờ bên kia đầm.", "Ban đêm, Gastly và Misdreavus vẫn ra khỏi hốc cây đấy."] },
- { "region": "misty-swamp", "npc": "swamp-fisher", "if": ["ck:shard-3"], "lines": ["Máy bơm bùn tắt rồi, nước đầm trong dần. Hôm qua tôi câu được con Barboach khỏe re!", "Grimer vẫn còn, nhưng ít hẳn."] },
- { "region": "coral-coast", "npc": "lighthouse-keeper", "if": ["ck:shard-4"], "lines": ["Cuốn sổ cổ nói đèn cần đủ bảy mảnh Lõi. Đêm nào ta cũng thắp, chờ cháu mang về.", "Mấy tảng đá quanh vách là nơi Onix và Graveler ẩn mình."] },
- { "region": "coral-coast", "npc": "lighthouse-keeper", "if": ["ck:end"], "lines": ["Nhìn kìa — ngọn đèn quét tới tận chân trời! Tàu thuyền tìm được đường về rồi.", "Ta sẽ ghi tên cháu vào cuốn sổ, ngay dưới tên người dựng hải đăng."] },
- { "region": "coral-coast", "npc": "diver", "if": ["ck:end"], "lines": ["Từ hôm hải đăng sáng, Lapras với Wailmer bơi vào tận rạn san hô.", "Tentacruel thì vẫn không thân thiện đâu, coi chừng."] },
- { "region": "volcanic-lands", "npc": "geologist", "if": ["ck:shard-6"], "lines": ["Máy khoan lớn sập rồi, dung nham chảy lại đúng dòng cũ. Đất bớt rung hẳn.", "Pokémon Lửa và Đá sống ở đây, Lv42–58. Miệng núi lửa có Pokémon mạnh nhất."] }
+ {
+  "region": "starter-valley",
+  "npc": "elder",
+  "if": [
+   "ck:shard-1"
+  ],
+  "lines": [
+   "Máy khoan ở tàn tích im rồi. Ta ngủ được một giấc trọn đêm.",
+   "Tàn tích này có từ thời xa xưa, trước cả khi làng được dựng lên. Mảnh Lõi cháu tìm thấy chắc cũng già như nó."
+  ]
+ },
+ {
+  "region": "starter-valley",
+  "npc": "elder",
+  "if": [
+   "ck:end"
+  ],
+  "lines": [
+   "Đêm qua ta thấy ánh hải đăng từ tận đây. Mấy chục năm rồi mới thấy lại.",
+   "Cháu làm được điều mà ông bà ta chỉ kể trong truyện."
+  ]
+ },
+ {
+  "region": "starter-valley",
+  "npc": "prof",
+  "if": [
+   "ck:end"
+  ],
+  "lines": [
+   "Hải Đăng Khởi Nguyên sáng lại rồi! Pokémon di cư theo mùa đang quay về thung lũng.",
+   "Hãy nhớ: Pokémon của cháu tự chiến đấu, cháu chỉ cần chỉ huy và di chuyển."
+  ]
+ },
+ {
+  "region": "emerald-woods",
+  "npc": "ef-ranger",
+  "if": [
+   "ck:shard-2"
+  ],
+  "lines": [
+   "Rừng yên hẳn từ hôm cháu ghé. Pokémon ra tận đường mòn kiếm ăn.",
+   "Bên suối có chỗ câu cá, cá ở đây to hơn ngoài Hồ Pha Lê nhiều."
+  ]
+ },
+ {
+  "region": "misty-swamp",
+  "npc": "swamp-witch",
+  "if": [
+   "ck:shard-3"
+  ],
+  "lines": [
+   "Sương mỏng đi rồi... lần đầu tiên ta thấy được bờ bên kia đầm.",
+   "Ban đêm, Gastly và Misdreavus vẫn ra khỏi hốc cây đấy."
+  ]
+ },
+ {
+  "region": "misty-swamp",
+  "npc": "swamp-fisher",
+  "if": [
+   "ck:shard-3"
+  ],
+  "lines": [
+   "Máy bơm bùn tắt rồi, nước đầm trong dần. Hôm qua tôi câu được con Barboach khỏe re!",
+   "Grimer vẫn còn, nhưng ít hẳn."
+  ]
+ },
+ {
+  "region": "coral-coast",
+  "npc": "lighthouse-keeper",
+  "if": [
+   "ck:shard-4"
+  ],
+  "lines": [
+   "Cuốn sổ cổ nói đèn cần đủ bảy mảnh Lõi. Đêm nào ta cũng thắp, chờ cháu mang về.",
+   "Mấy tảng đá quanh vách là nơi Onix và Graveler ẩn mình."
+  ]
+ },
+ {
+  "region": "coral-coast",
+  "npc": "lighthouse-keeper",
+  "if": [
+   "ck:end"
+  ],
+  "lines": [
+   "Nhìn kìa — ngọn đèn quét tới tận chân trời! Tàu thuyền tìm được đường về rồi.",
+   "Ta sẽ ghi tên cháu vào cuốn sổ, ngay dưới tên người dựng hải đăng."
+  ]
+ },
+ {
+  "region": "coral-coast",
+  "npc": "diver",
+  "if": [
+   "ck:end"
+  ],
+  "lines": [
+   "Từ hôm hải đăng sáng, Lapras với Wailmer bơi vào tận rạn san hô.",
+   "Tentacruel thì vẫn không thân thiện đâu, coi chừng."
+  ]
+ },
+ {
+  "region": "volcanic-lands",
+  "npc": "geologist",
+  "if": [
+   "ck:shard-6"
+  ],
+  "lines": [
+   "Máy khoan lớn sập rồi, dung nham chảy lại đúng dòng cũ. Đất bớt rung hẳn.",
+   "Pokémon Lửa và Đá sống ở đây, Lv42–58. Miệng núi lửa có Pokémon mạnh nhất."
+  ]
+ },
+ {
+  "region": "ca-mau",
+  "npc": "cm-elder",
+  "if": [
+   "choice:vn-cm-trap:bao-kiem-lam"
+  ],
+  "lines": [
+   "Kiểm lâm gỡ hết bẫy rồi. Luật rừng nghiêm thì rừng mới còn.",
+   "Có điều thằng Út giận ông ra mặt... Nghèo thì khổ lắm con."
+  ]
+ },
+ {
+  "region": "ca-mau",
+  "npc": "cm-elder",
+  "if": [
+   "choice:vn-cm-trap:khuyen-ut"
+  ],
+  "lines": [
+   "Thằng Út nghe con thiệt! Nó tự tay gỡ bẫy, còn xin ông dạy cách đan lờ.",
+   "Người ta nghe nhau bằng lời tử tế, hơn bằng luật."
+  ]
+ },
+ {
+  "region": "ca-mau",
+  "npc": "cm-fisher-ut",
+  "if": [
+   "choice:vn-cm-trap:bao-kiem-lam"
+  ],
+  "lines": [
+   "Kiểm lâm tịch thu hết bẫy của tui rồi... Thôi, tui biết tui sai.",
+   "Rừng đước giữ đất cho làng. Đừng đốt lửa trong rừng nhé!"
+  ]
+ },
+ {
+  "region": "ca-mau",
+  "npc": "cm-fisher-ut",
+  "if": [
+   "choice:vn-cm-trap:khuyen-ut"
+  ],
+  "lines": [
+   "Cảm ơn con đã nói chuyện với tui chớ không báo ai. Tui gỡ bẫy rồi, giờ tính chuyện làm ăn khác.",
+   "Rừng đước giữ đất cho làng. Đừng đốt lửa trong rừng nhé!"
+  ]
+ },
+ {
+  "region": "ca-mau",
+  "npc": "cm-ranger-uminh",
+  "if": [
+   "choice:vn-cm-trap:bao-kiem-lam"
+  ],
+  "lines": [
+   "Nhờ con báo tin, đội đã gỡ mười mấy cái bẫy trong rừng tràm. Pokémon đi lại yên ổn hơn hẳn.",
+   "Ong mật trong rừng tràm làm ra mật ngon nhất miền Tây."
+  ]
+ },
+ {
+  "region": "ca-mau",
+  "npc": "cm-ranger-uminh",
+  "if": [
+   "choice:vn-cm-trap:khuyen-ut"
+  ],
+  "lines": [
+   "Nghe nói Út Mũi tự gỡ bẫy rồi? Vậy thì tốt — đỡ cho tôi một chuyến lập biên bản.",
+   "Ong mật trong rừng tràm làm ra mật ngon nhất miền Tây."
+  ]
+ },
+ {
+  "region": "an-giang",
+  "npc": "ag-boatman",
+  "if": [
+   "choice:vn-ag-fishing:luoi-day"
+  ],
+  "lines": [
+   "Mùa rồi trúng lớn thiệt... mà nhìn đồng giờ vắng hoe, bác thấy chột dạ.",
+   "Mùa nước nổi, cá linh về đầy đồng. Năm nay chắc không được vậy nữa."
+  ]
+ },
+ {
+  "region": "an-giang",
+  "npc": "ag-boatman",
+  "if": [
+   "choice:vn-ag-fishing:cau-vua-du"
+  ],
+  "lines": [
+   "Cá non mình chừa lại đó, mùa sau về đầy đồng cho coi.",
+   "Mùa nước nổi, cá linh về đầy đồng. Pokémon nước cũng kéo về theo."
+  ]
+ },
+ {
+  "region": "an-giang",
+  "npc": "ag-researcher",
+  "if": [
+   "choice:vn-ag-fishing:luoi-day"
+  ],
+  "lines": [
+   "Số liệu năm nay: cá linh giảm gần một nửa so với năm ngoái. Lưới dày quá.",
+   "Nhóm tôi vẫn khảo sát đền cổ Bảy Núi — ít nhất đá thì không bị vét."
+  ]
+ },
+ {
+  "region": "an-giang",
+  "npc": "ag-researcher",
+  "if": [
+   "choice:vn-ag-fishing:cau-vua-du"
+  ],
+  "lines": [
+   "Đàn cá non năm nay đông bất ngờ. Ai đó đã câu rất có chừng mực.",
+   "Nhóm tôi khảo sát hệ sinh thái Bảy Núi... và một đền cổ chưa ai ghi chép."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-ferry-girl",
+  "if": [
+   "choice:vn-ct-feud:theo-tu-hien"
+  ],
+  "lines": [
+   "Ghe Tư Hiền cập bến sớm, cả xóm có hàng. Chú Tám thì vẫn còn hơi buồn.",
+   "Bến Ninh Kiều về đêm đèn sáng rực cả bờ sông Hậu."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-ferry-girl",
+  "if": [
+   "choice:vn-ct-feud:theo-chu-tam"
+  ],
+  "lines": [
+   "Ghe trái cây Chú Tám cập bến trước, chợ nổi thơm mùi sầu riêng. Tư Hiền cằn nhằn mấy bữa.",
+   "Bến Ninh Kiều về đêm đèn sáng rực cả bờ sông Hậu."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-ferry-girl",
+  "if": [
+   "choice:vn-ct-feud:chia-gio"
+  ],
+  "lines": [
+   "Sáng Tư Hiền, chiều Chú Tám — bến êm như chưa từng có chuyện gì.",
+   "Bến Ninh Kiều về đêm đèn sáng rực cả bờ sông Hậu."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-merchant",
+  "if": [
+   "choice:vn-ct-feud:theo-tu-hien"
+  ],
+  "lines": [
+   "Nhờ con mà ghe tôi có bến! Khóm bán hết từ sáng sớm.",
+   "Thấy trái khóm treo trên cây bẹo đó không? Ghe tôi đó."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-merchant",
+  "if": [
+   "choice:vn-ct-feud:theo-chu-tam"
+  ],
+  "lines": [
+   "Ghe tôi phải đậu xa bến... thôi kệ, trái cây chú Tám để lâu thì hư thiệt.",
+   "Ghe tôi bán khóm — thấy trái khóm treo trên cây bẹo đó không?"
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-merchant",
+  "if": [
+   "choice:vn-ct-feud:chia-gio"
+  ],
+  "lines": [
+   "Buổi sáng là của tôi, buổi chiều của lão Tám. Vậy mà hay — khỏi giành nhau.",
+   "Ghe tôi bán khóm — thấy trái khóm treo trên cây bẹo đó không?"
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-orchard-owner",
+  "if": [
+   "choice:vn-ct-feud:theo-tu-hien"
+  ],
+  "lines": [
+   "Ghe chú phải chờ tới trưa mới vô bến, trái chín héo mất mấy giỏ. Mà thôi, xóm cần hàng thật.",
+   "Pokémon hệ Bọ hay phá vườn lắm, con giúp chú với nha."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-orchard-owner",
+  "if": [
+   "choice:vn-ct-feud:theo-chu-tam"
+  ],
+  "lines": [
+   "Trái cây lên chợ còn tươi rói! Con ghé vườn ăn sầu riêng với chú.",
+   "Pokémon hệ Bọ hay phá vườn lắm, con giúp chú với nha."
+  ]
+ },
+ {
+  "region": "can-tho",
+  "npc": "ct-orchard-owner",
+  "if": [
+   "choice:vn-ct-feud:chia-gio"
+  ],
+  "lines": [
+   "Chiều nào ghe chú cũng có bến. Chia giờ mà ai cũng vui, con giỏi thiệt.",
+   "Pokémon hệ Bọ hay phá vườn lắm, con giúp chú với nha."
+  ]
+ }
 ]

@@ -5,6 +5,8 @@ import { npcLines } from '../src/core/story';
 import peace from '../src/data/vietnam/peace.json';
 import phases from '../src/data/story/npc-phases.json';
 import classic from '../src/data/story/classic.json';
+import vnQuests from '../src/data/vietnam/quests.json';
+import { choiceFlag, type QuestDef } from '../src/core/quests';
 
 // V30: villagers stop talking about a province's trouble once its guardian is calmed (data/vietnam/peace.json)
 const PEACE = peace as Record<string, { guide: string[]; town: string[] }>;
@@ -59,13 +61,28 @@ describe('NPC lines follow the story', () => {
 
 describe('chapter lines of single people (data/story/npc-phases.json)', () => {
   it('point at real people and at flags the story sets', () => {
-    const flags = new Set(classic.quests.flatMap((q) => (q.rewards as { flags?: string[] }).flags ?? []));
+    const all = [...(classic.quests as unknown as QuestDef[]), ...(vnQuests as unknown as QuestDef[])];
+    const flags = new Set([...all.flatMap((q) => q.rewards.flags ?? []),
+      ...all.flatMap((q) => q.objectives.flatMap((o) => (o.options ?? []).map((op) => choiceFlag(q.id, op.id))))]);
     for (const p of phases) {
       expect(REGION_DEFS[p.region]?.npcs.some((n) => n.id === p.npc), `${p.region} ${p.npc}`).toBe(true);
       for (const f of p.if) expect(flags.has(f), `${p.npc} ${f}`).toBe(true);
       expect(p.lines.length).toBeGreaterThan(0);
     }
   });
+  it('the people of a crossroads talk about the path the player picked (T22-12)', () => {
+    const ut = REGION_DEFS['ca-mau'].npcs.find((n) => n.id === 'cm-fisher-ut')!;
+    const said = (f: string) => npcLines(ut, (x) => x === f)[0];
+    expect(said('none')).toBe(ut.lines[0]);
+    expect(said(choiceFlag('vn-cm-trap', 'bao-kiem-lam'))).toContain('tịch thu');
+    expect(said(choiceFlag('vn-cm-trap', 'khuyen-ut'))).toContain('gỡ bẫy');
+    // every option of the three Vietnam crossroads changes what its people say
+    for (const [q, n] of [['vn-cm-trap', 3], ['vn-ag-fishing', 2], ['vn-ct-feud', 3]] as const) {
+      const opts = (vnQuests as unknown as QuestDef[]).find((x) => x.id === q)!.objectives.find((o) => o.type === 'choose')!.options!;
+      for (const op of opts) expect(phases.filter((p) => p.if[0] === choiceFlag(q, op.id)).length, `${q} ${op.id}`).toBe(n);
+    }
+  });
+
   it('the lighthouse keeper moves on with the story', () => {
     const k = REGION_DEFS['coral-coast'].npcs.find((n) => n.id === 'lighthouse-keeper')!;
     const at = (set: string[]) => npcLines(k, (f) => set.includes(f))[0];

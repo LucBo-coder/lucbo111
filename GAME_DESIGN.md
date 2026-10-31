@@ -256,7 +256,7 @@ Bản đồ chia chunk, tải động. Có ngày/đêm, thời tiết (mưa, sư
   - Nhiệm vụ cốt truyện có id cố định (`ck-…`, `mn-…`), thuộc một chương, có cảnh mở đầu / kết thúc.
   - Cảnh tự phát khi yên (không hội thoại, không giao chiến, không đấu HLV). Mỗi trang có **Tiếp ▶** hoặc **Bỏ qua cảnh**; đã mở là tính đã xem (lưu trong `storySeen`), xem lại được trong nhật ký.
   - NPC / HLV cốt truyện xuất hiện và rời đi theo cờ (`showIf` / `hideIf`); cùng một nhân vật giữ nguyên ngoại hình ở mọi bản đồ.
-  - Lời thoại thường ngày đi theo cốt truyện (V30, `phases`, `core/story.ts npcLines`): khi thần hộ vệ một tỉnh đã nguôi giận, người dẫn đường nói lời riêng và dân làng thay nhau nói 4 câu của tỉnh (`data/vietnam/peace.json`) thay vì kể chuyện rắc rối cũ. Vài người ở Quần Đảo Khởi Nguyên (bà đồng đầm lầy, người giữ hải đăng, trưởng làng…) đổi lời sau từng chương (`data/story/npc-phases.json`).
+  - Lời thoại thường ngày đi theo cốt truyện (V30, `phases`, `core/story.ts npcLines`): khi thần hộ vệ một tỉnh đã nguôi giận, người dẫn đường nói lời riêng và dân làng thay nhau nói 4 câu của tỉnh (`data/vietnam/peace.json`) thay vì kể chuyện rắc rối cũ. Vài người ở Quần Đảo Khởi Nguyên (bà đồng đầm lầy, người giữ hải đăng, trưởng làng…) đổi lời sau từng chương, người ở ba ngã rẽ Việt Nam nói theo lựa chọn đã chọn (cờ `choice:`) (`data/story/npc-phases.json`).
   - Ngã rẽ được báo trước trong lời giao nhiệm vụ.
 - **Mục tiêu tình huống (V29)** trên bản đồ:
   - **Giữ vị trí**: đứng trong vòng tròn khi có Pokémon trên sân; các đợt Pokémon hoang dã kéo tới. Ra khỏi vòng thì tạm dừng; ra quá 8 s thì phải giữ lại từ đầu.
