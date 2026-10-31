@@ -132,7 +132,7 @@
  "docks": [],
  "nodes": [
   { "id": "nb-meadow-1", "table": "meadow-forage", "x": 30, "y": 8 },
-  { "id": "nb-lake-1", "table": "lake-fish", "x": 52, "y": 28 },
+  { "id": "nb-lake-1", "table": "lake-fish", "x": 57, "y": 23 },
   { "id": "nb-forest-1", "table": "forest-forage", "x": 20, "y": 80 },
   { "id": "nb-paddy-1", "table": "paddy-fish", "x": 60, "y": 82 },
   { "id": "nb-meadow-2", "table": "meadow-forage", "x": 116, "y": 80 }

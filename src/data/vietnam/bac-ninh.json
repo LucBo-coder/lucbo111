@@ -128,7 +128,7 @@
  ],
  "docks": [],
  "nodes": [
-  { "id": "bn-lake-1", "table": "lake-fish", "x": 42, "y": 22 },
+  { "id": "bn-lake-1", "table": "lake-fish", "x": 40, "y": 21 },
   { "id": "bn-forest-1", "table": "forest-forage", "x": 100, "y": 28 },
   { "id": "bn-meadow-1", "table": "meadow-forage", "x": 20, "y": 90 },
   { "id": "bn-orchard-1", "table": "orchard-forage", "x": 70, "y": 100 },

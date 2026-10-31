@@ -137,7 +137,7 @@
  "nodes": [
   { "id": "hy-orchard-1", "table": "orchard-forage", "x": 30, "y": 10 },
   { "id": "hy-meadow-1", "table": "meadow-forage", "x": 90, "y": 14 },
-  { "id": "hy-river-1", "table": "canal-fish", "x": 60, "y": 30 },
+  { "id": "hy-river-1", "table": "canal-fish", "x": 60, "y": 28 },
   { "id": "hy-paddy-1", "table": "paddy-fish", "x": 70, "y": 100 },
   { "id": "hy-meadow-2", "table": "meadow-forage", "x": 114, "y": 80 }
  ],

@@ -131,9 +131,9 @@
  "docks": [],
  "nodes": [
   { "id": "qt-meadow-1", "table": "meadow-forage", "x": 50, "y": 8 },
-  { "id": "qt-sea-1", "table": "lake-fish", "x": 112, "y": 40 },
+  { "id": "qt-sea-1", "table": "lake-fish", "x": 114, "y": 39 },
   { "id": "qt-forest-1", "table": "forest-forage", "x": 20, "y": 78 },
-  { "id": "qt-river-1", "table": "canal-fish", "x": 70, "y": 92 },
+  { "id": "qt-river-1", "table": "canal-fish", "x": 68, "y": 89 },
   { "id": "qt-meadow-2", "table": "meadow-forage", "x": 80, "y": 104 }
  ],
  "field": [

@@ -142,8 +142,8 @@
  "nodes": [
   { "id": "sg-forest-1", "table": "forest-forage", "x": 30, "y": 8 },
   { "id": "sg-orchard-1", "table": "orchard-forage", "x": 70, "y": 25 },
-  { "id": "sg-river-1", "table": "canal-fish", "x": 106, "y": 70 },
-  { "id": "sg-mangrove-1", "table": "mangrove-fish", "x": 22, "y": 88 },
+  { "id": "sg-river-1", "table": "canal-fish", "x": 104, "y": 70 },
+  { "id": "sg-mangrove-1", "table": "mangrove-fish", "x": 26, "y": 87 },
   { "id": "sg-mangrove-2", "table": "mangrove-forage", "x": 50, "y": 104 },
   { "id": "sg-zoo-1", "table": "meadow-forage", "x": 8, "y": 46 }
  ],

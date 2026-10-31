@@ -138,7 +138,7 @@
  ],
  "nodes": [
   { "id": "dn-forest-1", "table": "forest-forage", "x": 40, "y": 20 },
-  { "id": "dn-lake-1", "table": "lake-fish", "x": 94, "y": 22 },
+  { "id": "dn-lake-1", "table": "lake-fish", "x": 91, "y": 19 },
   { "id": "dn-orchard-1", "table": "orchard-forage", "x": 106, "y": 40 },
   { "id": "dn-falls-1", "table": "falls-fish", "x": 106, "y": 74 },
   { "id": "dn-meadow-1", "table": "meadow-forage", "x": 88, "y": 88 },

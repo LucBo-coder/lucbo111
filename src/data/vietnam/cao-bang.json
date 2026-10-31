@@ -131,7 +131,7 @@
  "docks": [],
  "nodes": [
   { "id": "cb-meadow-1", "table": "meadow-forage", "x": 20, "y": 30 },
-  { "id": "cb-lake-1", "table": "falls-fish", "x": 52, "y": 16 },
+  { "id": "cb-lake-1", "table": "falls-fish", "x": 54, "y": 15 },
   { "id": "cb-forest-1", "table": "forest-forage", "x": 20, "y": 84 },
   { "id": "cb-meadow-2", "table": "meadow-forage", "x": 72, "y": 100 },
   { "id": "cb-meadow-3", "table": "meadow-forage", "x": 112, "y": 80 }

@@ -137,7 +137,7 @@
   { "id": "ld-forest-1", "table": "forest-forage", "x": 72, "y": 20 },
   { "id": "ld-meadow-1", "table": "meadow-forage", "x": 24, "y": 78 },
   { "id": "ld-orchard-1", "table": "orchard-forage", "x": 100, "y": 82 },
-  { "id": "ld-lake-1", "table": "lake-fish", "x": 52, "y": 82 },
+  { "id": "ld-lake-1", "table": "lake-fish", "x": 54, "y": 82 },
   { "id": "ld-meadow-2", "table": "meadow-forage", "x": 80, "y": 106 }
  ],
  "field": [

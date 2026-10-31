@@ -140,8 +140,8 @@
   { "id": "dl-forest-1", "table": "forest-forage", "x": 34, "y": 10 },
   { "id": "dl-orchard-1", "table": "orchard-forage", "x": 20, "y": 92 },
   { "id": "dl-meadow-1", "table": "meadow-forage", "x": 60, "y": 20 },
-  { "id": "dl-lake-1", "table": "lake-fish", "x": 52, "y": 96 },
-  { "id": "dl-falls-1", "table": "falls-fish", "x": 108, "y": 14 }
+  { "id": "dl-lake-1", "table": "lake-fish", "x": 55, "y": 94 },
+  { "id": "dl-falls-1", "table": "falls-fish", "x": 86, "y": 92 }
  ],
  "field": [
   { "id": "dl-boulder", "ability": "smash", "x": 104, "y": 70, "nook": { "cx": 100.5, "cy": 70.5, "r": 3, "wall": "boulder" } }

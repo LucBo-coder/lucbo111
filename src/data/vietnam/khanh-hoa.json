@@ -137,7 +137,7 @@
   { "id": "kh-forest-1", "table": "forest-forage", "x": 32, "y": 20 },
   { "id": "kh-orchard-1", "table": "orchard-forage", "x": 30, "y": 76 },
   { "id": "kh-meadow-1", "table": "meadow-forage", "x": 70, "y": 100 },
-  { "id": "kh-sea-1", "table": "lake-fish", "x": 104, "y": 62 },
+  { "id": "kh-sea-1", "table": "lake-fish", "x": 105, "y": 63 },
   { "id": "kh-sea-2", "table": "lake-fish", "x": 112, "y": 98 }
  ],
  "field": [

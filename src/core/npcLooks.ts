@@ -313,6 +313,7 @@ const BY_SPRITE: Record<string, string[]> = {
   wizard: ['robe', 'scientist'],
   youngster: ['cap', 'kid', 'man'],
   ranger: ['ranger', 'hiker'],
+  hiker: ['hiker', 'veteran', 'ranger'],
   knight: ['veteran', 'ranger'],
   viking: ['hiker', 'veteran'],
   bald: ['man', 'veteran'],
