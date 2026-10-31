@@ -84,6 +84,8 @@ export interface AdventureSave {
   rites?: string[];
   /** Vietnam Odyssey passport: Date.now() of the first visit of each province */
   visited?: Record<string, number>;
+  /** Story cutscenes already played (each plays once; all of them can be read again in the journal) */
+  storySeen?: string[];
 }
 
 /**
@@ -229,7 +231,7 @@ export function newAdventure(campaign: Campaign = 'classic'): AdventureSave {
     started: false, campaign, region: CAMPAIGN_START[campaign].region, party: [], pos: { x: -1, y: -1 }, lastWaypoint: CAMPAIGN_START[campaign].waypoint, waypoints: [],
     quests: {}, flags: [], discovered: [], chests: [], areas: [], worldExp: 0, reputation: 0, dungeons: {}, clock: 8 * 60, playTime: 0, bossDefeatedAt: {},
     events: newEventSave(), legends: {}, legendHp: {}, eggs: [], discoveredBy: {}, bossFights: {}, recalled: [],
-    activeUid: null, pc: emptyPc(), visited: {},
+    activeUid: null, pc: emptyPc(), visited: {}, storySeen: [],
   };
 }
 

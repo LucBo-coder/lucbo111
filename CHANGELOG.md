@@ -1,5 +1,25 @@
 # Changelog
 
+## Chưa phát hành — V29: Một Pokémon trên sân, cốt truyện "Mạch Nguồn" và "Quần Đảo Khởi Nguyên"
+
+- **Một Pokémon trên sân mỗi huấn luyện viên** ở Phiêu lưu, Việt Nam Odyssey và co-op (cả HLV NPC). Mọi con số nằm trong `src/data/field-rules.json`.
+  - **Vòng đổi nhanh** (T / nút **Đổi**, tự mở khi Pokémon gục): HP, hệ, trạng thái, thời gian hồi; phím 1–5. Đổi lúc yên bình hồi 0,8 s; đang giao chiến ~0,6 s, hồi 6 s.
+  - Pokémon gục về bóng, sau 4 s game tự thả con khỏe hợp hệ nhất; hết con khỏe thì ngất. Con trong bóng vẫn hồi chiêu và năng lượng.
+  - EXP: con đã đánh nhận đủ, con khỏe trong bóng 50%.
+  - Boss chỉnh cho trận một-con (HP, sát thương, kháng sát thương theo thời gian, khống chế ngắn hơn, ít quân tiếp viện hơn).
+  - Chặt cây / đập đá / đẩy đá / đền tự thả đúng con có năng lực. Ném bóng thì đồng đội ngừng đánh con đang bị bắt.
+  - Khách co-op mang tới 6 con, 1 con trên sân, đổi qua chủ phòng. Save v9 tự chuyển đổi.
+- **Combat UI**: Q nhắm con địch dưới chuột; lệnh "Đi theo" / "Rút lui" đổi tên thành **Ngừng tấn công** / **Quay về HLV**; HUD đội: con trên sân lớn, dự bị gọn.
+- **Cốt truyện cho cả hai chiến dịch** (`src/data/story/*.json`, sinh bằng `npx tsx scripts/gen-story.ts`):
+  - **Mạch Nguồn** (Việt Nam Odyssey): 7 hồi từ Cà Mau tới Hà Nội rồi về lại Đất Mũi; 46 nhiệm vụ, 20 cảnh; Linh chờ ở cả 36 tỉnh; Khải, Tiến sĩ Vũ, Chú Sáu; ngã rẽ ở Huế; trận cuối 3 bước ở Cổ Loa. Giáo sư Mai đổi tên thành **Giáo sư An**.
+  - **Quần Đảo Khởi Nguyên** (Phiêu lưu): 7 chương trên 7 bản đồ tìm bảy mảnh Lõi Khởi Nguyên để thắp lại hải đăng; 9 nhiệm vụ, 9 cảnh; ngã rẽ ở Bờ Biển.
+  - Cảnh tự phát lúc yên, **bỏ qua được**, đọc lại trong nhật ký. NPC cốt truyện xuất hiện / rời đi theo tiến độ.
+  - Mục tiêu mới: **giữ vị trí** trước các đợt Pokémon, **phá thiết bị**, **hộ tống**.
+- **Nhật ký**: thêm bộ lọc **Chính** / **Phụ** và trang **Cốt truyện** (hồi / chương, nhân vật đã gặp, cảnh đã xem với nút Xem lại).
+- Hộ chiếu không tính HLV cốt truyện (xuất hiện theo cờ) vào số HLV của tỉnh.
+- Test mới `v29_one_active` (15), `v29_story` (14), e2e `v29_story` (2).
+- Chưa làm (ghi ở TASKS T29-4/5): đổi dải cấp các tỉnh theo bảng tham khảo; Torterra là đồng minh kịch bản; khách co-op xem cảnh.
+
 ## Chưa phát hành — Sửa hoạt ảnh Pokémon (gói PMD cá nhân)
 
 - **Script mới `scripts/fetch-pmd-missing.py`**: tải từ PMDCollab SpriteCollab các loài còn thiếu trong gói hoạt ảnh, và tải lại những loài có sheet lệch kích thước khung (sheet lệch bị game từ chối nên loài đó mất hoạt ảnh). Kết quả trên máy: thêm 6 loài (Jellicent, Rolycoly, Sirfetch'd, Copperajah, Toedscool, Pecharunt), sửa 32 loài (Victini, Meowscarada và 30 sheet shiny). 55 loài SpriteCollab chưa vẽ vẫn dùng ảnh chính thức có hoạt ảnh dựng bằng code.

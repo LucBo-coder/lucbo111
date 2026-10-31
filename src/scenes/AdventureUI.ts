@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { fieldFlag, tideName } from '../core/field';
-import { questInRegion, repBoard } from '../core/journal';
+import { isMainQuest, questInRegion, repBoard } from '../core/journal';
+import { chapterStates } from '../core/story';
 import { CONSERVATION, ecoHealth, ECO_TIERS, ecoTier } from '../core/conservation';
 import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
@@ -118,7 +119,8 @@ export class AdventureUI extends Phaser.Scene {
   private partyPage = 0;
   private questPage = 0;
   /** Journal filter: every quest, quests of this map, finished ones, or the reputation board */
-  private questFilter: 'all' | 'here' | 'done' | 'rep' = 'all';
+  private questFilter: 'all' | 'main' | 'side' | 'here' | 'done' | 'story' | 'rep' = 'all';
+  private storyPage = 0;
   /** the HUD is laid out for a portrait phone */
   private portraitHud = false;
   /** Active-skill bar (focused Pokémon's 4 skills) */
@@ -1602,17 +1604,21 @@ export class AdventureUI extends Phaser.Scene {
   private buildQuests(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, st = this.adv.state, qs = st.quests;
     // filter row: all / this map / finished / reputation board
-    const filters: [typeof this.questFilter, string][] = [['all', 'Tất cả'], ['here', 'Vùng này'], ['done', 'Đã xong'], ['rep', 'Danh tiếng']];
+    // V29: main story / side quests apart, and the story page (acts, characters, cutscenes to watch again)
+    const filters: [typeof this.questFilter, string][] = [['all', 'Tất cả'], ['main', 'Chính'], ['side', 'Phụ'], ['here', 'Vùng này'], ['done', 'Đã xong'], ['story', 'Cốt truyện'], ['rep', 'Danh tiếng']];
     const fw = Math.min(150 * s, (r.w - 12 * s) / filters.length);
     filters.forEach(([id, label], i) => c.add(button(this, r.x + fw / 2 + i * (fw + 4 * s), r.y + 14 * s, fw, 30 * s, label, () => { this.questFilter = id; this.questPage = 0; this.openMenu('quests'); }, this.questFilter === id ? 0x4a5a8a : 0x262c44).container));
     r = { ...r, y: r.y + 36 * s, h: r.h - 36 * s };
     if (this.questFilter === 'rep') { this.buildRepBoard(c, r); return; }
+    if (this.questFilter === 'story') { this.buildStory(c, r); return; }
     const here = this.adv.regionDef.id;
     const list = qs.defs.filter((d) => {
       const stt = qs.states[d.id].status;
       if (stt !== 'active' && stt !== 'completed' && stt !== 'available') return false;
       if (this.questFilter === 'done') return stt === 'completed';
       if (this.questFilter === 'here') return questInRegion(d, here);
+      if (this.questFilter === 'main') return isMainQuest(d);
+      if (this.questFilter === 'side') return !isMainQuest(d);
       return true;
     });
     const [L, D] = this.split(r, 0.42, 0.4), lw = L.w;
@@ -1658,6 +1664,59 @@ export class AdventureUI extends Phaser.Scene {
     const rewards = [...Object.entries(rw.items ?? {}).map(([k, v]) => `${v} ${ITEMS[k]?.name ?? k}`), rw.worldExp ? `${rw.worldExp} EXP thế giới` : '', rw.reputation ? `${rw.reputation} danh tiếng` : '', rw.pokemon ? `${POKEMON.get(rw.pokemon.species)?.name} Lv${rw.pokemon.level}` : ''].filter(Boolean);
     c.add(text(this, dx + 16 * s, r.y + r.h - 90 * s, `Phần thưởng: ${rewards.join(', ')}`, 16 * s, '#9fe0a0').setWordWrapWidth(dw - 32 * s));
     if (state.status === 'active') c.add(button(this, dx + dw - 100 * s, r.y + r.h - 30 * s, 170 * s, 36 * s, st.trackedQuest === sel.id ? 'Đang theo dõi' : 'Theo dõi', () => { st.trackedQuest = sel.id; this.openMenu('quests'); }).container);
+  }
+
+  /**
+   * The campaign's story (V29): acts with their state (a locked act keeps its synopsis hidden), what changed after
+   * each finished act, the cast met so far, and every cutscene already seen — any of them can be watched again.
+   */
+  private buildStory(c: Phaser.GameObjects.Container, r: Rect): void {
+    const s = this.s, st = this.adv.state, ctl = this.adv.story;
+    if (!ctl) { c.add(text(this, r.x + 10 * s, r.y + 10 * s, 'Cốt truyện chỉ xem được khi đang ở ngoài bản đồ.', 18 * s, COLORS.dim)); return; }
+    const story = ctl.story, states = chapterStates(story, (id) => st.quests.states[id]?.status);
+    const [L, D] = this.split(r, 0.5, 0.5);
+    c.add(text(this, L.x + 6 * s, L.y, story.title.toUpperCase(), 22 * s, '#ffe080'));
+    c.add(text(this, L.x + 6 * s, L.y + 28 * s, story.premise, 14 * s, '#d0d8f0').setWordWrapWidth(L.w - 12 * s));
+    let y = L.y + 30 * s + 14 * s * 6.2;
+    for (const ch of story.chapters) {
+      const cs = states[ch.id];
+      if (y > L.y + L.h - 40 * s) break;
+      c.add(text(this, L.x + 6 * s, y, `${cs === 'done' ? '✓' : cs === 'current' ? '▶' : '◇'} ${ch.title}`, 17 * s, cs === 'done' ? '#80c080' : cs === 'current' ? '#ffe080' : COLORS.dim));
+      y += 22 * s;
+      if (cs !== 'locked') {
+        const t = text(this, L.x + 20 * s, y, cs === 'done' ? ch.change : ch.summary, 13 * s, '#b8c0d8').setWordWrapWidth(L.w - 30 * s);
+        c.add(t);
+        y += t.height + 6 * s;
+      }
+    }
+    // right: the cast met so far, then the cutscenes to watch again (paged)
+    c.add(panel(this, D.x, D.y, D.w, D.h, COLORS.panelEdge, 0x1c2134, 1));
+    const seen = ctl.seenCutscenes();
+    const met = story.characters.filter((ch) => seen.some((cs) => cs.lines.some((l) => l.who === ch.id)));
+    c.add(text(this, D.x + 12 * s, D.y + 8 * s, 'NHÂN VẬT', 17 * s, '#ffe080'));
+    let cy = D.y + 32 * s;
+    for (const ch of met) {
+      const t = text(this, D.x + 12 * s, cy, `${ch.name} — ${ch.role}`, 13 * s, '#d0d8f0').setWordWrapWidth(D.w - 24 * s);
+      c.add(t);
+      cy += t.height + 4 * s;
+    }
+    if (!met.length) { c.add(text(this, D.x + 12 * s, cy, 'Chưa gặp ai.', 14 * s, COLORS.dim)); cy += 20 * s; }
+    cy += 8 * s;
+    c.add(text(this, D.x + 12 * s, cy, `CẢNH ĐÃ XEM (${seen.length}/${story.cutscenes.length})`, 17 * s, '#ffe080'));
+    cy += 26 * s;
+    const rowH = 34 * s, per = Math.max(1, Math.floor((D.y + D.h - 44 * s - cy) / rowH)), pages = Math.max(1, Math.ceil(seen.length / per));
+    this.storyPage = Phaser.Math.Clamp(this.storyPage, 0, pages - 1);
+    seen.slice(this.storyPage * per, this.storyPage * per + per).forEach((cs, i) => {
+      const yy = cy + i * rowH;
+      c.add(text(this, D.x + 12 * s, yy + 6 * s, cs.title, 15 * s, '#ffffff'));
+      c.add(button(this, D.x + D.w - 70 * s, yy + 12 * s, 110 * s, 28 * s, 'Xem lại', () => { this.closeMenu(); void ctl.play(cs.id, true); }).container);
+    });
+    if (!seen.length) c.add(text(this, D.x + 12 * s, cy, 'Chưa xem cảnh nào.', 14 * s, COLORS.dim));
+    if (pages > 1) {
+      c.add(button(this, D.x + 50 * s, D.y + D.h - 20 * s, 80 * s, 28 * s, '◀', () => { this.storyPage = (this.storyPage + pages - 1) % pages; this.openMenu('quests'); }).container);
+      c.add(text(this, D.x + D.w / 2, D.y + D.h - 20 * s, `${this.storyPage + 1}/${pages}`, 15 * s, COLORS.dim).setOrigin(0.5));
+      c.add(button(this, D.x + D.w - 50 * s, D.y + D.h - 20 * s, 80 * s, 28 * s, '▶', () => { this.storyPage = (this.storyPage + 1) % pages; this.openMenu('quests'); }).container);
+    }
   }
 
   /** Reputation of every province / region of this campaign: tier, points, progress to the next tier and its gift. */
@@ -1954,7 +2013,7 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', () => openCoopMenu(this, this.adv), 0x2f5a6a).container);
     c.add(button(this, r.x + 160 * s, r.y + 388 * s, 300 * s, 36 * s, 'Đi chung / thách đấu PvP', () => void this.onlineMenu(), 0x3a3a5a).container);
     c.add(text(this, this.portraitMenu ? r.x : r.x + 340 * s, r.y + (this.portraitMenu ? 440 : 130) * s,
-      'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\nT đổi Pokémon (1–5 chọn) · Shift+1–6 gọi/thu hồi ô đội\n` 1-5 lệnh đội: Tự do / Tấn công / Bảo vệ /\n   Đi theo / Giữ vị trí / Rút lui\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
+      'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\nT đổi Pokémon (1–5 chọn) · Shift+1–6 gọi/thu hồi ô đội\n` 1-5 lệnh: Tự do / Tấn công mục tiêu / Bảo vệ /\n   Ngừng tấn công / Giữ vị trí / Quay về HLV\nQ dùng chiêu tốt nhất (ngắm chuột chọn mục tiêu)\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
   }
 }
 

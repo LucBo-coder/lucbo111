@@ -4,8 +4,12 @@
 // `choice:<quest>:<option>` (follow-up quests can require it), adds the option's rewards, and from then on only
 // objectives without a `branch` or with that branch apply.
 
+import type { EncounterDef } from './story';
+
 export type QuestKind = 'main' | 'side' | 'exploration' | 'capture' | 'trainer' | 'dungeon' | 'boss';
-export type ObjectiveType = 'talk' | 'capture' | 'defeat' | 'explore' | 'activate' | 'dungeon' | 'collect' | 'trainer' | 'rescue' | 'puzzle' | 'boss' | 'evolve' | 'choose';
+export type ObjectiveType = 'talk' | 'capture' | 'defeat' | 'explore' | 'activate' | 'dungeon' | 'collect' | 'trainer' | 'rescue' | 'puzzle' | 'boss' | 'evolve' | 'choose'
+  // story encounters (V29, core/story.ts): keep a point against waves, break a device, bring someone somewhere
+  | 'hold' | 'destroy' | 'escort';
 
 export interface ObjectiveDef {
   type: ObjectiveType;
@@ -20,6 +24,8 @@ export interface ObjectiveDef {
   branch?: string;
   /** 'choose' objective: the options (target = the NPC who asks) */
   options?: QuestOption[];
+  /** 'hold' / 'destroy' / 'escort': where and how (target = the encounter id the controller reports) */
+  encounter?: EncounterDef;
 }
 
 export interface QuestOption {
@@ -59,6 +65,9 @@ export interface QuestDef {
   starter?: string[];
   rewards: QuestRewards;
   dialogue: { offer: string[]; progress?: string[]; complete: string[] };
+  /** Story (V29): the act / chapter it belongs to and the cutscenes it plays (skippable, kept in the journal) */
+  chapter?: string;
+  cutscene?: { start?: string; complete?: string };
 }
 
 export type QuestStatus = 'locked' | 'available' | 'active' | 'completed';

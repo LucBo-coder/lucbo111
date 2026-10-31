@@ -1338,10 +1338,11 @@ export class World {
    * cooldown per side so manual casts cannot be spammed. A unit that is busy or out of range queues the
    * request for ACTIVE_SKILL_WINDOW seconds and walks to its target meanwhile.
    */
-  requestSkill(u: Unit, slot: number | 'best', side: Side = this.sideOf(u) ?? this.home): ActiveSkillResult {
+  requestSkill(u: Unit, slot: number | 'best', side: Side = this.sideOf(u) ?? this.home, aim: Unit | null = null): ActiveSkillResult {
     if (u.kind !== 'pokemon' || u.fainted || !u.alive) return 'fainted';
     if (side.manualCd > 0) return 'global';
-    const tg = this.manualTarget(u, side);
+    // the player aimed (mouse over a foe / tapped one): that one, else the usual choice
+    const tg = this.validFoe(aim) ? aim : this.manualTarget(u, side);
     let idx: number;
     if (slot === 'best') {
       const ready = u.skills.map((s) => ({ def: s.def, cooldownLeft: this.heldBlocks(u, s.def) ? Infinity : s.cd }));

@@ -15,6 +15,11 @@ export function questInRegion(q: QuestDef, region: string): boolean {
   return q.objectives.some((o) => (o.marker && (o.marker.region ?? 'starter-valley') === region) || (o.type === 'boss' && !!o.target && entranceOf(o.target)?.region === region));
 }
 
+/** Journal split (V29): the main line (main quests, boss chapters, the story) vs side quests. */
+export function isMainQuest(q: QuestDef): boolean {
+  return q.kind === 'main' || q.kind === 'boss' || (!!q.chapter && q.kind !== 'side');
+}
+
 export interface RepRow {
   region: string;
   name: string;

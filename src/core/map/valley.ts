@@ -63,8 +63,8 @@ export interface RegionDef {
   props: { kind: string; x: number; y: number }[];
   signs: { x: number; y: number; text: string[] }[];
   /** wander: radius (tiles) the NPC walks around its spot by day · role 'nurse': talking heals the party */
-  npcs: { id: string; name: string; sprite: string; x: number; y: number; lines: string[]; wander?: number; role?: 'nurse' }[];
-  trainers: { id: string; name: string; sprite: string; x: number; y: number; team: [string, number][]; challenge: string[]; win: string[]; lose: string[]; rewards: { items?: Record<string, number>; exp?: number } }[];
+  npcs: ({ id: string; name: string; sprite: string; x: number; y: number; lines: string[]; wander?: number; role?: 'nurse' } & NpcStory)[];
+  trainers: ({ id: string; name: string; sprite: string; x: number; y: number; team: [string, number][]; challenge: string[]; win: string[]; lose: string[]; rewards: { items?: Record<string, number>; exp?: number } } & NpcStory)[];
   /** quest: the quest that must be active (default q-rescue) · reporter: who to tell afterwards */
   rescue: { id: string; x: number; y: number; species: string; level: number; guards: [string, number][]; quest?: string; reporter?: string };
   chests: { id: string; x: number; y: number; items: Record<string, number>; requiresFlag?: string }[];
@@ -132,6 +132,12 @@ const PROP_TILE: Record<string, number> = {
 };
 
 const UNKNOWN = 255;
+
+/**
+ * Story people (V29, data/story/*.json): `look` = seed of the pixel look (the same person looks the same on every
+ * map), `showIf` / `hideIf` = story flags that make them appear / leave (core/story.ts npcVisible).
+ */
+export interface NpcStory { look?: string; showIf?: string[]; hideIf?: string[] }
 
 export class ValleyMap implements MapProvider {
   readonly kind = 'overworld' as const;

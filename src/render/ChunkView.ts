@@ -89,6 +89,14 @@ export class ChunkView {
     this.unloadsTotal++;
   }
 
+  /** Rebuilds one loaded chunk (its objects changed, e.g. story people appearing / leaving with the story). */
+  reload(idx: number): void {
+    const rec = this.loaded.get(idx);
+    if (!rec) return;
+    this.unload(idx, rec);
+    this.load(rec.cx, rec.cy, idx);
+  }
+
   /** Swaps animated tiles (water ripples, swaying tall grass) for every loaded chunk. */
   animate(frame: number): void {
     const n = this.map.chunk;

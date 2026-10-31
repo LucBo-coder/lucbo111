@@ -5,6 +5,7 @@ import { addExp, addFriendship, individualOf, makeOwned, OwnedPokemon } from '..
 import { availableEvolutions, EvoContext, evolutionsOf, evaluate, ITEM_DEFS } from '../core/evolution';
 import { unlockedSkills } from '../core/learnset';
 import { legendQuests } from '../core/legends';
+import { storyOf } from '../core/storyData';
 import { calcStats, StatKey } from '../core/stats';
 import { applyEvGain, addEv, evGain, zeroEvs } from '../core/ev';
 import { choiceFlag, QuestDef, QuestEvent, QuestManager, QuestRewards } from '../core/quests';
@@ -73,7 +74,9 @@ export class AdventureState {
     // each campaign has its own quest book (Vietnam Odyssey: data/vietnam/quests.json, no classic legend chains)
     const vn = this.adv.campaign === 'vietnam';
     const authored = (vn ? vnQuestsJson : questsJson) as QuestDef[];
-    this.quests = new QuestManager(vn ? authored : [...authored, ...legendQuests(authored)], this.adv.quests, () => new Set(this.adv.flags));
+    // + the campaign's story line (core/storyData.ts; its encounters need the local scene, not the online world)
+    const story = walletOverride ? [] : storyOf(this.adv.campaign).quests;
+    this.quests = new QuestManager([...(vn ? authored : [...authored, ...legendQuests(authored)]), ...story], this.adv.quests, () => new Set(this.adv.flags));
     this.syncQuests();
     if (!this.trackedQuest || this.quests.states[this.trackedQuest]?.status !== 'active') this.trackedQuest = this.quests.active()[0]?.id ?? null;
     // Repair the V7 invariants on every construction (old saves, hand-edited saves, interrupted captures).

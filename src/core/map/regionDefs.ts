@@ -57,6 +57,7 @@ import sonLaJson from '../../data/vietnam/son-la.json';
 import phuThoJson from '../../data/vietnam/phu-tho.json';
 import haNoiJson from '../../data/vietnam/ha-noi.json';
 import type { RegionDef } from './valley';
+import { STORIES } from '../storyData';
 
 // Every overworld map of the game. The valley is the hub; the other regions are reached through portals.
 export const REGION_DEFS: Record<string, RegionDef> = {
@@ -122,6 +123,19 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'phu-tho': phuThoJson as unknown as RegionDef,
   'ha-noi': haNoiJson as unknown as RegionDef,
 };
+
+// Story people of both campaigns (data/story/*.json) join their maps; they appear / leave with story flags
+// (showIf / hideIf), but always stand on the map data so the map itself never changes with progress.
+for (const story of Object.values(STORIES)) {
+  for (const { region, ...n } of story.npcs) {
+    const d = REGION_DEFS[region];
+    if (d && !d.npcs.some((x) => x.id === n.id)) d.npcs.push(n);
+  }
+  for (const { region, ...t } of story.trainers) {
+    const d = REGION_DEFS[region];
+    if (d && !d.trainers.some((x) => x.id === t.id)) d.trainers.push(t);
+  }
+}
 
 export function regionDef(id: string | null | undefined): RegionDef {
   return REGION_DEFS[id ?? ''] ?? REGION_DEFS['starter-valley'];

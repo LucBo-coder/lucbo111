@@ -23,7 +23,8 @@ describe('Vietnam Odyssey mode', () => {
     const s = defaultSave(); s.adventure = vn;
     const st = new AdventureState(s);
     const ids = Object.keys(st.adv.quests);
-    expect(ids.every((id) => id.startsWith('vn-'))).toBe(true);
+    // its own quests + the "Mạch Nguồn" story line (V29)
+    expect(ids.every((id) => id.startsWith('vn-') || id.startsWith('mn-'))).toBe(true);
     expect(st.quests.active().map((q) => q.id)).toContain('vn-cm-1');
     const c = defaultSave(); c.adventure = newAdventure();
     expect(Object.keys(new AdventureState(c).adv.quests).some((id) => id.startsWith('vn-'))).toBe(false);

@@ -55,7 +55,7 @@ export function passportPages(adv: AdventureSave, questIds: string[]): ProvinceP
       def, playable: !!r, unlocked: def.need.every(has), visited, firstVisit: adv.visited?.[def.id] ?? 0,
       areas: count(r?.areas.map((a) => a.id) ?? [], (id) => adv.areas.includes(id)),
       quests: count(pageQuests, (id) => adv.quests[id]?.status === 'completed'),
-      trainers: count(r?.trainers?.map((t) => t.id) ?? [], (id) => has('beat:' + id)),
+      trainers: count(r?.trainers?.filter((t) => !t.showIf && !t.hideIf).map((t) => t.id) ?? [], (id) => has('beat:' + id)),
       chests: count(r?.chests?.map((c) => c.id) ?? [], (id) => adv.chests.includes(id)),
       waypoints: count(r?.waypoints.map((w) => w.id) ?? [], (id) => adv.waypoints.includes(id)),
       puzzles: count((r?.puzzles ?? []).map((p) => p.id), (id) => has('puzzle:' + id)),

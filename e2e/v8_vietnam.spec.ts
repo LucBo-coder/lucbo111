@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { beatBossTo } from './bossHelpers';
 
 // Vietnam Odyssey — first goal of Master Prompt V6, played through the real game loop:
-// new game in Cà Mau → starter from Giáo sư Mai (dialogue) → capture a wild Pokémon (Poké Ball) → quests →
+// new game in Cà Mau → starter from Giáo sư An (dialogue) → capture a wild Pokémon (Poké Ball) → quests →
 // trainer battle → regional boss (phases) → badge → save, reload, load → gate opens → An Giang.
 
 type Win = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -45,7 +45,7 @@ test('Việt Nam Odyssey: Cà Mau from the first step to the An Giang gate', asy
   await page.waitForTimeout(800);
   await page.screenshot({ path: info.outputPath('1-dat-mui.png') });
 
-  // 1) starter from Giáo sư Mai: choose Mudkip (3rd choice)
+  // 1) starter from Giáo sư An: choose Mudkip (3rd choice)
   await talk(page, 'vn-prof', `window.__adv.state.save.collection.some(p => p.species === 'mudkip')`, '3');
   for (let i = 0; i < 12 && (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(150); }
   expect(await ev(page, `window.__adv.world.allies.map(a => a.defId)`)).toEqual(['mudkip']);

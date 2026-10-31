@@ -4,13 +4,13 @@
   "kind": "main",
   "title": "Khởi hành từ Đất Mũi",
   "giver": "vn-prof",
-  "description": "Gặp Giáo sư Mai ở Trạm Nghiên cứu Đất Mũi, nhận Pokémon đầu tiên và thu phục một Pokémon hoang dã.",
+  "description": "Gặp Giáo sư An ở Trạm Nghiên cứu Đất Mũi, nhận Pokémon đầu tiên và thu phục một Pokémon hoang dã.",
   "objectives": [
    {
     "type": "talk",
     "target": "vn-prof",
     "count": 1,
-    "text": "Gặp Giáo sư Mai",
+    "text": "Gặp Giáo sư An",
     "marker": {
      "x": 85,
      "y": 95,
@@ -32,7 +32,7 @@
     "type": "talk",
     "target": "vn-prof",
     "count": 1,
-    "text": "Báo cáo Giáo sư Mai",
+    "text": "Báo cáo Giáo sư An",
     "marker": {
      "x": 85,
      "y": 95,
@@ -171,7 +171,7 @@
     "type": "talk",
     "target": "vn-prof",
     "count": 1,
-    "text": "Báo tin cho Giáo sư Mai",
+    "text": "Báo tin cho Giáo sư An",
     "marker": {
      "x": 85,
      "y": 95,
@@ -320,7 +320,7 @@
   "kind": "capture",
   "title": "Bảng: Ghi chép rừng ngập mặn",
   "giver": "cm-board",
-  "description": "Giáo sư Mai cần mẫu ghi chép Wooper và Lotad.",
+  "description": "Giáo sư An cần mẫu ghi chép Wooper và Lotad.",
   "objectives": [
    {
     "type": "capture",
@@ -348,7 +348,7 @@
     "type": "talk",
     "target": "vn-prof",
     "count": 1,
-    "text": "Nộp cho Giáo sư Mai",
+    "text": "Nộp cho Giáo sư An",
     "marker": {
      "x": 85,
      "y": 95,

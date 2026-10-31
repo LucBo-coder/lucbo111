@@ -12,7 +12,7 @@ import { SkillBar } from '../ui/SkillBar';
 /** Short labels so six (seven on touch) buttons fit a 390 px wide phone. */
 const COMMAND_BUTTONS: { id: AllyCommand; label: string }[] = [
   { id: 'auto', label: 'Tự do' }, { id: 'attack', label: 'Tấn công' }, { id: 'defend', label: 'Bảo vệ' },
-  { id: 'follow', label: 'Đi theo' }, { id: 'hold', label: 'Giữ' }, { id: 'retreat', label: 'Rút' },
+  { id: 'follow', label: 'Ngừng' }, { id: 'hold', label: 'Giữ' }, { id: 'retreat', label: 'Về' },
 ];
 
 interface Box { x: number; y: number; w: number; h: number }

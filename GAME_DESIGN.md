@@ -1,6 +1,6 @@
 # Pokémon Survivor — Toàn bộ hệ thống gameplay
 
-> Cập nhật theo mã nguồn hiện tại: phiên bản 0.14.0 cộng các bản chưa phát hành V20 → V28 (xem [CHANGELOG.md](CHANGELOG.md)).
+> Cập nhật theo mã nguồn hiện tại: phiên bản 0.14.0 cộng các bản chưa phát hành V20 → V29 (xem [CHANGELOG.md](CHANGELOG.md)).
 > Tài liệu này mô tả **game chơi như thế nào** và **mỗi hệ thống vận hành ra sao**. Chi tiết kỹ thuật nằm ở các tài liệu riêng (cuối trang).
 
 Pokémon Survivor là game Pokémon fan-made, phi thương mại, 2D góc nhìn từ trên xuống. Game chạy trên trình duyệt (Phaser 3 + TypeScript), chơi được trên máy tính và điện thoại.
@@ -84,15 +84,15 @@ Phím `` ` `` và 1–5 (điện thoại: nút **Lệnh**):
 - **Tự do**
 - **Tấn công mục tiêu**: con dưới con trỏ / con được chạm.
 - **Bảo vệ HLV**
-- **Đi theo**: không giao chiến, vẫn hồi máu.
+- **Ngừng tấn công**: không giao chiến, vẫn hồi máu.
 - **Giữ vị trí**
-- **Rút lui**
+- **Quay về HLV**
 
 ### 2.5 Kỹ năng chủ động (Phiêu lưu, Việt Nam Odyssey, PvP, co-op)
 Pokémon vẫn tự đánh; người chơi chọn **lúc nào** và **chiêu nào** cho Pokémon đang điều khiển.
-- **Q**: dùng chiêu tốt nhất đang sẵn sàng (AI chọn chiêu, bạn chọn thời điểm).
+- **Q**: dùng chiêu tốt nhất đang sẵn sàng (AI chọn chiêu, bạn chọn thời điểm). Nếu vừa rê chuột lên một Pokémon địch (trong 4 s), chiêu nhắm vào đúng con đó.
 - Click / chạm một ô trên **thanh kỹ năng** để dùng đúng chiêu đó.
-- **T** (hoặc chạm tên trên thanh): đổi Pokémon được điều khiển.
+- **T** (hoặc nút **Đổi**): mở vòng đổi nhanh Pokémon (mục 2.7).
 - Chuột phải / nhấn giữ một ô: **giữ chiêu** cho mình, AI không dùng chiêu đó nữa. Lựa chọn này lưu theo từng Pokémon trong save, giữ nguyên sau khi tải lại, học chiêu mới hay tiến hóa.
 
 Luật giống hệt AI (hồi chiêu, năng lượng, vật phẩm khóa chiêu, miễn nhiễm hệ), cộng thêm **hồi chiêu chung 1,2 s** giữa hai lệnh để không spam. Nếu mục tiêu ngoài tầm, Pokémon tự đi tới đúng tầm trong tối đa 3 s.
@@ -114,8 +114,17 @@ PvP và khách co-op có cùng thanh kỹ năng và phím Q / T: lệnh gửi t�
 
 ### 2.7 Đội & đồng đội
 Đội tối đa 6 con.
-- **Summon / Recall**: thả Pokémon ra bằng đúng loại bóng đã bắt, thu hồi bằng tia đỏ, đổi chỗ bằng Shift + 1–6 hoặc chạm danh sách đội.
-- Pokémon trong bóng không hồi máu.
+- **Một Pokémon trên sân mỗi HLV (V29)** — áp dụng cho người chơi, HLV NPC và cả hai người trong co-op ở Phiêu lưu / Việt Nam Odyssey. Mọi con số nằm trong `src/data/field-rules.json`:
+  - Thả con mới thì con đang ở ngoài luôn được thu về trước (mọi đường gọi: phím, vòng đổi, năng lực khám phá, co-op).
+  - **Vòng đổi nhanh** (T / nút **Đổi** / tự mở khi Pokémon gục): HP, hệ, trạng thái, thời gian hồi; phím 1–5 chọn.
+  - Đổi lúc yên bình: hồi 0,8 s. Đang giao chiến (có địch trong 600 px): thu về + thả ra ~0,6 s, hồi 6 s.
+  - Trong bóng, chiêu vẫn hồi và năng lượng vẫn tăng; HP không hồi.
+  - Pokémon gục quay về bóng; sau 4 s game tự thả con khỏe hợp hệ nhất. Hết Pokémon khỏe → HLV ngất.
+  - EXP: con đã đánh nhận đủ, con khỏe trong bóng nhận 50%, con gục không nhận.
+  - Boss chỉnh theo luật một-con: HP ×0,5, sát thương ×0,65, kháng sát thương theo thời gian, khống chế ngắn hơn và miễn khống chế 6 s, tối đa 1 quân tiếp viện mỗi HLV (thấp hơn 8 cấp).
+  - Khi ném bóng, đồng đội ngừng đánh con đang bị bắt.
+- **Summon / Recall**: thả Pokémon ra bằng đúng loại bóng đã bắt, thu hồi bằng tia đỏ, đổi bằng Shift + 1–6, vòng đổi hoặc chạm danh sách đội.
+- Năng lực khám phá (chặt, đập đá, đẩy đá, đền) tự thả con có năng lực đó ra trước khi dùng.
 - **Synergy**: 2 / 3+ con cùng hệ → +10% / +20% sát thương hệ đó; đội có ≥ 5 hệ → +5%.
 
 ---
@@ -225,7 +234,7 @@ Bản đồ chia chunk, tải động. Có ngày/đêm, thời tiết (mưa, sư
 - **Nhiệm vụ phân nhánh**: chọn hướng nào thì mục tiêu, phần thưởng, lời kết và nhiệm vụ nối tiếp đi theo hướng đó; không quay lại được.
 - **Hình NPC**: nhân vật pixel có hoạt ảnh thở / bước, 15 dáng (nón lá, áo dài, trẻ em, cụ ông / cụ bà, kiểm lâm, người leo núi…). Mỗi NPC có bộ màu riêng cố định theo id. Danh xưng tiếng Việt (Cô, Bà, Chú, Bé…) quyết định giới tính và tuổi.
 - **Trận huấn luyện viên**:
-  - Tối đa 2 Pokémon trên sân, còn lại dự bị.
+  - 1 Pokémon trên sân (cùng luật với người chơi), còn lại dự bị.
   - Pokémon gục → HLV gửi con dự bị hợp hệ nhất để đối đầu Pokémon bạn đang điều khiển.
   - Pokémon bị khắc hệ và còn dưới 50% HP bị gọi về, đổi lấy con kháng hệ (HP được giữ).
   - Có 1–2 Potion, dùng khi dưới 30% HP.
@@ -235,7 +244,19 @@ Bản đồ chia chunk, tải động. Có ngày/đêm, thời tiết (mưa, sư
   - Hạng: *Người lạ* → *Quen mặt* (15) → *Được tin cậy* (40) → *Người nhà* (80).
   - Mỗi hạng tặng quà một lần và mở nhiệm vụ riêng.
   - Người dân chào theo hạng của bạn.
-- **Nhật ký** (J): bộ lọc Tất cả / Vùng này / Đã xong, kèm bảng Danh tiếng.
+- **Nhật ký** (J): bộ lọc Tất cả / **Chính** / **Phụ** / Vùng này / Đã xong / **Cốt truyện** / Danh tiếng.
+  - *Chính*: nhiệm vụ chính, boss và nhiệm vụ cốt truyện; *Phụ*: mọi nhiệm vụ còn lại.
+  - *Cốt truyện*: các hồi / chương (chương chưa tới giấu tóm tắt; chương xong ghi thế giới đã thay đổi gì), nhân vật đã gặp, và mọi cảnh đã xem — bấm **Xem lại** để đọc lại.
+- **Cốt truyện & cảnh (V29)**: mỗi chiến dịch có một mạch truyện riêng (mục 5.13 và 6.5) nằm trong `src/data/story/*.json`.
+  - Nhiệm vụ cốt truyện có id cố định (`ck-…`, `mn-…`), thuộc một chương, có cảnh mở đầu / kết thúc.
+  - Cảnh tự phát khi yên (không hội thoại, không giao chiến, không đấu HLV). Mỗi trang có **Tiếp ▶** hoặc **Bỏ qua cảnh**; đã mở là tính đã xem (lưu trong `storySeen`), xem lại được trong nhật ký.
+  - NPC / HLV cốt truyện xuất hiện và rời đi theo cờ (`showIf` / `hideIf`); cùng một nhân vật giữ nguyên ngoại hình ở mọi bản đồ.
+  - Ngã rẽ được báo trước trong lời giao nhiệm vụ.
+- **Mục tiêu tình huống (V29)** trên bản đồ:
+  - **Giữ vị trí**: đứng trong vòng tròn khi có Pokémon trên sân; các đợt Pokémon hoang dã kéo tới. Ra khỏi vòng thì tạm dừng; ra quá 8 s thì phải giữ lại từ đầu.
+  - **Phá thiết bị**: lại gần thì thiết bị (máy của phe đối địch) xuất hiện, đứng yên một chỗ; vừa đánh vừa chặn các đợt Pokémon kéo tới.
+  - **Hộ tống**: lại gần người cần đưa đi, người đó đi theo sau, nấp khi có giao chiến; bỏ xa quá 14 ô thì phải quay lại đón.
+  - Rời bản đồ, ngất hay chuyển nhiệm vụ đều chỉ làm tình huống bắt đầu lại, không mất nhiệm vụ.
 - **Bản đồ** (M): sương mù theo vùng đã khám phá, trạm dịch chuyển, hầm ngục, sự kiện, mục tiêu nhiệm vụ, bến ghe, chướng ngại khám phá.
 
 ### 5.5 Làng khởi đầu & Trại Huấn Luyện
@@ -306,6 +327,21 @@ Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmor
 - **8 kệ**: Bóng · Hồi phục · Kẹo EXP · Tiến hóa · Đá Mega · Chiến đấu · Tăng hệ · Huấn luyện.
 - Mỗi món có ảnh, giá, số đang có, mô tả và danh sách Pokémon dùng được.
 - Mua nhiều cùng lúc (×1 / ×5 / ×10 / Tối đa), hiện tổng tiền trước khi mua.
+
+### 5.13 Cốt truyện: Quần Đảo Khởi Nguyên (V29)
+Hải Đăng Khởi Nguyên ở Bờ Biển San Hô tắt từ khi **Lõi Khởi Nguyên** vỡ thành 7 mảnh rơi khắp quần đảo.
+- **Nhân vật**: Trưởng đoàn khảo sát Minh Khuê; Phong (khảo sát viên trẻ, vừa là bạn vừa là đối thủ); Ông giữ hải đăng; Trưởng nhóm Thiết của đoàn khai thác Thiết Lĩnh (đào mảnh Lõi lên bán); Giáo sư Tùng.
+- **7 chương** (9 nhiệm vụ `ck-…`, mở sau *Bước chân đầu tiên* và theo đúng cổng vùng sẵn có):
+
+| Chương | Bản đồ | Diễn biến chính | Mục tiêu |
+|---|---|---|---|
+| 1 | Thung Lũng | Đoàn khảo sát dựng trại, Thiết Lĩnh khoan dưới tàn tích | đấu Phong, khám phá, phá máy khoan |
+| 2 | Rừng Ngọc | Mảnh Lõi "hát", Pokémon kéo về trái tim rừng | giữ vị trí |
+| 3 | Đầm Lầy | Máy bơm bùn làm sương độc dày thêm | đấu thợ khai thác, phá máy bơm |
+| 4 | Bờ Biển | Ông giữ hải đăng kể chuyện Lõi; **ngã rẽ** trao 3 mảnh cho ông hay để đoàn khảo sát giữ | gặp, giữ chân hải đăng, chọn |
+| 5 | Núi Tuyết | Phong lên đỉnh một mình, kẹt trong bão | hộ tống Phong về trại |
+| 6 | Núi Lửa | Máy khoan lớn nhất ở miệng núi lửa | đấu Trưởng nhóm Thiết, phá máy khoan |
+| 7 | Thánh Địa → Bờ Biển | Bảy mảnh hợp lại; mang Lõi về hải đăng | giữ Lõi 60 s, trao Lõi — hải đăng sáng lại |
 
 ---
 
@@ -401,6 +437,23 @@ Thành phố trung tâm của cả 36 tỉnh được dựng theo phong cách ph
 
 Toàn bộ hình vẽ bằng code (`src/render/orientalArt.ts`). Nhà vẫn chơi như nhà thường: chặn đường, cửa có đèn, Trung tâm Pokémon có máy PC.
 
+### 6.5 Cốt truyện: Mạch Nguồn (V29)
+Dưới đất nước chảy những **mạch nguồn** cổ giữ nhịp cho sông, rừng và Pokémon. **Dự án Bình Minh** của Tiến sĩ Vũ dựng các trạm cưỡng chế để lấy năng lượng chống hạn mặn — khắp nơi nước chảy ngược, Pokémon bỏ nơi ở, các hộ vệ cổ thức giấc. Toàn bộ là giả tưởng; địa danh là thật.
+- **Nhân vật**: Giáo sư An (Đất Mũi, trao starter); **Linh** — kỹ sư thủy văn, đồng hành, chờ ở thành phố trung tâm từng tỉnh khi bạn có huy hiệu tỉnh trước và rời đi khi xong chặng; **Khải** — đối thủ cùng xuất phát; **Tiến sĩ Vũ** — người đứng đầu Bình Minh, cuối truyện sống và chuộc lỗi; **Chú Sáu** — lái ghe.
+- **Cấu trúc** (46 nhiệm vụ `mn-…`, 20 cảnh; mỗi tỉnh một chặng có vấn đề địa phương, cần nhiệm vụ cốt truyện tỉnh trước + huy hiệu tỉnh trước):
+
+| Hồi | Tỉnh | Diễn biến | Mục tiêu tiêu biểu |
+|---|---|---|---|
+| Mở đầu | Cà Mau | Trạm nước Đất Mũi, cứu Pokémon mắc lưới khi triều lên, bộ khuếch đại làm Seviper nổi giận ở khu làm tổ, Huy hiệu Rừng Tràm, lên ghe Chú Sáu | đấu Khải, giữ bãi, phá thiết bị, boss |
+| I — Dòng nước đổi chiều | An Giang → Đồng Tháp | Kênh chảy ngược, trạm bơm sông Hậu, lò gạch quá nhiệt, cột phát sóng làm cò bỏ đi, bé lạc rừng tràm, sếu không về Tràm Chim | giữ / phá / hộ tống xen kẽ |
+| II — Thành phố của Bình Minh | Tây Ninh → Đồng Nai | Ăng-ten Núi Bà; ở Sài Gòn **Khải gia nhập Bình Minh**, Magnezone quá tải vì trạm biến áp; bò tót bỏ rừng | phá, đấu Khải, boss, giữ |
+| III — Những điểm neo cổ | Lâm Đồng → Quảng Trị | Bình Minh cắm cọc vào điểm neo; Khải bắt đầu nghi ngờ; ở Huế **ngã rẽ** đưa / giữ dữ liệu điểm neo cho Tiến sĩ Vũ (mở 1 trong 2 nhiệm vụ nối tiếp ở Quảng Trị); hộ tống Khải bị thương ở Phong Nha | giữ, phá, hộ tống, đấu kỹ thuật viên, chọn |
+| IV — Hộ vệ thức giấc | Hà Tĩnh → Phú Thọ | Hộ vệ cổ (Braviary, Gigalith, Aggron…) thức dậy; ở Thanh Hóa **Khải rời Bình Minh**; ở Bắc Ninh tái đấu sòng phẳng | giữ, phá, hộ tống, tái đấu |
+| V — Thăng Long | Hà Nội | Torterra bị nối vào tổng trạm; đấu Tiến sĩ Vũ; trận cuối 3 bước: phá lõi cưỡng chế → giữ điểm neo Cổ Loa → cắt cáp giải phóng Torterra | đấu, phá, giữ, boss |
+| Kết | Cà Mau | Trạm cưỡng chế thành trạm quan trắc, đàn Pokémon về lại U Minh; hậu truyện: Tiến sĩ Vũ ở trạm quan trắc Đất Mũi | nói chuyện |
+
+- Cấp tham khảo của từng chặng theo cấp boss tỉnh đó (Linh nhắc khoảng cấp). Bảng cấp tham khảo trong đặc tả (1–7: Lv 1–25 … 33–36: Lv 85–100) **chưa** được áp dụng: các tỉnh vẫn tăng đều từ Lv 12 (Cà Mau) tới Lv 100 (Hà Nội) — xem TASKS.
+
 ---
 
 ## 7. Chơi online
@@ -409,7 +462,8 @@ Toàn bộ hình vẽ bằng code (`src/render/orientalArt.ts`). Nhà vẫn chơ
 - **Tạo phòng**: sảnh **Chơi online** → chọn Sinh tồn / Phiêu lưu / Việt Nam Odyssey → tạo phòng nhận mã 6 ký tự; người kia nhập mã.
 - **Chủ phòng và khách**:
   - Chủ phòng chạy mô phỏng.
-  - Khách mang tối đa 3 Pokémon, có HUD riêng, và tự dự đoán chuyển động của mình để giảm trễ.
+  - Khách mang tối đa 6 Pokémon nhưng chỉ 1 con trên sân (ở Phiêu lưu / Việt Nam Odyssey), đổi con qua chủ phòng; có HUD riêng, và tự dự đoán chuyển động của mình để giảm trễ.
+  - Cảnh cốt truyện và mục tiêu tình huống chỉ chạy ở máy chủ phòng; nhiệm vụ do chủ phòng xác thực.
 - **Cứu và theo nhau**: đứng gần đồng đội bị gục 3 giây để cứu. Đi cách chủ phòng quá 900 px thì được đưa về cạnh họ.
 - **Chia chiến lợi phẩm**:
   - Pokémon chủ phòng bắt được, đồ trong rương, thưởng hầm ngục và tiền cuối lượt đều cộng vào ô lưu của khách.
@@ -467,7 +521,8 @@ Tài khoản riêng, độc lập với ô lưu offline; có mã khôi phục, �
 | Tương tác (nói chuyện, câu cá, hái, lên ghe, cổng) | **E** / Space | Nút **E** |
 | Ném bóng / đổi bóng | **F** (ngắm chuột) / **R** | Nút ◓ (tự nhắm) |
 | Lệnh chiến thuật | `` ` `` và 1–5 | Nút **Lệnh** |
-| Kỹ năng chủ động | **Q** chiêu tốt nhất · click ô chiêu · chuột phải = giữ chiêu · **T** đổi Pokémon | Chạm ô chiêu · nhấn giữ = giữ chiêu · chạm tên = đổi |
+| Kỹ năng chủ động | **Q** chiêu tốt nhất (rê chuột chọn mục tiêu) · click ô chiêu · chuột phải = giữ chiêu | Chạm ô chiêu · nhấn giữ = giữ chiêu |
+| Vòng đổi nhanh Pokémon | **T**, rồi 1–5 | Nút **Đổi** |
 | Mega | **G** | Nút **MEGA** |
 | Đổi Pokémon | Shift + 1–6 | Chạm danh sách đội |
 | Dùng thuốc | **H** | — |

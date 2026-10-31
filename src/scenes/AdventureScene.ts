@@ -59,6 +59,8 @@ import { isAquatic, type WeatherKind } from '../core/encounters';
 import { LEGENDS, LegendEnv, missingConditions as legendMissing } from '../core/legends';
 import { LegendaryEncounterManager } from '../adventure/LegendaryEncounterManager';
 import { ShrineController } from '../adventure/ShrineController';
+import { StoryController } from '../adventure/StoryController';
+import { npcVisible } from '../core/story';
 import { SecretController } from '../adventure/SecretController';
 import { RITUALS } from '../core/rituals';
 import { audio } from '../systems/audio';
@@ -85,9 +87,9 @@ export const COMMANDS: { id: AllyCommand; label: string; key: string }[] = [
   { id: 'auto', label: 'Tự do', key: '`' },
   { id: 'attack', label: 'Tấn công mục tiêu', key: '1' },
   { id: 'defend', label: 'Bảo vệ HLV', key: '2' },
-  { id: 'follow', label: 'Đi theo', key: '3' },
+  { id: 'follow', label: 'Ngừng tấn công', key: '3' },
   { id: 'hold', label: 'Giữ vị trí', key: '4' },
-  { id: 'retreat', label: 'Rút lui', key: '5' },
+  { id: 'retreat', label: 'Quay về HLV', key: '5' },
 ];
 
 /** Dialogue portraits (IcyEthics trainer art) per NPC id */
@@ -137,6 +139,11 @@ export class AdventureScene extends Phaser.Scene {
   legendsMgr: LegendaryEncounterManager | null = null;
   /** Legendary shrine rituals, sealed arenas and hazards (overworld maps) */
   shrines: ShrineController | null = null;
+  /** Campaign story: cutscenes + encounter objectives (hold / destroy / escort) */
+  story: StoryController | null = null;
+  /** per loaded chunk: which story people are visible (rebuilt when the story moves on) */
+  private gateSig = new Map<number, string>();
+  private gateT = 0;
   secrets: SecretController | null = null;
   private distortG: Phaser.GameObjects.Graphics | null = null;
   private snow: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
@@ -337,6 +344,7 @@ export class AdventureScene extends Phaser.Scene {
       this.legendsMgr = new LegendaryEncounterManager(this);
       this.shrines = new ShrineController(this);
       this.shrines.build();
+      this.story = new StoryController(this);
       this.secrets = new SecretController(this);
       this.secrets.build();
       // a plane's fixed sky (Biển Xoáy Bạc: always a storm)
@@ -529,8 +537,27 @@ export class AdventureScene extends Phaser.Scene {
 
   // ───────────────────────────── chunks & objects ─────────────────────────────
 
+  /** Visibility signature of the story people of a chunk */
+  private storySig(rec: ChunkRecord): string {
+    let sig = '';
+    for (const o of rec.mapObjects) {
+      if (o.kind !== 'npc' && o.kind !== 'trainer') continue;
+      const d = o.data as { showIf?: string[]; hideIf?: string[] };
+      if (d.showIf || d.hideIf) sig += npcVisible(d, (f) => this.state.hasFlag(f)) ? '1' : '0';
+    }
+    return sig;
+  }
+
+  /** Story people appear / leave as flags change: the chunks they stand in are rebuilt (calm moments only). */
+  private updateStoryPeople(dt: number): void {
+    if ((this.gateT -= dt) > 0 || this.modal || this.battle) return;
+    this.gateT = 1;
+    for (const [idx, rec] of this.chunks.loaded) if (this.gateSig.get(idx) !== this.storySig(rec)) this.chunks.reload(idx);
+  }
+
   private onChunkLoad(rec: ChunkRecord): void {
     const tag = 'chunk-' + rec.idx;
+    this.gateSig.set(rec.idx, this.storySig(rec));
     const q = QUALITY_PROFILE[saveStore.data.settings.quality];
     for (const o of rec.mapObjects) {
       const px = o.x * TILE_PX, py = o.y * TILE_PX;
@@ -592,7 +619,9 @@ export class AdventureScene extends Phaser.Scene {
         }
         case 'npc':
         case 'trainer': {
-          const d = o.data as { sprite: string; name: string; id?: string; role?: string };
+          const d = o.data as { sprite: string; name: string; id?: string; role?: string; showIf?: string[]; hideIf?: string[] };
+          // story people only stand there while the story wants them (showIf / hideIf flags)
+          if (!npcVisible(d, (f) => this.state.hasFlag(f))) break;
           // people: an animated pixel character with this NPC's own body and colours; boards / lights keep their tile
           const look = this.lookOf(o.id);
           const s = add(look
@@ -999,7 +1028,9 @@ export class AdventureScene extends Phaser.Scene {
   manualSkill(slot: number | 'best'): void {
     const u = this.focusAlly();
     if (!u) return;
-    const r = this.world.requestSkill(u, slot);
+    // aim: the foe under the mouse (moved in the last 4 s) gets the skill — direction and area follow it
+    const aim = this.time.now - this.pointerWorld.at < 4000 ? this.aimTarget(false) : null;
+    const r = this.world.requestSkill(u, slot, undefined, aim);
     const msg = skillFailText(r, u.name, typeof slot === 'number' ? u.skills[slot]?.def.name ?? '' : '');
     if (msg) { this.ui?.banner(msg, '#ffb0a0'); audio.play('click'); }
   }
@@ -1089,7 +1120,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateDowned(dt);
     this.updateCapture(dt);
     if (!this.modal) this.updateMega(dt);
-    if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); this.secrets?.update(dt); }
+    if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); this.secrets?.update(dt); this.story?.update(dt); this.updateStoryPeople(dt); }
     // Evolution prompts wait for a calm moment (never between dungeon waves / before the boss)
     const dungeonCalm = !this.dungeon || this.dungeon.phase === 'reward' || this.dungeon.phase === 'done';
     if (this.evoQueue.size && dungeonCalm && !this.modal && !this.evoBusy && !this.inCombat() && this.blackoutT < 0) void this.processEvolution();
@@ -1136,6 +1167,7 @@ export class AdventureScene extends Phaser.Scene {
 
   /** An enemy is beaten (died, or a legendary boss went WEAKENED): EXP, friendship, rewards, quests. */
   private handleDown(e: Extract<WorldEvent, { t: 'death' }>): void {
+    if (e.tag === 'story-device') this.story?.onDown(e);
     {
       this.worldEvents?.onResolved(e.id!, e.defId, e.x, e.y, false);
       const trainerOwned = !!e.tag?.startsWith('trainer:');
@@ -1355,6 +1387,7 @@ export class AdventureScene extends Phaser.Scene {
     this.applyParty();
     audio.play('victory');
     this.ui?.questComplete(q.title, lines);
+    this.story?.onQuest(q, 'complete');
     this.notifyRepTier();
     // the province's story is done: its restoration sites appear right away
     if (CONSERVATION[this.regionDef.id]?.unlock === q.id && this.mapKind !== 'dungeon') this.buildConservation();
@@ -1544,8 +1577,9 @@ export class AdventureScene extends Phaser.Scene {
   /** Texture key of an NPC / trainer's pixel look on this map (built on first use), null for boards and lights. */
   lookOf(id: string): string | null {
     const d = this.regionDef;
-    const n = [...d.npcs, ...d.trainers].find((x) => x.id === id) as { id: string; sprite: string; name: string; role?: string } | undefined;
-    const look = n && npcLook(n.id, n.sprite, n.name, { mekong: d.theme === 'mekong', role: n.role });
+    const n = [...d.npcs, ...d.trainers].find((x) => x.id === id) as { id: string; sprite: string; name: string; role?: string; look?: string } | undefined;
+    // story people carry their own look seed: the same person on every map (V29)
+    const look = n && npcLook(n.look ?? n.id, n.sprite, n.name, { mekong: !n.look && d.theme === 'mekong', role: n.role });
     return look ? buildNpcLook(this, look) : null;
   }
 
@@ -2223,7 +2257,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private async challenge(it: Interactable): Promise<void> {
-    const tr = it.obj.data as RegionDef['trainers'][number];
+    const tr = it.obj.data as unknown as RegionDef['trainers'][number];
     const pt = this.portraitOf(tr.id);
     if (this.battle) return;
     if (this.state.hasFlag('beat:' + tr.id)) {
