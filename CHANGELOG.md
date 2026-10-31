@@ -14,6 +14,7 @@
 - **Torterra đồng minh**: trận cuối ở Hà Nội thêm bước *Cùng Torterra cắt cáp nối về tổng trạm*. Torterra vừa được làm dịu đứng cạnh bạn, cứ vài giây lại dùng Địa Chấn lên cột cáp và quái Bình Minh. *Thần Kim Quy trở về* chờ tới khi cáp đã cắt.
 - **Hướng dẫn trong game** (K / F1 / nút **?**): bảng phím đầy đủ, điều khiển cảm ứng, 5 trang cách chơi; lời nhắc lần đầu.
 - **Phím O** mở PC. Gõ chữ trong ô nhập (tìm PC, đặt tên hộp) không còn kích hoạt phím tắt (trước đây gõ x / i / m / j làm nhảy tab).
+- Test `v30_quest_reach`: chơi thử hết cả hai sổ nhiệm vụ (451 nhiệm vụ, cả nhánh phụ) — nhiệm vụ nào không mở được hoặc không xong được sẽ bị bắt.
 - `src/core/questAudit.ts`: rà dữ liệu nhiệm vụ của cả hai chiến dịch (0 lỗi).
 - Test mới `v30_quest_catchup`, `v30_quest_audit`, `v30_quest_flow` (chơi trọn mạch chính 36 tỉnh), `v29_shared_boss`; e2e `v30_help`. E2e `v29_story` tự phá thiết bị thay vì chờ đồng đội (hết bị hết giờ khi máy bận).
 
