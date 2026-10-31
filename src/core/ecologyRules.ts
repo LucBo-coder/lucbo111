@@ -105,6 +105,35 @@ export function rollRare(rng: Rng, c: SpawnContext, region: RegionDef, o: { cloc
   return null;
 }
 
+// ───────────────────────────── the Pokédex table of rare conditions (V30) ─────────────────────────────
+
+const BIOME_VI: Record<string, string> = {
+  meadow: 'đồng cỏ', forest: 'rừng', lake: 'hồ', rocky: 'đồi đá', ruins: 'tàn tích', farm: 'nông trại', snow: 'vùng tuyết',
+  volcano: 'núi lửa', swamp: 'đầm lầy', coast: 'bờ biển', sanctuary: 'thánh địa', cave: 'hang động',
+};
+const WEATHER_VI: Record<string, string> = {
+  clear: 'trời quang', rain: 'mưa', heavyRain: 'mưa xối xả', fog: 'sương mù', mysticFog: 'sương huyền bí',
+  thunderstorm: 'giông sét', heatwave: 'sóng nhiệt', blizzard: 'bão tuyết', snow: 'tuyết rơi',
+};
+const hhmm = (m: number) => `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+
+export interface RareRow { id: string; species: string; where: string; when: string; weather: string; hint: string }
+
+/**
+ * Every rare condition as a row of the Pokédex table: where (encounter regions by name, else habitats; on water when
+ * aquatic), when (clock window / day / night) and the weather it needs. `regionName` resolves an encounter region id.
+ */
+export function rareRows(regionName: (id: string) => string | undefined): RareRow[] {
+  return RARE_RULES.map((r) => {
+    const place = r.regions ? r.regions.map((id) => regionName(id) ?? id).join(', ') : r.biomes ? r.biomes.map((b) => BIOME_VI[b] ?? b).join(', ') : 'mọi nơi';
+    const when = r.hours ? `${hhmm(r.hours[0])}–${hhmm(r.hours[1])}` : r.time === 'night' ? 'ban đêm' : r.time === 'day' ? 'ban ngày' : 'mọi lúc';
+    return {
+      id: r.id, species: r.species, where: place + (r.aquatic ? ' (dưới nước)' : ''), when,
+      weather: r.weather ? r.weather.map((w) => WEATHER_VI[w] ?? w).join(' / ') : 'mọi thời tiết', hint: r.hint,
+    };
+  });
+}
+
 /** Hints for the rare conditions that can happen in a region (journal / signs). */
 export function rareHints(region: RegionDef): string[] {
   return RARE_RULES.filter((r) => (r.regions ? r.regions.includes(region.id) : !r.biomes || r.biomes.includes(region.biome))).map((r) => r.hint);

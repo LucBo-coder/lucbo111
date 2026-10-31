@@ -21,6 +21,7 @@ import { CANDY_DEFS, candyDef, maxUsefulCandy, previewCandy } from '../core/cand
 import { evolutionsOf, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions } from '../core/evolution';
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
+import { rareRows, type RareRow } from '../core/ecologyRules';
 import { REGION_DEFS } from '../core/map/regionDefs';
 import { passportPages, ProvincePage, VN_PROVINCES } from '../adventure/passport';
 import { LEGENDS } from '../core/legends';
@@ -118,6 +119,8 @@ export class AdventureUI extends Phaser.Scene {
   private mapView = { zoom: 1, ox: 0, oy: 0 };
   private dexStatus = '';
   private dexPage = 0;
+  /** Pokédex: the table of rare conditions instead of the species list (V30) */
+  dexRare = false;
   private partyPage = 0;
   private questPage = 0;
   /** Journal filter: every quest, quests of this map, finished ones, or the reputation board */
@@ -1479,11 +1482,56 @@ export class AdventureUI extends Phaser.Scene {
     this.openMenu('bag');
   }
 
+  private rareCache: RareRow[] | null = null;
+  private rareRowsOf(species?: string): RareRow[] {
+    const rows = (this.rareCache ??= rareRows((id) => ENC_REGIONS.get(id)?.name));
+    return species ? rows.filter((x) => x.species === species) : rows;
+  }
+
+  /** Pokédex table of the rare conditions (V30): who, where, when, which weather — and which ones hold right here. */
+  private buildRareTable(c: Phaser.GameObjects.Container, r: Rect, seen: Set<string>, caught: Set<string>): void {
+    const s = this.s;
+    const now = this.adv.spawns?.rareNow() ?? new Set<string>();
+    const rows = this.rareRowsOf();
+    c.add(text(this, r.x, r.y, 'Pokémon chỉ xuất hiện khi đủ điều kiện (nơi chốn, giờ, thời tiết). Dòng sáng xanh: đang thỏa ở chỗ bạn đứng.', 15 * s, COLORS.dim).setWordWrapWidth(r.w - 200 * s));
+    const rh = 58 * s, top = r.y + 30 * s;
+    const per = Math.max(1, Math.floor((r.h - 40 * s) / (rh + 4 * s)));
+    const pages = Math.ceil(rows.length / per);
+    this.dexPage = Math.min(this.dexPage, Math.max(0, pages - 1));
+    if (pages > 1) {
+      c.add(button(this, r.x + 50 * s, r.y + r.h - 14 * s, 90 * s, 26 * s, '◀', () => { this.dexPage = (this.dexPage + pages - 1) % pages; this.openMenu('dex'); }).container);
+      c.add(text(this, r.x + 150 * s, r.y + r.h - 14 * s, `${this.dexPage + 1}/${pages}`, 16 * s).setOrigin(0.5));
+      c.add(button(this, r.x + 250 * s, r.y + r.h - 14 * s, 90 * s, 26 * s, '▶', () => { this.dexPage = (this.dexPage + 1) % pages; this.openMenu('dex'); }).container);
+    }
+    rows.slice(this.dexPage * per, (this.dexPage + 1) * per).forEach((row, i) => {
+      const y = top + i * (rh + 4 * s);
+      const sp = SPECIES[row.species];
+      const known = seen.has(row.species) || caught.has(row.species);
+      const live = now.has(row.id);
+      const g = this.add.graphics();
+      g.fillStyle(live ? 0x1f4a32 : 0x20263a, 1).fillRect(r.x, y, r.w, rh);
+      if (live) g.lineStyle(2 * s, 0x80ff90, 0.9).strokeRect(r.x, y, r.w, rh);
+      c.add(g);
+      const tex = this.textures.exists(row.species) ? row.species : 'icon_pokeball';
+      const img = this.add.image(r.x + 26 * s, y + rh / 2, tex);
+      img.setScale(Math.min(2 * s, (rh - 8 * s) / img.height));
+      if (!known) img.setTintFill(0x101018);
+      c.add(img);
+      const name = known ? sp?.displayName ?? row.species : '???';
+      c.add(text(this, r.x + 56 * s, y + 4 * s, `${name}${caught.has(row.species) ? '  ●' : ''}${live ? '   ● Đang thỏa ở đây' : ''}`, 17 * s, live ? '#a0ffb0' : caught.has(row.species) ? '#ffe080' : '#ffffff'));
+      c.add(text(this, r.x + 56 * s, y + 24 * s, `Nơi: ${row.where} · Lúc: ${row.when} · Thời tiết: ${row.weather}`, 14 * s, '#c8e0ff').setWordWrapWidth(r.w - 70 * s).setMaxLines(1));
+      // the hint names the species: kept for the ones already met (the conditions above are the clue)
+      c.add(text(this, r.x + 56 * s, y + 40 * s, known ? row.hint : 'Chưa gặp loài này — điều kiện ở trên là manh mối.', 13 * s, COLORS.dim).setWordWrapWidth(r.w - 70 * s).setMaxLines(1));
+    });
+  }
+
   private buildDex(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, sv = this.adv.state.save;
     const list = Object.values(SPECIES).sort((a, b) => a.id - b.id);
     const caught = new Set(sv.pokedex.caught), seen = new Set(sv.pokedex.seen);
     c.add(text(this, r.x, r.y, `Đã thấy ${seen.size} · Đã bắt ${caught.size} / ${list.length} loài trong dữ liệu`, 17 * s, COLORS.dim));
+    c.add(button(this, r.x + r.w - 95 * s, r.y + 8 * s, 180 * s, 26 * s, this.dexRare ? '◀ Danh sách loài' : '✦ Điều kiện hiếm', () => { this.dexRare = !this.dexRare; this.openMenu('dex'); }).container);
+    if (this.dexRare) { this.buildRareTable(c, { x: r.x, y: r.y + 30 * s, w: r.w, h: r.h - 30 * s }, seen, caught); return; }
     const [L, D] = this.split(r, 0.5, 0.4), lw = L.w, cols = 4, cw = lw / cols, chh = 42 * s;
     const perPage = cols * Math.max(1, Math.floor((L.h - 70 * s) / (chh + 4 * s)));
     const pages = Math.ceil(list.length / perPage);
@@ -1542,7 +1590,8 @@ export class AdventureUI extends Phaser.Scene {
       const prefer = Object.entries(eco.weather).filter(([, v]) => (v ?? 1) > 1).map(([k]) => WEATHER_LABEL[k] ?? k).join(', ');
       const info = leg
         ? `Huyền thoại · ${method}${leg.time ? ' · ' + (leg.time === 'night' ? 'ban đêm' : leg.time === 'dawn' ? 'bình minh' : 'ban ngày') : ''}${investigationLine(sel.name, (f) => this.adv.state.hasFlag(f))}${caught.has(sel.name) ? '\n' + leg.lore : ''}`
-        : `Môi trường: ${eco.biomes.map((b) => BIOME_VI[b] ?? b).join(', ')} · Độ hiếm: ${RARITY_LABEL[eco.rarity]} · ${eco.time === 'night' ? 'Ban đêm' : 'Mọi lúc'}${prefer ? ' · Ưa: ' + prefer : ''}\nCách gặp: ${method}${eco.minLevel > 1 ? ` (từ Lv${eco.minLevel})` : ''}${sv.pokedex.shiny?.includes(sel.name) ? '  ·  ✦ Đã bắt Shiny' : ''}`;
+        : `Môi trường: ${eco.biomes.map((b) => BIOME_VI[b] ?? b).join(', ')} · Độ hiếm: ${RARITY_LABEL[eco.rarity]} · ${eco.time === 'night' ? 'Ban đêm' : 'Mọi lúc'}${prefer ? ' · Ưa: ' + prefer : ''}\nCách gặp: ${method}${eco.minLevel > 1 ? ` (từ Lv${eco.minLevel})` : ''}${sv.pokedex.shiny?.includes(sel.name) ? '  ·  ✦ Đã bắt Shiny' : ''}`
+          + this.rareRowsOf(sel.name).map((x) => `\n✦ Điều kiện hiếm: ${x.where} · ${x.when} · ${x.weather}`).join('');
       c.add(text(this, dx + 16 * s, dy + 322 * s, info, 14 * s, '#f0d8ff').setWordWrapWidth(dw - 32 * s));
     }
     c.add(text(this, dx + 16 * s, dy + 372 * s, sel.flavorText, 16 * s, '#e0e4f0').setWordWrapWidth(dw - 32 * s));

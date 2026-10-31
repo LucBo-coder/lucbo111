@@ -215,6 +215,7 @@ Bản đồ chia chunk, tải động. Có ngày/đêm, thời tiết (mưa, sư
 - **Đàn**: một số loài đi thành nhóm 2–4 con với một con đầu đàn (dạng tiến hóa nếu cấp cho phép). Đánh một con thì cả đàn phản ứng; đầu đàn gục thì đàn tan.
 - **Lãnh thổ**: loài giữ lãnh thổ cảnh báo bằng vòng đỏ khi người chơi bước vào, rồi tấn công; ra khỏi vùng thì thôi đuổi.
 - **Điều kiện hiếm**: có loài chỉ xuất hiện khi đúng sinh cảnh / vùng + giờ + thời tiết. Khi chúng xuất hiện có thông báo gợi ý, và lần gặp được ghi vào save.
+  - **Bảng tra trong Pokédex (V30)** (nút *✦ Điều kiện hiếm*): mỗi điều kiện một dòng — nơi (vùng gặp hoặc sinh cảnh, dưới nước), giờ, thời tiết. Dòng đang thỏa ở chỗ người chơi đứng sáng xanh (`SpawnManager.rareNow`). Loài chưa gặp hiện `???`, câu gợi ý mở khi đã gặp. Trang chi tiết loài thêm dòng *✦ Điều kiện hiếm*.
 - Bảng tên trên đầu: tên + cấp, α Alpha, ★ tinh anh, ✦ shiny.
 
 ### 5.3 Thu phục

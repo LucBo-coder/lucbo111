@@ -1,5 +1,5 @@
 import { Biome, EncounterRoll, RegionDef, regionOfArea, rollEncounter, SHINY_BASE, SpawnContext, WeatherKind } from '../core/encounters';
-import { PACK_SPREAD, planPack, rollRare, territoryOf } from '../core/ecologyRules';
+import { activeRare, PACK_SPREAD, planPack, rollRare, territoryOf } from '../core/ecologyRules';
 import { MapProvider, SpawnEntry } from '../core/map/mapProvider';
 import { T, TILE_PX } from '../core/map/tiles';
 import { makeWildState } from '../core/wildAI';
@@ -190,6 +190,23 @@ export class SpawnManager {
     let n = 0;
     for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && this.map.terrainAt(tx + dx, ty + dy) === T.Water) n++;
     return n >= 6;
+  }
+
+  /** Rare conditions that hold where the trainer stands right now, on land or on the water nearby (Pokédex table). */
+  rareNow(): Set<string> {
+    const out = new Set<string>();
+    if (this.map.kind !== 'overworld') return out;
+    const tr = this.world.trainer;
+    const tx = Math.floor(tr.x / TILE_PX), ty = Math.floor(tr.y / TILE_PX);
+    const area = this.map.areaAt(tx, ty);
+    const region = regionOfArea(area?.id);
+    if (!region) return out;
+    const base = { night: this.o.isNight(), weather: this.o.weather() };
+    const habitat = this.map.habitatAt(tx, ty);
+    const land: SpawnContext = { ...base, biome: (habitat && BIOME_OF_HABITAT[habitat]) || region.biome };
+    const water: SpawnContext = { ...base, biome: area?.habitat === 'coast' || region.biome === 'coast' ? 'coast' : 'lake', aquatic: true };
+    for (const c of [land, water]) for (const r of activeRare(c, region, this.o.clock?.())) out.add(r.id);
+    return out;
   }
 
   /** An aquatic spawn: the area's sea (coast) or fresh-water (everything else) pool, aquatic species only. */

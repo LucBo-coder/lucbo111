@@ -13,6 +13,7 @@
 - **Ngã rẽ chương 4 có hậu quả** (Quần Đảo Khởi Nguyên): trao mảnh Lõi cho ông giữ đèn thì ở chương 6 Trưởng nhóm Thiết thấy ánh đèn và không đánh nữa; để đoàn khảo sát giữ thì trận giữ Lõi ở chương 7 ngắn hơn (40 s). Lời cảnh truyện nhắc lại lựa chọn.
 - **Torterra đồng minh**: trận cuối ở Hà Nội thêm bước *Cùng Torterra cắt cáp nối về tổng trạm*. Torterra vừa được làm dịu đứng cạnh bạn, cứ vài giây lại dùng Địa Chấn lên cột cáp và quái Bình Minh. *Thần Kim Quy trở về* chờ tới khi cáp đã cắt.
 - **Cửa hàng ở mọi tỉnh, giá theo danh tiếng**: trước đây từ Bến Tre trở đi không mua được gì (cửa hàng chỉ để trang trí) — giờ cả 36 tỉnh đều có người bán. *Được tin cậy* ở một tỉnh được bớt 10%, *Người nhà* bớt 15% và mở kệ **Đặc sản** (vật phẩm tăng hệ, đá tiến hóa hợp với thần hộ vệ, rẻ hơn 20%). Bến Tre có bảng danh tiếng riêng.
+- **Pokédex: bảng điều kiện hiếm** (nút ✦ Điều kiện hiếm): mọi loài chỉ hiện khi đủ nơi chốn, giờ, thời tiết; điều kiện đang thỏa ở chỗ bạn đứng sáng xanh. Trang chi tiết loài cũng ghi điều kiện hiếm.
 - **Hướng dẫn trong game** (K / F1 / nút **?**): bảng phím đầy đủ, điều khiển cảm ứng, 5 trang cách chơi; lời nhắc lần đầu.
 - **Phím O** mở PC. Gõ chữ trong ô nhập (tìm PC, đặt tên hộp) không còn kích hoạt phím tắt (trước đây gõ x / i / m / j làm nhảy tab).
 - Test `v30_quest_reach`: chơi thử hết cả hai sổ nhiệm vụ (451 nhiệm vụ, cả nhánh phụ) — nhiệm vụ nào không mở được hoặc không xong được sẽ bị bắt.
