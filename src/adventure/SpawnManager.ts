@@ -1,4 +1,5 @@
-import { Biome, EncounterRoll, RegionDef, regionOfArea, rollEncounter, SHINY_BASE, SpawnContext, WeatherKind } from '../core/encounters';
+import type { ObjectiveDef } from '../core/quests';
+import { ECOLOGY, Biome, EncounterRoll, RegionDef, regionOfArea, rollEncounter, SHINY_BASE, SpawnContext, WeatherKind } from '../core/encounters';
 import { activeRare, PACK_SPREAD, planPack, rollRare, territoryOf } from '../core/ecologyRules';
 import { MapProvider, SpawnEntry } from '../core/map/mapProvider';
 import { T, TILE_PX } from '../core/map/tiles';
@@ -23,6 +24,8 @@ export interface EventSpawnInfo {
 }
 
 export interface SpawnOptions {
+  /** Current objectives of active quests, read afresh on each tick. */
+  objectives?: () => ObjectiveDef[];
   maxActive?: number;
   perHabitatCap?: number;
   /** Max wild Pokémon inside one region at a time */
@@ -90,6 +93,8 @@ export class SpawnManager {
       const tx = Math.floor(e.x / TILE_PX), ty = Math.floor(e.y / TILE_PX);
       if ((!e.hostile && d > DESPAWN_DIST) || (e.wild!.fled && d > 700) || !this.o.loaded(tx, ty)) this.world.removeEnemy(e);
     }
+    const living = this.wildUnits();
+    if (living.length < this.maxActive + 2 && this.spawnQuestTarget(living)) return;
     const ev = this.o.events?.() ?? {};
     if (wild.length >= this.maxActive + Math.min(6, ev.extraCap ?? 0)) return;
 
@@ -140,6 +145,31 @@ export class SpawnManager {
       this.o.onSpawn?.(u);
       return;
     }
+  }
+
+  /** Authored hunt sites must work even when the ambient biome/time pool excludes the target. */
+  private spawnQuestTarget(wild: Unit[]): boolean {
+    if (this.map.kind !== 'overworld') return false;
+    for (const obj of this.o.objectives?.() ?? []) {
+      const m = obj.marker, e = ECOLOGY.get(obj.target ?? '');
+      if (!['capture', 'defeat'].includes(obj.type) || !m || !e || e.legendary || e.mythical) continue;
+      if ((m.region ?? 'starter-valley') !== this.map.id) continue;
+      const cx = (m.x + 0.5) * TILE_PX, cy = (m.y + 0.5) * TILE_PX;
+      if (Math.hypot(cx - this.world.trainer.x, cy - this.world.trainer.y) > MAX_DIST) continue;
+      if (wild.some((u) => u.defId === e.id && Math.hypot(u.x - cx, u.y - cy) < 700)) continue;
+      for (let attempt = 0; attempt < 80; attempt++) {
+        const tx = m.x + this.world.rng.int(-20, 20), ty = m.y + this.world.rng.int(-20, 20);
+        const x = (tx + 0.5) * TILE_PX, y = (ty + 0.5) * TILE_PX;
+        if (tx < 0 || ty < 0 || tx >= this.map.widthTiles || ty >= this.map.heightTiles || !this.o.loaded(tx, ty)) continue;
+        if (Math.hypot(x - this.world.trainer.x, y - this.world.trainer.y) < 100 || this.o.onScreen?.(x, y)) continue;
+        if (e.aquatic ? !this.isOpenWater(tx, ty) : this.map.terrainAt(tx, ty) === T.Water || this.map.solidAt(tx, ty) || this.world.blocked(x, y, 18)) continue;
+        const [lo, hi] = this.map.areaAt(tx, ty)?.level ?? [3, 6];
+        this.spawnRolled({ species: e.id, level: Math.max(e.minLevel, this.world.rng.int(lo, hi)),
+          rarity: e.rarity, shiny: this.world.rng.next() < SHINY_BASE, temperament: e.temperament }, x, y);
+        return true;
+      }
+    }
+    return false;
   }
 
   /** One ecology spawn (territory from the rules), counted and announced. */

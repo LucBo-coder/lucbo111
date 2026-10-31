@@ -372,6 +372,7 @@ export class AdventureScene extends Phaser.Scene {
       if (this.regionDef.weather) this.weather = { kind: this.regionDef.weather, t: Infinity };
       else if (this.weather.t === Infinity) this.weather = { kind: 'clear', t: 240 }; // back from a plane
       this.spawns = new SpawnManager(this.world, map, {
+        objectives: () => this.state.quests.active().flatMap((q) => { const o = this.state.quests.currentObjective(q.id); return o ? [o] : []; }),
         maxActive: 14,
         perRegionCap: 10,
         levelBonus: () => Math.floor((this.state.worldLevel - 1) / 2),

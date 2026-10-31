@@ -786,7 +786,8 @@
     "text": "Đến Đầm Lầy Sương Mù (cổng phía tây nam)",
     "marker": {
      "x": 16,
-     "y": 104
+     "y": 104,
+     "region": "starter-valley"
     }
    },
    {
@@ -796,7 +797,8 @@
     "text": "Gặp Bà Thầy Mo Sương",
     "marker": {
      "x": 84,
-     "y": 24
+     "y": 24,
+     "region": "misty-swamp"
     }
    }
   ],
@@ -837,7 +839,8 @@
     "text": "Đánh bại Grimer (0/4)",
     "marker": {
      "x": 22,
-     "y": 36
+     "y": 36,
+     "region": "misty-swamp"
     }
    },
    {
@@ -847,7 +850,8 @@
     "text": "Đánh bại Koffing (0/3)",
     "marker": {
      "x": 30,
-     "y": 50
+     "y": 50,
+     "region": "misty-swamp"
     }
    },
    {
@@ -857,7 +861,8 @@
     "text": "Thu phục Wooper — nó lọc sạch bùn",
     "marker": {
      "x": 40,
-     "y": 70
+     "y": 70,
+     "region": "misty-swamp"
     }
    },
    {
@@ -867,7 +872,8 @@
     "text": "Báo cho Bà Thầy Mo",
     "marker": {
      "x": 84,
-     "y": 24
+     "y": 24,
+     "region": "misty-swamp"
     }
    }
   ],
@@ -914,7 +920,8 @@
     "text": "Thu phục Barboach",
     "marker": {
      "x": 26,
-     "y": 30
+     "y": 30,
+     "region": "misty-swamp"
     }
    },
    {
@@ -924,7 +931,8 @@
     "text": "Thu phục Tentacool",
     "marker": {
      "x": 18,
-     "y": 24
+     "y": 24,
+     "region": "misty-swamp"
     }
    },
    {
@@ -934,7 +942,8 @@
     "text": "Cho Ngư dân Lâm xem",
     "marker": {
      "x": 71,
-     "y": 82
+     "y": 82,
+     "region": "misty-swamp"
     }
    }
   ],
@@ -976,7 +985,8 @@
     "text": "Đánh bại Thuần Độc Sư Lan",
     "marker": {
      "x": 34,
-     "y": 46
+     "y": 46,
+     "region": "misty-swamp"
     }
    },
    {
@@ -986,7 +996,8 @@
     "text": "Đánh bại Bắt Bọ Vũ",
     "marker": {
      "x": 92,
-     "y": 44
+     "y": 44,
+     "region": "misty-swamp"
     }
    }
   ],
@@ -1024,7 +1035,8 @@
     "text": "Đuổi Chinchou (0/3)",
     "marker": {
      "x": 76,
-     "y": 60
+     "y": 60,
+     "region": "coral-coast"
     }
    },
    {
@@ -1034,7 +1046,8 @@
     "text": "Thu phục Lanturn để thắp đèn",
     "marker": {
      "x": 80,
-     "y": 40
+     "y": 40,
+     "region": "coral-coast"
     }
    },
    {
@@ -1044,7 +1057,8 @@
     "text": "Mang Lanturn về hải đăng",
     "marker": {
      "x": 54,
-     "y": 82
+     "y": 82,
+     "region": "coral-coast"
     }
    }
   ],
@@ -1086,7 +1100,8 @@
     "text": "Thu phục Corsola",
     "marker": {
      "x": 78,
-     "y": 80
+     "y": 80,
+     "region": "coral-coast"
     }
    },
    {
@@ -1096,7 +1111,8 @@
     "text": "Thu phục Staryu",
     "marker": {
      "x": 40,
-     "y": 12
+     "y": 12,
+     "region": "coral-coast"
     }
    },
    {
@@ -1106,7 +1122,8 @@
     "text": "Cho Thợ lặn Hải xem",
     "marker": {
      "x": 58,
-     "y": 22
+     "y": 22,
+     "region": "coral-coast"
     }
    }
   ],
@@ -1148,7 +1165,8 @@
     "text": "Đánh bại Vận động viên bơi Thu",
     "marker": {
      "x": 46,
-     "y": 26
+     "y": 26,
+     "region": "coral-coast"
     }
    },
    {
@@ -1158,7 +1176,8 @@
     "text": "Đánh bại Thủy thủ Bền",
     "marker": {
      "x": 40,
-     "y": 70
+     "y": 70,
+     "region": "coral-coast"
     }
    }
   ],
