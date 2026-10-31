@@ -23,7 +23,8 @@ import { evolutionGuide, type EvolutionOption, ITEM_DEFS, MEGA_DURATION, megaFor
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
 import { rareRows, type RareRow } from '../core/ecologyRules';
-import { DYNAMAX_DURATION, gmaxLine, TERA_DURATION, TERA_SHARD_COST } from '../core/gimmicks';
+import { DYNAMAX_DURATION, GMAX, gmaxLine, TERA_DURATION, TERA_SHARD_COST } from '../core/gimmicks';
+import { gmaxTexture, hasGmaxArt, loadGmaxArt } from '../render/gmaxArt';
 import { TYPE_VI } from '../core/synergy';
 import type { PokeType } from '../core/types';
 import { ALL_TYPES } from '../render/icons';
@@ -67,6 +68,7 @@ const WEATHER_LABEL: Record<string, string> = {
 };
 const BIOME_VI: Record<string, string> = { meadow: 'Đồng cỏ', forest: 'Rừng', lake: 'Hồ', rocky: 'Đồi đá', ruins: 'Tàn tích', farm: 'Nông trại', snow: 'Vùng tuyết', volcano: 'Núi lửa' };
 const LEGEND_KIND_VI: Record<string, string> = { shrine: 'Điện thờ', roaming: 'Lang thang', gift: 'Gặp gỡ đặc biệt', egg: 'Nở từ trứng' };
+const RAID_COLOR: Record<string, number> = { tera: 0x88eeff, dynamax: 0xff3060, gmax: 0xc040ff };
 const EVENT_COLOR: Record<string, number> = { teraRaid: 0x88eeff, raid: 0xff6080, outbreak: 0xffe060, alpha: 0xff6050, migration: 0x80d0ff, weather: 0xa0b0ff, ambush: 0xffa060, treasure: 0xffd080, distortion: 0xd080ff, merchant: 0x60e0a0, meteor: 0xfff0a0 };
 const EVENT_NAME: Record<string, string> = Object.fromEntries(Object.entries(EVENT_DEFS).map(([k, v]) => [k, v.name]));
 const EVENT_HINT: Record<string, string> = {
@@ -124,6 +126,8 @@ export class AdventureUI extends Phaser.Scene {
   private selected: { party?: string; dex?: string; quest?: string } = {};
   private mapView = { zoom: 1, ox: 0, oy: 0 };
   private dexStatus = '';
+  /** party detail: the portrait shows the Gigantamax form (V32) */
+  private showGmaxArt = false;
   private dexPage = 0;
   /** Pokédex: the table of rare conditions instead of the species list (V30) */
   dexRare = false;
@@ -466,9 +470,10 @@ export class AdventureUI extends Phaser.Scene {
 
     // Active world events: name, region, countdown, goal progress (short, right column, never over the field centre)
     const evs = a.worldEvents?.views() ?? [];
-    if (evs.length && a.mapKind === 'valley') {
+    const raid = a.raidDens?.hudLine() ?? null;
+    if ((evs.length || raid) && a.mapKind === 'valley') {
       const ey = qy + 58 * s;
-      const lines = evs.map((e) => `✦ ${e.name} · ${e.regionName} · ${fmtTime(e.left)}${e.goal ? `  (${e.progress}/${e.goal})` : ''}`);
+      const lines = [...(raid ? [raid] : []), ...evs.map((e) => `✦ ${e.name} · ${e.regionName} · ${fmtTime(e.left)}${e.goal ? `  (${e.progress}/${e.goal})` : ''}`)];
       this.texts.events.setText(lines.join('\n')).setOrigin(1, 0).setPosition(W - 12 * s, ey);
       g.fillStyle(0x200830, 0.55).fillRect(W - 12 * s - 360 * s, ey - 4 * s, 364 * s, lines.length * 20 * s + 8 * s);
     } else this.texts.events.setText('');
@@ -585,6 +590,12 @@ export class AdventureUI extends Phaser.Scene {
       const ex = x + (e.x / TILE_PX) * kx, ey = y + (e.y / TILE_PX) * ky;
       if (e.approx) g.lineStyle(1, 0xffd080, 0.9).strokeCircle(ex, ey, (e.approx / TILE_PX) * kx);
       else g.fillStyle(EVENT_COLOR[e.type] ?? 0xd090ff, 1).fillTriangle(ex, ey - 4, ex - 4, ey + 3, ex + 4, ey + 3);
+    }
+    // raid dens: a diamond in the colour of their light (V32)
+    if (m.kind === 'overworld') for (const d of a.raidDens?.markers() ?? []) {
+      const ex = x + (d.x / TILE_PX) * kx, ey = y + (d.y / TILE_PX) * ky;
+      g.fillStyle(RAID_COLOR[d.kind], 1).fillPoints([{ x: ex, y: ey - 5 }, { x: ex + 4, y: ey }, { x: ex, y: ey + 5 }, { x: ex - 4, y: ey }], true);
+      if (d.active) g.lineStyle(1, 0xffffff, 1).strokeCircle(ex, ey, 7);
     }
   }
 
@@ -1306,12 +1317,24 @@ export class AdventureUI extends Phaser.Scene {
     // official front art is fetched on first view; the panel refreshes once it arrives
     const fkey = (p.shiny ? 'front-shiny-' : 'front-') + p.species;
     if (officialPack.active && !this.textures.exists(fkey)) void (p.shiny ? loadShinyFront(p.species) : loadFront(p.species)).then(() => { if (this.menuTab === 'party' && this.textures.exists(fkey)) this.openMenu('party'); });
-    if (this.textures.exists(fkey)) {
+    // with the Gigantamax Factor, a tap on the portrait shows its Gigantamax form (V32)
+    const gkey = p.gmax && hasGmaxArt(p.species) ? gmaxTexture(p.species, !!p.shiny) : null;
+    if (p.gmax && hasGmaxArt(p.species) && !gkey) void loadGmaxArt(p.species, !!p.shiny).then(() => { if (this.menuTab === 'party') this.openMenu('party'); });
+    if (gkey && this.showGmaxArt) {
+      const img = this.add.image(r.x + 60 * s, r.y + 64 * s, gkey).setScale(fitScale(this, gkey, 116 * s));
+      c.add(img);
+      c.add(text(this, r.x + 10 * s, r.y + 6 * s, 'G-MAX', 14 * s, '#ff6080'));
+    } else if (this.textures.exists(fkey)) {
       c.add(this.add.image(r.x + 60 * s, r.y + 64 * s, fkey).setScale(fitScale(this, fkey, 110 * s)));
     } else {
       const spr = this.add.sprite(r.x + 60 * s, r.y + 64 * s, sheetKey(p.species), 0).setScale(fitScale(this, p.species, 96 * s));
       spr.play(`${p.species}:walk`);
       c.add(spr);
+    }
+    if (gkey) {
+      const z = this.add.zone(r.x + 4 * s, r.y + 4 * s, 112 * s, 112 * s).setOrigin(0).setInteractive({ useHandCursor: true });
+      z.on('pointerup', () => { this.showGmaxArt = !this.showGmaxArt; this.openMenu('party'); });
+      c.add(z);
     }
     c.add(text(this, r.x + 120 * s, r.y + 12 * s, `${def.name}  Lv${p.level}`, 26 * s, '#ffffff'));
     let bx = r.x + 120 * s;
@@ -1368,6 +1391,7 @@ export class AdventureUI extends Phaser.Scene {
     const evo = full.length <= 110 ? full : [...new Set(steps.filter((e) => !e.unsupported).map((e) => e.to))].map((to) => `${POKEMON.get(to)?.name ?? to}${ready.has(to) ? ' ✓' : ''}`).join(', ');
     const megas = megaFormsOf(p.species).map((m) => `${POKEMON.get(m.form)?.name} (cầm ${ITEM_DEFS.get(m.stone)?.name})`);
     c.add(text(this, r.x + 14 * s, r.y + r.h - 128 * s, `Trang bị: ${held ? held.name : 'không có'}`, 16 * s, held ? '#ffe080' : COLORS.dim));
+    if (p.gmax) c.add(text(this, r.x + 14 * s, r.y + r.h - 110 * s, GMAX[p.species] ? `Nhân Tố Gigantamax ✓ · ${GMAX[p.species].move}${gkey ? ' · chạm ảnh để xem dạng G-Max' : ''}` : 'Nhân Tố Gigantamax ✓ (dạng G-Max khi tiến hóa)', 13 * s, '#ff8098'));
     const evoLine = text(this, r.x + 14 * s, r.y + r.h - 98 * s, `Tiến hóa: ${evo || 'dạng cuối'}${megas.length ? '   ·   Mega: ' + megas.join(', ') : ''}${steps.length ? '   ▸ chạm để xem cách tiến hóa' : ''}`, 14 * s, '#a0ffb0').setWordWrapWidth(r.w - 28 * s);
     c.add(evoLine);
     if (steps.length) evoLine.setInteractive({ useHandCursor: true }).on('pointerup', () => void this.showEvoGuide(p.species, 'party', p.uid));
@@ -1652,6 +1676,14 @@ export class AdventureUI extends Phaser.Scene {
     if (!known) { c.add(text(this, dx + 20 * s, dy + 50 * s, '???\nChưa gặp loài này. Khám phá thêm để ghi nhận vào Pokédex.', 20 * s).setWordWrapWidth(dw - 40 * s)); return; }
     c.add(text(this, dx + 16 * s, dy + 34 * s, `#${String(sel.id).padStart(3, '0')} ${sel.displayName}`, 26 * s));
     c.add(text(this, dx + 16 * s, dy + 64 * s, sel.genus, 17 * s, COLORS.dim));
+    // its Gigantamax form, top right (V32)
+    if (GMAX[sel.name] && hasGmaxArt(sel.name)) {
+      const gk = gmaxTexture(sel.name);
+      if (gk) {
+        c.add(this.add.image(dx + dw - 56 * s, dy + 70 * s, gk).setScale(fitScale(this, gk, 80 * s)));
+        c.add(text(this, dx + dw - 56 * s, dy + 110 * s, 'G-MAX', 12 * s, '#ff6080').setOrigin(0.5, 0));
+      } else void loadGmaxArt(sel.name).then(() => { if (this.menuTab === 'dex') this.openMenu('dex'); });
+    }
     let bx = dx + 16 * s;
     for (const t of sel.types) { const b = typeBadge(this, bx, dy + 88 * s, t, 14 * s); c.add(b); bx += b.width + 6; }
     c.add(text(this, dx + 16 * s, dy + 116 * s, `Cao ${(sel.heightDm / 10).toFixed(1)}m · Nặng ${(sel.weightHg / 10).toFixed(1)}kg · Tỉ lệ bắt ${sel.captureRate}/255 · ${sel.growthRate}`, 15 * s, '#c8e0ff').setWordWrapWidth(dw - 32 * s));
@@ -1669,7 +1701,7 @@ export class AdventureUI extends Phaser.Scene {
       ? [...guide.prev, ...guide.next].map((e) => '• ' + e.line).join('\n')
       : [...guide.prev.map((e) => '• ' + e.line), `• Tiến hóa thành ${names(guide.next)} — bấm «Cách tiến hóa» để xem điều kiện`].join('\n');
     const megaForms = megaFormsOf(sel.name).map((m) => `${POKEMON.get(m.form)?.name} (${POKEMON.get(m.form)?.types.join('/')})`);
-    const evoText = text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa:${evo ? '\n' + evo : ' không tiến hóa'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s);
+    const evoText = text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa:${evo ? '\n' + evo : ' không tiến hóa'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${GMAX[sel.name] ? `\nGigantamax: ${GMAX[sel.name].move} · cao ${GMAX[sel.name].height} m (Súp Max hoặc Hang Raid G-Max)` : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s);
     c.add(evoText);
     // rows below follow the evolution block, which grows with branches (Eevee has eight)
     let ny = Math.max(dy + 322 * s, evoText.y + evoText.height + 8 * s);
@@ -1945,6 +1977,11 @@ export class AdventureUI extends Phaser.Scene {
         g.fillStyle(0xd08040, 1).fillRect((d.x + 0.5) * k - 5, (d.y + 0.5) * k - 5, 10, 10);
         const bossQ = st.quests.states['q-main-3']?.status === 'active';
         inner.add(text(this, (d.x + 0.5) * k, (d.y + 0.5) * k - 24, bossQ ? 'BOSS' : d.name, 13 * s, bossQ ? '#ff6060' : '#ffd0a0').setOrigin(0.5));
+      }
+      for (const d of a.raidDens?.markers() ?? []) {
+        const ex = (d.x / TILE_PX) * k, ey = (d.y / TILE_PX) * k;
+        g.fillStyle(RAID_COLOR[d.kind], 1).fillPoints([{ x: ex, y: ey - 10 }, { x: ex + 8, y: ey }, { x: ex, y: ey + 10 }, { x: ex - 8, y: ey }], true);
+        inner.add(text(this, ex, ey + 11, `Hang Raid ${d.label}${d.active ? ' · đang đánh' : ''}`, 13 * s, '#ffd8a0').setOrigin(0.5, 0));
       }
       for (const e of a.worldEvents?.views() ?? []) {
         if (!e.x) continue;

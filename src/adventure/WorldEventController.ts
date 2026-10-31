@@ -605,7 +605,7 @@ export class WorldEventController {
   }
 
   /** A region species for an event (ignores time of day; optional special list and extra biomes). */
-  private pickSpecies(region: RegionDef, filter: (e: NonNullable<ReturnType<typeof ECOLOGY.get>>) => boolean, special: string[] = [], extraBiomes: Biome[] = []): string | null {
+  pickSpecies(region: RegionDef, filter: (e: NonNullable<ReturnType<typeof ECOLOGY.get>>) => boolean, special: string[] = [], extraBiomes: Biome[] = []): string | null {
     const rng = this.world.rng;
     if (special.length && rng.chance(0.25)) {
       const ok = special.filter((s) => ECOLOGY.has(s) && ECOLOGY.get(s)!.minLevel <= region.level[1]);
@@ -640,7 +640,7 @@ export class WorldEventController {
   }
 
   /** Random open tile inside the region's areas (optionally at least `minDist` from `from`). */
-  private regionPoint(region: RegionDef, from?: { x: number; y: number }, minDist = 0): { x: number; y: number } | null {
+  regionPoint(region: RegionDef, from?: { x: number; y: number }, minDist = 0): { x: number; y: number } | null {
     const m = this.scene.map as { def?: { areas: { id: string; rect: [number, number, number, number] }[] } };
     const rects = (m.def?.areas ?? []).filter((a) => region.areas.includes(a.id) && a.id !== 'village');
     if (!rects.length) return null;

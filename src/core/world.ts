@@ -221,6 +221,8 @@ export interface Unit {
   /** Duel (V31): the Tera Type it takes and whether it has the Gigantamax Factor (from the player's collection) */
   teraPick?: PokeType | null;
   gmaxFactor?: boolean;
+  /** Raid den boss (V32): capture-rate multiplier once it is worn down (core/raidDens RAID_TIERS.catchMult) */
+  raidCatch?: number;
 }
 
 export interface Projectile {

@@ -58,6 +58,7 @@ import { ChunkRecord, ChunkView } from '../render/ChunkView';
 import { QUALITY_PROFILE } from '../render/vfx';
 import { WorldRenderer } from '../render/WorldRenderer';
 import { WorldEventController } from '../adventure/WorldEventController';
+import { RaidDenController } from '../adventure/RaidDenController';
 import { isAquatic, type WeatherKind } from '../core/encounters';
 import { LEGENDS, LegendEnv, missingConditions as legendMissing } from '../core/legends';
 import { LegendaryEncounterManager } from '../adventure/LegendaryEncounterManager';
@@ -143,6 +144,8 @@ export class AdventureScene extends Phaser.Scene {
   spawns: SpawnManager | null = null;
   /** Random world events (valley only) */
   worldEvents: WorldEventController | null = null;
+  /** random raid dens on the overworld (V32) */
+  raidDens: RaidDenController | null = null;
   legendsMgr: LegendaryEncounterManager | null = null;
   /** Legendary shrine rituals, sealed arenas and hazards (overworld maps) */
   shrines: ShrineController | null = null;
@@ -363,6 +366,7 @@ export class AdventureScene extends Phaser.Scene {
 
     if (this.mapKind === 'valley') {
       this.worldEvents = new WorldEventController(this);
+      this.raidDens = new RaidDenController(this);
       this.legendsMgr = new LegendaryEncounterManager(this);
       this.shrines = new ShrineController(this);
       this.shrines.build();
@@ -461,6 +465,8 @@ export class AdventureScene extends Phaser.Scene {
     // events never outlive the scene (timers, spawned units, weather override, chests)
     this.worldEvents?.cleanupAll();
     this.worldEvents = null;
+    this.raidDens?.cleanup();
+    this.raidDens = null;
     this.legendsMgr?.cleanup();
     this.legendsMgr = null;
     this.shrines?.cleanup();
@@ -1116,6 +1122,7 @@ export class AdventureScene extends Phaser.Scene {
       while (this.acc >= STEP && n < MAX_STEPS && w.state === 'playing') {
         w.step(STEP);
         this.worldEvents?.update(STEP);
+        this.raidDens?.update(STEP);
         this.legendsMgr?.update(STEP);
         this.env?.update(STEP);
         this.spawns?.update(STEP);
@@ -1203,6 +1210,7 @@ export class AdventureScene extends Phaser.Scene {
     if (e.tag === 'story-device') this.story?.onDown(e);
     {
       this.worldEvents?.onResolved(e.id!, e.defId, e.x, e.y, false);
+      this.raidDens?.onResolved(e.id!, false);
       const trainerOwned = !!e.tag?.startsWith('trainer:');
       // Friendship: a win against a trainer's Pokémon or a boss counts as a real battle for the active party
       if (trainerOwned || e.boss) for (const a of this.world.allies) if (!a.fainted && a.ownerUid) { const o = this.state.owned(a.ownerUid); if (o) addFriendship(o, 'battle'); }
@@ -1447,7 +1455,8 @@ export class AdventureScene extends Phaser.Scene {
       case 'npc': return this.talk(it);
       case 'sign': return void (await this.say('Bảng gỗ', (it.obj.data as { text: string[] }).text));
       case 'chest': {
-        const ed = it.obj.data as { event?: number; action?: string; i?: number } | undefined;
+        const ed = it.obj.data as { event?: number; action?: string; i?: number; raidDen?: number } | undefined;
+        if (ed?.raidDen != null) return this.raidDens?.use(ed.raidDen);
         if (ed?.event != null && ed.action) return this.worldEvents?.useObject(ed.event, ed.action, ed.i ?? 0);
         if (ed?.event != null) { if (this.worldEvents?.openTreasure(ed.event)) audio.play('victory'); return; }
         return this.openChest(it);
@@ -3028,7 +3037,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private baseChance(u: Unit, ball: BallId): number {
-    return captureChance(u.maxHp, u.hp, captureRateOf(u.defId) * (u.alpha ? 0.5 : 1), ballMultiplier(ball, this.ballContext(u)), statusBonus(u.statuses.map((s) => s.kind), u.wild?.mode === 'sleep'));
+    return captureChance(u.maxHp, u.hp, captureRateOf(u.defId) * (u.alpha ? 0.5 : 1) * (u.raidCatch ?? 1), ballMultiplier(ball, this.ballContext(u)), statusBonus(u.statuses.map((s) => s.kind), u.wild?.mode === 'sleep'));
   }
 
   throwBall(): void {
@@ -3106,7 +3115,7 @@ export class AdventureScene extends Phaser.Scene {
     const roll = legend
       // (the unit is already inside the ball here, so the rule is applied directly, not through previewChance)
       ? (() => { const ok = this.world.rng.chance(legendThrowChance(legend.rule, fx.ballId, this.baseChance(hit, fx.ballId))); return { success: ok, shakes: ok ? 3 : this.world.rng.int(0, 2) }; })()
-      : rollCapture(this.world.rng, hit.maxHp, hit.hp, captureRateOf(hit.defId) * (hit.alpha ? 0.5 : 1), ballMultiplier(fx.ballId, this.ballContext(hit)), statusBonus(hit.statuses.map((s) => s.kind), hit.wild?.mode === 'sleep'));
+      : rollCapture(this.world.rng, hit.maxHp, hit.hp, captureRateOf(hit.defId) * (hit.alpha ? 0.5 : 1) * (hit.raidCatch ?? 1), ballMultiplier(fx.ballId, this.ballContext(hit)), statusBonus(hit.statuses.map((s) => s.kind), hit.wild?.mode === 'sleep'));
     const shakes = roll.success ? 3 : roll.shakes;
     let i = 0;
     const wobble = () => {
@@ -3130,6 +3139,7 @@ export class AdventureScene extends Phaser.Scene {
       p.ball = fx.ballId;
       if (fx.ballId === 'luxuryball') p.friendship = Math.min(255, (p.friendship ?? 70) + 50);
       this.worldEvents?.onResolved(u.id, u.defId, u.x, u.y, true);
+      this.raidDens?.onResolved(u.id, true);
       const joined = this.state.inParty(p.uid);
       if (joined) this.applyParty();
       this.renderer_.vfx.named('capture', u.x, u.y);
