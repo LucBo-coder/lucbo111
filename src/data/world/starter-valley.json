@@ -1362,10 +1362,9 @@
    "toY": 88,
    "requires": [
     "boss:articuno",
-    "boss:zapdos",
-    "boss:moltres"
+    "boss:zapdos"
    ],
-   "hint": "Hơi nóng phả ra từ cổng đá... Chỉ người được ba Thần Điểu công nhận mới qua được. Khuyến nghị Lv45+."
+   "hint": "Hơi nóng phả ra từ cổng đá... Hãy được Articuno (Núi Tuyết) và Zapdos (Bờ Biển) công nhận trước — Moltres, Thần Điểu thứ ba, đang chờ bên trong. Khuyến nghị Lv45+."
   },
   {
    "id": "portal-sanctuary",

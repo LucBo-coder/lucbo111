@@ -33,7 +33,7 @@ test('portals: locked until the story flag, travel to the three regions, region 
   await page.waitForTimeout(400);
   expect(await ev(page, `window.__adv.regionDef.id`)).toBe('starter-valley');
 
-  for (const [to, biome, flags] of [['frozen-mountains', 'snow', ['boss:mega-venusaur']], ['volcanic-lands', 'volcano', ['boss:articuno', 'boss:zapdos', 'boss:moltres']], ['legendary-sanctuary', 'sanctuary', ['boss:rayquaza']]] as const) {
+  for (const [to, biome, flags] of [['frozen-mountains', 'snow', ['boss:mega-venusaur']], ['volcanic-lands', 'volcano', ['boss:articuno', 'boss:zapdos']], ['legendary-sanctuary', 'sanctuary', ['boss:rayquaza']]] as const) {
     await ev(page, `(() => { const a = window.__adv; ${JSON.stringify(flags)}.forEach(f => a.state.setFlag(f)); const p = a.regionDef.portals.find(x => x.to === '${to}'); a.travelTo(p.to, p.toX, p.toY); })()`);
     await waitMap(page, to);
     await ev(page, `(() => { const t = window.__adv.world.trainer; t.maxHp = t.hp = 1e7; })()`);
