@@ -13,7 +13,7 @@ taking the frame geometry from the downloaded images themselves. A shiny sheet t
 sheet is dropped and listed in `shinySkip` (the game plays the shiny Idle instead); a species whose shiny Walk / Idle
 is unusable gets `shiny: false` (the game draws the shiny with the normal sheets).
 Mega forms (scripts/fetch-pmd-megas.py) are not re-downloaded: a broken shiny of theirs is only switched off.
-Like the rest of public/assets/pmd the result is git-ignored: do not commit, publish or share it.
+Like the rest of public/assets/pmd the result is personal use only (CC BY-NC 4.0, artists in CREDITS.md).
 """
 import io
 import json
