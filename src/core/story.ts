@@ -142,6 +142,17 @@ export interface EncounterDef {
   device?: { name: string; species: string; level: number; hpMult?: number };
   /** escort: the NPC that follows the trainer, from where it waits to the destination (sprite kind + look seed) */
   npc?: { name: string; sprite?: string; look?: string; fromX: number; fromY: number };
+  /** destroy: a story Pokémon fighting on the player's side (a guardian set free) — stands at its spot (tiles from
+   *  the device) and every `every` s strikes all foes within `radius` tiles for `power` of their max HP (the device a
+   *  third of it). It cannot be hurt, caught or attacked. */
+  ally?: AllyDef;
+}
+
+export interface AllyDef { species: string; level: number; name: string; move: string; dx: number; dy: number; every?: number; radius?: number; power?: number }
+
+/** HP a story ally's strike takes from a foe: `power` of its max HP, a third of that on the device (at least 1). */
+export function allyStrike(ally: AllyDef, foe: { maxHp: number }, device: boolean): number {
+  return Math.max(1, Math.ceil(foe.maxHp * (ally.power ?? 0.3) * (device ? 1 / 3 : 1)));
 }
 
 export interface HoldState { t: number; out: number }

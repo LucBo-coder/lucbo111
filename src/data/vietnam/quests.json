@@ -19617,7 +19617,8 @@
   "title": "Thần Kim Quy trở về",
   "giver": "hn-guide",
   "requires": [
-   "vn-hn-2"
+   "vn-hn-2",
+   "mn-hn-3"
   ],
   "description": "Torterra đã được giải phóng. Báo tin cho cô Hằng ở phố cổ.",
   "objectives": [

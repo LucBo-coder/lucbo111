@@ -518,7 +518,7 @@
    "lines": [
     {
      "who": "",
-     "text": "Những sợi cáp tuột khỏi mai Torterra. Cây cổ thụ trên lưng nó rung lên, rễ cắm sâu xuống điểm neo Cổ Loa."
+     "text": "Cú Địa Chấn cuối cùng của Torterra quật đổ cột cáp. Những sợi cáp tuột khỏi mai nó. Cây cổ thụ trên lưng rung lên, rễ cắm sâu xuống điểm neo Cổ Loa."
     },
     {
      "who": "linh",
@@ -5143,7 +5143,7 @@
     "mn-hn-2",
     "vn-hn-2"
    ],
-   "description": "Ba bước cuối: phá lõi cưỡng chế, giữ điểm neo Cổ Loa trong lúc mạch nguồn ổn định, rồi cùng Torterra cắt những sợi cáp nối vào nó.",
+   "description": "Những bước cuối: phá lõi cưỡng chế, giữ điểm neo Cổ Loa trong lúc mạch nguồn ổn định, làm dịu Torterra đang bị cáp điều khiển, rồi cùng nó cắt những sợi cáp nối về tổng trạm.",
    "objectives": [
     {
      "type": "trainer",
@@ -5283,11 +5283,86 @@
     {
      "type": "boss",
      "target": "torterra",
-     "text": "Bước 3 — Cắt cáp khỏi Torterra (đánh bại để giải phóng nó)",
+     "text": "Bước 3 — Làm dịu Torterra (cáp cưỡng chế đang điều khiển nó)",
      "count": 1,
      "marker": {
       "x": 16,
       "y": 10,
+      "region": "ha-noi"
+     }
+    },
+    {
+     "type": "destroy",
+     "target": "mn-hn-3:cables",
+     "text": "Bước 4 — Cùng Torterra cắt cáp nối về tổng trạm",
+     "count": 1,
+     "encounter": {
+      "kind": "destroy",
+      "x": 24,
+      "y": 19,
+      "region": "ha-noi",
+      "ally": {
+       "species": "torterra",
+       "level": 100,
+       "name": "Torterra (đồng minh)",
+       "move": "Địa Chấn",
+       "dx": -3,
+       "dy": 1,
+       "every": 6,
+       "radius": 7,
+       "power": 0.3
+      },
+      "waves": [
+       [
+        [
+         "magnezone",
+         92
+        ],
+        [
+         "porygon-z",
+         92
+        ]
+       ],
+       [
+        [
+         "magnezone",
+         93
+        ],
+        [
+         "porygon-z",
+         93
+        ],
+        [
+         "metagross",
+         94
+        ]
+       ],
+       [
+        [
+         "porygon-z",
+         94
+        ],
+        [
+         "metagross",
+         94
+        ],
+        [
+         "metagross",
+         95
+        ]
+       ]
+      ],
+      "every": 12,
+      "device": {
+       "name": "Cột cáp tổng trạm",
+       "species": "klinklang",
+       "level": 97,
+       "hpMult": 7
+      }
+     },
+     "marker": {
+      "x": 24,
+      "y": 19,
       "region": "ha-noi"
      }
     },
@@ -5317,7 +5392,7 @@
    },
    "dialogue": {
     "offer": [
-     "Lõi cưỡng chế, điểm neo, rồi Torterra. Mình ở ngay sau bạn."
+     "Lõi cưỡng chế, điểm neo, rồi Torterra. Khi nó tỉnh lại, nó sẽ giúp ta cắt cáp. Mình ở ngay sau bạn."
     ],
     "progress": [
      "Làm theo từng bước trên bản đồ nhé."

@@ -2,7 +2,7 @@
 // Positions are written as anchors ("near this NPC / waypoint / the boss arena, a few tiles off"); the generator
 // resolves each one to a free, walkable tile of the real map and fills every objective's map marker.
 import type { QuestDef, ObjectiveDef, QuestRewards, QuestOption } from '../../src/core/quests';
-import type { StoryCharacter, StoryChapter, Cutscene, EncounterKind } from '../../src/core/story';
+import type { StoryCharacter, StoryChapter, Cutscene, EncounterKind, AllyDef } from '../../src/core/story';
 
 /** `wp:<id>` · `npc:<id>` · `trainer:<id>` · `boss` (world boss arena) · `area:<id>` (rect centre) · `xy:<x>,<y>` */
 export interface Spot { region: string; at: string; dx?: number; dy?: number }
@@ -21,6 +21,7 @@ export interface EncounterIn {
   kind: EncounterKind; at: Spot; radius?: number; seconds?: number; secondsIf?: { flag: string; seconds: number };
   waves?: [string, number][][]; every?: number;
   device?: { name: string; species: string; level: number; hpMult?: number };
+  ally?: AllyDef;
   /** escort: who follows (sprite kind + look seed), from where */
   npc?: { name: string; sprite?: string; look?: string; from: Spot };
 }

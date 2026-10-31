@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { AdventureScene } from '../scenes/AdventureScene';
 import type { DialogueChoice } from '../scenes/AdventureUI';
 import type { ObjectiveDef, QuestDef } from '../core/quests';
-import { cutscenePages, holdSeconds, holdTick, waveDue, type Cutscene, type EncounterDef, type HoldState, type StoryDef } from '../core/story';
+import { allyStrike, cutscenePages, holdSeconds, holdTick, waveDue, type Cutscene, type EncounterDef, type HoldState, type StoryDef } from '../core/story';
 import { storyOf } from '../core/storyData';
 import { makeWildState } from '../core/wildAI';
 import { npcLook } from '../core/npcLooks';
@@ -30,6 +30,9 @@ interface Running {
   g: Phaser.GameObjects.Graphics;
   label: Phaser.GameObjects.Text;
   escort: { img: Phaser.GameObjects.Sprite; following: boolean } | null;
+  /** a story Pokémon on the player's side (EncounterDef.ally) and the time to its next strike */
+  ally: Unit | null;
+  allyT: number;
 }
 
 /**
@@ -141,7 +144,7 @@ export class StoryController {
       img.setDepth(ey);
       escort = { img, following: false };
     }
-    this.run = { quest, step, obj, def, x, y, t: 0, hold: { t: 0, out: 0 }, wave: -1, spawned: [], device: null, g, label, escort };
+    this.run = { quest, step, obj, def, x, y, t: 0, hold: { t: 0, out: 0 }, wave: -1, spawned: [], device: null, g, label, escort, ally: null, allyT: 0 };
   }
 
   private stopEncounter(): void {
@@ -149,6 +152,7 @@ export class StoryController {
     if (!r) return;
     for (const u of r.spawned) if (u.alive) this.scene.world.removeEnemy(u);
     if (r.device?.alive) this.scene.world.removeEnemy(r.device);
+    if (r.ally?.alive) this.scene.world.removeEnemy(r.ally);
     r.g.destroy(); r.label.destroy(); r.escort?.img.destroy();
     this.run = null;
   }
@@ -180,6 +184,36 @@ export class StoryController {
       r.spawned.push(u);
     });
     if (wave.length) s.ui.banner(`Đợt ${i + 1}/${r.def.waves!.length} kéo tới!`, '#ffb060');
+  }
+
+  /** The story ally of a 'destroy' objective comes out next to the device (EncounterDef.ally). */
+  private spawnAlly(r: Running): void {
+    const s = this.scene, a = r.def.ally!;
+    const ax = r.x + a.dx * TILE_PX, ay = r.y + a.dy * TILE_PX;
+    // a world unit (so it is drawn like any Pokémon) that never takes part as a foe: not hostile, no wild AI, no capture
+    const u = s.world.spawnWild(a.species, a.level, ax, ay, { hostile: false, tag: 'story-ally', noCapture: true, hpMult: 50 });
+    u.name = a.name;
+    u.moveSpeed = 0;
+    r.ally = u;
+    r.allyT = Math.min(3, a.every ?? 6);
+    s.ui.banner(`${a.name} đứng về phía bạn!`, '#a0ffb0');
+  }
+
+  private stepAlly(r: Running, dt: number): void {
+    const s = this.scene, a = r.def.ally!, u = r.ally!;
+    const ax = r.x + a.dx * TILE_PX, ay = r.y + a.dy * TILE_PX;
+    // never angry, never moving, never casting at the player's side (hits never land: World.applyDamage)
+    u.x = ax; u.y = ay; u.vx = 0; u.vy = 0; u.hostile = false; u.target = null; u.castSlot = -1; u.dash = null;
+    for (const al of s.world.allies) if (al.target === u) al.target = null;
+    const rad = (a.radius ?? 6) * TILE_PX;
+    r.g.lineStyle(3, 0x80ff90, 0.5).strokeCircle(ax, ay, rad);
+    if ((r.allyT -= dt) > 0) return;
+    r.allyT = a.every ?? 6;
+    const foes = [...r.spawned, ...(r.device ? [r.device] : [])].filter((e) => e.alive && !e.fainted && Math.hypot(e.x - ax, e.y - ay) <= rad);
+    if (!foes.length) return;
+    s.renderer_.vfx.named('quake', ax, ay, rad);
+    s.ui.banner(`${a.name} dùng ${a.move}!`, '#d0b070');
+    for (const e of foes) s.world.applyDamage(e, allyStrike(a, e, e === r.device), null);
   }
 
   private stepEncounter(dt: number): void {
@@ -219,7 +253,9 @@ export class StoryController {
           u.moveSpeed = 0; // bolted to the ground
           r.device = u;
           s.ui.banner(`${def.device.name}: hãy cho Pokémon tấn công nó!`, '#ffd060');
+          if (def.ally) this.spawnAlly(r);
         }
+        if (r.ally) this.stepAlly(r, dt);
         if (r.device && !r.device.alive) { r.device = null; return; }
         if (r.device) {
           // bolted to its spot and never calms down (knock-back / the wild AI's leash would make it peaceful)

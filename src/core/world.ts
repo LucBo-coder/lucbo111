@@ -2538,6 +2538,8 @@ export class World {
 
   applyDamage(dst: Unit, amount: number, src: Unit | null, crit = false, eff = 1, dot = false): void {
     if (!dst.alive || dst.fainted || dst.captured) return;
+    // a story ally (a guardian fighting on the player's side, StoryController) is never a foe: no hit lands on it
+    if (dst.tag === 'story-ally') return;
     let dmg = amount;
     // one Pokemon per trainer: a boss no longer spreads its hits over a whole party on the field
     if (src?.kind === 'boss' && dst.kind === 'pokemon' && dst.team === 'ally' && this.adventureCombat) dmg *= FIELD.bossDamageScale;
