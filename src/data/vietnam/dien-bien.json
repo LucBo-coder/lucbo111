@@ -1,0 +1,776 @@
+{
+ "id": "dien-bien",
+ "name": "Điện Biên",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": {
+  "x": 64,
+  "y": 104
+ },
+ "areas": [
+  {
+   "id": "db-phadin",
+   "name": "Đèo Pha Đin",
+   "rect": [
+    0,
+    0,
+    45,
+    45
+   ],
+   "habitat": "rocky",
+   "level": [
+    91,
+    94
+   ]
+  },
+  {
+   "id": "db-pakhoang",
+   "name": "Hồ Pá Khoang",
+   "rect": [
+    46,
+    0,
+    100,
+    32
+   ],
+   "habitat": "lake",
+   "level": [
+    90,
+    93
+   ]
+  },
+  {
+   "id": "db-city",
+   "name": "Thành phố Điện Biên Phủ",
+   "rect": [
+    40,
+    33,
+    100,
+    68
+   ],
+   "habitat": "village",
+   "level": [
+    90,
+    90
+   ]
+  },
+  {
+   "id": "db-muongphang",
+   "name": "Rừng Mường Phăng",
+   "rect": [
+    0,
+    46,
+    39,
+    111
+   ],
+   "habitat": "forest",
+   "level": [
+    88,
+    91
+   ]
+  },
+  {
+   "id": "db-muongthanh",
+   "name": "Cánh đồng Mường Thanh",
+   "rect": [
+    40,
+    69,
+    100,
+    111
+   ],
+   "habitat": "farm",
+   "level": [
+    88,
+    91
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 8
+   }
+  },
+  {
+   "id": "db-apachai",
+   "name": "Ngã ba biên giới A Pa Chải",
+   "rect": [
+    101,
+    0,
+    127,
+    111
+   ],
+   "habitat": "rocky",
+   "level": [
+    89,
+    92
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     107
+    ],
+    [
+     64,
+     60
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     48
+    ],
+    [
+     40,
+     30
+    ],
+    [
+     24,
+     18
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     68,
+     48
+    ],
+    [
+     68,
+     26
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     74,
+     54
+    ],
+    [
+     110,
+     54
+    ],
+    [
+     112,
+     14
+    ],
+    [
+     112,
+     5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     54
+    ],
+    [
+     24,
+     62
+    ],
+    [
+     16,
+     92
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     80
+    ],
+    [
+     84,
+     96
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  58,
+  48,
+  74,
+  60
+ ],
+ "lake": {
+  "cx": 74,
+  "cy": 14,
+  "rx": 18,
+  "ry": 8
+ },
+ "buildings": [
+  {
+   "id": "db-center",
+   "name": "Trung tâm Pokémon",
+   "x": 42,
+   "y": 40,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "db-mart",
+   "name": "Cửa hàng Điện Biên",
+   "x": 78,
+   "y": 38,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "db-museum",
+   "name": "Bảo tàng Chiến thắng Điện Biên Phủ",
+   "x": 86,
+   "y": 40,
+   "w": 7,
+   "h": 4,
+   "roof": "teal",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "db-house-1",
+   "name": "Nhà chị Lò Thị Ngọc",
+   "x": 46,
+   "y": 62,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "blue"
+  },
+  {
+   "id": "db-house-2",
+   "name": "Quán xôi nếp nương",
+   "x": 90,
+   "y": 60,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "red"
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "well",
+   "x": 54,
+   "y": 66
+  },
+  {
+   "kind": "log",
+   "x": 24,
+   "y": 80
+  },
+  {
+   "kind": "haystack",
+   "x": 24,
+   "y": 96
+  },
+  {
+   "kind": "target",
+   "x": 116,
+   "y": 30
+  },
+  {
+   "kind": "bucket",
+   "x": 54,
+   "y": 26
+  }
+ ],
+ "signs": [
+  {
+   "x": 62,
+   "y": 58,
+   "text": [
+    "THÀNH PHỐ ĐIỆN BIÊN PHỦ",
+    "Lừng lẫy năm châu, chấn động địa cầu. Phía tây bắc: đèo Pha Đin · Phía bắc: hồ Pá Khoang · Phía tây: rừng Mường Phăng · Phía nam: cánh đồng Mường Thanh · Phía đông: A Pa Chải."
+   ]
+  },
+  {
+   "x": 62,
+   "y": 26,
+   "text": [
+    "HỒ PÁ KHOANG",
+    "Hồ nước giữa rừng thông, cách thành phố không xa, mặt nước xanh thẳm."
+   ]
+  },
+  {
+   "x": 28,
+   "y": 14,
+   "text": [
+    "ĐÈO PHA ĐIN",
+    "Một trong tứ đại đỉnh đèo. Tên đèo nghĩa là nơi trời gặp đất."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "db-guide",
+   "name": "Chị Ngọc Mường Thanh",
+   "sprite": "girl",
+   "x": 70,
+   "y": 58,
+   "lines": [
+    "Chào mừng tới Điện Biên! Ăn nắm xôi nếp nương đã em.",
+    "Mấy hôm nay trên đèo Pha Đin đá thép rơi chắn đường, xe không qua được.",
+    "Ông già người Thái trên đèo biết chuyện, em lên hỏi."
+   ]
+  },
+  {
+   "id": "db-elder",
+   "name": "Ông già người Thái",
+   "sprite": "elder",
+   "x": 34,
+   "y": 30,
+   "lines": [
+    "Pha Đin là nơi trời gặp đất. Ông bà kể có Hộ Thần giáp thép giữ đèo.",
+    "Người ta phá núi lấy đá, Hộ Thần thức giấc, chắn hết lối đi."
+   ]
+  },
+  {
+   "id": "db-lake",
+   "name": "Cô lái thuyền Pá Khoang",
+   "sprite": "girl",
+   "x": 52,
+   "y": 24,
+   "lines": [
+    "Hồ Pá Khoang lặng như gương, rừng thông soi bóng.",
+    "Đêm qua nghe tiếng thép va ầm ầm trên đèo tây bắc."
+   ]
+  },
+  {
+   "id": "db-forest",
+   "name": "Cụ giữ rừng Mường Phăng",
+   "sprite": "elder",
+   "x": 14,
+   "y": 56,
+   "lines": [
+    "Rừng Mường Phăng xanh tốt, có hồ nhỏ trong rừng.",
+    "Người ta săn trộm trong rừng, cụ lo lắm."
+   ]
+  },
+  {
+   "id": "db-farm",
+   "name": "Chú trồng lúa Mường Thanh",
+   "sprite": "villager",
+   "x": 60,
+   "y": 88,
+   "lines": [
+    "Cánh đồng Mường Thanh rộng nhất Tây Bắc, gạo dẻo thơm.",
+    "Có đứa đốt rơm bừa bãi, khói mù cả đồng."
+   ]
+  },
+  {
+   "id": "db-border",
+   "name": "Chú bộ đội biên phòng",
+   "sprite": "villager",
+   "x": 116,
+   "y": 40,
+   "lines": [
+    "A Pa Chải là nơi một tiếng gà gáy ba nước cùng nghe.",
+    "Đường lên cột mốc dốc lắm, đi cẩn thận nha."
+   ]
+  },
+  {
+   "id": "db-museum",
+   "name": "Cô hướng dẫn bảo tàng",
+   "sprite": "elder",
+   "x": 84,
+   "y": 46,
+   "lines": [
+    "Bảo tàng giữ lại ký ức năm mươi sáu ngày đêm.",
+    "Em ghé xem để biết ông cha mình đã vất vả thế nào."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "db-gate-t",
+   "name": "Người gác đèo Pha Đin",
+   "sprite": "hiker",
+   "x": 30,
+   "y": 22,
+   "team": [
+    [
+     "steelix",
+     93
+    ],
+    [
+     "excadrill",
+     93
+    ],
+    [
+     "garchomp",
+     93
+    ]
+   ],
+   "challenge": [
+    "Hộ Thần đang giận. Ai muốn lên đèo phải qua tôi!"
+   ],
+   "win": [
+    "Bạn đủ sức rồi. Hộ Thần ở đỉnh đèo tây bắc."
+   ],
+   "lose": [
+    "Bị đá đè rồi kìa."
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "metal-coat": 1
+    },
+    "exp": 4900
+   }
+  },
+  {
+   "id": "db-lake-t",
+   "name": "Người thả diều Pá Khoang",
+   "sprite": "youngster",
+   "x": 94,
+   "y": 24,
+   "team": [
+    [
+     "staraptor",
+     91
+    ],
+    [
+     "honchkrow",
+     91
+    ],
+    [
+     "togekiss",
+     91
+    ]
+   ],
+   "challenge": [
+    "Diều tôi bay cao nhất hồ! Thử không?"
+   ],
+   "win": [
+    "Diều đứt dây rồi... bạn thắng."
+   ],
+   "lose": [
+    "Gió lộng quá ha!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "sharp-beak": 1
+    },
+    "exp": 4800
+   }
+  },
+  {
+   "id": "db-forest-t",
+   "name": "Kẻ săn trộm Mường Phăng",
+   "sprite": "knight",
+   "x": 8,
+   "y": 100,
+   "team": [
+    [
+     "obstagoon",
+     90
+    ],
+    [
+     "ursaluna",
+     90
+    ],
+    [
+     "machamp",
+     90
+    ]
+   ],
+   "challenge": [
+    "Rừng này lắm thú, tao săn đấy! Tránh ra!"
+   ],
+   "win": [
+    "Thôi được, tao bỏ bẫy."
+   ],
+   "lose": [
+    "Cút!"
+   ],
+   "rewards": {
+    "items": {
+     "sitrus-berry": 3,
+     "protein": 1
+    },
+    "exp": 4700
+   }
+  },
+  {
+   "id": "db-farm-t",
+   "name": "Kẻ đốt rơm Mường Thanh",
+   "sprite": "youngster",
+   "x": 84,
+   "y": 104,
+   "team": [
+    [
+     "arcanine",
+     90
+    ],
+    [
+     "ninetales",
+     90
+    ],
+    [
+     "flareon",
+     90
+    ]
+   ],
+   "challenge": [
+    "Đốt rơm cho nhanh! Mắc gì cản tao?"
+   ],
+   "win": [
+    "Thôi... tao dập lửa."
+   ],
+   "lose": [
+    "Cháy rồi kìa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "charcoal": 1
+    },
+    "exp": 4700
+   }
+  },
+  {
+   "id": "db-border-t",
+   "name": "Người tuần tra biên giới",
+   "sprite": "knight",
+   "x": 118,
+   "y": 90,
+   "team": [
+    [
+     "lucario",
+     91
+    ],
+    [
+     "gallade",
+     91
+    ],
+    [
+     "metagross",
+     91
+    ]
+   ],
+   "challenge": [
+    "Tuần tra phải khỏe! Đấu tập một trận không?"
+   ],
+   "win": [
+    "Bạn khỏe thật."
+   ],
+   "lose": [
+    "Tập thêm đi em!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "hard-stone": 1
+    },
+    "exp": 4800
+   }
+  }
+ ],
+ "rescue": {
+  "id": "db-buffalo-rescue",
+  "x": 8,
+  "y": 40,
+  "species": "bouffalant",
+  "level": 91,
+  "guards": [
+   [
+    "mightyena",
+    90
+   ],
+   [
+    "houndoom",
+    89
+   ],
+   [
+    "houndoom",
+    89
+   ]
+  ],
+  "quest": "vn-db-rescue",
+  "reporter": "Ông già người Thái"
+ },
+ "chests": [
+  {
+   "id": "chest-db-phadin",
+   "x": 6,
+   "y": 6,
+   "items": {
+    "ultraball": 2,
+    "metal-coat": 1
+   }
+  },
+  {
+   "id": "chest-db-pakhoang",
+   "x": 96,
+   "y": 6,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-db-apachai",
+   "x": 122,
+   "y": 104,
+   "items": {
+    "superpotion": 3,
+    "hard-stone": 1
+   }
+  },
+  {
+   "id": "chest-db-muongphang",
+   "x": 6,
+   "y": 106,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-db-muongthanh",
+   "x": 96,
+   "y": 106,
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-db-nook",
+   "x": 116,
+   "y": 70,
+   "items": {
+    "exp-candy-m": 2,
+    "ultraball": 1
+   },
+   "requiresFlag": "field:dien-bien:db-boulder"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-dien-bien-center",
+   "name": "Trung tâm Pokémon Điện Biên Phủ",
+   "x": 45,
+   "y": 47
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "aggron",
+  "name": "Aggron — Hộ Thần Đèo Pha Đin",
+  "x": 16,
+  "y": 10,
+  "level": 94,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:db-gate-t"
+  ],
+  "hint": "Đá thép rơi ầm ầm, mặt đèo rung chuyển... Người gác đèo chưa cho ai lên.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "metal-coat": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 18500,
+   "flag": "badge:dien-bien",
+   "message": "Nhận Huy hiệu Pha Đin (Điện Biên)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-db-lh",
+   "name": "Quốc lộ 12 — về Lai Châu",
+   "x": 64,
+   "y": 107,
+   "to": "lai-chau",
+   "toX": 112,
+   "toY": 8
+  }
+ ],
+ "docks": [],
+ "nodes": [
+  {
+   "id": "db-meadow-1",
+   "table": "meadow-forage",
+   "x": 20,
+   "y": 30
+  },
+  {
+   "id": "db-lake-1",
+   "table": "falls-fish",
+   "x": 52,
+   "y": 16
+  },
+  {
+   "id": "db-forest-1",
+   "table": "forest-forage",
+   "x": 20,
+   "y": 84
+  },
+  {
+   "id": "db-meadow-2",
+   "table": "meadow-forage",
+   "x": 72,
+   "y": 100
+  },
+  {
+   "id": "db-meadow-3",
+   "table": "meadow-forage",
+   "x": 112,
+   "y": 80
+  }
+ ],
+ "field": [
+  {
+   "id": "db-boulder",
+   "ability": "smash",
+   "x": 120,
+   "y": 70,
+   "nook": {
+    "cx": 116.5,
+    "cy": 70.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}

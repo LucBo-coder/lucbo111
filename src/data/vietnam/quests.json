@@ -17854,5 +17854,545 @@
     "Hồ trong veo rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-db-1",
+  "kind": "main",
+  "title": "Đá thép chắn đèo",
+  "giver": "db-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:lai-chau"
+  ],
+  "description": "Tới Điện Biên: ghé Trung tâm Pokémon rồi lên đèo Pha Đin hỏi ông già người Thái.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-dien-bien-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Điện Biên Phủ",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "db-phadin",
+    "count": 1,
+    "text": "Lên đèo Pha Đin (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-elder",
+    "count": 1,
+    "text": "Hỏi Ông già người Thái",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 2300,
+   "reputation": 10,
+   "flags": [
+    "landmark:pha-din"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng tới Điện Biên! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên đèo Pha Đin hỏi ông già người Thái, đá thép chắn đường mấy hôm rồi."
+   ],
+   "progress": [
+    "Đèo Pha Đin ở phía tây bắc."
+   ],
+   "complete": [
+    "Ông nói Hộ Thần giáp thép giận vì người ta phá núi... Cô lái thuyền Pá Khoang và cụ giữ rừng có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-2",
+  "kind": "main",
+  "title": "Tiếng thép trên đèo",
+  "giver": "db-guide",
+  "requires": [
+   "vn-db-1"
+  ],
+  "description": "Ra hồ Pá Khoang hỏi cô lái thuyền, rồi vào rừng Mường Phăng hỏi cụ giữ rừng.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "db-pakhoang",
+    "count": 1,
+    "text": "Ra hồ Pá Khoang (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-lake",
+    "count": 1,
+    "text": "Hỏi Cô lái thuyền Pá Khoang",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-forest",
+    "count": 1,
+    "text": "Hỏi Cụ giữ rừng Mường Phăng",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 2350,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Cô lái thuyền nghe tiếng thép trên đèo. Em ra hỏi, rồi vào rừng hỏi thêm."
+   ],
+   "progress": [
+    "Hồ ở phía bắc, rừng ở phía tây."
+   ],
+   "complete": [
+    "Muốn lên đỉnh đèo gặp Hộ Thần, phải qua người gác đèo."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-3",
+  "kind": "main",
+  "title": "Hộ Thần Đèo Pha Đin",
+  "giver": "db-guide",
+  "requires": [
+   "vn-db-2"
+  ],
+  "description": "Thắng Người gác đèo Pha Đin để lên đỉnh, rồi làm Aggron nguôi giận.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "db-gate-t",
+    "count": 1,
+    "text": "Thắng Người gác đèo Pha Đin",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "aggron",
+    "count": 1,
+    "text": "Đánh bại Aggron — Hộ Thần Đèo Pha Đin",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2600,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Người gác đèo canh lối lên đỉnh. Em đủ sức thì lên."
+   ],
+   "progress": [
+    "Đỉnh đèo ở góc tây bắc."
+   ],
+   "complete": [
+    "Hộ Thần ngủ yên, đèo thông rồi! Huy hiệu Pha Đin là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-rescue",
+  "kind": "side",
+  "title": "Trâu lạc đèo",
+  "giver": "db-elder",
+  "requires": [
+   "vn-db-1"
+  ],
+  "description": "Một con Bouffalant bị bầy chó sói vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "db-buffalo-rescue",
+    "count": 1,
+    "text": "Giải cứu Bouffalant ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-elder",
+    "count": 1,
+    "text": "Báo cho Ông già người Thái",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 1900,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con trâu bị sói vây ở góc tây núi. Em giúp ông!"
+   ],
+   "progress": [
+    "Góc tây đèo Pha Đin."
+   ],
+   "complete": [
+    "Trâu về bản rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-kite",
+  "kind": "side",
+  "title": "Diều Pá Khoang",
+  "giver": "db-lake",
+  "requires": [
+   "vn-db-1"
+  ],
+  "description": "Người thả diều Pá Khoang thách ai dám đấu.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "db-lake-t",
+    "count": 1,
+    "text": "Thắng Người thả diều Pá Khoang",
+    "marker": {
+     "x": 94,
+     "y": 24,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái thuyền Pá Khoang",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sharp-beak": 1
+   },
+   "worldExp": 1750,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh thả diều ham đấu lắm. Em thử một trận nha."
+   ],
+   "progress": [
+    "Anh ấy ở bờ đông hồ."
+   ],
+   "complete": [
+    "Ảnh phục em rồi. Mai cô chở em dạo hồ."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-poacher",
+  "kind": "side",
+  "title": "Rừng Mường Phăng",
+  "giver": "db-forest",
+  "requires": [
+   "vn-db-2"
+  ],
+  "description": "Kẻ săn trộm đặt bẫy trong rừng Mường Phăng.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "db-muongphang",
+    "count": 1,
+    "text": "Vào rừng Mường Phăng (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "db-forest-t",
+    "count": 1,
+    "text": "Thắng Kẻ săn trộm Mường Phăng",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-forest",
+    "count": 1,
+    "text": "Báo cho Cụ giữ rừng Mường Phăng",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "protein": 1
+   },
+   "worldExp": 1700,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa đặt bẫy ở góc tây nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Rừng yên rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-straw",
+  "kind": "side",
+  "title": "Khói đồng Mường Thanh",
+  "giver": "db-farm",
+  "requires": [
+   "vn-db-1"
+  ],
+  "description": "Kẻ đốt rơm làm khói mù cả cánh đồng.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "db-muongthanh",
+    "count": 1,
+    "text": "Đến cánh đồng Mường Thanh (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 89,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "db-farm-t",
+    "count": 1,
+    "text": "Thắng Kẻ đốt rơm Mường Thanh",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-farm",
+    "count": 1,
+    "text": "Báo cho Chú trồng lúa Mường Thanh",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "charcoal": 1
+   },
+   "worldExp": 1700,
+   "reputation": 12,
+   "flags": [
+    "landmark:muong-thanh"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng đốt rơm làm khói mù cả đồng. Em nói chuyện với nó giùm chú."
+   ],
+   "progress": [
+    "Nó ở góc đông nam đồng."
+   ],
+   "complete": [
+    "Nó dập lửa rồi. Bao gạo Mường Thanh này chú tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-border",
+  "kind": "side",
+  "title": "Ba nước một tiếng gà",
+  "giver": "db-border",
+  "requires": [
+   "vn-db-1"
+  ],
+  "description": "Người tuần tra biên giới mời bạn đấu tập.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "db-apachai",
+    "count": 1,
+    "text": "Đến A Pa Chải (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "db-border-t",
+    "count": 1,
+    "text": "Thắng Người tuần tra biên giới",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-border",
+    "count": 1,
+    "text": "Báo cho Chú bộ đội biên phòng",
+    "marker": {
+     "x": 116,
+     "y": 40,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "hard-stone": 1
+   },
+   "worldExp": 1750,
+   "reputation": 12,
+   "flags": [
+    "landmark:a-pa-chai"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Anh tuần tra muốn đấu tập với em. Em thử nha."
+   ],
+   "progress": [
+    "Anh ấy ở phía nam dãy núi."
+   ],
+   "complete": [
+    "Đấu hay lắm! Lần sau lên cột mốc chú dẫn đường."
+   ]
+  }
+ },
+ {
+  "id": "vn-db-eco",
+  "kind": "side",
+  "title": "Hồ Pá Khoang trong xanh",
+  "giver": "db-lake",
+  "requires": [
+   "vn-db-3"
+  ],
+  "description": "Rác du lịch dạt bờ hồ Pá Khoang.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:dien-bien",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven hồ",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "dien-bien"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "db-lake",
+    "count": 1,
+    "text": "Báo cho Cô lái thuyền Pá Khoang",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "dien-bien"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1750,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Đèo thông rồi, giờ dọn hồ. Em phụ cô vớt rác nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước quanh hồ."
+   ],
+   "complete": [
+    "Hồ trong veo rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

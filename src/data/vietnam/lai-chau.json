@@ -712,10 +712,11 @@
    },
    "money": 18000,
    "flag": "badge:lai-chau",
-   "message": "Nhận Huy hiệu Biển Mây (Lai Châu)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Biển Mây (Lai Châu)! Đường tới Điện Biên đã mở: Quốc lộ 12."
   }
  },
  "portals": [
+  {"id": "portal-lh-next", "name": "Quốc lộ 12 — đường xuống Điện Biên", "x": 112, "y": 5, "to": "dien-bien", "toX": 64, "toY": 104, "requires": ["badge:lai-chau"], "hint": "Đường tới Điện Biên mở cho người có Huy hiệu Biển Mây — hạ boss Lai Châu trước."},
   {
    "id": "portal-lh-lc",
    "name": "Quốc lộ 4D — về Lào Cai",

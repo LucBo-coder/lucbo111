@@ -2220,5 +2220,59 @@
    "ultimateStyle": "spokes",
    "power": 0.33
   }
+ },
+ {
+  "id": "aggron",
+  "name": "Aggron — Hộ Thần Đèo Pha Đin",
+  "types": [
+   "steel",
+   "rock"
+  ],
+  "baseStats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 180,
+   "spa": 60,
+   "spd": 60,
+   "spe": 50
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "iron_head",
+   "heavy_slam"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "aron",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Hộ Thần giáp thép đứng dậy — cả đèo Pha Đin rung chuyển!",
+  "exp": 150,
+  "sprite": "aggron",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "flash_cannon",
+   "volley": "rock_tomb",
+   "nova": "earthquake",
+   "field": "stone_edge",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "head_smash",
+   "ultimateName": "Hộ Thần Đèo Pha Đin Húc Núi",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
  }
 ]

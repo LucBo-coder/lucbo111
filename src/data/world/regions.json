@@ -4272,5 +4272,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-db-phadin",
+  "name": "Đèo Pha Đin",
+  "areas": [
+   "db-phadin"
+  ],
+  "biome": "rocky",
+  "level": [
+   91,
+   94
+  ],
+  "elite": [
+   95,
+   97
+  ],
+  "boss": null,
+  "recommended": 93,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-db-pakhoang",
+  "name": "Hồ Pá Khoang",
+  "areas": [
+   "db-pakhoang"
+  ],
+  "biome": "lake",
+  "level": [
+   90,
+   93
+  ],
+  "elite": [
+   94,
+   96
+  ],
+  "boss": null,
+  "recommended": 92,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-db-muongphang",
+  "name": "Rừng Mường Phăng",
+  "areas": [
+   "db-muongphang"
+  ],
+  "biome": "forest",
+  "level": [
+   88,
+   91
+  ],
+  "elite": [
+   92,
+   94
+  ],
+  "boss": null,
+  "recommended": 90,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-db-muongthanh",
+  "name": "Cánh đồng Mường Thanh",
+  "areas": [
+   "db-muongthanh"
+  ],
+  "biome": "farm",
+  "level": [
+   88,
+   91
+  ],
+  "elite": [
+   92,
+   94
+  ],
+  "boss": null,
+  "recommended": 90,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-db-apachai",
+  "name": "Ngã ba biên giới A Pa Chải",
+  "areas": [
+   "db-apachai"
+  ],
+  "biome": "rocky",
+  "level": [
+   89,
+   92
+  ],
+  "elite": [
+   93,
+   95
+  ],
+  "boss": null,
+  "recommended": 91,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

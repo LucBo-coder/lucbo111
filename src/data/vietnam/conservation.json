@@ -476,6 +476,52 @@
     }
    ]
   },
+  "dien-bien": {
+   "id": "dien-bien",
+   "name": "Điện Biên",
+   "area": "db-pakhoang",
+   "action": "trash",
+   "unlock": "vn-db-3",
+   "boss": "aggron",
+   "label": "Vớt rác trên hồ Pá Khoang",
+   "done": "Bạn vớt chai nhựa và túi nilon dạt bờ hồ. Hồ Pá Khoang trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "dien-bien-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "dien-bien-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "dien-bien-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "dien-bien-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "dien-bien-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "dien-bien-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "dong-nai": {
    "id": "dong-nai",
    "name": "Đồng Nai",
