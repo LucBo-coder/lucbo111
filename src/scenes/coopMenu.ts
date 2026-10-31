@@ -8,6 +8,7 @@ import { saveStore } from '../systems/save';
 import { gameModes } from '../systems/gameMode';
 import { askText, button, panel, text } from './ui';
 import type { DuelMon } from '../net/protocol';
+import { FIELD } from '../core/fieldRules';
 
 /** Shared entry point in the pause/settings menu of every PvE campaign. */
 export function openCoopMenu(ui: Phaser.Scene, game: AdventureScene | GameScene): void {
@@ -51,7 +52,7 @@ export function openCoopMenu(ui: Phaser.Scene, game: AdventureScene | GameScene)
       } else {
         const code = await askText(ui, 'Mã phòng co-op (tham gia sẽ rời lượt chơi hiện tại)', '', 6);
         if (!code) return;
-        const party: DuelMon[] = adventure ? game.state.party().slice(0, 3).map(monFromOwned)
+        const party: DuelMon[] = adventure ? game.state.party().slice(0, FIELD.coopGuestCarry).map(monFromOwned)
           : game.world.allies.slice(0, 3).map(u => ({ species: u.megaFrom ?? u.defId, level: Math.min(100, u.level), held: u.heldId, shiny: u.shiny }));
         if (!party.length) { note.setText('Cần ít nhất 1 Pokémon trong đội để tham gia.'); return; }
         if (adventure) game.persist();

@@ -286,8 +286,14 @@ export class ShrineController {
       }
       case 'field': {
         const chk = canUse(st.ability, s.partyMembers(), { has: this.has });
-        if (chk.ok) { if (chk.by) s.ui.eventAlert(`${chk.by.name} dùng năng lực khám phá`, '#a0e0ff'); r.r.pass(); }
-        else this.abort(chk.reason);
+        if (chk.ok) {
+          // the member able to do it comes out of its ball first (one Pokémon per trainer)
+          void s.bringOut(chk.by, 'năng lực khám phá').then((ok) => {
+            if (!ok) return this.abort('Chưa đổi được Pokémon phù hợp — thử lại sau');
+            if (chk.by) s.ui.eventAlert(`${chk.by.name} dùng năng lực khám phá`, '#a0e0ff');
+            r.r.pass();
+          });
+        } else this.abort(chk.reason);
         break;
       }
       case 'quiz': void this.quiz(st); break;

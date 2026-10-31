@@ -29,7 +29,7 @@ export interface FieldDef {
 
 export const fieldFlag = (region: string, id: string) => `field:${region}:${id}`;
 
-export interface PartyMember { species: string; name: string; level: number; types: readonly PokeType[] }
+export interface PartyMember { species: string; name: string; level: number; types: readonly PokeType[]; uid?: string }
 
 /** First party member able to use the ability (null = nobody; the flag condition is checked separately). */
 export function fieldUser(ab: FieldAbility, party: readonly PartyMember[]): PartyMember | null {

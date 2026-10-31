@@ -1,0 +1,22 @@
+{
+  "_note": "Luật ra sân của Phiêu lưu / Việt Nam Odyssey (mỗi HLV 1 Pokémon). Giây trừ khi ghi khác. Sửa ở đây để cân bằng.",
+  "maxActivePerTrainer": 1,
+  "calmCooldown": 0.8,
+  "combatCooldown": 6,
+  "combatRecallTime": 0.25,
+  "combatSummonTime": 0.35,
+  "calmRecallTime": 0.45,
+  "calmSummonTime": 0.75,
+  "combatRadius": 600,
+  "reserveExpShare": 0.5,
+  "faintAutoSendAfter": 4,
+  "bossDotResist": 0.2,
+  "bossControlScale": 0.35,
+  "bossControlImmunity": 6,
+  "partyMax": 6,
+  "coopGuestCarry": 6,
+  "bossHpScale": 0.5,
+  "bossDamageScale": 0.65,
+  "bossAddsPerTrainer": 1,
+  "bossAddLevelDrop": 8
+}

@@ -38,15 +38,16 @@ test('trainer reserves, rematch and Cà Mau reputation', async ({ page }) => {
     s.addPokemon('mudkip', 3, 'starter'); a.applyParty(); })()`);
   await page.waitForTimeout(500);
 
-  // ── first battle: 3 Pokémon, only 2 on the field ──
+  // ── first battle: 3 Pokémon, one on the field (one Pokémon per trainer, NPCs too) ──
   await challenge(page, 'cm-fisherman');
   const b0 = await ev<{ field: number; bench: number }>(page, `(() => { const b = window.__adv.battle; return { field: b.units.filter(u => u.alive).length, bench: b.bench.length }; })()`);
-  expect(b0).toEqual({ field: 2, bench: 1 });
+  expect(b0).toEqual({ field: 1, bench: 2 });
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/trainer-two-fielded.png` });
   await killField(page);
   // the reserve comes out after a short pause
   await page.waitForFunction(() => (window as Win).__adv.battle?.units.some((u: Win) => u.alive), undefined, { timeout: 5000 });
-  expect(await ev(page, `window.__adv.battle.bench.length`)).toBe(0);
+  expect(await ev(page, `window.__adv.battle.bench.length`)).toBe(1);
+  expect(await ev(page, `window.__adv.battle.units.filter((u) => u.alive).length`)).toBe(1);
   const items = await ev<Record<string, number>>(page, `window.__adv.regionDef.trainers.find(t => t.id === 'cm-fisherman').rewards.items ?? {}`);
   for (let i = 0; i < 20 && !(await ev<boolean>(page, `window.__adv.state.hasFlag('beat:cm-fisherman')`)); i++) { await killField(page); await page.waitForTimeout(300); }
   expect(await ev(page, `window.__adv.state.hasFlag('beat:cm-fisherman')`)).toBe(true);

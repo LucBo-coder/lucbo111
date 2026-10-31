@@ -4,6 +4,7 @@ import type { AdventureScene } from '../scenes/AdventureScene';
 import { audio } from '../systems/audio';
 import { itemIconKey } from '../render/spriteRegistry';
 import { createGroundSprite } from '../render/groundSprite';
+import { FIELD, switchCooldown, switchTimes } from '../core/fieldRules';
 
 // Summon / Recall / Switch of party Pokémon (separate from the capture system — capture never goes through here).
 //
@@ -17,9 +18,12 @@ import { createGroundSprite } from '../render/groundSprite';
 // hit / act / be recalled twice mid-animation. A short cooldown follows each action. All tweens and sprites belong
 // to the scene, so a scene shutdown mid-animation leaves nothing behind (and `busy` is reset on shutdown).
 
-export const SWITCH_COOLDOWN = 0.8; // s after any summon / recall
-export const SUMMON_TIME = 0.75; // s: throw + open + materialise
-export const RECALL_TIME = 0.45; // s
+// Timings and cooldowns come from data/field-rules.json (core/fieldRules.ts): quick outside combat, a 0.6 s switch
+// and a 6 s cooldown in combat. Switching never heals, never clears statuses and never resets skill cooldowns
+// (World keeps them running while the Pokémon waits in its ball).
+export const SWITCH_COOLDOWN = FIELD.calmCooldown;
+export const SUMMON_TIME = FIELD.calmSummonTime;
+export const RECALL_TIME = FIELD.calmRecallTime;
 
 export type SummonResult = 'ok' | 'busy' | 'cooldown' | 'invalid' | 'fainted' | 'last';
 
@@ -42,11 +46,20 @@ export class PokemonSummonManager {
   isBusy(): boolean { return this.busy; }
   cooldownLeft(): number { return Math.max(0, this.cooldownUntil - this.now()); }
 
+  /** Timings of the action starting now (shorter in combat). */
+  private times = switchTimes(false);
+
   private check(uid: string): SummonResult {
     if (!this.adv.party.includes(uid)) return 'invalid';
     if (this.busy || this.locked.has(uid)) return 'busy';
-    if (this.now() < this.cooldownUntil) return 'cooldown';
+    // the Pokémon on the field fainted (or none is out): the next one may come out at once
+    if (this.now() < this.cooldownUntil && !this.fieldDown()) return 'cooldown';
     return 'ok';
+  }
+
+  /** The active one fainted (still on the field or just put back in its ball): a recall by choice does not count. */
+  private fieldDown(): boolean {
+    return this.scene.awaitingReplacement || this.scene.world.allies.some((a) => a.ownerUid && a.fainted);
   }
 
   /**
@@ -82,6 +95,7 @@ export class PokemonSummonManager {
     // Adventure Mode permits an empty field: recalling the last Pokémon is valid.
     void opts.allowEmpty;
     const p = this.scene.state.owned(uid)!;
+    this.times = switchTimes(this.scene.inCombat());
     // store exactly what it has now — no healing in the ball
     p.hpFrac = u.fainted ? 0 : Math.max(0.01, u.hp / u.maxHp);
     const st = u.statuses.find((x) => KEEP.includes(x.kind));
@@ -109,6 +123,7 @@ export class PokemonSummonManager {
     const p = this.scene.state.owned(uid);
     if (!p) return 'invalid';
     if ((p.hpFrac ?? 1) <= 0) return 'fainted';
+    if (!force) this.times = switchTimes(this.scene.inCombat());
     this.busy = true; this.locked.add(uid);
     const t = this.scene.world.trainer;
     const tx = at?.x ?? t.x + t.facing * 70, ty = at?.y ?? t.y + 18;
@@ -156,9 +171,12 @@ export class PokemonSummonManager {
   private done(uid: string): void {
     this.locked.delete(uid);
     this.busy = false;
-    this.cooldownUntil = this.now() + SWITCH_COOLDOWN;
+    this.cooldownUntil = this.now() + switchCooldown(this.scene.inCombat());
     this.scene.persist();
   }
+
+  /** Cooldown length that will follow the next action (HUD). */
+  nextCooldown(): number { return switchCooldown(this.scene.inCombat()); }
 
   // ───────────────────────────── animations (scene-owned objects only) ─────────────────────────────
 
@@ -169,7 +187,7 @@ export class PokemonSummonManager {
     audio.play('whip');
     const dist = Math.hypot(tx - sx, ty - sy);
     s.tweens.addCounter({
-      from: 0, to: 1, duration: 320,
+      from: 0, to: 1, duration: Math.min(320, this.times.summon * 1000 * 0.55),
       onUpdate: (tw) => { const k = tw.getValue() ?? 0; b.setPosition(sx + (tx - sx) * k, sy + (ty - sy) * k - Math.sin(k * Math.PI) * (50 + dist * 0.2)).setAngle(k * 540); },
       onComplete: () => {
         // open: pop + white flash + light column
@@ -184,7 +202,7 @@ export class PokemonSummonManager {
         const full = sil.scaleX;
         sil.setScale(0.1);
         if (sil) s.tweens.add({ targets: sil, scale: full, duration: 260, ease: 'Back.out', onComplete: () => s.tweens.add({ targets: sil, alpha: 0, duration: 120, onComplete: () => sil.destroy() }) });
-        s.time.delayedCall(Math.max(0, SUMMON_TIME * 1000 - 320), onDone);
+        s.time.delayedCall(Math.max(0, this.times.summon * 1000 - Math.min(320, this.times.summon * 1000 * 0.55)), onDone);
       },
     });
   }
@@ -200,7 +218,7 @@ export class PokemonSummonManager {
     const fullX = sil.scaleX, fullY = sil.scaleY, startX = sil.x, startY = sil.y;
     audio.play('zap');
     s.tweens.addCounter({
-      from: 0, to: 1, duration: RECALL_TIME * 1000,
+      from: 0, to: 1, duration: this.times.recall * 1000,
       onUpdate: (tw) => {
         const k = tw.getValue() ?? 0;
         beam.clear().lineStyle(6 * (1 - k * 0.6), 0xff3030, 0.85).lineBetween(t.x, t.y - 20, x, y).lineStyle(2, 0xffffff, 0.9).lineBetween(t.x, t.y - 20, x, y);

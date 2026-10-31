@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { beatBossTo } from './bossHelpers';
+import { FIELD } from '../src/core/fieldRules';
 import { POKEMON, validateData } from '../src/core/data';
 import { canMega, evolutionLine, evolutionsOf, ITEM_DEFS, itemEvolution, levelEvolution, megaFormsOf } from '../src/core/evolution';
 import { rollOffers, emptyMods } from '../src/core/upgrades';
@@ -229,8 +230,8 @@ describe('World boss: Mega Venusaur', () => {
     const spawnedNow = () => w.enemies.filter((e) => e.tag === 'boss-add').length;
     w.step(STEP);
     expect(b.boss!.phase).toBe(2);
-    // 4 Oddish guards summoned (a strong party may KO one within the same step)
-    expect(spawnedNow()).toBe(4);
+    // Oddish guards: one per trainer in the fight (one Pokémon per trainer — the boss defines up to 4)
+    expect(spawnedNow()).toBe(FIELD.bossAddsPerTrainer);
     expect(w.enemies.length).toBeGreaterThan(before);
     beatBossTo(w, b, 0.2); // waits out the phase-2 cinematic (invulnerable) first
     expect(b.boss!.phase).toBe(3);

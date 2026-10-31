@@ -48,8 +48,10 @@ test('valley: thicket, cracked rock and boulder open their hidden nooks', async 
   await page.waitForTimeout(300);
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/thicket.png` });
   await page.keyboard.press('e');
-  await page.waitForTimeout(400);
+  // one Pokémon per trainer: Treecko first comes out of its ball (recall + summon), then cuts
+  await page.waitForFunction(() => (window as unknown as { __adv: { state: { hasFlag(f: string): boolean } } }).__adv.state.hasFlag('field:starter-valley:sv-thicket'), null, { timeout: 5000 });
   expect(await flag(page, 'field:starter-valley:sv-thicket')).toBe(true);
+  expect(await ev(page, `window.__adv.world.allies.map((a) => a.defId)`)).toEqual(['treecko']);
   // walk in and open the chest
   await page.keyboard.down('d'); await page.waitForTimeout(1300); await page.keyboard.up('d');
   expect(await ev<number>(page, `window.__adv.world.trainer.x / 48`)).toBeGreaterThan(102);
@@ -67,17 +69,17 @@ test('valley: thicket, cracked rock and boulder open their hidden nooks', async 
   await page.waitForTimeout(500);
   expect(await near(page)).toBe('field:sv-cracked');
   await page.keyboard.press('e');
-  await page.waitForTimeout(400);
+  await page.waitForFunction(() => (window as unknown as { __adv: { state: { hasFlag(f: string): boolean } } }).__adv.state.hasFlag('field:starter-valley:sv-cracked'), null, { timeout: 5000 });
   expect(await flag(page, 'field:starter-valley:sv-cracked')).toBe(true);
 
   // ── the boulder: push it east from the west side, one tile per press, into its hole ──
   await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('makuhita', 20, 'gift'); a.applyParty(); })()`);
   await ev(page, `window.__adv.world.teleport(20.7*${T}, 66.6*${T})`);
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1200); // the switch cooldown after Machop came out
   expect(await near(page)).toBe('field:sv-boulder');
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/boulder-before.png` });
   await page.keyboard.press('e');
-  await page.waitForTimeout(500);
+  await page.waitForFunction(() => (window as unknown as { __adv: { state: { hasFlag(f: string): boolean } } }).__adv.state.hasFlag('field:starter-valley:sv-boulder'), null, { timeout: 5000 });
   expect(await flag(page, 'field:starter-valley:sv-boulder')).toBe(true);
   expect(await ev(page, `window.__adv.state.adv.boulders?.['sv-boulder'] ?? null`)).toBeNull();
   await page.keyboard.down('d'); await page.waitForTimeout(1300); await page.keyboard.up('d');

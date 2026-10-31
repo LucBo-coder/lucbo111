@@ -1,11 +1,13 @@
 // Trainer battle tactics for Adventure / Vietnam Odyssey (pure, testable).
-// A trainer fields at most FIELD_MAX Pokémon at once and keeps the rest in reserve; a hurt Pokémon facing a bad type
+// A trainer fields one Pokémon at a time (FIELD_MAX, the same rule as the player) and keeps the rest in reserve; a hurt Pokémon facing a bad type
 // match-up is called back for a reserve that resists the player's Pokémon; a limited number of Potions; rematches
 // after a cooldown with levels scaled to the player's party (money only — the first-win items are never paid twice).
 import { effectiveness } from './typeChart';
 import type { PokeType } from './types';
 
-export const FIELD_MAX = 2;
+import { FIELD } from './fieldRules';
+
+export const FIELD_MAX = FIELD.maxActivePerTrainer;
 /** a fielded Pokémon is swapped out below this HP fraction when it is at a type disadvantage */
 export const SWITCH_HP = 0.5;
 /** one Potion per battle by default (more for stronger trainers), used under this HP fraction */

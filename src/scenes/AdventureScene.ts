@@ -20,6 +20,7 @@ import { SpawnManager } from '../adventure/SpawnManager';
 import { BALL_ORDER, BallContext, ballMultiplier, BALLS, BallId, fleeChance, rollCapture, statusBonus, captureChance } from '../core/capture';
 import { BOSSES, POKEMON } from '../core/data';
 import type { PokeType } from '../core/types';
+import { expShares, FIELD } from '../core/fieldRules';
 import { FIELD_MAX, HEAL_FRAC, pickLead, pickSwitch, potionsFor, rematchPrize, rematchReady, rematchTeam, REMATCH_COOLDOWN, shouldHeal } from '../core/trainerAI';
 import { regionRep, repGreeting, repTier, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { boatOffers, FLOATING_MARKET, marketDay, marketOpen, recordPurchase, type MarketBoat } from '../core/floatingMarket';
@@ -469,7 +470,7 @@ export class AdventureScene extends Phaser.Scene {
       if (a.ownerUid && a.ownerUid === keep) continue;
       // remember the HP of a partner leaving the field (recall, deposit, faint)
       const p = a.ownerUid ? this.state.owned(a.ownerUid) : undefined;
-      if (p) p.hpFrac = a.fainted ? 0.5 : Math.max(0.05, a.hp / a.maxHp);
+      if (p) p.hpFrac = a.fainted ? 0 : Math.max(0.05, a.hp / a.maxHp);
       this.world.removePokemon(a);
     }
     if (active && !this.world.allies.some((a) => a.ownerUid === active.uid)) {
@@ -516,7 +517,7 @@ export class AdventureScene extends Phaser.Scene {
     if (this.mapKind === 'valley') adv.pos = { x: Math.round(this.world.trainer.x), y: Math.round(this.world.trainer.y) };
     for (const a of this.world.allies) {
       const p = a.ownerUid ? this.state.owned(a.ownerUid) : undefined;
-      if (p) p.hpFrac = a.fainted ? 0.5 : Math.max(0.05, a.hp / a.maxHp);
+      if (p) p.hpFrac = a.fainted ? 0 : Math.max(0.05, a.hp / a.maxHp);
     }
     // boss checkpoint: HP + phase snapshot (+ capture throws left) of a world boss / roamer fight in progress
     for (const u of this.world.enemies) {
@@ -921,9 +922,9 @@ export class AdventureScene extends Phaser.Scene {
     kb.on('keydown-R', guard(() => this.cycleBall()));
     kb.on('keydown-H', guard(() => this.quickHeal()));
     kb.on('keydown-G', guard(() => this.tryMega()));
-    // Active skills: Q = the focused Pokémon uses its best ready skill now · T = focus the next Pokémon on the field
+    // Q = the Pokémon on the field uses its best ready skill now · T = quick switch wheel (one Pokémon per trainer)
     kb.on('keydown-Q', guard(() => this.manualSkill('best')));
-    kb.on('keydown-T', guard(() => this.cycleFocus()));
+    kb.on('keydown-T', guard(() => this.ui?.toggleSwitchWheel()));
     kb.on('keydown-TAB', () => this.ui?.toggleMenu('party'));
     kb.on('keydown-M', () => this.ui?.toggleMenu('map'));
     kb.on('keydown-P', () => { if (this.state.adv.campaign === 'vietnam') this.ui?.toggleMenu('passport'); });
@@ -935,7 +936,10 @@ export class AdventureScene extends Phaser.Scene {
     // 1–5: ally commands · Shift + 1–6: summon / recall that party slot
     const DIGIT = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX'];
     const shifted = () => !!this.keys.SHIFT?.isDown;
-    COMMANDS.forEach((c) => kb.on(`keydown-${c.key === '`' ? 'BACKTICK' : DIGIT[Number(c.key) - 1]}`, guard(() => { if (shifted() && c.key !== '`') this.summons?.toggleSlot(Number(c.key) - 1); else this.command(c.id); })));
+    COMMANDS.forEach((c) => kb.on(`keydown-${c.key === '`' ? 'BACKTICK' : DIGIT[Number(c.key) - 1]}`, guard(() => {
+      if (c.key !== '`' && this.ui?.switchWheelOpen && this.ui.pickSwitchIndex(Number(c.key) - 1)) return; // wheel open: numbers pick
+      if (shifted() && c.key !== '`') this.summons?.toggleSlot(Number(c.key) - 1); else this.command(c.id);
+    })));
     kb.on('keydown-SIX', guard(() => { if (shifted()) this.summons?.toggleSlot(5); }));
     kb.on('keydown-ZERO', guard(() => this.command('auto')));
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
@@ -1082,6 +1086,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateInteractables();
     if (this.mapKind === 'valley') this.updatePuzzle();
     this.updateBattle();
+    this.updateDowned(dt);
     this.updateCapture(dt);
     if (!this.modal) this.updateMega(dt);
     if (this.mapKind === 'valley') { this.updateWorldBoss(); this.shrines?.update(dt); this.secrets?.update(dt); }
@@ -1113,7 +1118,8 @@ export class AdventureScene extends Phaser.Scene {
       if (e.t === 'faint') {
         const ally = this.world.allies.find((a) => a.id === e.id);
         const owned = ally?.ownerUid ? this.state.owned(ally.ownerUid) : null;
-        if (owned) addFriendship(owned, 'faint');
+        if (owned) { addFriendship(owned, 'faint'); owned.hpFrac = 0; }
+        if (ally?.ownerUid) this.downed = { uid: ally.ownerUid, t: 0, picked: false };
         continue;
       }
       if (e.t === 'manual') {
@@ -1140,7 +1146,11 @@ export class AdventureScene extends Phaser.Scene {
       this.state.earn((e.level ?? 5) * (trainerOwned ? 6 : 3));
       if (e.boss && this.bossSites().some((s) => s.id === e.defId)) this.onWorldBossDefeated(e.defId, e.level ?? 30);
       else if (e.boss && e.tag === 'roamer') this.legendsMgr?.onRoamerDefeated(e.defId, e.level ?? 40);
-      for (const up of this.state.gainExp(alive, exp)) {
+      // the Pokémon that fought gets all the EXP, the healthy ones waiting in their balls a share (field-rules.json)
+      const ups: ReturnType<AdventureState['gainExp']> = [];
+      const fainted = (uid: string) => (this.state.owned(uid)?.hpFrac ?? 1) <= 0 || !!this.world.allies.find((a) => a.ownerUid === uid)?.fainted;
+      for (const [uid, v] of expShares(this.state.adv.party.map((uid) => ({ uid, fainted: fainted(uid) })), alive, exp)) ups.push(...this.state.gainExp([uid], v));
+      for (const up of ups) {
         this.evoQueue.add(up.uid);
         const ally = this.world.allies.find((a) => a.ownerUid === up.uid);
         if (ally) {
@@ -2171,6 +2181,7 @@ export class AdventureScene extends Phaser.Scene {
   private async useCrack(it: Interactable): Promise<void> {
     const chk = canUse('smash', this.partyMembers(), { has: (x) => this.state.hasFlag(x) });
     if (!chk.ok) return void (await this.say('Vách đá nứt', ['Một mảng vách có vết nứt lớn, phía sau vọng ra tiếng gió.', chk.reason]));
+    if (!(await this.bringOut(chk.by, FIELD_ABILITIES.smash.name))) return;
     if (!this.dungeon?.openSecret()) return;
     for (const v of (it.obj.data as unknown as { views: Phaser.GameObjects.GameObject[] }).views) v.destroy();
     this.interactables.delete('dungeon-crack');
@@ -2343,14 +2354,39 @@ export class AdventureScene extends Phaser.Scene {
 
   // ───────────────────────────── exploration abilities & boats ─────────────────────────────
 
-  /** Party members as the field rules see them (anyone in the party counts, on the field or in the ball). */
+  /**
+   * Party members as the field rules see them (anyone in the party counts, on the field or in the ball). The one on
+   * the field comes first, so it is picked whenever it can do the job (no needless switch).
+   */
   partyMembers(): PartyMember[] {
     const out: PartyMember[] = [];
-    for (const uid of this.state.adv.party) {
+    const act = this.state.adv.activeUid;
+    for (const uid of [...this.state.adv.party].sort((a, b) => Number(b === act) - Number(a === act))) {
       const p = this.state.owned(uid), d = p && POKEMON.get(p.species);
-      if (p && d) out.push({ species: p.species, name: d.name, level: p.level, types: d.types });
+      if (p && d && (p.hpFrac ?? 1) > 0) out.push({ species: p.species, name: d.name, level: p.level, types: d.types, uid });
     }
     return out;
+  }
+
+  /**
+   * One Pokémon per trainer: a field ability used by a party member waiting in its ball first recalls the active
+   * one and sends that member out (normal switch rules and cooldown), then does the job. False = could not switch.
+   */
+  async bringOut(by: PartyMember | null, ability: string): Promise<boolean> {
+    if (!by?.uid || !this.summons || this.world.allies.some((a) => a.ownerUid === by.uid && !a.fainted)) return true;
+    const r = this.summons.summon(by.uid);
+    if (r !== 'ok') {
+      this.ui.banner(r === 'cooldown' ? `${by.name} cần ra sân để dùng ${ability} — chờ ${this.summons.cooldownLeft().toFixed(1)} s` : `${by.name} chưa thể ra sân để dùng ${ability}`, '#ffb0a0');
+      return false;
+    }
+    this.ui.banner(`${by.name} ra sân để dùng ${ability}`, '#a0d8ff');
+    for (let i = 0; i < 40; i++) {
+      await new Promise<void>((res) => this.time.delayedCall(100, () => res()));
+      if (!this.sys.isActive()) return false;
+      if (this.world.allies.some((a) => a.ownerUid === by.uid)) return true;
+      if (!this.summons.isBusy()) break;
+    }
+    return this.world.allies.some((a) => a.ownerUid === by.uid);
   }
 
   /** Field obstacles and docks are drawn by the scene, not the chunks: they can vanish (cut / smash) or move (strength). */
@@ -2517,6 +2553,8 @@ export class AdventureScene extends Phaser.Scene {
     const def = FIELD_ABILITIES[f.ability];
     const chk = canUse(f.ability, this.partyMembers(), { has: (x) => this.state.hasFlag(x) });
     if (!chk.ok) return void (await this.say(def.obstacle, [chk.reason]));
+    if (!(await this.bringOut(chk.by, def.name))) return;
+    if (!this.interactables.has('field:' + f.id)) return; // map changed / obstacle gone while switching
     const who = chk.by?.name ?? 'Bạn', t = this.world.trainer, flag = fieldFlag(this.regionDef.id, f.id);
     if (f.ability === 'strength') {
       const [bx, by] = this.state.adv.boulders?.[f.id] ?? [f.x, f.y];
@@ -2797,6 +2835,8 @@ export class AdventureScene extends Phaser.Scene {
     audio.play('whip');
     const dist = Math.hypot(tx - t.x, ty - t.y);
     const dur = 250 + dist * 0.7;
+    // the Pokémon on the field stops attacking what the trainer is trying to catch (flight + a short grace)
+    if (target) this.world.spare(target, dur / 1000 + 1.2);
     const sx = t.x, sy = t.y - 20;
     this.tweens.addCounter({
       from: 0, to: 1, duration: dur,
@@ -2917,6 +2957,54 @@ export class AdventureScene extends Phaser.Scene {
     if (fx?.phase === 'shaking' && fx.target && !fx.target.alive) { fx.ball.destroy(); this.captureFx = null; }
   }
 
+  // ───────────────────────────── fainted active Pokémon ─────────────────────────────
+
+  /** The active Pokémon fainted: how long ago, and whether the player already picked the next one. */
+  private downed: { uid: string; t: number; picked: boolean } | null = null;
+  /** The Pokémon on the field fainted and no replacement is out yet: the next one may come out without a cooldown. */
+  get awaitingReplacement(): boolean { return !!this.downed; }
+
+  /** Healthy party members waiting in their balls (switch candidates). */
+  healthyReserves(): string[] {
+    return this.state.adv.party.filter((uid) => uid !== this.state.adv.activeUid && (this.state.owned(uid)?.hpFrac ?? 1) > 0
+      && !this.world.allies.some((a) => a.ownerUid === uid));
+  }
+
+  /**
+   * A fainted Pokémon stays down: after its faint animation it goes back into its ball (HP 0, healed only at a
+   * Pokémon Center, a waypoint or after a blackout). The switch wheel opens at once; in combat, if the player has not
+   * picked after a few seconds, the best match-up comes out by itself. No healthy Pokémon left = blackout.
+   */
+  private updateDowned(dt: number): void {
+    const d = this.downed;
+    if (!d || this.blackoutT >= 0) return;
+    d.t += dt;
+    const u = this.world.allies.find((a) => a.ownerUid === d.uid);
+    if (u?.fainted && d.t >= 0.9) {
+      this.world.removePokemon(u);
+      const adv = this.state.adv;
+      if (adv.activeUid === d.uid) adv.activeUid = null;
+      if (!adv.recalled.includes(d.uid)) adv.recalled.push(d.uid);
+      if (this.megaUnit === u) this.endMega(false);
+      const left = this.healthyReserves();
+      if (!left.length) {
+        this.ui?.banner('Không còn Pokémon nào chiến đấu được!', '#ff6060');
+        this.downed = null;
+        this.startBlackout();
+        return;
+      }
+      this.ui?.openSwitchWheel('faint');
+    }
+    if (this.world.allies.some((a) => a.ownerUid && !a.fainted)) { this.downed = null; this.ui?.closeSwitchWheel(); return; }
+    if (d.t >= 0.9 + FIELD.faintAutoSendAfter && this.inCombat() && !this.summons?.isBusy()) {
+      const foe = this.world.enemies.filter((e) => e.alive && e.hostile && !e.captured).sort((a, b) => Math.hypot(a.x - this.world.trainer.x, a.y - this.world.trainer.y) - Math.hypot(b.x - this.world.trainer.x, b.y - this.world.trainer.y))[0];
+      const left = this.healthyReserves().map((uid) => ({ uid, types: POKEMON.get(this.state.owned(uid)!.species)?.types ?? [], hp: this.state.owned(uid)!.hpFrac ?? 1, maxHp: 1 }));
+      const k = pickLead(left, foe?.types ?? null);
+      const pick = left[Math.max(0, k)];
+      if (pick && this.summons?.summon(pick.uid) === 'ok') { this.ui?.closeSwitchWheel(); this.ui?.banner(`${POKEMON.get(this.state.owned(pick.uid)!.species)?.name} tự ra sân!`, '#a0d8ff'); d.picked = true; }
+    }
+  }
+
   // ───────────────────────────── blackout ─────────────────────────────
 
   private startBlackout(): void {
@@ -2938,6 +3026,9 @@ export class AdventureScene extends Phaser.Scene {
     const wp = region.waypoints.find((w) => w.id === this.state.adv.lastWaypoint) ?? region.waypoints[0];
     this.world.respawnTrainer((wp.x + 0.5) * TILE_PX, (wp.y + 1.6) * TILE_PX);
     this.summons?.healRecalled();
+    // back on its feet with the first Pokémon of the party out (everyone was healed)
+    this.downed = null;
+    if (!this.state.adv.activeUid && this.state.adv.party.length) { this.state.adv.activeUid = this.state.adv.party[0]; this.applyParty(); }
     this.world.setCommand('auto');
     this.cameras.main.fadeIn(600);
     this.ui.banner(`Đã hồi phục tại ${wp.name}`, '#80ff90');

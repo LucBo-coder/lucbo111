@@ -42,7 +42,8 @@ async function openNook(page: Page, region: string, field: string, fx: number, f
   await ev(page, `(() => { const a = window.__adv; a.state.addPokemon('${species}', 20, 'gift'); a.applyParty(); })()`);
   await standAt(page, fx + 1.4, fy + 0.6, 'field:' + field);
   await page.keyboard.press('e');
-  await page.waitForTimeout(400);
+  // one Pokémon per trainer: the member able to do it comes out of its ball first
+  await page.waitForFunction((f) => (window as Win).__adv.state.hasFlag(f), `field:${region}:${field}`, { timeout: 5000 });
   await closeDialogues(page);
   expect(await ev(page, `window.__adv.state.hasFlag('field:${region}:${field}')`)).toBe(true);
   await page.waitForFunction((c) => (window as Win).__adv.interactables.has(c), chest, { timeout: 5000 });

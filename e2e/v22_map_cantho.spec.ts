@@ -96,7 +96,8 @@ test('Cần Thơ orchard: canals, fruit bushes, bamboo rod, canal fishing, hidde
   await standAt(page, 65.4, 105.6, 'field:ct-thicket');
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/cantho-thicket.png` });
   await page.keyboard.press('e');
-  await page.waitForTimeout(400);
+  // one Pokémon per trainer: Treecko first comes out of its ball
+  await page.waitForFunction(() => (window as Win).__adv.state.hasFlag('field:can-tho:ct-thicket'), undefined, { timeout: 5000 });
   await closeDialogues(page);
   expect(await ev(page, `window.__adv.state.hasFlag('field:can-tho:ct-thicket')`)).toBe(true);
   await page.keyboard.down('a'); await page.waitForTimeout(1300); await page.keyboard.up('a');

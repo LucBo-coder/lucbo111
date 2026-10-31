@@ -6,7 +6,8 @@ import { isAquatic } from '../src/core/encounters';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { T } from '../src/core/map/tiles';
 import { ValleyMap } from '../src/core/map/valley';
-import { STEP, World } from '../src/core/world';
+import { World } from '../src/core/world';
+import { fightBoss, sendParty } from './bossHelpers';
 import { defaultSave, newAdventure } from '../src/systems/saveSchema';
 import vnQuests from '../src/data/vietnam/quests.json';
 import conservation from '../src/data/vietnam/conservation.json';
@@ -96,12 +97,12 @@ describe('Vietnam Odyssey: Bến Tre', () => {
     expect(BOSSES.get('exeggutor')!.capture).toBe(false);
     for (const party of [[['venusaur', 40], ['quagsire', 38], ['sawsbuck', 38]], [['breloom', 38], ['gyarados', 38], ['pelipper', 38]]] as const) {
       const w = new World({ mode: 'adventure', seed: 5, width: 5000, height: 5000 });
-      for (const [sp, l] of party) w.addPokemon(sp, { level: l });
+      sendParty(w, party, BOSSES.get('exeggutor')!.types); // one on the field (best match-up), the rest wait in their balls
       const t = w.trainer; t.maxHp = t.hp = 1e9;
       const b = w.spawnBoss('exeggutor', bt.worldBoss!.level, false, { x: t.x + 240, y: t.y });
       expect(b.boss!.pm.cfg.weakened).toBeUndefined();
       let time = 0;
-      for (let i = 0; i < 60 * 300 && b.alive; i++) { w.trainer.hp = w.trainer.maxHp; w.step(STEP); time += STEP; }
+      time = fightBoss(w, b, 300); // two Potions, like a player at that point of the journey
       console.info(`[balance] exeggutor Lv${bt.worldBoss!.level} vs ${party[0][0]}: ${b.alive ? 'ALIVE ' + Math.round(b.hp / b.maxHp * 100) + '%' : Math.round(time) + 's'}`);
       expect(b.alive, party[0][0]).toBe(false);
       expect(time, party[0][0]).toBeGreaterThan(25);

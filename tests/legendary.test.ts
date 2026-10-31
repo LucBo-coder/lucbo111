@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { beatBossTo } from './bossHelpers';
+import { beatBossTo, sendParty } from './bossHelpers';
 import { BOSSES, validateData } from '../src/core/data';
 import { STEP, World } from '../src/core/world';
 import valleyJson from '../src/data/world/starter-valley.json';
@@ -80,7 +80,8 @@ describe('legendary world bosses', () => {
   it('a strong Lv40 party can beat Articuno, but not instantly', () => {
     // trainer level 9 ≈ world level 3 (after Mega Venusaur); the trainer dodges (kept alive), the party fights for real
     const w = new World({ mode: 'adventure', seed: 3, width: 6000, height: 6000, trainerLevel: 9 });
-    for (const sp of ['charizard', 'blastoise', 'venusaur', 'pikachu', 'gyarados', 'alakazam']) w.addPokemon(sp, { level: 40 });
+    // one on the field (best match-up), five waiting in their balls
+    sendParty(w, ['charizard', 'blastoise', 'venusaur', 'pikachu', 'gyarados', 'alakazam'].map((sp) => [sp, 40] as const), BOSSES.get('articuno')!.types);
     const t = w.trainer;
     const b = w.spawnBoss('articuno', 40, false, { x: t.x + 260, y: t.y });
     t.maxHp = 1e9; t.hp = 1e9;

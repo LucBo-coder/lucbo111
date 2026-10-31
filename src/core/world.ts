@@ -20,6 +20,8 @@ import { updateWild, WildState } from './wildAI';
 import { evolutionsOf, ITEM_DEFS, ItemDef } from './evolution';
 import { BossPhaseManager, phaseConfigFor, PhaseSnapshot } from './bossPhases';
 import { RayState, rayAirborne, rayCancel, rayquazaThink } from './bosses/rayquaza';
+import { BallSnapshot, FIELD, restoredCooldown } from './fieldRules';
+import { pickLead } from './trainerAI';
 
 export const STEP = 1 / 60;
 export const WORLD_W = 3200;
@@ -97,6 +99,8 @@ export interface BossState {
   weakened?: boolean;
   /** Last named skill wind-up (HUD cast warning): shown until at + windup */
   cast?: { name: string; at: number; windup: number };
+  /** World time until which sleep / freeze / stun cannot be applied again (control has diminishing returns) */
+  ccImmuneUntil?: number;
 }
 
 export interface Unit {
@@ -172,6 +176,8 @@ export interface Unit {
   alpha: boolean;
   /** Flinch can't chain: seconds left of flinch immunity */
   flinchImmuneT: number;
+  /** The trainer is trying to catch it (ball in the air, capture window): allies leave it alone for this long (s) */
+  spareT: number;
   /** Environment slow (ice / snow / blizzard), 0..1, set by the Adventure environment controller */
   envSlow: number;
   /** Swims: confined to water tiles (wild fish spawned in water) */
@@ -443,7 +449,8 @@ export class World {
     this.height = opts.height ?? WORLD_H;
     this.recruitPool = opts.recruitPool ?? DEFAULT_RECRUIT_POOL;
     this.terrain = opts.terrain ?? null;
-    this.reviveTime = opts.pvp ? Infinity : opts.reviveTime ?? (this.mode === 'adventure' ? 25 : REVIVE_TIME);
+    // Adventure / Vietnam Odyssey: a fainted Pokémon stays down (the player sends another one, or heals at a Center)
+    this.reviveTime = opts.pvp ? Infinity : opts.reviveTime ?? (this.mode === 'adventure' ? Infinity : REVIVE_TIME);
     if (this.mode === 'adventure') this.level = opts.trainerLevel ?? 5;
     for (let i = 0; i < PROJECTILE_POOL; i++) {
       this.projectiles.push({
@@ -476,7 +483,7 @@ export class World {
       dash: null, statuses: [], shield: 0, shieldT: 0, alive: true, fainted: false, reviveT: 0, hitFlash: 0,
       contactCd: 0, iframes: 0, elite: false, exp: 0, slotIndex: 0, animCast: 0, lastSkill: '', damageDealt: 0, boss: null,
       ownerUid: null, wild: null, hostile: true, captured: false, noCapture: false, tag: null, lastX: 0, lastY: 0, sturdyCd: 0,
-      heldId: null, held: null, heldCd: 0, berryCd: 0, choiceLock: null, megaFrom: null, ind: null, flinchImmuneT: 0, envSlow: 0, aquatic: false, aiState: 'idle', aiStateT: 0, shiny: false, rarity: null, alpha: false,
+      heldId: null, held: null, heldCd: 0, berryCd: 0, choiceLock: null, megaFrom: null, ind: null, flinchImmuneT: 0, spareT: 0, envSlow: 0, aquatic: false, aiState: 'idle', aiStateT: 0, shiny: false, rarity: null, alpha: false,
       ...partial,
     };
     u.lastX = u.x; u.lastY = u.y;
@@ -507,10 +514,16 @@ export class World {
     t.hp = Math.max(1, Math.round(t.maxHp * frac));
   }
 
-  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; companion?: boolean; shiny?: boolean } = {}): Unit {
+  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; companion?: boolean; shiny?: boolean; bench?: boolean } = {}): Unit {
     const def = POKEMON.get(defId);
     if (!def) throw new Error('Unknown pokemon ' + defId);
     const side = opts.companion && this.companion ? this.companion : opts.rival && this.rival ? this.rival : this.home;
+    // one Pokémon per trainer outside its ball (Adventure, Vietnam Odyssey and their co-op): whoever is out goes back
+    // in completely before the newcomer appears — enforced here, whatever the caller (UI, load, reconnect) did
+    if (this.adventureCombat && !opts.bench) {
+      const cap = Math.max(1, FIELD.maxActivePerTrainer);
+      while (side.allies.length >= cap) this.removePokemon(side.allies[0]);
+    }
     const angle = side.allies.length * 1.1;
     const u = this.blankUnit({
       team: side === this.rival ? 'enemy' : 'ally', kind: 'pokemon', shiny: !!opts.shiny, defId, name: def.name, types: [...def.types], role: def.role,
@@ -522,11 +535,64 @@ export class World {
     });
     this.setHeld(u, opts.held ?? null);
     this.refreshAllyStats(u, opts.hpFrac ?? 1);
+    // back out of its ball: cooldowns kept running while it waited, energy is what it had (no free refill)
+    const snap = u.ownerUid ? this.ballStash.get(u.ownerUid) : undefined;
+    if (snap) {
+      for (const s of u.skills) s.cd = restoredCooldown(snap, s.def.id, this.time);
+      u.energy = Math.min(u.maxEnergy, snap.energy);
+      this.ballStash.delete(u.ownerUid!);
+    }
     // duel: the same AI tick phase for the same party slot on both sides (the default staggers by unit id)
     if (this.rival) u.aiTimer = (u.slotIndex % 7) * 0.03;
-    if (this.duel && side.allies.length >= this.duel.fieldMax) side.bench.push(u);
+    if ((this.duel && side.allies.length >= this.duel.fieldMax) || (opts.bench && this.adventureCombat)) side.bench.push(u);
     else side.allies.push(u);
     return u;
+  }
+
+  /**
+   * Co-op guest (Adventure rules): the Pokémon on the field goes back to the bench and `inc` comes out — one switch,
+   * the host's simulation decides (cooldown by combat, never two out). `inc` = null only recalls.
+   */
+  benchSwitch(side: Side, inc: Unit | null, inCombat: boolean): 'ok' | 'cooldown' | 'invalid' | 'fainted' {
+    if (!this.adventureCombat) return 'invalid';
+    // a fainted Pokémon can be replaced at once; otherwise the switch cooldown applies
+    const downed = side.allies.length > 0 && side.allies.every((a) => a.fainted);
+    if (side.switchCd > 0 && !downed) return 'cooldown';
+    if (inc && !side.bench.includes(inc)) return 'invalid';
+    if (inc?.fainted) return 'fainted';
+    for (const out of [...side.allies]) {
+      side.allies = side.allies.filter((a) => a !== out);
+      out.castSlot = -1; out.dash = null; out.target = null; out.queuedSlot = -1; out.queuedTarget = null; out.vx = out.vy = 0;
+      for (const e of this.enemies) { if (e.target === out) e.target = null; if (e.castTarget === out) e.castTarget = null; }
+      for (const z of this.zones) if (z.active && z.owner === out && z.fired && z.duration > 0) z.active = false;
+      side.bench.push(out);
+      this.emit({ t: 'vfx', name: 'poof', x: out.x, y: out.y });
+    }
+    if (inc) {
+      side.bench = side.bench.filter((b) => b !== inc);
+      const tr = side.trainer;
+      inc.x = inc.lastX = tr.x + 40; inc.y = inc.lastY = tr.y + 10; inc.aiTimer = 0; inc.slotIndex = 0;
+      side.allies.push(inc);
+      this.emit({ t: 'vfx', name: 'heal', x: inc.x, y: inc.y });
+    }
+    side.switchCd = inCombat ? FIELD.combatCooldown : FIELD.calmCooldown;
+    return 'ok';
+  }
+
+  /** Bench of a co-op guest: cooldowns keep running in the ball; a fainted Pokémon leaves the field after a moment. */
+  private stepBench(side: Side, dt: number): void {
+    if (side.switchCd > 0) side.switchCd -= dt;
+    for (const b of side.bench) for (const s of b.skills) if (s.cd > 0) s.cd -= dt;
+    const out = side.allies[0];
+    if (!out?.fainted) { side.autoSendT = FIELD.faintAutoSendAfter; return; }
+    // the guest did not pick in time: the next healthy one comes out (a faint never waits on a cooldown)
+    if ((side.autoSendT -= dt) > 0) return;
+    side.autoSendT = FIELD.faintAutoSendAfter;
+    // the healthy reserve with the best match-up against the boss (else the foe the fainted one was fighting)
+    const foe = (this.boss?.alive ? this.boss : null) ?? (out.target?.alive ? out.target : null);
+    const k = pickLead(side.bench.map((b) => ({ types: b.types, hp: b.fainted ? 0 : b.hp, maxHp: b.maxHp })), foe?.types ?? null);
+    const next = side.bench[k];
+    if (next) { side.switchCd = 0; this.benchSwitch(side, next, true); }
   }
 
   // ───────────────────────────── duel: bench, switching, Mega ─────────────────────────────
@@ -649,11 +715,42 @@ export class World {
     this.transformAlly(u, base);
   }
 
-  /** Removes a party member (adventure: party swap). */
+  /**
+   * Removes a party member from the field (recall, switch, deposit). It leaves completely: nothing targets it, its
+   * cooldowns and energy go "into the ball" (restored by the next addPokemon of the same uid), and what was tied to
+   * its body stops — a lingering ground effect it keeps up ends, Leech Seed no longer feeds it. Shots already flying
+   * and telegraphed blasts already placed resolve normally (they left its hands before the recall).
+   */
   removePokemon(u: Unit): void {
     const side = this.sideOf(u) ?? this.home;
     side.allies = side.allies.filter((a) => a !== u);
     side.allies.forEach((a, i) => (a.slotIndex = i));
+    if (u.ownerUid) {
+      const cds: Record<string, number> = {};
+      for (const s of u.skills) if (s.cd > 0) cds[s.def.id] = s.cd;
+      this.ballStash.set(u.ownerUid, { cds, energy: u.energy, at: this.time });
+    }
+    u.castSlot = -1; u.dash = null; u.target = null; u.queuedSlot = -1; u.queuedTarget = null; u.vx = u.vy = 0;
+    if (side.commandTarget === u) side.commandTarget = null;
+    for (const e of this.enemies) {
+      if (e.target === u) e.target = null;
+      if (e.castTarget === u) e.castTarget = null;
+      if (e.wild?.lastAttacker === u) e.wild.lastAttacker = side.trainer;
+      if (e.wild?.threat === u) e.wild.threat = null;
+      for (const s of e.statuses) if (s.source === u && s.kind === 'leech') s.source = null;
+    }
+    for (const z of this.zones) if (z.active && z.owner === u && z.fired && z.duration > 0) z.active = false;
+  }
+
+  /** Cooldowns / energy of party members waiting in their balls (by collection uid). */
+  private ballStash = new Map<string, BallSnapshot>();
+
+  /** Party members outside their balls per trainer (tests and debug: must never exceed the field rule). */
+  fieldViolations(): string[] {
+    if (!this.adventureCombat) return [];
+    const out: string[] = [];
+    for (const s of this.sides()) if (s.allies.length > FIELD.maxActivePerTrainer) out.push(`${s.trainer.name}: ${s.allies.length} Pokémon ngoài bóng`);
+    return out;
   }
 
   setAllyLevel(u: Unit, level: number): void {
@@ -829,7 +926,7 @@ export class World {
         // legendaries of the Adventure end WEAKENED (capture window) instead of dying
         pm: new BossPhaseManager(phaseConfigFor(def, { capture: this.mode === 'adventure' && def.ai === 'legendary' && def.capture !== false })) },
     });
-    u.maxHp = Math.floor(u.stats.hp * def.hpMult * (final ? 1.5 : 1));
+    u.maxHp = Math.floor(u.stats.hp * def.hpMult * (final ? 1.5 : 1) * (this.adventureCombat ? FIELD.bossHpScale : 1));
     u.hp = u.maxHp;
     for (let i = 0; i < def.segments * 4; i++) u.boss!.trail.push({ x: p.x, y: p.y });
     this.enemies.push(u);
@@ -913,13 +1010,14 @@ export class World {
       side.trainer.lastX = side.trainer.x; side.trainer.lastY = side.trainer.y;
       for (const a of side.allies) { a.lastX = a.x; a.lastY = a.y; }
     }
-    for (const e of this.enemies) { e.lastX = e.x; e.lastY = e.y; }
+    for (const e of this.enemies) { e.lastX = e.x; e.lastY = e.y; if (e.spareT > 0) e.spareT -= dt; }
 
     if (this.rival) this.stepDuelSides(dt);
     else {
       for (const side of this.sides()) {
         this.updateTrainer(side, dt);
         for (const a of side.allies) this.updateAlly(a, side, dt);
+        if (side.bench.length && this.adventureCombat) this.stepBench(side, dt);
       }
     }
     for (const e of this.enemies) if (e.alive) this.updateEnemy(e, dt);
@@ -1152,7 +1250,7 @@ export class World {
     const limit = Math.min(cands.length, 40);
     for (let i = 0; i < limit; i++) {
       const e = cands[i];
-      if (!e.hostile || e.captured || e.fainted) continue;
+      if (!e.hostile || e.captured || e.fainted || this.spared(e)) continue;
       const dSelf = Math.hypot(e.x - u.x, e.y - u.y);
       const dTr = Math.hypot(e.x - tr.x, e.y - tr.y);
       let score = -dSelf;
@@ -1192,7 +1290,26 @@ export class World {
   }
 
   private validFoe(e: Unit | null): e is Unit {
-    return !!e && e.alive && !e.captured && !e.fainted && e.hostile;
+    return !!e && e.alive && !e.captured && !e.fainted && e.hostile && !this.spared(e);
+  }
+
+  /**
+   * Adventure: a wild Pokémon the trainer is throwing a ball at, or a legendary in its capture window, is left
+   * alone by the allies (no knocking out what the player is trying to catch).
+   */
+  spared(e: Unit): boolean {
+    return this.adventureCombat && (e.spareT > 0 || !!e.boss?.weakened);
+  }
+
+  /** The trainer aims a ball at `e`: allies drop it as a target for `seconds` (casts already aimed at it stop). */
+  spare(e: Unit, seconds: number): void {
+    e.spareT = Math.max(e.spareT, seconds);
+    for (const a of this.allies) {
+      if (a.target === e) a.target = null;
+      if (a.castTarget === e) { a.castSlot = -1; a.castTarget = null; }
+      if (a.queuedTarget === e) { a.queuedSlot = -1; a.queuedTarget = null; }
+    }
+    for (const s of this.sides()) if (s.commandTarget === e) s.commandTarget = null;
   }
 
   /** Target for a player-triggered skill: the commanded target, the current one, else the nearest hostile opponent. */
@@ -1647,11 +1764,14 @@ export class World {
   /** Phase 2 of the generic bosses: adds + speed (unchanged behaviour since v0.2). */
   private bossPhase2Effects(b: Unit): void {
     const def = b.boss!.def;
-    for (let i = 0; i < def.phase2Summon.count; i++) {
-      const a = (i / def.phase2Summon.count) * Math.PI * 2;
+    // one Pokémon per trainer: the adds are fewer (per trainer in the fight) and weaker than when a party fought at once
+    const count = this.adventureCombat ? Math.min(def.phase2Summon.count, FIELD.bossAddsPerTrainer * this.sides().length) : def.phase2Summon.count;
+    const lv = Math.max(1, b.level - (this.adventureCombat ? FIELD.bossAddLevelDrop : 4));
+    for (let i = 0; i < count; i++) {
+      const a = (i / count) * Math.PI * 2;
       const sx = b.x + Math.cos(a) * 120, sy = b.y + Math.sin(a) * 120;
       if (this.mode === 'adventure' && POKEMON.has(def.phase2Summon.enemy)) {
-        this.spawnWild(def.phase2Summon.enemy, b.level - 4, sx, sy, { hostile: true, tag: 'boss-add', noCapture: true, elite: true,
+        this.spawnWild(def.phase2Summon.enemy, lv, sx, sy, { hostile: true, tag: 'boss-add', noCapture: true, elite: true,
           wild: { mode: 'chase', t: 0, homeX: sx, homeY: sy, homeR: 60, leash: 900, temperament: 'aggressive', aggroR: 600, nocturnal: false, wanderX: sx, wanderY: sy, lastAttacker: null, threat: null, lodT: 0, fled: false, calmT: 0 } });
       } else this.spawnEnemy(def.phase2Summon.enemy, b.level - 2, true, sx, sy);
     }
@@ -2418,6 +2538,8 @@ export class World {
   applyDamage(dst: Unit, amount: number, src: Unit | null, crit = false, eff = 1, dot = false): void {
     if (!dst.alive || dst.fainted || dst.captured) return;
     let dmg = amount;
+    // one Pokemon per trainer: a boss no longer spreads its hits over a whole party on the field
+    if (src?.kind === 'boss' && dst.kind === 'pokemon' && dst.team === 'ally' && this.adventureCombat) dmg *= FIELD.bossDamageScale;
     // Real-time sleep: a direct hit wakes the target once the short grace period has passed
     if (!dot && amount > 0) { const sl = this.getStatus(dst, 'sleep'); if (sl && sl.age >= SLEEP_WAKE_GRACE) this.cureStatus(dst, 'sleep', 'wake'); }
     if (dst.wild && src && src.team !== dst.team) {
@@ -2535,7 +2657,16 @@ export class World {
     const major = MAJOR_STATUS.includes(a.kind);
     if (major && u.statuses.some((s) => s.kind !== a.kind && MAJOR_STATUS.includes(s.kind))) return;
     let duration = Math.min(MAX_STATUS_DURATION, a.duration);
-    if (u.kind === 'boss') duration *= INCAPACITATING.includes(a.kind) ? 0.35 : a.kind === 'paralysis' || a.kind === 'slow' ? 0.5 : 1;
+    const control = INCAPACITATING.includes(a.kind) && a.kind !== 'flinch';
+    if (u.kind === 'boss' && u.boss) {
+      // control works on a boss, briefly, then it shrugs it off for a while (no stun-lock, no full immunity either)
+      if (control && this.time < (u.boss.ccImmuneUntil ?? 0)) {
+        if (hostile && this.impactBudget-- > 0) this.emit({ t: 'status', x: u.x, y: u.y - u.radius, kind: 'immune', team: u.team });
+        return;
+      }
+      duration *= INCAPACITATING.includes(a.kind) ? FIELD.bossControlScale : a.kind === 'paralysis' || a.kind === 'slow' ? 0.5 : 1;
+      if (control) u.boss.ccImmuneUntil = this.time + duration + FIELD.bossControlImmunity;
+    } else if (u.kind === 'boss') duration *= INCAPACITATING.includes(a.kind) ? FIELD.bossControlScale : a.kind === 'paralysis' || a.kind === 'slow' ? 0.5 : 1;
     const existing = this.getStatus(u, a.kind);
     if (existing) {
       existing.t = Math.max(existing.t, duration);
@@ -2596,7 +2727,7 @@ export class World {
             s.tick = 0.5;
             // DoT is % max HP; bosses and elites resist so DoT can't trivialise them.
             // Badly poisoned (Toxic) ramps up every second, capped at ×4.
-            const resist = u.kind === 'boss' ? 0.06 : u.elite ? 0.4 : 1;
+            const resist = u.kind === 'boss' ? FIELD.bossDotResist : u.elite ? 0.4 : 1;
             const ramp = s.kind === 'badPoison' ? Math.min(4, 1 + Math.floor(s.age)) : 1;
             const dmg = Math.max(1, Math.round(u.maxHp * s.magnitude * 0.5 * resist * ramp));
             this.applyDamage(u, dmg, s.source, false, 1, true);

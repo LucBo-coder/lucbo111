@@ -106,6 +106,10 @@ export type NetMsg =
   | { t: 'coopLootAck'; id: string }
   | { t: 'coopSkill'; epoch: string; unit: number; slot: number | 'best' }
   | { t: 'coopReserve'; epoch: string; unit: number; mask: number }
+  /** guest → host (Adventure rules): send out bench member `unit` (the one on the field goes back); host validates */
+  | { t: 'coopSwitch'; epoch: string; unit: number }
+  /** host → guest: why a requested switch did not happen (cd = seconds of cooldown left) */
+  | { t: 'switchRes'; r: 'cooldown' | 'invalid' | 'fainted'; cd: number }
   /** host → guest: why a requested active skill did not go off (duel and co-op) */
   | { t: 'skillRes'; r: ActiveSkillResult; unit: number; slot: number | 'best' }
   | { t: 'coopEnd'; reason: string }

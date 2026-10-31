@@ -14,7 +14,7 @@ import { buildPcForCollection, emptyPc, PcStorage } from '../core/pc';
 import { EventSave, newEventSave } from '../core/worldEvents';
 import type { PhaseSnapshot } from '../core/bossPhases';
 
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 export type QualitySetting = 'low' | 'medium' | 'high';
 export type Difficulty = 'normal' | 'hard' | 'expert';
 
@@ -312,6 +312,18 @@ const MIGRATIONS: Record<number, Migration> = {
     const old = Math.max(0, Math.floor(Number(d.currency) || 0));
     return { ...d, currency: old, survivorCoins: old, vnCoins: old, version: 8 };
   },
+  // v8 -> v9: one Pokemon per trainer, strictly. Every party member but the active one is in its ball, and a
+  // fainted active Pokemon (HP kept at 0 now: no free revive) hands the field to the first healthy member.
+  8: (d) => {
+    const adv = d.adventure as (Partial<AdventureSave> & Record<string, unknown>) | null | undefined;
+    if (!adv) return { ...d, version: 9 };
+    const collection = Array.isArray(d.collection) ? (d.collection as OwnedPokemon[]) : [];
+    const party = [...new Set((Array.isArray(adv.party) ? adv.party : []).filter((u): u is string => typeof u === 'string'))];
+    const healthy = (u: string) => (collection.find((p) => p.uid === u)?.hpFrac ?? 1) > 0;
+    let activeUid = typeof adv.activeUid === 'string' && party.includes(adv.activeUid) ? adv.activeUid : null;
+    if (activeUid && !healthy(activeUid)) activeUid = party.find(healthy) ?? null;
+    return { ...d, adventure: { ...adv, party, activeUid, recalled: party.filter((u) => u !== activeUid) }, version: 9 };
+  },
 };
 
 export function migrate(raw: unknown): SaveData {
@@ -334,7 +346,8 @@ export function migrate(raw: unknown): SaveData {
     // repair duplicates / references to Pokémon that do not exist any more
     const party = [...new Set((Array.isArray(adv.party) ? adv.party : []).filter((u): u is string => typeof u === 'string' && owned.has(u)))].slice(0, 6);
     const activeUid = typeof adv.activeUid === 'string' && party.includes(adv.activeUid) ? adv.activeUid : null;
-    const recalled = [...new Set((Array.isArray(adv.recalled) ? adv.recalled : []).filter((u): u is string => typeof u === 'string' && u !== activeUid && party.includes(u)))];
+    // single active rule: whoever is not the active Pokemon is in its ball (never two on the field after a load)
+    const recalled = party.filter((u) => u !== activeUid);
     const merged = { ...newAdventure(), ...adv, campaign: adv.campaign ?? 'classic', party, activeUid: activeUid as string | null, recalled };
     merged.pc = buildPcForCollection(collection, party, adv.pc as PcStorage | undefined, merged.pc.boxCount, merged.pc.boxSize);
     adventure = merged;

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { applyCoopDelta, CoopMirror, coopSession, obstacleSig, type CoopSnapshot, type CoopWire } from '../net/coop';
+import { applyCoopDelta, CoopMirror, coopSession, obstacleSig, type CoopSnapshot, type CoopWire, type GuestBenchMon } from '../net/coop';
 import { LatencySeries } from '../net/netStats';
 import { applyCoopLoot, lootSeen, markLootSeen, type CoopLoot } from '../net/coopRewards';
 import { net } from '../net/session';
@@ -83,7 +83,11 @@ export class CoopGuestScene extends Phaser.Scene {
     this.scene.launch('CoopGuestUI', { guest: this });
     this.keys = this.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT') as Record<string, Phaser.Input.Keyboard.Key>;
     const commands: AllyCommand[] = ['auto', 'attack', 'defend', 'follow', 'hold', 'retreat'];
-    ['BACKTICK', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].forEach((key, i) => this.input.keyboard!.on('keydown-' + key, () => this.setCommand(commands[i])));
+    // 1–5 = orders · Shift + 2–6 = send out that Pokémon of the bench (Adventure rules: one on the field)
+    ['BACKTICK', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'].forEach((key, i) => this.input.keyboard!.on('keydown-' + key, () => {
+      if (this.keys.SHIFT?.isDown && i >= 2) this.switchTo(i - 2); else this.setCommand(commands[i]);
+    }));
+    this.input.keyboard!.on('keydown-SIX', () => { if (this.keys.SHIFT?.isDown) this.switchTo(4); });
     this.input.keyboard!.on('keydown-ESC', () => this.exit());
     this.input.keyboard!.on('keydown-Q', () => this.manualSkill('best'));
     this.input.keyboard!.on('keydown-T', () => this.cycleFocus());
@@ -91,6 +95,7 @@ export class CoopGuestScene extends Phaser.Scene {
       if (m.t === 'coopSnap') this.receive(m.s);
       if (m.t === 'coopLoot') this.receiveLoot(m.reward, m.id);
       if (m.t === 'coopEnd') this.end(m.reason);
+      if (m.t === 'switchRes') this.hint(m.r === 'cooldown' ? `Chưa đổi được — chờ ${m.cd.toFixed(1)} s` : m.r === 'fainted' ? 'Pokémon này đã kiệt sức' : 'Không thể đổi lúc này');
       if (m.t === 'skillRes') {
         const u = this.mirror?.world.allies.find((a) => a.id === m.unit);
         const msg = u && skillFailText(m.r, u.name, typeof m.slot === 'number' ? u.skills[m.slot]?.def.name ?? '' : '');
@@ -244,6 +249,18 @@ export class CoopGuestScene extends Phaser.Scene {
     u.reserved = on ? u.reserved | (1 << slot) : u.reserved & ~(1 << slot); // the next snapshot confirms it
     net.send({ t: 'coopReserve', epoch: this.snapshot.epoch, unit: u.id, mask: u.reserved });
     this.hint(on ? `Giữ ${u.skills[slot].def.name} cho bạn tự dùng` : `${u.skills[slot].def.name}: trả lại cho AI`);
+  }
+  /** The guest's Pokémon in their balls (Adventure co-op), as the host last reported them. */
+  bench(): GuestBenchMon[] { return this.snapshot?.gb ?? []; }
+  /** Seconds before the host accepts another switch. */
+  switchCooldown(): number { return this.snapshot?.gsw ?? 0; }
+  /** Asks the host to send out bench member i (the host checks the cooldown and that only one is out). */
+  switchTo(i: number): void {
+    const b = this.bench()[i];
+    if (!b || !this.snapshot || this.ended) return;
+    if (b.fainted) { this.hint(`${b.name} đã kiệt sức`); return; }
+    net.send({ t: 'coopSwitch', epoch: this.snapshot.epoch, unit: b.id });
+    this.hint(`Đổi sang ${b.name}…`);
   }
   setCommand(c: AllyCommand): void { this.command = c; this.target = undefined; }
   toggleRun(): void { this.runHeld = !this.runHeld; }

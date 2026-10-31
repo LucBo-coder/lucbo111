@@ -6,7 +6,8 @@ import { isAquatic } from '../src/core/encounters';
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { T } from '../src/core/map/tiles';
 import { ValleyMap } from '../src/core/map/valley';
-import { STEP, World } from '../src/core/world';
+import { World } from '../src/core/world';
+import { fightBoss, sendParty } from './bossHelpers';
 import { defaultSave, newAdventure } from '../src/systems/saveSchema';
 import vnQuests from '../src/data/vietnam/quests.json';
 import type { QuestDef } from '../src/core/quests';
@@ -88,12 +89,12 @@ describe('Vietnam Odyssey: Cần Thơ', () => {
     // a grass party (4× weakness) and a party with no type advantage
     for (const party of [[['grovyle', 24], ['lombre', 22], ['breloom', 22]], [['marshtomp', 24], ['pelipper', 23], ['staravia', 22]]] as const) {
       const w = new World({ mode: 'adventure', seed: 5, width: 5000, height: 5000 });
-      for (const [sp, l] of party) w.addPokemon(sp, { level: l });
+      sendParty(w, party, BOSSES.get('whiscash')!.types); // one on the field (best match-up), the rest wait in their balls
       const t = w.trainer; t.maxHp = t.hp = 1e9;
       const b = w.spawnBoss('whiscash', ct.worldBoss!.level, false, { x: t.x + 240, y: t.y });
       expect(b.boss!.pm.cfg.weakened).toBeUndefined();
       let time = 0;
-      for (let i = 0; i < 60 * 240 && b.alive; i++) { w.trainer.hp = w.trainer.maxHp; w.step(STEP); time += STEP; }
+      time = fightBoss(w, b, 240); // two Potions, like a player at that point of the journey
       console.info(`[balance] whiscash Lv${ct.worldBoss!.level} vs ${party[0][0]}: ${b.alive ? 'ALIVE ' + Math.round(b.hp / b.maxHp * 100) + '%' : Math.round(time) + 's'} fainted ${w.allies.filter((a) => a.fainted).length}`);
       expect(b.alive, party[0][0]).toBe(false);
       expect(time, party[0][0]).toBeGreaterThan(25);

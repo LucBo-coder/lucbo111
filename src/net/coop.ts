@@ -8,6 +8,7 @@ import { applySkills, packSkills, remoteSlot } from './skillWire';
 import { LootLedger, type CoopLoot } from './coopRewards';
 import { type Wallet, WALLETS } from '../core/wallet';
 import { CoopEventDirector, type CoopEventView } from '../core/coopEvents';
+import { FIELD } from '../core/fieldRules';
 
 export interface CoopMap {
   kind: 'survivor' | 'region' | 'dungeon';
@@ -36,7 +37,11 @@ export interface CoopSnapshot {
   /** skill bars of the guest's Pokémon and the guest side's global skill cooldown (active skills) */
   skl?: SkillWire[];
   gcd?: number;
+  /** Adventure co-op: the guest's Pokémon waiting in their balls (one is on the field) and its switch cooldown */
+  gb?: GuestBenchMon[];
+  gsw?: number;
 }
+export interface GuestBenchMon { id: number; defId: string; name: string; level: number; hp: number; maxHp: number; fainted: boolean; shiny: boolean; types: string[] }
 /**
  * Between keyframes the host sends only what changed since the previous snapshot: the ordered unit ids of each side
  * and, per unit, the fields whose value changed. Static fields (name, types, max HP…) and the map's obstacles cost
@@ -84,6 +89,10 @@ export function packCoop(w: World, map: CoopMap, epoch: string, n: number, pause
     zones: w.zones.filter(z => z.active).map(({ owner: _o, slot, ...z }) => ({ ...z, x: r1(z.x), y: r1(z.y), skill: slot.def.id })),
     gems: w.gems.filter(g => g.active).map(g => ({ ...g, x: r1(g.x), y: r1(g.y) })), obstacles: w.obstacles.map(o => ({ ...o })), events: shareableEvents(events),
     ...(w.companion ? { skl: w.companion.allies.map((u) => packSkills(u)), gcd: r1(w.companion.manualCd) } : {}),
+    ...(w.companion && w.adventureCombat ? {
+      gb: w.companion.bench.map((u) => ({ id: u.id, defId: u.defId, name: u.name, level: u.level, hp: Math.round(u.hp), maxHp: u.maxHp, fainted: u.fainted, shiny: u.shiny, types: [...u.types] })),
+      gsw: r1(Math.max(0, w.companion.switchCd)),
+    } : {}),
   };
 }
 
@@ -153,10 +162,12 @@ export class CoopHost {
       if (!w.companion) {
         if (validateParty(m.party, RULESETS.open).length) { net.send({ t: 'coopEnd', reason: 'Đội Pokémon không hợp lệ' }); return; }
         const side = w.addCompanion();
-        for (const p of m.party.slice(0, 3)) w.addPokemon(p.species, {
-          companion: true, level: w.mode === 'survivor' ? w.level + 4 : p.level,
+        // Survivor co-op: the guest's three Pokémon fight together. Adventure rules: up to six come along, one is out.
+        const adventure = w.adventureCombat;
+        m.party.slice(0, adventure ? FIELD.coopGuestCarry : 3).forEach((p, i) => w.addPokemon(p.species, {
+          companion: true, level: w.mode === 'survivor' ? w.level + 4 : p.level, bench: adventure && i > 0,
           held: p.held, shiny: p.shiny, ind: p.ivs && p.nature ? { ivs: p.ivs, nature: p.nature, evs: p.evs } : null,
-        });
+        }));
         side.trainer.name = net.peerName || 'Đồng đội';
         side.trainer.avatar = cleanAvatarId(m.avatar ?? net.peerAvatar);
         this.seq = -1;
@@ -171,6 +182,10 @@ export class CoopHost {
       }
     } else if (m.t === 'coopLootAck' && typeof m.id === 'string') {
       this.loot.ack(m.id);
+    } else if (m.t === 'coopSwitch' && w.companion && m.epoch === this.epoch) {
+      const side = w.companion, inc = side.bench.find((b) => b.id === m.unit) ?? null;
+      const r = w.benchSwitch(side, inc, this.inCombat(side.trainer));
+      if (r !== 'ok') net.send({ t: 'switchRes', r, cd: Math.round(side.switchCd * 10) / 10 });
     } else if ((m.t === 'coopSkill' || m.t === 'coopReserve') && w.companion && m.epoch === this.epoch) {
       const side = w.companion, u = side.allies.find((a) => a.id === m.unit);
       if (!u) return;
@@ -192,6 +207,10 @@ export class CoopHost {
         if (w.companion.command !== m.command || w.companion.commandTarget !== (target ?? null)) w.setCommand(m.command, target ?? null, w.companion);
       }
     }
+  }
+  /** A hostile Pokémon near this trainer (switch cooldown in combat). */
+  private inCombat(t: Unit): boolean {
+    return this.world.enemies.some((e) => e.alive && !e.captured && e.hostile && Math.hypot(e.x - t.x, e.y - t.y) < FIELD.combatRadius);
   }
   /** Host → guest: share one loot/reward drop with the attached teammate. No-op when no guest is playing. */
   grant(loot: CoopLoot): void {

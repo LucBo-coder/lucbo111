@@ -35,6 +35,7 @@ export class CoopGuestUI extends Phaser.Scene {
   private touch = false;
   private joy: { id: number; bx: number; by: number; x: number; y: number } | null = null;
   private skillBar!: SkillBar;
+  private benchZones: Phaser.GameObjects.Zone[] = [];
   /** top edge of the skill bar (toasts on phones sit above it) */
   private skillTop = 0;
 
@@ -81,9 +82,17 @@ export class CoopGuestUI extends Phaser.Scene {
     // never below 13 px: VT323 is unreadable smaller than that on a phone
     const T = (k: string, size: number, color: string = COLORS.text) => (this.t[k] = text(this, 0, 0, '', Math.max(13, size * s), color));
     T('hp', 16); T('room', 15, COLORS.dim); T('mate', 15); T('challenge', 14, '#ffe680'); T('state', 22, '#ffffff');
-    T('loot', 17, '#ffe066'); T('boss', 18, '#ffb0a0'); T('help', 14, COLORS.dim); T('wait', 22); T('hint', 16, '#ffd0c0');
+    T('loot', 17, '#ffe066'); T('boss', 18, '#ffb0a0'); T('help', 14, COLORS.dim); T('swcd', 13, '#ffd080'); T('wait', 22); T('hint', 16, '#ffd0c0');
     this.t.hint.setOrigin(0.5, 1).setStroke('#000', 4);
     for (let i = 0; i < 3; i++) T('p' + i, 14);
+    // Adventure co-op: the Pokémon waiting in their balls — tap a row to send it out
+    this.benchZones = [];
+    for (let i = 0; i < 5; i++) {
+      T('b' + i, 13, COLORS.dim);
+      const z = this.add.zone(0, 0, 10, 10).setOrigin(0).setInteractive({ useHandCursor: true }).setDepth(21);
+      z.on('pointerdown', () => this.guest.switchTo(i));
+      this.benchZones.push(z);
+    }
     this.t.state.setOrigin(0.5).setAlign('center');
     this.t.loot.setOrigin(0.5, 1).setAlign('center');
     this.t.boss.setOrigin(0.5, 1);
@@ -220,6 +229,23 @@ export class CoopGuestUI extends Phaser.Scene {
       bar(g, tx, y + 30 * s, bw, 3 * s, u.energy / Math.max(1, u.maxEnergy), 0x60a0ff);
     });
     for (let i = w.allies.length; i < 3; i++) { this.t['p' + i].setText(''); this.icons[i]?.setVisible(false); }
+    // the bench (Adventure rules): compact rows under the active Pokémon, HP + type + switch cooldown
+    const bench = gs.bench(), cd = gs.switchCooldown();
+    const by0 = L.y + hpH + 8 * s + Math.max(1, Math.min(3, w.allies.length)) * (rowH + 4 * s);
+    const bh = 22 * s;
+    for (let i = 0; i < 5; i++) {
+      const b = bench[i], tx = this.t['b' + i], z = this.benchZones[i];
+      if (!b) { tx.setVisible(false); z.disableInteractive(); continue; }
+      const y = by0 + i * (bh + 3 * s);
+      g.fillStyle(0x0b0d16, 0.62).fillRect(L.x, y, hw, bh);
+      g.lineStyle(1, b.fainted ? 0x803030 : 0x2c3450, 1).strokeRect(L.x, y, hw, bh);
+      bar(g, L.x + hw * 0.62, y + bh * 0.4, hw * 0.34, 5 * s, b.hp / Math.max(1, b.maxHp), b.fainted ? 0x603030 : hpColor(b.hp / Math.max(1, b.maxHp)));
+      this.fit(tx, `${i + 2}. ${b.name} Lv${b.level}${b.fainted ? ' ✕' : ''}`, hw * 0.58).setPosition(L.x + 6 * s, y + 3 * s).setVisible(true)
+        .setColor(b.fainted ? '#a06060' : cd > 0 ? COLORS.dim : COLORS.text);
+      z.setPosition(L.x, y).setSize(hw, bh).setInteractive();
+    }
+    if (bench.length && cd > 0) this.fit(this.t.swcd, `Đổi Pokémon: chờ ${cd.toFixed(1)} s`, hw).setPosition(L.x, by0 + Math.min(5, bench.length) * (bh + 3 * s) + 2 * s).setVisible(true);
+    else this.t.swcd.setVisible(false);
 
     // ── right: minimap, teammate card, challenge ──
     const R = this.right;
@@ -276,7 +302,7 @@ export class CoopGuestUI extends Phaser.Scene {
       const sx = (target.x - cam.worldView.x) * cam.zoom, sy = (target.y - cam.worldView.y) * cam.zoom;
       g.lineStyle(2, 0xff6050, 0.9).strokeCircle(sx, sy, (target.radius + 12) * cam.zoom);
     }
-    this.t.help.setText(this.touch ? '' : 'WASD di chuyển · Shift chạy · ` 1–5 lệnh đội · Nhấp quái để tấn công · Q chiêu · T đổi Pokémon').setPosition(this.left.x, barTop - (boss ? 64 : 26) * s);
+    this.t.help.setText(this.touch ? '' : 'WASD di chuyển · Shift chạy · ` 1–5 lệnh đội · Nhấp quái để tấn công · Q chiêu · Shift+2–6 đổi Pokémon').setPosition(this.left.x, barTop - (boss ? 64 : 26) * s);
     this.drawCommands();
   }
 

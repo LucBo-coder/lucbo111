@@ -44,6 +44,7 @@ import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
 import { WALLETS } from '../core/wallet';
 import { SkillBar } from '../ui/SkillBar';
+import { statusLabel, SwitchWheel, type WheelMon } from '../ui/SwitchWheel';
 import type { StarterGen } from '../core/starters';
 
 const STAT_VI: Record<string, string> = { hp: 'HP', atk: 'Công', def: 'Thủ', spa: 'Công ĐB', spd: 'Thủ ĐB', spe: 'Tốc' };
@@ -122,6 +123,8 @@ export class AdventureUI extends Phaser.Scene {
   private portraitHud = false;
   /** Active-skill bar (focused Pokémon's 4 skills) */
   private skillBar!: SkillBar;
+  /** Quick switch wheel (T / "Đổi" / the active Pokémon fainted) */
+  private wheel: SwitchWheel | null = null;
   /** the open menu is laid out for a portrait phone (stacked columns) */
   private portraitMenu = false;
   private bagPage = 0;
@@ -151,7 +154,9 @@ export class AdventureUI extends Phaser.Scene {
     this.joy = null;
     this.banners = [];
     this.partyIcons = [];
+    this.partyRows = [];
     this.texts = {};
+    this.wheel = null; // the scene restarts with the same instance: no objects of the previous map
   }
 
   bossHud: BossHUDController | null = null;
@@ -188,6 +193,7 @@ export class AdventureUI extends Phaser.Scene {
     this.partyIcons = [];
     this.partyRows = [];
     this.texts = {};
+    this.wheel = null;
     this.build();
     if (tab) this.openMenu(tab);
   }
@@ -247,6 +253,7 @@ export class AdventureUI extends Phaser.Scene {
         ['Chạy', cx - 150 * s, cy + 20 * s, () => { this.adv.runHeld = !this.adv.runHeld; this.banner(this.adv.runHeld ? 'Chạy: BẬT' : 'Chạy: TẮT', '#fff'); }],
         ['Map', cx + 10 * s, cy - 150 * s, () => this.toggleMenu('map')],
         ['MEGA', cx - 110 * s, cy - 80 * s, () => this.adv.tryMega()],
+        ['Đổi', cx - 70 * s, cy - 150 * s, () => this.toggleSwitchWheel()],
       ];
       for (const [l, x, y, fn] of big) {
         const b = button(this, x, y, R * 1.7, R * 1.5, l, fn, 0x2f4a6a);
@@ -257,7 +264,7 @@ export class AdventureUI extends Phaser.Scene {
     this.skillBar = new SkillBar(this, {
       focusAlly: () => this.adv.focusAlly(),
       manualSkill: (j) => this.adv.manualSkill(j),
-      cycleFocus: () => this.adv.cycleFocus(),
+      cycleFocus: () => this.toggleSwitchWheel(),
       globalCd: () => this.adv.world.home.manualCd,
       toggleReserved: (j) => this.adv.toggleReserved(j),
       isReserved: (u, j) => this.adv.isReserved(u, j),
@@ -265,6 +272,38 @@ export class AdventureUI extends Phaser.Scene {
     const y0 = Math.round(H - 160 * s);
     this.skillBar.build(s, this.portraitHud ? { x: Math.round(16 * s), y: y0 } : { centerX: W / 2, y: y0 });
     this.joyG = this.add.graphics().setDepth(50);
+  }
+
+  // ───────────────────────────── quick switch ─────────────────────────────
+
+  /** Party members in their balls, for the wheel (party order = the Shift + number slots). */
+  private wheelMons(): WheelMon[] {
+    const a = this.adv;
+    return a.state.party().filter((p) => !a.world.allies.some((u) => u.ownerUid === p.uid)).map((p) => ({
+      uid: p.uid, name: POKEMON.get(p.species)?.name ?? p.species, level: p.level, hp: Math.max(0, p.hpFrac ?? 1),
+      types: [...(POKEMON.get(p.species)?.types ?? [])], status: statusLabel(p.status?.kind), icon: p.shiny ? shinyKey(p.species) : p.species,
+    }));
+  }
+
+  openSwitchWheel(reason: 'manual' | 'faint'): void {
+    const mons = this.wheelMons();
+    if (!mons.length) { if (reason === 'manual') this.banner('Không có Pokémon nào khác trong đội', '#ffb0a0'); return; }
+    this.wheel ??= new SwitchWheel(this, (uid) => this.pickSwitch(uid), () => this.adv.summons?.cooldownLeft() ?? 0);
+    const { width: W, height: H } = this.scale, s = this.s;
+    this.wheel.open(mons, reason, s, W / 2, Math.round(H - 175 * s));
+  }
+
+  closeSwitchWheel(): void { this.wheel?.close(); }
+  get switchWheelOpen(): boolean { return !!this.wheel?.isOpen; }
+  toggleSwitchWheel(): void { if (this.wheel?.isOpen) this.wheel.close(); else this.openSwitchWheel('manual'); }
+  /** Number key while the wheel is open. */
+  pickSwitchIndex(i: number): boolean { return !!this.wheel?.pickIndex(i); }
+
+  private pickSwitch(uid: string): void {
+    const a = this.adv, idx = a.state.adv.party.indexOf(uid);
+    if (idx < 0) return;
+    const r = a.summons?.toggleSlot(idx);
+    if (r === 'ok') this.wheel?.close();
   }
 
   private ensureMapTexture(): string {
@@ -306,10 +345,15 @@ export class AdventureUI extends Phaser.Scene {
     const party = a.state.party();
     while (this.partyIcons.length > party.length) this.partyIcons.pop()!.destroy();
     while (this.partyRows.length > party.length) { const r = this.partyRows.pop()!; r.frame?.destroy(); r.ball.destroy(); r.zone.destroy(); }
+    // the Pokémon on the field gets the big row, the ones in their balls a compact one (party order = Shift + number)
+    let rowY = 44 * s;
     party.forEach((p, i) => {
-      const y = 44 * s + i * 40 * s;
       const ally = w.allies.find((u) => u.ownerUid === p.uid);
       const inBall = !!a.summons?.isRecalled(p.uid);
+      const big = !!ally;
+      const rh = (big ? 36 : 22) * s;
+      const y = rowY;
+      rowY += rh + 4 * s;
       let row = this.partyRows[i];
       if (!row) {
         // tap / click a row: summon it from its ball, or recall it (keyboard: Shift + 1–6)
@@ -319,29 +363,34 @@ export class AdventureUI extends Phaser.Scene {
         row = { frame, ball: this.add.image(0, 0, 'item_held').setVisible(false), zone };
         this.partyRows[i] = row;
       }
-      row.zone.setPosition(12 * s, y);
-      row.frame?.setPosition(32 * s, y + 18 * s).setAlpha(inBall ? 0.6 : 1);
+      row.zone.setPosition(12 * s, y).setSize(hw, rh);
+      row.frame?.setPosition(32 * s, y + rh / 2).setAlpha(inBall ? 0.6 : 1).setVisible(big);
       if (inBall) {
         const bk = itemIconKey(this, p.ball ?? 'pokeball');
         if (row.ball.texture.key !== bk) row.ball.setTexture(bk);
-        row.ball.setVisible(true).setPosition(44 * s, y + 28 * s).setScale((16 * s) / Math.max(1, row.ball.width)).setDepth(5);
+        row.ball.setVisible(true).setPosition(30 * s, y + rh - 5 * s).setScale((11 * s) / Math.max(1, row.ball.width)).setDepth(5);
       } else row.ball.setVisible(false);
-      g.fillStyle(0x0b0d16, 0.75).fillRect(12 * s, y, hw, 36 * s);
-      g.lineStyle(2, ally?.fainted ? 0x803030 : a.state.isActive(p.uid) ? 0xffcc33 : 0x3a4260, 1).strokeRect(12 * s, y, hw, 36 * s);
+      const down = ally?.fainted || (inBall && (p.hpFrac ?? 1) <= 0);
+      g.fillStyle(0x0b0d16, big ? 0.8 : 0.6).fillRect(12 * s, y, hw, rh);
+      g.lineStyle(big ? 2 : 1, down ? 0x803030 : a.state.isActive(p.uid) ? 0xffcc33 : 0x2c3450, 1).strokeRect(12 * s, y, hw, rh);
       let icon = this.partyIcons[i];
       // the unit on the field may be in another form for now (Mega Evolution): show that form, the save keeps the base
       const species = ally?.defId ?? p.species;
       const ik = p.shiny ? shinyKey(species) : species;
       if (!icon) { icon = this.add.image(0, 0, ik); this.partyIcons[i] = icon; }
       if (icon.texture.key !== ik) icon.setTexture(ik);
-      icon.setScale(fitScale(this, ik, 34 * s));
-      icon.setPosition(32 * s, y + 18 * s).setAlpha(ally?.fainted ? 0.35 : inBall ? 0.5 : 1).setDepth(4);
+      icon.setScale(fitScale(this, ik, (big ? 34 : 20) * s));
+      icon.setPosition((big ? 32 : 24) * s, y + rh / 2).setAlpha(down ? 0.35 : inBall ? 0.75 : 1).setDepth(4);
       const k = 'p' + i;
       if (!this.texts[k]) this.texts[k] = text(this, 0, 0, '', 15 * s);
-      fitText(this.texts[k], `${POKEMON.get(species)?.name} Lv${p.level}${ally?.fainted ? `  ✕ ${Math.ceil(ally.reviveT)}s` : a.state.isActive(p.uid) ? '  ★ ngoài bóng' : inBall ? '  · trong bóng' : ''}`, hw - 44 * s).setPosition(52 * s, y + 1 * s);
-      const bx = 52 * s, bw = hw - 112 * s;
+      const st = inBall ? statusLabel(p.status?.kind) : undefined;
+      this.texts[k].setFontSize(Math.round((big ? 15 : 13) * s));
+      fitText(this.texts[k], big
+        ? `${POKEMON.get(species)?.name} Lv${p.level}${ally?.fainted ? '  ✕ gục' : '  ★ ra sân'}`
+        : `${i + 1}. ${POKEMON.get(species)?.name} Lv${p.level}${down ? ' ✕' : st ? ` · ${st}` : ''}`, big ? hw - 44 * s : hw * 0.62 - 26 * s).setPosition((big ? 52 : 38) * s, y + (big ? 1 : 3) * s);
+      const bx = big ? 52 * s : 12 * s + hw * 0.64, bw = big ? hw - 112 * s : hw * 0.33;
       if (ally) bar(g, bx, y + 21 * s, bw, 6 * s, ally.hp / ally.maxHp, hpColor(ally.hp / ally.maxHp));
-      else if (inBall) bar(g, bx, y + 21 * s, bw, 6 * s, p.hpFrac ?? 1, 0x8890a8); // HP kept in the ball (no healing)
+      else if (inBall) bar(g, bx, y + rh / 2 - 3 * s, bw, 6 * s, p.hpFrac ?? 1, down ? 0x603030 : 0x8890a8); // HP kept in the ball (no healing)
       // animated EXP bar: eases toward the real value; on level-up it fills, flashes gold, then restarts from 0
       const target = levelProgress(p);
       let ea = this.expAnim.get(p.uid);
@@ -350,7 +399,7 @@ export class AdventureUI extends Phaser.Scene {
       if (p.level > ea.level) { ea.shown = Math.min(1, ea.shown + dtS * 2.5); if (ea.shown >= 1) { ea.level = p.level; ea.shown = 0; ea.flash = 0.6; } }
       else ea.shown += (target - ea.shown) * Math.min(1, dtS * 4);
       if (ea.flash > 0) ea.flash -= dtS;
-      bar(g, bx, y + 29 * s, bw, 4 * s, ea.shown, ea.flash > 0 && Math.floor(ea.flash * 10) % 2 === 0 ? 0xffe060 : 0x60a0ff);
+      if (big) bar(g, bx, y + 29 * s, bw, 4 * s, ea.shown, ea.flash > 0 && Math.floor(ea.flash * 10) % 2 === 0 ? 0xffe060 : 0x60a0ff);
       // 4 skill cooldown squares (type colour, dark fill = remaining cooldown, dim = not enough energy)
       if (ally) ally.skills.forEach((sl, j) => {
         const sq = 12 * s, sx = 12 * s + hw - 4 * (sq + 3 * s) - 2 * s + j * (sq + 3 * s), sy = y + 19 * s;
@@ -361,6 +410,11 @@ export class AdventureUI extends Phaser.Scene {
       });
     });
     for (let i = party.length; i < 6; i++) this.texts['p' + i]?.setText('');
+    // switch cooldown under the party (in combat a switch costs 6 s)
+    const swcd = a.summons?.cooldownLeft() ?? 0;
+    if (!this.texts.swcd) this.texts.swcd = text(this, 0, 0, '', 13 * s, '#ffd080');
+    this.texts.swcd.setText(swcd > 0 && party.length > 1 ? `Đổi Pokémon: chờ ${swcd.toFixed(1)} s` : '').setPosition(12 * s, rowY);
+    if (this.wheel?.isOpen) this.wheel.draw(s);
 
     // Clock / weather / area
     const c = a.state.adv.clock;
@@ -1900,7 +1954,7 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', () => openCoopMenu(this, this.adv), 0x2f5a6a).container);
     c.add(button(this, r.x + 160 * s, r.y + 388 * s, 300 * s, 36 * s, 'Đi chung / thách đấu PvP', () => void this.onlineMenu(), 0x3a3a5a).container);
     c.add(text(this, this.portraitMenu ? r.x : r.x + 340 * s, r.y + (this.portraitMenu ? 440 : 130) * s,
-      'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\n` 1-5 lệnh đội: Tự do / Tấn công / Bảo vệ /\n   Đi theo / Giữ vị trí / Rút lui\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
+      'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\nT đổi Pokémon (1–5 chọn) · Shift+1–6 gọi/thu hồi ô đội\n` 1-5 lệnh đội: Tự do / Tấn công / Bảo vệ /\n   Đi theo / Giữ vị trí / Rút lui\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
   }
 }
 
