@@ -181,7 +181,27 @@ function pickMoves(sp) {
     const basic = Object.values(defs).filter((d) => d.type === 'normal' && d.power > 0 && d.energyCost === 0 && movesUpTo(sp)(d)).sort((a, b) => a.power - b.power)[0];
     chosen[0] = basic.id;
   }
+  // An evolution that needs a known move (Piloswine → Mamoswine: Ancient Power) or a move type
+  // (Eevee → Sylveon: a Fairy move) must be reachable: the kit carries it in the last slot (Lv30 at most).
+  for (const need of EVO_MOVE_NEEDS.get(sp.name) ?? []) {
+    if (chosen.some((id) => (need.move ? id === need.move : defs[id].type === need.type))) continue;
+    const pick = need.move
+      ? (defs[need.move] ? need.move : null)
+      : (learn.find((id) => defs[id].type === need.type && defs[id].power > 0)
+        // no generation cap here: the evolution itself is from the move's generation (Fairy → Gen 6)
+        ?? Object.values(defs).filter((d) => d.type === need.type && d.power > 0).sort((a, b) => a.power - b.power)[0]?.id);
+    if (pick) chosen[Math.min(3, chosen.length)] = pick;
+  }
   return [...new Set(chosen)].slice(0, 4);
+}
+
+/** species → moves / move types one of its evolutions requires it to know */
+const EVO_MOVE_NEEDS = new Map();
+for (const s of Object.values(SP)) for (const e of s.evolutions ?? []) {
+  if (!e.knownMove && !e.knownMoveType) continue;
+  const list = EVO_MOVE_NEEDS.get(e.from) ?? [];
+  list.push(e.knownMove ? { move: e.knownMove.replace(/-/g, '_') } : { type: e.knownMoveType });
+  EVO_MOVE_NEEDS.set(e.from, list);
 }
 
 const bst = (s) => s.hp + s.atk + s.def + s.spa + s.spd + s.spe;
