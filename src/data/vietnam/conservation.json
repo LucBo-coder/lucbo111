@@ -660,6 +660,52 @@
     }
    ]
   },
+  "ha-noi": {
+   "id": "ha-noi",
+   "name": "Hà Nội",
+   "area": "hn-hoguom",
+   "action": "trash",
+   "unlock": "vn-hn-3",
+   "boss": "torterra",
+   "label": "Vớt rác trên Hồ Gươm",
+   "done": "Bạn vớt chai nhựa và túi nilon trôi quanh tháp Rùa. Hồ Gươm xanh lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 3
+   },
+   "sites": [
+    {
+     "id": "ha-noi-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "ha-noi-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "ha-noi-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "ha-noi-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "ha-noi-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "ha-noi-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "ha-tinh": {
    "id": "ha-tinh",
    "name": "Hà Tĩnh",

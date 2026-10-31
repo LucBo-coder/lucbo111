@@ -2,6 +2,7 @@ import { Biome, ECOLOGY, eligible, Rarity, REGIONS, RegionDef, regionOfArea, SHI
 import Phaser from 'phaser';
 import { SCALE, TILE_PX } from '../core/map/tiles';
 import { makeWildState } from '../core/wildAI';
+import { MAX_LEVEL } from '../core/progression';
 import { ActiveEvent, ANOMALIES, EVENT_DEFS, EventType, WorldEventDirector } from '../core/worldEvents';
 import type { Unit } from '../core/world';
 import { ITEMS } from './AdventureState';
@@ -114,7 +115,7 @@ export class WorldEventController {
       case 'alpha': {
         const species = this.pickSpecies(region, (e) => e.stage > 0 || e.rarity !== 'common');
         if (!species) return this.abort(ev);
-        const u = this.world.spawnWild(species, region.elite[1] + 2, p.x, p.y, {
+        const u = this.world.spawnWild(species, Math.min(MAX_LEVEL, region.elite[1] + 2), p.x, p.y, {
           wild: makeWildState(p.x, p.y, 'aggressive', { homeR: 160, aggroR: 330, leash: 700 }), hostile: false, tag: 'event:' + ev.uid, elite: true, hpMult: 6,
         });
         u.alpha = true;

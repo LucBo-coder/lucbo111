@@ -1,0 +1,776 @@
+{
+ "id": "ha-noi",
+ "name": "Hà Nội",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": {
+  "x": 64,
+  "y": 104
+ },
+ "areas": [
+  {
+   "id": "hn-coloa",
+   "name": "Thành Cổ Loa",
+   "rect": [
+    0,
+    0,
+    45,
+    45
+   ],
+   "habitat": "ruins",
+   "level": [
+    97,
+    100
+   ]
+  },
+  {
+   "id": "hn-hoguom",
+   "name": "Hồ Gươm — tháp Rùa",
+   "rect": [
+    46,
+    0,
+    100,
+    32
+   ],
+   "habitat": "lake",
+   "level": [
+    96,
+    99
+   ]
+  },
+  {
+   "id": "hn-city",
+   "name": "Phố cổ Hà Nội",
+   "rect": [
+    40,
+    33,
+    100,
+    68
+   ],
+   "habitat": "village",
+   "level": [
+    96,
+    96
+   ]
+  },
+  {
+   "id": "hn-bavi",
+   "name": "Vườn quốc gia Ba Vì",
+   "rect": [
+    0,
+    46,
+    39,
+    111
+   ],
+   "habitat": "forest",
+   "level": [
+    94,
+    97
+   ]
+  },
+  {
+   "id": "hn-nhattan",
+   "name": "Vườn đào Nhật Tân",
+   "rect": [
+    40,
+    69,
+    100,
+    111
+   ],
+   "habitat": "farm",
+   "level": [
+    94,
+    97
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 8
+   }
+  },
+  {
+   "id": "hn-chuahuong",
+   "name": "Chùa Hương — núi Hương Sơn",
+   "rect": [
+    101,
+    0,
+    127,
+    111
+   ],
+   "habitat": "rocky",
+   "level": [
+    95,
+    98
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     107
+    ],
+    [
+     64,
+     60
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     48
+    ],
+    [
+     40,
+     30
+    ],
+    [
+     24,
+     18
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     68,
+     48
+    ],
+    [
+     68,
+     26
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     74,
+     54
+    ],
+    [
+     110,
+     54
+    ],
+    [
+     112,
+     14
+    ],
+    [
+     112,
+     5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     54
+    ],
+    [
+     24,
+     62
+    ],
+    [
+     16,
+     92
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     80
+    ],
+    [
+     84,
+     96
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  58,
+  48,
+  74,
+  60
+ ],
+ "lake": {
+  "cx": 74,
+  "cy": 14,
+  "rx": 18,
+  "ry": 8
+ },
+ "buildings": [
+  {
+   "id": "hn-center",
+   "name": "Trung tâm Pokémon",
+   "x": 42,
+   "y": 40,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "hn-mart",
+   "name": "Cửa hàng phố Hàng Đào",
+   "x": 78,
+   "y": 38,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "hn-museum",
+   "name": "Văn Miếu — Quốc Tử Giám",
+   "x": 86,
+   "y": 40,
+   "w": 7,
+   "h": 4,
+   "roof": "teal",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "hn-house-1",
+   "name": "Nhà cô Hằng phố cổ",
+   "x": 46,
+   "y": 62,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "blue"
+  },
+  {
+   "id": "hn-house-2",
+   "name": "Quán phở Hàng Đẫy",
+   "x": 90,
+   "y": 60,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "red"
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "well",
+   "x": 54,
+   "y": 66
+  },
+  {
+   "kind": "log",
+   "x": 24,
+   "y": 80
+  },
+  {
+   "kind": "haystack",
+   "x": 24,
+   "y": 96
+  },
+  {
+   "kind": "target",
+   "x": 116,
+   "y": 30
+  },
+  {
+   "kind": "bucket",
+   "x": 54,
+   "y": 26
+  }
+ ],
+ "signs": [
+  {
+   "x": 62,
+   "y": 58,
+   "text": [
+    "PHỐ CỔ HÀ NỘI",
+    "Thủ đô ngàn năm văn hiến. Phía tây bắc: thành Cổ Loa · Phía bắc: Hồ Gươm · Phía tây: Ba Vì · Phía nam: vườn đào Nhật Tân · Phía đông: chùa Hương."
+   ]
+  },
+  {
+   "x": 62,
+   "y": 26,
+   "text": [
+    "HỒ GƯƠM",
+    "Vua Lê trả gươm thần cho Rùa Vàng giữa hồ, từ đó hồ mang tên Hoàn Kiếm."
+   ]
+  },
+  {
+   "x": 28,
+   "y": 14,
+   "text": [
+    "THÀNH CỔ LOA",
+    "Thành xoắn ốc của An Dương Vương. Thần Kim Quy giúp xây thành, tặng móng làm nỏ thần."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "hn-guide",
+   "name": "Cô Hằng phố cổ",
+   "sprite": "girl",
+   "x": 70,
+   "y": 58,
+   "lines": [
+    "Chào mừng về Thủ đô! Ăn bát phở đã em.",
+    "Mấy hôm nay mặt Hồ Gươm sủi bọt, đất Cổ Loa rung, cây cối mọc um tùm trong một đêm.",
+    "Cụ đồ ở thành Cổ Loa biết chuyện, em lên hỏi."
+   ]
+  },
+  {
+   "id": "hn-elder",
+   "name": "Cụ đồ Cổ Loa",
+   "sprite": "elder",
+   "x": 34,
+   "y": 30,
+   "lines": [
+    "Thần Kim Quy giúp An Dương Vương xây thành, giúp vua Lê đánh giặc.",
+    "Thần đã rời hồ, về nằm giữa thành Cổ Loa. Thần muốn thử người đi khắp đất nước xem có xứng đáng không."
+   ]
+  },
+  {
+   "id": "hn-lake",
+   "name": "Bác chụp ảnh Hồ Gươm",
+   "sprite": "villager",
+   "x": 52,
+   "y": 24,
+   "lines": [
+    "Sáng nào bác cũng chụp tháp Rùa lúc sương sớm.",
+    "Đêm qua thấy bóng rùa vàng khổng lồ bơi qua hồ rồi đi về phía bắc."
+   ]
+  },
+  {
+   "id": "hn-forest",
+   "name": "Cụ người Dao Ba Vì",
+   "sprite": "elder",
+   "x": 14,
+   "y": 56,
+   "lines": [
+    "Ba Vì là núi Sơn Tinh, rừng thông, rừng nguyên sinh.",
+    "Có đứa săn trộm trong rừng, cụ lo lắm."
+   ]
+  },
+  {
+   "id": "hn-farm",
+   "name": "Chú trồng đào Nhật Tân",
+   "sprite": "villager",
+   "x": 60,
+   "y": 88,
+   "lines": [
+    "Đào Nhật Tân nở thắm mỗi Tết.",
+    "Có đứa bẻ trộm cành đào đem bán, cây què hết."
+   ]
+  },
+  {
+   "id": "hn-pagoda",
+   "name": "Cô lái đò suối Yến",
+   "sprite": "girl",
+   "x": 116,
+   "y": 40,
+   "lines": [
+    "Chèo đò suối Yến vào chùa Hương mất cả tiếng.",
+    "Ở đây có tay buôn chặt chém khách hành hương, em cẩn thận."
+   ]
+  },
+  {
+   "id": "hn-scholar",
+   "name": "Thầy đồ Văn Miếu",
+   "sprite": "elder",
+   "x": 84,
+   "y": 46,
+   "lines": [
+    "Văn Miếu là trường đại học đầu tiên của nước ta.",
+    "Tám mươi hai tấm bia tiến sĩ đặt trên lưng rùa đá."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "hn-gate-t",
+   "name": "Hộ vệ thành Cổ Loa",
+   "sprite": "hiker",
+   "x": 30,
+   "y": 22,
+   "team": [
+    [
+     "metagross",
+     99
+    ],
+    [
+     "garchomp",
+     99
+    ],
+    [
+     "lucario",
+     99
+    ]
+   ],
+   "challenge": [
+    "Thần Kim Quy chỉ gặp người xứng đáng. Qua được ta đã!"
+   ],
+   "win": [
+    "Bạn xứng đáng rồi. Thần chờ ở giữa thành."
+   ],
+   "lose": [
+    "Chưa đủ đâu, đi thêm đi."
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 3,
+     "miracle-seed": 1
+    },
+    "exp": 5500
+   }
+  },
+  {
+   "id": "hn-lake-t",
+   "name": "Ông cụ tập dưỡng sinh",
+   "sprite": "elder",
+   "x": 94,
+   "y": 24,
+   "team": [
+    [
+     "hitmonchan",
+     97
+    ],
+    [
+     "hitmontop",
+     97
+    ],
+    [
+     "medicham",
+     97
+    ]
+   ],
+   "challenge": [
+    "Ông tập bên hồ sáu mươi năm rồi! Đấu với ông không?"
+   ],
+   "win": [
+    "Hậu sinh khả úy!"
+   ],
+   "lose": [
+    "Tập đều như ông nha!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "protein": 1
+    },
+    "exp": 5400
+   }
+  },
+  {
+   "id": "hn-forest-t",
+   "name": "Kẻ săn trộm Ba Vì",
+   "sprite": "knight",
+   "x": 8,
+   "y": 100,
+   "team": [
+    [
+     "ursaluna",
+     96
+    ],
+    [
+     "obstagoon",
+     96
+    ],
+    [
+     "krookodile",
+     96
+    ]
+   ],
+   "challenge": [
+    "Rừng này lắm thú, tao săn đấy! Tránh ra!"
+   ],
+   "win": [
+    "Thôi được, tao bỏ bẫy."
+   ],
+   "lose": [
+    "Cút!"
+   ],
+   "rewards": {
+    "items": {
+     "sitrus-berry": 3,
+     "soft-sand": 1
+    },
+    "exp": 5300
+   }
+  },
+  {
+   "id": "hn-farm-t",
+   "name": "Kẻ bẻ trộm đào",
+   "sprite": "youngster",
+   "x": 84,
+   "y": 104,
+   "team": [
+    [
+     "vespiquen",
+     96
+    ],
+    [
+     "beedrill",
+     96
+    ],
+    [
+     "scolipede",
+     96
+    ]
+   ],
+   "challenge": [
+    "Cành đào bán Tết được giá lắm! Mắc gì cản tao?"
+   ],
+   "win": [
+    "Thôi... tao mua đào đàng hoàng."
+   ],
+   "lose": [
+    "Bị ong đốt chưa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "silver-powder": 1
+    },
+    "exp": 5300
+   }
+  },
+  {
+   "id": "hn-pagoda-t",
+   "name": "Tay buôn chặt chém",
+   "sprite": "knight",
+   "x": 118,
+   "y": 90,
+   "team": [
+    [
+     "liepard",
+     97
+    ],
+    [
+     "honchkrow",
+     97
+    ],
+    [
+     "bisharp",
+     97
+    ]
+   ],
+   "challenge": [
+    "Hàng ở đây giá thế đấy! Không mua thì đấu!"
+   ],
+   "win": [
+    "Thôi... tao bán đúng giá."
+   ],
+   "lose": [
+    "Mất tiền rồi kìa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "black-glasses": 1
+    },
+    "exp": 5400
+   }
+  }
+ ],
+ "rescue": {
+  "id": "hn-dove-rescue",
+  "x": 8,
+  "y": 40,
+  "species": "togekiss",
+  "level": 97,
+  "guards": [
+   [
+    "mandibuzz",
+    96
+   ],
+   [
+    "murkrow",
+    95
+   ],
+   [
+    "murkrow",
+    95
+   ]
+  ],
+  "quest": "vn-hn-rescue",
+  "reporter": "Cụ đồ Cổ Loa"
+ },
+ "chests": [
+  {
+   "id": "chest-hn-coloa",
+   "x": 6,
+   "y": 6,
+   "items": {
+    "ultraball": 3,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-hn-hoguom",
+   "x": 96,
+   "y": 6,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-hn-chuahuong",
+   "x": 122,
+   "y": 104,
+   "items": {
+    "superpotion": 3,
+    "hard-stone": 1
+   }
+  },
+  {
+   "id": "chest-hn-bavi",
+   "x": 6,
+   "y": 106,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-hn-nhattan",
+   "x": 96,
+   "y": 106,
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-hn-nook",
+   "x": 116,
+   "y": 70,
+   "items": {
+    "exp-candy-m": 2,
+    "ultraball": 2
+   },
+   "requiresFlag": "field:ha-noi:hn-boulder"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-ha-noi-center",
+   "name": "Trung tâm Pokémon Hà Nội",
+   "x": 45,
+   "y": 47
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "torterra",
+  "name": "Torterra — Thần Kim Quy Cổ Loa",
+  "x": 16,
+  "y": 10,
+  "level": 100,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:hn-gate-t"
+  ],
+  "hint": "Đất thành xoắn ốc rung lên, cây mọc kín lối... Hộ vệ thành Cổ Loa chưa cho ai vào.",
+  "rewards": {
+   "first": {
+    "ultraball": 5,
+    "superpotion": 5,
+    "miracle-seed": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 25000,
+   "flag": "badge:ha-noi",
+   "message": "Nhận Huy hiệu Thăng Long (Hà Nội)! Bạn đã đi trọn hành trình Việt Nam Odyssey từ mũi Cà Mau tới Thủ đô. Cảm ơn bạn đã đồng hành!"
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-hn-pt",
+   "name": "Đại lộ Thăng Long — về Phú Thọ",
+   "x": 64,
+   "y": 107,
+   "to": "phu-tho",
+   "toX": 112,
+   "toY": 8
+  }
+ ],
+ "docks": [],
+ "nodes": [
+  {
+   "id": "hn-meadow-1",
+   "table": "meadow-forage",
+   "x": 20,
+   "y": 30
+  },
+  {
+   "id": "hn-lake-1",
+   "table": "falls-fish",
+   "x": 52,
+   "y": 16
+  },
+  {
+   "id": "hn-forest-1",
+   "table": "forest-forage",
+   "x": 20,
+   "y": 84
+  },
+  {
+   "id": "hn-meadow-2",
+   "table": "meadow-forage",
+   "x": 72,
+   "y": 100
+  },
+  {
+   "id": "hn-meadow-3",
+   "table": "meadow-forage",
+   "x": 112,
+   "y": 80
+  }
+ ],
+ "field": [
+  {
+   "id": "hn-boulder",
+   "ability": "smash",
+   "x": 120,
+   "y": 70,
+   "nook": {
+    "cx": 116.5,
+    "cy": 70.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}

@@ -712,10 +712,11 @@
    },
    "money": 19500,
    "flag": "badge:phu-tho",
-   "message": "Nhận Huy hiệu Đất Tổ (Phú Thọ)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Đất Tổ (Phú Thọ)! Đường tới Hà Nội đã mở: Đại lộ Thăng Long."
   }
  },
  "portals": [
+  {"id": "portal-pt-next", "name": "Đại lộ Thăng Long — đường về Hà Nội", "x": 112, "y": 5, "to": "ha-noi", "toX": 64, "toY": 104, "requires": ["badge:phu-tho"], "hint": "Đường tới Hà Nội mở cho người có Huy hiệu Đất Tổ — hạ boss Phú Thọ trước."},
   {
    "id": "portal-pt-sl",
    "name": "Quốc lộ 32 — về Sơn La",

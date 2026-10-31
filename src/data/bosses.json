@@ -2330,6 +2330,60 @@
   }
  },
  {
+  "id": "torterra",
+  "name": "Torterra — Thần Kim Quy Cổ Loa",
+  "types": [
+   "grass",
+   "ground"
+  ],
+  "baseStats": {
+   "hp": 95,
+   "atk": 109,
+   "def": 105,
+   "spa": 75,
+   "spd": 85,
+   "spe": 56
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "wood_hammer",
+   "earthquake"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "turtwig",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thần Kim Quy hiện giữa thành xoắn ốc — đất trời Thăng Long rung chuyển!",
+  "exp": 150,
+  "sprite": "torterra",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "solar_beam",
+   "volley": "bullet_seed",
+   "nova": "earthquake",
+   "field": "petal_blizzard",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "leaf_storm",
+   "ultimateName": "Nỏ Thần Kim Quy",
+   "ultimateStyle": "spokes",
+   "power": 0.33
+  }
+ },
+ {
   "id": "gyarados",
   "name": "Gyarados — Thủy Tinh Nổi Giận",
   "types": [
