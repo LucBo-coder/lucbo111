@@ -10,6 +10,7 @@ import { installLazyCreatures, registerOfficialLazy } from '../render/lazyCreatu
 import { buildAvatarSheets, buildCreatureAnimations } from '../render/animation';
 import { REGISTRY, loadOfficialIndex, officialPack, officialItemFiles, preloadIcyEthics, registerIcyEthics, registerPlaceholders, registerProcedural } from '../render/spriteRegistry';
 import { generateTextures } from '../render/pixelArt';
+import { loadGmaxIndex } from '../render/gmaxArt';
 import { buildTileset, buildWorldProps, preloadIcyTiles, preloadWorldArt } from '../render/tileset';
 import { loadImagesInBackground, missingAssets, preloadManifest } from '../systems/assets';
 import { audio } from '../systems/audio';
@@ -60,6 +61,8 @@ export class BootScene extends Phaser.Scene {
       // on demand: only the index now, each species' art when it is first needed (see lazyCreatures.ts)
       officialPack.active = registerOfficialLazy(idx.icons, idx.front, (id) => POKEMON.get(id)?.types ?? ['normal'], idx.shiny ?? []) > 0;
       console.info(`[assets] official sprite pack (on demand): ${idx.icons.length} icons, ${idx.front.length} front sprites`);
+      // the 32 Gigantamax forms (scripts/fetch-gmax-sprites.mjs), loaded when a giant first needs one
+      console.info(`[assets] Gigantamax forms: ${await loadGmaxIndex(this)}`);
     }
     // Mega forms without their own PMD sheets (scripts/fetch-pmd-megas.py): the Mega's official art when the pack has it
     // (its real look), otherwise the base species' animated sheets
