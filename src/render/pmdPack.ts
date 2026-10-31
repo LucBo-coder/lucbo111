@@ -7,7 +7,8 @@ import Phaser from 'phaser';
 
 export type PmdAnim = 'Walk' | 'Idle' | 'Attack' | 'Shoot' | 'Charge' | 'Hurt' | 'Faint';
 interface AnimMeta { w: number; h: number; n: number; rows: number; d: number[]; hit?: number }
-interface SpeciesMeta { dex: number; anims: Partial<Record<PmdAnim, AnimMeta>>; shiny: boolean }
+/** shinySkip: animations without a usable shiny sheet (scripts/fetch-pmd-missing.py) — the shiny plays its Idle instead */
+interface SpeciesMeta { dex: number; anims: Partial<Record<PmdAnim, AnimMeta>>; shiny: boolean; shinySkip?: PmdAnim[] }
 
 export const pmdPack = { available: false, active: false };
 let index: Record<string, SpeciesMeta> = {};
@@ -73,17 +74,18 @@ export function pumpPmd(scene: Phaser.Scene): void {
     const meta = index[species];
     for (const [anim, m] of Object.entries(meta.anims) as [PmdAnim, AnimMeta][]) {
       const key = `pmd:${k}:${anim}`;
-      if (scene.textures.exists(key)) continue;
+      if (scene.textures.exists(key) || (s && meta.shinySkip?.includes(anim))) continue;
       scene.load.spritesheet(key, `assets/pmd/${species}/${s ? 'shiny/' : ''}${anim}.png`, { frameWidth: m.w, frameHeight: m.h });
     }
   }
   scene.load.once('complete', () => {
     for (const k of batch) {
-      const [species] = k.split(':');
+      const [species, s] = k.split(':');
       const meta = index[species];
       let ok = true;
       for (const [anim, m] of Object.entries(meta.anims) as [PmdAnim, AnimMeta][]) {
         const key = `pmd:${k}:${anim}`;
+        if (s && meta.shinySkip?.includes(anim)) continue;
         if (!scene.textures.exists(key)) { ok = anim !== 'Walk' && anim !== 'Idle' && ok; continue; }
         const source = scene.textures.get(key).getSourceImage();
         // Some local shiny sheets do not match the normal AnimData geometry.
@@ -108,6 +110,12 @@ export function pumpPmd(scene: Phaser.Scene): void {
         }
       }
       state.set(k, ok ? 'ready' : 'failed');
+      // a shiny whose Walk / Idle sheets are unusable keeps its real animations: drawn with the normal sheets
+      // (id() then resolves the shiny to the normal key, which loads on the next pmdReady)
+      if (!ok && s) {
+        meta.shiny = false;
+        console.warn(`[overworld] PMD shiny sheets of ${species} unusable; using the normal sheets`);
+      }
     }
   });
   scene.load.start();

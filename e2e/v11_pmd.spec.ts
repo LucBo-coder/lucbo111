@@ -47,3 +47,25 @@ test('PMD pack: 8-direction animations in the field, shiny sheets, walking turns
   expect(dirs.size).toBeGreaterThanOrEqual(3);
   expect(errors).toEqual([]);
 });
+
+// Repaired sheets (scripts/fetch-pmd-missing.py): species whose sheets did not match their geometry lost every
+// animation; a shiny with unusable Walk / Idle sheets now animates with the normal sheets instead of the static icon.
+test('PMD pack: repaired species animate, a shiny without usable sheets falls back to the normal sheets', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = [], warns: string[] = [];
+  page.on('pageerror', (e) => errors.push(String(e)));
+  page.on('console', (m) => { if (m.type() === 'warning' && m.text().includes('Invalid PMD geometry')) warns.push(m.text()); });
+  await page.goto('/?debug');
+  await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
+  await ev(page, `void window.__phaser.scene.getScene('Menu').startAdventure(true, 1, 'vietnam')`);
+  await page.waitForFunction(() => (window as Win).__adv?.world && (window as Win).__phaser.scene.isActive('AdvUI'), undefined, { timeout: 20_000 });
+  const list = [['victini', false], ['meowscarada', false], ['sirfetchd', false], ['copperajah', false], ['pidgey', true], ['reshiram', true], ['dewott', true], ['marshadow', true]];
+  await ev(page, `(() => { const a = window.__adv, w = a.world, t = w.trainer; t.maxHp = t.hp = 1e6; w.teleport(72 * 48, 92 * 48);
+    ${JSON.stringify(list)}.forEach(([s, sh], i) => { const u = w.spawnWild(s, 20, t.x - 300 + (i % 4) * 160, t.y - 170 + Math.floor(i / 4) * 330, {}); u.shiny = sh; if (u.wild) u.wild.mode = 'idle'; }); })()`);
+  // repaired sheets play; dewott / marshadow shinies use the normal sheets (no ':s:')
+  const want = [/^pmd:victini:/, /^pmd:meowscarada:/, /^pmd:sirfetchd:/, /^pmd:copperajah:/, /^pmd:pidgey:s:/, /^pmd:reshiram:s:/, /^pmd:dewott:(?!s:)/, /^pmd:marshadow:(?!s:)/];
+  const keys = () => ev<string[]>(page, `(() => { const a = window.__adv; return a.world.enemies.filter(e => e.alive).map(e => a.renderer_.views.get(e.id)?.body.texture.key ?? 'none'); })()`);
+  await expect.poll(async () => { const k = await keys(); return want.filter((r) => !k.some((x) => r.test(x))).map(String); }, { timeout: 30_000 }).toEqual([]);
+  expect(warns).toEqual([]);
+  expect(errors).toEqual([]);
+});

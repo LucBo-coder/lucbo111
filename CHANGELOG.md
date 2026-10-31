@@ -1,5 +1,11 @@
 # Changelog
 
+## Chưa phát hành — Sửa hoạt ảnh Pokémon (gói PMD cá nhân)
+
+- **Script mới `scripts/fetch-pmd-missing.py`**: tải từ PMDCollab SpriteCollab các loài còn thiếu trong gói hoạt ảnh, và tải lại những loài có sheet lệch kích thước khung (sheet lệch bị game từ chối nên loài đó mất hoạt ảnh). Kết quả trên máy: thêm 6 loài (Jellicent, Rolycoly, Sirfetch'd, Copperajah, Toedscool, Pecharunt), sửa 32 loài (Victini, Meowscarada và 30 sheet shiny). 55 loài SpriteCollab chưa vẽ vẫn dùng ảnh chính thức có hoạt ảnh dựng bằng code.
+- **Shiny không có sheet dùng được** (Dewott, Archen, Minior, Marshadow, Mega Charizard X…) giờ vẫn có hoạt ảnh 8 hướng bằng sheet thường, thay vì hiện icon tĩnh. Hoạt ảnh shiny bị thiếu lẻ (`shinySkip`, ví dụ Faint) không còn được tải.
+- e2e `v11_pmd` thêm trường hợp kiểm tra các loài vừa sửa.
+
 ## Chưa phát hành — V28: Phố cổ phương Đông
 
 - **Thành phố trung tâm của 36 tỉnh Việt Nam Odyssey thành phố cổ phương Đông**: nhà mái ngói cong có đầu đao vút, bờ nóc, cột sơn son, cửa bức bàn sơn đỏ đinh vàng, song cửa giấy, nền đá và đèn lồng đỏ trước cửa. Có 4 màu ngói: đỏ nâu, xám xanh, vàng lưu ly, men xanh. Trung tâm Pokémon và cửa hàng có hoành phi (Poké Ball / túi hàng) trên cửa; đình, chùa, bảo tàng, Văn Miếu dùng mái chồng diêm hai tầng với "lưỡng long chầu nguyệt" trên nóc. Toàn bộ hình vẽ bằng code (`src/render/orientalArt.ts`), không dùng asset bên ngoài.
