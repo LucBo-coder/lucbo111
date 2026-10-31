@@ -252,3 +252,31 @@ describe('World boss: Mega Venusaur', () => {
     expect(hitBySun).toBe(false);
   });
 });
+
+describe('evolution guide for players', () => {
+  it('explains every way in and out in Vietnamese, with no raw ids or duplicate routes', async () => {
+    const { evolutionGuide } = await import('../src/core/evolution');
+    const eevee = evolutionGuide('eevee').next;
+    // Glaceon: only the Ice Stone route, the five real-world caves are dropped
+    expect(eevee.filter((e) => e.to === 'glaceon').map((e) => e.unsupported)).toEqual([null]);
+    // Sylveon: friendship 160 and 220 variants collapse to the easier one
+    expect(eevee.filter((e) => e.to === 'sylveon').map((e) => e.line)).toEqual([expect.stringContaining('160')]);
+    expect(eevee.find((e) => e.to === 'espeon')!.tips.join(' ')).toMatch(/Thân thiết tăng.*ban ngày/s);
+    const steelix = evolutionGuide('onix').next[0];
+    expect(steelix.line).toMatch(/Dây Liên Kết.*Metal Coat/);
+    expect(steelix.tips.join(' ')).toMatch(/Trang bị/);
+    expect(evolutionGuide('piloswine').next[0].line).toContain('Ancient Power');
+    expect(evolutionGuide('pikachu').prev.map((e) => e.from)).toEqual(['pichu']);
+    expect(evolutionGuide('charizard')).toEqual({ prev: [expect.objectContaining({ from: 'charmeleon' })], next: [] });
+  });
+});
+
+describe('move-based evolutions are reachable', () => {
+  it('a species whose evolution needs a known move (or move type) carries it in its kit', async () => {
+    const { evolutionGuide } = await import('../src/core/evolution');
+    const stuck = [...POKEMON.values()].filter((p) => !p.mega)
+      .flatMap((p) => evolutionGuide(p.id).next.filter((e) => !e.unsupported && e.tips.some((t) => t.startsWith('Bộ chiêu'))).map((e) => e.line));
+    expect(stuck).toEqual([]);
+    expect(evolutionGuide('piloswine').next[0].tips.join(' ')).toMatch(/Ancient Power mở khóa ở Lv\d+/);
+  });
+});

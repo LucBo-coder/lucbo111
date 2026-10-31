@@ -1,6 +1,9 @@
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import itemsJson from '../data/items.json';
 import { POKEMON, SKILLS } from './data';
+import { skillUnlockLevel } from './learnset';
+import { TYPE_VI } from './synergy';
+import type { PokeType } from './types';
 
 // EvolutionRuleEngine. Every PokéAPI `evolution_details` entry is one rule; each condition field is
 // checked by its own evaluator, so adding a condition never means touching a big if/else.
@@ -59,8 +62,22 @@ export const LOCATION_HABITAT: Record<string, string> = {
   'mt-coronet': 'rocky', 'chargestone-cave': 'rocky', 'new-mauville': 'rocky', 'vast-poni-canyon': 'rocky', 'blush-mountain': 'rocky', 'kalos-route-13': 'rocky',
 };
 const HABITAT_NAME: Record<string, string> = { forest: 'vùng rừng', rocky: 'vùng đá' };
-const itemName = (id: string) => ITEM_DEFS.get(id)?.name ?? id;
+/** 'king-s-rock' → 'King S Rock' for ids the game has no name for. */
+const pretty = (id: string) => id.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+const itemName = (id: string) => ITEM_DEFS.get(id)?.name ?? pretty(id);
+const speciesName = (id: string) => POKEMON.get(id)?.name ?? pretty(id);
 const skillApi = (id: string) => id.replace(/_/g, '-');
+const skillOfApi = (api: string) => [...SKILLS.keys()].find((k) => skillApi(k) === api);
+const moveName = (api: string) => { const k = skillOfApi(api); return k ? SKILLS.get(k)!.name : pretty(api); };
+const typeName = (t: string) => TYPE_VI[t as PokeType] ?? t;
+/** PokéAPI triggers this real-time game has no equivalent for. */
+const TRIGGER_VI: Record<string, string> = {
+  'use-move': 'dùng một chiêu nhiều lần', 'three-critical-hits': 'chí mạng 3 lần trong một trận', shed: 'lột xác khi tiến hóa Nincada',
+  'strong-style-move': 'dùng chiêu kiểu Mạnh', 'agile-style-move': 'dùng chiêu kiểu Nhanh', 'recoil-damage': 'chịu sát thương phản lực',
+  'take-damage': 'chịu sát thương rồi đi qua cổng đá', 'three-defeated-bisharp': 'hạ 3 Bisharp cầm Leader’s Crest', 'meltan-candies': 'kẹo Meltan',
+  spin: 'xoay tròn khi cầm đồ ngọt', 'tower-of-darkness': 'Tháp Bóng Tối', 'tower-of-waters': 'Tháp Nước', 'in-battle-level-up': 'lên cấp trong trận',
+  'gimmighoul-coins': 'gom 999 đồng xu Gimmighoul', unknown: 'không rõ', other: 'đặc biệt',
+};
 
 interface Evaluator {
   applies(r: EvoRule): boolean;
@@ -79,19 +96,19 @@ const EVALUATORS: Evaluator[] = [
     text: (r) => (r.timeOfDay === 'day' ? 'ban ngày' : 'ban đêm'),
   },
   {
-    applies: (r) => !!r.heldItem, unsupported: (r) => (ITEM_DEFS.has(r.heldItem!) ? null : `Cần cầm ${r.heldItem} (chưa có trong game)`),
+    applies: (r) => !!r.heldItem, unsupported: (r) => (ITEM_DEFS.has(r.heldItem!) ? null : `Cần cầm ${itemName(r.heldItem!)} (chưa có trong game)`),
     ok: (r, c) => c.heldItem === r.heldItem, text: (r) => `cầm ${itemName(r.heldItem!)}`,
   },
   {
-    applies: (r) => !!r.knownMove, unsupported: (r) => ([...SKILLS.keys()].some((k) => skillApi(k) === r.knownMove) ? null : `Cần chiêu ${r.knownMove} (chưa có trong game)`),
-    ok: (r, c) => (c.knownSkills ?? []).some((k) => skillApi(k) === r.knownMove), text: (r) => `biết chiêu ${r.knownMove}`,
+    applies: (r) => !!r.knownMove, unsupported: (r) => ([...SKILLS.keys()].some((k) => skillApi(k) === r.knownMove) ? null : `Cần chiêu ${moveName(r.knownMove!)} (chưa có trong game)`),
+    ok: (r, c) => (c.knownSkills ?? []).some((k) => skillApi(k) === r.knownMove), text: (r) => `biết chiêu ${moveName(r.knownMove!)}`,
   },
   {
     applies: (r) => !!r.knownMoveType, ok: (r, c) => (c.knownSkills ?? []).some((k) => SKILLS.get(k)?.type === r.knownMoveType),
-    text: (r) => `biết chiêu hệ ${r.knownMoveType}`,
+    text: (r) => `biết chiêu hệ ${typeName(r.knownMoveType!)}`,
   },
   {
-    applies: (r) => !!r.location, unsupported: (r) => (LOCATION_HABITAT[r.location!] ? null : `Cần địa điểm ${r.location} (chưa có vùng tương ứng)`),
+    applies: (r) => !!r.location, unsupported: (r) => (LOCATION_HABITAT[r.location!] ? null : `Cần địa điểm ${pretty(r.location!)} (chưa có vùng tương ứng)`),
     ok: (r, c) => c.habitat === LOCATION_HABITAT[r.location!], text: (r) => `lên cấp ở ${HABITAT_NAME[LOCATION_HABITAT[r.location!]] ?? r.location}`,
   },
   { applies: (r) => !!r.needsRain, ok: (_r, c) => !!c.raining, text: () => 'khi trời mưa' },
@@ -124,12 +141,12 @@ function toOption(e: EvoRule): EvolutionOption {
   const item = isTrade ? 'linking-cord' : e.item;
   const active = EVALUATORS.filter((ev) => ev.applies(e));
   let unsupported: string | null = null;
-  if (trigger === 'other') unsupported = `Điều kiện "${e.trigger}" chưa hỗ trợ`;
+  if (trigger === 'other') unsupported = `Cần ${TRIGGER_VI[e.trigger] ?? e.trigger} — chưa hỗ trợ trong game`;
   for (const ev of active) unsupported = unsupported ?? ev.unsupported?.(e) ?? null;
-  if (!unsupported && trigger === 'use-item' && item && !ITEM_DEFS.has(item)) unsupported = `Cần ${item} (chưa có trong game)`;
+  if (!unsupported && trigger === 'use-item' && item && !ITEM_DEFS.has(item)) unsupported = `Cần ${itemName(item)} (chưa có trong game)`;
   if (!unsupported && trigger === 'level-up' && !active.length) unsupported = 'Cần điều kiện đặc biệt — chưa hỗ trợ';
-  if (!unsupported && !POKEMON.has(e.to)) unsupported = `${e.to} chưa có trong game`;
-  const conditions = [...(trigger === 'use-item' ? [`dùng ${itemName(item!)}`] : []), ...active.map((ev) => ev.text(e))];
+  if (!unsupported && !POKEMON.has(e.to)) unsupported = `${speciesName(e.to)} chưa có trong game`;
+  const conditions = [...(trigger === 'use-item' ? [isTrade ? `dùng ${itemName(item!)} — thay cho trao đổi` : `dùng ${itemName(item!)}`] : []), ...active.map((ev) => ev.text(e))];
   return { to: e.to, trigger, minLevel: e.minLevel, item, rule: e, conditions, unsupported };
 }
 
@@ -198,6 +215,76 @@ export function evolutionLine(species: string): string[] {
     cur = next.to;
   }
   return line;
+}
+
+// ───────────────────────────── player guide ─────────────────────────────
+
+/** One evolution explained for the player: what is needed and how to get it. */
+export interface EvoGuideStep {
+  from: string; to: string;
+  /** e.g. "Pikachu → Raichu: dùng Thunder Stone" */
+  line: string;
+  /** How to meet each condition in this game */
+  tips: string[];
+  unsupported: string | null;
+  option: EvolutionOption;
+}
+
+function tipsFor(o: EvolutionOption, from: string): string[] {
+  const r = o.rule, tips: string[] = [];
+  if (o.trigger === 'use-item' && o.item) {
+    tips.push(o.item === 'linking-cord'
+      ? 'Dây Liên Kết thay cho trao đổi: mua ở cửa hàng (kệ Tiến hóa) rồi dùng từ Túi'
+      : `Mua ${itemName(o.item)} ở cửa hàng (kệ Tiến hóa) rồi dùng từ Túi lên Pokémon`);
+  }
+  if (r.heldItem) tips.push(`Cho cầm ${itemName(r.heldItem)} bằng nút Trang bị${o.trigger === 'use-item' ? ' trước khi dùng Dây Liên Kết' : ''} — vật phẩm sẽ mất khi tiến hóa`);
+  if (r.minHappiness != null || r.minAffection != null) tips.push('Thân thiết tăng khi lên cấp, cùng chiến đấu, ăn quả giảm EV');
+  if (r.timeOfDay) tips.push(`Chỉ ${r.timeOfDay === 'day' ? 'ban ngày' : 'ban đêm'} — xem đồng hồ trên HUD`);
+  if (r.knownMove) {
+    const k = skillOfApi(r.knownMove), slot = k ? POKEMON.get(from)?.skills.indexOf(k) ?? -1 : -1;
+    tips.push(slot >= 0 ? `${moveName(r.knownMove)} mở khóa ở Lv${skillUnlockLevel(from, slot)}` : `Bộ chiêu của loài này chưa có ${moveName(r.knownMove)}`);
+  }
+  if (r.knownMoveType) {
+    const slots = (POKEMON.get(from)?.skills ?? []).map((k, i) => [k, i] as const).filter(([k]) => SKILLS.get(k)?.type === r.knownMoveType);
+    tips.push(slots.length ? `Chiêu hệ ${typeName(r.knownMoveType)} đầu tiên mở khóa ở Lv${Math.min(...slots.map(([, i]) => skillUnlockLevel(from, i)))}` : `Bộ chiêu của loài này chưa có chiêu hệ ${typeName(r.knownMoveType)}`);
+  }
+  if (r.needsRain) tips.push('Lên cấp khi trời đang mưa trên bản đồ');
+  if (r.location && LOCATION_HABITAT[r.location]) tips.push(`Lên cấp khi đang đứng trong ${HABITAT_NAME[LOCATION_HABITAT[r.location]]}`);
+  if (r.relativeStats != null) tips.push('So Tấn công với Phòng thủ ở bảng chỉ số (Tính cách, IV, EV đều ảnh hưởng)');
+  if (o.trigger === 'level-up' && (r.minLevel == null || tips.length)) tips.push('Đủ điều kiện rồi lên thêm 1 cấp (Kẹo EXP cũng được)');
+  return tips;
+}
+
+function stepOf(from: string, o: EvolutionOption): EvoGuideStep {
+  const head = `${speciesName(from)} → ${speciesName(o.to)}`;
+  return o.unsupported
+    ? { from, to: o.to, line: `${head}: ${o.unsupported}`, tips: [], unsupported: o.unsupported, option: o }
+    : { from, to: o.to, line: `${head}: ${o.conditions.join(' + ')}`, tips: tipsFor(o, from), unsupported: null, option: o };
+}
+
+/** How the species is reached (`prev`) and what it can become (`next`), in plain Vietnamese. */
+export function evolutionGuide(species: string): { prev: EvoGuideStep[]; next: EvoGuideStep[] } {
+  const prev: EvoGuideStep[] = [];
+  for (const sp of Object.keys(SPECIES)) prev.push(...tidy(evolutionsOf(sp).filter((o) => o.to === species).map((o) => stepOf(sp, o))));
+  return { prev, next: tidy(evolutionsOf(species).map((o) => stepOf(species, o))) };
+}
+
+/**
+ * One readable entry per way to evolve: unsupported variants are dropped when the target is reachable
+ * another way (Glaceon: Ice Stone vs five real-world caves), and variants that differ only by a number
+ * keep the easiest (Sylveon: friendship 160 vs 220).
+ */
+function tidy(steps: EvoGuideStep[]): EvoGuideStep[] {
+  const ok = new Set(steps.filter((x) => !x.unsupported).map((x) => x.to));
+  const best = new Map<string, EvoGuideStep>();
+  const sum = (x: EvoGuideStep) => (x.line.match(/\d+/g) ?? []).reduce((a, n) => a + Number(n), 0);
+  for (const x of steps) {
+    if (x.unsupported && ok.has(x.to)) continue;
+    const key = x.unsupported ? x.to : x.to + '|' + x.line.replace(/\d+/g, '#');
+    const cur = best.get(key);
+    if (!cur || sum(x) < sum(cur)) best.set(key, x);
+  }
+  return [...best.values()];
 }
 
 // ───────────────────────────── Mega ─────────────────────────────

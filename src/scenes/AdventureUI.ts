@@ -19,7 +19,7 @@ import { chunkCols, chunkRows } from '../core/map/mapProvider';
 import { TILE_PX } from '../core/map/tiles';
 import { levelProgress, OwnedPokemon } from '../core/progression';
 import { CANDY_DEFS, candyDef, maxUsefulCandy, previewCandy } from '../core/candy';
-import { evolutionsOf, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions } from '../core/evolution';
+import { evolutionGuide, type EvolutionOption, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions } from '../core/evolution';
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
 import { rareRows, type RareRow } from '../core/ecologyRules';
@@ -1356,16 +1356,21 @@ export class AdventureUI extends Phaser.Scene {
     c.add(text(this, r.x + 14 * s, r.y + r.h - 58 * s, api?.flavorText ?? '', 14 * s, '#a8b0c8').setWordWrapWidth(r.w - 28 * s));
     // Equipment & evolution
     const held = p.held ? ITEM_DEFS.get(p.held) : undefined;
-    const ctx = st.evoContext(p.uid, this.adv.evoEnv());
-    const evo = evolutionsOf(p.species).map((e) => {
+    const steps = evolutionGuide(p.species).next;
+    const full = steps.map((e) => {
       const to = POKEMON.get(e.to)?.name ?? e.to;
       if (e.unsupported) return `${to}: ${e.unsupported}`;
-      const miss = ctx ? missingConditions(e, ctx) : [];
-      return `${to}: ${e.conditions.join(' + ')}${miss.length ? ` (còn thiếu: ${miss.join(', ')})` : ' ✓'}`;
-    });
+      const miss = this.evoMissing(e.option, p.uid);
+      return `${to}: ${e.option.conditions.join(' + ')}${miss.length ? ` (còn thiếu: ${miss.join(', ')})` : ' ✓'}`;
+    }).join(' · ');
+    // many branches (Eevee) don't fit two lines: list the targets, the dialogue has the details
+    const ready = new Set(steps.filter((e) => !e.unsupported && !this.evoMissing(e.option, p.uid).length).map((e) => e.to));
+    const evo = full.length <= 110 ? full : [...new Set(steps.filter((e) => !e.unsupported).map((e) => e.to))].map((to) => `${POKEMON.get(to)?.name ?? to}${ready.has(to) ? ' ✓' : ''}`).join(', ');
     const megas = megaFormsOf(p.species).map((m) => `${POKEMON.get(m.form)?.name} (cầm ${ITEM_DEFS.get(m.stone)?.name})`);
     c.add(text(this, r.x + 14 * s, r.y + r.h - 128 * s, `Trang bị: ${held ? held.name : 'không có'}`, 16 * s, held ? '#ffe080' : COLORS.dim));
-    c.add(text(this, r.x + 14 * s, r.y + r.h - 98 * s, `Tiến hóa: ${evo.length ? evo.join(' · ') : 'dạng cuối'}${megas.length ? '   ·   Mega: ' + megas.join(', ') : ''}`, 14 * s, '#a0ffb0').setWordWrapWidth(r.w - 28 * s));
+    const evoLine = text(this, r.x + 14 * s, r.y + r.h - 98 * s, `Tiến hóa: ${evo || 'dạng cuối'}${megas.length ? '   ·   Mega: ' + megas.join(', ') : ''}${steps.length ? '   ▸ chạm để xem cách tiến hóa' : ''}`, 14 * s, '#a0ffb0').setWordWrapWidth(r.w - 28 * s);
+    c.add(evoLine);
+    if (steps.length) evoLine.setInteractive({ useHandCursor: true }).on('pointerup', () => void this.showEvoGuide(p.species, 'party', p.uid));
     c.add(button(this, r.x + r.w - 270 * s, r.y + r.h - 116 * s, 86 * s, 32 * s, 'Dùng kẹo', () => void this.pickCandy(p.uid)).container);
     c.add(button(this, r.x + r.w - 160 * s, r.y + r.h - 116 * s, 120 * s, 32 * s, 'Trang bị', () => void this.pickEquip(p.uid)).container);
     if (p.held) c.add(button(this, r.x + r.w - 60 * s, r.y + r.h - 116 * s, 80 * s, 32 * s, 'Gỡ', () => { this.adv.unequipItem(p.uid); this.openMenu('party'); }, 0x6a3a2f).container);
@@ -1376,6 +1381,35 @@ export class AdventureUI extends Phaser.Scene {
       this.adv.persist();
       this.openMenu('party');
     }, inParty ? 0x6a3a2f : 0x2f6a3a).container);
+  }
+
+  /**
+   * Every way into / out of a species, one dialogue page each: the conditions, what this individual
+   * still lacks (when opened from the party / PC) and how to meet each condition in this game.
+   */
+  /** Conditions this individual still lacks, counting the stone / Linking Cord it would need in the bag. */
+  private evoMissing(o: EvolutionOption, uid: string): string[] {
+    const ctx = this.adv.state.evoContext(uid, this.adv.evoEnv());
+    if (!ctx) return [];
+    const miss = missingConditions(o, ctx);
+    if (o.trigger === 'use-item' && o.item && this.adv.state.item(o.item) <= 0) miss.unshift(`${ITEM_DEFS.get(o.item)?.name ?? o.item} trong Túi`);
+    return miss;
+  }
+
+  private async showEvoGuide(species: string, back: MenuTab, uid?: string): Promise<void> {
+    const g = evolutionGuide(species);
+    // two pages per route (conditions, then how-to) so a page never outgrows the dialogue box
+    const pages = g.next.flatMap((e) => {
+      if (e.unsupported) return [`${e.line}\nNhánh này chưa thể tiến hóa trong game.`];
+      const miss = uid ? this.evoMissing(e.option, uid) : [];
+      const status = !uid ? '' : miss.length ? `\nCòn thiếu: ${miss.join(', ')}` : '\n✓ Đã đủ điều kiện';
+      return [`${e.line}${status}`, ...(e.tips.length ? [`Cách đạt (${POKEMON.get(e.to)?.name ?? e.to}):${e.tips.map((t) => '\n• ' + t).join('')}`] : [])];
+    });
+    if (g.prev.length) pages.unshift(`Tiến hóa từ:\n${g.prev.map((e) => '• ' + e.line).join('\n')}`);
+    if (!pages.length) pages.push(`${POKEMON.get(species)?.name ?? species} là dạng cuối, không tiến hóa thêm.`);
+    this.closeMenu();
+    await this.adv.say(`Cách tiến hóa — ${POKEMON.get(species)?.name ?? species}`, pages);
+    this.openMenu(back);
   }
 
   private async pickEquip(uid: string): Promise<void> {
@@ -1628,9 +1662,17 @@ export class AdventureUI extends Phaser.Scene {
       c.add(text(this, dx + 16 * s, y, ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'][i] + ' ' + sel.baseStats[k], 15 * s));
       bar(g, dx + 100 * s, y + 6 * s, dw - 130 * s, 6 * s, sel.baseStats[k] / 160, 0x60c0ff);
     });
-    const evo = sel.evolutions.map((e) => `${e.from} → ${e.to}${e.minLevel ? ' (Lv' + e.minLevel + ')' : ''}`).join(',  ');
+    const guide = evolutionGuide(sel.name);
+    const names = (xs: typeof guide.next) => [...new Set(xs.filter((e) => !e.unsupported).map((e) => POKEMON.get(e.to)?.name ?? e.to))].join(', ');
+    // more than four routes (Eevee) would push everything off the panel: name the targets, the dialogue explains
+    const evo = guide.prev.length + guide.next.length <= 4
+      ? [...guide.prev, ...guide.next].map((e) => '• ' + e.line).join('\n')
+      : [...guide.prev.map((e) => '• ' + e.line), `• Tiến hóa thành ${names(guide.next)} — bấm «Cách tiến hóa» để xem điều kiện`].join('\n');
     const megaForms = megaFormsOf(sel.name).map((m) => `${POKEMON.get(m.form)?.name} (${POKEMON.get(m.form)?.types.join('/')})`);
-    c.add(text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa: ${evo || 'không có'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s));
+    const evoText = text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa:${evo ? '\n' + evo : ' không tiến hóa'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s);
+    c.add(evoText);
+    // rows below follow the evolution block, which grows with branches (Eevee has eight)
+    let ny = Math.max(dy + 322 * s, evoText.y + evoText.height + 8 * s);
     // Encounter info (V3 §4.3): habitat, rarity, time, weather, method — never an exact position
     const eco = ECOLOGY.get(sel.name);
     if (eco) {
@@ -1642,9 +1684,12 @@ export class AdventureUI extends Phaser.Scene {
         ? `Huyền thoại · ${method}${leg.time ? ' · ' + (leg.time === 'night' ? 'ban đêm' : leg.time === 'dawn' ? 'bình minh' : 'ban ngày') : ''}${investigationLine(sel.name, (f) => this.adv.state.hasFlag(f))}${caught.has(sel.name) ? '\n' + leg.lore : ''}`
         : `Môi trường: ${eco.biomes.map((b) => BIOME_VI[b] ?? b).join(', ')} · Độ hiếm: ${RARITY_LABEL[eco.rarity]} · ${eco.time === 'night' ? 'Ban đêm' : 'Mọi lúc'}${prefer ? ' · Ưa: ' + prefer : ''}\nCách gặp: ${method}${eco.minLevel > 1 ? ` (từ Lv${eco.minLevel})` : ''}${sv.pokedex.shiny?.includes(sel.name) ? '  ·  ✦ Đã bắt Shiny' : ''}`
           + this.rareRowsOf(sel.name).map((x) => `\n✦ Điều kiện hiếm: ${x.where} · ${x.when} · ${x.weather}`).join('');
-      c.add(text(this, dx + 16 * s, dy + 322 * s, info, 14 * s, '#f0d8ff').setWordWrapWidth(dw - 32 * s));
+      const infoText = text(this, dx + 16 * s, ny, info, 14 * s, '#f0d8ff').setWordWrapWidth(dw - 32 * s);
+      if (ny + infoText.height <= r.y + r.h - 76 * s) { c.add(infoText); ny = Math.max(dy + 372 * s, ny + infoText.height + 8 * s); } else infoText.destroy();
     }
-    c.add(text(this, dx + 16 * s, dy + 372 * s, sel.flavorText, 16 * s, '#e0e4f0').setWordWrapWidth(dw - 32 * s));
+    // the flavour text is the first thing to go when a long evolution tree leaves no room
+    if (ny + 40 * s < r.y + r.h - 76 * s) c.add(text(this, dx + 16 * s, ny, sel.flavorText, 16 * s, '#e0e4f0').setWordWrapWidth(dw - 32 * s));
+    if (guide.prev.length || guide.next.length) c.add(button(this, dx + dw - 290 * s, r.y + r.h - 40 * s, 180 * s, 36 * s, 'Cách tiến hóa', () => void this.showEvoGuide(sel.name, 'dex'), 0x2f5a3a).container);
     c.add(text(this, dx + 16 * s, r.y + r.h - 70 * s, this.dexStatus || 'Dữ liệu từ PokéAPI (cache cục bộ).', 14 * s, COLORS.dim).setWordWrapWidth(dw - 220 * s));
     c.add(button(this, dx + dw - 100 * s, r.y + r.h - 40 * s, 180 * s, 36 * s, 'Làm mới PokéAPI', () => {
       this.dexStatus = 'Đang kết nối pokeapi.co...';
