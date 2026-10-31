@@ -4502,5 +4502,120 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "vn-pt-nghialinh",
+  "name": "Núi Nghĩa Lĩnh — Đền Hùng",
+  "areas": [
+   "pt-nghialinh"
+  ],
+  "biome": "rocky",
+  "level": [
+   95,
+   98
+  ],
+  "elite": [
+   99,
+   101
+  ],
+  "boss": null,
+  "recommended": 97,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-pt-bachhac",
+  "name": "Ngã ba Bạch Hạc",
+  "areas": [
+   "pt-bachhac"
+  ],
+  "biome": "lake",
+  "level": [
+   94,
+   97
+  ],
+  "elite": [
+   98,
+   100
+  ],
+  "boss": null,
+  "recommended": 96,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-pt-xuanson",
+  "name": "Vườn quốc gia Xuân Sơn",
+  "areas": [
+   "pt-xuanson"
+  ],
+  "biome": "forest",
+  "level": [
+   92,
+   95
+  ],
+  "elite": [
+   96,
+   98
+  ],
+  "boss": null,
+  "recommended": 94,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-pt-longcoc",
+  "name": "Đồi chè Long Cốc",
+  "areas": [
+   "pt-longcoc"
+  ],
+  "biome": "farm",
+  "level": [
+   92,
+   95
+  ],
+  "elite": [
+   96,
+   98
+  ],
+  "boss": null,
+  "recommended": 94,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
+ },
+ {
+  "id": "vn-pt-tamdao",
+  "name": "Núi Tam Đảo",
+  "areas": [
+   "pt-tamdao"
+  ],
+  "biome": "rocky",
+  "level": [
+   93,
+   96
+  ],
+  "elite": [
+   97,
+   99
+  ],
+  "boss": null,
+  "recommended": 95,
+  "danger": 4,
+  "unlock": null,
+  "excludeTypes": [
+   "ice"
+  ]
  }
 ]

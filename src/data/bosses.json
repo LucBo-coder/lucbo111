@@ -2328,5 +2328,59 @@
    "ultimateStyle": "storm",
    "power": 0.33
   }
+ },
+ {
+  "id": "gyarados",
+  "name": "Gyarados — Thủy Tinh Nổi Giận",
+  "types": [
+   "water",
+   "flying"
+  ],
+  "baseStats": {
+   "hp": 95,
+   "atk": 125,
+   "def": 79,
+   "spa": 60,
+   "spd": 100,
+   "spe": 81
+  },
+  "hpMult": 40,
+  "moveSpeed": 70,
+  "radius": 32,
+  "contactPower": 40,
+  "segments": 0,
+  "skills": [
+   "waterfall",
+   "crunch"
+  ],
+  "phase2Threshold": 0.5,
+  "phase2Summon": {
+   "enemy": "magikarp",
+   "count": 2
+  },
+  "phase3Threshold": 0.25,
+  "phase3Banner": "Thủy Tinh dâng nước — sóng dữ đánh tận chân núi Nghĩa Lĩnh!",
+  "exp": 150,
+  "sprite": "gyarados",
+  "ai": "legendary",
+  "scale": 3.2,
+  "survivor": false,
+  "capture": false,
+  "legend": {
+   "beam": "hydro_pump",
+   "volley": "water_pulse",
+   "nova": "surf",
+   "field": "whirlpool",
+   "fieldStatus": {
+    "kind": "slow",
+    "chance": 0.5,
+    "duration": 2,
+    "magnitude": 0.3
+   },
+   "ultimate": "thrash",
+   "ultimateName": "Thủy Tinh Dâng Nước",
+   "ultimateStyle": "storm",
+   "power": 0.33
+  }
  }
 ]

@@ -1212,6 +1212,52 @@
     }
    ]
   },
+  "phu-tho": {
+   "id": "phu-tho",
+   "name": "Phú Thọ",
+   "area": "pt-bachhac",
+   "action": "trash",
+   "unlock": "vn-pt-3",
+   "boss": "gyarados",
+   "label": "Vớt rác ở ngã ba sông",
+   "done": "Bạn vớt chai nhựa và túi nilon nước lũ đánh dạt vào bờ. Ngã ba Bạch Hạc trong lại.",
+   "thrivingReward": {
+    "mystic-water": 1,
+    "ultraball": 2
+   },
+   "sites": [
+    {
+     "id": "phu-tho-1",
+     "x": 73,
+     "y": 23
+    },
+    {
+     "id": "phu-tho-2",
+     "x": 69,
+     "y": 6
+    },
+    {
+     "id": "phu-tho-3",
+     "x": 83,
+     "y": 7
+    },
+    {
+     "id": "phu-tho-4",
+     "x": 59,
+     "y": 19
+    },
+    {
+     "id": "phu-tho-5",
+     "x": 88,
+     "y": 20
+    },
+    {
+     "id": "phu-tho-6",
+     "x": 58,
+     "y": 9
+    }
+   ]
+  },
   "quang-ngai": {
    "id": "quang-ngai",
    "name": "Quảng Ngãi",

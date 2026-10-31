@@ -18923,5 +18923,545 @@
     "Hồ trong veo rồi! Cảm ơn em."
    ]
   }
+ },
+ {
+  "id": "vn-pt-1",
+  "kind": "main",
+  "title": "Nước dâng chân núi",
+  "giver": "pt-guide",
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:son-la"
+  ],
+  "description": "Về Đất Tổ: ghé Trung tâm Pokémon rồi lên núi Nghĩa Lĩnh hỏi cụ thủ từ Đền Hùng.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "wp-phu-tho-center",
+    "count": 1,
+    "text": "Kích hoạt trạm Trung tâm Pokémon Việt Trì",
+    "marker": {
+     "x": 45,
+     "y": 47,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "explore",
+    "target": "pt-nghialinh",
+    "count": 1,
+    "text": "Lên núi Nghĩa Lĩnh (phía tây bắc)",
+    "marker": {
+     "x": 22,
+     "y": 22,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-elder",
+    "count": 1,
+    "text": "Hỏi Cụ thủ từ Đền Hùng",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2
+   },
+   "worldExp": 2500,
+   "reputation": 10,
+   "flags": [
+    "landmark:den-hung"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Chào mừng về Đất Tổ! Em ghé Trung tâm Pokémon trước nha.",
+    "Rồi lên Đền Hùng hỏi cụ thủ từ, nước sông dâng tận chân núi mấy hôm rồi."
+   ],
+   "progress": [
+    "Núi Nghĩa Lĩnh ở phía tây bắc."
+   ],
+   "complete": [
+    "Cụ kể chuyện Sơn Tinh, Thủy Tinh... Bác lái đò Bạch Hạc và cụ người Mường Xuân Sơn có thể biết thêm."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-2",
+  "kind": "main",
+  "title": "Rồng nước ngã ba sông",
+  "giver": "pt-guide",
+  "requires": [
+   "vn-pt-1"
+  ],
+  "description": "Ra ngã ba Bạch Hạc hỏi bác lái đò, rồi vào Xuân Sơn hỏi cụ người Mường.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "pt-bachhac",
+    "count": 1,
+    "text": "Ra ngã ba Bạch Hạc (phía bắc)",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-river",
+    "count": 1,
+    "text": "Hỏi Bác lái đò Bạch Hạc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-forest",
+    "count": 1,
+    "text": "Hỏi Cụ người Mường Xuân Sơn",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3
+   },
+   "worldExp": 2550,
+   "reputation": 15,
+   "flags": [
+    "landmark:bach-hac"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Bác lái đò thấy bóng rồng nước trên sông. Em ra hỏi, rồi vào Xuân Sơn hỏi thêm."
+   ],
+   "progress": [
+    "Ngã ba sông ở phía bắc, Xuân Sơn ở phía tây."
+   ],
+   "complete": [
+    "Muốn lên đỉnh giúp Sơn Tinh, phải qua lính canh."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-3",
+  "kind": "main",
+  "title": "Thủy Tinh Nổi Giận",
+  "giver": "pt-guide",
+  "requires": [
+   "vn-pt-2"
+  ],
+  "description": "Thắng Lính canh Sơn Tinh để lên núi, rồi làm Gyarados rút nước.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "pt-gate-t",
+    "count": 1,
+    "text": "Thắng Lính canh Sơn Tinh",
+    "marker": {
+     "x": 30,
+     "y": 22,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "boss",
+    "target": "gyarados",
+    "count": 1,
+    "text": "Đánh bại Gyarados — Thủy Tinh Nổi Giận",
+    "marker": {
+     "x": 16,
+     "y": 10,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 3
+   },
+   "worldExp": 2800,
+   "reputation": 20
+  },
+  "dialogue": {
+   "offer": [
+    "Lính canh giữ lối lên đỉnh. Em đủ sức thì lên giúp Sơn Tinh."
+   ],
+   "progress": [
+    "Đỉnh núi ở góc tây bắc."
+   ],
+   "complete": [
+    "Thủy Tinh rút nước về biển rồi! Huy hiệu Đất Tổ là của em."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-rescue",
+  "kind": "side",
+  "title": "Cú rừng mắc lũ",
+  "giver": "pt-elder",
+  "requires": [
+   "vn-pt-1"
+  ],
+  "description": "Một con Noctowl bị bầy kền kền vây ở góc tây núi.",
+  "objectives": [
+   {
+    "type": "rescue",
+    "target": "pt-owl-rescue",
+    "count": 1,
+    "text": "Giải cứu Noctowl ở góc tây núi",
+    "marker": {
+     "x": 8,
+     "y": 40,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-elder",
+    "count": 1,
+    "text": "Báo cho Cụ thủ từ Đền Hùng",
+    "marker": {
+     "x": 34,
+     "y": 30,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "greatball": 3,
+    "superpotion": 2
+   },
+   "worldExp": 2000,
+   "reputation": 25
+  },
+  "dialogue": {
+   "offer": [
+    "Có con cú bị kền kền vây ở góc tây núi. Em giúp cụ!"
+   ],
+   "progress": [
+    "Góc tây núi Nghĩa Lĩnh."
+   ],
+   "complete": [
+    "Cú về rừng rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-birds",
+  "kind": "side",
+  "title": "Chim ngã ba sông",
+  "giver": "pt-river",
+  "requires": [
+   "vn-pt-1"
+  ],
+  "description": "Người bắt chim Bạch Hạc giăng lưới bên sông.",
+  "objectives": [
+   {
+    "type": "trainer",
+    "target": "pt-river-t",
+    "count": 1,
+    "text": "Thắng Người bắt chim Bạch Hạc",
+    "marker": {
+     "x": 94,
+     "y": 24,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-river",
+    "count": 1,
+    "text": "Báo cho Bác lái đò Bạch Hạc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "sharp-beak": 1
+   },
+   "worldExp": 1850,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Anh bắt chim giăng lưới khắp bờ. Em nói chuyện với ảnh giùm bác."
+   ],
+   "progress": [
+    "Anh ấy ở bờ đông sông."
+   ],
+   "complete": [
+    "Ảnh gỡ lưới rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-poacher",
+  "kind": "side",
+  "title": "Rừng Xuân Sơn",
+  "giver": "pt-forest",
+  "requires": [
+   "vn-pt-2"
+  ],
+  "description": "Kẻ săn trộm đặt bẫy trong rừng Xuân Sơn.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "pt-xuanson",
+    "count": 1,
+    "text": "Vào rừng Xuân Sơn (phía tây)",
+    "marker": {
+     "x": 19,
+     "y": 78,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "pt-forest-t",
+    "count": 1,
+    "text": "Thắng Kẻ săn trộm Xuân Sơn",
+    "marker": {
+     "x": 8,
+     "y": 100,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-forest",
+    "count": 1,
+    "text": "Báo cho Cụ người Mường Xuân Sơn",
+    "marker": {
+     "x": 14,
+     "y": 56,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "sitrus-berry": 3,
+    "protein": 1
+   },
+   "worldExp": 1800,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Có đứa đặt bẫy ở góc tây nam rừng. Em đuổi nó đi."
+   ],
+   "progress": [
+    "Góc tây nam rừng."
+   ],
+   "complete": [
+    "Rừng yên rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-waste",
+  "kind": "side",
+  "title": "Suối chè Long Cốc",
+  "giver": "pt-farm",
+  "requires": [
+   "vn-pt-1"
+  ],
+  "description": "Kẻ xả thải xuống suối làm chè héo.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "pt-longcoc",
+    "count": 1,
+    "text": "Đến đồi chè Long Cốc (phía nam)",
+    "marker": {
+     "x": 70,
+     "y": 89,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "pt-farm-t",
+    "count": 1,
+    "text": "Thắng Kẻ xả thải Long Cốc",
+    "marker": {
+     "x": 84,
+     "y": 104,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-farm",
+    "count": 1,
+    "text": "Báo cho Cô hái chè Long Cốc",
+    "marker": {
+     "x": 60,
+     "y": 88,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "poison-barb": 1
+   },
+   "worldExp": 1800,
+   "reputation": 12
+  },
+  "dialogue": {
+   "offer": [
+    "Thằng xả thải làm chè héo cả vạt. Em nói chuyện với nó giùm cô."
+   ],
+   "progress": [
+    "Nó ở góc đông nam đồi chè."
+   ],
+   "complete": [
+    "Nó hứa xây bể lọc rồi. Gói chè này cô tặng em."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-martial",
+  "kind": "side",
+  "title": "Võ Tam Đảo",
+  "giver": "pt-mountain",
+  "requires": [
+   "vn-pt-1"
+  ],
+  "description": "Võ sư Tam Đảo muốn thử sức người lạ.",
+  "objectives": [
+   {
+    "type": "explore",
+    "target": "pt-tamdao",
+    "count": 1,
+    "text": "Lên núi Tam Đảo (phía đông)",
+    "marker": {
+     "x": 114,
+     "y": 55,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "trainer",
+    "target": "pt-mountain-t",
+    "count": 1,
+    "text": "Thắng Võ sư Tam Đảo",
+    "marker": {
+     "x": 118,
+     "y": 90,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-mountain",
+    "count": 1,
+    "text": "Báo cho Chú kiểm lâm Tam Đảo",
+    "marker": {
+     "x": 116,
+     "y": 40,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "superpotion": 2,
+    "protein": 1
+   },
+   "worldExp": 1850,
+   "reputation": 12,
+   "flags": [
+    "landmark:tam-dao"
+   ]
+  },
+  "dialogue": {
+   "offer": [
+    "Ông võ sư ham đấu lắm. Em thử với ông."
+   ],
+   "progress": [
+    "Ông ở phía nam núi."
+   ],
+   "complete": [
+    "Ông võ sư phục em rồi. Cảm ơn em."
+   ]
+  }
+ },
+ {
+  "id": "vn-pt-eco",
+  "kind": "side",
+  "title": "Ba dòng sông trong",
+  "giver": "pt-river",
+  "requires": [
+   "vn-pt-3"
+  ],
+  "description": "Nước lũ của Thủy Tinh đánh dạt rác vào bờ ngã ba sông.",
+  "objectives": [
+   {
+    "type": "activate",
+    "target": "eco:phu-tho",
+    "count": 6,
+    "text": "Vớt rác ở 6 điểm ven sông",
+    "marker": {
+     "x": 73,
+     "y": 23,
+     "region": "phu-tho"
+    }
+   },
+   {
+    "type": "talk",
+    "target": "pt-river",
+    "count": 1,
+    "text": "Báo cho Bác lái đò Bạch Hạc",
+    "marker": {
+     "x": 52,
+     "y": 24,
+     "region": "phu-tho"
+    }
+   }
+  ],
+  "rewards": {
+   "items": {
+    "ultraball": 2,
+    "mystic-water": 1
+   },
+   "worldExp": 1850,
+   "reputation": 15
+  },
+  "dialogue": {
+   "offer": [
+    "Nước rút rồi, rác còn đầy bờ. Em phụ bác vớt nha."
+   ],
+   "progress": [
+    "Rác dồn sát mép nước."
+   ],
+   "complete": [
+    "Ba dòng sông trong lại rồi! Cảm ơn em."
+   ]
+  }
  }
 ]

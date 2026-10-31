@@ -1,0 +1,776 @@
+{
+ "id": "phu-tho",
+ "name": "Phú Thọ",
+ "width": 128,
+ "height": 112,
+ "chunk": 16,
+ "theme": "valley",
+ "spawn": {
+  "x": 64,
+  "y": 104
+ },
+ "areas": [
+  {
+   "id": "pt-nghialinh",
+   "name": "Núi Nghĩa Lĩnh — Đền Hùng",
+   "rect": [
+    0,
+    0,
+    45,
+    45
+   ],
+   "habitat": "rocky",
+   "level": [
+    95,
+    98
+   ]
+  },
+  {
+   "id": "pt-bachhac",
+   "name": "Ngã ba Bạch Hạc",
+   "rect": [
+    46,
+    0,
+    100,
+    32
+   ],
+   "habitat": "lake",
+   "level": [
+    94,
+    97
+   ]
+  },
+  {
+   "id": "pt-city",
+   "name": "Thành phố Việt Trì",
+   "rect": [
+    40,
+    33,
+    100,
+    68
+   ],
+   "habitat": "village",
+   "level": [
+    94,
+    94
+   ]
+  },
+  {
+   "id": "pt-xuanson",
+   "name": "Vườn quốc gia Xuân Sơn",
+   "rect": [
+    0,
+    46,
+    39,
+    111
+   ],
+   "habitat": "forest",
+   "level": [
+    92,
+    95
+   ]
+  },
+  {
+   "id": "pt-longcoc",
+   "name": "Đồi chè Long Cốc",
+   "rect": [
+    40,
+    69,
+    100,
+    111
+   ],
+   "habitat": "farm",
+   "level": [
+    92,
+    95
+   ],
+   "orchard": {
+    "period": 7,
+    "gap": 8
+   }
+  },
+  {
+   "id": "pt-tamdao",
+   "name": "Núi Tam Đảo",
+   "rect": [
+    101,
+    0,
+    127,
+    111
+   ],
+   "habitat": "rocky",
+   "level": [
+    93,
+    96
+   ]
+  }
+ ],
+ "paths": [
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     107
+    ],
+    [
+     64,
+     60
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     48
+    ],
+    [
+     40,
+     30
+    ],
+    [
+     24,
+     18
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     68,
+     48
+    ],
+    [
+     68,
+     26
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     74,
+     54
+    ],
+    [
+     110,
+     54
+    ],
+    [
+     112,
+     14
+    ],
+    [
+     112,
+     5
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     60,
+     54
+    ],
+    [
+     24,
+     62
+    ],
+    [
+     16,
+     92
+    ]
+   ]
+  },
+  {
+   "w": 3,
+   "pts": [
+    [
+     64,
+     80
+    ],
+    [
+     84,
+     96
+    ]
+   ]
+  }
+ ],
+ "plaza": [
+  58,
+  48,
+  74,
+  60
+ ],
+ "lake": {
+  "cx": 74,
+  "cy": 14,
+  "rx": 18,
+  "ry": 8
+ },
+ "buildings": [
+  {
+   "id": "pt-center",
+   "name": "Trung tâm Pokémon",
+   "x": 42,
+   "y": 40,
+   "w": 6,
+   "h": 4,
+   "roof": "red",
+   "wall": "stone",
+   "door": 2
+  },
+  {
+   "id": "pt-mart",
+   "name": "Cửa hàng Việt Trì",
+   "x": 78,
+   "y": 38,
+   "w": 5,
+   "h": 4,
+   "roof": "grey",
+   "wall": "wood",
+   "door": 2
+  },
+  {
+   "id": "pt-museum",
+   "name": "Bảo tàng Hùng Vương",
+   "x": 86,
+   "y": 40,
+   "w": 7,
+   "h": 4,
+   "roof": "teal",
+   "wall": "stone",
+   "door": 3
+  },
+  {
+   "id": "pt-house-1",
+   "name": "Nhà cô Thu hát Xoan",
+   "x": 46,
+   "y": 62,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "blue"
+  },
+  {
+   "id": "pt-house-2",
+   "name": "Quán bánh chưng bánh giầy",
+   "x": 90,
+   "y": 60,
+   "w": 3,
+   "h": 3,
+   "roof": "red",
+   "wall": "stone",
+   "door": 1,
+   "style": "cottage",
+   "color": "red"
+  }
+ ],
+ "fences": [],
+ "props": [
+  {
+   "kind": "well",
+   "x": 54,
+   "y": 66
+  },
+  {
+   "kind": "log",
+   "x": 24,
+   "y": 80
+  },
+  {
+   "kind": "haystack",
+   "x": 24,
+   "y": 96
+  },
+  {
+   "kind": "target",
+   "x": 116,
+   "y": 30
+  },
+  {
+   "kind": "bucket",
+   "x": 54,
+   "y": 26
+  }
+ ],
+ "signs": [
+  {
+   "x": 62,
+   "y": 58,
+   "text": [
+    "THÀNH PHỐ VIỆT TRÌ",
+    "Đất Tổ Hùng Vương. Phía tây bắc: núi Nghĩa Lĩnh · Phía bắc: ngã ba Bạch Hạc · Phía tây: Xuân Sơn · Phía nam: đồi chè Long Cốc · Phía đông: núi Tam Đảo."
+   ]
+  },
+  {
+   "x": 62,
+   "y": 26,
+   "text": [
+    "NGÃ BA BẠCH HẠC",
+    "Nơi sông Lô, sông Đà gặp sông Hồng. Ông bà kể Thủy Tinh dâng nước từ đây."
+   ]
+  },
+  {
+   "x": 28,
+   "y": 14,
+   "text": [
+    "ĐỀN HÙNG",
+    "Dù ai đi ngược về xuôi, nhớ ngày giỗ Tổ mùng mười tháng ba."
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "id": "pt-guide",
+   "name": "Cô Thu Việt Trì",
+   "sprite": "girl",
+   "x": 70,
+   "y": 58,
+   "lines": [
+    "Chào mừng về Đất Tổ! Ăn miếng bánh chưng đã em.",
+    "Mấy hôm nay nước sông dâng cuồn cuộn, sóng đánh tận chân núi Nghĩa Lĩnh.",
+    "Cụ thủ từ Đền Hùng biết chuyện, em lên hỏi."
+   ]
+  },
+  {
+   "id": "pt-elder",
+   "name": "Cụ thủ từ Đền Hùng",
+   "sprite": "elder",
+   "x": 34,
+   "y": 30,
+   "lines": [
+    "Ngày xưa Sơn Tinh, Thủy Tinh tranh nhau cầu hôn Mỵ Nương.",
+    "Thủy Tinh thua, năm nào cũng dâng nước đánh Sơn Tinh. Năm nay nó giận hơn mọi năm."
+   ]
+  },
+  {
+   "id": "pt-river",
+   "name": "Bác lái đò Bạch Hạc",
+   "sprite": "villager",
+   "x": 52,
+   "y": 24,
+   "lines": [
+    "Ba con sông gặp nhau ở đây, nước đục nước trong.",
+    "Đêm qua thấy bóng rồng nước quẫy trên sông, rồi lao về phía núi."
+   ]
+  },
+  {
+   "id": "pt-forest",
+   "name": "Cụ người Mường Xuân Sơn",
+   "sprite": "elder",
+   "x": 14,
+   "y": 56,
+   "lines": [
+    "Rừng Xuân Sơn còn nguyên sinh, có hang động sâu.",
+    "Người ta săn trộm trong rừng, cụ lo lắm."
+   ]
+  },
+  {
+   "id": "pt-farm",
+   "name": "Cô hái chè Long Cốc",
+   "sprite": "villager",
+   "x": 60,
+   "y": 88,
+   "lines": [
+    "Đồi chè Long Cốc như bát úp giữa biển sương.",
+    "Có đứa xả thải xuống suối, chè héo cả một vạt."
+   ]
+  },
+  {
+   "id": "pt-mountain",
+   "name": "Chú kiểm lâm Tam Đảo",
+   "sprite": "villager",
+   "x": 116,
+   "y": 40,
+   "lines": [
+    "Tam Đảo mát quanh năm, có ba đỉnh như ba hòn đảo trên mây.",
+    "Ông võ sư trên núi ham đấu lắm."
+   ]
+  },
+  {
+   "id": "pt-xoan",
+   "name": "Nghệ nhân hát Xoan",
+   "sprite": "elder",
+   "x": 84,
+   "y": 46,
+   "lines": [
+    "Hát Xoan là hát thờ vua Hùng, có từ ngàn năm.",
+    "Em nghe một câu: Mời vua mời chúa..."
+   ]
+  }
+ ],
+ "trainers": [
+  {
+   "id": "pt-gate-t",
+   "name": "Lính canh Sơn Tinh",
+   "sprite": "hiker",
+   "x": 30,
+   "y": 22,
+   "team": [
+    [
+     "golem",
+     97
+    ],
+    [
+     "rhyperior",
+     97
+    ],
+    [
+     "garchomp",
+     97
+    ]
+   ],
+   "challenge": [
+    "Thủy Tinh đang đánh núi! Ai muốn lên phải qua ta!"
+   ],
+   "win": [
+    "Bạn đủ sức giúp Sơn Tinh rồi. Lên đi."
+   ],
+   "lose": [
+    "Nước cuốn mất rồi kìa."
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "hard-stone": 1
+    },
+    "exp": 5300
+   }
+  },
+  {
+   "id": "pt-river-t",
+   "name": "Người bắt chim Bạch Hạc",
+   "sprite": "youngster",
+   "x": 94,
+   "y": 24,
+   "team": [
+    [
+     "pidgeot",
+     95
+    ],
+    [
+     "staraptor",
+     95
+    ],
+    [
+     "swellow",
+     95
+    ]
+   ],
+   "challenge": [
+    "Chim ngã ba sông bay nhanh lắm! Đấu không?"
+   ],
+   "win": [
+    "Chim bay mất rồi... bạn thắng."
+   ],
+   "lose": [
+    "Gió sông lộng quá ha!"
+   ],
+   "rewards": {
+    "items": {
+     "ultraball": 2,
+     "sharp-beak": 1
+    },
+    "exp": 5200
+   }
+  },
+  {
+   "id": "pt-forest-t",
+   "name": "Kẻ săn trộm Xuân Sơn",
+   "sprite": "knight",
+   "x": 8,
+   "y": 100,
+   "team": [
+    [
+     "obstagoon",
+     94
+    ],
+    [
+     "ursaluna",
+     94
+    ],
+    [
+     "pangoro",
+     94
+    ]
+   ],
+   "challenge": [
+    "Rừng này lắm thú, tao săn đấy! Tránh ra!"
+   ],
+   "win": [
+    "Thôi được, tao bỏ bẫy."
+   ],
+   "lose": [
+    "Cút!"
+   ],
+   "rewards": {
+    "items": {
+     "sitrus-berry": 3,
+     "protein": 1
+    },
+    "exp": 5100
+   }
+  },
+  {
+   "id": "pt-farm-t",
+   "name": "Kẻ xả thải Long Cốc",
+   "sprite": "youngster",
+   "x": 84,
+   "y": 104,
+   "team": [
+    [
+     "muk",
+     94
+    ],
+    [
+     "weezing",
+     94
+    ],
+    [
+     "garbodor",
+     94
+    ]
+   ],
+   "challenge": [
+    "Xả xuống suối cho nhanh! Mắc gì cản tao?"
+   ],
+   "win": [
+    "Thôi... tao xây bể lọc."
+   ],
+   "lose": [
+    "Hôi chưa!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "poison-barb": 1
+    },
+    "exp": 5100
+   }
+  },
+  {
+   "id": "pt-mountain-t",
+   "name": "Võ sư Tam Đảo",
+   "sprite": "knight",
+   "x": 118,
+   "y": 90,
+   "team": [
+    [
+     "lucario",
+     95
+    ],
+    [
+     "machamp",
+     95
+    ],
+    [
+     "hariyama",
+     95
+    ]
+   ],
+   "challenge": [
+    "Võ Tam Đảo luyện trên mây! Đấu không?"
+   ],
+   "win": [
+    "Bạn ra đòn nhanh hơn ta."
+   ],
+   "lose": [
+    "Tập thêm đi!"
+   ],
+   "rewards": {
+    "items": {
+     "superpotion": 2,
+     "protein": 1
+    },
+    "exp": 5200
+   }
+  }
+ ],
+ "rescue": {
+  "id": "pt-owl-rescue",
+  "x": 8,
+  "y": 40,
+  "species": "noctowl",
+  "level": 95,
+  "guards": [
+   [
+    "mandibuzz",
+    94
+   ],
+   [
+    "murkrow",
+    93
+   ],
+   [
+    "murkrow",
+    93
+   ]
+  ],
+  "quest": "vn-pt-rescue",
+  "reporter": "Cụ thủ từ Đền Hùng"
+ },
+ "chests": [
+  {
+   "id": "chest-pt-nghialinh",
+   "x": 6,
+   "y": 6,
+   "items": {
+    "ultraball": 2,
+    "hard-stone": 1
+   }
+  },
+  {
+   "id": "chest-pt-bachhac",
+   "x": 96,
+   "y": 6,
+   "items": {
+    "netball": 3,
+    "mystic-water": 1
+   }
+  },
+  {
+   "id": "chest-pt-tamdao",
+   "x": 122,
+   "y": 104,
+   "items": {
+    "superpotion": 3,
+    "metal-coat": 1
+   }
+  },
+  {
+   "id": "chest-pt-xuanson",
+   "x": 6,
+   "y": 106,
+   "items": {
+    "ultraball": 2,
+    "leaf-stone": 1
+   }
+  },
+  {
+   "id": "chest-pt-longcoc",
+   "x": 96,
+   "y": 106,
+   "items": {
+    "sitrus-berry": 3,
+    "miracle-seed": 1
+   }
+  },
+  {
+   "id": "chest-pt-nook",
+   "x": 116,
+   "y": 70,
+   "items": {
+    "exp-candy-m": 2,
+    "ultraball": 1
+   },
+   "requiresFlag": "field:phu-tho:pt-boulder"
+  }
+ ],
+ "waypoints": [
+  {
+   "id": "wp-phu-tho-center",
+   "name": "Trung tâm Pokémon Việt Trì",
+   "x": 45,
+   "y": 47
+  }
+ ],
+ "puzzles": [],
+ "dungeons": [],
+ "pillars": [],
+ "spawns": {},
+ "legendaries": [],
+ "worldBoss": {
+  "id": "gyarados",
+  "name": "Gyarados — Thủy Tinh Nổi Giận",
+  "x": 16,
+  "y": 10,
+  "level": 98,
+  "respawn": 600,
+  "arena": 260,
+  "requires": [
+   "beat:pt-gate-t"
+  ],
+  "hint": "Nước dâng cuồn cuộn, sóng đánh chân núi... Lính canh Sơn Tinh chưa cho ai lên.",
+  "rewards": {
+   "first": {
+    "ultraball": 3,
+    "superpotion": 3,
+    "mystic-water": 1
+   },
+   "repeat": {
+    "superpotion": 1,
+    "ultraball": 1
+   },
+   "money": 19500,
+   "flag": "badge:phu-tho",
+   "message": "Nhận Huy hiệu Đất Tổ (Phú Thọ)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+  }
+ },
+ "portals": [
+  {
+   "id": "portal-pt-sl",
+   "name": "Quốc lộ 32 — về Sơn La",
+   "x": 64,
+   "y": 107,
+   "to": "son-la",
+   "toX": 112,
+   "toY": 8
+  }
+ ],
+ "docks": [],
+ "nodes": [
+  {
+   "id": "pt-meadow-1",
+   "table": "meadow-forage",
+   "x": 20,
+   "y": 30
+  },
+  {
+   "id": "pt-lake-1",
+   "table": "falls-fish",
+   "x": 52,
+   "y": 16
+  },
+  {
+   "id": "pt-forest-1",
+   "table": "forest-forage",
+   "x": 20,
+   "y": 84
+  },
+  {
+   "id": "pt-meadow-2",
+   "table": "meadow-forage",
+   "x": 72,
+   "y": 100
+  },
+  {
+   "id": "pt-meadow-3",
+   "table": "meadow-forage",
+   "x": 112,
+   "y": 80
+  }
+ ],
+ "field": [
+  {
+   "id": "pt-boulder",
+   "ability": "smash",
+   "x": 120,
+   "y": 70,
+   "nook": {
+    "cx": 116.5,
+    "cy": 70.5,
+    "r": 3,
+    "wall": "boulder"
+   }
+  }
+ ]
+}

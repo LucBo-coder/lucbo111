@@ -712,10 +712,11 @@
    },
    "money": 19000,
    "flag": "badge:son-la",
-   "message": "Nhận Huy hiệu Sống Lưng Khủng Long (Sơn La)! Đường tới các tỉnh tiếp theo sẽ mở ở bản cập nhật sau."
+   "message": "Nhận Huy hiệu Sống Lưng Khủng Long (Sơn La)! Đường tới Phú Thọ đã mở: Quốc lộ 32."
   }
  },
  "portals": [
+  {"id": "portal-sl-next", "name": "Quốc lộ 32 — đường về Phú Thọ", "x": 112, "y": 5, "to": "phu-tho", "toX": 64, "toY": 104, "requires": ["badge:son-la"], "hint": "Đường tới Phú Thọ mở cho người có Huy hiệu Sống Lưng Khủng Long — hạ boss Sơn La trước."},
   {
    "id": "portal-sl-db",
    "name": "Quốc lộ 6 — về Điện Biên",
