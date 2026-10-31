@@ -1,5 +1,6 @@
+import { validTeraType } from './pokemonTraits';
 import { POKEMON } from './data';
-import { evolutionsOf } from './evolution';
+import { evolutionsOf, megaFormsOf } from './evolution';
 import { effectiveness } from './typeChart';
 import type { PokeType, StatusKind } from './types';
 
@@ -126,7 +127,7 @@ export const GMAX: Record<string, GmaxDef> = {
 
 /** The Tera Type of a Pokémon: the one chosen with Tera Shards, else its species' first type. */
 export function teraTypeOf(species: string, stored?: string | null): PokeType {
-  return (stored as PokeType) || (POKEMON.get(species)?.types[0] ?? 'normal');
+  return validTeraType(stored) ? stored : (POKEMON.get(species)?.types[0] ?? 'normal');
 }
 
 /** STAB multiplier while Terastallized: original types keep 1.5×, the Tera Type gives 1.5× (2× if also original). */
@@ -298,5 +299,43 @@ export const RAID_HP_MULT = 10;
 export function raidRewards(gmax: boolean, roll: number): Record<string, number> {
   const out: Record<string, number> = { 'tera-shard': gmax ? 5 : 3, 'exp-candy-m': 2 };
   if (gmax || roll < 0.15) out['max-soup'] = 1;
+  return out;
+}
+
+// ───────────────────────────── Việt Nam Odyssey: where the key items come from (V31) ─────────────────────────────
+
+/**
+ * The classic campaign gets the Key Stone from Mega Venusaur and the orbs from the legendary shrines; Việt Nam Odyssey
+ * has neither, so: the Key Stone + the Mega Stone of the player's starter line with the first guardian calmed, the
+ * Blue Orb with Khánh Hòa's guardian (Kyogre waits on the Nha Trang shore), the Red Orb with Gia Lai's (Groudon in
+ * the Chư Đăng Ya crater). The Tera Orb / Dynamax Band come with the bosses beaten, as in the classic campaign.
+ */
+export const VN_KEY_STONE_AT = 1;
+export const VN_ORBS: { flag: string; item: string; legend: string }[] = [
+  { flag: 'boss:kingdra', item: 'blue-orb', legend: 'kyogre' },
+  { flag: 'boss:conkeldurr', item: 'red-orb', legend: 'groudon' },
+];
+
+/** First Mega Stone of the species' line (itself or anything it evolves into), e.g. Charmander → Charizardite X. */
+export function lineMegaStone(species: string, depth = 0): string | null {
+  const own = megaFormsOf(species)[0]?.stone;
+  if (own) return own;
+  if (depth > 3) return null;
+  for (const o of evolutionsOf(species)) {
+    if (o.unsupported) continue;
+    const s = lineMegaStone(o.to, depth + 1);
+    if (s) return s;
+  }
+  return null;
+}
+
+export function vietnamGifts(bossesBeaten: number, hasFlag: (f: string) => boolean, has: (id: string) => boolean, starter: string | null): string[] {
+  const out: string[] = [];
+  if (bossesBeaten >= VN_KEY_STONE_AT && !has('key-stone')) {
+    out.push('key-stone');
+    const stone = starter ? lineMegaStone(starter) : null;
+    if (stone && !has(stone)) out.push(stone);
+  }
+  for (const o of VN_ORBS) if (hasFlag(o.flag) && !has(o.item)) out.push(o.item);
   return out;
 }

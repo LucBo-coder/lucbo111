@@ -9,7 +9,7 @@ import type { PokeType } from './types';
 //  • every event has a duration and ends (expired / completed / cleaned up); history and cooldowns are saved,
 //    active events are not (they end when the game is saved & reloaded — documented Save/Load policy).
 
-export type EventType = 'outbreak' | 'alpha' | 'migration' | 'weather' | 'ambush' | 'treasure' | 'distortion' | 'merchant' | 'meteor' | 'raid';
+export type EventType = 'outbreak' | 'alpha' | 'migration' | 'weather' | 'ambush' | 'treasure' | 'distortion' | 'merchant' | 'meteor' | 'raid' | 'teraRaid';
 
 export interface EventDef {
   name: string;
@@ -35,6 +35,7 @@ export const EVENT_DEFS: Record<EventType, EventDef> = {
   merchant: { name: 'Thương nhân lưu động', major: false, duration: 240, cooldown: 720, chance: 0.35, priority: 2 },
   meteor: { name: 'Mưa sao băng', major: true, duration: 200, cooldown: 1200, chance: 0.4, priority: 4 },
   // V31: a Dynamax den lights up — a giant wild Pokémon to beat, then catch once it shrinks (needs the Dynamax Band)
+  teraRaid: { name: 'Tera Raid — Tinh thể Tera', major: false, duration: 420, cooldown: 600, chance: 0.65, priority: 5 },
   raid: { name: 'Max Raid — Hang Dynamax', major: true, duration: 300, cooldown: 900, chance: 0.45, priority: 4 },
 };
 export const MINOR_CHECK = 300;

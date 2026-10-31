@@ -1,3 +1,5 @@
+import { abilityEffect, rollAbilitySlot } from './abilities';
+import { randomTeraType } from './pokemonTraits';
 import { computeDamage } from './damage';
 import { BOSSES, ENEMIES, getSkill, POKEMON, UPGRADES } from './data';
 import { curves, EnemyDirector, SpawnRequest } from './director';
@@ -134,6 +136,8 @@ export interface Unit {
   contactPower: number;
   skills: SkillSlot[];
   passive: PassiveDef | null;
+  abilitySlot?: number;
+  abilityReadyAt?: number;
   target: Unit | null;
   aiTimer: number;
   castSlot: number;
@@ -450,9 +454,13 @@ export class World {
   get run(): boolean { return this.home.run; }
   set run(v: boolean) { this.home.run = v; }
 
+  private readonly traitRng: Rng;
+
   constructor(opts: WorldOptions) {
     this.home = newSide(null as unknown as Unit);
-    this.rng = new Rng(opts.seed ?? (Date.now() & 0xffffffff));
+    const seed = opts.seed ?? (Date.now() & 0xffffffff);
+    this.rng = new Rng(seed);
+    this.traitRng = new Rng(seed ^ 0x51f15e);
     this.director = new EnemyDirector(this.rng);
     this.mode = opts.pvp ? 'adventure' : opts.mode ?? 'survivor';
     // Survivor meta-progression: permanent upgrades bought in the menu (before any unit is built)
@@ -526,7 +534,7 @@ export class World {
     t.hp = Math.max(1, Math.round(t.maxHp * frac));
   }
 
-  addPokemon(defId: string, opts: { level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; companion?: boolean; shiny?: boolean; bench?: boolean } = {}): Unit {
+  addPokemon(defId: string, opts: { abilitySlot?: number; teraType?: PokeType; level?: number; uid?: string; hpFrac?: number; held?: string | null; ind?: Individual | null; rival?: boolean; companion?: boolean; shiny?: boolean; bench?: boolean } = {}): Unit {
     const def = POKEMON.get(defId);
     if (!def) throw new Error('Unknown pokemon ' + defId);
     const side = opts.companion && this.companion ? this.companion : opts.rival && this.rival ? this.rival : this.home;
@@ -545,6 +553,9 @@ export class World {
       skills: this.kit(defId, opts.level ?? 4 + this.level).map((id) => ({ def: getSkill(id), cd: 0, level: 1, powerBonus: 0 })),
       slotIndex: side.allies.length, ind: opts.ind ?? null,
     });
+    u.abilitySlot = opts.abilitySlot;
+    if (u.abilitySlot != null) u.passive = abilityEffect(defId, u.abilitySlot);
+    u.teraPick = opts.teraType ?? randomTeraType(() => this.traitRng.next());
     this.setHeld(u, opts.held ?? null);
     this.refreshAllyStats(u, opts.hpFrac ?? 1);
     // back out of its ball: cooldowns kept running while it waited, energy is what it had (no free refill)
@@ -731,7 +742,7 @@ export class World {
     if (opts.mega) u.megaFrom = u.defId;
     else if (!def.mega) u.megaFrom = null;
     u.defId = defId; u.name = def.name; u.types = [...def.types]; u.role = def.role; u.base = def.baseStats;
-    u.moveSpeed = def.moveSpeed; u.attackRange = def.attackRange; u.critRate = def.critRate; u.radius = def.radius; u.passive = def.passive;
+    u.moveSpeed = def.moveSpeed; u.attackRange = def.attackRange; u.critRate = def.critRate; u.radius = def.radius; u.passive = !def.mega && u.abilitySlot != null ? abilityEffect(defId, u.abilitySlot) : def.passive;
     // a Terastallized / Dynamaxed Pokémon that changes species keeps its crystal / its giant size
     if (u.tera) { u.tera.from = [...def.types]; u.types = [u.tera.type]; }
     if (u.dyna) u.radius = def.radius * DYNAMAX_RADIUS_MULT;
@@ -885,6 +896,9 @@ export class World {
       skills: this.kit(speciesId, level).map((id) => ({ def: getSkill(id), cd: this.rng.range(0.4, 1.6), level: 1, powerBonus: 0 })),
       wild: o.wild ?? null, hostile: o.hostile ?? false, tag: o.tag ?? null, noCapture: !!o.noCapture,
     });
+    u.teraPick = randomTeraType(() => this.traitRng.next());
+    u.abilitySlot = rollAbilitySlot(speciesId, () => this.traitRng.next());
+    u.passive = abilityEffect(speciesId, u.abilitySlot);
     u.maxHp = Math.floor(u.stats.hp * (o.hpMult ?? 2.5) * (o.elite ? 1.8 : 1));
     u.hp = u.maxHp;
     this.enemies.push(u);
@@ -2553,6 +2567,15 @@ export class World {
     if (!dst.alive || dst.fainted || dst.captured) return;
     const s = slot.def;
     if (this.rollMiss(src, dst, s)) return;
+    const immunity = dst.passive;
+    if (s.power > 0 && ((immunity?.kind === 'typeResist' && immunity.mult === 0 && immunity.types?.includes(s.type)) ||
+      (immunity?.kind === 'typeAbsorb' && immunity.type === s.type))) {
+      if (immunity.kind === 'typeAbsorb' && this.time >= (dst.abilityReadyAt ?? 0)) {
+        dst.hp = Math.min(dst.maxHp, dst.hp + dst.maxHp * (immunity.value ?? 0.25));
+        dst.abilityReadyAt = this.time + 3;
+      }
+      return;
+    }
     // Static-style passives punish melee attackers
     if (dst.passive?.kind === 'contactStatus' && dst.passive.status && (s.kind === 'melee' || s.kind === 'dash') && src.team !== dst.team && this.rng.chance(dst.passive.status.chance)) {
       this.applyStatus(src, dst.passive.status, dst);
@@ -2584,6 +2607,9 @@ export class World {
       if (pv?.kind === 'typeBoost' && s.type === pv.type) modifier *= pv.mult ?? 1.5;
       if (pv?.kind === 'meleeBoost' && (s.kind === 'melee' || s.kind === 'dash')) modifier *= pv.mult ?? 1.3;
       if (pv?.kind === 'projectileBoost' && (s.kind === 'projectile' || s.kind === 'beam')) modifier *= pv.mult ?? 1.5;
+      if (pv?.kind === 'physicalBoost' && s.category === 'physical') modifier *= pv.mult ?? 2;
+      if (pv?.kind === 'weakMoveBoost' && s.power > 0 && s.power <= 60) modifier *= pv.mult ?? 1.5;
+      if (pv?.kind === 'stabBoost' && ((src.tera?.from ?? src.types).includes(s.type) || src.tera?.type === s.type)) modifier *= pv.mult ?? 4 / 3;
       const dp = dst.passive;
       if (dp?.kind === 'typeResist' && dp.types?.includes(s.type)) modifier *= dp.mult ?? 0.5;
       const he = src.held;
@@ -2613,7 +2639,7 @@ export class World {
         level: src.level, power: s.power, category: s.category, skillType: s.type,
         attackerTypes: src.tera ? src.tera.from : src.types, defenderTypes: dst.types, teraType: src.tera?.type,
         atk: src.stats.atk, spa: src.stats.spa, def: dst.stats.def, spd: dst.stats.spd,
-        critRoll: this.rng.next(), critRate: crit, varianceRoll: this.rng.next(), modifier,
+        critRoll: this.rng.next(), critRate: dp?.kind === 'critImmune' ? 0 : crit, varianceRoll: this.rng.next(), modifier,
       });
       this.applyDamage(dst, res.amount, src, res.crit, res.effectiveness);
       if (src.dyna && res.amount > 0) this.maxMoveEffect(src, dst, s.type);

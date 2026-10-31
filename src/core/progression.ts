@@ -1,3 +1,5 @@
+import { randomTeraType, traitSeed, validTeraType } from './pokemonTraits';
+import { rollAbilitySlot } from './abilities';
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import { Individual, individualFromSeed, randomIndividual, Stats } from './stats';
 
@@ -69,8 +71,10 @@ export interface OwnedPokemon {
   status?: { kind: string; t: number };
   /** Locked / favourite in the PC: protected against accidental release and sorted first */
   favorite?: boolean;
-  /** Tera Type chosen with Tera Shards (absent = the species' first type) — V31 */
+  /** Permanent random Tera type, changeable with Tera Shards. */
   teraType?: string;
+  /** Ordinary ability slot 0/1 or Hidden Ability slot 2; preserved through evolution. */
+  abilitySlot?: number;
   /** Gigantamax Factor (Max Soup): Dynamax turns it into its Gigantamax form — V31 */
   gmax?: boolean;
 }
@@ -87,6 +91,7 @@ export function makeOwned(species: string, level: number, origin: OwnedPokemon['
     uid: `${species}-${now.toString(36)}-${Math.floor(rand() * 1e6).toString(36)}`,
     species, level, exp: expForLevel(species, level), origin, caughtAt: now,
     ivs: ind.ivs, nature: ind.nature, friendship: baseHappinessOf(species),
+    teraType: randomTeraType(rand), abilitySlot: rollAbilitySlot(species, rand),
   };
 }
 
@@ -97,6 +102,8 @@ export function ensureIndividual(p: OwnedPokemon): OwnedPokemon {
     p.ivs = p.ivs ?? ind.ivs;
     p.nature = p.nature ?? ind.nature;
   }
+  if (!validTeraType(p.teraType)) p.teraType = randomTeraType(() => traitSeed(p.uid, 'tera'));
+  if (![0, 1, 2].includes(p.abilitySlot ?? -1)) p.abilitySlot = rollAbilitySlot(p.species, () => traitSeed(p.uid, 'ability'));
   if (p.friendship == null) p.friendship = baseHappinessOf(p.species);
   return p;
 }

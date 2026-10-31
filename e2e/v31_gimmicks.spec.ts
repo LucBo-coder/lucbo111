@@ -36,7 +36,7 @@ test('Terastal, Gigantamax and Primal Reversion in the field', async ({ page }) 
   await closeDialogues(page);
   // two bosses beaten → the Tera Orb, four → the Dynamax Band (handed out by the scene itself)
   await ev(page, `(() => { const st = window.__adv.state; ['boss:a', 'boss:b', 'boss:c', 'boss:d'].forEach(f => st.setFlag(f));
-    const c = st.addPokemon('charizard', 60, 'gift'); c.gmax = true; st.addPokemon('kyogre', 70, 'gift'); st.addItems({ 'blue-orb': 1 }); })()`);
+    const c = st.addPokemon('charizard', 60, 'gift'); c.teraType = 'fire'; c.gmax = true; st.addPokemon('kyogre', 70, 'gift'); st.addItems({ 'blue-orb': 1 }); })()`);
   await page.waitForFunction(() => { const st = (window as Win).__adv.state; return st.item('tera-orb') > 0 && st.item('dynamax-band') > 0; }, undefined, { timeout: 10_000 });
   await closeDialogues(page);
   await ev(page, `${ui}.closeMenu?.()`);

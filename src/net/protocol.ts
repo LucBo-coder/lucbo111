@@ -19,6 +19,7 @@ export interface DuelMon {
   level: number;
   /** V31: Tera Type chosen with Tera Shards / Gigantamax Factor, from the collection */
   teraType?: string;
+  abilitySlot?: number;
   gmax?: boolean;
   held?: string | null;
   ivs?: Stats;

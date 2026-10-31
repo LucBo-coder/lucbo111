@@ -1,3 +1,5 @@
+import { validTeraType } from '../core/pokemonTraits';
+import { abilityOptions } from '../core/abilities';
 import { POKEMON } from '../core/data';
 import { makeOwned } from '../core/progression';
 import { registerCaught, type SaveData } from '../systems/saveSchema';
@@ -16,7 +18,7 @@ export interface CoopLoot {
   /** item id → quantity */
   items?: Record<string, number>;
   /** a captured wild Pokémon that joins the guest's collection too */
-  pokemon?: { species: string; level: number; shiny?: boolean; ball?: string };
+  pokemon?: { species: string; level: number; shiny?: boolean; ball?: string; teraType?: string; abilitySlot?: number };
   /** short label shown on the guest's HUD ("Rương báu", "Thưởng hỗ trợ sinh tồn"…) */
   note?: string;
 }
@@ -89,6 +91,8 @@ export function applyCoopLoot(save: SaveData, loot: CoopLoot | null | undefined)
   if (pk && typeof pk.species === 'string' && POKEMON.has(pk.species)) {
     const level = Math.min(100, Math.max(1, Math.round(Number(pk.level) || 5)));
     const p = makeOwned(pk.species, level, 'wild');
+    if (validTeraType(pk.teraType)) p.teraType = pk.teraType;
+    if (abilityOptions(pk.species).some(a => a.slot === pk.abilitySlot)) p.abilitySlot = pk.abilitySlot;
     if (pk.shiny) p.shiny = true;
     if (typeof pk.ball === 'string' && ITEMS[pk.ball]?.kind === 'ball') p.ball = pk.ball;
     save.collection.push(p);

@@ -1,3 +1,4 @@
+import type { PokeType } from '../core/types';
 import { getSkill } from '../core/data';
 import { World, type Unit, type WorldEvent, type WorldState } from '../core/world';
 import { cleanAvatarId } from '../core/avatars';
@@ -166,7 +167,7 @@ export class CoopHost {
         const adventure = w.adventureCombat;
         m.party.slice(0, adventure ? FIELD.coopGuestCarry : 3).forEach((p, i) => w.addPokemon(p.species, {
           companion: true, level: w.mode === 'survivor' ? w.level + 4 : p.level, bench: adventure && i > 0,
-          held: p.held, shiny: p.shiny, ind: p.ivs && p.nature ? { ivs: p.ivs, nature: p.nature, evs: p.evs } : null,
+          abilitySlot: p.abilitySlot, teraType: p.teraType as PokeType | undefined, held: p.held, shiny: p.shiny, ind: p.ivs && p.nature ? { ivs: p.ivs, nature: p.nature, evs: p.evs } : null,
         }));
         side.trainer.name = net.peerName || 'Đồng đội';
         side.trainer.avatar = cleanAvatarId(m.avatar ?? net.peerAvatar);

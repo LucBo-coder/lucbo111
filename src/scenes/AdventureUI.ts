@@ -1,3 +1,4 @@
+import { abilityEffect, abilityOf } from '../core/abilities';
 import Phaser from 'phaser';
 import { fieldFlag, tideName } from '../core/field';
 import { isMainQuest, questInRegion, repBoard } from '../core/journal';
@@ -66,9 +67,10 @@ const WEATHER_LABEL: Record<string, string> = {
 };
 const BIOME_VI: Record<string, string> = { meadow: 'Đồng cỏ', forest: 'Rừng', lake: 'Hồ', rocky: 'Đồi đá', ruins: 'Tàn tích', farm: 'Nông trại', snow: 'Vùng tuyết', volcano: 'Núi lửa' };
 const LEGEND_KIND_VI: Record<string, string> = { shrine: 'Điện thờ', roaming: 'Lang thang', gift: 'Gặp gỡ đặc biệt', egg: 'Nở từ trứng' };
-const EVENT_COLOR: Record<string, number> = { outbreak: 0xffe060, alpha: 0xff6050, migration: 0x80d0ff, weather: 0xa0b0ff, ambush: 0xffa060, treasure: 0xffd080, distortion: 0xd080ff, merchant: 0x60e0a0, meteor: 0xfff0a0 };
+const EVENT_COLOR: Record<string, number> = { teraRaid: 0x88eeff, raid: 0xff6080, outbreak: 0xffe060, alpha: 0xff6050, migration: 0x80d0ff, weather: 0xa0b0ff, ambush: 0xffa060, treasure: 0xffd080, distortion: 0xd080ff, merchant: 0x60e0a0, meteor: 0xfff0a0 };
 const EVENT_NAME: Record<string, string> = Object.fromEntries(Object.entries(EVENT_DEFS).map(([k, v]) => [k, v.name]));
 const EVENT_HINT: Record<string, string> = {
+  teraRaid: 'Phá lớp Tera rồi thu phục — thưởng Tera Shard, có thể gặp Ability ẩn', raid: 'Hạ boss đến khi thu nhỏ rồi ném bóng',
   outbreak: 'Đánh bại / thu phục 6 con cùng loài', alpha: 'Pokémon cực mạnh — hạ gục hoặc thu phục (khó bắt gấp đôi)', migration: 'Đàn Pokémon hiếm đang di chuyển — đuổi theo!',
   weather: 'Thời tiết thay đổi Pokémon xuất hiện & sức mạnh đòn', ambush: 'Đánh bại cả đội của huấn luyện viên', treasure: 'Hạ Pokémon canh giữ rồi mở rương (E)', distortion: 'Hạ 5 Pokémon trong vùng biến dạng',
   merchant: 'Tìm thương nhân (E) — hàng hiếm giảm 30%, số lượng có hạn', meteor: 'Nhặt các mảnh sao rơi (E) trước khi chúng tắt',
@@ -1260,7 +1262,8 @@ export class AdventureUI extends Phaser.Scene {
     const stats = calcStats(def.baseStats, p.level, ind);
     c.add(text(this, dx + 128 * s, dy + 126 * s, `HP ${Math.floor(stats.hp * 4)} · Atk ${stats.atk} · Def ${stats.def}\nSpA ${stats.spa} · SpD ${stats.spd} · Spe ${stats.spe}\nIV ${STAT_KEYS.map((k) => ind.ivs[k]).join('/')} · Thân thiết ${p.friendship ?? 0}/255`, 13 * s, '#d8e0f8').setWordWrapWidth(dw - 146 * s));
     c.add(text(this, dx + 14 * s, dy + 210 * s, `EXP ${p.exp}/${levelProgress(p) >= 1 ? 'MAX' : '—'} · Bắt lúc ${new Date(p.caughtAt).toLocaleDateString('vi-VN')}\nNguồn: ${p.origin}${p.held ? ` · Đang giữ ${ITEM_DEFS.get(p.held)?.name ?? p.held}` : ''}`, 14 * s, COLORS.dim).setWordWrapWidth(dw - 28 * s));
-    let by2 = dy + 274 * s;
+    c.add(text(this, dx + 14 * s, dy + 254 * s, `Tera: ${TYPE_VI[st.teraType(p.uid)!]} · Ability: ${abilityEffect(p.species, p.abilitySlot).name}${abilityOf(p.species, p.abilitySlot).hidden ? ' (ẩn)' : ''}`, 13 * s, '#a0f0ff').setWordWrapWidth(dw - 28 * s));
+    let by2 = dy + 300 * s;
     if (st.pcLocation(p.uid)) {
       c.add(button(this, dx + dw / 2, by2, dw - 36 * s, 34 * s, `Rút vào đội (${st.adv.party.length}/6)`, () => {
         if (!st.withdrawFromPc(p.uid)) this.banner('Đội hình đã đủ 6 hoặc Pokémon không có trong PC', '#ff9080');
@@ -1334,7 +1337,7 @@ export class AdventureUI extends Phaser.Scene {
     });
     const evs = ind.evs;
     c.add(text(this, r.x + 300 * s, r.y + 196 * s, `EV ${STAT_KEYS.map((k) => evs?.[k] ?? 0).join('/')}  ·  tổng ${evs ? evTotal(evs) : 0}/${EV_MAX_TOTAL}`, 13 * s, '#ffd8a0'));
-    c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Đặc tính: ${def.passive.name}\n${def.passive.description}\nAbility (PokéAPI): ${(api?.abilities ?? []).map((a) => a.name + (a.hidden ? '*' : '')).join(', ')}`, 14 * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
+    c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Hệ Tera: ${TYPE_VI[st.teraType(p.uid)!]}\nAbility: ${abilityEffect(p.species, p.abilitySlot).name}${abilityOf(p.species, p.abilitySlot).hidden ? ' (ẩn)' : ''}\n${abilityEffect(p.species, p.abilitySlot).description}`, 14 * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
     def.skills.forEach((id, i) => {
       const sk = getSkill(id), mv = MOVES[id];
       const y = r.y + 240 * s + i * 38 * s;

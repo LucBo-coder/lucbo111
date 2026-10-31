@@ -73,6 +73,7 @@ export interface SkillDef {
 }
 
 export type PassiveKind =
+  | 'typeAbsorb' | 'physicalBoost' | 'weakMoveBoost' | 'stabBoost' | 'critImmune'
   | 'pinch' // Blaze/Torrent/Overgrow: boost `type` skills by `mult` below `threshold` HP
   | 'critBonus' // Keen Eye: +`value` crit rate
   | 'guts' // +`mult` damage while afflicted by any status

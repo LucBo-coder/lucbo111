@@ -171,6 +171,7 @@ describe('the bag', () => {
     const st = new AdventureState(defaultSave());
     const p = st.addPokemon('charmander', 10, 'starter');
     const r = st.addPokemon('rattata', 5, 'wild');
+    p.teraType = 'fire'; // explicit fixture: new individuals now roll a random Tera type
     expect(st.teraType(p.uid)).toBe('fire');
     st.addItems({ 'tera-shard': TERA_SHARD_COST - 1 });
     expect(st.setTeraType(p.uid, 'dragon' as PokeType)).toBe(false);

@@ -1,3 +1,4 @@
+import type { PokeType as IndividualTeraType } from '../core/types';
 import Phaser from 'phaser';
 import { CoopHost, coopSession } from '../net/coop';
 import { addCoopHud, rewardCoopHost } from './coopHud';
@@ -14,7 +15,7 @@ import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
 import { repShop, REP_DISCOUNT, SPECIALTY_TIER } from '../core/shop';
-import { canMega, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
+import { canMega, ITEM_DEFS, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
 import { TYPE_VI } from '../core/synergy';
 import { canDynamax, canTera, NO_DYNAMAX, pickTeraType, trainerGimmick, trainerGimmickNow, DYNAMAX_COOLDOWN, DYNAMAX_DURATION, GIMMICK_IDLE_REVERT, gmaxOf, primalFormOf, TERA_COOLDOWN, TERA_DURATION, type GimmickCheck, type GimmickUnit } from '../core/gimmicks';
 import { DungeonController } from '../adventure/DungeonController';
@@ -509,7 +510,7 @@ export class AdventureScene extends Phaser.Scene {
         this.state.adv.activeUid = null;
         if (!this.state.adv.recalled.includes(active.uid)) this.state.adv.recalled.push(active.uid);
       } else {
-        const u = this.world.addPokemon(active.species, { level: active.level, uid: active.uid, hpFrac: active.hpFrac ?? 1, held: active.held ?? null, ind: individualOf(active) });
+        const u = this.world.addPokemon(active.species, { level: active.level, uid: active.uid, hpFrac: active.hpFrac ?? 1, held: active.held ?? null, ind: individualOf(active), abilitySlot: active.abilitySlot, teraType: active.teraType as IndividualTeraType });
         u.shiny = !!active.shiny;
         u.x = this.world.trainer.x + this.world.rng.range(-30, 30); u.y = this.world.trainer.y + this.world.rng.range(-30, 30);
       }
@@ -1976,7 +1977,10 @@ export class AdventureScene extends Phaser.Scene {
       this.giftT = 3;
       const got = this.state.claimGimmickGifts();
       if (got.length) {
-        this.ui.questComplete('Vật phẩm mới!', got.map((id) => `+1 ${ITEMS[id]?.name ?? id} — ${id === 'tera-orb' ? 'phím Y: Terastal' : 'phím B: Dynamax'}`));
+        const why = (id: string) => id === 'tera-orb' ? 'phím Y: Terastal' : id === 'dynamax-band' ? 'phím B: Dynamax' : id === 'key-stone' ? 'phím G: Mega Tiến Hóa'
+          : id === 'blue-orb' ? 'Kyogre đang chờ ở bờ vịnh Nha Trang (Khánh Hòa) — có ngọc, nó Hồi Quy Nguyên Thủy' : id === 'red-orb' ? 'Groudon ngủ trong miệng núi lửa Chư Đăng Ya (Gia Lai) — có ngọc, nó Hồi Quy Nguyên Thủy'
+          : ITEM_DEFS.get(id)?.megaFor ? `cho ${POKEMON.get(ITEM_DEFS.get(id)!.megaFor!)?.name} cầm để Mega Tiến Hóa` : '';
+        this.ui.questComplete('Vật phẩm mới!', got.map((id) => `+1 ${ITEMS[id]?.name ?? id}${why(id) ? ' — ' + why(id) : ''}`));
         this.persist();
       }
     }
@@ -3121,6 +3125,8 @@ export class AdventureScene extends Phaser.Scene {
     if (success) {
       this.world.endCapture(u, true);
       const p = this.state.addPokemon(u.defId, u.level, 'wild', u.shiny);
+      p.teraType = u.teraPick ?? u.tera?.type ?? p.teraType;
+      p.abilitySlot = u.abilitySlot ?? p.abilitySlot;
       p.ball = fx.ballId;
       if (fx.ballId === 'luxuryball') p.friendship = Math.min(255, (p.friendship ?? 70) + 50);
       this.worldEvents?.onResolved(u.id, u.defId, u.x, u.y, true);
@@ -3132,7 +3138,7 @@ export class AdventureScene extends Phaser.Scene {
       this.state.addWorldExp(30);
       this.tweens.add({ targets: fx.ball, alpha: 0, duration: 600, delay: 400, onComplete: () => fx.ball.destroy() });
       this.questEvent({ type: 'capture', target: u.defId });
-      this.coopHost?.grant({ pokemon: { species: u.defId, level: u.level, shiny: u.shiny, ball: fx.ballId }, note: 'Bắt Pokémon' });
+      this.coopHost?.grant({ pokemon: { species: u.defId, level: u.level, shiny: u.shiny, ball: fx.ballId, teraType: p.teraType, abilitySlot: p.abilitySlot }, note: 'Bắt Pokémon' });
       this.persist();
     } else {
       this.world.endCapture(u, false);

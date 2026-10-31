@@ -1,7 +1,7 @@
 import questsJson from '../data/world/quests.json';
 import vnQuestsJson from '../data/vietnam/quests.json';
 import { POKEMON } from '../core/data';
-import { addExp, addFriendship, individualOf, makeOwned, OwnedPokemon } from '../core/progression';
+import { addExp, addFriendship, ensureIndividual, individualOf, makeOwned, OwnedPokemon } from '../core/progression';
 import { availableEvolutions, EvoContext, evolutionsOf, evaluate, ITEM_DEFS } from '../core/evolution';
 import { unlockedSkills } from '../core/learnset';
 import { legendQuests } from '../core/legends';
@@ -17,7 +17,7 @@ import {
 } from '../core/pc';
 import { AdventureSave, Difficulty, newAdventure, registerCaught, SaveData } from '../systems/saveSchema';
 import { MAX_STACK, shopCatalogue } from '../core/shop';
-import { gimmickGifts, gmaxLine, TERA_SHARD_COST, teraTypeOf } from '../core/gimmicks';
+import { gimmickGifts, gmaxLine, TERA_SHARD_COST, teraTypeOf, vietnamGifts } from '../core/gimmicks';
 import type { PokeType } from '../core/types';
 import { addRep, REP_REGIONS, REP_TIERS, tierReward, type RepGain } from '../core/reputation';
 import { balance, campaignWallet, earnTo, spendFrom, Wallet, WALLETS } from '../core/wallet';
@@ -385,7 +385,7 @@ export class AdventureState {
   /** Tera Type of a collection member (chosen one, else its species' first type). */
   teraType(uid: string): PokeType | null {
     const p = this.owned(uid);
-    return p ? teraTypeOf(p.species, p.teraType) : null;
+    return p ? teraTypeOf(p.species, ensureIndividual(p).teraType) : null;
   }
 
   /** Tera Shards ×TERA_SHARD_COST → a new Tera Type. Nothing is spent when the type does not change. */
@@ -412,7 +412,12 @@ export class AdventureState {
 
   /** Key items the bosses beaten have earned and the bag does not hold yet (added now; returned for the notice). */
   claimGimmickGifts(): string[] {
-    const ids = gimmickGifts(this.bossesBeaten(), (id) => this.item(id) > 0);
+    const has = (id: string) => this.item(id) > 0;
+    const ids = gimmickGifts(this.bossesBeaten(), has);
+    if (this.adv.campaign === 'vietnam') {
+      const starter = this.save.collection.find((c) => c.origin === 'starter')?.species ?? null;
+      ids.push(...vietnamGifts(this.bossesBeaten(), (f) => this.hasFlag(f), has, starter));
+    }
     for (const id of ids) this.addItems({ [id]: 1 });
     return ids;
   }
@@ -519,6 +524,7 @@ export class AdventureState {
     if (!opt) return false;
     if (opt.trigger === 'use-item' && !this.consume(stone!)) return false;
     if (opt.rule.heldItem && p.held === opt.rule.heldItem) p.held = undefined;
+    ensureIndividual(p);
     p.species = to;
     p.evoDeclined = undefined;
     registerCaught(this.save, to, !!p.shiny);

@@ -1,3 +1,4 @@
+import { abilityOf, abilityOptions } from '../core/abilities';
 import { getSkill, POKEMON } from '../core/data';
 import { ECOLOGY } from '../core/encounters';
 import { EV_MAX_STAT, EV_MAX_TOTAL, evTotal } from '../core/ev';
@@ -47,7 +48,7 @@ export function isLegendary(species: string): boolean {
 export function monFromOwned(p: OwnedPokemon): DuelMon {
   const ind = individualOf(p);
   return { species: p.species, level: p.level, held: p.held ?? null, ivs: ind.ivs, nature: ind.nature, evs: p.evs, shiny: !!p.shiny, nickname: p.nickname,
-    ...(p.teraType ? { teraType: p.teraType } : {}), ...(p.gmax ? { gmax: true } : {}) };
+    abilitySlot: abilityOf(p.species, p.abilitySlot).slot, ...(p.teraType ? { teraType: p.teraType } : {}), ...(p.gmax ? { gmax: true } : {}) };
 }
 
 /**
@@ -68,6 +69,7 @@ export function validateParty(party: DuelMon[], rules: DuelRules): string[] {
     if (m.evs && (STAT_KEYS.some((k) => !Number.isInteger(m.evs![k]) || m.evs![k] < 0 || m.evs![k] > EV_MAX_STAT) || evTotal(m.evs) > EV_MAX_TOTAL)) err.push(`${def.name}: EV vượt giới hạn`);
     if (m.nature && !NATURES[m.nature]) err.push(`${def.name}: tính cách không hợp lệ`);
     if (m.teraType != null && !ALL_POKE_TYPES.includes(m.teraType as PokeType)) err.push(`${def.name}: Hệ Tera không hợp lệ`);
+    if (m.abilitySlot != null && !abilityOptions(m.species).some(a => a.slot === m.abilitySlot)) err.push(`${def.name}: Ability không hợp lệ`);
     if (m.gmax != null && typeof m.gmax !== 'boolean') err.push(`${def.name}: Nhân Tố Gigantamax không hợp lệ`);
     if (m.held) { const it = ITEM_DEFS.get(m.held); if (!it || (it.kind !== 'held' && it.kind !== 'megaStone')) err.push(`${def.name}: vật phẩm không hợp lệ`); }
     if (!rules.allowLegends && isLegendary(m.species)) err.push(`${def.name}: luật này cấm huyền thoại`);
@@ -97,7 +99,7 @@ export function buildDuel(seed: number, rules: DuelRules, side0: DuelMon[], side
   ([side0, side1] as DuelMon[][]).forEach((party, side) => {
     for (const m of applyRules(party, rules)) {
       const u = w.addPokemon(m.species, {
-        level: m.level, held: m.held ?? null, rival: side === 1, shiny: !!m.shiny,
+        abilitySlot: m.abilitySlot, teraType: m.teraType as PokeType | undefined, level: m.level, held: m.held ?? null, rival: side === 1, shiny: !!m.shiny,
         ind: m.ivs && m.nature ? { ivs: m.ivs, nature: m.nature, evs: m.evs } : null,
       });
       if (m.nickname) u.name = m.nickname;

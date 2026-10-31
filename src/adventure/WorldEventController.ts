@@ -1,3 +1,7 @@
+import { abilityEffect, rollAbilitySlot } from '../core/abilities';
+import { randomTeraType } from '../core/pokemonTraits';
+import { TYPE_VI } from '../core/synergy';
+import type { PokeType } from '../core/types';
 import { Biome, ECOLOGY, eligible, Rarity, REGIONS, RegionDef, regionOfArea, SHINY_OUTBREAK, WeatherKind } from '../core/encounters';
 import Phaser from 'phaser';
 import { SCALE, TILE_PX } from '../core/map/tiles';
@@ -125,6 +129,30 @@ export class WorldEventController {
         ev.data.species = species; ev.goal = 1;
         this.track(ev, [u]);
         this.announce(`CẢNH BÁO: ${this.name(species)} Alpha Lv${u.level} đang lảng vảng ở ${region.name}!`, '#ff7060');
+        break;
+      }
+      case 'teraRaid': {
+        const species = this.pickSpecies(region, e => !e.aquatic);
+        if (!species) return this.abort(ev);
+        const type = randomTeraType(() => this.world.rng.next());
+        const u = this.world.spawnWild(species, Math.min(MAX_LEVEL, region.elite[1] + 2), p.x, p.y, {
+          wild: makeWildState(p.x, p.y, 'aggressive', { homeR: 100, aggroR: 280, leash: 550 }),
+          tag: 'event:' + ev.uid, elite: true, hpMult: 6, noCapture: true,
+        });
+        u.teraPick = type;
+        u.abilitySlot = rollAbilitySlot(species, () => this.world.rng.next(), true);
+        u.passive = abilityEffect(species, u.abilitySlot);
+        u.flinchImmuneT = 1e9;
+        this.world.terastallize(u, type);
+        ev.data.species = species; ev.data.teraType = type; ev.goal = 1;
+        this.track(ev, [u]);
+        const crystal = this.scene.add.graphics().setDepth(p.y - 1);
+        crystal.fillStyle(0x88eeff, 0.25).fillCircle(p.x, p.y, 54);
+        crystal.fillStyle(0xaaddff, 0.8).fillTriangle(p.x, p.y - 90, p.x - 25, p.y - 30, p.x + 25, p.y - 30);
+        crystal.lineStyle(2, 0xffffff, 0.9).strokeTriangle(p.x, p.y - 90, p.x - 25, p.y - 30, p.x + 25, p.y - 30);
+        const label = this.scene.add.text(p.x, p.y - 112, `Tera Raid · ${TYPE_VI[type]}`, { fontSize: '15px', color: '#b8f5ff', stroke: '#18283b', strokeThickness: 4 }).setOrigin(0.5).setDepth(p.y + 100);
+        this.props.set(ev.uid, [crystal, label]);
+        this.announce(`Tinh thể Tera xuất hiện ở ${region.name}: ${this.name(species)} — hệ ${TYPE_VI[type]}! Xem dấu trên bản đồ; phá Tera rồi ném bóng.`, '#a0f0ff');
         break;
       }
       case 'raid': {
@@ -297,6 +325,17 @@ export class WorldEventController {
       case 'alpha':
         if (!alive.length) this.end(ev, true);
         break;
+      case 'teraRaid': {
+        if (!alive.length) { this.end(ev, true); break; }
+        const u = alive[0];
+        if (u.tera && u.hp / u.maxHp < RAID_SHRINK_AT) {
+          this.world.endTera(u);
+          u.noCapture = false;
+          ev.data.shattered = true;
+          this.announce(`${u.name} đã vỡ lớp Tera — có thể ném bóng!`, '#a0f0ff');
+        }
+        break;
+      }
       case 'raid': {
         if (!alive.length) { this.end(ev, true); break; }
         const u = alive[0];
@@ -419,6 +458,12 @@ export class WorldEventController {
     if (completed) {
       switch (ev.type) {
         case 'outbreak': st.addItems({ greatball: 5 }); st.earn(800); lines.push('+5 Great Ball', `+800 ${st.unit}`); break;
+        case 'teraRaid': {
+          const loot = { 'tera-shard': 10, 'exp-candy-m': 2 };
+          st.addItems(loot); st.earn(1500);
+          lines.push(...Object.entries(loot).map(([id, n]) => `+${n} ${ITEMS[id]?.name ?? id}`), `+1500 ${st.unit}`);
+          break;
+        }
         case 'raid': {
           const loot = raidRewards(!!ev.data.gmax, this.world.rng.next());
           st.addItems(loot); st.earn(2000);
@@ -513,7 +558,7 @@ export class WorldEventController {
     return this.director.active.map((ev) => {
       const r = REGIONS.get(ev.region);
       return {
-        uid: ev.uid, type: ev.type, name: variantById(ev.data.variant)?.name ?? EVENT_DEFS[ev.type].name, region: ev.region, regionName: r?.name ?? ev.region,
+        uid: ev.uid, type: ev.type, name: ev.type === 'teraRaid' ? `Tera Raid · ${TYPE_VI[ev.data.teraType as PokeType]} · ${this.name(ev.data.species as string)}` : variantById(ev.data.variant)?.name ?? EVENT_DEFS[ev.type].name, region: ev.region, regionName: r?.name ?? ev.region,
         left: Math.max(0, ev.end - this.now), progress: ev.progress, goal: ev.goal,
         x: (ev.data.x as number) ?? 0, y: (ev.data.y as number) ?? 0, approx: ev.type === 'treasure' ? 260 : 0,
       };
