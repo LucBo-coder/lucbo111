@@ -126,6 +126,18 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'ha-noi': haNoiJson as unknown as RegionDef,
 };
 
+// Every mart has someone behind the counter (V30): a map with a mart building and no shopkeeper gets one in front of
+// its door (a province without a mart: a street vendor next to the Pokémon Center's door). Before V30 only the first
+// five provinces sold anything.
+for (const d of Object.values(REGION_DEFS)) {
+  if (d.npcs.some((n) => n.id === 'shopkeeper')) continue;
+  const mart = d.buildings?.find((b) => /-mart$/.test(b.id));
+  const at = mart ?? (d.worldBoss ? d.buildings?.find((b) => /-center$/.test(b.id)) : undefined);
+  if (!at) continue;
+  d.npcs.push({ id: 'shopkeeper', name: mart ? 'Người bán hàng' : 'Người bán hàng rong', sprite: 'villager',
+    x: at.x + at.door + (mart ? 0 : 3), y: at.y + at.h + 1, lines: ['Mua gì cứ nói nhé!'] });
+}
+
 // Việt Nam Odyssey (V30): once a province's guardian is calmed its people stop talking about the trouble — the local
 // guide has its own words, the other villagers take turns with the province's lines (data/vietnam/peace.json)
 for (const [id, p] of Object.entries(peaceJson as Record<string, { guide: string[]; town: string[] }>)) {

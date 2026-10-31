@@ -334,6 +334,8 @@ Hang Đá Cổ (Onix), Hang Băng Vĩnh Cửu (Mamoswine), Lò Dung Nham (Magmor
 - **8 kệ**: Bóng · Hồi phục · Kẹo EXP · Tiến hóa · Đá Mega · Chiến đấu · Tăng hệ · Huấn luyện.
 - Mỗi món có ảnh, giá, số đang có, mô tả và danh sách Pokémon dùng được.
 - Mua nhiều cùng lúc (×1 / ×5 / ×10 / Tối đa), hiện tổng tiền trước khi mua.
+- **Theo danh tiếng vùng (V30)** (`core/shop.ts repShop`): *Được tin cậy* bớt 10% mọi món, *Người nhà* bớt 15% và mở kệ **Đặc sản** — vật phẩm tăng hệ và đá tiến hóa hợp hệ thần hộ vệ của vùng, rẻ hơn 20% (món đó rời kệ thường).
+- Mọi tỉnh Việt Nam đều có người bán trước cửa hàng (tỉnh không có cửa hàng: người bán hàng rong cạnh Trung tâm Pokémon). Trước V30 chỉ 5 tỉnh đầu bán hàng.
 
 ### 5.13 Cốt truyện: Quần Đảo Khởi Nguyên (V29)
 Hải Đăng Khởi Nguyên ở Bờ Biển San Hô tắt từ khi **Lõi Khởi Nguyên** vỡ thành 7 mảnh rơi khắp quần đảo.

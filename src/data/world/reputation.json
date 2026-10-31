@@ -56,6 +56,16 @@
         "3": "Người Trà Vinh mình đây rồi! Rừng dầu Ao Bà Om yên giấc lại cũng nhờ con."
       }
     },
+    "ben-tre": {
+      "name": "Bến Tre",
+      "rewards": { "1": { "oranberry": 3, "greatball": 3 }, "2": { "superpotion": 3, "miracle-seed": 1 }, "3": { "ultraball": 3, "leaf-stone": 1 } },
+      "greet": {
+        "0": "Khách mới về xứ dừa hả? Uống trái dừa xiêm cho mát đã.",
+        "1": "Thấy con mấy lần rồi. Ghé lò kẹo dừa chưa?",
+        "2": "Thợ leo dừa Thới Sơn ai cũng nhắc tên con.",
+        "3": "Người Bến Tre mình đây rồi! Vườn dừa yên lại cũng nhờ con."
+      }
+    },
     "dong-thap": {
       "name": "Đồng Tháp",
       "rewards": { "1": { "sitrus-berry": 2, "greatball": 3 }, "2": { "superpotion": 3, "miracle-seed": 1 }, "3": { "ultraball": 3, "water-stone": 1 } },

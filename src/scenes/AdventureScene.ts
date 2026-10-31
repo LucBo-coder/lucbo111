@@ -13,7 +13,7 @@ import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
-import { shopCatalogue } from '../core/shop';
+import { repShop, REP_DISCOUNT, SPECIALTY_TIER } from '../core/shop';
 import { canMega, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
 import { DungeonController } from '../adventure/DungeonController';
 import { SpawnManager } from '../adventure/SpawnManager';
@@ -1692,8 +1692,18 @@ export class AdventureScene extends Phaser.Scene {
     this.persist();
   }
 
+  /** The mart: prices and the specialty shelf follow the player's reputation in this region (core/shop.ts repShop). */
   private async shop(name: string): Promise<void> {
-    await this.ui.openShop({ title: name, greeting: 'Chào cháu! Cửa hàng chia theo từng kệ — chọn món, chọn số lượng rồi bấm Mua.', offers: shopCatalogue() });
+    const region = this.regionDef.id;
+    const known = !!REP_REGIONS[region];
+    const tier = known ? repTier(regionRep(this.state.adv, region)) : 0;
+    const boss = this.regionDef.worldBoss;
+    const types = boss ? POKEMON.get(boss.id)?.types ?? [] : [];
+    const off = Math.round(REP_DISCOUNT[tier] * 100);
+    const greeting = tier >= SPECIALTY_TIER ? `Người nhà mình đây rồi! Mọi món bớt ${off}%, còn kệ Đặc sản cô để riêng cho con.`
+      : off ? `Khách quen tin cậy — cô bớt ${off}% mọi món nhé!`
+      : `Chào cháu! Cửa hàng chia theo từng kệ — chọn món, chọn số lượng rồi bấm Mua.${known ? ` (Được ${REP_REGIONS[region].name} tin cậy thì cô bớt giá.)` : ''}`;
+    await this.ui.openShop({ title: name, greeting, offers: repShop(tier, types) });
   }
 
   // ───────────────────────────── evolution ─────────────────────────────

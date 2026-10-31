@@ -5,9 +5,10 @@ import { POKEMON } from './data';
 // Poké Mart catalogue (no Phaser): every item sold, its price and the shelf (category) it sits on, plus the stock of
 // the Travelling Merchant event. AdventureState spends the money; the shop window (scenes/shopUI.ts) only shows this.
 
-export type ShopCategory = 'balls' | 'healing' | 'candy' | 'evolution' | 'mega' | 'battle' | 'type' | 'training';
+export type ShopCategory = 'local' | 'balls' | 'healing' | 'candy' | 'evolution' | 'mega' | 'battle' | 'type' | 'training';
 
 export const SHOP_CATEGORIES: { id: ShopCategory; label: string; icon: string; hint: string }[] = [
+  { id: 'local', label: 'Đặc sản', icon: 'miracle-seed', hint: 'Hàng riêng của vùng, chỉ bán cho người nhà (danh tiếng cao nhất) — rẻ hơn 20%.' },
   { id: 'balls', label: 'Bóng', icon: 'pokeball', hint: 'Bóng thu phục — mỗi loại mạnh trong một hoàn cảnh riêng.' },
   { id: 'healing', label: 'Hồi phục', icon: 'potion', hint: 'Thuốc và quả hồi máu dùng ngay trên đường (phím H).' },
   { id: 'candy', label: 'Kẹo EXP', icon: 'rare-candy', hint: 'Kẹo kinh nghiệm cho Pokémon lên cấp nhanh.' },
@@ -112,6 +113,49 @@ export function megaOf(stone: string): { base: string; form: string } | null {
   const d = ITEM_DEFS.get(stone);
   if (!d?.megaFor) return null;
   return megaFormsOf(d.megaFor).some((f) => f.stone === stone) ? { base: d.megaFor, form: d.form! } : null;
+}
+
+// ───────────────────────────── the mart and the region's reputation (V30) ─────────────────────────────
+
+/** Discount at the mart of a region by its reputation tier (0 Người lạ · 1 Quen mặt · 2 Được tin cậy · 3 Người nhà). */
+export const REP_DISCOUNT = [0, 0, 0.1, 0.15];
+/** Tier that opens the region's specialty shelf, and that shelf's discount. */
+export const SPECIALTY_TIER = 3;
+export const SPECIALTY_DISCOUNT = 0.2;
+
+const STONE_OF: Record<string, string> = {
+  fire: 'fire-stone', water: 'water-stone', grass: 'leaf-stone', electric: 'thunder-stone', ice: 'ice-stone',
+  fairy: 'moon-stone', normal: 'moon-stone', dark: 'dusk-stone', ghost: 'dusk-stone', psychic: 'dawn-stone', fighting: 'dawn-stone',
+};
+const discounted = (price: number, d: number) => Math.max(50, Math.round((price * (1 - d)) / 50) * 50);
+
+/** The region's specialties: the type items and evolution stone that go with its guardian's types (sold items only). */
+export function specialtiesFor(types: string[]): string[] {
+  const sold = new Set(shopCatalogue().map((e) => e.id));
+  const out: string[] = [];
+  for (const t of types) {
+    for (const [id, d] of ITEM_DEFS) if (d.effect?.type === 'typeBoost' && (d.effect as { pokeType?: string }).pokeType === t && sold.has(id)) out.push(id);
+    if (STONE_OF[t] && sold.has(STONE_OF[t])) out.push(STONE_OF[t]);
+  }
+  return [...new Set(out)].slice(0, 5);
+}
+
+export interface RepShopEntry extends ShopEntry { was?: number }
+
+/**
+ * The mart of a region for the player's reputation there: the whole catalogue (a tier discount from Được tin cậy), and
+ * at Người nhà a "Đặc sản" shelf with the guardian's type items and stone at 20 % off (they leave their usual shelf).
+ */
+export function repShop(tier: number, guardianTypes: string[]): RepShopEntry[] {
+  const d = REP_DISCOUNT[Math.max(0, Math.min(REP_DISCOUNT.length - 1, tier))];
+  const local = tier >= SPECIALTY_TIER ? new Set(specialtiesFor(guardianTypes)) : new Set<string>();
+  const out: RepShopEntry[] = [];
+  for (const e of shopCatalogue()) {
+    if (local.has(e.id)) continue;
+    out.push(d ? { ...e, was: e.price, price: discounted(e.price, d) } : e);
+  }
+  const special = shopCatalogue().filter((e) => local.has(e.id)).map((e) => ({ ...e, category: 'local' as const, was: e.price, price: discounted(e.price, SPECIALTY_DISCOUNT) }));
+  return [...special, ...out];
 }
 
 // ───────────────────────────── Travelling Merchant (world event) ─────────────────────────────

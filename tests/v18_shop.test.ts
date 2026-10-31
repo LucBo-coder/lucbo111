@@ -25,7 +25,9 @@ describe('Poké Mart catalogue (0.18)', () => {
       expect(SHOP_CATEGORIES.map((c) => c.id)).toContain(e.category);
       expect(categoryOf(e.id)).toBe(e.category);
     }
-    for (const c of SHOP_CATEGORIES) expect(cat.filter((e) => e.category === c.id).length, c.id).toBeGreaterThan(0);
+    // every shelf has goods ('local' = a region's specialties, filled by the reputation shop only — V30 repShop)
+    for (const c of SHOP_CATEGORIES) if (c.id !== 'local') expect(cat.filter((e) => e.category === c.id).length, c.id).toBeGreaterThan(0);
+    expect(cat.some((e) => e.category === 'local')).toBe(false);
     // old prices kept, story rewards never sold
     expect(cat.find((e) => e.id === 'pokeball')?.price).toBe(200);
     expect(cat.find((e) => e.id === 'rare-candy')?.price).toBe(10_000);
