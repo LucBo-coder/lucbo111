@@ -71,7 +71,9 @@ const cutscenes: Cutscene[] = [
     { who: 'phong', text: 'Mảnh thứ năm đây. Cậu cầm đi — tôi nghĩ nó muốn đi với cậu.' },
   ] },
   { id: 'ck-c-6', title: 'Miệng núi lửa', chapter: 'ck-6', lines: [
-    { who: 'thiet', text: 'Máy khoan lớn nhất của ta... sập rồi. Được thôi, nhóc. Ta thua.' },
+    { who: 'thiet', text: 'Máy khoan lớn nhất của ta... sập rồi. Được thôi, nhóc. Ta thua.', unless: 'ck:lamp-early' },
+    { who: 'thiet', text: 'Đêm qua ta thấy ngọn đèn le lói từ miệng núi lửa. Ba mươi năm rồi nó mới sáng lại...', if: 'ck:lamp-early' },
+    { who: 'thiet', text: 'Cháu trao mảnh cho lão giữ đèn chứ không giữ cho mình. Ta không đánh người như thế. Phá cái máy đi — ta không cản.', if: 'ck:lamp-early' },
     { who: 'thiet', text: 'Mảnh cuối ở Thánh Địa. Ta đã thử vào — các hộ vệ ở đó không cho ai cầm máy đi qua. Có lẽ chúng sẽ cho cháu.' },
     { who: 'khue', text: 'Thiết... sao ông lại nói cho bọn ta?' },
     { who: 'thiet', text: 'Hồi nhỏ ta cũng từng ngồi trên bờ biển nhìn ngọn đèn đó.' },
@@ -79,10 +81,13 @@ const cutscenes: Cutscene[] = [
   { id: 'ck-c-7', title: 'Lõi Khởi Nguyên', chapter: 'ck-7', lines: [
     { who: '', text: 'Bảy mảnh xoay quanh nhau giữa sân Thánh Địa, chậm rãi khép lại thành một khối sáng.' },
     { who: 'khue', text: 'Nó đang liền lại! Giữ cho mọi thứ yên — đừng để Pokémon nào chạm vào nó.' },
+    { who: 'khue', text: 'Máy dò bắt được nhịp của ba mảnh ta mang theo từ Bờ Biển. Ta sẽ giữ nhịp cho Lõi — nó sẽ liền nhanh hơn.', if: 'ck:survey-scan' },
   ] },
   { id: 'ck-c-end', title: 'Hải Đăng Khởi Nguyên', chapter: 'ck-7', lines: [
     { who: '', text: 'Lõi Khởi Nguyên được đặt về chỗ cũ. Ngọn hải đăng bừng sáng, chiếu xa tới tận Thánh Địa.' },
     { who: 'keeper', text: 'Ba mươi năm... cảm ơn cháu. Từ đêm nay, tàu thuyền và Pokémon biển lại tìm được đường về.' },
+    { who: 'keeper', text: 'Ba mảnh cháu gửi ông đã giữ ánh đèn le lói suốt mấy tháng qua. Chính ánh sáng đó đã làm Thiết đổi ý.', if: 'ck:lamp-early' },
+    { who: 'khue', text: 'Ghi chép từ máy dò sẽ giúp đoàn tìm những thứ khác Lõi từng chiếu tới. Quyết định giữ mảnh lại đã đáng.', if: 'ck:survey-scan' },
     { who: 'phong', text: 'Lần sau có chuyến khảo sát nào, nhớ gọi tôi. Tôi sẽ không chạy trước nữa — chắc vậy.' },
     { who: 'khue', text: 'Đoàn khảo sát sẽ ở lại vài mùa. Quần đảo còn nhiều bí ẩn lắm.' },
   ] },
@@ -115,11 +120,16 @@ trainers.push(
     team: [['grimer', 26], ['croagunk', 27], ['koffing', 27]],
     challenge: ['Khu khai thác! Đi chỗ khác chơi!'], win: ['Ối... báo trưởng nhóm thôi!'], lose: ['Đã bảo rồi mà.'],
     rewards: { items: { superpotion: 2, greatball: 3 }, exp: 1100 } },
-  { id: 'ck-thiet', name: 'Trưởng nhóm Thiết', sprite: 'viking', look: 'ck-thiet', at: P('volcanic-lands', 'area:crater', -4, 3), showIf: ['ck:shard-5'], hideIf: ['ck:shard-6'],
+  { id: 'ck-thiet', name: 'Trưởng nhóm Thiết', sprite: 'viking', look: 'ck-thiet', at: P('volcanic-lands', 'area:crater', -4, 3), showIf: ['ck:shard-5'], hideIf: ['ck:shard-6', 'ck:lamp-early'],
     team: [['magcargo', 52], ['rhydon', 53], ['steelix', 53], ['magmar', 54]],
     challenge: ['Cháu đã đi xa tới vậy chỉ để chặn ta sao? Được — cho ta xem.'], win: ['...Pokémon của cháu đánh vì một thứ ta không có.'], lose: ['Đất này thuộc về người đào được nó.'],
     rewards: { items: { superpotion: 2, ultraball: 3 }, exp: 3200 } },
 );
+
+// the shards given to the keeper (chapter 4) lit the lamp; Thiết saw it from the crater and will not fight
+npcs.push({ id: 'ck-thiet-calm', name: 'Trưởng nhóm Thiết', sprite: 'viking', look: 'ck-thiet', at: P('volcanic-lands', 'area:crater', -5, 3),
+  showIf: ['ck:shard-5', 'ck:lamp-early'], hideIf: ['ck:shard-6'],
+  lines: ['Ta thấy ngọn đèn le lói rồi, nhóc. Cái máy khoan ở ngay kia — phá nó đi, ta không cản.'] });
 
 quests.push(
   { id: 'ck-1a', kind: 'main', region: 'starter-valley', chapter: 'ck-1', title: 'Đoàn khảo sát', giver: khue('starter-valley'), requires: ['q-main-1'],
@@ -167,7 +177,7 @@ quests.push(
     dialogue: { offer: ['Sương độc dày gấp đôi từ khi Thiết Lĩnh dựng máy bơm. Phải tắt nó.'], progress: ['Máy bơm ở giữa đầm.'], complete: ['Phong đã nhặt được mảnh thứ ba trong bùn. Giờ tới bờ biển.'] },
     cutscene: { complete: 'ck-c-3' } },
   { id: 'ck-4', kind: 'main', region: 'coral-coast', chapter: 'ck-4', title: 'Người giữ hải đăng', giver: khue('coral-coast'), requires: ['ck-3'], requiresFlags: ['region:coral-coast'],
-    description: 'Ông giữ hải đăng nhớ câu chuyện về Lõi. Bạn phải quyết định: trao ba mảnh cho ông giữ ngay, hay để Trưởng đoàn mang theo nghiên cứu (lựa chọn này đổi phần thưởng và lời kể về sau).',
+    description: 'Ông giữ hải đăng nhớ câu chuyện về Lõi. Bạn phải quyết định: trao ba mảnh cho ông giữ ngay, hay để Trưởng đoàn mang theo nghiên cứu (trao thì đèn le lói ngay và có người sẽ thấy nó; giữ thì máy dò của đoàn mạnh hơn khi Lõi liền lại).',
     objectives: [
       { type: 'talk', target: 'lighthouse-keeper', text: 'Gặp Ông giữ hải đăng' },
       { type: 'hold', target: 'ck-4:hold', text: 'Giữ chân hải đăng trong lúc ông tìm cuốn sổ cổ',
@@ -196,7 +206,8 @@ quests.push(
   { id: 'ck-6', kind: 'main', region: 'volcanic-lands', chapter: 'ck-6', title: 'Máy khoan miệng núi lửa', giver: khue('volcanic-lands'), requires: ['ck-5'], requiresFlags: ['boss:articuno', 'boss:zapdos', 'boss:moltres'],
     description: 'Trưởng nhóm Thiết đặt máy khoan lớn nhất ở miệng núi lửa để lấy mảnh thứ sáu.',
     objectives: [
-      { type: 'trainer', target: 'ck-thiet', text: 'Đánh bại Trưởng nhóm Thiết' },
+      // the shards given to the keeper (chapter 4) lit the lamp: Thiết saw it and does not fight
+      { type: 'trainer', target: 'ck-thiet', text: 'Đánh bại Trưởng nhóm Thiết', skipIf: ['ck:lamp-early'] },
       { type: 'destroy', target: 'ck-6:destroy', text: 'Phá máy khoan lớn',
         encounter: { kind: 'destroy', at: P('volcanic-lands', 'area:crater', 3, 3), every: 13, device: { name: 'Máy khoan lớn Thiết Lĩnh', species: 'klinklang', level: 54, hpMult: 4.5 }, waves: waves(['slugma', 'magcargo', 'magmar'], 50) } },
       { type: 'talk', target: khue('volcanic-lands'), text: 'Báo lại với Trưởng đoàn' },
@@ -209,7 +220,7 @@ quests.push(
     objectives: [
       { type: 'explore', target: 'sanctuary-court', text: 'Vào sân Thánh Địa' },
       { type: 'hold', target: 'ck-7a:hold', text: 'Giữ Lõi Khởi Nguyên trong lúc nó liền lại',
-        encounter: { kind: 'hold', at: P('legendary-sanctuary', 'area:sanctuary-court'), radius: 5, seconds: 60, every: 12, waves: waves(['bronzong', 'metagross', 'dragonite'], 72) } },
+        encounter: { kind: 'hold', at: P('legendary-sanctuary', 'area:sanctuary-court'), radius: 5, seconds: 60, secondsIf: { flag: 'ck:survey-scan', seconds: 40 }, every: 12, waves: waves(['bronzong', 'metagross', 'dragonite'], 72) } },
       { type: 'talk', target: khue('legendary-sanctuary'), text: 'Nhận Lõi Khởi Nguyên từ Trưởng đoàn' },
     ],
     rewards: { exp: 6000, items: { 'rare-candy': 2 }, flags: ['ck:core'] },

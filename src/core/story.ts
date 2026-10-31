@@ -17,6 +17,9 @@ export interface CutsceneLine {
   /** character id, an NPC name, or '' for narration */
   who: string;
   text: string;
+  /** only said when this story flag is set / is not set (the echo of an earlier choice) */
+  if?: string;
+  unless?: string;
 }
 
 export interface Cutscene {
@@ -103,9 +106,10 @@ export function cutsceneOf(q: QuestDef | undefined, when: 'start' | 'complete'):
  * Lines of a cutscene grouped by speaker (one dialogue box per group). `name` resolves a character id to its
  * display name; narration keeps an empty speaker.
  */
-export function cutscenePages(c: Cutscene, name: (who: string) => string): { speaker: string; lines: string[] }[] {
+export function cutscenePages(c: Cutscene, name: (who: string) => string, has: (flag: string) => boolean = () => false): { speaker: string; lines: string[] }[] {
   const out: { speaker: string; lines: string[] }[] = [];
   for (const l of c.lines) {
+    if ((l.if && !has(l.if)) || (l.unless && has(l.unless))) continue;
     const speaker = l.who ? name(l.who) : '';
     const last = out[out.length - 1];
     if (last && last.speaker === speaker) last.lines.push(l.text);
@@ -129,6 +133,8 @@ export interface EncounterDef {
   radius?: number;
   /** hold: seconds to keep the point */
   seconds?: number;
+  /** hold: a shorter / longer time when a story flag is set (an earlier choice helps) */
+  secondsIf?: { flag: string; seconds: number };
   /** hold / destroy: hostile waves, [species, level] each, one wave every `every` seconds */
   waves?: [string, number][][];
   every?: number;
@@ -139,6 +145,11 @@ export interface EncounterDef {
 }
 
 export interface HoldState { t: number; out: number }
+
+/** Seconds a 'hold' lasts with the story so far (default 45). */
+export function holdSeconds(def: { seconds?: number; secondsIf?: { flag: string; seconds: number } }, has: (flag: string) => boolean): number {
+  return def.secondsIf && has(def.secondsIf.flag) ? def.secondsIf.seconds : def.seconds ?? 45;
+}
 
 /**
  * One tick of a 'hold' objective: progress while the trainer stands in the circle with a Pokémon fighting;

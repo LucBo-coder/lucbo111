@@ -10,6 +10,7 @@
   - Save v10 tự chuyển đổi (nhiệm vụ đang dở giữ đúng chỗ).
 - **Cấp tỉnh theo dải**: tỉnh 1–7 Lv 1–25, 8–15 Lv 25–45, 16–24 Lv 45–65, 25–32 Lv 65–85, 33–36 Lv 85–100 (trước đây tăng đều Lv 12 → 100, giữa hành trình quá dốc). Khu, HLV, cứu hộ, boss và vùng gặp Pokémon dời cùng nhau; Pokémon của HLV về dạng tiến hóa hợp cấp.
 - **Dân làng theo kịp câu chuyện**: hạ xong thần hộ vệ, người dẫn đường và dân trong tỉnh nói chuyện yên bình trở lại thay vì kể mãi chuyện rắc rối cũ (cả 36 tỉnh). Ở Quần Đảo Khởi Nguyên, người giữ hải đăng, bà đồng đầm lầy, trưởng làng… đổi lời sau từng chương.
+- **Ngã rẽ chương 4 có hậu quả** (Quần Đảo Khởi Nguyên): trao mảnh Lõi cho ông giữ đèn thì ở chương 6 Trưởng nhóm Thiết thấy ánh đèn và không đánh nữa; để đoàn khảo sát giữ thì trận giữ Lõi ở chương 7 ngắn hơn (40 s). Lời cảnh truyện nhắc lại lựa chọn.
 - **Hướng dẫn trong game** (K / F1 / nút **?**): bảng phím đầy đủ, điều khiển cảm ứng, 5 trang cách chơi; lời nhắc lần đầu.
 - **Phím O** mở PC. Gõ chữ trong ô nhập (tìm PC, đặt tên hộp) không còn kích hoạt phím tắt (trước đây gõ x / i / m / j làm nhảy tab).
 - `src/core/questAudit.ts`: rà dữ liệu nhiệm vụ của cả hai chiến dịch (0 lỗi).

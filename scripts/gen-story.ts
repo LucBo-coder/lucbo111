@@ -165,6 +165,7 @@ function build(src: StoryIn, regions: string[]): StoryDef & { npcs: StoryNpc[]; 
         const e: EncounterDef = { kind: encounter.kind, x: p.x, y: p.y, region: encounter.at.region };
         if (encounter.radius) e.radius = encounter.radius;
         if (encounter.seconds) e.seconds = encounter.seconds;
+        if (encounter.secondsIf) e.secondsIf = encounter.secondsIf;
         if (encounter.waves) { e.waves = encounter.waves.map((w) => w.map(([sp, lv]) => [stageFor(sp, lv), lv] as [string, number])); for (const w of encounter.waves) for (const [sp] of w) if (!POKEMON.has(sp) || isAquatic(sp)) errors.push(`${q.id}: unknown or aquatic (fights on land) species ${sp}`); }
         if (encounter.every) e.every = encounter.every;
         if (encounter.device) { e.device = encounter.device; if (!POKEMON.has(encounter.device.species)) errors.push(`${q.id}: unknown device species ${encounter.device.species}`); }

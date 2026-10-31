@@ -350,6 +350,11 @@ Hải Đăng Khởi Nguyên ở Bờ Biển San Hô tắt từ khi **Lõi Khởi
 | 6 | Núi Lửa | Máy khoan lớn nhất ở miệng núi lửa | đấu Trưởng nhóm Thiết, phá máy khoan |
 | 7 | Thánh Địa → Bờ Biển | Bảy mảnh hợp lại; mang Lõi về hải đăng | giữ Lõi 60 s, trao Lõi — hải đăng sáng lại |
 
+- **Hậu quả của ngã rẽ chương 4 (V30)**:
+  - *Trao 3 mảnh cho ông giữ đèn* (`ck:lamp-early`): đèn le lói ngay. Ở chương 6, Thiết đã thấy ánh đèn từ miệng núi lửa nên không đánh nữa, chỉ đứng cạnh máy khoan (bỏ bước đấu Thiết, `skipIf`). Lời của Thiết và đoạn kết nhắc lại chuyện này.
+  - *Để đoàn khảo sát giữ* (`ck:survey-scan`): máy dò bắt nhịp ba mảnh, giữ Lõi ở chương 7 chỉ còn **40 s** (`secondsIf`). Khuê nói lý do, đoạn kết nhắc ghi chép của máy dò.
+  - Cơ chế dùng chung: mục tiêu `skipIf` (tự qua khi có cờ), câu thoại cảnh truyện `if` / `unless`, trận giữ vị trí `secondsIf`.
+
 ---
 
 ## 6. Việt Nam Odyssey

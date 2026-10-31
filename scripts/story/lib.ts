@@ -18,7 +18,7 @@ export interface TrainerIn extends Omit<NpcIn, 'lines'> {
 }
 
 export interface EncounterIn {
-  kind: EncounterKind; at: Spot; radius?: number; seconds?: number;
+  kind: EncounterKind; at: Spot; radius?: number; seconds?: number; secondsIf?: { flag: string; seconds: number };
   waves?: [string, number][][]; every?: number;
   device?: { name: string; species: string; level: number; hpMult?: number };
   /** escort: who follows (sprite kind + look seed), from where */

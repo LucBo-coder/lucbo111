@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { AdventureScene } from '../scenes/AdventureScene';
 import type { DialogueChoice } from '../scenes/AdventureUI';
 import type { ObjectiveDef, QuestDef } from '../core/quests';
-import { cutscenePages, holdTick, waveDue, type Cutscene, type EncounterDef, type HoldState, type StoryDef } from '../core/story';
+import { cutscenePages, holdSeconds, holdTick, waveDue, type Cutscene, type EncounterDef, type HoldState, type StoryDef } from '../core/story';
 import { storyOf } from '../core/storyData';
 import { makeWildState } from '../core/wildAI';
 import { npcLook } from '../core/npcLooks';
@@ -74,7 +74,7 @@ export class StoryController {
     this.playing = true;
     if (!replay && !this.seen.includes(id)) { this.seen.push(id); this.scene.persist(); }
     try {
-      const pages = cutscenePages(c, (w) => this.characterName(w));
+      const pages = cutscenePages(c, (w) => this.characterName(w), (f) => this.scene.state.hasFlag(f));
       for (let i = 0; i < pages.length; i++) {
         const p = pages[i];
         const last = i === pages.length - 1;
@@ -192,7 +192,8 @@ export class StoryController {
       case 'hold': {
         if (d > 30 * TILE_PX && r.hold.t === 0) { r.label.setText(''); return; }
         const inside = d < rad && s.world.allies.some((a) => !a.fainted);
-        const res = holdTick(r.hold, dt, inside, def);
+        const need = holdSeconds(def, (f) => s.state.hasFlag(f));
+        const res = holdTick(r.hold, dt, inside, { seconds: need });
         if (res.reset) {
           for (const u of r.spawned) if (u.alive) s.world.removeEnemy(u);
           r.spawned = []; r.t = 0; r.wave = -1;
@@ -204,7 +205,6 @@ export class StoryController {
           const due = waveDue(r.t, def);
           while (r.wave < due) this.spawnWave(r, ++r.wave);
         }
-        const need = def.seconds ?? 45;
         r.g.lineStyle(4, inside ? 0x80ff90 : 0xffd060, 0.5 + 0.4 * pulse).strokeCircle(r.x, r.y, rad);
         r.g.fillStyle(inside ? 0x80ff90 : 0xffd060, 0.08).fillCircle(r.x, r.y, rad);
         r.g.lineStyle(8, 0x80ff90, 0.9).beginPath().arc(r.x, r.y, rad + 10, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * r.hold.t) / need).strokePath();

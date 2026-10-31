@@ -107,12 +107,13 @@ export function auditQuests(quests: QuestDef[], w: AuditWorld): AuditIssue[] {
   }
 
   /** NPC hidden (hideIf already set / showIf never set) at the time the quest needs them. */
-  function hiddenCheck(q: QuestDef, who: string, role: string, giving: boolean): void {
+  function hiddenCheck(q: QuestDef, who: string, role: string, giving: boolean, skipIf: string[] = []): void {
     const p = people.get(who);
     if (!p) return;
     const sure = new Set([...(q.requiresFlags ?? []), ...[...pre(q.id)].flatMap((r) => rewardFlags.get(r) ?? [])]);
     // the quest's own reward flags hide them only after completion — fine; but a flag set before it runs is a dead end
-    for (const f of p.hideIf ?? []) if (sure.has(f)) err(q.id, `${role} "${who}" đã bị ẩn (hideIf ${f}) khi nhiệm vụ cần`);
+    // a flag that also skips the objective (skipIf) is fine: the step is passed when the person leaves
+    for (const f of p.hideIf ?? []) if (sure.has(f) && !skipIf.includes(f)) err(q.id, `${role} "${who}" đã bị ẩn (hideIf ${f}) khi nhiệm vụ cần`);
     if (giving) return;
     void p.showIf;
   }
@@ -132,12 +133,12 @@ export function auditQuests(quests: QuestDef[], w: AuditWorld): AuditIssue[] {
     switch (o.type) {
       case 'talk': case 'choose':
         if (!people.has(t)) err(q.id, `${at}: không có NPC này`);
-        else hiddenCheck(q, t, 'NPC', false);
+        else hiddenCheck(q, t, 'NPC', false, o.skipIf);
         if (o.type === 'choose' && !o.options?.length) err(q.id, `${at}: lựa chọn rỗng`);
         break;
       case 'trainer':
         if (!people.get(t)?.trainer) err(q.id, `${at}: không có huấn luyện viên này`);
-        else hiddenCheck(q, t, 'HLV', false);
+        else hiddenCheck(q, t, 'HLV', false, o.skipIf);
         break;
       case 'explore':
         if (t.startsWith('dock:')) { if (!has((r) => r.docks, t.slice(5))) err(q.id, `${at}: không có bến này`); }

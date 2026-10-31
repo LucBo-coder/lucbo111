@@ -234,7 +234,18 @@
    "lines": [
     {
      "who": "thiet",
-     "text": "Máy khoan lớn nhất của ta... sập rồi. Được thôi, nhóc. Ta thua."
+     "text": "Máy khoan lớn nhất của ta... sập rồi. Được thôi, nhóc. Ta thua.",
+     "unless": "ck:lamp-early"
+    },
+    {
+     "who": "thiet",
+     "text": "Đêm qua ta thấy ngọn đèn le lói từ miệng núi lửa. Ba mươi năm rồi nó mới sáng lại...",
+     "if": "ck:lamp-early"
+    },
+    {
+     "who": "thiet",
+     "text": "Cháu trao mảnh cho lão giữ đèn chứ không giữ cho mình. Ta không đánh người như thế. Phá cái máy đi — ta không cản.",
+     "if": "ck:lamp-early"
     },
     {
      "who": "thiet",
@@ -262,6 +273,11 @@
     {
      "who": "khue",
      "text": "Nó đang liền lại! Giữ cho mọi thứ yên — đừng để Pokémon nào chạm vào nó."
+    },
+    {
+     "who": "khue",
+     "text": "Máy dò bắt được nhịp của ba mảnh ta mang theo từ Bờ Biển. Ta sẽ giữ nhịp cho Lõi — nó sẽ liền nhanh hơn.",
+     "if": "ck:survey-scan"
     }
    ]
   },
@@ -277,6 +293,16 @@
     {
      "who": "keeper",
      "text": "Ba mươi năm... cảm ơn cháu. Từ đêm nay, tàu thuyền và Pokémon biển lại tìm được đường về."
+    },
+    {
+     "who": "keeper",
+     "text": "Ba mảnh cháu gửi ông đã giữ ánh đèn le lói suốt mấy tháng qua. Chính ánh sáng đó đã làm Thiết đổi ý.",
+     "if": "ck:lamp-early"
+    },
+    {
+     "who": "khue",
+     "text": "Ghi chép từ máy dò sẽ giúp đoàn tìm những thứ khác Lõi từng chiếu tới. Quyết định giữ mảnh lại đã đáng.",
+     "if": "ck:survey-scan"
     },
     {
      "who": "phong",
@@ -738,7 +764,7 @@
    "requiresFlags": [
     "region:coral-coast"
    ],
-   "description": "Ông giữ hải đăng nhớ câu chuyện về Lõi. Bạn phải quyết định: trao ba mảnh cho ông giữ ngay, hay để Trưởng đoàn mang theo nghiên cứu (lựa chọn này đổi phần thưởng và lời kể về sau).",
+   "description": "Ông giữ hải đăng nhớ câu chuyện về Lõi. Bạn phải quyết định: trao ba mảnh cho ông giữ ngay, hay để Trưởng đoàn mang theo nghiên cứu (trao thì đèn le lói ngay và có người sẽ thấy nó; giữ thì máy dò của đoàn mạnh hơn khi Lõi liền lại).",
    "objectives": [
     {
      "type": "talk",
@@ -974,10 +1000,13 @@
      "type": "trainer",
      "target": "ck-thiet",
      "text": "Đánh bại Trưởng nhóm Thiết",
+     "skipIf": [
+      "ck:lamp-early"
+     ],
      "count": 1,
      "marker": {
-      "x": 79,
-      "y": 32,
+      "x": 82,
+      "y": 33,
       "region": "volcanic-lands"
      }
     },
@@ -1119,6 +1148,10 @@
       "region": "legendary-sanctuary",
       "radius": 5,
       "seconds": 60,
+      "secondsIf": {
+       "flag": "ck:survey-scan",
+       "seconds": 40
+      },
       "waves": [
        [
         [
@@ -1376,6 +1409,25 @@
    "hideIf": [
     "ck:end"
    ]
+  },
+  {
+   "region": "volcanic-lands",
+   "id": "ck-thiet-calm",
+   "name": "Trưởng nhóm Thiết",
+   "sprite": "viking",
+   "look": "ck-thiet",
+   "x": 78,
+   "y": 32,
+   "lines": [
+    "Ta thấy ngọn đèn le lói rồi, nhóc. Cái máy khoan ở ngay kia — phá nó đi, ta không cản."
+   ],
+   "showIf": [
+    "ck:shard-5",
+    "ck:lamp-early"
+   ],
+   "hideIf": [
+    "ck:shard-6"
+   ]
   }
  ],
  "trainers": [
@@ -1468,8 +1520,8 @@
    "name": "Trưởng nhóm Thiết",
    "sprite": "viking",
    "look": "ck-thiet",
-   "x": 79,
-   "y": 32,
+   "x": 82,
+   "y": 33,
    "team": [
     [
      "magcargo",
@@ -1508,7 +1560,8 @@
     "ck:shard-5"
    ],
    "hideIf": [
-    "ck:shard-6"
+    "ck:shard-6",
+    "ck:lamp-early"
    ]
   }
  ]

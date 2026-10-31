@@ -24,6 +24,8 @@ export interface ObjectiveDef {
   marker?: { x: number; y: number; region?: string; approx?: number };
   /** Only applies when this option was chosen */
   branch?: string;
+  /** Counts as done when any of these story flags is set (a choice made in an earlier quest made it unneeded) */
+  skipIf?: string[];
   /** 'choose' objective: the options (target = the NPC who asks) */
   options?: QuestOption[];
   /** 'hold' / 'destroy' / 'escort': where and how (target = the encounter id the controller reports) */
@@ -171,7 +173,8 @@ export class QuestManager {
     while (st.status === 'active') {
       const obj = d.objectives[st.step];
       if (!obj || obj.type === 'choose') return;
-      st.progress = Math.max(st.progress, Math.min(obj.count, this.already(obj)));
+      const skip = obj.skipIf?.some((f) => this.flags().has(f));
+      st.progress = skip ? obj.count : Math.max(st.progress, Math.min(obj.count, this.already(obj)));
       if (st.progress < obj.count) return;
       if (this.advance(d, st).completed) this.autoDone.push(d.id);
     }
