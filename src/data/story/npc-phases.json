@@ -1,0 +1,12 @@
+[
+ { "region": "starter-valley", "npc": "elder", "if": ["ck:shard-1"], "lines": ["Máy khoan ở tàn tích im rồi. Ta ngủ được một giấc trọn đêm.", "Tàn tích này có từ thời xa xưa, trước cả khi làng được dựng lên. Mảnh Lõi cháu tìm thấy chắc cũng già như nó."] },
+ { "region": "starter-valley", "npc": "elder", "if": ["ck:end"], "lines": ["Đêm qua ta thấy ánh hải đăng từ tận đây. Mấy chục năm rồi mới thấy lại.", "Cháu làm được điều mà ông bà ta chỉ kể trong truyện."] },
+ { "region": "starter-valley", "npc": "prof", "if": ["ck:end"], "lines": ["Hải Đăng Khởi Nguyên sáng lại rồi! Pokémon di cư theo mùa đang quay về thung lũng.", "Hãy nhớ: Pokémon của cháu tự chiến đấu, cháu chỉ cần chỉ huy và di chuyển."] },
+ { "region": "emerald-woods", "npc": "ef-ranger", "if": ["ck:shard-2"], "lines": ["Rừng yên hẳn từ hôm cháu ghé. Pokémon ra tận đường mòn kiếm ăn.", "Bên suối có chỗ câu cá, cá ở đây to hơn ngoài Hồ Pha Lê nhiều."] },
+ { "region": "misty-swamp", "npc": "swamp-witch", "if": ["ck:shard-3"], "lines": ["Sương mỏng đi rồi... lần đầu tiên ta thấy được bờ bên kia đầm.", "Ban đêm, Gastly và Misdreavus vẫn ra khỏi hốc cây đấy."] },
+ { "region": "misty-swamp", "npc": "swamp-fisher", "if": ["ck:shard-3"], "lines": ["Máy bơm bùn tắt rồi, nước đầm trong dần. Hôm qua tôi câu được con Barboach khỏe re!", "Grimer vẫn còn, nhưng ít hẳn."] },
+ { "region": "coral-coast", "npc": "lighthouse-keeper", "if": ["ck:shard-4"], "lines": ["Cuốn sổ cổ nói đèn cần đủ bảy mảnh Lõi. Đêm nào ta cũng thắp, chờ cháu mang về.", "Mấy tảng đá quanh vách là nơi Onix và Graveler ẩn mình."] },
+ { "region": "coral-coast", "npc": "lighthouse-keeper", "if": ["ck:end"], "lines": ["Nhìn kìa — ngọn đèn quét tới tận chân trời! Tàu thuyền tìm được đường về rồi.", "Ta sẽ ghi tên cháu vào cuốn sổ, ngay dưới tên người dựng hải đăng."] },
+ { "region": "coral-coast", "npc": "diver", "if": ["ck:end"], "lines": ["Từ hôm hải đăng sáng, Lapras với Wailmer bơi vào tận rạn san hô.", "Tentacruel thì vẫn không thân thiện đâu, coi chừng."] },
+ { "region": "volcanic-lands", "npc": "geologist", "if": ["ck:shard-6"], "lines": ["Máy khoan lớn sập rồi, dung nham chảy lại đúng dòng cũ. Đất bớt rung hẳn.", "Pokémon Lửa và Đá sống ở đây, Lv42–58. Miệng núi lửa có Pokémon mạnh nhất."] }
+]

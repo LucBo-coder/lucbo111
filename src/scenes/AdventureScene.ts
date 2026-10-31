@@ -60,7 +60,7 @@ import { LEGENDS, LegendEnv, missingConditions as legendMissing } from '../core/
 import { LegendaryEncounterManager } from '../adventure/LegendaryEncounterManager';
 import { ShrineController } from '../adventure/ShrineController';
 import { StoryController } from '../adventure/StoryController';
-import { npcVisible } from '../core/story';
+import { npcLines, npcVisible, type NpcPhase } from '../core/story';
 import { SecretController } from '../adventure/SecretController';
 import { RITUALS } from '../core/rituals';
 import { audio } from '../systems/audio';
@@ -1619,14 +1619,14 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private async talk(it: Interactable): Promise<void> {
-    const npc = it.obj.data as { id: string; name: string; lines: string[] };
+    const npc = it.obj.data as { id: string; name: string; lines: string[]; phases?: NpcPhase[] };
     this.talkingTo = npc.id;
     try { await this.talkTo(npc, it); } finally { this.talkingTo = null; }
   }
 
   /** rotates the villagers' rumours between the hidden entrances still to find */
   private rumorN = 0;
-  private async talkTo(npc: { id: string; name: string; lines: string[] }, it: Interactable): Promise<void> {
+  private async talkTo(npc: { id: string; name: string; lines: string[]; phases?: NpcPhase[] }, it: Interactable): Promise<void> {
     void it;
     const qs = this.state.quests;
     const pt = this.portraitOf(npc.id);
@@ -1672,7 +1672,9 @@ export class AdventureScene extends Phaser.Scene {
     // a rumour about a hidden shrine entrance the player's legend quests still need here (the area, never the tile)
     const targets = qs.active().map((q) => qs.currentObjective(q.id)).filter((o) => o?.type === 'boss' && o.target).map((o) => o!.target!);
     const rumor = active ? null : entranceRumor(this.regionDef.id, targets, (f) => this.state.hasFlag(f), this.rumorN++);
-    await say(active?.dialogue.progress ?? [...(greet ? [greet] : []), ...npc.lines, ...(rumor ? [rumor] : [])]);
+    // what villagers say follows the story (a province at peace after its guardian, core/story.ts npcLines)
+    const idle = npcLines(npc, (f) => this.state.hasFlag(f));
+    await say(active?.dialogue.progress ?? [...(greet ? [greet] : []), ...idle, ...(rumor ? [rumor] : [])]);
   }
 
   /** A quest's crossroads: the NPC asks, the player picks a path (or walks away and decides later). */

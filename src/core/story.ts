@@ -70,6 +70,16 @@ export function npcVisible(d: { showIf?: string[]; hideIf?: string[] }, has: (f:
   return (d.showIf ?? []).every(has) && !(d.hideIf ?? []).some(has);
 }
 
+/** Idle lines of an NPC once some story flags are set (V30): the last phase whose flags are all set wins. */
+export interface NpcPhase { if: string[]; lines: string[] }
+
+/** What an NPC says when nothing else (quest, offer, service) applies: its latest matching phase, else its lines. */
+export function npcLines(d: { lines: string[]; phases?: NpcPhase[] }, has: (f: string) => boolean): string[] {
+  let out = d.lines;
+  for (const p of d.phases ?? []) if (p.if.every(has)) out = p.lines;
+  return out;
+}
+
 export type ChapterState = 'locked' | 'current' | 'done';
 
 /** Chapter progress from the quest states: done when its last quest is completed, current from its first available. */

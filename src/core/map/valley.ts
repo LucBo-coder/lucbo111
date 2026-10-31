@@ -135,9 +135,10 @@ const UNKNOWN = 255;
 
 /**
  * Story people (V29, data/story/*.json): `look` = seed of the pixel look (the same person looks the same on every
- * map), `showIf` / `hideIf` = story flags that make them appear / leave (core/story.ts npcVisible).
+ * map), `showIf` / `hideIf` = story flags that make them appear / leave (core/story.ts npcVisible), `phases` = what
+ * they say once the story moves on (core/story.ts npcLines).
  */
-export interface NpcStory { look?: string; showIf?: string[]; hideIf?: string[] }
+export interface NpcStory { look?: string; showIf?: string[]; hideIf?: string[]; phases?: { if: string[]; lines: string[] }[] }
 
 export class ValleyMap implements MapProvider {
   readonly kind = 'overworld' as const;

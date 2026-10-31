@@ -56,6 +56,8 @@ import dienBienJson from '../../data/vietnam/dien-bien.json';
 import sonLaJson from '../../data/vietnam/son-la.json';
 import phuThoJson from '../../data/vietnam/phu-tho.json';
 import haNoiJson from '../../data/vietnam/ha-noi.json';
+import peaceJson from '../../data/vietnam/peace.json';
+import npcPhasesJson from '../../data/story/npc-phases.json';
 import type { RegionDef } from './valley';
 import { STORIES } from '../storyData';
 
@@ -123,6 +125,26 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'phu-tho': phuThoJson as unknown as RegionDef,
   'ha-noi': haNoiJson as unknown as RegionDef,
 };
+
+// Việt Nam Odyssey (V30): once a province's guardian is calmed its people stop talking about the trouble — the local
+// guide has its own words, the other villagers take turns with the province's lines (data/vietnam/peace.json)
+for (const [id, p] of Object.entries(peaceJson as Record<string, { guide: string[]; town: string[] }>)) {
+  const d = REGION_DEFS[id];
+  if (!d?.worldBoss) continue;
+  const flag = [`boss:${d.worldBoss.id}`];
+  let i = 0;
+  for (const n of d.npcs) {
+    if (n.role || n.id === 'shopkeeper') continue;
+    const lines = n.id.endsWith('-guide') ? p.guide : [p.town[i++ % p.town.length]];
+    n.phases = [...(n.phases ?? []).filter((x) => x.if.join() !== flag.join()), { if: flag, lines }];
+  }
+}
+
+// hand-written lines for single people once a chapter is done (data/story/npc-phases.json, in story order)
+for (const { region, npc, ...phase } of npcPhasesJson as { region: string; npc: string; if: string[]; lines: string[] }[]) {
+  const n = REGION_DEFS[region]?.npcs.find((x) => x.id === npc);
+  if (n) n.phases = [...(n.phases ?? []), phase];
+}
 
 // Story people of both campaigns (data/story/*.json) join their maps; they appear / leave with story flags
 // (showIf / hideIf), but always stand on the map data so the map itself never changes with progress.

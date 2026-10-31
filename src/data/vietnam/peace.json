@@ -1,0 +1,146 @@
+{
+ "ca-mau": {
+  "guide": ["Rừng U Minh hết kêu đêm rồi! Khách lên mũi Cà Mau đông trở lại, ai cũng hỏi chuyện con với Seviper.", "Đi đâu thì đi, nhớ về thăm Đất Mũi nghen."],
+  "town": ["Đêm qua ngủ một giấc tới sáng, không nghe rắn rít nữa. Cảm ơn con nghen!", "Ghe xuồng vô rừng tràm lấy mật ong lại rồi đó. Seviper giữ tổ thì mình chừa tổ nó ra.", "Nước kênh trong lại rồi, cá về đầy đáy.", "Ông Nam kiểm lâm kể chuyện con vào khu làm tổ tới ba bữa chưa hết."]
+ },
+ "an-giang": {
+  "guide": ["Đền cổ yên rồi! Claydol đứng canh như xưa, khách lên Bảy Núi không còn bị đá lăn chặn đường.", "Mùa nước nổi năm nay về đúng hẹn. Con ở lại ăn bánh xèo bông điên điển rồi hẵng đi."],
+  "town": ["Núi Cấm hết rung rồi, mấy bà đi lễ lên đền đông như hội.", "Nghe nói con giải được dấu ấn trong đền? Ông bà tui đồn trăm năm mới có một người.", "Cò ở Trà Sư bay về kín rừng, đẹp lắm con.", "Đường thốt nốt năm nay ngọt, chắc tại trời đất yên."]
+ },
+ "can-tho": {
+  "guide": ["Chúa Sông Hậu nằm im dưới đáy sông rồi! Chợ nổi Cái Răng họp lại từ tờ mờ sáng.", "Con ra bến Ninh Kiều coi, ghe thuyền nối đuôi nhau cả cây số."],
+  "town": ["Hồi trước sóng sông Hậu đánh lật ghe hoài, giờ êm re.", "Ghe bẹo treo đầy khóm, đầy bưởi, mua giùm cô một trái nghen!", "Vườn cò Bằng Lăng chiều nào cũng trắng xóa.", "Ai cũng nói nhờ con mà Whiscash chịu ngủ yên."]
+ },
+ "vinh-long": {
+  "guide": ["Lò gạch Mang Thít đỏ lửa đều rồi, Torkoal không phun khói đen nữa!", "Bác Hai trên cù lao nhắn con ghé ăn bưởi Năm Roi."],
+  "town": ["Mẻ gốm đầu tiên sau bao tháng ra lò không nứt cái nào.", "Khói lò bay thẳng lên trời, ông bà nói vậy là đất yên.", "Nước sông Tiền hết nóng, cá linh về lại rồi.", "Thằng cháu tui đòi nuôi một con Numel, nói lớn lên làm thợ lò như con."]
+ },
+ "tra-vinh": {
+  "guide": ["Thần Cây Dầu đứng yên rồi! Rừng dầu cổ thụ lại có tiếng chim.", "Ao Bà Om mùa này sen nở, con ghé coi trước khi đi."],
+  "town": ["Hàng dầu trước chùa hết rụng cành, sư thầy mừng lắm.", "Tối nay chùa Ăng có múa Rô-băm, con ở lại coi nha.", "Dừa sáp Cầu Kè trái nào trái nấy đặc ruột.", "Trẻ con dám chơi dưới gốc dầu trở lại rồi."]
+ },
+ "ben-tre": {
+  "guide": ["Dừa Trăm Thân hiền lại rồi, vườn dừa Thới Sơn không còn trái rơi như mưa đá.", "Cô gói cho con mấy viên kẹo dừa, ăn đường dài cho đỡ buồn miệng."],
+  "town": ["Thợ leo dừa lên cây lại được rồi, mừng muốn khóc.", "Lò kẹo dừa nấu suốt đêm cho kịp đơn hàng.", "Sông Hàm Luông êm, đò đưa khách qua lại cả ngày.", "Exeggutor đứng giữa vườn như ông từ giữ đất, ai đi ngang cũng cúi chào."]
+ },
+ "dong-thap": {
+  "guide": ["Thần Sen hết giận rồi! Đầm sen Tháp Mười nở hồng cả cánh đồng.", "Làng hoa Sa Đéc đang chuẩn bị chợ hoa, con ghé coi một vòng."],
+  "town": ["Sếu đầu đỏ về Tràm Chim rồi, cả xã kéo nhau đi coi.", "Xoài Cao Lãnh năm nay trái to, ngọt lịm.", "Ludicolo nhảy múa trên lá sen mỗi chiều, con nít thích lắm.", "Ghe chợ nổi Cái Bè chở trái cây lên tận Sài Gòn."]
+ },
+ "tay-ninh": {
+  "guide": ["Núi Bà Đen hết rung rồi! Cáp treo chạy lại, khách lên đỉnh nườm nượp.", "Golurk đứng gác sườn núi như tượng đá. Người ta đi lễ còn chụp hình với nó."],
+  "town": ["Bánh tráng phơi sương đem ra phơi lại được rồi, không sợ đất đá rơi.", "Hồ Dầu Tiếng nước trong, ghe cá ra khơi từ sáng sớm.", "Tòa Thánh đánh chuông cầu an, cả vùng nghe thấy.", "Ruộng lúa Long An xanh tới chân trời."]
+ },
+ "ho-chi-minh": {
+  "guide": ["Đèn bờ sông sáng trưng mỗi tối, Magnezone hết hút điện rồi!", "Lên xe anh chở đi một vòng, coi Sài Gòn về đêm đẹp cỡ nào."],
+  "town": ["Quán cà phê vợt mở lại tới khuya, đèn đường hết chớp tắt.", "Tàu điện chạy đúng giờ, đi làm không lo trễ.", "Bến Bạch Đằng tối nào cũng đông, người ta ra hóng gió.", "Thằng em tui làm kỹ sư điện, nói chưa thấy lưới điện nào êm như bây giờ."]
+ },
+ "dong-nai": {
+  "guide": ["Bò Tót Cát Tiên về rừng sâu rồi, không còn phá ruộng nữa.", "Kiểm lâm đếm được cả đàn mới, mấy chục con lận."],
+  "town": ["Đồi điều trổ bông trắng, năm nay chắc trúng mùa.", "Thác Giang Điền đông khách cắm trại trở lại.", "Đêm nằm nghe tiếng vượn hót trong rừng, yên tâm lắm.", "Tauros lâu lâu ra bìa rừng đứng ngó, rồi lại quay vô. Nó nhớ mặt con đó."]
+ },
+ "lam-dong": {
+  "guide": ["Thần Hoa nở lại rồi! Cả Đà Lạt thơm mùi dã quỳ.", "Chợ đêm bán dâu tây nóng hổi, con lên mặc áo ấm rồi đi dạo nha."],
+  "town": ["Vườn hoa Vạn Thành nở kín, xe hàng chở hoa xuống phố suốt ngày.", "Hồ Xuân Hương lặng như gương, sáng nào cũng có người chèo thuyền.", "Chè Cầu Đất đợt này thơm lắm, uống một chén cho ấm.", "Florges bay qua đồi thông, đi tới đâu hoa nở tới đó."]
+ },
+ "khanh-hoa": {
+  "guide": ["Vịnh Nha Trang lặng sóng rồi! Tàu ra đảo chạy lại đủ chuyến.", "Kingdra nằm dưới rạn san hô, thợ lặn nói nước trong tới đáy."],
+  "town": ["Ghe ra khơi về đầy cá thu, chợ Đầm vui như Tết.", "Tháp Bà Ponagar có lễ, bà con Chăm múa suốt buổi.", "Ruộng nho Ninh Thuận chín đỏ, mời con ăn thử.", "Bãi biển đông người tắm, cứu hộ ngồi chơi cả ngày."]
+ },
+ "dak-lak": {
+  "guide": ["Voi Thần Yok Đôn hiền lại rồi, đàn voi về uống nước hồ Lắk mỗi chiều.", "Ghé quán chị uống ly cà phê phin, lần này chị mời."],
+  "town": ["Rẫy cà phê không bị giẫm nữa, năm nay hái được nhiều.", "Tối nay buôn có lễ cồng chiêng, con ở lại nghe.", "Thác Dray Nur đổ trắng xóa, khách tới chụp hình đông lắm.", "Donphan cuộn tròn lăn qua đồi chơi với con nít trong buôn."]
+ },
+ "gia-lai": {
+  "guide": ["Võ Thần Tây Sơn ngồi thiền lại rồi, núi lửa Chư Đăng Ya hết bốc khói.", "Võ đường mở lớp mới, đám trẻ trong làng xin học đông lắm."],
+  "town": ["Biển Hồ trong veo, đứng trên bờ thấy được tận đáy.", "Mùa dã quỳ vàng rực trên miệng núi lửa, đẹp nhất năm.", "Trống trận Tây Sơn vang lên mừng làng yên.", "Tàu cá Quy Nhơn về bến đều đặn."]
+ },
+ "quang-ngai": {
+  "guide": ["Hồn Neo Lý Sơn chìm xuống đáy rồi, tàu ra đảo không còn bị kéo lệch.", "Ruộng tỏi Lý Sơn đang mùa, bác gửi con một túi tỏi đen."],
+  "town": ["Thuyền thúng ra Sa Huỳnh bắt ốc lại rồi.", "Măng Đen sương sớm mù trời, đi dạo thích lắm.", "Ngư dân nói biển hiền như hồi bác còn nhỏ.", "Chén cá bống kho tiêu ăn với cơm nóng, con ăn thử đi."]
+ },
+ "da-nang": {
+  "guide": ["Rồng Sông Hàn bay về Sơn Trà rồi! Tối thứ bảy cầu Rồng phun lửa lại như xưa.", "Đi Hội An thả đèn hoa đăng một bữa rồi hẵng đi tiếp."],
+  "town": ["Biển Mỹ Khê sóng đẹp, dân lướt ván ra đông.", "Phố cổ Hội An lên đèn lồng kín phố.", "Salamence lâu lâu lượn trên Bà Nà, khách du lịch la ầm lên vì mừng.", "Tháp Mỹ Sơn có đoàn nghiên cứu về đo đạc lại, nghe nói tìm được thêm bia cổ."]
+ },
+ "hue": {
+  "guide": ["Gươm Báu về vỏ rồi, con. Đại Nội đêm nay yên ắng như ngàn năm trước.", "Mệ nấu nồi chè bột lọc, con ăn một chén rồi đi."],
+  "town": ["Tiếng chuông Thiên Mụ sớm nay nghe trong hơn mọi bữa.", "Lính canh đi tuần Đại Nội không còn run tay nữa.", "Đò trên sông Hương có ca Huế lại rồi, tối nay đi nghe với mệ.", "Phá Tam Giang mùa này cá đầy lưới."]
+ },
+ "quang-tri": {
+  "guide": ["Dơi Thần Sơn Đoòng về hang rồi, đoàn thám hiểm vào lại được.", "Đêm ở Đồng Hới giờ chỉ còn tiếng sóng Nhật Lệ."],
+  "town": ["Cầu Hiền Lương sơn lại hai màu, người hai bờ qua lại thăm nhau.", "Hang Phong Nha mở cửa đón khách, thuyền nối đuôi vô động.", "Noivern bay vòng trên rừng Trường Sơn lúc chạng vạng, đẹp lắm.", "Địa đạo Vịnh Mốc có đoàn học sinh tới thăm."]
+ },
+ "ha-tinh": {
+  "guide": ["Đại Bàng Hồng Lĩnh bay về đỉnh núi rồi, không sà xuống bắt gà nữa.", "Chùa Hương Tích khói hương nghi ngút, con lên lễ một bữa."],
+  "town": ["Bưởi Phúc Trạch đang mùa, trái nào cũng mọng.", "Biển Thiên Cầm sóng vỗ như tiếng đàn, ngồi nghe cả buổi.", "Ví dặm đêm nay hát ở đình làng, con ở lại nghe.", "Braviary đứng trên vách Hồng Lĩnh, nhìn xuống như canh làng."]
+ },
+ "nghe-an": {
+  "guide": ["Cú Thần Pù Mát yên rồi, rừng đêm không còn tiếng rít.", "Về làng Sen một chuyến đi con, đầm sen đang thơm."],
+  "town": ["Đồi chè Thanh Chương xanh mướt, hái chè từ sáng sớm.", "Bãi tắm Cửa Lò đông như hội.", "Decidueye đậu trên cây gạo đầu làng, ai đi qua cũng ngó.", "Hò ví dặm vang khắp xóm, nghe mà thương."]
+ },
+ "thanh-hoa": {
+  "guide": ["Nữ Thần Suối Cẩm Lương về suối rồi, đàn cá thần lội tung tăng.", "Ra Sầm Sơn tắm biển đi em, ăn chả mực nữa."],
+  "town": ["Thành nhà Hồ đứng vững sáu trăm năm, giờ thêm một chuyện để kể.", "Ruộng bậc thang Pù Luông vàng óng, khách Tây lên chụp hình.", "Hồ Bến En nước xanh, thuyền đi giữa rừng.", "Milotic nổi lên mặt suối mỗi sáng, cầu vồng hiện ngay trên đầu."]
+ },
+ "ninh-binh": {
+  "guide": ["Rồng Ba Đầu Hang Múa ngủ yên rồi, đò Tràng An chở khách lại.", "Leo lên đỉnh Hang Múa ngắm ruộng lúa đi con, đẹp lắm."],
+  "town": ["Chuông chùa Bái Đính vang khắp thung lũng.", "Đò Tam Cốc mái chèo bằng chân, khách cười suốt.", "Rừng Cúc Phương đang mùa bướm, bay kín lối đi.", "Hydreigon nằm trên núi đá vôi, nhìn xa tưởng tượng Phật."]
+ },
+ "hung-yen": {
+  "guide": ["Nữ Hoàng Nhãn Lồng hết giận rồi, vườn nhãn trĩu quả.", "Chị gửi em một chùm nhãn lồng Phố Hiến, ngọt lắm."],
+  "town": ["Chùa Keo vào hội, cả làng đi rước kiệu.", "Bãi sông Hồng trồng ngô xanh rì.", "Đồng lúa Thái Bình trải tới chân trời.", "Tsareena đi tuần quanh vườn nhãn, không con sâu nào dám bén mảng."]
+ },
+ "hai-phong": {
+  "guide": ["Chim Lửa Hoa Phượng thôi đốt rồi! Hoa phượng đỏ rực mà không cháy cây nào.", "Ra Cát Bà chơi một chuyến đi em, biển đang đẹp."],
+  "town": ["Cảng Hải Phòng tàu ra vào tấp nập.", "Vải Thanh Hà chín đỏ, mời em ăn một chùm.", "Đồ Sơn chiều nay có hội chọi trâu.", "Talonflame đậu trên cây phượng già ở trung tâm, người ta ra ngắm như ngắm pháo hoa."]
+ },
+ "bac-ninh": {
+  "guide": ["Nàng Quan Họ hát lại rồi, giọng trong như suối!", "Người ơi người ở đừng về... ở lại nghe liền anh liền chị hát một canh nhé."],
+  "town": ["Làng tranh Đông Hồ in lại tranh Tết, mua một bức về làm quà.", "Chùa Dâu đông người đi lễ.", "Vải Lục Ngạn đang mùa, xe chở vải nối nhau cả dãy.", "Primarina hát bên sông Cầu, thuyền đi qua cũng dừng chèo nghe."]
+ },
+ "quang-ninh": {
+  "guide": ["Rồng Mẹ Hạ Long về vịnh rồi, sóng êm như mặt hồ.", "Lên tàu đi một vòng vịnh đi em, đảo nào cũng đẹp."],
+  "town": ["Mỏ than Cẩm Phả chạy êm, không còn tiếng máy lạ.", "Thuyền chài Vân Đồn ra khơi về đầy tôm cá.", "Chùa Yên Tử đông người leo núi, ai cũng mặc áo nâu.", "Dragonite bay vòng trên vịnh mỗi bình minh, nhìn như rồng mẹ đi tuần."]
+ },
+ "lang-son": {
+  "guide": ["Nàng Tô Thị yên lòng rồi, núi Vọng Phu không còn đá lở.", "Chợ Kỳ Lừa họp phiên to, em ghé mua ít hạt dẻ."],
+  "town": ["Ải Chi Lăng đứng vững như tự ngàn xưa.", "Mẫu Sơn mây phủ trắng đỉnh, rượu Mẫu Sơn thơm nức.", "Sông Kỳ Cùng nước hiền, trẻ con ra tắm mát.", "Gigalith nằm dưới chân núi, ai đi ngang cũng đặt một nhành hoa."]
+ },
+ "cao-bang": {
+  "guide": ["Hổ Lửa Ngườm Ngao về hang rồi, thác Bản Giốc đổ êm như dải lụa.", "Ăn thêm bát bánh cuốn rồi hẵng đi em."],
+  "town": ["Hồ Thang Hen nước xanh ngắt, ba mươi sáu hồ đầy nước.", "Đèo Mã Phục xe lên xuống đều, không còn đá rơi.", "Pác Bó đón đoàn học sinh về thăm.", "Incineroar ngồi trước cửa hang phơi nắng, lũ trẻ trong bản đứng xa xa ngắm."]
+ },
+ "thai-nguyen": {
+  "guide": ["Hồn Ấm Chè thôi rong ruổi rồi, đồi chè Tân Cương thơm ngát.", "Ngồi uống thêm chén chè với cô, chè mới đó."],
+  "town": ["Hồ Núi Cốc trong xanh, thuyền đi quanh đảo.", "Lò cao khu gang thép đỏ lửa đều, công nhân mừng.", "Hang Phượng Hoàng hết tiếng than khóc, khách vào thắp nến.", "Polteageist ngồi trong ấm sứ ở đình làng, người ta rót chè mời nó."]
+ },
+ "tuyen-quang": {
+  "guide": ["Ngựa Thần Mã Pí Lèng yên rồi, đèo không còn đá lăn.", "Chợ phiên Đồng Văn họp sớm, em đi theo chị một bữa."],
+  "town": ["Hồ Na Hang thuyền đi giữa núi, nước xanh như ngọc.", "Ruộng bậc thang Hoàng Su Phì đổ nước, sáng lấp lánh.", "Cây đa Tân Trào lá xanh mướt.", "Mudsdale đứng trên đỉnh đèo nhìn xuống sông Nho Quế, oai lắm."]
+ },
+ "lao-cai": {
+  "guide": ["Thần Tuyết Fansipan hết nổi bão rồi, cáp treo lên đỉnh chạy lại.", "Lên bản Cát Cát ăn mèn mén đi em, ở đây ai cũng quý em."],
+  "town": ["Thác Bạc đổ trắng, nước mát lạnh.", "Ruộng Mường Hoa xanh rì, khách đi bộ dọc đường đá cổ.", "Đèo Ô Quy Hồ hết băng, xe qua được.", "Abomasnow ngồi trên đỉnh Fansipan, tuyết rơi nhè nhẹ thôi, đẹp như tranh."]
+ },
+ "lai-chau": {
+  "guide": ["Chim Mây Bạch Mộc hót lại rồi, biển mây trôi êm trên đỉnh.", "Chè Tam Đường mới hái, chị pha em uống một chén."],
+  "town": ["Hồ thủy điện đầy nước, đèn cả huyện sáng.", "Sìn Hồ có phiên chợ to, bà con xuống núi đông lắm.", "Pu Sam Cáp hết mây đen, nhìn thấy cả hang đá.", "Altaria lượn trên biển mây, ai leo lên đỉnh cũng được nó bay theo."]
+ },
+ "dien-bien": {
+  "guide": ["Hộ Thần Đèo Pha Đin đứng gác lại rồi, đèo không còn sạt lở.", "Hồ Pá Khoang đẹp lắm, em ra đó ngồi một lát."],
+  "town": ["Cánh đồng Mường Thanh lúa trổ, thơm cả thung lũng.", "Hoa ban Mường Phăng nở trắng rừng.", "Ngã ba A Pa Chải có đoàn lên cắm mốc.", "Aggron đứng trên đỉnh đèo, xe nào qua cũng bấm còi chào."]
+ },
+ "son-la": {
+  "guide": ["Bạo Long Tà Xùa ngủ yên rồi, sống lưng khủng long không rung nữa.", "Đồi chè Mộc Châu xanh mướt, em đi chụp ảnh đi."],
+  "town": ["Thảo nguyên Mộc Châu bò sữa thả đầy đồi.", "Hồ Quỳnh Nhai thuyền đi giữa những đỉnh núi.", "Bản Áng rừng thông reo vi vu.", "Tyrantrum gầm một tiếng vào buổi sáng, cả bản biết là trời trong."]
+ },
+ "phu-tho": {
+  "guide": ["Thủy Tinh nguôi giận rồi, nước ngã ba Bạch Hạc rút về.", "Lên đền Hùng thắp nén nhang đi em, hành trình sắp tới đích rồi."],
+  "town": ["Ruộng lúa ven sông không còn bị ngập.", "Hát xoan ở đình làng vang suốt tối.", "Chè Long Cốc trên đồi bát úp xanh mướt.", "Gyarados nằm dưới sông Lô, mặt nước lặng như tờ."]
+ },
+ "ha-noi": {
+  "guide": ["Thần Kim Quy về Hồ Gươm rồi em ạ! Sáng nay cả phố cổ ra bờ hồ đứng ngắm.", "Em đi khắp đất nước rồi về tới Thủ đô. Cô tự hào về em lắm."],
+  "town": ["Cổ Loa có hội, người ta rước kiệu quanh thành ốc.", "Vườn đào Nhật Tân nở hồng, Tết này chắc vui lắm.", "Đèn phố cổ sáng trưng, không còn mất điện nữa.", "Torterra nằm bên Hồ Gươm, rùa nhỏ bơi quanh như đi chầu."]
+ }
+}
