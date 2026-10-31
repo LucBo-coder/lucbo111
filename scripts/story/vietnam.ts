@@ -30,6 +30,9 @@ const MAIN: Record<string, string> = Object.fromEntries(ROUTE.map(([p, c]) => [p
 MAIN['ca-mau'] = 'mn-cm-4';
 MAIN['ho-chi-minh'] = 'mn-sg-2';
 MAIN['ha-noi'] = 'mn-hn-3';
+/** The province's own arrival quest (local guide, data/vietnam/quests.json): the story of a province opens after it,
+ *  so the player meets the place before Linh's measurements — and the guardian's quest waits for the story (V30). */
+const INTRO = (p: string) => `vn-${ROUTE[IDX[p]][1]}-1`;
 const FIRST: Record<string, string> = { ...MAIN, 'ca-mau': 'mn-cm-1', 'ho-chi-minh': 'mn-sg-1', 'ha-noi': 'mn-hn-1' };
 
 const characters = [
@@ -406,7 +409,7 @@ for (const s of STAGES) {
   quests.push({
     id, kind: 'main', region: s.p, chapter: chapters.find((c) => c.quests.includes(id))!.id,
     title: s.title, description: s.offer.join(' '), giver: linh(s.p),
-    requires: [MAIN[prev]], requiresFlags: [`badge:${prev}`],
+    requires: [MAIN[prev], INTRO(s.p)], requiresFlags: [`badge:${prev}`],
     objectives: objs, rewards: { ...reward(lv, s.rewards), reputation: 2, flags: [`mn:done:${s.p}`] },
     dialogue: { offer: s.offer, progress: ['Mình đang đo. Bạn làm theo dấu trên bản đồ nhé.'], complete: s.done },
     cutscene: s.cutscene,
@@ -450,18 +453,18 @@ quests.push(
     dialogue: { offer: ['Triều đang lên kìa! Ngư dân báo có Pokémon mắc lưới bỏ hoang ngoài bãi.', 'Chú Sáu ở bến biết cách gỡ lưới. Bạn giữ bãi cho chú nhé — Krabby hoảng lên là kẹp người đó.'],
       progress: ['Chú Sáu ở bến ghe, gần chỗ ngư dân Út Mũi.'], complete: ['Cảm ơn con. Mấy con Pokémon mắc lưới đã về lại biển hết rồi.'] },
     cutscene: { complete: 'mn-c-nets' } },
-  { id: 'mn-cm-3', kind: 'main', region: 'ca-mau', chapter: 'mn-0', title: 'Khu làm tổ của Seviper', giver: 'mn-sau-ca-mau', requires: ['mn-cm-2'],
+  { id: 'mn-cm-3', kind: 'main', region: 'ca-mau', chapter: 'mn-0', title: 'Khu làm tổ của Seviper', giver: 'cm-ranger', requires: ['mn-cm-2', 'vn-cm-2'],
     description: 'Seviper — Chúa Rừng U Minh — đang lồng lộn quanh khu làm tổ. Giữa rừng có một cỗ máy lạ.',
     objectives: [
-      { type: 'explore', target: 'cm-uminh', text: 'Vào rừng tràm U Minh' },
+      { type: 'trainer', target: 'cm-forest-trainer', text: 'Vượt qua thử thách của Kiểm lâm tập sự Vy' },
       { type: 'destroy', target: 'mn-cm-3:destroy', text: 'Phá bộ khuếch đại cạnh khu làm tổ',
         encounter: { kind: 'destroy', at: P('ca-mau', 'boss', 12, 4), every: 14, device: { name: 'Bộ khuếch đại Bình Minh', species: 'bronzor', level: 9, hpMult: 2.5 }, waves: [[['ekans', 7], ['seviper', 7]], [['ekans', 8], ['seviper', 8]]] } },
       { type: 'boss', target: 'seviper', text: 'Làm Seviper bình tĩnh lại (đánh bại Chúa Rừng U Minh)' },
       { type: 'talk', target: linh('ca-mau'), text: 'Báo lại với Linh' },
     ],
     rewards: { exp: 400, items: { superpotion: 2, greatball: 3 } },
-    dialogue: { offer: ['Ông nội chú nói: rừng kêu đêm là có người động vào mạch. Con vào U Minh xem sao.', 'Nhớ: Seviper chỉ giữ tổ của nó thôi. Làm nó bình tĩnh lại, đừng làm hại.'],
-      progress: ['Rừng tràm U Minh ở phía bắc. Đi ghe theo kênh là nhanh nhất.'], complete: ['Seviper đã về tổ. Còn cỗ máy này... "Dự án Bình Minh". Mình phải báo Giáo sư An.'] },
+    dialogue: { offer: ['Seviper lồng lộn quanh khu làm tổ ở tây bắc rừng tràm. Cô Linh bạn cháu nói giữa rừng có một cỗ máy lạ.', 'Vy sẽ thử sức cháu trước — rừng sâu không phải chỗ cho người yếu tay. Nhớ: Seviper chỉ giữ tổ của nó thôi, làm nó bình tĩnh lại, đừng làm hại.'],
+      progress: ['Khu làm tổ ở phía tây bắc rừng tràm. Vy đứng canh lối vào.'], complete: ['Seviper đã về tổ. Còn cỗ máy này... "Dự án Bình Minh". Mình phải báo Giáo sư An.'] },
     cutscene: { complete: 'mn-c-amp' } },
   { id: 'mn-cm-4', kind: 'main', region: 'ca-mau', chapter: 'mn-0', title: 'Huy hiệu Rừng Tràm', giver: linh('ca-mau'), requires: ['mn-cm-3'], requiresFlags: ['badge:ca-mau'], autoStart: true,
     description: 'Mang Huy hiệu Rừng Tràm và tin về Dự án Bình Minh về cho Giáo sư An.',
@@ -480,7 +483,7 @@ trainers.push(
     rewards: { items: { ultraball: 2, superpotion: 1 }, exp: 1800 } },
 );
 quests.push(
-  { id: 'mn-sg-1', kind: 'main', region: 'ho-chi-minh', chapter: 'mn-2', title: 'Lưới điện của Bình Minh', giver: linh('ho-chi-minh'), requires: [MAIN['tay-ninh']], requiresFlags: ['badge:tay-ninh'],
+  { id: 'mn-sg-1', kind: 'main', region: 'ho-chi-minh', chapter: 'mn-2', title: 'Lưới điện của Bình Minh', giver: linh('ho-chi-minh'), requires: [MAIN['tay-ninh'], INTRO('ho-chi-minh')], requiresFlags: ['badge:tay-ninh'],
     description: 'Sài Gòn chập điện từng khu. Bình Minh tuyển người ngay giữa trung tâm — và Khải đang ở đó.',
     objectives: [
       { type: 'explore', target: 'sg-city', text: 'Vào trung tâm Sài Gòn' },
@@ -491,9 +494,10 @@ quests.push(
     dialogue: { offer: ['Lưới điện thành phố bị Bình Minh hút để chạy tổng đài. Mình nghe nói họ tuyển người ở trung tâm.', 'Và... Khải đã nhận lời gia nhập.'],
       progress: ['Khải ở gần trung tâm thành phố.'], complete: ['Khải không chịu nghe. Nhưng ít ra mình biết tổng đài ở đâu: trạm biến áp — nơi Magnezone bị nối vào.'] },
     cutscene: { start: 'mn-c-khai-joins' } },
-  { id: 'mn-sg-2', kind: 'main', region: 'ho-chi-minh', chapter: 'mn-2', title: 'Magnezone quá tải', giver: linh('ho-chi-minh'), requires: ['mn-sg-1'],
+  { id: 'mn-sg-2', kind: 'main', region: 'ho-chi-minh', chapter: 'mn-2', title: 'Magnezone quá tải', giver: linh('ho-chi-minh'), requires: ['mn-sg-1', 'vn-sg-2'],
     description: 'Magnezone — Thần Điện Sài Gòn — bị một trạm biến áp của Bình Minh hút điện tới quá tải.',
     objectives: [
+      { type: 'trainer', target: 'sg-engineer', text: 'Thắng Kỹ sư điện Tín (anh ấy giữ lối ra bờ sông)' },
       { type: 'destroy', target: 'mn-sg-2:destroy', text: 'Phá trạm biến áp cưỡng chế',
         encounter: { kind: 'destroy', at: P('ho-chi-minh', 'boss', 10, 6), every: 14, device: { name: 'Trạm biến áp cưỡng chế', species: 'klinklang', level: 44, hpMult: 4 }, waves: waves(['voltorb', 'electabuzz', 'electrode'], 41) } },
       { type: 'boss', target: 'magnezone', text: 'Làm Magnezone hạ nhiệt (đánh bại Thần Điện Sài Gòn)' },
@@ -538,7 +542,7 @@ npcs.push(
 
 // ── Hồi V: Hà Nội ──
 quests.push(
-  { id: 'mn-hn-1', kind: 'main', region: 'ha-noi', chapter: 'mn-5', title: 'Thủ đô mất mạch', giver: linh('ha-noi'), requires: [MAIN['phu-tho']], requiresFlags: ['badge:phu-tho'],
+  { id: 'mn-hn-1', kind: 'main', region: 'ha-noi', chapter: 'mn-5', title: 'Thủ đô mất mạch', giver: linh('ha-noi'), requires: [MAIN['phu-tho'], INTRO('ha-noi')], requiresFlags: ['badge:phu-tho'],
     description: 'Hồ Gươm cạn bất thường, rùa trong hồ không nổi lên nữa. Khải đã tới trước và biết đường vào tổng trạm.',
     objectives: [
       { type: 'explore', target: 'hn-hoguom', text: 'Tới Hồ Gươm' },
@@ -560,9 +564,10 @@ quests.push(
     dialogue: { offer: ['Tiến sĩ Vũ ở Cổ Loa. Ông không bỏ chạy — ông đợi bạn.'], progress: ['Thành Cổ Loa ở phía bắc thành phố.'],
       complete: ['Ông ấy nói thật: lõi cưỡng chế không còn nghe lệnh ai nữa. Mình phải phá nó.'] },
     cutscene: { complete: 'mn-c-vu' } },
-  { id: 'mn-hn-3', kind: 'main', region: 'ha-noi', chapter: 'mn-5', title: 'Điểm neo Cổ Loa', giver: linh('ha-noi'), requires: ['mn-hn-2'],
+  { id: 'mn-hn-3', kind: 'main', region: 'ha-noi', chapter: 'mn-5', title: 'Điểm neo Cổ Loa', giver: linh('ha-noi'), requires: ['mn-hn-2', 'vn-hn-2'],
     description: 'Ba bước cuối: phá lõi cưỡng chế, giữ điểm neo Cổ Loa trong lúc mạch nguồn ổn định, rồi cùng Torterra cắt những sợi cáp nối vào nó.',
     objectives: [
+      { type: 'trainer', target: 'hn-gate-t', text: 'Thắng Hộ vệ thành Cổ Loa (người canh lối vào điểm neo)' },
       { type: 'destroy', target: 'mn-hn-3:destroy', text: 'Bước 1 — Phá lõi cưỡng chế',
         encounter: { kind: 'destroy', at: P('ha-noi', 'area:hn-coloa', 4, -4), every: 13, device: { name: 'Lõi cưỡng chế Bình Minh', species: 'metagross', level: 96, hpMult: 6 }, waves: waves(['magnezone', 'porygon-z', 'rhyperior'], 92) } },
       { type: 'hold', target: 'mn-hn-3:hold', text: 'Bước 2 — Giữ điểm neo Cổ Loa',

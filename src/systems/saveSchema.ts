@@ -14,7 +14,7 @@ import { buildPcForCollection, emptyPc, PcStorage } from '../core/pc';
 import { EventSave, newEventSave } from '../core/worldEvents';
 import type { PhaseSnapshot } from '../core/bossPhases';
 
-export const SAVE_VERSION = 9;
+export const SAVE_VERSION = 10;
 export type QualitySetting = 'low' | 'medium' | 'high';
 export type Difficulty = 'normal' | 'hard' | 'expert';
 
@@ -103,7 +103,7 @@ export type LegendState = 'locked' | 'available' | 'active' | 'defeated' | 'caug
 
 export interface SaveData {
   version: number;
-  settings: { sfx: boolean; showFps: boolean; quality: QualitySetting; officialSprites: boolean; gen1Survivor: boolean; /** player toggled the official pack themselves */ officialChosen?: boolean; /** background music */ music: boolean; /** PMD animation pack (personal, if downloaded) */ pmdSprites?: boolean };
+  settings: { sfx: boolean; showFps: boolean; quality: QualitySetting; officialSprites: boolean; gen1Survivor: boolean; /** player toggled the official pack themselves */ officialChosen?: boolean; /** background music */ music: boolean; /** PMD animation pack (personal, if downloaded) */ pmdSprites?: boolean; /** the in-game guide (K) was opened once */ helpSeen?: boolean };
   unlockedPokemon: string[];
   permanentUpgrades: Record<string, number>;
   /** Adventure wallet ("xu"): classic Adventure + online world. The other modes have their own (core/wallet.ts). */
@@ -325,6 +325,21 @@ const MIGRATIONS: Record<number, Migration> = {
     let activeUid = typeof adv.activeUid === 'string' && party.includes(adv.activeUid) ? adv.activeUid : null;
     if (activeUid && !healthy(activeUid)) activeUid = party.find(healthy) ?? null;
     return { ...d, adventure: { ...adv, party, activeUid, recalled: party.filter((u) => u !== activeUid) }, version: 9 };
+  },
+  // v9 -> v10: mạch nhiệm vụ Việt Nam (V30). Two story quests got a gate trainer as their first step (shift the step
+  // so a half-done quest keeps its place); the guardian quests of Cà Mau / Sài Gòn / Hà Nội became one-talk epilogues
+  // that open on the boss flag; An Giang and "Vào rừng U Minh" wait for their prerequisites again unless already taken.
+  9: (d) => {
+    const adv = d.adventure as (Partial<AdventureSave> & Record<string, unknown>) | null | undefined;
+    if (!adv?.quests || adv.campaign !== 'vietnam') return { ...d, version: 10 };
+    const quests = { ...adv.quests } as Record<string, { status: string; step: number; progress: number }>;
+    const flags = new Set(Array.isArray(adv.flags) ? adv.flags : []);
+    const done = (id: string) => quests[id]?.status === 'completed';
+    for (const id of ['mn-sg-2', 'mn-hn-3']) if (quests[id]?.status === 'active') quests[id] = { ...quests[id], step: quests[id].step + 1 };
+    for (const id of ['vn-cm-3', 'vn-sg-3', 'vn-hn-3']) if (quests[id] && !done(id)) quests[id] = { status: 'locked', step: 0, progress: 0 };
+    if (quests['vn-ag-1'] && !done('vn-ag-1') && !flags.has('badge:ca-mau')) quests['vn-ag-1'] = { status: 'locked', step: 0, progress: 0 };
+    if (quests['vn-cm-2']?.status === 'available' && !done('mn-cm-2')) quests['vn-cm-2'] = { status: 'locked', step: 0, progress: 0 };
+    return { ...d, adventure: { ...adv, quests }, version: 10 };
   },
 };
 

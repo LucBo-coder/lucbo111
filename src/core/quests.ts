@@ -1,5 +1,7 @@
 // Data-driven quest engine (pure; persisted through the save system).
-// Objectives are sequential: only the current objective of an active quest receives progress.
+// Objectives run in order, but the order only binds where it means something (V30): talking / reporting, a choice and
+// the story encounters (hold / destroy / escort) happen only at their step, while fighting, catching, exploring,
+// collecting… done early while the quest is active is kept (`pre`) and counted the moment the quest gets there.
 // Branching (V22): a 'choose' objective offers options; the pick is stored on the quest state, sets the flag
 // `choice:<quest>:<option>` (follow-up quests can require it), adds the option's rewards, and from then on only
 // objectives without a `branch` or with that branch apply.
@@ -77,7 +79,12 @@ export interface QuestState {
   progress: number;
   /** The option picked at the quest's 'choose' objective */
   branch?: string;
+  /** progress already made on later objectives (index → count), see ORDERED */
+  pre?: Record<number, number>;
 }
+
+/** Objective types that only count at their own step: a conversation, a choice, a story encounter. */
+export const ORDERED = new Set<ObjectiveType>(['talk', 'choose', 'hold', 'destroy', 'escort']);
 
 export const choiceFlag = (quest: string, option: string): string => `choice:${quest}:${option}`;
 
@@ -94,13 +101,29 @@ export interface QuestUpdate {
   completed: boolean;
 }
 
+/**
+ * How much of an objective the world already shows done (0 = nothing / unknown). Many events fire once per save — a
+ * waypoint is activated once, a trainer / boss beaten once, a chest opened once — so an objective whose event happened
+ * before the quest reached it would otherwise wait forever. AdventureState answers from the save (core: never guesses).
+ */
+export type AlreadyDone = (obj: ObjectiveDef) => number;
+
 export class QuestManager {
   readonly states: Record<string, QuestState>;
+  /** quests completed by catching up (not by an event): the caller drains them to pay the rewards */
+  private autoDone: string[] = [];
 
-  constructor(readonly defs: QuestDef[], saved: Record<string, QuestState> = {}, private flags: () => Set<string> = () => new Set()) {
+  constructor(readonly defs: QuestDef[], saved: Record<string, QuestState> = {}, private flags: () => Set<string> = () => new Set(),
+    private already: AlreadyDone = (o) => (o.type === 'boss' && o.target && flags().has('boss:' + o.target) ? 1 : 0)) {
     this.states = {};
-    for (const d of defs) this.states[d.id] = saved[d.id] ? { ...saved[d.id] } : { status: 'locked', step: 0, progress: 0 };
+    for (const d of defs) {
+      const st: QuestState = saved[d.id] ? { ...saved[d.id] } : { status: 'locked', step: 0, progress: 0 };
+      // a save from before the quest lost objectives: never leave it active with nothing left to do
+      if (st.status === 'active' && st.step >= d.objectives.length) { st.step = Math.max(0, d.objectives.length - 1); st.progress = 0; }
+      this.states[d.id] = st;
+    }
     this.refresh();
+    this.catchUpAll();
   }
 
   def(id: string): QuestDef | undefined {
@@ -121,7 +144,7 @@ export class QuestManager {
         const flagOk = (d.requiresFlags ?? []).every((f) => flags.has(f));
         if (!reqOk || !flagOk) continue;
         st.status = d.autoStart ? 'active' : 'available';
-        if (d.autoStart) started.push(d.id);
+        if (d.autoStart) { started.push(d.id); this.catchUp(d, st); }
         changed = true;
       }
     }
@@ -134,7 +157,56 @@ export class QuestManager {
     st.status = 'active';
     st.step = 0;
     st.progress = 0;
+    this.catchUp(this.def(id)!, st);
     return true;
+  }
+
+  /**
+   * Brings the quest's current objective up to what the world already shows (see AlreadyDone): e.g. two quests share a
+   * boss (the old province chain and the V29 story both send the player to Seviper), the waypoint was activated before
+   * the quest asked for it, the restoration sites were planted before the ranger's quest was taken. Moves on while
+   * objectives are done; a quest finished this way is queued in `autoDone`.
+   */
+  private catchUp(d: QuestDef, st: QuestState): void {
+    while (st.status === 'active') {
+      const obj = d.objectives[st.step];
+      if (!obj || obj.type === 'choose') return;
+      st.progress = Math.max(st.progress, Math.min(obj.count, this.already(obj)));
+      if (st.progress < obj.count) return;
+      if (this.advance(d, st).completed) this.autoDone.push(d.id);
+    }
+  }
+
+  /** A later objective of the quest's path this event counts for (not ORDERED, not yet full), or -1. */
+  private aheadFor(d: QuestDef, st: QuestState, ev: QuestEvent): number {
+    for (let i = st.step + 1; i < d.objectives.length; i++) {
+      const o = d.objectives[i];
+      if (o.branch && o.branch !== st.branch) continue; // a branch not (yet) picked never collects anything
+      if (ORDERED.has(o.type) || o.type !== ev.type) continue;
+      if (o.target && o.target !== '*' && o.target !== ev.target) continue;
+      if ((st.pre?.[i] ?? 0) < o.count) return i;
+    }
+    return -1;
+  }
+
+  /** Progress shown for any objective: done, current, or made early. */
+  objectiveProgress(id: string, i: number): number {
+    const st = this.states[id], o = this.def(id)?.objectives[i];
+    if (!st || !o) return 0;
+    if (st.status === 'completed' || i < st.step) return o.count;
+    return i === st.step ? st.progress : Math.min(o.count, st.pre?.[i] ?? 0);
+  }
+
+  /** Re-checks every active quest against the world (after loading, travelling, or a change made outside events). */
+  catchUpAll(): void {
+    for (const d of this.active()) this.catchUp(d, this.states[d.id]);
+  }
+
+  /** Quests completed by catching up since the last call (rewards not yet paid). */
+  takeAutoDone(): string[] {
+    const out = this.autoDone;
+    this.autoDone = [];
+    return out;
   }
 
   active(): QuestDef[] {
@@ -191,16 +263,20 @@ export class QuestManager {
     const d = this.def(id), st = this.states[id], obj = this.currentObjective(id);
     if (!d || obj?.type !== 'choose' || !obj.options?.some((o) => o.id === option)) return null;
     st.branch = option;
-    return this.advance(d, st);
+    const u = this.advance(d, st);
+    this.catchUp(d, st);
+    return u;
   }
 
   /** Moves past the finished objective (skipping other branches' objectives); completes the quest at the end. */
   private advance(d: QuestDef, st: QuestState): QuestUpdate {
     st.step++;
-    st.progress = 0;
     while (st.step < d.objectives.length && d.objectives[st.step].branch && d.objectives[st.step].branch !== st.branch) st.step++;
+    // what was done early on this objective counts now (catchUp moves on if that already fills it)
+    st.progress = Math.min(d.objectives[st.step]?.count ?? 0, st.pre?.[st.step] ?? 0);
+    if (st.pre) { delete st.pre[st.step]; if (!Object.keys(st.pre).length) delete st.pre; }
     const completed = st.step >= d.objectives.length;
-    if (completed) st.status = 'completed';
+    if (completed) { st.status = 'completed'; delete st.pre; }
     return { questId: d.id, advanced: true, objectiveDone: true, completed };
   }
 
@@ -210,10 +286,17 @@ export class QuestManager {
     for (const d of this.active()) {
       const st = this.states[d.id];
       const obj = d.objectives[st.step];
-      if (!obj || obj.type !== ev.type || obj.type === 'choose') continue;
-      if (obj.target && obj.target !== '*' && obj.target !== ev.target) continue;
+      const here = !!obj && obj.type === ev.type && obj.type !== 'choose' && (!obj.target || obj.target === '*' || obj.target === ev.target);
+      if (!here) {
+        // not this step: kept for a later step of the path, unless that one has to wait its turn
+        const j = this.aheadFor(d, st, ev);
+        if (j < 0) continue;
+        (st.pre ??= {})[j] = Math.min(d.objectives[j].count, (st.pre[j] ?? 0) + (ev.amount ?? 1));
+        out.push({ questId: d.id, advanced: true, objectiveDone: st.pre[j] >= d.objectives[j].count, completed: false });
+        continue;
+      }
       st.progress = Math.min(obj.count, st.progress + (ev.amount ?? 1));
-      if (st.progress >= obj.count) out.push(this.advance(d, st));
+      if (st.progress >= obj.count) { const u = this.advance(d, st); this.catchUp(d, st); out.push(u); }
       else out.push({ questId: d.id, advanced: true, objectiveDone: false, completed: false });
     }
     return out;

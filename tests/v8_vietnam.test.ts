@@ -8,12 +8,15 @@ import { ValleyMap } from '../src/core/map/valley';
 import { World } from '../src/core/world';
 import { fightBoss, sendParty } from './bossHelpers';
 import vnQuests from '../src/data/vietnam/quests.json';
+import { STORIES } from '../src/core/storyData';
 import type { QuestDef } from '../src/core/quests';
 import { VN_PROVINCES } from '../src/adventure/passport';
 import { defaultSave, migrate, newAdventure } from '../src/systems/saveSchema';
 
 const VN = VN_PROVINCES.filter((p) => REGION_DEFS[p.id]).map((p) => p.id);
 const quests = vnQuests as unknown as QuestDef[];
+/** the province chains + the story (V30: the guardian of Cà Mau / Sài Gòn / Hà Nội is fought in the story quest) */
+const mainLine = [...quests, ...STORIES.vietnam.quests];
 
 describe('Vietnam Odyssey mode', () => {
   it('campaigns are separate: own start, own quest book, old saves stay classic', () => {
@@ -73,7 +76,7 @@ describe('Vietnam Odyssey mode', () => {
     expect(ids.size).toBe(quests.length);
     for (const q of quests) {
       if (q.giver) expect(npcs.has(q.giver), q.id).toBe(true);
-      for (const r of q.requires ?? []) expect(ids.has(r), q.id).toBe(true);
+      for (const r of q.requires ?? []) expect(ids.has(r) || mainLine.some((x) => x.id === r), q.id).toBe(true);
       for (const o of q.objectives) {
         const t = o.target!;
         if (o.type === 'talk') expect(npcs.has(t), `${q.id} ${t}`).toBe(true);
@@ -114,7 +117,7 @@ describe('Vietnam Odyssey: no progression deadlock', () => {
   it('a boss gate never depends on a reward of the quest that asks for that boss', () => {
     for (const id of VN) {
       const wb = REGION_DEFS[id].worldBoss!;
-      const q = quests.find((x) => x.objectives.some((o) => o.type === 'boss' && o.target === wb.id))!;
+      const q = mainLine.find((x) => x.objectives.some((o) => o.type === 'boss' && o.target === wb.id))!;
       for (const f of wb.requires ?? []) expect(q.rewards.flags ?? [], `${id} ${f}`).not.toContain(f);
       // every gate is something the player can do before the boss: beat a trainer of the map or solve its puzzle
       for (const f of wb.requires ?? []) {

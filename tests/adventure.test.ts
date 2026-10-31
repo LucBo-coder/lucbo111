@@ -144,9 +144,10 @@ describe('quests', () => {
     expect(q.states.a.status).toBe('active');
     expect(q.states.b.status).toBe('locked');
     q.notify({ type: 'capture', target: 'pidgey' });
-    expect(q.states.a.progress).toBe(0); // talk must come first
+    expect(q.states.a.step).toBe(0); // the talk still comes first…
+    expect(q.objectiveProgress('a', 1)).toBe(1); // …but the early capture is kept (V30)
     q.notify({ type: 'talk', target: 'prof' });
-    q.notify({ type: 'capture', target: 'pidgey' });
+    expect(q.states.a).toMatchObject({ step: 1, progress: 1 });
     const up = q.notify({ type: 'capture', target: 'caterpie' });
     expect(up[0].completed).toBe(true);
     q.refresh();

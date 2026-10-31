@@ -5,6 +5,7 @@ import { chapterStates } from '../core/story';
 import { CONSERVATION, ecoHealth, ECO_TIERS, ecoTier } from '../core/conservation';
 import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
+import { HELP_PAGES } from './helpGuide';
 import { coopSession } from '../net/coop';
 import { music } from '../systems/music';
 import { BossHUDController } from '../ui/BossHUDController';
@@ -68,7 +69,7 @@ const EVENT_HINT: Record<string, string> = {
   merchant: 'Tìm thương nhân (E) — hàng hiếm giảm 30%, số lượng có hạn', meteor: 'Nhặt các mảnh sao rơi (E) trước khi chúng tắt',
 };
 const REGION_NAMES: Record<string, string> = Object.fromEntries([...ENC_REGIONS.values()].map((r) => [r.id, r.name]));
-type MenuTab = 'party' | 'pc' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'passport' | 'settings';
+type MenuTab = 'party' | 'pc' | 'dex' | 'bag' | 'quests' | 'events' | 'map' | 'passport' | 'help' | 'settings';
 const TABS: { id: MenuTab; label: string; key: string }[] = [
   { id: 'party', label: 'Đội hình', key: 'Tab' },
   { id: 'pc', label: 'PC', key: 'O' },
@@ -78,6 +79,7 @@ const TABS: { id: MenuTab; label: string; key: string }[] = [
   { id: 'events', label: 'Sự kiện', key: 'V' },
   { id: 'map', label: 'Bản đồ', key: 'M' },
   { id: 'passport', label: 'Hộ chiếu', key: 'P' },
+  { id: 'help', label: 'Hướng dẫn', key: 'K' },
   { id: 'settings', label: 'Cài đặt', key: 'Esc' },
 ];
 // Overworld maps (valley hub + regions behind portals); unlock = the valley portal's story flags
@@ -133,6 +135,8 @@ export class AdventureUI extends Phaser.Scene {
   /** -1 = open on the page of the current province */
   private passportPage = -1;
   private repPage = -1;
+  /** Hướng dẫn: the page shown (index into HELP_PAGES) */
+  private helpPage = 0;
   // PC storage browser
   private pcBox = 0;
   private pcSelected: string | null = null;
@@ -167,6 +171,8 @@ export class AdventureUI extends Phaser.Scene {
   create(): void {
     this.touch = this.sys.game.device.input.touch;
     this.build();
+    // first time in the adventure: point at the guide (cleared once it is opened)
+    if (!saveStore.data.settings.helpSeen) this.time.delayedCall(2500, () => this.banner(this.touch ? 'Mới chơi? Chạm nút ? (góc trên) để xem hướng dẫn' : 'Mới chơi? Nhấn K (hoặc nút ?) để xem hướng dẫn & các phím', '#ffe080'));
     this.scale.on('resize', this.rebuild, this);
     this.events.once('shutdown', () => this.scale.off('resize', this.rebuild, this));
     this.input.on('pointerdown', (p: Phaser.Input.Pointer, over: Phaser.GameObjects.GameObject[]) => {
@@ -236,13 +242,13 @@ export class AdventureUI extends Phaser.Scene {
 
     // Buttons (always clickable; bigger action cluster on touch devices)
     const by = this.miniBox.y + mh + 26 * s;
-    const small: [string, () => void][] = [['≡', () => this.toggleMenu('settings')], ['Đội', () => this.toggleMenu('party')], ['Q', () => this.toggleMenu('quests')], ['Túi', () => this.toggleMenu('bag')]];
+    const small: [string, () => void][] = [['≡', () => this.toggleMenu('settings')], ['?', () => this.toggleMenu('help')], ['Đội', () => this.toggleMenu('party')], ['Q', () => this.toggleMenu('quests')], ['Túi', () => this.toggleMenu('bag')]];
     small.forEach(([l, fn], i) => button(this, W - 30 * s - i * 54 * s, by, 48 * s, 36 * s, l, fn));
     // portrait phones: the HP bar and the minimap fill the top row, so the clock sits left of the buttons and the
     // area name under them (the quest tracker moves down one line)
     this.portraitHud = H > W * 1.15;
     if (this.portraitHud) {
-      this.texts.clock.setOrigin(1, 0.5).setPosition(W - 30 * s - 3 * 54 * s - 34 * s, by).setFontSize(22 * s);
+      this.texts.clock.setOrigin(1, 0.5).setPosition(W - 30 * s - (small.length - 1) * 54 * s - 34 * s, by).setFontSize(22 * s);
       this.texts.area.setOrigin(1, 0).setPosition(W - 12 * s, by + 22 * s);
     }
     if (this.touch || W / DPR < 900) {
@@ -1057,6 +1063,7 @@ export class AdventureUI extends Phaser.Scene {
       case 'map': this.buildMap(c, body); break;
       case 'passport': this.buildPassport(c, body); break;
       case 'events': this.buildEvents(c, body); break;
+      case 'help': this.buildHelp(c, body); break;
       case 'settings': this.buildSettings(c, body); break;
     }
   }
@@ -1653,9 +1660,11 @@ export class AdventureUI extends Phaser.Scene {
     // only the chosen path's objectives (a choice shows what was picked)
     const picked = qs.option(sel.id);
     qs.pathObjectives(sel.id).forEach(({ obj: o, i }, row) => {
-      const done = state.status === 'completed' || i < state.step;
+      // a later step done early (fighting, catching… while the quest runs) already shows ticked / its count
+      const n = qs.objectiveProgress(sel.id, i);
+      const done = state.status === 'completed' || i < state.step || (state.status === 'active' && n >= o.count);
       const cur = state.status === 'active' && i === state.step;
-      const prog = cur && o.count > 1 ? ` (${state.progress}/${o.count})` : '';
+      const prog = !done && o.count > 1 && (cur || n > 0) ? ` (${n}/${o.count})` : '';
       const shown = cur ? this.adv.shownObjective(sel.id) ?? o : o;
       const label = o.type === 'choose' && picked ? `${o.text} — ${picked.label}` : shown.text.replace(/\(\d+\/\d+\)/, '');
       c.add(text(this, dx + 24 * s, dy + 110 * s + row * 28 * s, `${done ? '☑' : cur ? '▶' : '☐'} ${label}${prog}`, 18 * s, done ? '#80c080' : cur ? '#ffe080' : COLORS.dim));
@@ -1977,6 +1986,58 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     this.openMenu('map');
   }
 
+  /** Hướng dẫn: page list | the page (key table flowed into columns, or the how-to lines). */
+  private buildHelp(c: Phaser.GameObjects.Container, r: Rect): void {
+    const s = this.s;
+    if (!saveStore.data.settings.helpSeen) { saveStore.data.settings.helpSeen = true; void saveStore.save(); }
+    this.helpPage = Math.min(this.helpPage, HELP_PAGES.length - 1);
+    const [L, D] = this.split(r, 0.24, 0.22);
+    const cols = this.portraitMenu ? 2 : 1, bh = 36 * s, bw = (L.w - (cols - 1) * 6 * s) / cols;
+    HELP_PAGES.forEach((p, i) => {
+      const x = L.x + bw / 2 + (i % cols) * (bw + 6 * s), y = L.y + bh / 2 + Math.floor(i / cols) * (bh + 6 * s);
+      c.add(button(this, x, y, bw, bh, p.title, () => { this.helpPage = i; this.openMenu('help'); }, i === this.helpPage ? 0x4a5a8a : 0x262c44).container);
+    });
+    const page = HELP_PAGES[this.helpPage];
+    c.add(text(this, D.x, D.y, page.title.toUpperCase(), 22 * s, '#ffe080'));
+    const top = D.y + 34 * s, bottom = D.y + D.h;
+    if (page.lines) {
+      let y = top;
+      for (const l of page.lines) {
+        c.add(text(this, D.x, y, '•', 17 * s, '#ffd040'));
+        const t = text(this, D.x + 18 * s, y, l, 17 * s, '#d0d8f0').setWordWrapWidth(D.w - 22 * s);
+        c.add(t);
+        y += t.height + 10 * s;
+      }
+      return;
+    }
+    // key table: groups flow down, then across the columns; the text shrinks until everything fits
+    const ncol = this.portraitMenu ? 1 : 2, gap = 18 * s, cw = (D.w - (ncol - 1) * gap) / ncol, kw = cw * 0.36;
+    for (let k = 1; ; k -= 0.05) {
+      const made: Phaser.GameObjects.Text[] = [];
+      let col = 0, y = top, ok = true;
+      const place = (row: Phaser.GameObjects.Text[], h: number) => {
+        if (y + h > bottom && y > top) { col++; y = top; }
+        if (col >= ncol) ok = false;
+        for (const o of row) o.setPosition(D.x + col * (cw + gap) + (o.getData('dx') as number), y);
+        y += h;
+      };
+      for (const g of page.keys ?? []) {
+        const head = text(this, 0, 0, g.group, 18 * s * k, '#80c8ff').setData('dx', 0);
+        made.push(head);
+        place([head], head.height + 4 * s * k);
+        for (const row of g.rows) {
+          const key = text(this, 0, 0, row.keys, 16 * s * k, '#ffe080').setWordWrapWidth(kw - 8 * s).setData('dx', 6 * s);
+          const what = text(this, 0, 0, row.what, 16 * s * k, '#d0d8f0').setWordWrapWidth(cw - kw - 6 * s).setData('dx', kw);
+          made.push(key, what);
+          place([key, what], Math.max(key.height, what.height) + 4 * s * k);
+        }
+        y += 8 * s * k;
+      }
+      if (ok || k <= 0.6) { c.add(made); return; }
+      for (const o of made) o.destroy();
+    }
+  }
+
   private buildSettings(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, set = saveStore.data.settings;
     c.add(text(this, r.x, r.y + 6 * s, 'Chất lượng đồ họa', 22 * s));
@@ -2013,7 +2074,7 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', () => openCoopMenu(this, this.adv), 0x2f5a6a).container);
     c.add(button(this, r.x + 160 * s, r.y + 388 * s, 300 * s, 36 * s, 'Đi chung / thách đấu PvP', () => void this.onlineMenu(), 0x3a3a5a).container);
     c.add(text(this, this.portraitMenu ? r.x : r.x + 340 * s, r.y + (this.portraitMenu ? 440 : 130) * s,
-      'ĐIỀU KHIỂN\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\nT đổi Pokémon (1–5 chọn) · Shift+1–6 gọi/thu hồi ô đội\n` 1-5 lệnh: Tự do / Tấn công mục tiêu / Bảo vệ /\n   Ngừng tấn công / Giữ vị trí / Quay về HLV\nQ dùng chiêu tốt nhất (ngắm chuột chọn mục tiêu)\nTab đội hình · X Pokédex · I túi · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
+      'ĐIỀU KHIỂN (đầy đủ: phím K / tab Hướng dẫn)\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\nT đổi Pokémon (1–5 chọn) · Shift+1–6 gọi/thu hồi ô đội\n` 1-5 lệnh: Tự do / Tấn công mục tiêu / Bảo vệ /\n   Ngừng tấn công / Giữ vị trí / Quay về HLV\nQ dùng chiêu tốt nhất (ngắm chuột chọn mục tiêu)\nTab đội hình · X Pokédex · I túi · O PC · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
   }
 }
 

@@ -8,7 +8,8 @@ import { legendQuests } from '../core/legends';
 import { storyOf } from '../core/storyData';
 import { calcStats, StatKey } from '../core/stats';
 import { applyEvGain, addEv, evGain, zeroEvs } from '../core/ev';
-import { choiceFlag, QuestDef, QuestEvent, QuestManager, QuestRewards } from '../core/quests';
+import { choiceFlag, ObjectiveDef, QuestDef, QuestEvent, QuestManager, QuestRewards } from '../core/quests';
+import { sitesDone } from '../core/conservation';
 import { applyCandy, CandyOutcome, CANDY_DEFS, candyDef, maxUsefulCandy } from '../core/candy';
 import {
   buildPcForCollection, firstFreePcSlot, PcLocation, PcStorage, pcHasRoom, pcLocationOf, pcUids,
@@ -73,10 +74,12 @@ export class AdventureState {
     // authored quests + the generated legendary quest chains (core/legends.ts)
     // each campaign has its own quest book (Vietnam Odyssey: data/vietnam/quests.json, no classic legend chains)
     const vn = this.adv.campaign === 'vietnam';
-    const authored = (vn ? vnQuestsJson : questsJson) as QuestDef[];
     // + the campaign's story line (core/storyData.ts; its encounters need the local scene, not the online world)
     const story = walletOverride ? [] : storyOf(this.adv.campaign).quests;
-    this.quests = new QuestManager([...(vn ? authored : [...authored, ...legendQuests(authored)]), ...story], this.adv.quests, () => new Set(this.adv.flags));
+    // the province chains wait for the story at a few steps (V30); without the story those steps fall away
+    const authored = ((vn ? vnQuestsJson : questsJson) as QuestDef[]).map((q) =>
+      story.length || !q.requires?.some((r) => /^(mn|ck)-/.test(r)) ? q : { ...q, requires: q.requires.filter((r) => !/^(mn|ck)-/.test(r)) });
+    this.quests = new QuestManager([...(vn ? authored : [...authored, ...legendQuests(authored)]), ...story], this.adv.quests, () => new Set(this.adv.flags), (o) => this.alreadyDone(o));
     this.syncQuests();
     if (!this.trackedQuest || this.quests.states[this.trackedQuest]?.status !== 'active') this.trackedQuest = this.quests.active()[0]?.id ?? null;
     // Repair the V7 invariants on every construction (old saves, hand-edited saves, interrupted captures).
@@ -562,10 +565,53 @@ export class AdventureState {
 
   // ───────────────────────────── quests ─────────────────────────────
 
+  /** Map area the trainer stands in (set by the scene): an 'explore' objective for it is done on the spot. */
+  currentArea: string | null = null;
+
+  /**
+   * How much of an objective the save already shows done — the events of these objectives fire once per save, so a
+   * quest reaching one after the fact catches up instead of waiting forever (QuestManager.catchUp).
+   */
+  alreadyDone(o: ObjectiveDef): number {
+    const t = o.target;
+    if (!t || t === '*') return 0;
+    const has = (f: string) => this.hasFlag(f);
+    switch (o.type) {
+      case 'boss': return has('boss:' + t) ? 1 : 0;
+      case 'trainer': return has('beat:' + t) ? 1 : 0;
+      case 'puzzle': return has('puzzle:' + t) ? 1 : 0;
+      case 'rescue': return has('rescued:' + t) ? 1 : 0;
+      case 'collect': return this.adv.chests.includes(t) ? 1 : 0; // a chest opens once; fish / forage / market repeat
+      case 'activate':
+        if (t.startsWith('eco:')) return sitesDone(t.slice(4), has);
+        if (t.startsWith('field:')) return this.adv.flags.some((f) => f.startsWith('field:') && f.endsWith(':' + t.slice(6))) ? 1 : 0;
+        return this.adv.waypoints.includes(t) ? 1 : 0;
+      case 'explore': return this.currentArea === t ? 1 : 0;
+      default: return 0;
+    }
+  }
+
+  /** Re-checks active quests against the save; returns quests that finished by it (rewards NOT yet applied). */
+  catchUpQuests(): QuestDef[] {
+    this.quests.catchUpAll();
+    return this.drainAutoDone();
+  }
+
+  private drainAutoDone(): QuestDef[] {
+    const ids = this.quests.takeAutoDone();
+    if (!ids.length) return [];
+    this.quests.refresh();
+    const more = this.quests.takeAutoDone(); // quests auto-started by those completions may already be done too
+    if (this.trackedQuest && this.quests.states[this.trackedQuest]?.status === 'completed') this.trackedQuest = this.quests.active()[0]?.id ?? null;
+    this.syncQuests();
+    return [...ids, ...more].map((id) => this.quests.def(id)!);
+  }
+
   /** Feeds an event to quests. Returns quests completed by it (rewards NOT yet applied). */
   notify(ev: QuestEvent): QuestDef[] {
     const done = this.quests.notify(ev).filter((u) => u.completed).map((u) => this.quests.def(u.questId)!);
     this.quests.refresh();
+    done.push(...this.drainAutoDone());
     if (this.trackedQuest && this.quests.states[this.trackedQuest]?.status === 'completed') this.trackedQuest = this.quests.active()[0]?.id ?? null;
     if (!this.trackedQuest) this.trackedQuest = this.quests.active()[0]?.id ?? null;
     this.syncQuests();
@@ -580,7 +626,7 @@ export class AdventureState {
     this.quests.refresh();
     if (u.completed && this.trackedQuest === id) this.trackedQuest = this.quests.active()[0]?.id ?? null;
     this.syncQuests();
-    return u.completed ? [this.quests.def(id)!] : [];
+    return [...(u.completed ? [this.quests.def(id)!] : []), ...this.drainAutoDone()];
   }
 
   startQuest(id: string): boolean {

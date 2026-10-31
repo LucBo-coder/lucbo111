@@ -571,7 +571,8 @@
    "description": "Mùa nước nổi về sớm cả tháng, nước kênh chảy ngược ra phía biên giới. Mình cắm cọc đo ở đồng nước nổi — bạn giữ cho Pokémon hoảng loạn đừng phá cọc trong lúc máy đang đo nhé.",
    "giver": "mn-linh-an-giang",
    "requires": [
-    "mn-cm-4"
+    "mn-cm-4",
+    "vn-ag-1"
    ],
    "requiresFlags": [
     "badge:ca-mau"
@@ -696,7 +697,8 @@
    "description": "Chợ nổi Cái Răng vắng ghe vì nước sông Hậu rút bất thường mỗi sáng. Có một trạm bơm mọc lên gần Cồn Sơn mà không ai cấp phép. Mình đi phá nó.",
    "giver": "mn-linh-can-tho",
    "requires": [
-    "mn-ag"
+    "mn-ag",
+    "vn-ct-1"
    ],
    "requiresFlags": [
     "badge:an-giang"
@@ -823,7 +825,8 @@
    "description": "Nước rút khỏi kênh Mang Thít nên lò gạch không còn hơi ẩm làm mát. Slugma và Numel kéo về lò cả bầy, quá nhiệt cả rồi. Bạn giữ khu lò trong lúc mình mở cửa cống cho nước vào lại nhé.",
    "giver": "mn-linh-vinh-long",
    "requires": [
-    "mn-ct"
+    "mn-ct",
+    "vn-vl-1"
    ],
    "requiresFlags": [
     "badge:can-tho"
@@ -944,7 +947,8 @@
    "description": "Đàn cò ở Chùa Hang bỏ đi hết. Người ta thấy một cột máy của Bình Minh phát tiếng rít ngoài biển Ba Động. Tiếng rít ấy làm cò hoảng. Mình phải phá nó.",
    "giver": "mn-linh-tra-vinh",
    "requires": [
-    "mn-vl"
+    "mn-vl",
+    "vn-tv-1"
    ],
    "requiresFlags": [
     "badge:vinh-long"
@@ -1070,7 +1074,8 @@
    "description": "Nước mặn vào sâu làm dừa chết khô, nhiều nhà phải dời đi. Một bé trong làng kẹo dừa đi tìm Pokémon của mình rồi lạc vào rừng tràm. Bạn vào đưa bé về thị trấn giúp mình — đi chậm thôi, bé sợ Pokémon hoang lắm.",
    "giver": "mn-linh-ben-tre",
    "requires": [
-    "mn-tv"
+    "mn-tv",
+    "vn-bt-1"
    ],
    "requiresFlags": [
     "badge:tra-vinh"
@@ -1144,7 +1149,8 @@
    "description": "Đàn sếu đầu đỏ năm nay không về Tràm Chim. Đất ngập khô sớm, Croagunk và Toxicroak tràn lên bãi nghỉ của sếu. Mình mở lại đập tràn — bạn giữ bãi trong lúc nước vào nhé.",
    "giver": "mn-linh-dong-thap",
    "requires": [
-    "mn-bt"
+    "mn-bt",
+    "vn-dt-1"
    ],
    "requiresFlags": [
     "badge:ben-tre"
@@ -1268,7 +1274,8 @@
    "description": "Đỉnh Núi Bà Đen có một ăng-ten lạ dò mạch nguồn. Golett trên núi cứ đêm là đi lang thang xuống chân núi. Lên núi phá nó đi, mình đo được nó đang gửi tín hiệu về Sài Gòn.",
    "giver": "mn-linh-tay-ninh",
    "requires": [
-    "mn-dt"
+    "mn-dt",
+    "vn-tn-1"
    ],
    "requiresFlags": [
     "badge:dong-thap"
@@ -1398,7 +1405,8 @@
    "description": "Đàn bò tót Cát Tiên bỏ rừng xuống ruộng vì suối trong rừng cạn. Houndour theo xuống săn bê con. Bạn giữ bãi cỏ ven suối trong lúc kiểm lâm lùa đàn về.",
    "giver": "mn-linh-dong-nai",
    "requires": [
-    "mn-sg-2"
+    "mn-sg-2",
+    "vn-dn-1"
    ],
    "requiresFlags": [
     "badge:ho-chi-minh"
@@ -1520,7 +1528,8 @@
    "description": "Hoa Đà Lạt héo trước Tết — đất mất ẩm từ dưới sâu. Máy đo chỉ thẳng lên đỉnh Langbiang: có một điểm neo cổ ở đó. Bình Minh đang cắm cọc vào. Bạn giữ điểm neo, mình tháo cọc.",
    "giver": "mn-linh-lam-dong",
    "requires": [
-    "mn-dn"
+    "mn-dn",
+    "vn-ld-1"
    ],
    "requiresFlags": [
     "badge:dong-nai"
@@ -1644,7 +1653,8 @@
    "description": "Xoáy nước lạ ở Hòn Mun là do một trạm bơm đặt sát bờ, hút nước theo mạch nguồn ngoài khơi. Clauncher và Corsola bị xoáy nước hất lên bờ, hoảng loạn lắm. Cẩn thận!",
    "giver": "mn-linh-khanh-hoa",
    "requires": [
-    "mn-ld"
+    "mn-ld",
+    "vn-kh-1"
    ],
    "requiresFlags": [
     "badge:lam-dong"
@@ -1770,7 +1780,8 @@
    "description": "Hồ Lắk cạn tới mức voi phải đi xa tìm nước. Già làng Y Thuôn vào rừng Yok Đôn tìm đàn Donphan rồi không về. Già biết chỗ điểm neo của buôn — bạn tìm và đưa già về Buôn Ma Thuột giúp mình.",
    "giver": "mn-linh-dak-lak",
    "requires": [
-    "mn-kh"
+    "mn-kh",
+    "vn-dl-1"
    ],
    "requiresFlags": [
     "badge:khanh-hoa"
@@ -1844,7 +1855,8 @@
    "description": "Núi lửa Chư Đăng Ya đã ngủ cả triệu năm — giờ lòng đất nóng lên. Bình Minh đặt trạm ngay miệng núi. Có một kỹ thuật viên Bình Minh canh trạm. Đánh bại anh ta, rồi giữ miệng núi trong lúc mình ngắt điện.",
    "giver": "mn-linh-gia-lai",
    "requires": [
-    "mn-dl"
+    "mn-dl",
+    "vn-gl-1"
    ],
    "requiresFlags": [
     "badge:dak-lak"
@@ -1976,7 +1988,8 @@
    "description": "Ngư dân Lý Sơn kể có một phao máy lớn trôi vào gần bờ, đêm nào cũng phát sáng. Binacle và Frillish bám đầy quanh nó. Đó là phao hút mạch của Bình Minh. Phá nó đi.",
    "giver": "mn-linh-quang-ngai",
    "requires": [
-    "mn-gl"
+    "mn-gl",
+    "vn-qn-1"
    ],
    "requiresFlags": [
     "badge:gia-lai"
@@ -2102,7 +2115,8 @@
    "description": "Bán đảo Sơn Trà là điểm neo lớn của miền Trung. Bình Minh cắm cọc ở sườn núi, Gabite và Shelgon tràn xuống từ hang. Bạn giữ điểm neo, mình đóng van.",
    "giver": "mn-linh-da-nang",
    "requires": [
-    "mn-qn"
+    "mn-qn",
+    "vn-dg-1"
    ],
    "requiresFlags": [
     "badge:quang-ngai"
@@ -2223,7 +2237,8 @@
    "description": "Tiến sĩ Vũ đang đợi ở Đại Nội. Ông ấy muốn dữ liệu điểm neo mình đo được. Mình nói trước: chọn đưa hay giữ dữ liệu sẽ thay đổi những gì xảy ra về sau. Bạn quyết đi — mình tin bạn.",
    "giver": "mn-linh-hue",
    "requires": [
-    "mn-dg"
+    "mn-dg",
+    "vn-hu-1"
    ],
    "requiresFlags": [
     "badge:da-nang"
@@ -2390,7 +2405,8 @@
    "description": "Có tiếng nổ ở trạm Bình Minh trong rừng Phong Nha. Người ta thấy một cậu trai bị thương ngồi ở cửa hang. Mình đoán là Khải. Đưa cậu ấy về thành phố đi — bạn đi trước dẹp đường, cậu ấy theo sau.",
    "giver": "mn-linh-quang-tri",
    "requires": [
-    "mn-hu"
+    "mn-hu",
+    "vn-qt-1"
    ],
    "requiresFlags": [
     "badge:hue"
@@ -2468,7 +2484,8 @@
    "description": "Hộ vệ Hồng Lĩnh là Braviary — nó đã thức giấc và đuổi hết người lên chùa Hương Tích. Nó không ác, chỉ bảo vệ điểm neo. Bạn giữ chân núi trong lúc mình gỡ cọc Bình Minh.",
    "giver": "mn-linh-ha-tinh",
    "requires": [
-    "mn-qt"
+    "mn-qt",
+    "vn-ht-1"
    ],
    "requiresFlags": [
     "badge:quang-tri"
@@ -2592,7 +2609,8 @@
    "description": "Rừng Pù Mát im phăng phắc. Bình Minh đặt một bộ khuếch đại giữa rừng, còn để người canh. Bạn biết phải làm gì rồi đó.",
    "giver": "mn-linh-nghe-an",
    "requires": [
-    "mn-ht"
+    "mn-ht",
+    "vn-na-1"
    ],
    "requiresFlags": [
     "badge:ha-tinh"
@@ -2729,7 +2747,8 @@
    "description": "Suối cá thần Cẩm Lương cạn một nửa. Khải đang ở đó — lần này cậu ấy nhờ chúng ta.",
    "giver": "mn-linh-thanh-hoa",
    "requires": [
-    "mn-na"
+    "mn-na",
+    "vn-th-1"
    ],
    "requiresFlags": [
     "badge:nghe-an"
@@ -2863,7 +2882,8 @@
    "description": "Nước Tràng An xuống thấp tới mức đò mắc cạn trong hang. Cô Tâm lái đò bị kẹt lại trong hang suốt từ sáng. Bạn vào đưa cô ra rồi về Hoa Lư.",
    "giver": "mn-linh-ninh-binh",
    "requires": [
-    "mn-th"
+    "mn-th",
+    "vn-nb-1"
    ],
    "requiresFlags": [
     "badge:thanh-hoa"
@@ -2937,7 +2957,8 @@
    "description": "Nhãn lồng Hưng Yên rụng non cả vườn. Steenee và Vespiquen nổi giận vì một bộ khuếch đại giấu trong vườn.",
    "giver": "mn-linh-hung-yen",
    "requires": [
-    "mn-nb"
+    "mn-nb",
+    "vn-hy-1"
    ],
    "requiresFlags": [
     "badge:ninh-binh"
@@ -3062,7 +3083,8 @@
    "description": "Ở Cát Bà, chim biển bị một trạm hút làm rối hướng bay, Talonflame sà xuống tấn công cả thuyền. Giữ bến trong lúc mình tắt trạm từ xa.",
    "giver": "mn-linh-hai-phong",
    "requires": [
-    "mn-hy"
+    "mn-hy",
+    "vn-hp-1"
    ],
    "requiresFlags": [
     "badge:hung-yen"
@@ -3183,7 +3205,8 @@
    "description": "Khải đợi bạn ở Đồi Lim. Lần này không có thiết bị Bình Minh, không có gì hết — chỉ Pokémon của hai người.",
    "giver": "mn-linh-bac-ninh",
    "requires": [
-    "mn-hp"
+    "mn-hp",
+    "vn-bn-1"
    ],
    "requiresFlags": [
     "badge:hai-phong"
@@ -3257,7 +3280,8 @@
    "description": "Bình Minh đặt trạm bơm dưới mỏ than Cẩm Phả để hút mạch ngầm của vịnh. Có người canh. Đánh bại họ rồi phá trạm.",
    "giver": "mn-linh-quang-ninh",
    "requires": [
-    "mn-bn"
+    "mn-bn",
+    "vn-ql-1"
    ],
    "requiresFlags": [
     "badge:bac-ninh"
@@ -3394,7 +3418,8 @@
    "description": "Hộ vệ đá Gigalith đã thức giấc ở Mẫu Sơn. Ở ải Chi Lăng, Boldore lăn xuống chặn đường. Giữ ải trong lúc mình nhổ cọc Bình Minh.",
    "giver": "mn-linh-lang-son",
    "requires": [
-    "mn-ql"
+    "mn-ql",
+    "vn-ls-1"
    ],
    "requiresFlags": [
     "badge:quang-ninh"
@@ -3515,7 +3540,8 @@
    "description": "Một nhà nghiên cứu hang động bị kẹt trong động Ngườm Ngao vì nước ngầm dâng bất thường. Đưa chú ấy về thành phố an toàn nhé.",
    "giver": "mn-linh-cao-bang",
    "requires": [
-    "mn-ls"
+    "mn-ls",
+    "vn-cb-1"
    ],
    "requiresFlags": [
     "badge:lang-son"
@@ -3589,7 +3615,8 @@
    "description": "Chè Tân Cương héo vàng. Có một bộ khuếch đại giữa đồi chè hút ẩm của đất. Haunter tụ lại quanh nó mỗi đêm — chắc vì sóng của máy.",
    "giver": "mn-linh-thai-nguyen",
    "requires": [
-    "mn-cb"
+    "mn-cb",
+    "vn-ty-1"
    ],
    "requiresFlags": [
     "badge:cao-bang"
@@ -3715,7 +3742,8 @@
    "description": "Mudsdale từ núi đá Đồng Văn kéo xuống Tân Trào vì suối đầu nguồn cạn. Giữ khu cây đa trong lúc kiểm lâm dẫn đàn về.",
    "giver": "mn-linh-tuyen-quang",
    "requires": [
-    "mn-ty"
+    "mn-ty",
+    "vn-tq-1"
    ],
    "requiresFlags": [
     "badge:thai-nguyen"
@@ -3836,7 +3864,8 @@
    "description": "Một người leo núi bị kẹt gần đỉnh Fansipan khi mây tuyết kéo tới bất thường. Đưa anh ấy xuống Sa Pa — đường trơn, đi chậm thôi.",
    "giver": "mn-linh-lao-cai",
    "requires": [
-    "mn-tq"
+    "mn-tq",
+    "vn-lc-1"
    ],
    "requiresFlags": [
     "badge:tuyen-quang"
@@ -3910,7 +3939,8 @@
    "description": "Đúng như ảnh anh Dũng chụp: Bình Minh cắm cọc nối điểm neo ngay trên biển mây Bạch Mộc.",
    "giver": "mn-linh-lai-chau",
    "requires": [
-    "mn-lc"
+    "mn-lc",
+    "vn-lh-1"
    ],
    "requiresFlags": [
     "badge:lao-cai"
@@ -4035,7 +4065,8 @@
    "description": "Aggron, hộ vệ đá của đèo Pha Đin, đã thức giấc. Lairon chặn ngang đèo. Giữ đèo trong lúc mình gỡ cọc.",
    "giver": "mn-linh-dien-bien",
    "requires": [
-    "mn-lh"
+    "mn-lh",
+    "vn-db-1"
    ],
    "requiresFlags": [
     "badge:lai-chau"
@@ -4156,7 +4187,8 @@
    "description": "Ở Tà Xùa, Bình Minh đào bới tìm hóa thạch để làm lõi năng lượng. Tyrunt và Amaura sống lại giữa đường mòn. Phá cái máy đào đi!",
    "giver": "mn-linh-son-la",
    "requires": [
-    "mn-db"
+    "mn-db",
+    "vn-sl-1"
    ],
    "requiresFlags": [
     "badge:dien-bien"
@@ -4282,7 +4314,8 @@
    "description": "Ở ngã ba Bạch Hạc, ba dòng sông gặp nhau — điểm neo cuối trước Thăng Long. Dragonair từ sông Lô trườn lên bờ. Giữ ngã ba thật lâu, mình cần đo toàn bộ mạch về Hà Nội.",
    "giver": "mn-linh-phu-tho",
    "requires": [
-    "mn-sl"
+    "mn-sl",
+    "vn-pt-1"
    ],
    "requiresFlags": [
     "badge:son-la"
@@ -4588,19 +4621,20 @@
    "kind": "main",
    "chapter": "mn-0",
    "title": "Khu làm tổ của Seviper",
-   "giver": "mn-sau-ca-mau",
+   "giver": "cm-ranger",
    "requires": [
-    "mn-cm-2"
+    "mn-cm-2",
+    "vn-cm-2"
    ],
    "description": "Seviper — Chúa Rừng U Minh — đang lồng lộn quanh khu làm tổ. Giữa rừng có một cỗ máy lạ.",
    "objectives": [
     {
-     "type": "explore",
-     "target": "cm-uminh",
-     "text": "Vào rừng tràm U Minh",
+     "type": "trainer",
+     "target": "cm-forest-trainer",
+     "text": "Vượt qua thử thách của Kiểm lâm tập sự Vy",
      "count": 1,
      "marker": {
-      "x": 63,
+      "x": 44,
       "y": 22,
       "region": "ca-mau"
      }
@@ -4683,11 +4717,11 @@
    },
    "dialogue": {
     "offer": [
-     "Ông nội chú nói: rừng kêu đêm là có người động vào mạch. Con vào U Minh xem sao.",
-     "Nhớ: Seviper chỉ giữ tổ của nó thôi. Làm nó bình tĩnh lại, đừng làm hại."
+     "Seviper lồng lộn quanh khu làm tổ ở tây bắc rừng tràm. Cô Linh bạn cháu nói giữa rừng có một cỗ máy lạ.",
+     "Vy sẽ thử sức cháu trước — rừng sâu không phải chỗ cho người yếu tay. Nhớ: Seviper chỉ giữ tổ của nó thôi, làm nó bình tĩnh lại, đừng làm hại."
     ],
     "progress": [
-     "Rừng tràm U Minh ở phía bắc. Đi ghe theo kênh là nhanh nhất."
+     "Khu làm tổ ở phía tây bắc rừng tràm. Vy đứng canh lối vào."
     ],
     "complete": [
      "Seviper đã về tổ. Còn cỗ máy này... \"Dự án Bình Minh\". Mình phải báo Giáo sư An."
@@ -4756,7 +4790,8 @@
    "title": "Lưới điện của Bình Minh",
    "giver": "mn-linh-ho-chi-minh",
    "requires": [
-    "mn-tn"
+    "mn-tn",
+    "vn-sg-1"
    ],
    "requiresFlags": [
     "badge:tay-ninh"
@@ -4830,10 +4865,22 @@
    "title": "Magnezone quá tải",
    "giver": "mn-linh-ho-chi-minh",
    "requires": [
-    "mn-sg-1"
+    "mn-sg-1",
+    "vn-sg-2"
    ],
    "description": "Magnezone — Thần Điện Sài Gòn — bị một trạm biến áp của Bình Minh hút điện tới quá tải.",
    "objectives": [
+    {
+     "type": "trainer",
+     "target": "sg-engineer",
+     "text": "Thắng Kỹ sư điện Tín (anh ấy giữ lối ra bờ sông)",
+     "count": 1,
+     "marker": {
+      "x": 108,
+      "y": 48,
+      "region": "ho-chi-minh"
+     }
+    },
     {
      "type": "destroy",
      "target": "mn-sg-2:destroy",
@@ -4954,7 +5001,8 @@
    "title": "Thủ đô mất mạch",
    "giver": "mn-linh-ha-noi",
    "requires": [
-    "mn-pt"
+    "mn-pt",
+    "vn-hn-1"
    ],
    "requiresFlags": [
     "badge:phu-tho"
@@ -5092,10 +5140,22 @@
    "title": "Điểm neo Cổ Loa",
    "giver": "mn-linh-ha-noi",
    "requires": [
-    "mn-hn-2"
+    "mn-hn-2",
+    "vn-hn-2"
    ],
    "description": "Ba bước cuối: phá lõi cưỡng chế, giữ điểm neo Cổ Loa trong lúc mạch nguồn ổn định, rồi cùng Torterra cắt những sợi cáp nối vào nó.",
    "objectives": [
+    {
+     "type": "trainer",
+     "target": "hn-gate-t",
+     "text": "Thắng Hộ vệ thành Cổ Loa (người canh lối vào điểm neo)",
+     "count": 1,
+     "marker": {
+      "x": 30,
+      "y": 22,
+      "region": "ha-noi"
+     }
+    },
     {
      "type": "destroy",
      "target": "mn-hn-3:destroy",

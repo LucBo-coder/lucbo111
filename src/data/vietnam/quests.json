@@ -71,7 +71,7 @@
   "id": "vn-cm-2",
   "kind": "main",
   "title": "Vào rừng U Minh",
-  "giver": "vn-prof",
+  "giver": "mn-sau-ca-mau",
   "description": "Băng qua rừng ngập mặn, tới trạm kiểm lâm U Minh Hạ.",
   "objectives": [
    {
@@ -128,53 +128,32 @@
   },
   "dialogue": {
    "offer": [
-    "Kiểm lâm Nam ở U Minh Hạ báo Pokémon trong rừng đang rất bất an. Cháu tới đó giúp ông ấy nhé."
+    "Kiểm lâm Nam ở U Minh Hạ nhắn xuống: Pokémon rừng tràm bất an lắm, đêm nào cũng kêu.",
+    "Con qua rừng ngập mặn đi lên phía bắc, kích hoạt trạm kiểm lâm rồi gặp ông Nam. Chú với cô Linh theo sau."
    ],
    "complete": [
     "Cháu tới rồi! Lũ Pokémon rừng tràm hoảng loạn mấy hôm nay..."
    ]
   },
   "requires": [
-   "vn-cm-1"
+   "mn-cm-2"
   ]
  },
  {
   "id": "vn-cm-3",
   "kind": "main",
-  "title": "Chúa Rừng U Minh",
+  "title": "Rừng U Minh bình yên",
   "giver": "cm-ranger",
-  "description": "Một Seviper khổng lồ chiếm sâu trong rừng tràm. Hãy đánh bại nó để mang bình yên trở lại.",
+  "description": "Seviper đã về tổ. Báo tin cho Kiểm lâm Nam ở trạm U Minh Hạ.",
   "objectives": [
    {
-    "type": "trainer",
-    "target": "cm-forest-trainer",
-    "count": 1,
-    "text": "Vượt qua Kiểm lâm tập sự Vy",
-    "marker": {
-     "x": 44,
-     "y": 22,
-     "region": "ca-mau"
-    }
-   },
-   {
-    "type": "boss",
-    "target": "seviper",
-    "count": 1,
-    "text": "Đánh bại Seviper — Chúa Rừng U Minh",
-    "marker": {
-     "x": 28,
-     "y": 30,
-     "region": "ca-mau"
-    }
-   },
-   {
     "type": "talk",
-    "target": "vn-prof",
+    "target": "cm-ranger",
     "count": 1,
-    "text": "Báo tin cho Giáo sư An",
+    "text": "Báo tin cho Kiểm lâm Nam",
     "marker": {
-     "x": 85,
-     "y": 95,
+     "x": 64,
+     "y": 40,
      "region": "ca-mau"
     }
    }
@@ -188,18 +167,22 @@
   },
   "dialogue": {
    "offer": [
-    "Có một Seviper rất lớn làm tổ ở phía tây bắc rừng tràm. Nọc độc của nó làm Pokémon khác bỏ chạy.",
-    "Vượt qua thử thách của Vy trước, rồi hãy vào sâu đánh bại nó."
-   ],
-   "complete": [
-    "Cháu làm được rồi! Với Huy hiệu Rừng Tràm, đường lên An Giang đã mở."
+    "Rừng tràm đã yên chưa cháu? Ghé trạm kể cho ta nghe với."
    ],
    "progress": [
-    "Seviper ở phía tây bắc rừng tràm. Mang theo thuốc giải độc nhé!"
+    "Rừng tràm đã yên chưa cháu? Ghé trạm kể cho ta nghe với."
+   ],
+   "complete": [
+    "Seviper về tổ rồi, rừng tràm hết kêu đêm. Cảm ơn cháu nhiều lắm!",
+    "Có điều bãi bồi ven rừng ngập mặn sạt lở nặng. Rảnh thì giúp ta trồng lại cây đước con nhé. Còn Huy hiệu Rừng Tràm thì mang về khoe Giáo sư An đi!"
    ]
   },
   "requires": [
    "vn-cm-2"
+  ],
+  "autoStart": true,
+  "requiresFlags": [
+   "boss:seviper"
   ]
  },
  {
@@ -483,7 +466,10 @@
     "Ôi may quá, có người tới rồi!"
    ]
   },
-  "autoStart": true
+  "autoStart": true,
+  "requiresFlags": [
+   "badge:ca-mau"
+  ]
  },
  {
   "id": "vn-ag-rescue",
@@ -593,7 +579,8 @@
    ]
   },
   "requires": [
-   "vn-ag-rescue"
+   "vn-ag-rescue",
+   "mn-ag"
   ]
  },
  {
@@ -944,7 +931,8 @@
    ]
   },
   "requires": [
-   "vn-ct-2"
+   "vn-ct-2",
+   "mn-ct"
   ]
  },
  {
@@ -2865,7 +2853,8 @@
   "title": "Thần Lò Mang Thít",
   "giver": "vl-host",
   "requires": [
-   "vn-vl-2"
+   "vn-vl-2",
+   "mn-vl"
   ],
   "description": "Đến lò gạch Mang Thít, làm dịu Torkoal — Thần Lò (sinh vật giả tưởng của game) đang làm lò nóng quá mức.",
   "objectives": [
@@ -3401,7 +3390,8 @@
   "title": "Thần Cây Dầu",
   "giver": "tv-achar",
   "requires": [
-   "vn-tv-2"
+   "vn-tv-2",
+   "mn-tv"
   ],
   "description": "Vào rừng dầu cổ thụ cạnh Ao Bà Om, làm dịu Trevenant — Thần Cây Dầu (sinh vật giả tưởng của game) đang làm rừng bất an.",
   "objectives": [
@@ -3975,7 +3965,8 @@
   "title": "Thần Dừa Trăm Thân",
   "giver": "bt-guide",
   "requires": [
-   "vn-bt-2"
+   "vn-bt-2",
+   "mn-bt"
   ],
   "description": "Rừng tràm phía tây nam có một cây dừa già trăm năm. Muốn gặp nó thì phải qua Kiểm lâm Út trước.",
   "objectives": [
@@ -4360,7 +4351,8 @@
   "title": "Thần Sen Tháp Mười",
   "giver": "dt-guide",
   "requires": [
-   "vn-dt-2"
+   "vn-dt-2",
+   "mn-dt"
   ],
   "description": "Đầm sen Tháp Mười héo dần. Qua được Người giữ đầm sen Lành thì mới gặp được Thần Sen.",
   "objectives": [
@@ -4817,7 +4809,8 @@
   "title": "Thần Núi Bà Đen",
   "giver": "tn-guide",
   "requires": [
-   "vn-tn-2"
+   "vn-tn-2",
+   "mn-tn"
   ],
   "description": "Qua được Người leo núi Hùng để lên đỉnh, rồi làm Thần Núi nguôi giận.",
   "objectives": [
@@ -5342,32 +5335,21 @@
  {
   "id": "vn-sg-3",
   "kind": "main",
-  "title": "Thần Điện Sài Gòn",
+  "title": "Sài Gòn sáng đèn",
   "giver": "sg-guide",
   "requires": [
    "vn-sg-2"
   ],
-  "description": "Kỹ sư điện Tín chặn lối vào bờ sông. Thắng anh ấy rồi đối mặt Magnezone.",
+  "description": "Magnezone đã hạ nhiệt. Về kể cho anh Ba xe ôm nghe.",
   "objectives": [
    {
-    "type": "trainer",
-    "target": "sg-engineer",
+    "type": "talk",
+    "target": "sg-guide",
     "count": 1,
-    "text": "Thắng Kỹ sư điện Tín",
+    "text": "Kể lại cho anh Ba xe ôm",
     "marker": {
-     "x": 108,
-     "y": 48,
-     "region": "ho-chi-minh"
-    }
-   },
-   {
-    "type": "boss",
-    "target": "magnezone",
-    "count": 1,
-    "text": "Đánh bại Magnezone — Thần Điện Sài Gòn",
-    "marker": {
-     "x": 112,
-     "y": 40,
+     "x": 57,
+     "y": 55,
      "region": "ho-chi-minh"
     }
    }
@@ -5381,15 +5363,20 @@
   },
   "dialogue": {
    "offer": [
-    "Kỹ sư Tín ở bờ sông phía bắc bến. Ảnh chỉ cho người đủ sức đi qua thôi."
+    "Đèn bờ sông sáng lại rồi kìa! Ghé anh kể chuyện nghe coi."
    ],
    "progress": [
-    "Bờ sông phía bắc bến Bạch Đằng, nghe tiếng điện rè rè là tới."
+    "Đèn bờ sông sáng lại rồi kìa! Ghé anh kể chuyện nghe coi."
    ],
    "complete": [
-    "Đèn cả thành phố sáng lại rồi! Huy hiệu Sài Gòn là của con."
+    "Đèn cả thành phố sáng lại rồi! Huy hiệu Sài Gòn là của con.",
+    "Đường lên Đồng Nai thông rồi đó, đi mạnh giỏi nghen!"
    ]
-  }
+  },
+  "autoStart": true,
+  "requiresFlags": [
+   "boss:magnezone"
+  ]
  },
  {
   "id": "vn-sg-rescue",
@@ -5869,7 +5856,8 @@
   "title": "Bò Tót Cát Tiên",
   "giver": "dn-guide",
   "requires": [
-   "vn-dn-2"
+   "vn-dn-2",
+   "mn-dn"
   ],
   "description": "Thắng Kiểm lâm trưởng Hải để vào rừng sâu, rồi làm Tauros đầu đàn nguôi giận.",
   "objectives": [
@@ -6387,7 +6375,8 @@
   "title": "Thần Hoa Đà Lạt",
   "giver": "ld-guide",
   "requires": [
-   "vn-ld-2"
+   "vn-ld-2",
+   "mn-ld"
   ],
   "description": "Thắng Người giữ vườn hoa Linh để vào thung lũng, rồi làm Florges thôi khóc.",
   "objectives": [
@@ -6917,7 +6906,8 @@
   "title": "Thần Vịnh Nha Trang",
   "giver": "kh-guide",
   "requires": [
-   "vn-kh-2"
+   "vn-kh-2",
+   "mn-kh"
   ],
   "description": "Thắng Thợ lặn trưởng Hải để ra mũi đá, rồi làm Kingdra nguôi giận.",
   "objectives": [
@@ -7454,7 +7444,8 @@
   "title": "Voi Thần Yok Đôn",
   "giver": "dl-guide",
   "requires": [
-   "vn-dl-2"
+   "vn-dl-2",
+   "mn-dl"
   ],
   "description": "Thắng Thợ săn già Ama Kông để vào sâu trong rừng, rồi làm Donphan nguôi giận.",
   "objectives": [
@@ -7984,7 +7975,8 @@
   "title": "Võ Thần Tây Sơn",
   "giver": "gl-guide",
   "requires": [
-   "vn-gl-2"
+   "vn-gl-2",
+   "mn-gl"
   ],
   "description": "Thắng Võ sĩ Tây Sơn Ngọc để lên võ đài, rồi đánh bại Conkeldurr.",
   "objectives": [
@@ -8511,7 +8503,8 @@
   "title": "Hồn Neo Lý Sơn",
   "giver": "qn-guide",
   "requires": [
-   "vn-qn-2"
+   "vn-qn-2",
+   "mn-qn"
   ],
   "description": "Thắng Thuyền trưởng Lý Sơn Tâm để ra bãi bắc, rồi làm Dhelmise yên giấc.",
   "objectives": [
@@ -9027,7 +9020,8 @@
   "title": "Rồng Sông Hàn",
   "giver": "dg-guide",
   "requires": [
-   "vn-dg-2"
+   "vn-dg-2",
+   "mn-dg"
   ],
   "description": "Thắng Kiểm lâm trưởng Sơn Trà để lên đỉnh, rồi làm Salamence nguôi giận.",
   "objectives": [
@@ -9554,7 +9548,8 @@
   "title": "Gươm Báu Hoàng Thành",
   "giver": "hu-guide",
   "requires": [
-   "vn-hu-2"
+   "vn-hu-2",
+   "mn-hu"
   ],
   "description": "Thắng Thị vệ Đại Nội để vào sân điện, rồi làm Aegislash tra gươm vào vỏ.",
   "objectives": [
@@ -10084,7 +10079,8 @@
   "title": "Dơi Thần Sơn Đoòng",
   "giver": "qt-guide",
   "requires": [
-   "vn-qt-2"
+   "vn-qt-2",
+   "mn-qt"
   ],
   "description": "Thắng Nhà thám hiểm Sơn Đoòng để vào cửa hang, rồi làm Noivern yên lặng.",
   "objectives": [
@@ -10596,7 +10592,8 @@
   "title": "Đại Bàng Hồng Lĩnh",
   "giver": "ht-guide",
   "requires": [
-   "vn-ht-2"
+   "vn-ht-2",
+   "mn-ht"
   ],
   "description": "Thắng Người nuôi chim ưng Hồng Lĩnh để lên mỏm đá, rồi làm Braviary nguôi giận.",
   "objectives": [
@@ -11126,7 +11123,8 @@
   "title": "Cú Thần Pù Mát",
   "giver": "na-guide",
   "requires": [
-   "vn-na-2"
+   "vn-na-2",
+   "mn-na"
   ],
   "description": "Thắng Thợ ảnh chim Pù Mát để vào sâu trong rừng, rồi làm Decidueye hạ cung.",
   "objectives": [
@@ -11655,7 +11653,8 @@
   "title": "Nữ Thần Suối Cẩm Lương",
   "giver": "th-guide",
   "requires": [
-   "vn-th-2"
+   "vn-th-2",
+   "mn-th"
   ],
   "description": "Thắng Thầy mo bản Lương để lên vũng suối, rồi làm Milotic nguôi giận.",
   "objectives": [
@@ -12184,7 +12183,8 @@
   "title": "Rồng Ba Đầu Hang Múa",
   "giver": "nb-guide",
   "requires": [
-   "vn-nb-2"
+   "vn-nb-2",
+   "mn-nb"
   ],
   "description": "Thắng Người leo núi Hang Múa để lên đỉnh, rồi làm Hydreigon nguôi giận.",
   "objectives": [
@@ -12714,7 +12714,8 @@
   "title": "Nữ Hoàng Nhãn Lồng",
   "giver": "hy-guide",
   "requires": [
-   "vn-hy-2"
+   "vn-hy-2",
+   "mn-hy"
   ],
   "description": "Thắng Thương lái nhãn Tâm để vào gốc nhãn cổ thụ, rồi làm Tsareena nguôi giận.",
   "objectives": [
@@ -13240,7 +13241,8 @@
   "title": "Chim Lửa Hoa Phượng",
   "giver": "hp-guide",
   "requires": [
-   "vn-hp-2"
+   "vn-hp-2",
+   "mn-hp"
   ],
   "description": "Thắng Thợ leo vách Cát Bà để lên tổ, rồi làm Talonflame nguôi giận.",
   "objectives": [
@@ -13779,7 +13781,8 @@
   "title": "Nàng Quan Họ",
   "giver": "bn-guide",
   "requires": [
-   "vn-bn-2"
+   "vn-bn-2",
+   "mn-bn"
   ],
   "description": "Thắng Liền anh Cả để ra mép ao, rồi làm Primarina vui trở lại.",
   "objectives": [
@@ -14308,7 +14311,8 @@
   "title": "Rồng Mẹ Hạ Long",
   "giver": "ql-guide",
   "requires": [
-   "vn-ql-2"
+   "vn-ql-2",
+   "mn-ql"
   ],
   "description": "Thắng Thuyền trưởng tàu Hạ Long để ra mũi đất, rồi làm Dragonite nguôi giận.",
   "objectives": [
@@ -14837,7 +14841,8 @@
   "title": "Nàng Tô Thị Hóa Đá",
   "giver": "ls-guide",
   "requires": [
-   "vn-ls-2"
+   "vn-ls-2",
+   "mn-ls"
   ],
   "description": "Thắng Thợ đá Tam Thanh để lên đỉnh, rồi làm Gigalith yên giấc.",
   "objectives": [
@@ -15353,7 +15358,8 @@
   "title": "Hổ Lửa Ngườm Ngao",
   "giver": "cb-guide",
   "requires": [
-   "vn-cb-2"
+   "vn-cb-2",
+   "mn-cb"
   ],
   "description": "Thắng Thợ săn hổ già để vào cửa hang, rồi làm Incineroar ngủ yên.",
   "objectives": [
@@ -15879,7 +15885,8 @@
   "title": "Hồn Ấm Chè Tân Cương",
   "giver": "ty-guide",
   "requires": [
-   "vn-ty-2"
+   "vn-ty-2",
+   "mn-ty"
   ],
   "description": "Thắng Thầy mo hang Phượng Hoàng để vào cửa hang, rồi làm Polteageist nguôi hờn.",
   "objectives": [
@@ -16408,7 +16415,8 @@
   "title": "Ngựa Thần Mã Pí Lèng",
   "giver": "tq-guide",
   "requires": [
-   "vn-tq-2"
+   "vn-tq-2",
+   "mn-tq"
   ],
   "description": "Thắng Người dắt ngựa Mã Pí Lèng để lên đỉnh đèo, rồi làm Mudsdale nguôi giận.",
   "objectives": [
@@ -16937,7 +16945,8 @@
   "title": "Thần Tuyết Fansipan",
   "giver": "lc-guide",
   "requires": [
-   "vn-lc-2"
+   "vn-lc-2",
+   "mn-lc"
   ],
   "description": "Thắng Người dẫn đường Fansipan để lên đỉnh, rồi làm Abomasnow nguôi giận.",
   "objectives": [
@@ -17466,7 +17475,8 @@
   "title": "Chim Mây Bạch Mộc",
   "giver": "lh-guide",
   "requires": [
-   "vn-lh-2"
+   "vn-lh-2",
+   "mn-lh"
   ],
   "description": "Thắng Người săn mây Bạch Mộc để lên đỉnh, rồi làm Altaria nguôi giận.",
   "objectives": [
@@ -17992,7 +18002,8 @@
   "title": "Hộ Thần Đèo Pha Đin",
   "giver": "db-guide",
   "requires": [
-   "vn-db-2"
+   "vn-db-2",
+   "mn-db"
   ],
   "description": "Thắng Người gác đèo Pha Đin để lên đỉnh, rồi làm Aggron nguôi giận.",
   "objectives": [
@@ -18535,7 +18546,8 @@
   "title": "Bạo Long Tà Xùa",
   "giver": "sl-guide",
   "requires": [
-   "vn-sl-2"
+   "vn-sl-2",
+   "mn-sl"
   ],
   "description": "Thắng Thợ săn mây Tà Xùa để lên đỉnh, rồi làm Tyrantrum ngủ lại.",
   "objectives": [
@@ -19064,7 +19076,8 @@
   "title": "Thủy Tinh Nổi Giận",
   "giver": "pt-guide",
   "requires": [
-   "vn-pt-2"
+   "vn-pt-2",
+   "mn-pt"
   ],
   "description": "Thắng Lính canh Sơn Tinh để lên núi, rồi làm Gyarados rút nước.",
   "objectives": [
@@ -19601,32 +19614,21 @@
  {
   "id": "vn-hn-3",
   "kind": "main",
-  "title": "Thần Kim Quy Cổ Loa",
+  "title": "Thần Kim Quy trở về",
   "giver": "hn-guide",
   "requires": [
    "vn-hn-2"
   ],
-  "description": "Thắng Hộ vệ thành Cổ Loa, rồi vượt thử thách cuối cùng của Thần Kim Quy.",
+  "description": "Torterra đã được giải phóng. Báo tin cho cô Hằng ở phố cổ.",
   "objectives": [
    {
-    "type": "trainer",
-    "target": "hn-gate-t",
+    "type": "talk",
+    "target": "hn-guide",
     "count": 1,
-    "text": "Thắng Hộ vệ thành Cổ Loa",
+    "text": "Báo tin cho cô Hằng",
     "marker": {
-     "x": 30,
-     "y": 22,
-     "region": "ha-noi"
-    }
-   },
-   {
-    "type": "boss",
-    "target": "torterra",
-    "count": 1,
-    "text": "Đánh bại Torterra — Thần Kim Quy Cổ Loa",
-    "marker": {
-     "x": 16,
-     "y": 10,
+     "x": 70,
+     "y": 58,
      "region": "ha-noi"
     }
    }
@@ -19640,15 +19642,19 @@
   },
   "dialogue": {
    "offer": [
-    "Hộ vệ canh giữa thành xoắn ốc. Đây là chặng cuối, em cố lên!"
+    "Hồ Gươm đầy nước lại rồi em ơi! Ghé cô một lát."
    ],
    "progress": [
-    "Giữa thành Cổ Loa, góc tây bắc."
+    "Hồ Gươm đầy nước lại rồi em ơi! Ghé cô một lát."
    ],
    "complete": [
     "Thần Kim Quy gật đầu rồi trở về Hồ Gươm! Huy hiệu Thăng Long là của em — hành trình xuyên Việt đã trọn vẹn."
    ]
-  }
+  },
+  "autoStart": true,
+  "requiresFlags": [
+   "boss:torterra"
+  ]
  },
  {
   "id": "vn-hn-rescue",

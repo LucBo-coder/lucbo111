@@ -64,13 +64,19 @@ test('Mạch Nguồn: cutscene, gated people, hold & destroy encounters, story j
   expect(await ev(page, `window.__adv.story.run`)).toBe(null);
 
   // ── 'destroy' (mn-cm-3): the device appears when close, breaking it advances the quest ──
-  await ev(page, `(() => { const s = window.__adv.state; s.quests.states['mn-cm-2'] = { status: 'completed', step: 3, progress: 0 }; s.quests.refresh(); s.startQuest('mn-cm-3'); s.quests.states['mn-cm-3'].step = 1; })()`);
+  await ev(page, `(() => { const s = window.__adv.state; s.quests.states['mn-cm-2'] = { status: 'completed', step: 3, progress: 0 }; s.quests.states['vn-cm-2'] = { status: 'completed', step: 4, progress: 0 }; s.quests.refresh(); s.startQuest('mn-cm-3'); s.quests.states['mn-cm-3'].step = 1; })()`);
   const dev = await ev<{ x: number; y: number }>(page, `window.__adv.state.quests.def('mn-cm-3').objectives[1].encounter`);
   await ev(page, `window.__adv.world.teleport(${dev.x} * 48 + 24, ${dev.y} * 48 + 140)`);
   await page.waitForFunction(() => !!(window as Win).__adv.story.run?.device, undefined, { timeout: 8000 });
   expect(await ev(page, `window.__adv.story.run.device.name`)).toBe('Bộ khuếch đại Bình Minh');
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/story-device.png` });
-  await page.waitForFunction(() => (window as Win).__adv.state.quests.states['mn-cm-3'].step === 2, undefined, { timeout: 60_000 });
+  // the Pokémon on the field fights it; the test lands the blows itself so a slow (software-WebGL, busy) machine
+  // does not turn the fight into a timeout — breaking it must still go through the real "unit down" path
+  for (let i = 0; i < 40 && (await ev<number>(page, `window.__adv.state.quests.states['mn-cm-3'].step`)) !== 2; i++) {
+    await ev(page, `(() => { const a = window.__adv, d = a.story.run?.device; if (d?.alive) a.world.applyDamage(d, Math.ceil(d.maxHp / 3), a.world.allies[0]); })()`);
+    await page.waitForTimeout(400);
+  }
+  expect(await ev(page, `window.__adv.state.quests.states['mn-cm-3'].step`)).toBe(2);
 
   // ── journal: "Chính" lists the story quests, the story page shows the acts and the cutscenes to watch again ──
   await ev(page, `(() => { const u = ${ui}; u.questFilter = 'main'; u.openMenu('quests'); })()`);

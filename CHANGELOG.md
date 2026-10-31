@@ -1,5 +1,18 @@
 # Changelog
 
+## Chưa phát hành — V30: Hệ thống nhiệm vụ, mạch nhiệm vụ Việt Nam, hướng dẫn trong game
+
+- **Không còn nhiệm vụ kẹt**: việc chỉ xảy ra một lần trong save (kích hoạt trạm, thắng HLV, hạ boss, mở rương, giải câu đố, dọn chướng ngại, điểm bảo tồn) giờ được tính cả khi đã làm trước lúc nhận nhiệm vụ. Nhận nhiệm vụ khám phá khi đang đứng trong khu đó thì tính ngay. Save có nhiệm vụ vượt quá số bước được kéo về bước cuối.
+- **Thứ tự hợp lý hơn**: đánh, bắt, khám phá, thu thập… làm sớm khi nhiệm vụ đang chạy được giữ lại và tính khi tới bước; chỉ nói chuyện / báo cáo, lựa chọn và tình huống cốt truyện phải đúng lượt. Nhật ký đánh dấu ☑ / số đếm cho bước làm sớm.
+- **Mạch nhiệm vụ Việt Nam**: mỗi tỉnh đi theo *đến nơi → Linh phá thiết bị Bình Minh → thần hộ vệ → huy hiệu*.
+  - Sửa: nhiệm vụ An Giang tự bật ngay từ đầu game; Chúa Rừng U Minh, Magnezone, Torterra phải đánh hai lần (hai nhiệm vụ cùng boss); nhiệm vụ Seviper của cốt truyện không nhắc phải thắng Vy.
+  - Cà Mau sắp lại: Trạm nước → Lưới → Vào rừng U Minh (Chú Sáu) → Khu làm tổ của Seviper (Kiểm lâm Nam) → *Rừng U Minh bình yên* → Huy hiệu. Sài Gòn / Hà Nội: boss trong cốt truyện, nhiệm vụ tỉnh thành đoạn kết.
+  - Save v10 tự chuyển đổi (nhiệm vụ đang dở giữ đúng chỗ).
+- **Hướng dẫn trong game** (K / F1 / nút **?**): bảng phím đầy đủ, điều khiển cảm ứng, 5 trang cách chơi; lời nhắc lần đầu.
+- **Phím O** mở PC. Gõ chữ trong ô nhập (tìm PC, đặt tên hộp) không còn kích hoạt phím tắt (trước đây gõ x / i / m / j làm nhảy tab).
+- `src/core/questAudit.ts`: rà dữ liệu nhiệm vụ của cả hai chiến dịch (0 lỗi).
+- Test mới `v30_quest_catchup`, `v30_quest_audit`, `v30_quest_flow` (chơi trọn mạch chính 36 tỉnh), `v29_shared_boss`; e2e `v30_help`. E2e `v29_story` tự phá thiết bị thay vì chờ đồng đội (hết bị hết giờ khi máy bận).
+
 ## Chưa phát hành — V29: Một Pokémon trên sân, cốt truyện "Mạch Nguồn" và "Quần Đảo Khởi Nguyên"
 
 - **Một Pokémon trên sân mỗi huấn luyện viên** ở Phiêu lưu, Việt Nam Odyssey và co-op (cả HLV NPC). Mọi con số nằm trong `src/data/field-rules.json`.

@@ -25,8 +25,8 @@ test('Cà Mau mangrove restoration', async ({ page }) => {
   expect(await sites(page)).toEqual([]);
 
   // Seviper's story ends: complete the last objective for real
-  await ev(page, `(() => { const a = window.__adv, qs = a.state.quests; for (const id of ['vn-cm-1', 'vn-cm-2']) qs.states[id] = { status: 'completed', step: 9, progress: 0 };
-    qs.states['vn-cm-3'] = { status: 'active', step: 2, progress: 0 }; a.state.setFlag('boss:seviper'); a.questEvent({ type: 'talk', target: 'vn-prof' }); })()`);
+  await ev(page, `(() => { const a = window.__adv, qs = a.state.quests; for (const id of ['vn-cm-1', 'mn-cm-1', 'mn-cm-2', 'vn-cm-2', 'mn-cm-3']) qs.states[id] = { status: 'completed', step: 9, progress: 0 };
+    a.state.setFlag('boss:seviper'); a.questEvent({ type: 'talk', target: 'cm-ranger' }); })()`);
   await page.waitForTimeout(300);
   for (let i = 0; i < 6 && (await dialogueOpen(page)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(150); }
   expect(await ev(page, `window.__adv.state.quests.states['vn-cm-3'].status`)).toBe('completed');

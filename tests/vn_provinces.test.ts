@@ -11,6 +11,7 @@ import { fightBoss, sendParty } from './bossHelpers';
 import { REP_REGIONS } from '../src/core/reputation';
 import { defaultSave, newAdventure } from '../src/systems/saveSchema';
 import vnQuests from '../src/data/vietnam/quests.json';
+import { STORIES } from '../src/core/storyData';
 import conservation from '../src/data/vietnam/conservation.json';
 import type { QuestDef } from '../src/core/quests';
 import type { ProvinceSpec } from '../scripts/provinces/types';
@@ -87,7 +88,8 @@ describe('Vietnam Odyssey: provinces from story specs', () => {
       expect(st.quests.states[own[0].id].status).toBe('locked');
       st.setFlag(`badge:${s.prev.id}`);
       expect(st.quests.states[own[0].id].status).toBe('active');
-      const bq = own.find((q) => q.objectives.some((o) => o.type === 'boss'))!;
+      // the guardian's quest: the province's own, or (Sài Gòn, Hà Nội) the story's climax (V30)
+      const bq = own.find((q) => q.objectives.some((o) => o.type === 'boss')) ?? STORIES.vietnam.quests.find((q) => q.objectives.some((o) => o.type === 'boss' && o.target === boss.id))!;
       const iBoss = bq.objectives.findIndex((o) => o.type === 'boss');
       expect(bq.objectives[iBoss].target).toBe(boss.id);
       const gateTrainer = boss.requires![0].replace('beat:', '');

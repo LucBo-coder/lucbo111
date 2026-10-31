@@ -66,8 +66,10 @@ test('Việt Nam Odyssey: Cà Mau from the first step to the An Giang gate', asy
   }
   expect(caught).toBe(true);
   await talk(page, 'vn-prof', `window.__adv.state.quests.states['vn-cm-1'].status === 'completed'`);
-  // accept the next main quest from the professor
-  await talk(page, 'vn-prof', `window.__adv.state.quests.states['vn-cm-2'].status === 'active'`);
+  // the story's first two steps in Đất Mũi (trạm nước, lưới) are played in v29_story.spec.ts — skipped here;
+  // then Chú Sáu points the way to U Minh (V30: "Vào rừng U Minh" follows the story)
+  await ev(page, `(() => { const qs = window.__adv.state.quests; for (const id of ['mn-cm-1', 'mn-cm-2']) qs.states[id] = { status: 'completed', step: 9, progress: 0 }; qs.refresh(); })()`);
+  await talk(page, 'mn-sau-ca-mau', `window.__adv.state.quests.states['vn-cm-2'].status === 'active'`);
 
   // 3) through the mangrove into U Minh, activate the ranger station, meet the ranger
   await ev(page, `(() => { const a = window.__adv; a.state.save.collection.forEach(p => { p.level = 14; }); a.world.allies.forEach(u => a.world.setAllyLevel(u, 14)); })()`);
@@ -78,7 +80,8 @@ test('Việt Nam Odyssey: Cà Mau from the first step to the An Giang gate', asy
   for (let i = 0; i < 10 && !(await ev<boolean>(page, `window.__adv.state.adv.waypoints.includes('wp-cm-uminh')`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(250); }
   for (let i = 0; i < 10 && (await ev<boolean>(page, `!!window.__phaser.scene.getScene('AdvUI').dialogueLayer`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(150); }
   await talk(page, 'cm-ranger', `window.__adv.state.quests.states['vn-cm-2'].status === 'completed'`);
-  await talk(page, 'cm-ranger', `window.__adv.state.quests.states['vn-cm-3'].status === 'active'`);
+  // the ranger sends the player to the nest: Vy's trial, the Bình Minh amplifier, Seviper (story quest)
+  await talk(page, 'cm-ranger', `window.__adv.state.quests.states['mn-cm-3'].status === 'active'`);
 
   // 4) the boss is sealed until the trainer test is passed
   await teleport(page, 28, 34); await page.waitForTimeout(1500);
@@ -107,7 +110,9 @@ test('Việt Nam Odyssey: Cà Mau from the first step to the An Giang gate', asy
   expect(await ev(page, `window.__adv.state.save.collection.some(p => p.species === 'seviper')`)).toBe(false);
   await page.waitForTimeout(1200);
   await page.screenshot({ path: info.outputPath('4-badge.png') });
-  await talk(page, 'vn-prof', `window.__adv.state.quests.states['vn-cm-3'].status === 'completed'`);
+  // Seviper calmed: "Rừng U Minh bình yên" starts on its own — the ranger hears the news
+  expect(await ev(page, `window.__adv.state.quests.states['vn-cm-3'].status`)).toBe('active');
+  await talk(page, 'cm-ranger', `window.__adv.state.quests.states['vn-cm-3'].status === 'completed'`);
 
   // 6) save → reload → Load Game → still Cà Mau with the badge
   await ev(page, `window.__adv.exitToMenu()`);
@@ -162,6 +167,8 @@ test('An Giang: rescue, temple seal puzzle, temple guardian, ferry to Phú Quố
   for (let i = 0; i < 10 && !(await ev<boolean>(page, `window.__adv.state.hasFlag('rescued:ag-survey-smeargle')`)); i++) { await page.keyboard.press('e'); await page.waitForTimeout(250); }
   expect(await ev(page, `window.__adv.state.hasFlag('rescued:ag-survey-smeargle')`)).toBe(true);
   await talk(page, 'ag-researcher', `window.__adv.state.quests.states['vn-ag-rescue'].status === 'completed'`);
+  // V30: the temple guardian waits for An Giang's story (Linh's flood-gauge, played in v29_story.spec.ts)
+  await ev(page, `(() => { const qs = window.__adv.state.quests; for (const id of ['mn-ag']) qs.states[id] = { status: 'completed', step: 9, progress: 0 }; qs.refresh(); })()`);
   await talk(page, 'ag-researcher', `window.__adv.state.quests.states['vn-ag-temple'].status === 'active'`);
   // the guardian sleeps until the seal is solved: NƯỚC → RỪNG → NÚI (plates 1, 2, 0)
   await teleport(page, 64, 22); await page.waitForTimeout(1500);

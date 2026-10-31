@@ -90,6 +90,8 @@ test('Cần Thơ: An Giang gate → Ninh Kiều → floating market → Chúa S�
   await closeDialogues(page);
   await page.waitForFunction(() => (window as Win).__adv.state.quests.states['vn-ct-2'].status === 'completed', undefined, { timeout: 10_000 });
   expect(await ev(page, `window.__adv.state.hasFlag('landmark:cai-rang')`)).toBe(true);
+  // V30: Chúa Sông Hậu waits for Cần Thơ's story (the Cồn Sơn pump, played in v29_story.spec.ts)
+  await ev(page, `(() => { const qs = window.__adv.state.quests; for (const id of ['mn-ct']) qs.states[id] = { status: 'completed', step: 9, progress: 0 }; qs.refresh(); })()`);
   await talk(page, 'ct-merchant', `window.__adv.state.quests.states['vn-ct-3'].status === 'active'`);
   await closeDialogues(page);
 

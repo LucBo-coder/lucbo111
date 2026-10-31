@@ -4,7 +4,7 @@ import { chapterStates, cutscenePages, holdTick, npcVisible, validateStory, wave
 import { REGION_DEFS } from '../src/core/map/regionDefs';
 import { ValleyMap } from '../src/core/map/valley';
 import { POKEMON } from '../src/core/data';
-import { QuestManager, type QuestDef } from '../src/core/quests';
+import type { QuestDef } from '../src/core/quests';
 import { isMainQuest } from '../src/core/journal';
 import { VN_PROVINCES } from '../src/adventure/passport';
 import vnQuests from '../src/data/vietnam/quests.json';
@@ -84,36 +84,7 @@ describe('story data (data/story/*.json, scripts/gen-story.ts)', () => {
     }
   });
 
-  it('the Vietnam story line can be played start to end through the quest engine', () => {
-    const defs = [...(vnQuests as QuestDef[]), ...STORIES.vietnam.quests];
-    const flags = new Set<string>();
-    const qm = new QuestManager(defs, {}, () => flags);
-    const play = (id: string) => {
-      if (qm.states[id].status === 'locked') qm.refresh();
-      expect(qm.states[id].status, id).not.toBe('locked');
-      if (qm.states[id].status === 'available') qm.start(id);
-      const q = qm.def(id)!;
-      for (let guard = 0; qm.states[id].status === 'active' && guard < 40; guard++) {
-        const o = qm.currentObjective(id)!;
-        if (o.type === 'choose') { qm.choose(id, o.options![0].id); continue; }
-        for (let k = 0; k < o.count; k++) qm.notify({ type: o.type, target: o.target ?? '*' });
-      }
-      expect(qm.states[id].status, id).toBe('completed');
-      for (const f of qm.rewardsOf(id).flags ?? []) flags.add(f);
-      void q;
-    };
-    // the story's first step needs the starter quest
-    qm.start('vn-cm-1'); for (const o of qm.def('vn-cm-1')!.objectives) qm.notify({ type: o.type, target: o.target ?? '*' });
-    expect(qm.states['vn-cm-1'].status).toBe('completed');
-    // each province's badge comes from its guardian (world boss) — granted here once the province's story starts
-    const regionOf = (id: string) => STORIES.vietnam.npcs.find((n) => n.id === qm.def(id)!.giver)?.region ?? 'ca-mau';
-    for (const ch of STORIES.vietnam.chapters) for (const id of ch.quests) {
-      play(id);
-      flags.add(`badge:${regionOf(id)}`);
-      qm.refresh();
-    }
-    expect(flags.has('mn:end')).toBe(true);
-  });
+  // the whole main line (story + province chains) is played start to end in tests/v30_quest_flow.test.ts
 
   it('journal split: story chapters and main quests on "Chính", the rest on "Phụ"', () => {
     const q = STORIES.vietnam.quests.find((x) => x.id === 'mn-ag')!;

@@ -943,8 +943,11 @@ export class AdventureScene extends Phaser.Scene {
   private bindInput(): void {
     const kb = this.input.keyboard!;
     this.keys = kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT') as Record<string, Phaser.Input.Keyboard.Key>;
-    kb.addCapture('TAB');
-    const guard = (fn: () => void) => () => { if (!this.modal && this.blackoutT < 0) fn(); };
+    kb.addCapture('TAB,F1');
+    // a text box (PC search, box name, room code) is being typed in: its letters are not hotkeys
+    const typing = () => { const el = document.activeElement; return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement; };
+    const guard = (fn: () => void) => () => { if (!this.modal && this.blackoutT < 0 && !typing()) fn(); };
+    const menu = (fn: () => void) => () => { if (!typing()) fn(); };
     kb.on('keydown-E', guard(() => this.interact()));
     kb.on('keydown-SPACE', guard(() => this.interact()));
     kb.on('keydown-F', guard(() => this.throwBall()));
@@ -954,14 +957,17 @@ export class AdventureScene extends Phaser.Scene {
     // Q = the Pokémon on the field uses its best ready skill now · T = quick switch wheel (one Pokémon per trainer)
     kb.on('keydown-Q', guard(() => this.manualSkill('best')));
     kb.on('keydown-T', guard(() => this.ui?.toggleSwitchWheel()));
-    kb.on('keydown-TAB', () => this.ui?.toggleMenu('party'));
-    kb.on('keydown-M', () => this.ui?.toggleMenu('map'));
-    kb.on('keydown-P', () => { if (this.state.adv.campaign === 'vietnam') this.ui?.toggleMenu('passport'); });
-    kb.on('keydown-J', () => this.ui?.toggleMenu('quests'));
-    kb.on('keydown-V', () => this.ui?.toggleMenu('events'));
-    kb.on('keydown-I', () => this.ui?.toggleMenu('bag'));
-    kb.on('keydown-X', () => this.ui?.toggleMenu('dex'));
-    kb.on('keydown-ESC', () => this.ui?.toggleMenu('settings'));
+    kb.on('keydown-TAB', menu(() => this.ui?.toggleMenu('party')));
+    kb.on('keydown-M', menu(() => this.ui?.toggleMenu('map')));
+    kb.on('keydown-P', menu(() => { if (this.state.adv.campaign === 'vietnam') this.ui?.toggleMenu('passport'); }));
+    kb.on('keydown-J', menu(() => this.ui?.toggleMenu('quests')));
+    kb.on('keydown-V', menu(() => this.ui?.toggleMenu('events')));
+    kb.on('keydown-I', menu(() => this.ui?.toggleMenu('bag')));
+    kb.on('keydown-X', menu(() => this.ui?.toggleMenu('dex')));
+    kb.on('keydown-O', menu(() => this.ui?.toggleMenu('pc')));
+    kb.on('keydown-K', menu(() => this.ui?.toggleMenu('help')));
+    kb.on('keydown-F1', menu(() => this.ui?.toggleMenu('help')));
+    kb.on('keydown-ESC', menu(() => this.ui?.toggleMenu('settings')));
     // 1–5: ally commands · Shift + 1–6: summon / recall that party slot
     const DIGIT = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX'];
     const shifted = () => !!this.keys.SHIFT?.isDown;
@@ -1072,6 +1078,8 @@ export class AdventureScene extends Phaser.Scene {
     let iy = (k.S.isDown || k.DOWN.isDown ? 1 : 0) - (k.W.isDown || k.UP.isDown ? 1 : 0);
     if (!ix && !iy) { ix = this.joystick.x; iy = this.joystick.y; }
     const frozen = this.modal || this.blackoutT >= 0 || this.captureFx?.phase === 'shaking' || !!this.fishing;
+    // once a second: quests that the save already shows done (flags set outside quest events, a loaded save) finish
+    if ((this.questSyncT -= dt) <= 0 && !this.modal) { this.questSyncT = 1; this.syncQuests(); }
     w.input.x = frozen ? 0 : ix; w.input.y = frozen ? 0 : iy;
     w.run = k.SHIFT.isDown || this.runHeld;
 
@@ -1275,6 +1283,7 @@ export class AdventureScene extends Phaser.Scene {
     const name = area?.name ?? '';
     if (name !== this.areaName) {
       this.areaName = name;
+      this.state.currentArea = area?.id ?? null;
       if (area) {
         this.ui?.areaBanner(area.name);
         if (!this.state.adv.areas.includes(area.id)) {
@@ -1378,6 +1387,14 @@ export class AdventureScene extends Phaser.Scene {
 
   questEvent(ev: Parameters<AdventureState['notify']>[0]): void {
     const done = this.state.notify(ev);
+    for (const q of done) this.completeQuest(q);
+    if (done.length) this.persist();
+  }
+
+  private questSyncT = 1;
+  /** Catches active quests up with the save (QuestManager.catchUp) and pays the ones that finished that way. */
+  syncQuests(): void {
+    const done = this.state.catchUpQuests();
     for (const q of done) this.completeQuest(q);
     if (done.length) this.persist();
   }
@@ -1636,6 +1653,7 @@ export class AdventureScene extends Phaser.Scene {
         this.ui.banner(`Nhiệm vụ mới: ${offer.title}`, '#ffd040');
         audio.play('levelup');
         this.persist();
+        this.syncQuests(); // a step the player already did (trạm đã kích hoạt, HLV đã thắng…) counts at once
       }
       return;
     }

@@ -34,7 +34,9 @@ describe('V22 conservation: data', () => {
       expect(q, p.id).toBeTruthy();
       expect(q.objectives[0]).toMatchObject({ type: 'activate', target: 'eco:' + p.id, count: p.sites.length });
       expect(q.objectives[0].marker).toMatchObject({ x: p.sites[0].x, y: p.sites[0].y, region: p.id });
-      expect(qs.find((x) => x.id === p.unlock)!.objectives.some((o) => o.type === 'boss' && o.target === p.boss)).toBe(true);
+      // the unlock quest is the guardian's quest, or (V30) its epilogue that opens once the guardian is beaten
+      const u = qs.find((x) => x.id === p.unlock)!;
+      expect(u.objectives.some((o) => o.type === 'boss' && o.target === p.boss) || !!u.requiresFlags?.includes('boss:' + p.boss), p.id).toBe(true);
     }
   });
 });

@@ -231,6 +231,11 @@ Bản đồ chia chunk, tải động. Có ngày/đêm, thời tiết (mưa, sư
 - **Loại nhiệm vụ**: chính, phụ, thu phục, thách đấu, khám phá, giải cứu, câu đố, hầm ngục, boss, bảo tồn.
   - HUD có mũi tên chỉ hướng kèm khoảng cách.
   - NPC hiện `!` khi có nhiệm vụ, `?` khi chờ báo cáo.
+- **Tiến độ nhiệm vụ (V30)**: các bước đi theo thứ tự, nhưng thứ tự chỉ bắt buộc ở chỗ cần thiết.
+  - *Nói chuyện / báo cáo*, *lựa chọn* và *tình huống cốt truyện* (giữ vị trí, phá thiết bị, hộ tống) chỉ tính khi tới đúng bước.
+  - Đánh, bắt, khám phá, mở rương, câu cá, kích hoạt trạm, hầm ngục… làm trước khi tới bước (lúc nhiệm vụ đang chạy) vẫn được giữ lại và tính ngay khi tới bước; nhật ký đánh dấu ☑ / ghi số đếm.
+  - Việc chỉ xảy ra một lần trong save (kích hoạt trạm, thắng HLV, hạ boss, mở rương, giải câu đố, dọn chướng ngại, điểm bảo tồn) được tính cả khi đã làm từ trước lúc nhận nhiệm vụ. Khám phá được tính nếu đang đứng sẵn trong khu đó.
+  - `src/core/questAudit.ts` rà toàn bộ dữ liệu nhiệm vụ (mục tiêu tồn tại, nhiệm vụ mở được, người giao không bị ẩn, dấu bản đồ hợp lệ); test giữ cả hai chiến dịch ở 0 lỗi.
 - **Nhiệm vụ phân nhánh**: chọn hướng nào thì mục tiêu, phần thưởng, lời kết và nhiệm vụ nối tiếp đi theo hướng đó; không quay lại được.
 - **Hình NPC**: nhân vật pixel có hoạt ảnh thở / bước, 15 dáng (nón lá, áo dài, trẻ em, cụ ông / cụ bà, kiểm lâm, người leo núi…). Mỗi NPC có bộ màu riêng cố định theo id. Danh xưng tiếng Việt (Cô, Bà, Chú, Bé…) quyết định giới tính và tuổi.
 - **Trận huấn luyện viên**:
@@ -257,6 +262,7 @@ Bản đồ chia chunk, tải động. Có ngày/đêm, thời tiết (mưa, sư
   - **Phá thiết bị**: lại gần thì thiết bị (máy của phe đối địch) xuất hiện, đứng yên một chỗ; vừa đánh vừa chặn các đợt Pokémon kéo tới.
   - **Hộ tống**: lại gần người cần đưa đi, người đó đi theo sau, nấp khi có giao chiến; bỏ xa quá 14 ô thì phải quay lại đón.
   - Rời bản đồ, ngất hay chuyển nhiệm vụ đều chỉ làm tình huống bắt đầu lại, không mất nhiệm vụ.
+- **Hướng dẫn** (K / F1 / nút **?**): bảng phím theo nhóm, điều khiển cảm ứng và các trang cách chơi (`src/scenes/helpGuide.ts`). Lần đầu vào game có lời nhắc. Ô nhập chữ không kích hoạt phím tắt.
 - **Bản đồ** (M): sương mù theo vùng đã khám phá, trạm dịch chuyển, hầm ngục, sự kiện, mục tiêu nhiệm vụ, bến ghe, chướng ngại khám phá.
 
 ### 5.5 Làng khởi đầu & Trại Huấn Luyện
@@ -400,7 +406,7 @@ Từ tỉnh 8 trở đi, mỗi tỉnh dùng chung một khuôn (sinh từ spec b
 - **Cổng vào**: cổng nối từ tỉnh trước, chỉ mở khi có huy hiệu của tỉnh đó. Đi được hai chiều.
 - **6 khu vực**: thành phố trung tâm + 5 khu hoang dã, mỗi khu một sinh cảnh (rừng, hồ, núi đá, đồng ruộng / vườn, đồng cỏ, phế tích, đầm lầy, bờ biển, tuyết). Cấp hoang dã nằm trong khoảng [boss − 6, boss].
 - **9 nhiệm vụ**:
-  - 3 nhiệm vụ chính: ghé Trung tâm Pokémon + khu đầu tiên → hỏi chuyện 2 NPC → thắng HLV canh cửa rồi hạ boss.
+  - 3 nhiệm vụ chính: ghé Trung tâm Pokémon + khu đầu tiên → hỏi chuyện 2 NPC → thắng HLV canh cửa rồi hạ boss. Nhiệm vụ boss chờ nhiệm vụ cốt truyện của tỉnh (mục 6.5).
   - 1 nhiệm vụ giải cứu (đánh bầy canh để cứu một Pokémon).
   - 4 nhiệm vụ phụ gắn với HLV và địa danh.
   - 1 nhiệm vụ bảo tồn (mở sau boss).
@@ -452,6 +458,11 @@ Dưới đất nước chảy những **mạch nguồn** cổ giữ nhịp cho s
 | V — Thăng Long | Hà Nội | Torterra bị nối vào tổng trạm; đấu Tiến sĩ Vũ; trận cuối 3 bước: phá lõi cưỡng chế → giữ điểm neo Cổ Loa → cắt cáp giải phóng Torterra | đấu, phá, giữ, boss |
 | Kết | Cà Mau | Trạm cưỡng chế thành trạm quan trắc, đàn Pokémon về lại U Minh; hậu truyện: Tiến sĩ Vũ ở trạm quan trắc Đất Mũi | nói chuyện |
 
+- **Mạch nhiệm vụ một tỉnh (V30)**: **đến nơi** (người dẫn đường, nhiệm vụ `vn-…-1`) → **Linh điều tra và phá thiết bị Bình Minh** (song song với việc tìm hiểu địa phương) → **thần hộ vệ** → huy hiệu → tỉnh sau. Thiết bị là thứ làm hộ vệ nổi giận, nên phải phá nó trước khi làm dịu hộ vệ.
+  - **Cà Mau**: Khởi hành → Trạm nước → Lưới khi triều lên → *Vào rừng U Minh* (Chú Sáu chỉ đường) → *Khu làm tổ của Seviper* (Kiểm lâm Nam giao: thắng Vy, phá bộ khuếch đại, Seviper) → *Rừng U Minh bình yên* (báo Kiểm lâm, mở trồng đước) → Giáo sư An trao huy hiệu.
+  - **Sài Gòn / Hà Nội**: trận boss nằm trong nhiệm vụ cốt truyện (có bước thắng người canh cửa); nhiệm vụ tỉnh cùng chặng là đoạn kết (*Sài Gòn sáng đèn*, *Thần Kim Quy trở về*). Mỗi hộ vệ chỉ đánh trong một nhiệm vụ.
+  - Thế giới online không có cốt truyện: các điều kiện trỏ tới nhiệm vụ `mn-…` được bỏ qua.
+  - `tests/v30_quest_flow.test.ts` chơi trọn mạch chính từ Đất Mũi tới đoạn kết và kiểm tra thứ tự ở cả 36 tỉnh.
 - Cấp tham khảo của từng chặng theo cấp boss tỉnh đó (Linh nhắc khoảng cấp). Bảng cấp tham khảo trong đặc tả (1–7: Lv 1–25 … 33–36: Lv 85–100) **chưa** được áp dụng: các tỉnh vẫn tăng đều từ Lv 12 (Cà Mau) tới Lv 100 (Hà Nội) — xem TASKS.
 
 ---
