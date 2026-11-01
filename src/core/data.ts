@@ -44,6 +44,18 @@ function indexById<T extends { id: string }>(list: T[], label: string): Map<stri
 export const SKILLS = indexById([...(skillsJson as SkillDef[]), ...(dexSkills as SkillDef[])], 'skill');
 // Gen 2–6 Mega forms (hand-entered stats, see data/dex/megas.json) — their stones are in items.json
 export const POKEMON = indexById([...(pokemonJson as PokemonDef[]), ...(dexPokemon as PokemonDef[]), ...(dexMegas as unknown as PokemonDef[])], 'pokemon');
+// abilities that control the weather work through core/battleWeather.ts, not as a flat bonus
+const WEATHER_CONTROL: Record<string, string> = {
+  'air-lock': 'Khi nó ở trong trận, thời tiết vẫn còn nhưng mất mọi tác dụng.',
+  'cloud-nine': 'Khi nó ở trong trận, thời tiết vẫn còn nhưng mất mọi tác dụng.',
+  'delta-stream': 'Khi vào trận gọi Gió mạnh (tới 90s, tan khi nó rời trận): hệ Bay +50%, hệ Bay không còn điểm yếu; thời tiết thường không thay được.',
+  'primordial-sea': 'Khi vào trận gọi Mưa lớn (tới 90s, tan khi nó rời trận): hệ Nước +50%, chiêu hệ Lửa thất bại; thời tiết thường không thay được.',
+  'desolate-land': 'Khi vào trận gọi Nắng cực gắt (tới 90s, tan khi nó rời trận): hệ Lửa +50%, chiêu hệ Nước thất bại; thời tiết thường không thay được.',
+};
+for (const p of POKEMON.values()) {
+  const d = p.passive && WEATHER_CONTROL[p.passive.id];
+  if (d) p.passive = { id: p.passive.id, name: p.passive.name, kind: 'weather', description: d };
+}
 export const ENEMIES = indexById(enemiesJson as EnemyDef[], 'enemy');
 // hand-tuned bosses first, then the generated Gen 1–4 legendaries (scripts/build-dex.mjs)
 export const BOSSES = indexById([...(bossesJson as BossDef[]), ...(legendBossesJson as unknown as BossDef[]).filter((b) => !(bossesJson as BossDef[]).some((h) => h.id === b.id))], 'boss');

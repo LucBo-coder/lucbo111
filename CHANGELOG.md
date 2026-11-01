@@ -1,5 +1,21 @@
 # Changelog
 
+## Chưa phát hành — Thời tiết mạnh, Air Lock / Cloud Nine, Weather Ball
+
+Theo luật bản chính thức (docs/weather-pokemon-research.md §1.2 #3, #4, #5, #8):
+
+- **Thời tiết mạnh**:
+  - Primal Kyogre gọi **Mưa lớn**: chiêu hệ Lửa gây sát thương thất bại ("Trượt!").
+  - Primal Groudon gọi **Nắng cực gắt**: chiêu hệ Nước gây sát thương thất bại.
+  - Mega Rayquaza (Delta Stream) gọi **Gió mạnh**: hệ Bay +50%, và đòn siêu hiệu quả lên hệ Bay chỉ còn sát thương thường.
+  - Thời tiết thường (kể cả của Pokémon huyền thoại theo lore) không thay được thời tiết mạnh. Chỉ một thời tiết mạnh khác hoặc Rayquaza (lore: dẹp cuộc chiến của Kyogre và Groudon) mới làm được. Phím C báo lý do khi bị chặn.
+  - Thời tiết mạnh tan khi Pokémon gọi rời trận. Banner và đồng hồ hiện tên dạng mạnh.
+- **Air Lock / Cloud Nine** (Rayquaza; Psyduck, Golduck; Cloud Nine ẩn của Lickitung, Swablu, Altaria, Drampa…): khi Pokémon này ở trong trận, thời tiết vẫn còn nhưng **mất mọi tác dụng**: không tăng/giảm sát thương, không có bão cát mài máu, không có sét, Castform không đổi hệ. Dòng thời tiết dưới đồng hồ ghi "mất tác dụng (tên Pokémon)". Trước đây hai Ability này chỉ là +5% chí mạng.
+- **Weather Ball**: khi có thời tiết, sức mạnh ×2 và đổi hệ (Mưa → Nước, Nắng → Lửa, Cát → Đá, Tuyết → Băng; riêng game này thêm Giông → Điện, Gió → Bay).
+- Mô tả Ability của Primordial Sea / Desolate Land / Delta Stream / Air Lock / Cloud Nine ghi đúng tác dụng mới.
+- Chưa có: Rain Dance, Sunny Day, Sandstorm, Snowscape, Chilly Reception. Dữ liệu chiêu của game không có các chiêu này, và muốn thêm thì phải sửa bộ chiêu của nhiều loài.
+- Test `v34_strong_weather` (8).
+
 ## Chưa phát hành — Thời tiết theo lore (Pokédex)
 
 - **Pokémon gọi thời tiết theo Pokédex**, áp dụng cho cả loài, không phụ thuộc Ability. Mỗi mục đều ghi câu Pokédex gốc làm nguồn (`LORE_WEATHER` trong `core/battleWeather.ts`). Cột "Tan" cho biết thời tiết có tắt khi Pokémon gọi rời trận hay không.

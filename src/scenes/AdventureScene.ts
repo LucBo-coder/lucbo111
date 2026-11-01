@@ -13,7 +13,7 @@ import { keptMask, setKept } from '../core/keptSkills';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
-import { WEATHER_INFO } from '../core/battleWeather';
+import { WEATHER_INFO, weatherName, weatherShort } from '../core/battleWeather';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
 import { repShop, REP_DISCOUNT, SPECIALTY_TIER } from '../core/shop';
 import { canMega, ITEM_DEFS, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
@@ -1235,8 +1235,10 @@ export class AdventureScene extends Phaser.Scene {
       if (e.t === 'weather') {
         if (e.kind) {
           const info = WEATHER_INFO[e.kind];
-          const head = !e.by ? `${info.name} nổi lên!` : e.team === 'ally' ? `${e.by} gọi ${info.name}!` : `${e.by} (đối thủ) gọi ${info.name}!`;
-          this.ui?.banner(`${info.icon} ${head} ${info.short} · ${Math.round(e.duration ?? 0)}s`, info.color);
+          const name = weatherName(e.kind, e.strong);
+          const head = !e.by ? `${name} nổi lên!` : e.team === 'ally' ? `${e.by} gọi ${name}!` : `${e.by} (đối thủ) gọi ${name}!`;
+          const locked = this.world.weatherLockedBy();
+          this.ui?.banner(`${info.icon} ${head} ${locked ? `nhưng ${locked} khiến thời tiết mất tác dụng` : weatherShort(e.kind, e.strong)} · ${Math.round(e.duration ?? 0)}s`, info.color);
           if (e.x != null && e.y != null) this.renderer_.vfx.ring(e.x, e.y, 90, Phaser.Display.Color.HexStringToColor(info.color).color, 600);
         } else if (e.calm && e.by) {
           // (lore) Rayquaza / Landorus / Moltres / Enamorus calm the sky

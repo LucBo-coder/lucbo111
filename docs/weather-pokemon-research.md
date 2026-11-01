@@ -7,7 +7,8 @@ Ngày: 2026-11-01. Tài liệu này chỉ phân tích và đề xuất, chưa c�
 > - Đã thêm Giông bão và Gió lớn.
 > - Đã quét Pokédex của cả 1025 loài và thêm: Reshiram, Tapu Koko, Manectric, Pikachu (bầy từ 3 con), Bronzong, Bellossom (chỉ khi trời âm u), Flygon, Palossand, Kingdra, Drampa (khi nổi giận), Frosmoth, Vanillite; Cryogonal yếu đi khi nắng. Dragonair ("điều khiển thời tiết", không rõ kiểu) chưa thêm.
 > - Lỗi #1 (Sand Spit), #2 (biến hình) và #9 (`ecology.json`) ở §1.2 đã sửa.
-> - Còn mở: #3 (thời tiết mạnh chặn chiêu Lửa / Nước), #4 (Delta Stream), #5 (Air Lock / Cloud Nine), #7 (dạng Alola, Mega Froslass), #8 (chiêu tạo thời tiết).
+> - #3 (thời tiết mạnh), #4 (Delta Stream) và #5 (Air Lock / Cloud Nine) đã làm. #8: Weather Ball đã có tác dụng; các chiêu tạo thời tiết (Rain Dance, Sunny Day…) chưa có trong dữ liệu chiêu.
+> - Còn mở: #7 (dạng Alola, Mega Froslass: cần art) và phần còn lại của #8.
 > - Entei và Ho-Oh không được thêm. Lore của chúng là núi lửa phun và cầu vồng, không phải thời tiết trận.
 
 ## 0. Nguồn và cách đọc

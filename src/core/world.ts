@@ -1,4 +1,4 @@
-import { abilitySource, BattleWeather, canCallWeather, castformTypes, HIT_CALL_COOLDOWN, LIGHTNING_CHIP, LIGHTNING_CHIP_BOSS, LIGHTNING_TICK, lightningImmune, loreDamageMult, loreSource, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherOfAbility, WEATHER_CALL_COOLDOWN, type WeatherSource } from './battleWeather';
+import { abilitySource, BattleWeather, canCallWeather, castformTypes, deltaStreamMult, overridesStrong, speciesWeatherLock, strongWeatherBlocks, weatherBallSkill, WEATHER_LOCK_ABILITIES, HIT_CALL_COOLDOWN, LIGHTNING_CHIP, LIGHTNING_CHIP_BOSS, LIGHTNING_TICK, lightningImmune, loreDamageMult, loreSource, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherOfAbility, WEATHER_CALL_COOLDOWN, type WeatherSource } from './battleWeather';
 import { abilityEffect, rollAbilitySlot } from './abilities';
 import { randomTeraType } from './pokemonTraits';
 import { computeDamage } from './damage';
@@ -314,7 +314,7 @@ export type WorldEvent =
   /** A player-triggered (active) skill was cast, or its request ran out / became invalid (ok: false) */
   | { t: 'manual'; id: number; skill: string; ok: boolean }
   /** A Pokémon's ability called a weather (kind) or the weather ended (kind: null) */
-  | { t: 'weather'; kind: BattleWeather | null; by?: string; team?: Team; duration?: number; x?: number; y?: number; calm?: boolean; lore?: boolean; ended?: BattleWeather }
+  | { t: 'weather'; kind: BattleWeather | null; by?: string; team?: Team; duration?: number; x?: number; y?: number; calm?: boolean; lore?: boolean; ended?: BattleWeather; strong?: boolean }
   /** A thunderstorm bolt struck this spot */
   | { t: 'lightning'; x: number; y: number };
 
@@ -431,7 +431,7 @@ export class World {
   /** Weather-anomaly damage multipliers per move type (set by world events) */
   weatherMods: Partial<Record<PokeType, number>> = {};
   /** Weather called up by a Pokémon's ability (core/battleWeather.ts) */
-  battleWeather: { kind: BattleWeather; until: number; by: string; byId: number | null; tied: boolean } | null = null;
+  battleWeather: { kind: BattleWeather; until: number; by: string; byId: number | null; tied: boolean; strong?: boolean } | null = null;
   private lightningT = 0;
   private sandT = 0;
   /** Max Move fields (Max Flare's harsh sun, Max Geyser's rain…): type → boost and world time it ends (V31) */
@@ -1082,11 +1082,11 @@ export class World {
     return src?.origin === 'ability' ? src.id : null;
   }
 
-  setBattleWeather(kind: BattleWeather, duration: number, by: Unit | null, opts: { tied?: boolean; lore?: boolean } = {}): void {
-    this.battleWeather = { kind, until: this.time + duration, by: by?.name ?? '', byId: by?.id ?? null, tied: !!opts.tied && !!by };
+  setBattleWeather(kind: BattleWeather, duration: number, by: Unit | null, opts: { tied?: boolean; lore?: boolean; strong?: boolean } = {}): void {
+    this.battleWeather = { kind, until: this.time + duration, by: by?.name ?? '', byId: by?.id ?? null, tied: !!opts.tied && !!by, strong: !!opts.strong };
     this.sandT = 0;
     this.lightningT = 0;
-    this.emit({ t: 'weather', kind, by: by?.name, team: by?.team, duration, x: by?.x, y: by?.y, lore: opts.lore });
+    this.emit({ t: 'weather', kind, by: by?.name, team: by?.team, duration, x: by?.x, y: by?.y, lore: opts.lore, strong: !!opts.strong });
   }
 
   /** Ends the called weather; `calmedBy` = the Pokémon that calmed the sky (Rayquaza…) or whose weather left with it. */
@@ -1107,13 +1107,15 @@ export class World {
     if (!src) return;
     u.weatherCalled = true;
     u.weatherCallAt = this.time;
+    // a strong weather (Primal Kyogre's heavy rain…) is not replaced by an ordinary one
+    if (this.battleWeather?.strong && !overridesStrong(src)) return;
     if (src.act === 'calm') {
       const w = this.battleWeather;
       if (w && (!src.clears || src.clears.includes(w.kind))) this.endBattleWeather(u, true);
       return;
     }
     // the same weather already up: only refreshed (and it now belongs to this caller)
-    this.setBattleWeather(src.act, Math.max(src.duration, this.battleWeather?.kind === src.act ? this.battleWeatherLeft() : 0), u, { tied: src.tied, lore: src.origin === 'lore' });
+    this.setBattleWeather(src.act, Math.max(src.duration, this.battleWeather?.kind === src.act ? this.battleWeatherLeft() : 0), u, { tied: src.tied, lore: src.origin === 'lore', strong: src.strong });
   }
 
   /** Player's own call (key C): the first of the trainer's Pokémon on the field that can act on the weather. */
@@ -1123,7 +1125,7 @@ export class World {
 
   tryCallWeather(): { ok: boolean; reason?: string; unit?: Unit } {
     const u = this.playerWeatherCaller();
-    const check = canCallWeather(u ? this.weatherSource(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0, u ? this.crowdOf(u) : 0);
+    const check = canCallWeather(u ? this.weatherSource(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0, u ? this.crowdOf(u) : 0, !!this.battleWeather?.strong);
     if (!check.ok || !u) return check;
     this.callWeather(u);
     return { ok: true, unit: u };
@@ -1132,12 +1134,31 @@ export class World {
   /** Sand Spit (main series): an attack landing on it whips up a sandstorm. */
   private weatherOnHit(dst: Unit): void {
     const src = this.weatherSource(dst);
-    if (!src || src.trigger !== 'hit' || src.act === 'calm' || this.battleWeather?.kind === src.act) return;
+    if (!src || src.trigger !== 'hit' || src.act === 'calm' || this.battleWeather?.kind === src.act || (this.battleWeather?.strong && !src.strong)) return;
     if (dst.weatherCallAt != null && this.time - dst.weatherCallAt < HIT_CALL_COOLDOWN) return;
     this.callWeather(dst);
   }
 
   /** Seconds the called weather still lasts (0 = none). */
+  /** Air Lock / Cloud Nine: a Pokémon with it is in the fight, so the weather has no effect (name of that Pokémon). */
+  weatherLockedBy(): string | null {
+    const locks = (u: Unit) => u.alive && !u.fainted && !u.captured
+      && (WEATHER_LOCK_ABILITIES.has(u.passive?.id ?? '') || (u.kind === 'boss' && speciesWeatherLock(u.defId)));
+    for (const side of this.sides()) for (const a of side.allies) if (a.kind === 'pokemon' && locks(a)) return a.name;
+    for (const e of this.enemies) if ((e.hostile || e.kind === 'boss') && locks(e)) return e.name;
+    return null;
+  }
+
+  /** The weather as far as its effects go: none while Air Lock / Cloud Nine is in the fight. */
+  activeWeather(): BattleWeather | null {
+    const w = this.battleWeather;
+    return w && !this.weatherLockedBy() ? w.kind : null;
+  }
+
+  private activeStrong(): boolean {
+    return !!this.battleWeather?.strong && !!this.activeWeather();
+  }
+
   battleWeatherLeft(): number {
     return this.battleWeather ? Math.max(0, this.battleWeather.until - this.time) : 0;
   }
@@ -1166,6 +1187,7 @@ export class World {
       const by = this.findUnit(w.byId);
       if (!by || !by.alive || by.fainted || by.captured) { this.endBattleWeather(by ?? undefined, false, w.by); return; }
     }
+    if (!this.activeWeather()) return; // Air Lock / Cloud Nine: no sand, no lightning
     if (w.kind === 'thunderstorm') { this.updateLightning(dt); return; }
     if (w.kind !== 'sand') return;
     this.sandT += dt;
@@ -1199,7 +1221,7 @@ export class World {
 
   /** (lore) Castform takes the guise of the weather: its type follows the called weather. */
   private castformForm(u: Unit): void {
-    const want = castformTypes(this.battleWeather?.kind ?? null);
+    const want = castformTypes(this.activeWeather());
     if (u.tera || u.types.join() === want.join()) return;
     u.types = want;
   }
@@ -2737,8 +2759,14 @@ export class World {
 
   private hit(src: Unit, dst: Unit, slot: SkillSlot, mult: number): void {
     if (!dst.alive || dst.fainted || dst.captured) return;
-    const s = slot.def;
+    const aw = this.activeWeather();
+    const s = weatherBallSkill(slot.def, aw);
     if (this.rollMiss(src, dst, s)) return;
+    // strong weather: a damaging Fire move fizzles in Mưa lớn, a Water move in Nắng cực gắt
+    if (s.power > 0 && strongWeatherBlocks(aw, this.activeStrong(), s.type)) {
+      this.emit({ t: 'status', x: dst.x, y: dst.y - dst.radius, kind: 'miss', team: dst.team });
+      return;
+    }
     const immunity = dst.passive;
     if (s.power > 0 && ((immunity?.kind === 'typeResist' && immunity.mult === 0 && immunity.types?.includes(s.type)) ||
       (immunity?.kind === 'typeAbsorb' && immunity.type === s.type))) {
@@ -2764,8 +2792,9 @@ export class World {
       if (atkUp) modifier *= 1 + atkUp.magnitude;
       const wm = this.weatherMods[s.type];
       if (wm) modifier *= wm;
-      modifier *= weatherDamageMult(this.battleWeather?.kind ?? null, s.type, s.category, dst.types);
-      modifier *= loreDamageMult(this.battleWeather?.kind ?? null, src.defId, s.category);
+      modifier *= weatherDamageMult(aw, s.type, s.category, dst.types);
+      modifier *= loreDamageMult(aw, src.defId, s.category);
+      modifier *= deltaStreamMult(aw, this.activeStrong(), s.type, dst.types);
       const mf = this.maxFields[s.type];
       if (mf && this.time < mf.until) modifier *= mf.mult;
       // Dynamax: every move is a Max Move

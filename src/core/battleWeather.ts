@@ -1,5 +1,6 @@
 import cache from '../data/pokeapi/pokeapi-cache.json';
-import type { Category, PokeType } from './types';
+import { typeMultiplier } from './typeChart';
+import type { Category, PokeType, SkillDef } from './types';
 
 // Weather called up by a Pokémon. Pure rules, no Phaser.
 // Two kinds of source (docs/weather-pokemon-research.md):
@@ -14,6 +15,10 @@ import type { Category, PokeType } from './types';
 //   Tuyết    — Ice takes ⅔ of physical damage
 //   Giông bão — Electric ×1.5, Water ×1.2, Fire ×0.75; lightning strikes the fight (never finishes anyone off)
 //   Gió lớn  — Flying ×1.5
+// Strong weathers [chính thức] (Primordial Sea, Desolate Land, Delta Stream): Mưa lớn makes damaging Fire moves fail,
+// Nắng cực gắt makes damaging Water moves fail, Gió mạnh takes away the Flying type's weaknesses; an ordinary weather
+// cannot replace them, and they end when their Pokémon leaves. Air Lock / Cloud Nine: while such a Pokémon is in the
+// fight the weather stays but has no effect at all.
 
 export type BattleWeather = 'rain' | 'sun' | 'sand' | 'snow' | 'thunderstorm' | 'wind';
 /** What a source does: call a weather, or calm the sky (end the weathers it names). */
@@ -49,8 +54,43 @@ export const WEATHER_ABILITIES: Record<string, BattleWeather> = {
   drought: 'sun', 'desolate-land': 'sun', 'orichalcum-pulse': 'sun',
   'sand-stream': 'sand', 'sand-spit': 'sand',
   'snow-warning': 'snow',
+  'delta-stream': 'wind',
 };
-const PRIMAL = new Set(['primordial-sea', 'desolate-land']);
+/** The strong weathers (main series): not replaced by an ordinary weather, gone when their Pokémon leaves. */
+const PRIMAL = new Set(['primordial-sea', 'desolate-land', 'delta-stream']);
+/** Air Lock / Cloud Nine: the weather loses every effect while such a Pokémon is in the fight. */
+export const WEATHER_LOCK_ABILITIES = new Set(['air-lock', 'cloud-nine']);
+
+/** Name of the strong form of a weather (Mưa lớn, Nắng cực gắt, Gió mạnh). */
+const STRONG_NAME: Partial<Record<BattleWeather, string>> = { rain: 'Mưa lớn', sun: 'Nắng cực gắt', wind: 'Gió mạnh' };
+const STRONG_EFFECT: Partial<Record<BattleWeather, string>> = {
+  rain: 'chiêu hệ Lửa thất bại', sun: 'chiêu hệ Nước thất bại', wind: 'hệ Bay không còn điểm yếu',
+};
+export function weatherName(kind: BattleWeather, strong = false): string {
+  return (strong && STRONG_NAME[kind]) || WEATHER_INFO[kind].name;
+}
+export function weatherShort(kind: BattleWeather, strong = false): string {
+  return strong && STRONG_EFFECT[kind] ? `${WEATHER_INFO[kind].short} · ${STRONG_EFFECT[kind]}` : WEATHER_INFO[kind].short;
+}
+
+/** Strong weather: Mưa lớn stops damaging Fire moves, Nắng cực gắt stops damaging Water moves. */
+export function strongWeatherBlocks(w: BattleWeather | null, strong: boolean, moveType: PokeType): boolean {
+  return strong && ((w === 'rain' && moveType === 'fire') || (w === 'sun' && moveType === 'water'));
+}
+
+/** Delta Stream (Gió mạnh): a move super effective on the Flying type hits that type neutrally. */
+export function deltaStreamMult(w: BattleWeather | null, strong: boolean, moveType: PokeType, defenderTypes: readonly PokeType[]): number {
+  if (!strong || w !== 'wind' || !defenderTypes.includes('flying')) return 1;
+  const m = typeMultiplier(moveType, 'flying');
+  return m > 1 ? 1 / m : 1;
+}
+
+/** Weather Ball [chính thức]: in a weather its power doubles and it takes that weather's type. Giông / Gió are this game's own. */
+const WEATHER_BALL_TYPE: Record<BattleWeather, PokeType> = { rain: 'water', sun: 'fire', sand: 'rock', snow: 'ice', thunderstorm: 'electric', wind: 'flying' };
+export function weatherBallSkill(s: SkillDef, w: BattleWeather | null): SkillDef {
+  if (s.id !== 'weather_ball' || !w) return s;
+  return { ...s, type: WEATHER_BALL_TYPE[w], power: s.power * 2 };
+}
 
 /** One way a Pokémon changes the weather. */
 export interface WeatherSource {
@@ -62,6 +102,8 @@ export interface WeatherSource {
   trigger: 'entry' | 'hit' | 'anger';
   /** the weather ends as soon as this Pokémon leaves the fight (fainted, caught, gone) */
   tied?: boolean;
+  /** a strong weather (Primordial Sea, Desolate Land, Delta Stream) */
+  strong?: boolean;
   /** only acts while one of these weathers is up (Bellossom dances for the sun when cloudy weather persists) */
   onlyWhen?: BattleWeather[];
   /** only acts when at least this many of its species are in the fight (several Pikachu → lightning storm) */
@@ -133,7 +175,7 @@ export function weatherDuration(abilityId: string): number {
 export function abilitySource(abilityId: string | null | undefined): WeatherSource | null {
   const w = weatherOfAbility(abilityId);
   if (!w || !abilityId) return null;
-  return { act: w, duration: weatherDuration(abilityId), trigger: abilityId === 'sand-spit' ? 'hit' : 'entry', tied: PRIMAL.has(abilityId), origin: 'ability', id: abilityId };
+  return { act: w, duration: weatherDuration(abilityId), trigger: abilityId === 'sand-spit' ? 'hit' : 'entry', tied: PRIMAL.has(abilityId), strong: PRIMAL.has(abilityId), origin: 'ability', id: abilityId };
 }
 
 /** The lore source of a species, if its Pokédex says it changes the weather. */
@@ -144,8 +186,9 @@ export function loreSource(species: string): WeatherSource | null {
 }
 
 /** Whether a Pokémon can act on the weather on command now (reason = what the player is told when it can't). */
-export function canCallWeather(src: WeatherSource | null, current: BattleWeather | null, cdLeft: number, crowdNow = 1): { ok: boolean; reason?: string } {
+export function canCallWeather(src: WeatherSource | null, current: BattleWeather | null, cdLeft: number, crowdNow = 1, currentStrong = false): { ok: boolean; reason?: string } {
   if (!src) return { ok: false, reason: 'Không có Pokémon nào trên sân gọi được thời tiết' };
+  if (current && currentStrong && !overridesStrong(src)) return { ok: false, reason: `${weatherName(current, true)} đang bao trùm — thời tiết thường không thay được` };
   if (src.crowd && crowdNow < src.crowd) return { ok: false, reason: `Cần ${src.crowd} con cùng loài trong trận mới gọi được ${WEATHER_INFO[src.act as BattleWeather].name}` };
   if (src.onlyWhen && (!current || !src.onlyWhen.includes(current))) return { ok: false, reason: `Chỉ gọi được khi trời ${src.onlyWhen.map((w) => WEATHER_INFO[w].name).join(' / ')}` };
   if (src.act === 'calm') {
@@ -153,6 +196,11 @@ export function canCallWeather(src: WeatherSource | null, current: BattleWeather
   } else if (current === src.act) return { ok: false, reason: `${WEATHER_INFO[src.act].name} đang có rồi` };
   if (cdLeft > 0) return { ok: false, reason: `Gọi thời tiết: chờ ${Math.ceil(cdLeft)}s` };
   return { ok: true };
+}
+
+/** Only a strong weather replaces a strong weather; Rayquaza's lore calm (it quelled Kyogre and Groudon) ends one too. */
+export function overridesStrong(src: WeatherSource): boolean {
+  return !!src.strong || (src.act === 'calm' && !src.clears);
 }
 
 type AbilityEntry = { name: string; hidden: boolean };
@@ -208,7 +256,9 @@ export function lightningImmune(types: readonly PokeType[]): boolean {
 /** In-game description of a weather ability (party details, Pokédex). */
 export function weatherAbilityText(abilityId: string): string {
   const src = abilitySource(abilityId)!;
-  const info = WEATHER_INFO[src.act as BattleWeather];
+  const kind = src.act as BattleWeather;
+  const info = WEATHER_INFO[kind];
+  if (src.strong) return `Khi vào trận gọi ${weatherName(kind, true)} (tới ${src.duration}s, tan khi nó rời trận): ${info.effect}, ${STRONG_EFFECT[kind]}; thời tiết thường không thay được.`;
   return `${src.trigger === 'hit' ? 'Khi bị trúng đòn' : 'Khi vào trận'} gọi ${info.name} trong ${src.duration}s: ${info.effect}.`;
 }
 
@@ -230,4 +280,9 @@ export function loreWeatherText(species: string): string | null {
   if (species === 'gigalith') return 'Theo Pokédex: đòn đặc biệt +30% khi nắng, −40% khi mưa / giông.';
   if (species === 'cryogonal') return 'Theo Pokédex: tan thành hơi nước khi trời nóng — đòn yếu đi 30% khi nắng.';
   return null;
+}
+
+/** A boss keeps the weather lock of its species (Rayquaza's Air Lock, Golduck's Cloud Nine). */
+export function speciesWeatherLock(species: string): boolean {
+  return (SPECIES[species]?.abilities ?? []).some((a) => !a.hidden && WEATHER_LOCK_ABILITIES.has(a.name));
 }

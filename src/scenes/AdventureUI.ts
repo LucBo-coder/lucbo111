@@ -13,7 +13,7 @@ import { BossHUDController } from '../ui/BossHUDController';
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
-import { loreWeatherText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, type BattleWeather } from '../core/battleWeather';
+import { loreWeatherText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, weatherName, weatherShort, type BattleWeather } from '../core/battleWeather';
 
 const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT', thunderstorm: 'GIÔNG', wind: 'GIÓ' };
 import { BALL_ORDER, BALLS, BallId } from '../core/capture';
@@ -490,11 +490,13 @@ export class AdventureUI extends Phaser.Scene {
     const wk = a.effectiveWeather();
     const bw = a.world.battleWeather;
     // a weather called by a Pokémon replaces the sky on screen, so the clock names that weather, not the sky's
-    const wx = bw ? `${WEATHER_INFO[bw.kind].icon} ${WEATHER_INFO[bw.kind].name}` : WEATHER_LABEL[wk] ?? (night ? 'Đêm' : 'Nắng');
+    const wx = bw ? `${WEATHER_INFO[bw.kind].icon} ${weatherName(bw.kind, bw.strong)}` : WEATHER_LABEL[wk] ?? (night ? 'Đêm' : 'Nắng');
     this.texts.clock.setText(a.mapKind === 'dungeon' ? a.map.name : `${String(Math.floor(c / 60)).padStart(2, '0')}:${String(Math.floor(c % 60)).padStart(2, '0')}  ${wx}`);
     const tl = a.dungeon?.timeLeft;
     // the line under the clock: who called it, seconds left, what it does
-    const bwText = bw ? `${WEATHER_INFO[bw.kind].icon} ${WEATHER_INFO[bw.kind].name}${bw.by ? ` (${bw.by})` : ''} ${Math.ceil(a.world.battleWeatherLeft())}s · ${WEATHER_INFO[bw.kind].short}` : '';
+    // Air Lock / Cloud Nine: the weather is there but does nothing
+    const lockedBy = bw ? a.world.weatherLockedBy() : null;
+    const bwText = bw ? `${WEATHER_INFO[bw.kind].icon} ${weatherName(bw.kind, bw.strong)}${bw.by ? ` (${bw.by})` : ''} ${Math.ceil(a.world.battleWeatherLeft())}s · ${lockedBy ? `mất tác dụng (${lockedBy})` : weatherShort(bw.kind, bw.strong)}` : '';
     if (this.portraitHud) fitText(this.texts.bweather, bwText, Math.max(60 * s, this.texts.clock.x - this.texts.clock.width - 30 * s));
     else this.texts.bweather.setText(bwText);
     if (bw) this.texts.bweather.setColor(WEATHER_INFO[bw.kind].color);
