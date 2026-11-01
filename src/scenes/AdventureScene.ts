@@ -1829,6 +1829,27 @@ export class AdventureScene extends Phaser.Scene {
     return true;
   }
 
+  /** "Tiến hóa" button of the party screen: the evolutions this Pokémon meets now (level or a stone in the bag). */
+  async evolveFromMenu(uid: string): Promise<boolean> {
+    const p = this.state.owned(uid);
+    if (!p) return false;
+    if (this.inCombat()) { this.ui.banner('Không thể tiến hóa khi đang chiến đấu', '#ff9080'); return false; }
+    if (this.modal || this.evoBusy) return false;
+    const ready = this.state.readyEvolutions(uid, this.evoEnv());
+    if (!ready.length) { this.ui.banner('Pokémon này chưa đủ điều kiện tiến hóa', '#ff9080'); return false; }
+    const fromName = POKEMON.get(p.species)!.name;
+    const label = (e: { to: string; item?: string }) => `Tiến hóa thành ${POKEMON.get(e.to)!.name}${e.item ? ` (dùng ${ITEMS[e.item]?.name ?? e.item})` : ''}`;
+    const r = await this.say(fromName, [`${fromName} Lv${p.level} đã đủ điều kiện tiến hóa.`], [...ready.map((e, i) => ({ label: label(e), value: String(i) })), { label: 'Hủy', value: 'no' }]);
+    if (!r || r === 'no') return false;
+    const pick = ready[Number(r)];
+    this.evoBusy = true;
+    try {
+      return await this.runEvolution(uid, pick.to, fromName, POKEMON.get(pick.to)!.name, pick.item);
+    } finally {
+      this.evoBusy = false;
+    }
+  }
+
   async useStone(stone: string): Promise<void> {
     const env = this.evoEnv();
     const cands = this.state.save.collection.filter((c) => this.state.stoneEvolution(c.uid, stone, env));

@@ -1,5 +1,16 @@
 # Changelog
 
+## Chưa phát hành — Đội hình chỉ 6 Pokémon, Hệ Tera, nút Tiến hóa
+
+- **Tab Đội hình chỉ hiện 6 Pokémon đang mang theo**: 6 thẻ lớn (2 cột trên máy tính, 3 cột trên điện thoại). Mỗi thẻ có sprite, tên, cấp, hệ, thanh máu, vật phẩm đang cầm, dấu ★ khi đang ngoài bóng, dấu "Gục" và nhãn "▲ Tiến hóa" khi đủ điều kiện. Ô trống ghi "+ thêm từ PC". Những Pokémon còn lại nằm trong PC: tiêu đề ghi số Pokémon trong PC và có nút "Mở PC". Trước đây tab này liệt kê cả bộ sưu tập, chia nhiều trang.
+- **Chi tiết Pokémon**:
+  - huy hiệu **Hệ Tera** cạnh hệ gốc (có khung riêng);
+  - khi Pokémon đủ điều kiện (đủ cấp, hoặc có đá tiến hóa trong túi), hiện dải xanh "Đủ điều kiện tiến hóa → …" kèm **nút Tiến hóa**: chọn nhánh rồi xem hoạt cảnh tiến hóa. Nút vẫn hoạt động sau khi đã từ chối lời hỏi tự động, và không dùng được khi đang chiến đấu;
+  - nút "Rút khỏi đội" đổi thành "Gửi vào PC" (báo khi PC đầy).
+- Logic: `AdventureState.readyEvolutions` liệt kê các nhánh tiến hóa dùng được ngay; `AdventureScene.evolveFromMenu` chạy tiến hóa từ menu.
+- Test `party_evolve` (2), e2e `ui_party` (máy tính, điện thoại dọc / ngang: 6 Pokémon, Pokémon thứ 7 nằm trong PC, huy hiệu Tera, dải tiến hóa, bấm Tiến hóa → Ivysaur).
+- Tài liệu `docs/weather-pokemon-research.md`: nghiên cứu Pokémon tạo / tác động thời tiết (cơ chế chính thức, lore, đề xuất sự kiện).
+
 ## Chưa phát hành — Nút chiến đấu ở góc phải
 
 - **Mega / Tera / Dynamax / Thời tiết thành nút riêng** ở góc dưới phải, thay cho các dòng chữ "[G] MEGA sẵn sàng", "TERA sạc 40s"…: mỗi tính năng một ô vuông có khung màu và icon (Key Stone, Quả Cầu Tera, Vòng Dynamax; mưa / nắng / cát / tuyết), bấm hoặc chạm để dùng; phím G / Y / B / C ghi ở góc ô (máy tính).

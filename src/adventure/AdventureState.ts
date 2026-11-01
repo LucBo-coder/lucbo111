@@ -499,6 +499,24 @@ export class AdventureState {
     return availableEvolutions(p.species, c).filter((o) => o.trigger === 'level-up').map((o) => o.to);
   }
 
+  /**
+   * Every evolution this Pokémon can take right now from the party screen: level-up ones (even after a "not now")
+   * and item ones whose stone / Linking Cord is in the bag.
+   */
+  readyEvolutions(uid: string, env: EvoEnv = {}): { to: string; item?: string }[] {
+    const p = this.owned(uid);
+    if (!p) return [];
+    const out: { to: string; item?: string }[] = [];
+    for (const o of availableEvolutions(p.species, this.evoContext(uid, env)!)) if (o.trigger === 'level-up') out.push({ to: o.to });
+    const items = new Set(evolutionsOf(p.species).filter((o) => o.trigger === 'use-item' && o.item && this.item(o.item) > 0).map((o) => o.item!));
+    for (const item of items) {
+      for (const o of availableEvolutions(p.species, this.evoContext(uid, env, item)!)) {
+        if (o.trigger === 'use-item' && o.item === item && !out.some((x) => x.to === o.to)) out.push({ to: o.to, item });
+      }
+    }
+    return out;
+  }
+
   /** Back-compat: first pending level-up evolution. */
   pendingEvolution(uid: string, env: EvoEnv = {}): string | null {
     return this.pendingEvolutions(uid, env)[0] ?? null;
