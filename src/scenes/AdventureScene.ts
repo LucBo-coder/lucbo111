@@ -13,6 +13,8 @@ import { keptMask, setKept } from '../core/keptSkills';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { RideController } from '../adventure/RideController';
+import { UltraWormholeController } from '../adventure/UltraWormholeController';
+import { isWormholeLegend } from '../core/ultraWormhole';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
 import { WEATHER_INFO, weatherName, weatherShort } from '../core/battleWeather';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
@@ -105,7 +107,7 @@ export const PORTRAITS: Record<string, string> = {
 
 export interface Interactable {
   /** 'remote' = the other player of an online session (shared open world); 'online' = a player of Thế giới online */
-  kind: MapObject['kind'] | 'remote' | 'online';
+  kind: MapObject['kind'] | 'remote' | 'online' | 'wormhole';
   id: string;
   x: number;
   y: number;
@@ -149,6 +151,7 @@ export class AdventureScene extends Phaser.Scene {
   /** random raid dens on the overworld (V32) */
   raidDens: RaidDenController | null = null;
   legendsMgr: LegendaryEncounterManager | null = null;
+  wormholes: UltraWormholeController | null = null;
   /** Legendary shrine rituals, sealed arenas and hazards (overworld maps) */
   shrines: ShrineController | null = null;
   /** Campaign story: cutscenes + encounter objectives (hold / destroy / escort) */
@@ -381,6 +384,7 @@ export class AdventureScene extends Phaser.Scene {
       this.worldEvents = new WorldEventController(this);
       this.raidDens = new RaidDenController(this);
       this.legendsMgr = new LegendaryEncounterManager(this);
+      this.wormholes = new UltraWormholeController(this);
       this.shrines = new ShrineController(this);
       this.shrines.build();
       this.story = new StoryController(this);
@@ -482,6 +486,8 @@ export class AdventureScene extends Phaser.Scene {
     this.raidDens = null;
     this.legendsMgr?.cleanup();
     this.legendsMgr = null;
+    this.wormholes?.cleanup();
+    this.wormholes = null;
     this.shrines?.cleanup();
     this.shrines = null;
     this.secrets?.cleanup();
@@ -571,7 +577,7 @@ export class AdventureScene extends Phaser.Scene {
     }
     // boss checkpoint: HP + phase snapshot (+ capture throws left) of a world boss / roamer fight in progress
     for (const u of this.world.enemies) {
-      if (!u.alive || u.kind !== 'boss' || !u.boss || (u.tag !== 'worldboss' && u.tag !== 'roamer')) continue;
+      if (!u.alive || u.kind !== 'boss' || !u.boss || (u.tag !== 'worldboss' && u.tag !== 'roamer' && u.tag !== 'wormhole')) continue;
       adv.bossFights[u.defId] = { hpFrac: u.hp / u.maxHp, phase: u.boss.pm.snapshot(), captureLeft: this.legendCap?.unit === u ? this.legendCap.left : undefined };
     }
     void saveStore.save(this.state.save);
@@ -601,6 +607,8 @@ export class AdventureScene extends Phaser.Scene {
     const tag = 'chunk-' + rec.idx;
     this.gateSig.set(rec.idx, this.storySig(rec));
     const q = QUALITY_PROFILE[saveStore.data.settings.quality];
+    // Không Gian Ultra: the ground's colours hue-shifted (WebGL only); trainers and Pokémon keep theirs
+    if (this.mapKind === 'valley' && this.regionDef.filter === 'ultra' && this.game.renderer.type === Phaser.WEBGL) rec.layer.postFX.addColorMatrix().hue(170).brightness(0.9, true);
     for (const o of rec.mapObjects) {
       const px = o.x * TILE_PX, py = o.y * TILE_PX;
       const add = <T extends Phaser.GameObjects.GameObject>(g: T) => { rec.objects.push(g); return g; };
@@ -1164,6 +1172,7 @@ export class AdventureScene extends Phaser.Scene {
         this.worldEvents?.update(STEP);
         this.raidDens?.update(STEP);
         this.legendsMgr?.update(STEP);
+        this.wormholes?.update(STEP);
         this.env?.update(STEP);
         this.spawns?.update(STEP);
         this.dungeon?.update(STEP);
@@ -1287,6 +1296,7 @@ export class AdventureScene extends Phaser.Scene {
       this.state.earn((e.level ?? 5) * (trainerOwned ? 6 : 3));
       if (e.boss && this.bossSites().some((s) => s.id === e.defId)) this.onWorldBossDefeated(e.defId, e.level ?? 30);
       else if (e.boss && e.tag === 'roamer') this.legendsMgr?.onRoamerDefeated(e.defId, e.level ?? 40);
+      else if (e.boss && e.tag === 'wormhole') this.wormholes?.onDefeated(e.defId, e.level ?? 50);
       // the Pokémon that fought gets all the EXP, the healthy ones waiting in their balls a share (field-rules.json)
       const ups: ReturnType<AdventureState['gainExp']> = [];
       const fainted = (uid: string) => (this.state.owned(uid)?.hpFrac ?? 1) <= 0 || !!this.world.allies.find((a) => a.ownerUid === uid)?.fainted;
@@ -1331,7 +1341,7 @@ export class AdventureScene extends Phaser.Scene {
   /** Background music: legendary / other boss fights, dungeon, else the region's theme. */
   musicMood(): Mood {
     const b = this.world?.boss;
-    if (b?.alive) return LEGENDS.has(b.defId) ? 'legend' : 'boss';
+    if (b?.alive) return LEGENDS.has(b.defId) || isWormholeLegend(b.defId) ? 'legend' : 'boss';
     if (this.mapKind === 'dungeon') return 'dungeon';
     const th = this.regionDef?.theme;
     return th === 'frozen' ? 'frozen' : th === 'volcanic' ? 'volcanic' : th === 'sanctuary' ? 'sanctuary' : th === 'swamp' ? 'swamp' : th === 'coast' ? 'coast' : 'valley';
@@ -1546,6 +1556,7 @@ export class AdventureScene extends Phaser.Scene {
       case 'node': return this.useNode(it);
       case 'shrine': return this.shrines?.interact(it.id, it.obj.data as never);
       case 'secret': return this.secrets?.interact(it.id);
+      case 'wormhole': return this.wormholes?.interact();
     }
   }
 
@@ -2348,6 +2359,7 @@ export class AdventureScene extends Phaser.Scene {
 
   /** Travel to another region through a portal (story-gated). */
   async usePortal(p: PortalDef): Promise<void> {
+    if (p.id === 'ultra-home' && this.wormholes) return this.wormholes.goHome(p);
     const locked = (p.requires ?? []).filter((f) => !this.state.hasFlag(f));
     if (locked.length) { await this.say(p.name, [p.hint ?? 'Cổng đang bị phong ấn.']); return; }
     const dest = regionDef(p.to);

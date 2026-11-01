@@ -34,6 +34,8 @@ describe('world progression', () => {
       });
       links.set(id, ls);
     }
+    // Ultra Space has no fixed way in: Ultra Wormholes open on the open maps once Mega Venusaur is beaten
+    links.get('starter-valley')!.push({ to: 'ultra-space', requires: ['boss:mega-venusaur'] });
     // Region flags come from story quests in the always-open starter areas.
     const flags = new Set(['region:emerald-forest', 'region:coral-coast']);
     const reach = new Set(['starter-valley']);

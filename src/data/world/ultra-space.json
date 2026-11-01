@@ -1,0 +1,511 @@
+{
+  "id": "ultra-space",
+  "name": "Không Gian Ultra",
+  "width": 108,
+  "height": 108,
+  "chunk": 16,
+  "theme": "sanctuary",
+  "filter": "ultra",
+  "spawn": {
+    "x": 54,
+    "y": 98
+  },
+  "areas": [
+    {
+      "id": "ultra-forest",
+      "name": "Rừng Ultra",
+      "rect": [
+        0,
+        0,
+        35,
+        35
+      ],
+      "habitat": "snow",
+      "level": [
+        50,
+        58
+      ]
+    },
+    {
+      "id": "ultra-crater",
+      "name": "Miệng Núi Lửa Ultra",
+      "rect": [
+        36,
+        0,
+        71,
+        35
+      ],
+      "habitat": "volcano",
+      "level": [
+        52,
+        60
+      ]
+    },
+    {
+      "id": "ultra-desert",
+      "name": "Sa Mạc Ultra",
+      "rect": [
+        72,
+        0,
+        107,
+        35
+      ],
+      "habitat": "rocky",
+      "level": [
+        52,
+        60
+      ]
+    },
+    {
+      "id": "ultra-jungle",
+      "name": "Rừng Rậm Ultra",
+      "rect": [
+        0,
+        36,
+        35,
+        71
+      ],
+      "habitat": "forest",
+      "level": [
+        48,
+        56
+      ]
+    },
+    {
+      "id": "ultra-megalopolis",
+      "name": "Siêu Đô Thị Ultra",
+      "rect": [
+        36,
+        36,
+        71,
+        71
+      ],
+      "habitat": "ruins",
+      "level": [
+        54,
+        62
+      ]
+    },
+    {
+      "id": "ultra-plant",
+      "name": "Nhà Máy Ultra",
+      "rect": [
+        72,
+        36,
+        107,
+        71
+      ],
+      "habitat": "ruins",
+      "level": [
+        50,
+        58
+      ]
+    },
+    {
+      "id": "ultra-ruin",
+      "name": "Phế Tích Ultra",
+      "rect": [
+        0,
+        72,
+        35,
+        107
+      ],
+      "habitat": "swamp",
+      "level": [
+        52,
+        60
+      ]
+    },
+    {
+      "id": "ultra-wilds",
+      "name": "Hoang Mạc Ultra",
+      "rect": [
+        36,
+        72,
+        71,
+        107
+      ],
+      "habitat": "sanctuary",
+      "level": [
+        45,
+        52
+      ]
+    },
+    {
+      "id": "ultra-deep-sea",
+      "name": "Biển Sâu Ultra",
+      "rect": [
+        72,
+        72,
+        107,
+        107
+      ],
+      "habitat": "coast",
+      "level": [
+        48,
+        56
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "w": 3,
+      "pts": [
+        [
+          54,
+          104
+        ],
+        [
+          54,
+          62
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          20,
+          22
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          54,
+          22
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          84,
+          20
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          16,
+          54
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          90,
+          54
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          18,
+          90
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          54,
+          54
+        ],
+        [
+          80,
+          86
+        ]
+      ]
+    }
+  ],
+  "plaza": [
+    48,
+    48,
+    60,
+    60
+  ],
+  "lake": {
+    "cx": 94,
+    "cy": 96,
+    "rx": 9,
+    "ry": 7
+  },
+  "buildings": [],
+  "fences": [],
+  "props": [],
+  "signs": [
+    {
+      "x": 57,
+      "y": 99,
+      "text": [
+        "KHÔNG GIAN ULTRA",
+        "Bên kia Ultra Wormhole: chín thế giới, mỗi nơi một Ultra Beast.",
+        "Hạ Nihilego, Xurkitree và Guzzlord để đánh thức thứ đang ngủ ở Siêu Đô Thị."
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "ultra-recon",
+      "name": "Đội Trinh Sát Ultra",
+      "sprite": "wizard",
+      "x": 51,
+      "y": 99,
+      "lines": [
+        "Ánh sáng ở thế giới chúng tôi đã bị nuốt mất… Bạn tới được đây là nhờ Ultra Wormhole.",
+        "Mỗi vùng của Không Gian Ultra có Ultra Beast riêng. Những vết nứt nhỏ ở đây còn kéo cả huyền thoại từ các vùng đất xa xôi tới.",
+        "Muốn về thì bước vào Ultra Wormhole ngay sau lưng tôi."
+      ]
+    }
+  ],
+  "trainers": [],
+  "rescue": {
+    "id": "none",
+    "x": -99,
+    "y": -99,
+    "species": "pidgey",
+    "level": 1,
+    "guards": []
+  },
+  "chests": [
+    {
+      "id": "chest-ultra-forest",
+      "x": 8,
+      "y": 30,
+      "items": {
+        "ultraball": 3,
+        "exp-candy-l": 1
+      }
+    },
+    {
+      "id": "chest-ultra-crater",
+      "x": 66,
+      "y": 6,
+      "items": {
+        "ultraball": 3,
+        "fire-stone": 1
+      }
+    },
+    {
+      "id": "chest-ultra-plant",
+      "x": 100,
+      "y": 64,
+      "items": {
+        "ultraball": 3,
+        "thunder-stone": 1
+      }
+    },
+    {
+      "id": "chest-ultra-ruin",
+      "x": 6,
+      "y": 102,
+      "items": {
+        "ultraball": 3,
+        "exp-candy-l": 1
+      }
+    }
+  ],
+  "waypoints": [
+    {
+      "id": "wp-ultra-wilds",
+      "name": "Trạm Hoang Mạc Ultra",
+      "x": 56,
+      "y": 96
+    },
+    {
+      "id": "wp-ultra-city",
+      "name": "Trạm Siêu Đô Thị",
+      "x": 54,
+      "y": 64
+    }
+  ],
+  "puzzles": [],
+  "dungeons": [],
+  "pillars": [],
+  "spawns": {},
+  "legendaries": [
+    {
+      "id": "kartana",
+      "name": "Rừng Ultra",
+      "x": 18,
+      "y": 16,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": 0.81,
+      "hint": "Những thân cây giấy trắng bị cắt ngọt như lưỡi kiếm…"
+    },
+    {
+      "id": "blacephalon",
+      "name": "Miệng Núi Lửa Ultra",
+      "x": 54,
+      "y": 14,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": 1.57,
+      "hint": "Pháo hoa nổ lách tách trên miệng núi lửa."
+    },
+    {
+      "id": "celesteela",
+      "name": "Sa Mạc Ultra",
+      "x": 82,
+      "y": 12,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": 2.16,
+      "hint": "Một vệt khói như tên lửa vạch ngang bầu trời sa mạc."
+    },
+    {
+      "id": "stakataka",
+      "name": "Bức Tường Ultra",
+      "x": 98,
+      "y": 28,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": 2.61,
+      "hint": "Một bức tường đá xếp chồng… vừa nhúc nhích?"
+    },
+    {
+      "id": "buzzwole",
+      "name": "Rừng Rậm Ultra",
+      "x": 12,
+      "y": 46,
+      "level": 52,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": 0.19,
+      "hint": "Thân cây có vết đấm lõm sâu."
+    },
+    {
+      "id": "pheromosa",
+      "name": "Rừng Rậm Ultra",
+      "x": 24,
+      "y": 66,
+      "level": 52,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": -0.38,
+      "hint": "Thoáng một bóng trắng thanh mảnh lướt qua tán lá."
+    },
+    {
+      "id": "xurkitree",
+      "name": "Nhà Máy Ultra",
+      "x": 90,
+      "y": 54,
+      "level": 52,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": 3.14,
+      "hint": "Dây điện ở đây tự giật lên như rễ cây."
+    },
+    {
+      "id": "guzzlord",
+      "name": "Phế Tích Ultra",
+      "x": 18,
+      "y": 90,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": -0.79,
+      "hint": "Cả một khu phế tích bị nuốt chửng…"
+    },
+    {
+      "id": "nihilego",
+      "name": "Biển Sâu Ultra",
+      "x": 80,
+      "y": 82,
+      "level": 50,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": -2.32,
+      "hint": "Những đốm sáng như sứa trôi lững lờ trên bờ biển."
+    },
+    {
+      "id": "poipole",
+      "name": "Hoang Mạc Ultra",
+      "x": 40,
+      "y": 84,
+      "level": 35,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": -1.13,
+      "hint": "Có tiếng \"Poi! Poi!\" vọng lại từ đâu đó."
+    },
+    {
+      "id": "necrozma",
+      "name": "Đỉnh Siêu Đô Thị",
+      "x": 54,
+      "y": 54,
+      "level": 62,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [
+        "boss:nihilego",
+        "boss:xurkitree",
+        "boss:guzzlord"
+      ],
+      "gap": 1.57,
+      "hint": "Ánh sáng của Siêu Đô Thị đã bị nuốt mất. Necrozma chỉ hiện ra khi Nihilego, Xurkitree và Guzzlord đã bị khuất phục."
+    }
+  ],
+  "portals": [
+    {
+      "id": "ultra-home",
+      "name": "Ultra Wormhole (về nhà)",
+      "x": 54,
+      "y": 103,
+      "to": "starter-valley",
+      "toX": 64,
+      "toY": 64
+    }
+  ],
+  "field": []
+}

@@ -57,6 +57,8 @@ export interface AdventureSave {
   ride?: string;
   /** the mount picked with Shift+Z (Z uses it first where it can go) */
   rideUid?: string;
+  /** Where the trainer stepped into Ultra Space (map + tile): its wormhole leads back there */
+  ultraReturn?: { region: string; x: number; y: number };
   /** In-game days passed (the clock wrapped past midnight) */
   day?: number;
   /** Chợ nổi Cái Răng: what was bought on the current market day (limited stock per day) */

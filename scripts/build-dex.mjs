@@ -395,8 +395,26 @@ const LEGEND_LEVEL = {
   raikou: 40, entei: 40, suicune: 40, lugia: 45, 'ho-oh': 45, celebi: 30, regirock: 42, regice: 42, registeel: 42, latias: 45, latios: 45,
   kyogre: 50, groudon: 50, rayquaza: 55, jirachi: 35, deoxys: 55, uxie: 45, mesprit: 45, azelf: 45, dialga: 55, palkia: 55, heatran: 50,
   regigigas: 52, giratina: 58, cresselia: 48, phione: 20, manaphy: 20, darkrai: 52, shaymin: 30, arceus: 65,
+  // Gen 5–9 and the Ultra Beasts: they come through Ultra Wormholes (adventure/UltraWormholeController.ts)
+  victini: 35, cobalion: 48, terrakion: 48, virizion: 48, tornadus: 50, thundurus: 50, landorus: 52, reshiram: 58, zekrom: 58, kyurem: 60,
+  keldeo: 45, meloetta: 40, genesect: 50,
+  xerneas: 60, yveltal: 60, zygarde: 60, diancie: 45, hoopa: 50, volcanion: 52,
+  'type-null': 40, silvally: 50, 'tapu-koko': 50, 'tapu-lele': 50, 'tapu-bulu': 50, 'tapu-fini': 50, solgaleo: 60, lunala: 60, necrozma: 62,
+  magearna: 45, marshadow: 50, zeraora: 50, meltan: 25, melmetal: 52,
+  nihilego: 50, buzzwole: 52, pheromosa: 52, xurkitree: 52, celesteela: 54, kartana: 54, guzzlord: 54, poipole: 35, naganadel: 55, stakataka: 54, blacephalon: 54,
+  zacian: 62, zamazenta: 62, eternatus: 65, kubfu: 30, urshifu: 55, zarude: 50, regieleki: 52, regidrago: 52, glastrier: 55, spectrier: 55, calyrex: 55,
+  enamorus: 52,
+  'wo-chien': 52, 'chien-pao': 52, 'ting-lu': 52, 'chi-yu': 52, koraidon: 62, miraidon: 62, okidogi: 50, munkidori: 50, fezandipiti: 50, ogerpon: 52,
+  terapagos: 65, pecharunt: 50,
 };
-const SIGNATURE = { lugia: 'aeroblast', 'ho-oh': 'sacred_fire', dialga: 'roar_of_time', palkia: 'spacial_rend', giratina: 'shadow_force', heatran: 'magma_storm', jirachi: 'doom_desire', latios: 'luster_purge', latias: 'mist_ball', darkrai: 'dark_pulse', kyogre: 'water_spout', groudon: 'eruption', rayquaza: 'outrage', regigigas: 'superpower', deoxys: 'psycho_cut', arceus: 'hyper_beam' };
+/** the box-art giants: more HP, drawn bigger */
+const LEGEND_GIANTS = new Set(['dialga', 'palkia', 'giratina', 'regigigas', 'reshiram', 'zekrom', 'kyurem', 'xerneas', 'yveltal', 'zygarde', 'solgaleo', 'lunala', 'necrozma', 'zacian', 'zamazenta', 'eternatus', 'koraidon', 'miraidon', 'terapagos']);
+const SIGNATURE = {
+  reshiram: 'blue_flare', zekrom: 'bolt_strike', kyurem: 'glaciate', keldeo: 'sacred_sword', genesect: 'techno_blast', victini: 'searing_shot',
+  yveltal: 'oblivion_wing', diancie: 'diamond_storm', hoopa: 'hyperspace_hole', volcanion: 'steam_eruption', marshadow: 'spectral_thief',
+  solgaleo: 'sunsteel_strike', lunala: 'moongeist_beam', necrozma: 'photon_geyser', zeraora: 'plasma_fists', eternatus: 'eternabeam',
+  urshifu: 'wicked_blow', regieleki: 'thunder_cage', regidrago: 'dragon_energy', magearna: 'fleur_cannon',
+  lugia: 'aeroblast', 'ho-oh': 'sacred_fire', dialga: 'roar_of_time', palkia: 'spacial_rend', giratina: 'shadow_force', heatran: 'magma_storm', jirachi: 'doom_desire', latios: 'luster_purge', latias: 'mist_ball', darkrai: 'dark_pulse', kyogre: 'water_spout', groudon: 'eruption', rayquaza: 'outrage', regigigas: 'superpower', deoxys: 'psycho_cut', arceus: 'hyper_beam' };
 const TYPE_STATUS = { fire: ['burn', 3, 0.03], electric: ['paralysis', 3, 0.5], ice: ['freeze', 1.5, 0], poison: ['badPoison', 5, 0.02], grass: ['sleep', 1.5, 0], psychic: ['confusion', 3, 0], ghost: ['confusion', 3, 0], fairy: ['confusion', 3, 0], dark: ['defDown', 4, 0.3], steel: ['defDown', 4, 0.3], fighting: ['defDown', 4, 0.3], normal: ['defDown', 4, 0.3], dragon: ['paralysis', 2, 0.5], water: ['slow', 3, 0.4], ground: ['slow', 3, 0.4], rock: ['slow', 3, 0.4], flying: ['slow', 3, 0.4], bug: ['slow', 3, 0.4] };
 const TYPE_STYLE = { electric: 'storm', rock: 'storm', flying: 'storm', bug: 'storm', fire: 'spokes', dragon: 'spokes', steel: 'spokes', fighting: 'spokes', ice: 'safe', water: 'safe', ground: 'safe', grass: 'safe', poison: 'safe' };
 const SPECIAL_STYLE = { dialga: 'timestop', palkia: 'rift', arceus: 'judgment' };
@@ -426,10 +444,10 @@ for (const [id, lv] of Object.entries(LEGEND_LEVEL)) {
   const blink = sp.types.includes('psychic') || sp.types.includes('ghost') || sp.mythical || id === 'darkrai' || id === 'palkia';
   const summon = Object.entries(SP).find(([sid, s]) => s.types[0] === t && !s.legendary && !s.mythical && !s.evolvesFrom && !s.isBaby && sid !== id && (GEN_N[s.generation] ?? 9) <= Math.max(4, GEN_N[sp.generation] ?? 9))?.[0] ?? 'rattata';
   legendBosses.push({
-    id, name: sp.displayName ?? cap(id), types: sp.types, baseStats: st, hpMult: HP_TUNE[id] ?? (id === 'arceus' ? 150 : ['dialga', 'palkia', 'giratina', 'regigigas'].includes(id) ? 120 : 100),
+    id, name: sp.displayName ?? cap(id), level: lv, types: sp.types, baseStats: st, hpMult: HP_TUNE[id] ?? (id === 'arceus' || id === 'eternatus' || id === 'terapagos' ? 150 : LEGEND_GIANTS.has(id) ? 120 : 100),
     moveSpeed: flying ? 95 : 70, radius: Math.round(Math.min(44, 30 + (sp.heightDm ?? 20) / 3)), contactPower: 55, segments: 0,
     skills: [...new Set([beam, volley, nova])], phase2Threshold: 0.5, phase2Summon: { enemy: summon, count: lv >= 55 ? 3 : 2 },
-    phase3Threshold: 0.25, phase3Banner: 'đang dồn toàn bộ sức mạnh!', exp: 140, sprite: id, ai: 'legendary', scale: id === 'arceus' || id === 'regigigas' || id === 'giratina' ? 5 : 4.5, survivor: false,
+    phase3Threshold: 0.25, phase3Banner: 'đang dồn toàn bộ sức mạnh!', exp: 140, sprite: id, ai: 'legendary', scale: id === 'arceus' || LEGEND_GIANTS.has(id) ? 5 : 4.5, survivor: false,
     legend: {
       beam, volley, nova, field: fieldSkill?.id ?? nova, fieldStatus: fieldSkill?.status ?? { kind: sk, chance: 0.5, duration: sd, magnitude: sm },
       ultimate: ult, ultimateName: `${SIGNATURE[id] ? allMoveDefs()[SIGNATURE[id]].name : allMoveDefs()[ult].name} tối thượng`,

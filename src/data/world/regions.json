@@ -4732,5 +4732,287 @@
   "excludeTypes": [
    "ice"
   ]
+ },
+ {
+  "id": "ultra-forest",
+  "name": "Rừng Ultra",
+  "areas": [
+   "ultra-forest"
+  ],
+  "biome": "snow",
+  "level": [
+   50,
+   58
+  ],
+  "elite": [
+   60,
+   63
+  ],
+  "boss": null,
+  "recommended": 53,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "cryogonal",
+   "vanilluxe",
+   "beartic",
+   "abomasnow",
+   "crabominable",
+   "froslass",
+   "weavile",
+   "glalie",
+   "frosmoth"
+  ]
+ },
+ {
+  "id": "ultra-crater",
+  "name": "Miệng Núi Lửa Ultra",
+  "areas": [
+   "ultra-crater"
+  ],
+  "biome": "volcano",
+  "level": [
+   52,
+   60
+  ],
+  "elite": [
+   62,
+   65
+  ],
+  "boss": null,
+  "recommended": 55,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "salazzle",
+   "turtonator",
+   "magcargo",
+   "torkoal",
+   "heatmor",
+   "camerupt",
+   "coalossal",
+   "centiskorch"
+  ]
+ },
+ {
+  "id": "ultra-desert",
+  "name": "Sa Mạc Ultra",
+  "areas": [
+   "ultra-desert"
+  ],
+  "biome": "rocky",
+  "level": [
+   52,
+   60
+  ],
+  "elite": [
+   62,
+   65
+  ],
+  "boss": null,
+  "recommended": 55,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "sandaconda",
+   "palossand",
+   "garchomp",
+   "flygon",
+   "krookodile",
+   "glimmora",
+   "orthworm",
+   "druddigon",
+   "carbink",
+   "duraludon"
+  ]
+ },
+ {
+  "id": "ultra-jungle",
+  "name": "Rừng Rậm Ultra",
+  "areas": [
+   "ultra-jungle"
+  ],
+  "biome": "forest",
+  "level": [
+   48,
+   56
+  ],
+  "elite": [
+   58,
+   61
+  ],
+  "boss": null,
+  "recommended": 51,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "vikavolt",
+   "golisopod",
+   "lurantis",
+   "tsareena",
+   "vespiquen",
+   "yanmega",
+   "decidueye",
+   "drapion"
+  ]
+ },
+ {
+  "id": "ultra-megalopolis",
+  "name": "Siêu Đô Thị Ultra",
+  "areas": [
+   "ultra-megalopolis"
+  ],
+  "biome": "ruins",
+  "level": [
+   54,
+   62
+  ],
+  "elite": [
+   64,
+   67
+  ],
+  "boss": null,
+  "recommended": 57,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "magnezone",
+   "klinklang",
+   "porygon-z",
+   "metang",
+   "metagross",
+   "beheeyem",
+   "bronzong",
+   "golurk",
+   "reuniclus",
+   "hatterene",
+   "gothitelle"
+  ]
+ },
+ {
+  "id": "ultra-plant",
+  "name": "Nhà Máy Ultra",
+  "areas": [
+   "ultra-plant"
+  ],
+  "biome": "ruins",
+  "level": [
+   50,
+   58
+  ],
+  "elite": [
+   60,
+   63
+  ],
+  "boss": null,
+  "recommended": 53,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "magnezone",
+   "magneton",
+   "klinklang",
+   "porygon-z",
+   "porygon2",
+   "electrode",
+   "eelektross",
+   "golett",
+   "golurk",
+   "klefki"
+  ]
+ },
+ {
+  "id": "ultra-ruin",
+  "name": "Phế Tích Ultra",
+  "areas": [
+   "ultra-ruin"
+  ],
+  "biome": "swamp",
+  "level": [
+   52,
+   60
+  ],
+  "elite": [
+   62,
+   65
+  ],
+  "boss": null,
+  "recommended": 55,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "muk",
+   "garbodor",
+   "weezing",
+   "dusknoir",
+   "sableye",
+   "banette",
+   "zweilous",
+   "swalot",
+   "skuntank",
+   "chandelure"
+  ]
+ },
+ {
+  "id": "ultra-wilds",
+  "name": "Hoang Mạc Ultra",
+  "areas": [
+   "ultra-wilds"
+  ],
+  "biome": "sanctuary",
+  "level": [
+   45,
+   52
+  ],
+  "elite": [
+   54,
+   57
+  ],
+  "boss": null,
+  "recommended": 48,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "beheeyem",
+   "clefable",
+   "minior",
+   "chimecho",
+   "sigilyph",
+   "solrock",
+   "lunatone",
+   "bronzong",
+   "starmie",
+   "porygon-z"
+  ]
+ },
+ {
+  "id": "ultra-deep-sea",
+  "name": "Biển Sâu Ultra",
+  "areas": [
+   "ultra-deep-sea"
+  ],
+  "biome": "coast",
+  "level": [
+   48,
+   56
+  ],
+  "elite": [
+   58,
+   61
+  ],
+  "boss": null,
+  "recommended": 51,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "starmie",
+   "lanturn",
+   "chinchou",
+   "jellicent",
+   "pyukumuku",
+   "toxapex",
+   "dhelmise",
+   "frillish"
+  ]
  }
 ]

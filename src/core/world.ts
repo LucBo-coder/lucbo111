@@ -438,6 +438,8 @@ export class World {
   /** The home trainer rides a party Pokémon (core/riding.ts); `mount` is only drawn under the trainer, it never fights. */
   ride: { species: string; uid: string | null; modes: RideMode[]; mode: RideMode } | null = null;
   mount: Unit | null = null;
+  /** no mount may go onto the water (Vietnam Odyssey rivers before the trainer owns a boat) */
+  rideNoWater = false;
   private lightningT = 0;
   private sandT = 0;
   /** Max Move fields (Max Flare's harsh sun, Max Geyser's rain…): type → boost and world time it ends (V31) */
@@ -1485,6 +1487,7 @@ export class World {
   rideAllows(modes: readonly RideMode[], x: number, y: number): boolean {
     const t = this.terrain;
     if (!t) return true;
+    if (this.rideNoWater && this.isWaterAt(x, y)) return false;
     if (modes.includes('fly') && !(t.blocksFly ?? t.blocksMove)(x, y)) return true;
     if (modes.includes('swim') && this.isWaterAt(x, y)) return true;
     return modes.includes('run') && !t.blocksMove(x, y);

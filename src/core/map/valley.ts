@@ -81,6 +81,8 @@ export interface RegionDef {
   legendaries?: LegendSite[];
   /** Visual / terrain theme (default 'valley'): frozen lake = water, volcanic lake = lava */
   theme?: 'valley' | 'frozen' | 'volcanic' | 'sanctuary' | 'swamp' | 'coast' | 'mekong';
+  /** Colour grade of the whole screen: 'ultra' = Không Gian Ultra's alien sky (hue-shifted, motes drifting) */
+  filter?: 'ultra';
   /** Gates to other regions (interact with E); `requires` = story flags */
   portals?: PortalDef[];
   /** Rivers (water, lava in volcanic maps); where a path crosses one it becomes a bridge */

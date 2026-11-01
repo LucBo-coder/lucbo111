@@ -62,7 +62,9 @@ describe('BiomeSpawnManager / RegionalLevelManager / RaritySystem (V3 §II–IV)
         const roll = rollEncounter(rng, { biome: r.biome, night, weather: 'clear' }, r);
         if (!roll) continue;
         const e = ECOLOGY.get(roll.species)!;
-        expect(e.biomes, `${r.id}:${roll.species}`).toContain(r.biome);
+        // a region with its own species list (Không Gian Ultra) keeps to that list instead of the biome
+        if (r.species) expect(r.species, `${r.id}:${roll.species}`).toContain(roll.species);
+        else expect(e.biomes, `${r.id}:${roll.species}`).toContain(r.biome);
         expect(e.legendary || e.mythical).toBe(false);
         expect(e.method).toBe('wild');
       }

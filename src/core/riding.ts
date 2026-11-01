@@ -11,12 +11,14 @@ import { isAquatic } from './encounters';
 
 export type RideMode = 'run' | 'swim' | 'fly';
 
-type SpeciesRow = { types: string[]; baseStats: { spe: number }; heightDm: number; weightHg: number };
+type SpeciesRow = { types: string[]; baseStats: { spe: number }; heightDm: number; weightHg: number; shape?: string };
 const SPECIES = (cache as unknown as { species: Record<string, SpeciesRow> }).species;
 
 /** Can fly whatever their type says (they carry people: Latias / Latios in Alto Mare and Sinnoh / Hoenn). */
 const ALSO_FLY = new Set(['latios', 'latias', 'latios-mega', 'latias-mega']);
 /** Never carry a rider (ghosts that are only gas, Pokémon with no body to sit on). */
+/** Upright two-legged bodies (Machamp, Hariyama, Gardevoir…) don't carry a rider on land — but Snorlax's belly does. */
+const HUMANOID_RUNNERS = new Set(['snorlax', 'munchlax', 'slaking', 'ursaring', 'ursaluna', 'bewear']);
 const NO_RIDE = new Set(['gastly', 'haunter', 'koffing', 'weezing', 'voltorb', 'electrode', 'magnezone', 'klinklang', 'cofagrigus', 'dusknoir']);
 
 export const RIDE_MIN_LEVEL: Record<RideMode, number> = { run: 15, swim: 20, fly: 30 };
@@ -43,7 +45,8 @@ export function rideModes(species: string): RideMode[] {
   const t = new Set(s.types), h = s.heightDm, w = s.weightHg;
   const fish = isAquatic(species);
   const out: RideMode[] = [];
-  if (!fish && !t.has('ghost') && h >= 10 && w >= 400) out.push('run');
+  const upright = s.shape === 'humanoid' && !HUMANOID_RUNNERS.has(species);
+  if (!fish && !upright && !t.has('ghost') && h >= 10 && w >= 400) out.push('run');
   if ((t.has('water') || fish) && h >= 10 && w >= 300) out.push('swim');
   if ((t.has('flying') && h >= 12 && w >= 200) || ALSO_FLY.has(species)) out.push('fly');
   return out;

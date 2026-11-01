@@ -174,6 +174,8 @@ export interface LegendConfig {
 export interface BossDef {
   id: string;
   name: string;
+  /** generated legendaries: the level it is met at (before the world-level bonus) */
+  level?: number;
   types: PokeType[];
   baseStats: BaseStats;
   moveSpeed: number;

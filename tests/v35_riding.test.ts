@@ -33,6 +33,8 @@ describe('who can be ridden', () => {
     expect(rideModes('butterfree')).toEqual([]); // 1.1 m, 32 kg: too light to run, too small to fly
     expect(rideModes('magikarp')).toEqual([]);
     expect(rideModes('gastly')).toEqual([]);
+    expect(rideModes('machamp')).toEqual([]); // upright two-legged body
+    expect(rideModes('snorlax')).toContain('run'); // …but Snorlax's belly carries anyone
   });
 
   it('levels gate the modes', () => {
@@ -97,6 +99,14 @@ describe('riding in the world', () => {
     walk(f, 10);
     expect(f.trainer.x).toBeGreaterThan(1500);
     expect(f.trainer.x).toBeLessThan(2000);
+  });
+
+  it('Vietnam rivers before the boat: no mount goes onto the water', () => {
+    const w = world();
+    w.rideNoWater = true;
+    expect(w.startRide('pidgeot', { level: 40 })).toBe(true);
+    walk(w, 6);
+    expect(w.trainer.x).toBeLessThan(1000);
   });
 
   it('getting off on land; nothing to ride below the levels', () => {

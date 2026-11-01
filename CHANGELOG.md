@@ -1,5 +1,27 @@
 # Changelog
 
+## Chưa phát hành — Ultra Wormhole và Không Gian Ultra
+
+- **Ultra Wormhole** (theo cốt truyện Sun / Moon): sau khi thắng Mega Venusaur, thỉnh thoảng một vết nứt xoáy trắng – xanh – hồng mở ra gần trainer trên bản đồ (kiểm tra mỗi 150 s, 35%, cách nhau ít nhất 5 phút; mở 75 s). Tới gần nhấn **E** để bước vào **Không Gian Ultra**. Game nhớ chỗ trainer đã bước vào; Ultra Wormhole ở cổng Không Gian Ultra đưa trainer về đúng chỗ đó.
+- **Bản đồ mới: Không Gian Ultra** (`data/world/ultra-space.json`, 108×108). Nền đất đổi màu tím ngoài hành tinh (trainer và Pokémon giữ màu gốc), có hạt sáng bay lơ lửng. Chín thế giới, mỗi nơi có Pokémon hoang dã riêng (Lv45–62) và một Ultra Beast ở nơi cố định:
+  - Hoang Mạc Ultra (cổng vào, Poipole) · Siêu Đô Thị Ultra ở giữa · Biển Sâu Ultra (Nihilego) · Rừng Rậm Ultra (Buzzwole, Pheromosa) · Nhà Máy Ultra (Xurkitree) · Phế Tích Ultra (Guzzlord) · Miệng Núi Lửa Ultra (Blacephalon) · Rừng Ultra phủ tuyết (Kartana) · Sa Mạc Ultra (Celesteela, Stakataka).
+  - **Necrozma** ở đỉnh Siêu Đô Thị, chỉ hiện ra sau khi đã hạ Nihilego, Xurkitree và Guzzlord.
+  - Mỗi vùng chỉ có danh sách loài riêng theo chủ đề, không theo biome: Beheeyem, Minior, Solrock / Lunatone ở Hoang Mạc; Magnezone, Metagross, Porygon-Z ở Siêu Đô Thị; Starmie, Jellicent, Toxapex ở Biển Sâu… (`regions.json`, trường mới `species`).
+  - Có 4 rương, 2 trạm dịch chuyển, một người của Đội Trinh Sát Ultra và một bảng chỉ dẫn.
+- **Vết nứt trong Không Gian Ultra**: mở thường hơn nhiều so với bên ngoài (kiểm tra mỗi 50 s, 50%, cách nhau 2 phút). Tới gần nhấn **E**: một huyền thoại / thần thoại Gen 5–9 bước ra thành boss. Vết nứt không mang tới Ultra Beast có chỗ cố định, Poipole hay Necrozma.
+  - Thắng qua mọi phase: +3000 tiền, +3 Ultra Ball, rồi mở cửa sổ thu phục như các huyền thoại khác. Đã thu phục thì không quay lại nữa.
+  - Đánh quá 150 s hoặc trainer chạy xa: nó quay về vết nứt, máu và phase được lưu cho lần sau.
+- **Bể huyền thoại mở rộng tới Gen 9: thêm 68 boss** sinh tự động (`legend-bosses.json`, `scripts/build-dex.mjs`):
+  - 57 huyền thoại / thần thoại Gen 5–9: bộ ba Thiên Thời, Reshiram / Zekrom / Kyurem, Xerneas / Yveltal / Zygarde, bốn Tapu, Solgaleo / Lunala / Necrozma, Zacian / Zamazenta / Eternatus, Calyrex và ngựa, bốn Tai Ương, Koraidon / Miraidon, Ogerpon, Terapagos, Pecharunt…
+  - 11 Ultra Beast: Nihilego, Buzzwole, Pheromosa, Xurkitree, Celesteela, Kartana, Guzzlord, Poipole, Naganadel, Stakataka, Blacephalon.
+  - Chiêu đặc trưng khi có trong dữ liệu (Blue Flare, Bolt Strike, Glaciate, Photon Geyser, Sunsteel Strike, Moongeist Beam, Eternabeam…). Cấp 25–65 (+2 mỗi cấp thế giới).
+  - Ultra Beast ra thường nhất, rồi huyền thoại, thần thoại; 15 loài "khổng lồ" trên bìa game (Reshiram, Zekrom, Solgaleo, Eternatus, Koraidon, Terapagos…) chỉ đến sau khi đã thu phục 3 huyền thoại.
+  - Pokédex ghi cách gặp: "Không Gian Ultra — <vùng>" cho Ultra Beast có chỗ cố định, "Vết nứt trong Không Gian Ultra" cho các loài còn lại; nhạc trận huyền thoại khi đánh chúng.
+- **Cưỡi Pokémon, chỉnh lại:**
+  - Loài dáng người hai chân (Machamp, Hariyama, Gardevoir…) không cõng người chạy được; Snorlax, Slaking, Ursaring, Ursaluna, Bewear vẫn được.
+  - Bản đồ Việt Nam có sông và bến ghe: chưa có ghe thì không thú cưỡi nào xuống nước được (bơi hay bay qua sông đều không), để nhiệm vụ ghe vẫn có ý nghĩa.
+- Test `v36_ultra_wormhole` (4, gồm việc sinh và đánh cả 68 boss mới), `v37_ultra_space` (5: chín vùng, loài hoang dã, chỗ của Ultra Beast, đi bộ tới được mọi nơi, bể vết nứt), thêm 1 test cưỡi. E2E `v36_ultra_wormhole`: bước vào Không Gian Ultra, Terapagos ra từ vết nứt, về đúng chỗ cũ.
+
 ## Chưa phát hành — Cưỡi Pokémon
 
 - **Phím Z (hoặc ô "CƯỠI" ở góc phải): leo lên / xuống Pokémon trong đội.** Trainer ngồi trên lưng, thú cưỡi được vẽ to hơn bình thường (theo chiều cao thật của loài).

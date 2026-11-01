@@ -14,6 +14,7 @@ import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
 import { rideText } from '../core/riding';
+import { isWormholeLegend, wormholeHint } from '../core/ultraWormhole';
 import { loreWeatherText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, weatherName, weatherShort, type BattleWeather } from '../core/battleWeather';
 
 const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT', thunderstorm: 'GIÔNG', wind: 'GIÓ' };
@@ -1859,7 +1860,8 @@ export class AdventureUI extends Phaser.Scene {
     if (eco) {
       const leg = LEGENDS.get(sel.name);
       const method = leg ? `${LEGEND_KIND_VI[leg.kind]}${leg.kind === 'roaming' ? ' — ' + (this.adv.legendsMgr?.roamHint(sel.name) ?? '') : leg.name ? ' — ' + leg.name : ''}`
-        : eco.method === 'event' ? 'Chỉ qua sự kiện (bùng phát / thời tiết dị thường / vùng biến dạng)' : eco.method === 'wild' ? 'Hoang dã' : 'Tiến hóa';
+        : isWormholeLegend(sel.name) ? wormholeHint(sel.name)
+          : eco.method === 'event' ? 'Chỉ qua sự kiện (bùng phát / thời tiết dị thường / vùng biến dạng)' : eco.method === 'wild' ? 'Hoang dã' : 'Tiến hóa';
       const prefer = Object.entries(eco.weather).filter(([, v]) => (v ?? 1) > 1).map(([k]) => WEATHER_LABEL[k] ?? k).join(', ');
       const info = leg
         ? `Huyền thoại · ${method}${leg.time ? ' · ' + (leg.time === 'night' ? 'ban đêm' : leg.time === 'dawn' ? 'bình minh' : 'ban ngày') : ''}${investigationLine(sel.name, (f) => this.adv.state.hasFlag(f))}${caught.has(sel.name) ? '\n' + leg.lore : ''}`

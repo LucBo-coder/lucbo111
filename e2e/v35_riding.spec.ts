@@ -37,6 +37,8 @@ test('ride a runner, then a flyer over the river', async ({ page }, info) => {
   expect(await ev(page, `window.__adv.world.ride`)).toBeNull();
 
   // flyer over the nearest water tile: can't get off there
+  // (the Cà Mau rivers open to mounts once the trainer owns the boat)
+  await ev(page, `window.__adv.state.setFlag('vehicle:ghe')`);
   await ev(page, `window.__adv.state.adv.rideUid = '${uids.charizard}'`);
   await page.keyboard.press('z');
   await page.waitForTimeout(200);

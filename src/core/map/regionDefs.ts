@@ -13,6 +13,7 @@ import silverMaelstromJson from '../../data/world/silver-maelstrom.json';
 import magmaCoreJson from '../../data/world/magma-core.json';
 import skyPillarJson from '../../data/world/sky-pillar.json';
 import distortionWorldJson from '../../data/world/distortion-world.json';
+import ultraSpaceJson from '../../data/world/ultra-space.json';
 import valleyHollowJson from '../../data/world/valley-hollow.json';
 import emeraldHollowJson from '../../data/world/emerald-hollow.json';
 import coralHollowJson from '../../data/world/coral-hollow.json';
@@ -80,6 +81,8 @@ export const REGION_DEFS: Record<string, RegionDef> = {
   'magma-core': magmaCoreJson as unknown as RegionDef,
   'sky-pillar': skyPillarJson as unknown as RegionDef,
   'distortion-world': distortionWorldJson as unknown as RegionDef,
+  // beyond the Ultra Wormholes (adventure/UltraWormholeController.ts): the Ultra Beasts' worlds
+  'ultra-space': ultraSpaceJson as unknown as RegionDef,
   'valley-hollow': valleyHollowJson as unknown as RegionDef,
   'emerald-hollow': emeraldHollowJson as unknown as RegionDef,
   'coral-hollow': coralHollowJson as unknown as RegionDef,

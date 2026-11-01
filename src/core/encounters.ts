@@ -62,6 +62,8 @@ export interface RegionDef {
   unlock: string | null;
   /** Types that never live here (tropical Vietnam regions: no Ice types outside the northern mountains) */
   excludeTypes?: string[];
+  /** The only species that live here, whatever the biome (Không Gian Ultra: each world of its own) */
+  species?: string[];
 }
 
 const TYPES_OF = new Map((pokemonJson as { id: string; types: string[] }[]).map((p) => [p.id, p.types]));
@@ -95,7 +97,7 @@ export function eligible(c: SpawnContext, region: RegionDef): Ecology[] {
     if (e.method !== 'wild' && e.method !== 'event') continue;
     if (e.legendary || e.mythical) continue;
     if (!!e.aquatic !== !!c.aquatic) continue; // fish only in water, land Pokémon only on land
-    if (!e.biomes.some((b) => biomes.has(b))) continue;
+    if (region.species ? !region.species.includes(e.id) : !e.biomes.some((b) => biomes.has(b))) continue;
     // event-only species (snow / volcano) need an event that opened their biome
     if (e.method === 'event' && !e.biomes.some((b) => c.extraBiomes?.includes(b))) continue;
     if (e.time === 'night' && !c.night) continue;

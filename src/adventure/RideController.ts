@@ -17,6 +17,7 @@ export class RideController {
   /** uid of the Pokémon that was out and went into its ball to be ridden */
   private recalledUid: string | null = null;
   private swapT = 0;
+  private lockT = 0;
 
   constructor(private scene: AdventureScene) {}
 
@@ -83,6 +84,7 @@ export class RideController {
   }
 
   private mount(m: PartyMember, announce: boolean): boolean {
+    this.world.rideNoWater = this.waterLocked();
     const owned = m.uid ? this.scene.state.owned(m.uid) : undefined;
     if (!this.world.startRide(m.species, { uid: m.uid, level: m.level, shiny: !!owned?.shiny })) return false;
     // the one on the field goes into its ball to carry the trainer (it is not on the field twice)
@@ -127,10 +129,17 @@ export class RideController {
     return false;
   }
 
+  /** Vietnam Odyssey rivers: the boat quest stays the way across — no swimming / flying over them before the boat. */
+  private waterLocked(): boolean {
+    return !!this.scene.regionDef.docks?.length && !this.scene.state.hasFlag('vehicle:ghe');
+  }
+
   update(dt: number): void {
+    this.world.rideNoWater = this.waterLocked();
     const r = this.world.ride;
     if (!r) return;
     const s = this.scene, t = this.world.trainer;
+    this.lockT -= dt;
     // a fight on land: off the mount (over water / in the air it carries on)
     if ((s.inCombat() || t.hp <= 0 || s.boating) && this.dismount(true)) { s.ui.banner('Xuống khỏi thú cưỡi để chiến đấu', '#ffd0a0'); return; }
     this.swapT -= dt;
@@ -138,7 +147,11 @@ export class RideController {
     if (this.swapT <= 0 && Math.hypot(inp.x, inp.y) > 0.3 && !s.modal) {
       const len = Math.hypot(inp.x, inp.y);
       const ax = t.x + (inp.x / len) * 26, ay = t.y + (inp.y / len) * 26;
-      if (!this.world.rideAllows(r.modes, ax, ay)) this.shoreSwap(ax, ay);
+      if (!this.world.rideAllows(r.modes, ax, ay)) {
+        if (this.world.rideNoWater && this.onWater(ax, ay)) {
+          if (this.lockT <= 0) { this.lockT = 6; s.ui.banner('Sông ở vùng này phải đi bằng ghe — có ghe rồi mới bơi / bay qua được', '#ffd0a0'); }
+        } else this.shoreSwap(ax, ay);
+      }
     }
     // the Pokémon out of its ball keeps up: land-bound ones jump to the trainer once left behind at a shore
     for (const a of this.world.allies) {
