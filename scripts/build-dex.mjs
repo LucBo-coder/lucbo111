@@ -256,6 +256,23 @@ for (const form of ['rayquaza-mega']) {
 }
 
 // ───────────────────────────── ecology (BiomeSpawnManager / RaritySystem input) ─────────────────────────────
+// Spawn weight in a sky weather, from the species' Pokédex lore (docs/weather-pokemon-research.md §3D); 1 = neutral.
+// Without it the type rules alone put e.g. Tornadus (Flying) at ×0.5 in the thunderstorms it is said to raise.
+const LORE_ECOLOGY = {
+  zapdos: { thunderstorm: 3, rain: 1.3 }, // "causes savage thunderstorms" (Gold)
+  thundurus: { thunderstorm: 3, rain: 1.5 }, // "firing off lightning bolts" (White)
+  raikou: { thunderstorm: 3, rain: 1.5 }, // "rain clouds it carries" (Gold)
+  tornadus: { thunderstorm: 2, heavyRain: 1.5 }, // "causing severe storms" (White)
+  lugia: { thunderstorm: 2, heavyRain: 2 }, // "a 40-day storm" (Diamond); also "appears when storms start" (Crystal)
+  kyogre: { heavyRain: 3, rain: 2 }, // "torrential downpours" (Ruby)
+  groudon: { heatwave: 3 }, // "evaporate with light and heat" (Sapphire)
+  articuno: { blizzard: 3 }, // "create blizzards" (Diamond)
+  landorus: { thunderstorm: 1, clear: 1.5 }, // arrives as the tempests abate (Legends: Arceus)
+  rayquaza: { thunderstorm: 1 }, // lives above the clouds — no storm penalty
+  enamorus: { thunderstorm: 1, blizzard: 0.5, clear: 1.5 }, // ends the bitter winter (Legends: Arceus)
+  castform: { rain: 2, heavyRain: 2, heatwave: 2, blizzard: 2 }, // takes the guise of the weather (Sapphire)
+};
+
 // Every National Dex species #1–#1025 gets: biomes, rarity tier, evolution stage, wild level floor, time, weather
 // multipliers and an encounter method. Rules are documented in GAMEPLAY_AUDIT.md (V3).
 const PAPI_HABITAT = { grassland: ['meadow'], forest: ['forest'], 'waters-edge': ['lake'], sea: ['lake'], cave: ['ruins', 'rocky'], mountain: ['rocky'], 'rough-terrain': ['rocky'], urban: ['farm'] };
@@ -342,6 +359,8 @@ for (const [id, sp] of Object.entries(SP)) {
   if (has('grass')) { mul('clear', 1.2); mul('heatwave', 0.7); }
   if (has('flying')) mul('thunderstorm', 0.5);
   if (has('ground') || has('rock')) mul('heatwave', 1.3);
+  // lore (Pokédex) beats the type rules: the species shows up in the weather it is said to cause or end
+  for (const [k, v] of Object.entries(LORE_ECOLOGY[id] ?? {})) { if (v === 1) delete weather[k]; else weather[k] = v; }
   ecology.push({
     id, dex: sp.id, gen: genNum(sp.generation), biomes, rarity: TIERS[tier], stage, minLevel: minLevelOf(id, stage),
     time: has('ghost') || has('dark') || ['clefairy', 'jigglypuff', 'hoothoot', 'noctowl', 'drowzee', 'murkrow', 'misdreavus', 'kricketot', 'zubat', 'oddish'].includes(id) ? 'night' : 'any',

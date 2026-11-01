@@ -1,4 +1,4 @@
-import { BattleWeather, canCallWeather, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherDuration, weatherOfAbility, WEATHER_CALL_COOLDOWN } from './battleWeather';
+import { abilitySource, BattleWeather, canCallWeather, castformTypes, HIT_CALL_COOLDOWN, LIGHTNING_CHIP, LIGHTNING_CHIP_BOSS, LIGHTNING_TICK, lightningImmune, loreDamageMult, loreSource, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherOfAbility, WEATHER_CALL_COOLDOWN, type WeatherSource } from './battleWeather';
 import { abilityEffect, rollAbilitySlot } from './abilities';
 import { randomTeraType } from './pokemonTraits';
 import { computeDamage } from './damage';
@@ -314,7 +314,9 @@ export type WorldEvent =
   /** A player-triggered (active) skill was cast, or its request ran out / became invalid (ok: false) */
   | { t: 'manual'; id: number; skill: string; ok: boolean }
   /** A Pokémon's ability called a weather (kind) or the weather ended (kind: null) */
-  | { t: 'weather'; kind: BattleWeather | null; by?: string; team?: Team; duration?: number; x?: number; y?: number };
+  | { t: 'weather'; kind: BattleWeather | null; by?: string; team?: Team; duration?: number; x?: number; y?: number; calm?: boolean; lore?: boolean; ended?: BattleWeather }
+  /** A thunderstorm bolt struck this spot */
+  | { t: 'lightning'; x: number; y: number };
 
 export type WorldState = 'playing' | 'levelup' | 'gameover' | 'victory' | 'duelOver';
 
@@ -429,7 +431,8 @@ export class World {
   /** Weather-anomaly damage multipliers per move type (set by world events) */
   weatherMods: Partial<Record<PokeType, number>> = {};
   /** Weather called up by a Pokémon's ability (core/battleWeather.ts) */
-  battleWeather: { kind: BattleWeather; until: number; by: string } | null = null;
+  battleWeather: { kind: BattleWeather; until: number; by: string; byId: number | null; tied: boolean } | null = null;
+  private lightningT = 0;
   private sandT = 0;
   /** Max Move fields (Max Flare's harsh sun, Max Geyser's rain…): type → boost and world time it ends (V31) */
   maxFields: Partial<Record<PokeType, { mult: number; until: number }>> = {};
@@ -755,6 +758,8 @@ export class World {
     else if (!def.mega) u.megaFrom = null;
     u.defId = defId; u.name = def.name; u.types = [...def.types]; u.role = def.role; u.base = def.baseStats;
     u.moveSpeed = def.moveSpeed; u.attackRange = def.attackRange; u.critRate = def.critRate; u.radius = def.radius; u.passive = !def.mega && u.abilitySlot != null ? abilityEffect(defId, u.abilitySlot) : def.passive;
+    // a new form with its own weather calls it (Primal Kyogre's heavy rain, Mega Tyranitar's sandstorm)
+    u.weatherCalled = false;
     // a Terastallized / Dynamaxed Pokémon that changes species keeps its crystal / its giant size
     if (u.tera) { u.tera.from = [...def.types]; u.types = [u.tera.type]; }
     if (u.dyna) u.radius = def.radius * DYNAMAX_RADIUS_MULT;
@@ -1063,22 +1068,32 @@ export class World {
 
   // ───────────────────────────── called weather ─────────────────────────────
 
-  /** The weather ability of a unit: its own ability, or (bosses) the ordinary ability of its species. */
+  /**
+   * How a unit changes the weather: its species' lore (Pokédex) first, then its own weather ability, then (bosses)
+   * the ordinary weather ability of its species.
+   */
+  weatherSource(u: Unit): WeatherSource | null {
+    return loreSource(u.defId) ?? abilitySource(u.passive?.id) ?? (u.kind === 'boss' ? abilitySource(speciesWeatherAbility(u.defId)) : null);
+  }
+
+  /** Back-compat: the ability id behind a unit's weather (null for a lore source). */
   weatherAbility(u: Unit): string | null {
-    if (u.passive && weatherOfAbility(u.passive.id)) return u.passive.id;
-    if (u.kind === 'boss') return speciesWeatherAbility(u.defId);
-    return null;
+    const src = this.weatherSource(u);
+    return src?.origin === 'ability' ? src.id : null;
   }
 
-  setBattleWeather(kind: BattleWeather, duration: number, by: Unit | null): void {
-    this.battleWeather = { kind, until: this.time + duration, by: by?.name ?? '' };
+  setBattleWeather(kind: BattleWeather, duration: number, by: Unit | null, opts: { tied?: boolean; lore?: boolean } = {}): void {
+    this.battleWeather = { kind, until: this.time + duration, by: by?.name ?? '', byId: by?.id ?? null, tied: !!opts.tied && !!by };
     this.sandT = 0;
-    this.emit({ t: 'weather', kind, by: by?.name, team: by?.team, duration, x: by?.x, y: by?.y });
+    this.lightningT = 0;
+    this.emit({ t: 'weather', kind, by: by?.name, team: by?.team, duration, x: by?.x, y: by?.y, lore: opts.lore });
   }
 
-  endBattleWeather(): void {
+  /** Ends the called weather; `calmedBy` = the Pokémon that calmed the sky (Rayquaza…) or whose weather left with it. */
+  endBattleWeather(calmedBy?: Unit, calm = false, byName?: string): void {
+    const ended = this.battleWeather?.kind;
     this.battleWeather = null;
-    this.emit({ t: 'weather', kind: null });
+    this.emit({ t: 'weather', kind: null, by: calmedBy?.name ?? byName, team: calmedBy?.team, calm, ended, x: calmedBy?.x, y: calmedBy?.y });
   }
 
   /** Seconds before this unit may call its weather on command again. */
@@ -1086,28 +1101,40 @@ export class World {
     return u.weatherCallAt == null ? 0 : Math.max(0, u.weatherCallAt + WEATHER_CALL_COOLDOWN - this.time);
   }
 
-  /** The unit calls its weather now (the ability going off on entry, or the player's own call). */
+  /** The unit acts on the weather now: calls its weather, or calms the sky (entry, hit, anger, or the player's call). */
   callWeather(u: Unit): void {
-    const ab = this.weatherAbility(u);
-    const kind = weatherOfAbility(ab);
-    if (!ab || !kind) return;
+    const src = this.weatherSource(u);
+    if (!src) return;
     u.weatherCalled = true;
     u.weatherCallAt = this.time;
-    // the same weather already up: only refreshed
-    this.setBattleWeather(kind, Math.max(weatherDuration(ab), this.battleWeather?.kind === kind ? this.battleWeatherLeft() : 0), u);
+    if (src.act === 'calm') {
+      const w = this.battleWeather;
+      if (w && (!src.clears || src.clears.includes(w.kind))) this.endBattleWeather(u, true);
+      return;
+    }
+    // the same weather already up: only refreshed (and it now belongs to this caller)
+    this.setBattleWeather(src.act, Math.max(src.duration, this.battleWeather?.kind === src.act ? this.battleWeatherLeft() : 0), u, { tied: src.tied, lore: src.origin === 'lore' });
   }
 
-  /** Player's own call (key C): the first of the trainer's Pokémon on the field with a weather ability. */
+  /** Player's own call (key C): the first of the trainer's Pokémon on the field that can act on the weather. */
   playerWeatherCaller(): Unit | null {
-    return this.allies.find((a) => a.kind === 'pokemon' && a.alive && !a.fainted && !!this.weatherAbility(a)) ?? null;
+    return this.allies.find((a) => a.kind === 'pokemon' && a.alive && !a.fainted && !!this.weatherSource(a)) ?? null;
   }
 
   tryCallWeather(): { ok: boolean; reason?: string; unit?: Unit } {
     const u = this.playerWeatherCaller();
-    const check = canCallWeather(u ? this.weatherAbility(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0);
+    const check = canCallWeather(u ? this.weatherSource(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0);
     if (!check.ok || !u) return check;
     this.callWeather(u);
     return { ok: true, unit: u };
+  }
+
+  /** Sand Spit (main series): an attack landing on it whips up a sandstorm. */
+  private weatherOnHit(dst: Unit): void {
+    const src = this.weatherSource(dst);
+    if (!src || src.trigger !== 'hit' || src.act === 'calm' || this.battleWeather?.kind === src.act) return;
+    if (dst.weatherCallAt != null && this.time - dst.weatherCallAt < HIT_CALL_COOLDOWN) return;
+    this.callWeather(dst);
   }
 
   /** Seconds the called weather still lasts (0 = none). */
@@ -1117,11 +1144,14 @@ export class World {
 
   private updateBattleWeather(dt: number): void {
     // a weather Pokémon calls its weather the moment it joins a fight (once per time it comes out)
+    // (lore) a Pokémon that is "roused to rage" calls it once it falls under half HP; Sand Spit waits for a hit
     const consider = (u: Unit, engaged: boolean) => {
+      if (u.defId === 'castform') this.castformForm(u);
       if (u.weatherCalled || !u.alive || u.fainted || u.captured) return;
-      const ab = this.weatherAbility(u);
-      if (!ab) { u.weatherCalled = true; return; }
-      if (!engaged) return;
+      const src = this.weatherSource(u);
+      if (!src) { u.weatherCalled = true; return; }
+      if (!engaged || src.trigger === 'hit') return;
+      if (src.trigger === 'anger' && u.hp > u.maxHp / 2) return;
       this.callWeather(u);
     };
     for (const side of this.sides()) for (const a of side.allies) consider(a, !!a.target?.alive);
@@ -1129,6 +1159,12 @@ export class World {
     const w = this.battleWeather;
     if (!w) return;
     if (this.time >= w.until) { this.endBattleWeather(); return; }
+    // a legendary's weather goes with it (Lugia calms the storm it raised, Primal Kyogre's heavy rain…)
+    if (w.tied && w.byId != null) {
+      const by = this.findUnit(w.byId);
+      if (!by || !by.alive || by.fainted || by.captured) { this.endBattleWeather(by ?? undefined, false, w.by); return; }
+    }
+    if (w.kind === 'thunderstorm') { this.updateLightning(dt); return; }
     if (w.kind !== 'sand') return;
     this.sandT += dt;
     if (this.sandT < SAND_TICK) return;
@@ -1141,6 +1177,34 @@ export class World {
     };
     for (const side of this.sides()) for (const a of side.allies) hurt(a);
     for (const e of this.enemies) if (e.hostile) hurt(e);
+  }
+
+  /** Thunderstorm: a bolt now and then on one Pokémon in the fight (not Electric / Ground; never the finishing blow). */
+  private updateLightning(dt: number): void {
+    this.lightningT += dt;
+    if (this.lightningT < LIGHTNING_TICK) return;
+    this.lightningT -= LIGHTNING_TICK;
+    const pool: Unit[] = [];
+    const ok = (u: Unit) => u.alive && !u.fainted && !u.captured && !lightningImmune(u.types) && u.hp > 1;
+    for (const side of this.sides()) for (const a of side.allies) if (ok(a) && a.target?.alive) pool.push(a);
+    for (const e of this.enemies) if (e.hostile && ok(e)) pool.push(e);
+    if (!pool.length) return;
+    const u = pool[Math.floor(this.rng.next() * pool.length)];
+    const amount = Math.min(u.hp - 1, Math.max(1, u.maxHp * (u.kind === 'boss' ? LIGHTNING_CHIP_BOSS : LIGHTNING_CHIP)));
+    this.emit({ t: 'lightning', x: u.x, y: u.y });
+    this.applyDamage(u, amount, null, false, 1, true);
+  }
+
+  /** (lore) Castform takes the guise of the weather: its type follows the called weather. */
+  private castformForm(u: Unit): void {
+    const want = castformTypes(this.battleWeather?.kind ?? null);
+    if (u.tera || u.types.join() === want.join()) return;
+    u.types = want;
+  }
+
+  private findUnit(id: number): Unit | null {
+    for (const side of this.sides()) for (const a of side.allies) if (a.id === id) return a;
+    return this.enemies.find((e) => e.id === id) ?? null;
   }
 
   /** Restores a boss's phase from a save checkpoint (mid-cinematic saves resume ACTIVE in that phase). */
@@ -1996,6 +2060,7 @@ export class World {
 
   /** Real alternate form (Mega Rayquaza): its types and stats (HP fraction kept). */
   private applyBossForm(b: Unit, form: string): void {
+    b.weatherCalled = false;
     const f = POKEMON.get(form);
     if (!f) return;
     const st = b.boss!;
@@ -2689,6 +2754,7 @@ export class World {
       const wm = this.weatherMods[s.type];
       if (wm) modifier *= wm;
       modifier *= weatherDamageMult(this.battleWeather?.kind ?? null, s.type, s.category, dst.types);
+      modifier *= loreDamageMult(this.battleWeather?.kind ?? null, src.defId, s.category);
       const mf = this.maxFields[s.type];
       if (mf && this.time < mf.until) modifier *= mf.mult;
       // Dynamax: every move is a Max Move
@@ -2776,6 +2842,7 @@ export class World {
       dst.hostile = true;
       dst.wild.lastAttacker = src;
     }
+    if (src && !dot && amount > 0 && src.team !== dst.team) this.weatherOnHit(dst);
     if (dst.shield > 0) {
       const absorbed = Math.min(dst.shield, dmg);
       dst.shield -= absorbed;

@@ -296,6 +296,9 @@ const WEATHER_ICON: Record<string, { pal: Record<string, string>; rows: string[]
   sun: { pal: { o: '#ff9020', y: '#ffe040', w: '#fffbd0' }, rows: ['....o.....', '.o..o..o..', '..oyyyo...', '..ywwyy...', 'ooywyyyoo.', '..yyyyy...', '..oyyyo...', '.o..o..o..', '....o.....', '..........'] },
   sand: { pal: { d: '#a07838', s: '#e0c080', l: '#fff0c0' }, rows: ['..........', '.sssss....', 'd.....s...', '..llsss.s.', '.d.....s..', 'sssss...s.', '.....s.d..', '.dssss....', '..........', '..........'] },
   snow: { pal: { c: '#80d8ff', w: '#ffffff' }, rows: ['....c.....', '.c..w..c..', '..c.w.c...', '...www....', 'cwwwcwwwc.', '...www....', '..c.w.c...', '.c..w..c..', '....c.....', '..........'] },
+  thunderstorm: { pal: { k: '#283040', g: '#7080a0', l: '#a0b0c8', y: '#ffe040', w: '#ffffff' }, rows: ['...kkk....', '..kglgkk..', '.kglllggk.', 'kggggggggk', '.kkkyykkk.', '....yy....', '...yyw....', '....wy....', '....y.....', '...y......'] },
+  wind: { pal: { w: '#ffffff', g: '#a0e0c0', d: '#60a080' }, rows: ['..........', 'wwwwwww...', '.......w..', '..gggg..w.', '......gw..', 'ddddd.....', '.....d....', '..wwwww...', '.......w..', '......w...'] },
+  calm: { pal: { y: '#ffe060', o: '#ffb040', b: '#a0e0ff', w: '#ffffff' }, rows: ['..........', '..o...o...', '...yyy....', '.oywwyo...', '..yyyy....', '...yy.bb..', '.....bwwb.', '....bwwwwb', '....bbbbb.', '..........'] },
 };
 
 /** Texture key of a called-weather icon (rain / sun / sand / snow). */

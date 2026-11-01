@@ -13,9 +13,9 @@ import { BossHUDController } from '../ui/BossHUDController';
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
-import { WEATHER_CALL_COOLDOWN, weatherDuration, weatherOfAbility, WEATHER_INFO, type BattleWeather } from '../core/battleWeather';
+import { loreWeatherText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, type BattleWeather } from '../core/battleWeather';
 
-const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT' };
+const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT', thunderstorm: 'GIÔNG', wind: 'GIÓ' };
 import { BALL_ORDER, BALLS, BallId } from '../core/capture';
 import { getSkill, POKEMON } from '../core/data';
 import { chunkCols, chunkRows } from '../core/map/mapProvider';
@@ -605,9 +605,12 @@ export class AdventureUI extends Phaser.Scene {
     const dyna = a.dynaStatus();
     const gmax = a.dynaUnit ? !!a.dynaUnit.dyna?.gmax : !!dyna.gmax;
     const caller = a.world.playerWeatherCaller();
-    const ab = caller ? a.world.weatherAbility(caller) : null;
-    const kind = weatherOfAbility(ab) ?? 'rain';
+    const src = caller ? a.world.weatherSource(caller) : null;
+    // a calming source (Rayquaza, Landorus…) shows a clear sky; it is "in use" while nothing it clears is up
+    const calm = src?.act === 'calm';
+    const kind: BattleWeather = src && src.act !== 'calm' ? src.act : 'rain';
     const bw = a.world.battleWeather;
+    const calmReady = calm && !!bw && (!src!.clears || src!.clears.includes(bw.kind));
     return {
       mega: { visible: a.state.item('key-stone') > 0, icon: itemIconKey(this, 'key-stone'), label: 'MEGA', color: 0xff80ff,
         ...timed(!!a.megaUnit, a.megaT, MEGA_DURATION, a.megaCd, MEGA_COOLDOWN, !!a.megaStatus().ally) },
@@ -615,8 +618,10 @@ export class AdventureUI extends Phaser.Scene {
         ...timed(!!a.teraUnit, a.teraT, TERA_DURATION, a.teraCd, TERA_COOLDOWN, a.teraStatus().ok) },
       dyna: { visible: a.state.item('dynamax-band') > 0, icon: itemIconKey(this, 'dynamax-band'), label: gmax ? 'G-MAX' : 'MAX', color: 0xff3060,
         ...timed(!!a.dynaUnit, a.dynaT, DYNAMAX_DURATION, a.dynaCd, DYNAMAX_COOLDOWN, dyna.ok) },
-      weather: { visible: !!caller, icon: weatherIconKey(kind), label: WEATHER_SHORT[kind], color: Phaser.Display.Color.HexStringToColor(WEATHER_INFO[kind].color).color,
-        ...timed(bw?.kind === kind, a.world.battleWeatherLeft(), ab ? weatherDuration(ab) : 40, caller ? a.world.weatherCallCd(caller) : 0, WEATHER_CALL_COOLDOWN, true) },
+      weather: calm
+        ? { visible: true, icon: weatherIconKey('calm'), label: 'YÊN', color: 0xa0e0ff, ...timed(false, 0, 1, a.world.weatherCallCd(caller!), WEATHER_CALL_COOLDOWN, calmReady) }
+        : { visible: !!caller, icon: weatherIconKey(kind), label: WEATHER_SHORT[kind], color: Phaser.Display.Color.HexStringToColor(WEATHER_INFO[kind].color).color,
+          ...timed(bw?.kind === kind, a.world.battleWeatherLeft(), src?.duration ?? 40, caller ? a.world.weatherCallCd(caller) : 0, WEATHER_CALL_COOLDOWN, true) },
     };
   }
 
@@ -1472,7 +1477,8 @@ export class AdventureUI extends Phaser.Scene {
     });
     const evs = ind.evs;
     c.add(text(this, r.x + 300 * s, r.y + 196 * s, `EV ${STAT_KEYS.map((k) => evs?.[k] ?? 0).join('/')}  ·  tổng ${evs ? evTotal(evs) : 0}/${EV_MAX_TOTAL}`, 13 * s, '#ffd8a0'));
-    c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Ability: ${abilityEffect(p.species, p.abilitySlot).name}${abilityOf(p.species, p.abilitySlot).hidden ? ' (ẩn)' : ''}\n${abilityEffect(p.species, p.abilitySlot).description}`, 14 * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
+    const lore = loreWeatherText(p.species);
+    c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Ability: ${abilityEffect(p.species, p.abilitySlot).name}${abilityOf(p.species, p.abilitySlot).hidden ? ' (ẩn)' : ''}\n${abilityEffect(p.species, p.abilitySlot).description}${lore ? `\n${lore}` : ''}`, (lore ? 13 : 14) * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
     def.skills.forEach((id, i) => {
       const sk = getSkill(id), mv = MOVES[id];
       const y = r.y + 240 * s + i * 38 * s;

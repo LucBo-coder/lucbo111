@@ -1,5 +1,47 @@
 # Changelog
 
+## Chưa phát hành — Thời tiết theo lore (Pokédex)
+
+- **Pokémon gọi thời tiết theo Pokédex**, áp dụng cho cả loài, không phụ thuộc Ability. Mỗi mục đều ghi câu Pokédex gốc làm nguồn (`LORE_WEATHER` trong `core/battleWeather.ts`). Cột "Tan" cho biết thời tiết có tắt khi Pokémon gọi rời trận hay không.
+
+  | Pokémon | Thời tiết | Thời lượng | Tan khi rời trận |
+  |---|---|---|---|
+  | Zapdos | Giông bão | 90 s | Có |
+  | Thundurus | Giông bão | 90 s | Có |
+  | Raikou | Giông bão | 60 s | Có |
+  | Lugia | Giông bão | 90 s | Có |
+  | Articuno | Tuyết | 90 s | Có |
+  | Kyogre | Mưa | 90 s | Có |
+  | Groudon | Nắng gắt | 90 s | Có |
+  | Tornadus | Gió lớn | 90 s | Có |
+  | Suicune | Gió lớn | 60 s | Có |
+  | Abomasnow, Vanilluxe | Tuyết | 40 s | Không |
+  | Hippowdon | Bão cát, **khi nổi giận** (dưới nửa máu) | 40 s | Không |
+
+- **Làm yên trời** (xóa thời tiết khi vào trận, hoặc bấm C):
+  - Rayquaza xóa mọi thời tiết.
+  - Landorus xóa Giông bão, Gió lớn và Mưa ("bão tan, đất được mùa").
+  - Moltres và Enamorus xóa Tuyết ("mang mùa xuân đến").
+- **Thời tiết mới**:
+  - **Giông bão**: hệ Điện +50%, hệ Nước +20%, hệ Lửa −25%. Mỗi 3 s sét đánh một Pokémon trong trận (không đánh hệ Điện / Đất, không bao giờ hạ gục). Trời tối, mưa, tia sét kèm chớp nhẹ (tắt khi chọn đồ họa thấp nhất).
+  - **Gió lớn**: hệ Bay +50%, vệt gió thổi ngang màn hình.
+- **Phản ứng với thời tiết** (theo Pokédex):
+  - Castform đổi hệ theo thời tiết (Nắng → Lửa, Mưa / Giông → Nước, Tuyết → Băng).
+  - Cherrim mạnh hơn 50% khi nắng.
+  - Gigalith: đòn đặc biệt +30% khi nắng, −40% khi mưa / giông.
+- Nguồn lore được ưu tiên hơn Ability. Ability chính thức vẫn giữ (Pelipper, Torkoal, Politoed…).
+- Chi tiết Pokémon có thêm dòng "Theo Pokédex: …". Ô thời tiết ở góc phải có icon và nhãn mới (GIÔNG, GIÓ, YÊN).
+- **Sửa theo bản chính thức**:
+  - Sand Spit gọi bão cát **khi bị trúng đòn**, không còn gọi khi vào trận.
+  - Primal Kyogre / Primal Groudon / Mega (Tyranitar, Abomasnow, Charizard Y) gọi lại thời tiết của dạng mới sau khi biến hình. Thời tiết Primal tan khi Pokémon rời trận.
+- **Xuất hiện theo lore** (`ecology.json`, bảng `LORE_ECOLOGY` trong `scripts/build-dex.mjs`):
+  - Zapdos / Thundurus / Raikou ×3 khi có giông.
+  - Tornadus ×2 và Lugia ×2 khi có giông (trước đây ×0,5 vì luật hệ Bay).
+  - Kyogre ×3 khi mưa lớn; Groudon ×3 khi nắng nóng; Articuno ×3 khi bão tuyết.
+  - Castform ×2 khi có thời tiết.
+  - Rayquaza, Landorus và Enamorus không còn bị giảm khi có giông.
+- Test `v33_lore_weather` (12), e2e `v33_lore_weather` (Zapdos: giông, sét, tan khi thu về; Tornadus: gió; Rayquaza: làm yên trời bằng phím C).
+
 ## Chưa phát hành — Đội hình chỉ 6 Pokémon, Hệ Tera, nút Tiến hóa
 
 - **Tab Đội hình chỉ hiện 6 Pokémon đang mang theo**: 6 thẻ lớn (2 cột trên máy tính, 3 cột trên điện thoại). Mỗi thẻ có sprite, tên, cấp, hệ, thanh máu, vật phẩm đang cầm, dấu ★ khi đang ngoài bóng, dấu "Gục" và nhãn "▲ Tiến hóa" khi đủ điều kiện. Ô trống ghi "+ thêm từ PC". Những Pokémon còn lại nằm trong PC: tiêu đề ghi số Pokémon trong PC và có nút "Mở PC". Trước đây tab này liệt kê cả bộ sưu tập, chia nhiều trang.

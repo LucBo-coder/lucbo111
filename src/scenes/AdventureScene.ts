@@ -160,6 +160,7 @@ export class AdventureScene extends Phaser.Scene {
   private snow: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
   private heat: Phaser.GameObjects.Rectangle | null = null;
   private sandFx: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
+  private windFx: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
   dungeon: DungeonController | null = null;
   mapKind: 'valley' | 'dungeon' = 'valley';
   difficulty: Difficulty = 'normal';
@@ -288,6 +289,7 @@ export class AdventureScene extends Phaser.Scene {
     this.snow = null;
     this.heat = null;
     this.sandFx = null;
+    this.windFx = null;
     this.fog = null;
     this.dark = undefined as unknown as Phaser.GameObjects.Rectangle; // previous run's objects are destroyed on restart
     this.acc = 0;
@@ -868,6 +870,16 @@ export class AdventureScene extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(9690);
       } else if (!this.sandFx.emitting) this.sandFx.start();
     } else if (this.sandFx?.emitting) this.sandFx.stop();
+    // gale (Tornadus, Suicune): long pale streaks blown across the screen, no haze
+    const wind = this.world.battleWeather?.kind === 'wind' && amount > 0;
+    if (wind) {
+      if (!this.windFx) {
+        this.windFx = this.add.particles(0, 0, 'px', {
+          x: { min: this.scale.width * 0.2, max: this.scale.width + 300 }, y: { min: -20, max: this.scale.height + 20 }, lifespan: 900, speedX: { min: -1500, max: -1100 }, speedY: { min: -30, max: 30 },
+          scaleX: { min: 18, max: 34 }, scaleY: 1, alpha: { start: 0.5, end: 0 }, quantity: Math.max(1, Math.round(2 * amount)), frequency: 40, tint: [0xffffff, 0xd8f0e8],
+        }).setScrollFactor(0).setDepth(9690);
+      } else if (!this.windFx.emitting) this.windFx.start();
+    } else if (this.windFx?.emitting) this.windFx.stop();
     const ha = sand ? 0.36 : wk === 'heatwave' || theme === 'volcanic' ? (theme === 'volcanic' ? 0.08 : 0.12) + Math.sin(this.time.now * 0.003) * 0.03 : 0;
     this.heat.fillColor = sand ? 0xc89850 : 0xff8020;
     if (theme === 'volcanic' && Math.random() < 0.25 * amount) { const v = cam.worldView; this.renderer_.vfx.emit('fire', v.x + Math.random() * v.width, v.y + v.height, 1); }
@@ -949,7 +961,7 @@ export class AdventureScene extends Phaser.Scene {
     this.world.env.weather = sky;
     // a weather called by a Pokémon's ability takes over the look of the sky while it lasts
     const bw = this.world.battleWeather?.kind;
-    const wk: WeatherKind = bw === 'rain' ? (sky === 'thunderstorm' || sky === 'heavyRain' ? sky : 'rain') : bw === 'sun' ? 'heatwave' : bw === 'snow' ? 'blizzard' : sky;
+    const wk: WeatherKind = bw === 'rain' ? (sky === 'thunderstorm' || sky === 'heavyRain' ? sky : 'rain') : bw === 'thunderstorm' ? 'thunderstorm' : bw === 'sun' ? 'heatwave' : bw === 'snow' ? 'blizzard' : sky;
     const wet = wk === 'rain' || wk === 'heavyRain' || wk === 'thunderstorm';
     const foggy = wk === 'fog' || wk === 'mysticFog';
     const dk = this.darkness() + (wk === 'thunderstorm' ? 0.25 : wet ? 0.15 : foggy ? 0.06 : 0);
@@ -1226,7 +1238,23 @@ export class AdventureScene extends Phaser.Scene {
           const head = !e.by ? `${info.name} nổi lên!` : e.team === 'ally' ? `${e.by} gọi ${info.name}!` : `${e.by} (đối thủ) gọi ${info.name}!`;
           this.ui?.banner(`${info.icon} ${head} ${info.short} · ${Math.round(e.duration ?? 0)}s`, info.color);
           if (e.x != null && e.y != null) this.renderer_.vfx.ring(e.x, e.y, 90, Phaser.Display.Color.HexStringToColor(info.color).color, 600);
+        } else if (e.calm && e.by) {
+          // (lore) Rayquaza / Landorus / Moltres / Enamorus calm the sky
+          this.ui?.banner(`${e.by} làm bầu trời yên lặng — ${e.ended ? WEATHER_INFO[e.ended].name : 'thời tiết'} tan biến`, '#c0f0ff');
+          if (e.x != null && e.y != null) this.renderer_.vfx.ring(e.x, e.y, 120, 0xc0f0ff, 700);
+        } else if (e.by && e.ended) {
+          // a legendary's weather goes with it (Lugia calms the storm it raised)
+          this.ui?.banner(`${WEATHER_INFO[e.ended].name} tan khi ${e.by} rời trận`, '#c0d8ff');
         } else this.ui?.banner('Thời tiết trở lại bình thường', '#c0d8ff');
+        continue;
+      }
+      if (e.t === 'lightning') {
+        // a thunderstorm bolt: from above the screen down to the Pokémon, a brief, soft flash (at most every 3 s)
+        const vfx = this.renderer_.vfx;
+        vfx.lightning(e.x + 30, e.y - 260, e.x, e.y);
+        vfx.flash(e.x, e.y, 60, 0xfff080, 160);
+        vfx.emit('electric', e.x, e.y, 8);
+        if (QUALITY_PROFILE[saveStore.data.settings.quality].weather > 0) this.cameras.main.flash(90, 60, 60, 40);
         continue;
       }
       const down = e.t === 'death' ? e : e.t === 'bossWeakened' ? { ...e, t: 'death' as const, elite: false, boss: true, wild: false } : null;

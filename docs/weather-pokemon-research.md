@@ -2,6 +2,13 @@
 
 Ngày: 2026-11-01. Tài liệu này chỉ phân tích và đề xuất, chưa có thay đổi code nào đi kèm.
 
+> **Cập nhật 2026-11-01: đã triển khai theo lore.**
+> - Các loài ở §3D đã gọi thời tiết theo Pokédex: `LORE_WEATHER` / `LORE_REACTIVE` trong `src/core/battleWeather.ts`.
+> - Đã thêm Giông bão và Gió lớn.
+> - Lỗi #1 (Sand Spit), #2 (biến hình) và #9 (`ecology.json`) ở §1.2 đã sửa.
+> - Còn mở: #3 (thời tiết mạnh chặn chiêu Lửa / Nước), #4 (Delta Stream), #5 (Air Lock / Cloud Nine), #7 (dạng Alola, Mega Froslass), #8 (chiêu tạo thời tiết).
+> - Entei và Ho-Oh không được thêm. Lore của chúng là núi lửa phun và cầu vồng, không phải thời tiết trận.
+
 ## 0. Nguồn và cách đọc
 
 **Ba nhóm thông tin luôn được tách riêng:**

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { abilityEffect, abilityOptions } from '../src/core/abilities';
 import {
-  SAND_TICK, speciesWeatherAbility, WEATHER_CALL_COOLDOWN, canCallWeather, WEATHER_DURATION, PRIMAL_WEATHER_DURATION, weatherDamageMult, weatherDuration, weatherOfAbility, weatherSpecies,
+  SAND_TICK, speciesWeatherAbility, WEATHER_CALL_COOLDOWN, canCallWeather, abilitySource, WEATHER_DURATION, PRIMAL_WEATHER_DURATION, weatherDamageMult, weatherDuration, weatherOfAbility, weatherSpecies,
 } from '../src/core/battleWeather';
 import { STEP, World, type Unit } from '../src/core/world';
 
@@ -149,9 +149,9 @@ describe('weather abilities', () => {
 
   it('the player calls the weather on command (key C): needs a weather Pokémon out, not the same weather, cooldown over', () => {
     expect(canCallWeather(null, null, 0).ok).toBe(false);
-    expect(canCallWeather('drizzle', 'rain', 0).reason).toMatch(/đang có/);
-    expect(canCallWeather('drizzle', 'sun', 12).reason).toMatch(/chờ 12s/);
-    expect(canCallWeather('drizzle', 'sun', 0).ok).toBe(true);
+    expect(canCallWeather(abilitySource('drizzle'), 'rain', 0).reason).toMatch(/đang có/);
+    expect(canCallWeather(abilitySource('drizzle'), 'sun', 12).reason).toMatch(/chờ 12s/);
+    expect(canCallWeather(abilitySource('drizzle'), 'sun', 0).ok).toBe(true);
 
     const w = new World({ mode: 'adventure', seed: 7, width: 4000, height: 4000 });
     const plain = w.addPokemon('rattata', { level: 20 });
