@@ -12,6 +12,7 @@ import { skillFailText } from '../net/skillWire';
 import { keptMask, setKept } from '../core/keptSkills';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
+import { RideController } from '../adventure/RideController';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
 import { WEATHER_INFO, weatherName, weatherShort } from '../core/battleWeather';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
@@ -173,6 +174,7 @@ export class AdventureScene extends Phaser.Scene {
   selectedBall: BallId = 'pokeball';
   captureFx: CaptureFx | null = null;
   summons: PokemonSummonManager | null = null;
+  rides: RideController | null = null;
   env: EnvironmentController | null = null;
   /** Open capture window on a weakened legendary boss (all phases cleared) */
   legendCap: { unit: Unit; id: string; level: number; left: number; rule: LegendCaptureRule } | null = null;
@@ -317,6 +319,8 @@ export class AdventureScene extends Phaser.Scene {
         blocksShot: (x, y) => map.shotSolidAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX)),
         // bridges span the water: boats and swimmers pass under them
         isWater: (x, y) => { const t = map.terrainAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX)); return t === T.Water || t === T.Bridge; },
+        // a flying mount passes over water and lava, like a shot: buildings, fences, walls and the border stop it
+        blocksFly: (x, y) => map.shotSolidAt(Math.floor(x / TILE_PX), Math.floor((y + 6) / TILE_PX)),
       },
     });
     (window as unknown as { __adv: AdventureScene }).__adv = this;
@@ -333,7 +337,7 @@ export class AdventureScene extends Phaser.Scene {
       // (not when saved in a boat on the river)
       let { x, y } = adv.pos;
       const tx = Math.floor(x / TILE_PX), ty = Math.floor(y / TILE_PX);
-      if (!adv.boat && map.solidAt(tx, ty)) {
+      if (!adv.boat && !adv.ride && map.solidAt(tx, ty)) {
         search: for (let r = 1; r <= 12; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
           if (Math.max(Math.abs(dx), Math.abs(dy)) !== r || map.solidAt(tx + dx, ty + dy)) continue;
           x = (tx + dx + 0.5) * TILE_PX; y = (ty + dy + 0.5) * TILE_PX;
@@ -344,6 +348,7 @@ export class AdventureScene extends Phaser.Scene {
     } else this.world.teleport((region.spawn.x + 0.5) * TILE_PX, (region.spawn.y + 0.5) * TILE_PX);
     adv.started = true;
     this.summons = new PokemonSummonManager(this);
+    this.rides = new RideController(this);
     this.env = new EnvironmentController(this);
     this.applyParty();
     for (const a of this.world.allies) { a.x = this.world.trainer.x + 20; a.y = this.world.trainer.y + 20; }
@@ -1041,6 +1046,8 @@ export class AdventureScene extends Phaser.Scene {
     })));
     kb.on('keydown-SIX', guard(() => { if (shifted()) this.summons?.toggleSlot(5); }));
     kb.on('keydown-ZERO', guard(() => this.command('auto')));
+    // riding: Z climbs on / off, Shift+Z picks the next mount of the party
+    kb.on('keydown-Z', guard(() => { if (shifted()) this.rides?.cycle(); else this.rides?.toggle(); }));
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
       if (p.wasTouch) return;
       const wp = this.cameras.main.getWorldPoint(p.x, p.y);
@@ -1185,6 +1192,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateFishing(dt);
     this.updateErrands(dt);
     this.updateBoat(dt);
+    this.rides?.update(dt);
     this.updateMarket();
     this.updateTerritory();
     this.updateInteractables();
@@ -2722,6 +2730,11 @@ export class AdventureScene extends Phaser.Scene {
     const t = this.world.trainer;
     if (at && this.map.terrainAt(Math.floor(t.x / TILE_PX), Math.floor(t.y / TILE_PX)) === T.Water) this.boardBoat(at, false);
     else delete this.state.adv.boat;
+    // a save made on a mount resumes on its back; if it can't (it left the party), off any water / lava
+    if (this.state.adv.ride && !this.boating && !this.rides?.restore() && this.map.solidAt(Math.floor(t.x / TILE_PX), Math.floor(t.y / TILE_PX))) {
+      const sp = this.regionDef.spawn;
+      this.world.teleport((sp.x + 0.5) * TILE_PX, (sp.y + 0.5) * TILE_PX);
+    }
   }
 
   /** Legendary investigation: a faint glimmer on the ground for each clue not yet found (unlocked legends only). */
@@ -2929,6 +2942,7 @@ export class AdventureScene extends Phaser.Scene {
     const chk = canUse('boat', [], { has: (x) => this.state.hasFlag(x) });
     if (!chk.ok) return void (await this.say(k.name, [FIELD_ABILITIES.boat.hint]));
     if (this.battle || this.inCombat()) { this.ui.banner('Đang giao chiến — chưa xuống ghe được!', '#ffb060'); return; }
+    if (this.rides?.riding && !this.rides.dismount(true)) return;
     this.boardBoat(k, true);
   }
 

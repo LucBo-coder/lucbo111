@@ -1,3 +1,4 @@
+import { RIDE_SPRINT, rideModeFor, rideModesAt, rideSpeed, type RideMode } from './riding';
 import { abilitySource, BattleWeather, canCallWeather, castformTypes, deltaStreamMult, overridesStrong, speciesWeatherLock, strongWeatherBlocks, weatherBallSkill, WEATHER_LOCK_ABILITIES, HIT_CALL_COOLDOWN, LIGHTNING_CHIP, LIGHTNING_CHIP_BOSS, LIGHTNING_TICK, lightningImmune, loreDamageMult, loreSource, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherOfAbility, WEATHER_CALL_COOLDOWN, type WeatherSource } from './battleWeather';
 import { abilityEffect, rollAbilitySlot } from './abilities';
 import { randomTeraType } from './pokemonTraits';
@@ -44,6 +45,8 @@ export interface Terrain {
   blocksShot(x: number, y: number): boolean;
   /** Water surface (aquatic Pokémon swim here and only here) */
   isWater?(x: number, y: number): boolean;
+  /** A flying mount is stopped here (buildings, walls, the map border) — water and lava are flown over */
+  blocksFly?(x: number, y: number): boolean;
 }
 
 export type AllyCommand = 'auto' | 'attack' | 'defend' | 'follow' | 'hold' | 'retreat';
@@ -432,6 +435,9 @@ export class World {
   weatherMods: Partial<Record<PokeType, number>> = {};
   /** Weather called up by a Pokémon's ability (core/battleWeather.ts) */
   battleWeather: { kind: BattleWeather; until: number; by: string; byId: number | null; tied: boolean; strong?: boolean } | null = null;
+  /** The home trainer rides a party Pokémon (core/riding.ts); `mount` is only drawn under the trainer, it never fights. */
+  ride: { species: string; uid: string | null; modes: RideMode[]; mode: RideMode } | null = null;
+  mount: Unit | null = null;
   private lightningT = 0;
   private sandT = 0;
   /** Max Move fields (Max Flare's harsh sun, Max Geyser's rain…): type → boost and world time it ends (V31) */
@@ -974,6 +980,7 @@ export class World {
 
   teleport(x: number, y: number): void {
     this.trainer.x = x; this.trainer.y = y; this.trainer.lastX = x; this.trainer.lastY = y;
+    if (this.mount) { this.mount.x = x; this.mount.y = y; }
     for (const a of this.allies) { a.x = x + this.rng.range(-30, 30); a.y = y + this.rng.range(-30, 30); a.lastX = a.x; a.lastY = a.y; a.target = null; }
   }
 
@@ -1448,7 +1455,14 @@ export class World {
     let ix = side.input.x, iy = side.input.y;
     const len = Math.hypot(ix, iy);
     if (len > 1) { ix /= len; iy /= len; }
-    const speed = t.moveSpeed * (1 + this.mods.trainerSpeed) * this.slowFactor(t) * (side.run ? 1.6 : 1);
+    const ride = side === this.home ? this.ride : null;
+    if (ride) {
+      const m = rideModeFor(ride.modes, this.isWaterAt(t.x, t.y));
+      if (m) ride.mode = m;
+    }
+    // riding: the mount's own speed (Shift = gallop); walking: ×1.6 sprint
+    const pace = ride ? rideSpeed(ride.species, ride.mode) * (side.run ? RIDE_SPRINT : 1) : side.run ? 1.6 : 1;
+    const speed = t.moveSpeed * (1 + this.mods.trainerSpeed) * this.slowFactor(t) * pace;
     t.vx = ix * speed;
     t.vy = iy * speed;
     if (Math.abs(ix) > 0.05) t.facing = Math.sign(ix);
@@ -1458,6 +1472,58 @@ export class World {
     if (t.iframes > 0) t.iframes -= dt;
     if (t.hitFlash > 0) t.hitFlash -= dt;
     if (t.shieldT > 0 && (t.shieldT -= dt) <= 0) t.shield = 0;
+    if (ride && this.mount) this.syncMount(t);
+  }
+
+  // ───────────────────────────── riding ─────────────────────────────
+
+  private isWaterAt(x: number, y: number): boolean {
+    return !!this.terrain?.isWater?.(x, y);
+  }
+
+  /** Whether a mount with these modes can be at (x, y). */
+  rideAllows(modes: readonly RideMode[], x: number, y: number): boolean {
+    const t = this.terrain;
+    if (!t) return true;
+    if (modes.includes('fly') && !(t.blocksFly ?? t.blocksMove)(x, y)) return true;
+    if (modes.includes('swim') && this.isWaterAt(x, y)) return true;
+    return modes.includes('run') && !t.blocksMove(x, y);
+  }
+
+  /**
+   * The trainer climbs on a party Pokémon. False if it can't carry anyone at its level, or can't be where the
+   * trainer stands (a runner on the water…).
+   */
+  startRide(species: string, opts: { uid?: string | null; level: number; shiny?: boolean }): boolean {
+    const t = this.trainer;
+    const modes = rideModesAt(species, opts.level);
+    const mode = rideModeFor(modes, this.isWaterAt(t.x, t.y));
+    const def = POKEMON.get(species);
+    if (!mode || !def || !this.rideAllows(modes, t.x, t.y)) return false;
+    this.ride = { species, uid: opts.uid ?? null, modes, mode };
+    this.mount = this.blankUnit({
+      team: 'ally', kind: 'pokemon', defId: species, name: def.name, types: [...def.types], base: def.baseStats, level: opts.level,
+      radius: def.radius, x: t.x, y: t.y, shiny: !!opts.shiny, tag: 'mount', hostile: false,
+    });
+    this.syncMount(t);
+    return true;
+  }
+
+  /** Off the mount, where the trainer can stand (false over water / lava: stay on). */
+  stopRide(force = false): boolean {
+    if (!this.ride) return true;
+    const t = this.trainer;
+    if (!force && this.terrain?.blocksMove(t.x, t.y)) return false;
+    this.ride = null;
+    this.mount = null;
+    t.aquatic = false;
+    return true;
+  }
+
+  private syncMount(t: Unit): void {
+    const m = this.mount!;
+    m.x = t.x; m.y = t.y - 0.5; m.vx = t.vx; m.vy = t.vy; m.facing = t.facing;
+    m.aquatic = this.ride!.mode === 'swim';
   }
 
   // ───────────────────────────── allies ─────────────────────────────
@@ -3238,6 +3304,7 @@ export class World {
   private terrainBlocks(u: Unit, x: number, y: number): boolean {
     const t = this.terrain;
     if (!t) return false;
+    if (this.ride && u === this.trainer) return !this.rideAllows(this.ride.modes, x, y);
     return u.aquatic && t.isWater ? !t.isWater(x, y) : t.blocksMove(x, y);
   }
 

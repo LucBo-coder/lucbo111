@@ -1,3 +1,4 @@
+import { mountScale } from '../core/riding';
 import Phaser from 'phaser';
 import { PmdAnim, pmdAnimKey, pmdDir, pmdHas, pmdReady, pumpPmd } from './pmdPack';
 import { giantScale, primalScale } from '../core/gimmicks';
@@ -158,6 +159,8 @@ export class WorldRenderer {
     this.debugG.clear();
     this.debugCount = 0;
     this.debugLabels.forEach(t => t.setVisible(false));
+    // riding: the mount first, the trainer is then seated on its back
+    if (w.mount) this.syncUnit(w.mount);
     this.syncUnit(w.trainer);
     for (const a of w.allies) this.syncUnit(a);
     // PvP duel: the other player's trainer and Pokémon on the field (the bench is not drawn)
@@ -230,6 +233,8 @@ export class WorldRenderer {
     const formSize = !isBoss && u.megaFrom ? primalScale(species) : 1;
     const size = (isBoss ? Math.min(1.5, (bdef!.scale ?? 5.5) / 3) : u.alpha ? 1.7 : u.elite ? 1.35 : 1) * formSize;
     let base = profile.visualScale * size;
+    // a mount is drawn bigger than the trainer, more so for big species (official height, core/riding.ts)
+    if (u.tag === 'mount') base *= mountScale(species);
     if (!v) {
       const shadow = this.scene.add.image(u.x, u.y, 'shadow').setScale(base * 0.9, base * 0.9);
       if (u.elite) shadow.setTint(0xffd040).setAlpha(1);
@@ -340,6 +345,14 @@ export class WorldRenderer {
       v.shadow.setTintFill(0xd8f0ff).setAlpha(0.55).setScale(profile.shadowScale * size * v.grow * k, profile.shadowScale * size * v.grow * 0.5 * k);
       v.body.setY(pose.y + Math.sin(now * 0.004 + u.id) * 2);
     }
+    // riding (core/riding.ts): the trainer sits on the mount's back, drawn just in front of it, no shadow of its own
+    const mount = u === this.world.trainer ? this.world.mount : null;
+    const mv = mount ? this.views.get(mount.id) : null;
+    if (mv) {
+      // seated: the trainer's legs disappear behind the mount's body
+      v.body.setPosition(mv.body.x, mv.body.y - mv.body.displayHeight * 0.36).setDepth(mv.body.depth - 0.5);
+      v.shadow.setVisible(false);
+    }
     if (this.debugVisuals) this.drawVisualDebug(u, v, profile.flightHeight + air * 160);
 
     if (u.hitFlash > 0.08 && !isBoss) v.body.setTintFill(0xffffff);
@@ -408,7 +421,7 @@ export class WorldRenderer {
     // The visual foot/origin already includes flight height and render offsets.
     // Combat radius is unrelated to the gap between the artwork and its HUD.
     const barX = v.body.x, barY = v.body.y + 5;
-    if (u.kind === 'pokemon') {
+    if (u.kind === 'pokemon' && u.tag !== 'mount') {
       const bw = 36, x = barX - bw / 2, y = barY;
       bar(g, x, y, bw, 4, u.hp / u.maxHp, hpColor(u.hp / u.maxHp));
       bar(g, x, y + 5, bw, 2, u.energy / u.maxEnergy, 0x60a0ff);

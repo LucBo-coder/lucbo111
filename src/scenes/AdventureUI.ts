@@ -13,6 +13,7 @@ import { BossHUDController } from '../ui/BossHUDController';
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
+import { rideText } from '../core/riding';
 import { loreWeatherText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, weatherName, weatherShort, type BattleWeather } from '../core/battleWeather';
 
 const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT', thunderstorm: 'GIÔNG', wind: 'GIÓ' };
@@ -321,7 +322,7 @@ export class AdventureUI extends Phaser.Scene {
       // above the touch cluster when the column fits there (portrait), else a row left of it (landscape phones)
       const R = 34 * s, size = Math.round(R * 1.6), gap = 6 * s; // as big as the touch buttons
       const cx = W - 70 * s, cy = H - 80 * s, top = cy - 150 * s - R * 0.75;
-      const colTop = top - 12 * s - 4 * (size + gap);
+      const colTop = top - 12 * s - 5 * (size + gap); // up to five squares (Mega, Tera, Dynamax, weather, ride)
       if (colTop > this.miniBox.y + this.miniBox.h + 160 * s) this.gimmicks.build(size, W - 12 * s - size / 2, top - 12 * s - size / 2, 0, -(size + gap));
       else this.gimmicks.build(size, cx - 179 * s - 12 * s - size / 2, H - 14 * s - size / 2, -(size + gap), 0);
     } else {
@@ -596,6 +597,7 @@ export class AdventureUI extends Phaser.Scene {
     if (id === 'mega') this.adv.tryMega();
     else if (id === 'tera') this.adv.tryTera();
     else if (id === 'dyna') this.adv.tryDynamax();
+    else if (id === 'ride') this.adv.rides?.toggle();
     else this.adv.tryCallWeather();
   }
 
@@ -624,7 +626,17 @@ export class AdventureUI extends Phaser.Scene {
         ? { visible: true, icon: weatherIconKey('calm'), label: 'YÊN', color: 0xa0e0ff, ...timed(false, 0, 1, a.world.weatherCallCd(caller!), WEATHER_CALL_COOLDOWN, calmReady) }
         : { visible: !!caller, icon: weatherIconKey(kind), label: WEATHER_SHORT[kind], color: Phaser.Display.Color.HexStringToColor(WEATHER_INFO[kind].color).color,
           ...timed(bw?.kind === kind, a.world.battleWeatherLeft(), src?.duration ?? 40, caller ? a.world.weatherCallCd(caller) : 0, WEATHER_CALL_COOLDOWN, true) },
+      ride: this.rideView(),
     };
+  }
+
+  /** Ride button: the mount's picture; lit while riding, dim when riding is not possible here. */
+  private rideView(): GimmickSlotView {
+    const a = this.adv, r = a.world.ride, rides = a.rides;
+    const sp = r?.species ?? rides?.pick()?.species ?? null;
+    if (!rides || !sp || a.mapKind === 'dungeon') return { visible: !!r, icon: '', label: '', color: 0x80e0a0, state: 'blocked' };
+    const label = r ? (r.mode === 'fly' ? 'BAY' : r.mode === 'swim' ? 'BƠI' : 'CHẠY') : 'CƯỠI';
+    return { visible: true, icon: sheetKey(sp), frame: 0, label, color: 0x80e0a0, state: r ? 'active' : rides.blockedReason() ? 'blocked' : 'ready' };
   }
 
   private drawMinimap(): void {
@@ -1479,7 +1491,8 @@ export class AdventureUI extends Phaser.Scene {
     });
     const evs = ind.evs;
     c.add(text(this, r.x + 300 * s, r.y + 196 * s, `EV ${STAT_KEYS.map((k) => evs?.[k] ?? 0).join('/')}  ·  tổng ${evs ? evTotal(evs) : 0}/${EV_MAX_TOTAL}`, 13 * s, '#ffd8a0'));
-    const lore = loreWeatherText(p.species);
+    const ride = rideText(p.species, p.level);
+    const lore = [loreWeatherText(p.species), ride].filter(Boolean).join('\n') || null;
     c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Ability: ${abilityEffect(p.species, p.abilitySlot).name}${abilityOf(p.species, p.abilitySlot).hidden ? ' (ẩn)' : ''}\n${abilityEffect(p.species, p.abilitySlot).description}${lore ? `\n${lore}` : ''}`, (lore ? 13 : 14) * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
     def.skills.forEach((id, i) => {
       const sk = getSkill(id), mv = MOVES[id];

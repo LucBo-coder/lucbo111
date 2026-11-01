@@ -1,18 +1,19 @@
 import Phaser from 'phaser';
 import { text } from './ui';
 
-// Battle-feature buttons (Mega, Terastal, Dynamax, weather call) in the bottom-right corner: a square frame per
+// Battle-feature buttons (Mega, Terastal, Dynamax, weather call) and the ride button in the bottom-right corner: a square frame per
 // feature with its icon, the key, and a timer — the time left while it is in use (bar along the bottom + seconds),
 // the recharge while it cools down (dark fill draining from the top + seconds). Click / tap = use it.
 // The bar only draws; AdventureUI fills a view per slot each frame from the scene's gimmick state.
 
-export type GimmickId = 'mega' | 'tera' | 'dyna' | 'weather';
+export type GimmickId = 'mega' | 'tera' | 'dyna' | 'weather' | 'ride';
 
 export interface GimmickSlotView {
   /** shown at all (the key item is in the bag / a weather Pokémon is out) */
   visible: boolean;
-  /** texture key of the icon */
+  /** texture key of the icon (and its frame, for a sprite sheet) */
   icon: string;
+  frame?: number;
   /** short name under the icon when there is no timer */
   label: string;
   /** frame colour */
@@ -41,6 +42,7 @@ const ORDER: { id: GimmickId; key: string }[] = [
   { id: 'tera', key: 'Y' },
   { id: 'dyna', key: 'B' },
   { id: 'weather', key: 'C' },
+  { id: 'ride', key: 'Z' },
 ];
 
 export class GimmickBar {
@@ -100,7 +102,7 @@ export class GimmickBar {
       i++;
       s.c.setPosition(x, y);
       // icon: pixel art scaled to ~60% of the square
-      if (s.icon.texture.key !== v.icon && this.scene.textures.exists(v.icon)) s.icon.setTexture(v.icon);
+      if (s.icon.texture.key !== v.icon && this.scene.textures.exists(v.icon)) s.icon.setTexture(v.icon, v.frame);
       const src = s.icon.frame;
       s.icon.setScale((z * 0.56) / Math.max(src.width, src.height, 1));
       const dim = v.state === 'blocked' || v.state === 'cooldown';

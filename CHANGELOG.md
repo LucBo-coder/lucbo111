@@ -1,5 +1,20 @@
 # Changelog
 
+## Chưa phát hành — Cưỡi Pokémon
+
+- **Phím Z (hoặc ô "CƯỠI" ở góc phải): leo lên / xuống Pokémon trong đội.** Trainer ngồi trên lưng, thú cưỡi được vẽ to hơn bình thường (theo chiều cao thật của loài).
+  - **Chạy** trên đất: Pokémon cao từ 1 m, nặng từ 40 kg, không phải cá, Lv 15+ (Rapidash, Arcanine, Tauros, Snorlax…).
+  - **Bơi** trên nước: hệ Nước (hoặc cá) cao từ 1 m, nặng từ 30 kg, Lv 20+ (Lapras, Gyarados, Sharpedo, Wailord…).
+  - **Bay** qua sông hồ, dung nham: hệ Bay cao từ 1,2 m, nặng từ 20 kg, Lv 30+ (Charizard, Pidgeot, Dragonite…), cùng Latios / Latias. Nhà cửa, tường, hàng rào, cây, đá vẫn chặn.
+- **Tốc độ theo chỉ số Speed của loài**, mỗi kiểu một khoảng: chạy ×1,1–2,0, bơi ×0,9–1,7, bay ×1,3–2,2 so với đi bộ. Ví dụ Rapidash chạy ×1,85, Snorlax ×1,35, Charizard bay ×1,97. Giữ Shift khi cưỡi: nhanh thêm 20%.
+- **Shift+Z** chọn thú cưỡi tiếp theo trong đội (game nhớ lựa chọn); không chọn thì Z lấy con nhanh nhất đi được chỗ đang đứng (ưu tiên con bay).
+- **Tới bờ nước tự đổi thú cưỡi:** đang chạy mà đi xuống nước thì đổi sang con bơi giỏi nhất trong đội; đang bơi mà lên bờ thì đổi sang con chạy (không có thì bước lên bờ).
+- Pokémon đang ra sân mà được chọn để cưỡi thì vào bóng, xuống thì ra lại. Pokémon đi theo bị bỏ lại ở bờ sẽ nhảy tới cạnh trainer.
+- Không cưỡi được trong hang động, khi đi ghe, khi đang giao chiến. Đánh nhau trên đất thì tự xuống; giữa nước hay trên trời thì không xuống được.
+- Lưu khi đang cưỡi: tải lại vẫn ngồi trên lưng thú cưỡi đó.
+- Chi tiết Pokémon có dòng "Cưỡi: Chạy ×1.85 · Bay ×1.97 (từ Lv 30)". Hướng dẫn (K) có mục Z và Shift+Z.
+- Quy tắc trong `src/core/riding.ts`, điều khiển trong `src/adventure/RideController.ts`. Test `v35_riding` (7), e2e `v35_riding`.
+
 ## Chưa phát hành — Thời tiết mạnh, Air Lock / Cloud Nine, Weather Ball
 
 Theo luật bản chính thức (docs/weather-pokemon-research.md §1.2 #3, #4, #5, #8):

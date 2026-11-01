@@ -53,6 +53,10 @@ export interface AdventureSave {
   boulders?: Record<string, [number, number]>;
   /** Dock id while the player is out on the river in a boat (resumes in the boat after a reload) */
   boat?: string;
+  /** uid of the party Pokémon the trainer rides (resumes on its back after a reload) */
+  ride?: string;
+  /** the mount picked with Shift+Z (Z uses it first where it can go) */
+  rideUid?: string;
   /** In-game days passed (the clock wrapped past midnight) */
   day?: number;
   /** Chợ nổi Cái Răng: what was bought on the current market day (limited stock per day) */
