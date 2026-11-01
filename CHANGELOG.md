@@ -1,5 +1,31 @@
 # Changelog
 
+## Chưa phát hành — Pokémon gọi thời tiết; sửa thua boss ở đền huyền thoại
+
+- **Pokémon gọi thời tiết** (đặc tính như game gốc): khi vào trận, Pokémon có đặc tính thời tiết gọi thời tiết trong 40 s (Biển Nguyên Thủy / Đất Khô Cằn của dạng Primal: 90 s). Một thời tiết mỗi lúc, cái mới thay cái cũ; mỗi lần ra sân gọi một lần.
+  - **Mưa** (Drizzle — Pelipper, Politoed, Kyogre): hệ Nước +50%, hệ Lửa −50%.
+  - **Nắng gắt** (Drought — Torkoal, Vulpix / Ninetales, Groudon; Koraidon): hệ Lửa +50%, hệ Nước −50%.
+  - **Bão cát** (Sand Stream — Tyranitar, Hippopotas / Hippowdon, Gigalith; Sand Spit — Silicobra / Sandaconda): mọi Pokémon trong trận trừ hệ Đá / Đất / Thép mất máu dần (không gục vì cát; boss mất rất ít), hệ Đá chịu đòn đặc biệt tốt hơn.
+  - **Tuyết** (Snow Warning — Snover / Abomasnow, Vanilluxe, Amaura / Aurorus): hệ Băng chịu đòn vật lý tốt hơn.
+  - Cả Pokémon của bạn, Pokémon hoang dã, HLV và **boss** (Torkoal ở Vĩnh Long, Gigalith ở Lạng Sơn, Abomasnow ở Lào Cai, Tyranitar, Kyogre, Groudon…) đều gọi được.
+  - **Gọi chủ động (phím C, cảm ứng: nút Trời)**: Pokémon của bạn trên sân có đặc tính thời tiết gọi ngay, kể cả trước khi vào trận (chuẩn bị đánh boss) hoặc để giành lại khi đối thủ đổi thời tiết. Mỗi lần gọi (tự động hay chủ động) chờ 60 s mới gọi lại; không gọi được khi thời tiết đó đang có. HUD hiện "[C] Gọi Mưa (Pelipper)" / thời gian chờ (bấm được); nút Trời chỉ hiện khi có Pokémon gọi được, mờ đi và đếm giây khi đang chờ.
+  - Màn hình đổi theo: mưa rơi, nắng nóng, gió cát, tuyết; thông báo ai gọi thời tiết gì. **Đồng hồ ghi thời tiết đang có** (trước đây vẫn ghi "Nắng" của bầu trời trong lúc mưa do Pelipper gọi); dòng dưới đồng hồ ghi ai gọi, số giây còn lại và tác dụng.
+  - Trang chi tiết Pokémon ghi đúng tác dụng của đặc tính (trước đây là "+5% chí mạng" thay thế). Drought của Groudon không còn cộng dồn +50% với nắng.
+  - `src/core/battleWeather.ts` (luật thuần). Test `v32_weather` (9).
+- **Sửa: thua boss ở đền huyền thoại bị kẹt** — các tầng đền (Tầng Trời, Hang Băng Vĩnh Cửu…) không có trạm dịch chuyển nên lúc hồi phục game báo lỗi mỗi khung hình và màn "Bạn đã kiệt sức" lặp mãi. Giờ bạn tỉnh lại ở lối vào của tầng đó.
+- **Sửa: thua thì boss vẫn giữ máu cũ** — thua là trận kết thúc: boss huyền thoại / đền / boss khu vực rời đi, phong ấn mở, lần sau đánh lại từ đầu (đầy máu, phase 1). Huyền thoại lang thang vẫn bỏ chạy và giữ máu như trước (đúng thiết kế lang thang).
+- Sửa: hiệu ứng tuyết / nắng nóng không được tạo lại sau khi đổi bản đồ.
+- e2e `v32_boss_weather`: thua Rayquaza ở Tầng Trời → tỉnh lại ở lối vào, đi được, đánh lại boss đầy máu; Pelipper gọi mưa bằng phím C (đồng hồ ghi Mưa) và tự gọi khi vào trận (thông báo, HUD, mưa trên màn hình), bão cát.
+
+## Chưa phát hành — Giao diện: không chồng chữ, túi đồ chia ngăn
+
+- **Túi đồ chia 6 ngăn**: Bóng · Hồi phục · Trang bị · Tiến hóa (đá + Mega Stone) · Kẹo & EV · Quan trọng; mỗi ngăn ghi số loại, chỉ hiện vật phẩm đang có, ngăn trống có lời hướng dẫn. Bóng đang dùng có viền vàng. Trước đây mọi thứ trộn chung (13 trang).
+- **Cài đặt** xếp thành mục có tiêu đề (Đồ họa, Âm thanh, Sprite chính thức, Trò chơi, Điều khiển), 2 cột trên máy tính, 1 cột trên điện thoại; nút mở bảng phím (K).
+- **Không còn chồng chữ**: bản đồ (danh sách tỉnh đè nút Hộ chiếu trên điện thoại), Cài đặt (dòng sprite đè nút), Pokédex (tiêu đề chạy dưới nút Điều kiện hiếm), mô tả vật phẩm 2 dòng tràn khỏi ô, icon vật phẩm quá to.
+- **Điện thoại ngang**: menu dùng hết bề ngang màn hình (trước chỉ khoảng 2/3). Nhiệm vụ: bộ lọc chia 2 hàng trên điện thoại dọc.
+- **HUD cảm ứng**: bỏ gợi ý phím bàn phím ([F], [R], [H], `` ` 1-5``), dòng chữ dưới trái không chạy vào cụm nút.
+- e2e `ui_layout`: mở mọi tab menu (kể cả 6 ngăn túi đồ, chi tiết Pokémon) trên máy tính, điện thoại dọc và ngang; báo chữ ra ngoài màn hình hoặc đè lên nhau.
+
 ## Chưa phát hành — V31: Terastal, Dynamax / Gigantamax, dạng Primal
 
 - **Terastal** (phím **Y**, Quả Cầu Tera nhận sau boss thứ 2): Pokémon trên sân thành Hệ Tera 60 s — đổi hệ phòng thủ, STAB Tera (×2 nếu trùng hệ gốc), sức mạnh tối thiểu 60. Lớp pha lê màu hệ + vương miện Tera, kích thước giữ nguyên. **Mảnh Tera** (10 mảnh) đổi Hệ Tera.

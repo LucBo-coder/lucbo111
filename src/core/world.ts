@@ -1,3 +1,4 @@
+import { BattleWeather, canCallWeather, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherDuration, weatherOfAbility, WEATHER_CALL_COOLDOWN } from './battleWeather';
 import { abilityEffect, rollAbilitySlot } from './abilities';
 import { randomTeraType } from './pokemonTraits';
 import { computeDamage } from './damage';
@@ -138,6 +139,10 @@ export interface Unit {
   passive: PassiveDef | null;
   abilitySlot?: number;
   abilityReadyAt?: number;
+  /** its weather ability already went off since it came out (once per entry, as in the games) */
+  weatherCalled?: boolean;
+  /** world time of its last weather call (cooldown of the player's own call) */
+  weatherCallAt?: number;
   target: Unit | null;
   aiTimer: number;
   castSlot: number;
@@ -307,7 +312,9 @@ export type WorldEvent =
   /** Survivor Elemental Combo went off */
   | { t: 'combo'; name: string; x: number; y: number; type: PokeType }
   /** A player-triggered (active) skill was cast, or its request ran out / became invalid (ok: false) */
-  | { t: 'manual'; id: number; skill: string; ok: boolean };
+  | { t: 'manual'; id: number; skill: string; ok: boolean }
+  /** A Pokémon's ability called a weather (kind) or the weather ended (kind: null) */
+  | { t: 'weather'; kind: BattleWeather | null; by?: string; team?: Team; duration?: number; x?: number; y?: number };
 
 export type WorldState = 'playing' | 'levelup' | 'gameover' | 'victory' | 'duelOver';
 
@@ -421,6 +428,9 @@ export class World {
   env = { night: false, weather: 'clear' as WeatherKind };
   /** Weather-anomaly damage multipliers per move type (set by world events) */
   weatherMods: Partial<Record<PokeType, number>> = {};
+  /** Weather called up by a Pokémon's ability (core/battleWeather.ts) */
+  battleWeather: { kind: BattleWeather; until: number; by: string } | null = null;
+  private sandT = 0;
   /** Max Move fields (Max Flare's harsh sun, Max Geyser's rain…): type → boost and world time it ends (V31) */
   maxFields: Partial<Record<PokeType, { mult: number; until: number }>> = {};
   private reviveTime: number;
@@ -950,6 +960,7 @@ export class World {
 
   respawnTrainer(x: number, y: number): void {
     this.teleport(x, y);
+    if (this.battleWeather) this.endBattleWeather();
     this.healParty();
     for (const a of this.allies) { a.castSlot = -1; a.dash = null; }
     for (const e of this.enemies) if (e.hostile && e.wild) { e.hostile = false; e.target = null; }
@@ -1050,6 +1061,88 @@ export class World {
     return u;
   }
 
+  // ───────────────────────────── called weather ─────────────────────────────
+
+  /** The weather ability of a unit: its own ability, or (bosses) the ordinary ability of its species. */
+  weatherAbility(u: Unit): string | null {
+    if (u.passive && weatherOfAbility(u.passive.id)) return u.passive.id;
+    if (u.kind === 'boss') return speciesWeatherAbility(u.defId);
+    return null;
+  }
+
+  setBattleWeather(kind: BattleWeather, duration: number, by: Unit | null): void {
+    this.battleWeather = { kind, until: this.time + duration, by: by?.name ?? '' };
+    this.sandT = 0;
+    this.emit({ t: 'weather', kind, by: by?.name, team: by?.team, duration, x: by?.x, y: by?.y });
+  }
+
+  endBattleWeather(): void {
+    this.battleWeather = null;
+    this.emit({ t: 'weather', kind: null });
+  }
+
+  /** Seconds before this unit may call its weather on command again. */
+  weatherCallCd(u: Unit): number {
+    return u.weatherCallAt == null ? 0 : Math.max(0, u.weatherCallAt + WEATHER_CALL_COOLDOWN - this.time);
+  }
+
+  /** The unit calls its weather now (the ability going off on entry, or the player's own call). */
+  callWeather(u: Unit): void {
+    const ab = this.weatherAbility(u);
+    const kind = weatherOfAbility(ab);
+    if (!ab || !kind) return;
+    u.weatherCalled = true;
+    u.weatherCallAt = this.time;
+    // the same weather already up: only refreshed
+    this.setBattleWeather(kind, Math.max(weatherDuration(ab), this.battleWeather?.kind === kind ? this.battleWeatherLeft() : 0), u);
+  }
+
+  /** Player's own call (key C): the first of the trainer's Pokémon on the field with a weather ability. */
+  playerWeatherCaller(): Unit | null {
+    return this.allies.find((a) => a.kind === 'pokemon' && a.alive && !a.fainted && !!this.weatherAbility(a)) ?? null;
+  }
+
+  tryCallWeather(): { ok: boolean; reason?: string; unit?: Unit } {
+    const u = this.playerWeatherCaller();
+    const check = canCallWeather(u ? this.weatherAbility(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0);
+    if (!check.ok || !u) return check;
+    this.callWeather(u);
+    return { ok: true, unit: u };
+  }
+
+  /** Seconds the called weather still lasts (0 = none). */
+  battleWeatherLeft(): number {
+    return this.battleWeather ? Math.max(0, this.battleWeather.until - this.time) : 0;
+  }
+
+  private updateBattleWeather(dt: number): void {
+    // a weather Pokémon calls its weather the moment it joins a fight (once per time it comes out)
+    const consider = (u: Unit, engaged: boolean) => {
+      if (u.weatherCalled || !u.alive || u.fainted || u.captured) return;
+      const ab = this.weatherAbility(u);
+      if (!ab) { u.weatherCalled = true; return; }
+      if (!engaged) return;
+      this.callWeather(u);
+    };
+    for (const side of this.sides()) for (const a of side.allies) consider(a, !!a.target?.alive);
+    for (const e of this.enemies) consider(e, e.hostile && (!!e.target || e.kind === 'boss'));
+    const w = this.battleWeather;
+    if (!w) return;
+    if (this.time >= w.until) { this.endBattleWeather(); return; }
+    if (w.kind !== 'sand') return;
+    this.sandT += dt;
+    if (this.sandT < SAND_TICK) return;
+    this.sandT -= SAND_TICK;
+    // sandstorm wears everyone in the fight down, but never finishes anyone off
+    const hurt = (u: Unit) => {
+      if (!u.alive || u.fainted || u.captured || sandImmune(u.types) || u.hp <= 1) return;
+      const amount = Math.min(u.hp - 1, Math.max(1, u.maxHp * (u.kind === 'boss' ? SAND_CHIP_BOSS : SAND_CHIP)));
+      this.applyDamage(u, amount, null, false, 1, true);
+    };
+    for (const side of this.sides()) for (const a of side.allies) hurt(a);
+    for (const e of this.enemies) if (e.hostile) hurt(e);
+  }
+
   /** Restores a boss's phase from a save checkpoint (mid-cinematic saves resume ACTIVE in that phase). */
   restoreBossPhase(b: Unit, snap: PhaseSnapshot | null | undefined): void {
     const st = b.boss;
@@ -1138,6 +1231,7 @@ export class World {
     this.separateEnemies();
     this.updateProjectiles(dt);
     this.updateZones(dt);
+    this.updateBattleWeather(dt);
     if (this.mode === 'survivor' && (this.synergyT -= dt) <= 0) {
       this.synergyT = 1;
       this.synergy = partySynergy(this.allies.map((a) => a.types));
@@ -2594,6 +2688,7 @@ export class World {
       if (atkUp) modifier *= 1 + atkUp.magnitude;
       const wm = this.weatherMods[s.type];
       if (wm) modifier *= wm;
+      modifier *= weatherDamageMult(this.battleWeather?.kind ?? null, s.type, s.category, dst.types);
       const mf = this.maxFields[s.type];
       if (mf && this.time < mf.until) modifier *= mf.mult;
       // Dynamax: every move is a Max Move
@@ -2606,7 +2701,8 @@ export class World {
       const pv = src.passive;
       if (pv?.kind === 'pinch' && s.type === pv.type && src.hp / src.maxHp < (pv.threshold ?? 0.33)) modifier *= pv.mult ?? 1.5;
       if (pv?.kind === 'guts' && src.statuses.length) modifier *= pv.mult ?? 1.5;
-      if (pv?.kind === 'typeBoost' && s.type === pv.type) modifier *= pv.mult ?? 1.5;
+      // a weather ability (Groudon's Drought…) works through the weather it calls, not as a flat boost
+      if (pv?.kind === 'typeBoost' && s.type === pv.type && !weatherOfAbility(pv.id)) modifier *= pv.mult ?? 1.5;
       if (pv?.kind === 'meleeBoost' && (s.kind === 'melee' || s.kind === 'dash')) modifier *= pv.mult ?? 1.3;
       if (pv?.kind === 'projectileBoost' && (s.kind === 'projectile' || s.kind === 'beam')) modifier *= pv.mult ?? 1.5;
       if (pv?.kind === 'physicalBoost' && s.category === 'physical') modifier *= pv.mult ?? 2;

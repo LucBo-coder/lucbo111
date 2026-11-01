@@ -13,6 +13,7 @@ import { keptMask, setKept } from '../core/keptSkills';
 import { EnvironmentController } from '../adventure/EnvironmentController';
 import { music, Mood } from '../systems/music';
 import { PokemonSummonManager } from '../adventure/PokemonSummonManager';
+import { WEATHER_INFO } from '../core/battleWeather';
 import { AdventureState, EvoEnv, HEAL_POWER, ITEMS, STARTERS } from '../adventure/AdventureState';
 import { repShop, REP_DISCOUNT, SPECIALTY_TIER } from '../core/shop';
 import { canMega, ITEM_DEFS, MEGA_COOLDOWN, MEGA_DURATION, MEGA_IDLE_REVERT, megaFormsOf } from '../core/evolution';
@@ -158,6 +159,7 @@ export class AdventureScene extends Phaser.Scene {
   private distortG: Phaser.GameObjects.Graphics | null = null;
   private snow: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
   private heat: Phaser.GameObjects.Rectangle | null = null;
+  private sandFx: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
   dungeon: DungeonController | null = null;
   mapKind: 'valley' | 'dungeon' = 'valley';
   difficulty: Difficulty = 'normal';
@@ -283,6 +285,9 @@ export class AdventureScene extends Phaser.Scene {
     this.evoQueue = new Set();
     this.evoBusy = false;
     this.rain = null;
+    this.snow = null;
+    this.heat = null;
+    this.sandFx = null;
     this.fog = null;
     this.dark = undefined as unknown as Phaser.GameObjects.Rectangle; // previous run's objects are destroyed on restart
     this.acc = 0;
@@ -314,6 +319,7 @@ export class AdventureScene extends Phaser.Scene {
     });
     (window as unknown as { __adv: AdventureScene }).__adv = this;
     (window as unknown as { __passport: typeof passportPages }).__passport = passportPages;
+    (window as unknown as { __advItems: typeof ITEMS }).__advItems = ITEMS; // e2e: the full item list (bag layout test)
 
     // Position: dungeon start, saved position, or region spawn
     const region = this.regionDef;
@@ -852,10 +858,21 @@ export class AdventureScene extends Phaser.Scene {
       } else if (!this.snow.emitting) this.snow.start();
     } else if (this.snow?.emitting) this.snow.stop();
     if (!this.heat) this.heat = this.add.rectangle(0, 0, this.scale.width * 4, this.scale.height * 4, 0xff8020, 0).setOrigin(0).setScrollFactor(0).setDepth(9680);
-    const ha = wk === 'heatwave' || theme === 'volcanic' ? (theme === 'volcanic' ? 0.08 : 0.12) + Math.sin(this.time.now * 0.003) * 0.03 : 0;
+    // sandstorm (Sand Stream): a sandy haze and grains blown sideways
+    const sand = this.world.battleWeather?.kind === 'sand' && amount > 0;
+    if (sand) {
+      if (!this.sandFx) {
+        this.sandFx = this.add.particles(0, 0, 'px', {
+          x: { min: this.scale.width * 0.3, max: this.scale.width + 200 }, y: { min: -50, max: this.scale.height + 50 }, lifespan: 1400, speedX: { min: -1100, max: -750 }, speedY: { min: 40, max: 140 },
+          scaleX: { min: 5, max: 11 }, scaleY: 2, alpha: { start: 0.95, end: 0.35 }, quantity: Math.max(1, Math.round(5 * amount)), frequency: 25, tint: [0xf0d890, 0xe0b868, 0xfff0c0],
+        }).setScrollFactor(0).setDepth(9690);
+      } else if (!this.sandFx.emitting) this.sandFx.start();
+    } else if (this.sandFx?.emitting) this.sandFx.stop();
+    const ha = sand ? 0.36 : wk === 'heatwave' || theme === 'volcanic' ? (theme === 'volcanic' ? 0.08 : 0.12) + Math.sin(this.time.now * 0.003) * 0.03 : 0;
+    this.heat.fillColor = sand ? 0xc89850 : 0xff8020;
     if (theme === 'volcanic' && Math.random() < 0.25 * amount) { const v = cam.worldView; this.renderer_.vfx.emit('fire', v.x + Math.random() * v.width, v.y + v.height, 1); }
     if (theme === 'sanctuary' && Math.random() < 0.3 * amount) { const v = cam.worldView; this.renderer_.vfx.emit('fairy', v.x + Math.random() * v.width, v.y + Math.random() * v.height, 1); }
-    this.heat.setFillStyle(0xff8020, this.heat.fillAlpha + (ha - this.heat.fillAlpha) * Math.min(1, dt * 2));
+    this.heat.setFillStyle(this.heat.fillColor, this.heat.fillAlpha + (ha - this.heat.fillAlpha) * Math.min(1, dt * 2));
     // distortion zones: pulsing violet rings + motes
     const zones = this.worldEvents?.distortions() ?? [];
     if (!this.distortG) this.distortG = this.add.graphics().setDepth(5);
@@ -928,8 +945,11 @@ export class AdventureScene extends Phaser.Scene {
       }
     }
     this.world.env.night = this.isNight();
-    const wk = this.effectiveWeather();
-    this.world.env.weather = wk;
+    const sky = this.effectiveWeather();
+    this.world.env.weather = sky;
+    // a weather called by a Pokémon's ability takes over the look of the sky while it lasts
+    const bw = this.world.battleWeather?.kind;
+    const wk: WeatherKind = bw === 'rain' ? (sky === 'thunderstorm' || sky === 'heavyRain' ? sky : 'rain') : bw === 'sun' ? 'heatwave' : bw === 'snow' ? 'blizzard' : sky;
     const wet = wk === 'rain' || wk === 'heavyRain' || wk === 'thunderstorm';
     const foggy = wk === 'fog' || wk === 'mysticFog';
     const dk = this.darkness() + (wk === 'thunderstorm' ? 0.25 : wet ? 0.15 : foggy ? 0.06 : 0);
@@ -985,6 +1005,7 @@ export class AdventureScene extends Phaser.Scene {
     kb.on('keydown-G', guard(() => this.tryMega()));
     kb.on('keydown-Y', guard(() => this.tryTera()));
     kb.on('keydown-B', guard(() => this.tryDynamax()));
+    kb.on('keydown-C', guard(() => this.tryCallWeather()));
     // Q = the Pokémon on the field uses its best ready skill now · T = quick switch wheel (one Pokémon per trainer)
     kb.on('keydown-Q', guard(() => this.manualSkill('best')));
     kb.on('keydown-T', guard(() => this.ui?.toggleSwitchWheel()));
@@ -1199,6 +1220,15 @@ export class AdventureScene extends Phaser.Scene {
         continue;
       }
       if (e.t === 'bossWeakenedExpired') { if (this.legendCap?.unit.id === e.id) this.legendFlee('hồi sức'); continue; }
+      if (e.t === 'weather') {
+        if (e.kind) {
+          const info = WEATHER_INFO[e.kind];
+          const head = !e.by ? `${info.name} nổi lên!` : e.team === 'ally' ? `${e.by} gọi ${info.name}!` : `${e.by} (đối thủ) gọi ${info.name}!`;
+          this.ui?.banner(`${info.icon} ${head} ${info.short} · ${Math.round(e.duration ?? 0)}s`, info.color);
+          if (e.x != null && e.y != null) this.renderer_.vfx.ring(e.x, e.y, 90, Phaser.Display.Color.HexStringToColor(info.color).color, 600);
+        } else this.ui?.banner('Thời tiết trở lại bình thường', '#c0d8ff');
+        continue;
+      }
       const down = e.t === 'death' ? e : e.t === 'bossWeakened' ? { ...e, t: 'death' as const, elite: false, boss: true, wild: false } : null;
       if (!down || !down.id) continue;
       this.handleDown(down);
@@ -1907,6 +1937,12 @@ export class AdventureScene extends Phaser.Scene {
     const u = this.gimmickLead();
     const factor = !!(u?.ownerUid && this.state.owned(u.ownerUid)?.gmax);
     return { ...canDynamax(this.gimmickUnit(u), this.state.item('dynamax-band') > 0, !!this.dynaUnit, this.dynaCd, factor), ally: u ?? undefined };
+  }
+
+  /** Key C / touch button: a Pokémon of yours on the field with a weather ability calls its weather now. */
+  tryCallWeather(): void {
+    const r = this.world.tryCallWeather();
+    if (!r.ok) this.ui.banner(r.reason ?? 'Không thể gọi thời tiết', '#ff9080');
   }
 
   tryTera(): void {
@@ -3248,6 +3284,14 @@ export class AdventureScene extends Phaser.Scene {
     this.blackoutT = 1.6;
     this.cameras.main.fadeOut(900, 0, 0, 0);
     this.ui.banner('Bạn đã kiệt sức...', '#ff6060');
+    // a lost legendary / shrine / site boss fight is over: the boss goes back (full HP and phase 1 next time — its
+    // checkpoint is dropped, the shrine's seal opens); a roamer flees as it does when its time is up
+    if (this.worldBoss?.alive) {
+      const name = this.worldBoss.name;
+      this.abandonWorldBoss();
+      this.time.delayedCall(2600, () => this.ui?.banner(`${name} đã rời đi. Lần sau trận đấu bắt đầu lại từ đầu.`, '#c8d8ff'));
+    }
+    this.legendsMgr?.cleanup();
     if (this.battle) {
       const tr = this.regionDef.trainers.find((t) => t.id === this.battle!.id);
       for (const u of this.battle.units) if (u.alive) this.world.removeEnemy(u);
@@ -3260,7 +3304,9 @@ export class AdventureScene extends Phaser.Scene {
   private finishBlackout(): void {
     if (this.mapKind === 'dungeon') { this.leaveDungeon(false); return; }
     const region = this.regionDef;
-    const wp = region.waypoints.find((w) => w.id === this.state.adv.lastWaypoint) ?? region.waypoints[0];
+    // shrine planes and other small maps have no waypoint: wake up at the map's entrance instead
+    const wp = region.waypoints.find((w) => w.id === this.state.adv.lastWaypoint) ?? region.waypoints[0]
+      ?? { x: region.spawn.x, y: region.spawn.y - 1.1, name: `lối vào ${region.name}` };
     this.world.respawnTrainer((wp.x + 0.5) * TILE_PX, (wp.y + 1.6) * TILE_PX);
     this.summons?.healRecalled();
     // back on its feet with the first Pokémon of the party out (everyone was healed)

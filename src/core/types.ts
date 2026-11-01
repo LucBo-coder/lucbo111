@@ -79,6 +79,7 @@ export type PassiveKind =
   | 'guts' // +`mult` damage while afflicted by any status
   | 'sturdy' // survive a lethal hit at 1 HP (internal cooldown `value` s)
   | 'moveSpeed' // Chlorophyll: +`value` move speed
+  | 'weather' // Drizzle / Drought / Sand Stream / Snow Warning: calls a weather when it joins a fight (core/battleWeather.ts)
   | 'statusImmune' // Shield Dust / Inner Focus: immune to `immune` statuses from enemies
   | 'contactStatus' // Static: melee/dash attackers get `status`
   | 'typeResist' // Thick Fat: damage from `types` x `mult`

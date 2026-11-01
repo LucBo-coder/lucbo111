@@ -2,6 +2,7 @@ import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { POKEMON } from './data';
 import type { PassiveDef } from './types';
+import { weatherAbilityText, weatherOfAbility } from './battleWeather';
 
 type AbilityEntry = { name: string; hidden: boolean };
 const species = { ...cache.species, ...fakemon } as unknown as Record<string, { abilities?: AbilityEntry[] }>;
@@ -37,6 +38,7 @@ export function abilityEffect(speciesId: string, slot = 0): PassiveDef {
   if (id === 'huge-power' || id === 'pure-power') return { ...base, kind: 'physicalBoost', mult: 2, description: 'Sát thương vật lý nhân đôi.' };
   if (id === 'technician') return { ...base, kind: 'weakMoveBoost', mult: 1.5, description: 'Chiêu có sức mạnh không quá 60 gây thêm 50% sát thương.' };
   if (id === 'adaptability') return { ...base, kind: 'stabBoost', mult: 4 / 3, description: 'Tăng thêm 33% sát thương chiêu cùng hệ đang được hưởng STAB.' };
+  if (weatherOfAbility(id)) return { ...base, kind: 'weather', description: weatherAbilityText(id) };
   if (id === 'battle-armor' || id === 'shell-armor') return { ...base, kind: 'critImmune', description: 'Không nhận đòn chí mạng.' };
   const effect = effects.get(id);
   if (effect) return { ...effect };

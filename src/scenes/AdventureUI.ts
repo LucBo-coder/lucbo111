@@ -13,6 +13,7 @@ import { BossHUDController } from '../ui/BossHUDController';
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
+import { weatherOfAbility, WEATHER_INFO } from '../core/battleWeather';
 import { BALL_ORDER, BALLS, BallId } from '../core/capture';
 import { getSkill, POKEMON } from '../core/data';
 import { chunkCols, chunkRows } from '../core/map/mapProvider';
@@ -47,7 +48,7 @@ import { saveStore } from '../systems/save';
 import { fitScale, itemIconKey, officialPack } from '../render/spriteRegistry';
 import type { QualitySetting } from '../systems/saveSchema';
 import { AdventureScene, COMMANDS } from './AdventureScene';
-import { askText, button, COLORS, fitText, fitWidth, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
+import { askText, button, type Button, COLORS, fitText, fitWidth, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
 import { net } from '../net/session';
 import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
@@ -91,6 +92,32 @@ const TABS: { id: MenuTab; label: string; key: string }[] = [
   { id: 'help', label: 'Hướng dẫn', key: 'K' },
   { id: 'settings', label: 'Cài đặt', key: 'Esc' },
 ];
+type BagCat = 'ball' | 'heal' | 'held' | 'evo' | 'boost' | 'key';
+const BAG_CATS: { id: BagCat; label: string }[] = [
+  { id: 'ball', label: 'Bóng' },
+  { id: 'heal', label: 'Hồi phục' },
+  { id: 'held', label: 'Trang bị' },
+  { id: 'evo', label: 'Tiến hóa' },
+  { id: 'boost', label: 'Kẹo & EV' },
+  { id: 'key', label: 'Quan trọng' },
+];
+const BAG_EMPTY: Record<BagCat, string> = {
+  ball: 'Hết bóng. Mua thêm ở cửa hàng (Poké Mart) của thị trấn.',
+  heal: 'Chưa có thuốc hồi phục. Cửa hàng bán Potion, Super Potion và Oran Berry.',
+  held: 'Chưa có vật phẩm trang bị. Có trong rương, phần thưởng nhiệm vụ và cửa hàng.',
+  evo: 'Chưa có đá tiến hóa hay Mega Stone.',
+  boost: 'Chưa có Kẹo EXP hay vật phẩm EV.',
+  key: 'Chưa có vật phẩm quan trọng (Key Stone, Quả Cầu Tera, Vòng Dynamax…).',
+};
+/** Pocket of an item: held items apart from Mega Stones (those sit with the evolution stones). */
+function bagCatOf(id: string): BagCat {
+  const k = ITEMS[id]?.kind;
+  if (k === 'ball' || k === 'heal') return k;
+  if (k === 'stone' || ITEM_DEFS.get(id)?.kind === 'megaStone') return 'evo';
+  if (k === 'held') return 'held';
+  if (k === 'candy' || k === 'ev') return 'boost';
+  return 'key';
+}
 // Overworld maps (valley hub + regions behind portals); unlock = the valley portal's story flags
 const REGIONS = [
   { id: 'starter-valley', name: 'Thung Lũng Khởi Nguyên', need: [] as string[], hint: '' },
@@ -138,6 +165,8 @@ export class AdventureUI extends Phaser.Scene {
   private storyPage = 0;
   /** the HUD is laid out for a portrait phone */
   private portraitHud = false;
+  /** touch button for the weather call (key C), shown only while a weather Pokémon of yours is out */
+  private weatherBtn: Button | null = null;
   /** Active-skill bar (focused Pokémon's 4 skills) */
   private skillBar!: SkillBar;
   /** Quick switch wheel (T / "Đổi" / the active Pokémon fainted) */
@@ -145,6 +174,8 @@ export class AdventureUI extends Phaser.Scene {
   /** the open menu is laid out for a portrait phone (stacked columns) */
   private portraitMenu = false;
   private bagPage = 0;
+  /** the bag pocket shown */
+  bagCat: BagCat = 'ball';
   /** -1 = open on the page of the current province */
   private passportPage = -1;
   private repPage = -1;
@@ -243,7 +274,11 @@ export class AdventureUI extends Phaser.Scene {
     T('tera', 0, 0, 16, '#a0f0ff').setOrigin(0.5, 0);
     T('dyna', 0, 0, 16, '#ff90a8').setOrigin(0.5, 0);
     T('money', 16 * s, H - 78 * s, 18, '#ffe066');
-    T('online', W / 2, 62 * s, 16, '#ffd0a0').setOrigin(0.5, 0);
+    T('online', W / 2, 84 * s, 16, '#ffd0a0').setOrigin(0.5, 0);
+    // weather called by a Pokémon's ability (Drizzle, Drought…): icon, name, seconds left
+    T('bweather', W / 2, 62 * s, 17, '#ffffff').setOrigin(0.5, 0);
+    // the player's own weather call (key C): status line under Tera / Dynamax, click / tap to call
+    T('wcall', 0, 0, 16, '#c8e8ff').setOrigin(0.5, 0).setInteractive({ useHandCursor: true }).on('pointerup', () => this.adv.tryCallWeather());
 
     // Minimap (whole-region thumbnail with fog of war)
     const key = this.ensureMapTexture();
@@ -265,6 +300,7 @@ export class AdventureUI extends Phaser.Scene {
     if (this.portraitHud) {
       this.texts.clock.setOrigin(1, 0.5).setPosition(W - 30 * s - (small.length - 1) * 54 * s - 34 * s, by).setFontSize(22 * s);
       this.texts.area.setOrigin(1, 0).setPosition(W - 12 * s, by + 22 * s);
+      this.texts.bweather.setOrigin(0, 0.5).setPosition(14 * s, by);
     }
     if (this.touch || W / DPR < 900) {
       const R = 34 * s;
@@ -282,6 +318,9 @@ export class AdventureUI extends Phaser.Scene {
         const b = button(this, x, y, R * 1.7, R * 1.5, l, fn, 0x2f4a6a);
         b.container.setAlpha(0.85);
       }
+      // weather call: only shown while a Pokémon of yours on the field has a weather ability
+      this.weatherBtn = button(this, cx - 150 * s, cy - 150 * s, R * 1.7, R * 1.5, 'Trời', () => this.adv.tryCallWeather(), 0x2f5a7a);
+      this.weatherBtn.container.setAlpha(0.85).setVisible(false);
     }
     // active skills: tap / click a slot = use it now · right-click or long-press = keep it for the player
     this.skillBar = new SkillBar(this, {
@@ -443,9 +482,16 @@ export class AdventureUI extends Phaser.Scene {
     const c = a.state.adv.clock;
     const night = a.isNight();
     const wk = a.effectiveWeather();
-    const wx = WEATHER_LABEL[wk] ?? (night ? 'Đêm' : 'Nắng');
+    const bw = a.world.battleWeather;
+    // a weather called by a Pokémon replaces the sky on screen, so the clock names that weather, not the sky's
+    const wx = bw ? `${WEATHER_INFO[bw.kind].icon} ${WEATHER_INFO[bw.kind].name}` : WEATHER_LABEL[wk] ?? (night ? 'Đêm' : 'Nắng');
     this.texts.clock.setText(a.mapKind === 'dungeon' ? a.map.name : `${String(Math.floor(c / 60)).padStart(2, '0')}:${String(Math.floor(c % 60)).padStart(2, '0')}  ${wx}`);
     const tl = a.dungeon?.timeLeft;
+    // the line under the clock: who called it, seconds left, what it does
+    const bwText = bw ? `${WEATHER_INFO[bw.kind].icon} ${WEATHER_INFO[bw.kind].name}${bw.by ? ` (${bw.by})` : ''} ${Math.ceil(a.world.battleWeatherLeft())}s · ${WEATHER_INFO[bw.kind].short}` : '';
+    if (this.portraitHud) fitText(this.texts.bweather, bwText, Math.max(60 * s, this.texts.clock.x - this.texts.clock.width - 30 * s));
+    else this.texts.bweather.setText(bwText);
+    if (bw) this.texts.bweather.setColor(WEATHER_INFO[bw.kind].color);
     this.texts.area.setText(a.mapKind === 'dungeon' ? `Phase: ${phaseLabel(a.dungeon?.phase)}${a.dungeon?.mods.length ? ` · ${a.dungeon.mods.map((m) => m.name).join(', ')}` : ''}${tl != null ? `  ·  ⏱ ${Math.floor(tl / 60)}:${String(Math.floor(tl % 60)).padStart(2, '0')}` : ''}` : a.areaName).setColor(tl != null && tl < 30 ? '#ff7050' : COLORS.dim);
 
     // Quest tracker
@@ -502,15 +548,35 @@ export class AdventureUI extends Phaser.Scene {
       g.fillStyle(0xff3060, 1).fillRect(mx - 78 * s, my + 72 * s, 166 * s * Math.max(0, a.dynaT / DYNAMAX_DURATION), 3 * s);
       this.texts.dyna?.setText(`${a.dynaUnit.dyna?.gmax ? 'GIGANTAMAX' : 'DYNAMAX'} ${a.dynaUnit.name} ${Math.ceil(a.dynaT)}s`).setPosition(gx, my + 54 * s);
     } else this.texts.dyna?.setText(a.state.item('dynamax-band') > 0 ? (a.dynaStatus().ok ? `[B] ${a.dynaStatus().gmax ? 'GIGANTAMAX' : 'DYNAMAX'} sẵn sàng` : a.dynaCd > 0 ? `DYNAMAX hồi ${Math.ceil(a.dynaCd)}s` : '') : '').setPosition(gx, my + 54 * s);
+    // weather call (key C)
+    const caller = a.world.playerWeatherCaller();
+    let wcall = '';
+    if (caller) {
+      const kind = weatherOfAbility(a.world.weatherAbility(caller))!;
+      const cd = a.world.weatherCallCd(caller);
+      const info = WEATHER_INFO[kind];
+      wcall = bw?.kind === kind ? '' : cd > 0 ? `${info.icon} ${info.name}: chờ ${Math.ceil(cd)}s` : `[C] ${info.icon} Gọi ${info.name} (${caller.name})`;
+      this.texts.wcall.setColor(info.color);
+      // touch: the button itself shows the wait, dimmed while it can't be used
+      this.weatherBtn?.setLabel(cd > 0 ? `${Math.ceil(cd)}s` : 'Trời');
+      this.weatherBtn?.container.setAlpha(cd > 0 || bw?.kind === kind ? 0.45 : 0.85);
+    }
+    // the status line sits among the touch buttons on phones: there the button carries it instead
+    this.texts.wcall.setText(this.weatherBtn ? '' : wcall).setPosition(gx, my + 78 * s);
+    this.weatherBtn?.container.setVisible(!!caller);
     this.texts.money?.setText(`${a.state.money} ${a.state.unit}`);
     this.skillBar.draw(g, !!(this.menu || this.dialogueLayer));
 
     // Items + command
     const ball = a.selectedBall;
-    this.texts.balls.setText(`[F] ${BALLS[ball].name} ×${a.state.item(ball)}   [R] đổi   [H] thuốc ×${a.state.item('potion') + a.state.item('superpotion') + a.state.item('oranberry')}`)
-      .setPosition(16 * s, H - 30 * s);
+    // touch screens: no keyboard hints, and the line stops before the action buttons on the right
+    const heal = a.state.item('potion') + a.state.item('superpotion') + a.state.item('oranberry');
+    const leftW = this.touch || W / DPR < 900 ? W - 250 * s : W * 0.45;
+    fitText(this.texts.balls, this.touch
+      ? `◓ ${BALLS[ball].name} ×${a.state.item(ball)}  ·  thuốc ×${heal}`
+      : `[F] ${BALLS[ball].name} ×${a.state.item(ball)}   [R] đổi   [H] thuốc ×${heal}`, leftW).setPosition(16 * s, H - 30 * s);
     const cmd = COMMANDS.find((cc) => cc.id === w.command)!;
-    this.texts.cmd.setText(`Lệnh đội: ${cmd.label}${w.commandTarget ? ' → ' + w.commandTarget.name : ''}   (\` 1-5)`).setPosition(16 * s, H - 54 * s);
+    fitText(this.texts.cmd, `Lệnh đội: ${cmd.label}${w.commandTarget ? ' → ' + w.commandTarget.name : ''}${this.touch ? '' : '   (\` 1-5)'}`, leftW).setPosition(16 * s, H - 54 * s);
 
     // Online session (shared open world)
     this.texts.online.setText(net.status === 'hosting' ? `ONLINE · Phòng ${net.code} — chờ bạn vào` : net.connected ? `${coopSession.active ? 'CO-OP' : 'ONLINE'} · Đang chơi cùng ${net.peerName} · ${net.rtt} ms${coopSession.active || a.presence?.visible() ? '' : ' · ở vùng khác'}` : '');
@@ -1052,11 +1118,15 @@ export class AdventureUI extends Phaser.Scene {
     // than the HUD scale, which is limited by the narrow width
     const hud = this.s;
     this.portraitMenu = H > W * 1.15;
-    const s = (this.s = this.portraitMenu ? uiScale(W, H, (w, h) => Phaser.Math.Clamp(Math.min((w - 16) / 540, (h - 16) / 900), 0.55, 1.4)) : hud);
+    // landscape: scale the menu to fill the screen (short phone screens were left with empty side bands)
+    const s = (this.s = this.portraitMenu
+      ? uiScale(W, H, (w, h) => Phaser.Math.Clamp(Math.min((w - 16) / 540, (h - 16) / 900), 0.55, 1.4))
+      : Math.max(hud, uiScale(W, H, (w, h) => Phaser.Math.Clamp(Math.min((w - 16) / 1040, (h - 16) / 640), 0.5, 1.35))));
     const c = this.add.container(0, 0).setDepth(120);
     this.menu = c;
     c.add(this.add.rectangle(0, 0, W, H, 0x05060c, 0.8).setOrigin(0).setInteractive());
-    const pw = this.portraitMenu ? W - 16 * DPR : Math.min(W - 16, 1040 * s), ph = this.portraitMenu ? H - 16 * DPR : Math.min(H - 16, 640 * s);
+    const shortScreen = H / DPR < 520;
+    const pw = this.portraitMenu || shortScreen ? W - 16 * DPR : Math.min(W - 16, 1040 * s), ph = this.portraitMenu ? H - 16 * DPR : Math.min(H - 16, 640 * s);
     const x0 = (W - pw) / 2, y0 = (H - ph) / 2;
     c.add(panel(this, x0, y0, pw, ph, COLORS.panelEdge, 0x161a28, 0.97));
     const tabs = this.tabs();
@@ -1637,7 +1707,7 @@ export class AdventureUI extends Phaser.Scene {
     const s = this.s, sv = this.adv.state.save;
     const list = Object.values(SPECIES).sort((a, b) => a.id - b.id);
     const caught = new Set(sv.pokedex.caught), seen = new Set(sv.pokedex.seen);
-    c.add(text(this, r.x, r.y, `Đã thấy ${seen.size} · Đã bắt ${caught.size} / ${list.length} loài trong dữ liệu`, 17 * s, COLORS.dim));
+    c.add(fitWidth(text(this, r.x, r.y, `Đã thấy ${seen.size} · Đã bắt ${caught.size} / ${list.length} loài`, 17 * s, COLORS.dim), r.w - 200 * s));
     c.add(button(this, r.x + r.w - 95 * s, r.y + 8 * s, 180 * s, 26 * s, this.dexRare ? '◀ Danh sách loài' : '✦ Điều kiện hiếm', () => { this.dexRare = !this.dexRare; this.openMenu('dex'); }).container);
     if (this.dexRare) { this.buildRareTable(c, { x: r.x, y: r.y + 30 * s, w: r.w, h: r.h - 30 * s }, seen, caught); return; }
     const [L, D] = this.split(r, 0.5, 0.4), lw = L.w, cols = 4, cw = lw / cols, chh = 42 * s;
@@ -1736,53 +1806,84 @@ export class AdventureUI extends Phaser.Scene {
     }).container);
   }
 
+  /** Bag pockets: every item sits in exactly one (the bag is shown one pocket at a time). */
+  bagCats(): { id: BagCat; label: string; ids: string[] }[] {
+    const st = this.adv.state;
+    const owned = Object.keys(ITEMS).filter((k) => st.item(k) > 0);
+    // balls in catalogue order, then everything else in item-list order
+    const order = (ids: string[]) => [...BALL_ORDER.filter((b) => ids.includes(b)), ...ids.filter((i) => !(BALL_ORDER as readonly string[]).includes(i))];
+    return BAG_CATS.map((cat) => ({ ...cat, ids: order(owned.filter((id) => bagCatOf(id) === cat.id)) }));
+  }
+
   private buildBag(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, st = this.adv.state;
-    const base = [...BALL_ORDER, 'potion', 'superpotion', 'oranberry'];
-    const extra = Object.keys(st.save.inventory).filter((k) => !base.includes(k) && st.item(k) > 0 && ITEMS[k]);
-    const ids = [...base, ...extra];
-    c.add(text(this, r.x, r.y, `${WALLETS[st.wallet].name}: ${st.money}   ·   Vật phẩm: ${ids.filter((i) => st.item(i) > 0).length}`, 18 * s, '#ffe066'));
-    const cols = this.portraitMenu ? 1 : 2, cw = r.w / cols - 6 * s, rh = 54 * s;
-    const rowsPerPage = Math.max(1, Math.floor((r.h - 92 * s) / (rh + 6 * s)));
+    const cats = this.bagCats();
+    const cur = cats.find((k) => k.id === this.bagCat) ?? cats[0];
+    const total = cats.reduce((n, k) => n + k.ids.length, 0);
+    c.add(fitWidth(text(this, r.x, r.y, `${WALLETS[st.wallet].name}: ${st.money}   ·   ${total} loại vật phẩm`, 18 * s, "#ffe066"), r.w));
+    // pocket tabs: one row (desktop) or two rows (portrait phone)
+    const tabRows = this.portraitMenu ? 2 : 1, perRow = Math.ceil(cats.length / tabRows);
+    const tw = r.w / perRow, th = 34 * s, ty = r.y + 26 * s;
+    cats.forEach((k, i) => {
+      const x = r.x + (i % perRow) * tw, y = ty + Math.floor(i / perRow) * (th + 6 * s);
+      const on = k.id === cur.id;
+      c.add(button(this, x + tw / 2, y + th / 2, tw - 6 * s, th, `${k.label} (${k.ids.length})`, () => {
+        this.bagCat = k.id; this.bagPage = 0; this.openMenu('bag');
+      }, on ? 0x4a5a8a : k.ids.length ? 0x262c44 : 0x1c2030).container);
+    });
+    const listY = ty + tabRows * (th + 6 * s) + 6 * s;
+    const ids = cur.ids;
+    if (!ids.length) {
+      c.add(text(this, r.x + r.w / 2, listY + 60 * s, BAG_EMPTY[cur.id], 18 * s, COLORS.dim).setOrigin(0.5, 0).setAlign('center').setWordWrapWidth(r.w - 40 * s));
+      return;
+    }
+    const cols = this.portraitMenu ? 1 : 2, gap = 10 * s, cw = (r.w - gap * (cols - 1)) / cols, rh = 66 * s;
+    const pager = 44 * s;
+    const rowsPerPage = Math.max(1, Math.floor((r.y + r.h - listY - pager + 6 * s) / (rh + 6 * s)));
     const perPage = cols * rowsPerPage;
     const pages = Math.max(1, Math.ceil(ids.length / perPage));
     this.bagPage = Phaser.Math.Clamp(this.bagPage, 0, pages - 1);
+    const btnW = 104 * s;
     ids.slice(this.bagPage * perPage, (this.bagPage + 1) * perPage).forEach((id, i) => {
-      const x = r.x + (i % cols) * (cw + 12 * s), y = r.y + 26 * s + Math.floor(i / cols) * (rh + 6 * s);
-
+      const x = r.x + (i % cols) * (cw + gap), y = listY + Math.floor(i / cols) * (rh + 6 * s);
       const it = ITEMS[id];
       const def = ITEM_DEFS.get(id);
-      c.add(panel(this, x, y, cw, rh, def?.kind === 'megaStone' || def?.kind === 'key' ? 0xff80e0 : COLORS.panelEdge, 0x1c2134, 1));
-      // pixel item icon (balls, potions, berry, stones, Mega Stones, held charms)
+      const special = def?.kind === 'megaStone';
+      const inUse = it.kind === 'ball' && this.adv.selectedBall === id;
+      c.add(panel(this, x, y, cw, rh, inUse ? 0xffcc33 : special ? 0xff80e0 : COLORS.panelEdge, 0x1c2134, 1));
       // official item art (personal pack) when available, else the original pixel icon
       const ikey = itemIconKey(this, id);
       const official = ikey.startsWith('oitem-');
-      const icon = this.add.image(x + 26 * s, y + rh / 2, ikey).setScale(official ? Math.max(1, Math.round(1.5 * s)) : Math.max(1, Math.round(3 * s)));
+      const icon = this.add.image(x + 28 * s, y + rh / 2, ikey).setScale(official ? Math.max(1, Math.round(1.5 * s)) : Math.max(1, Math.round(3 * s)));
+      // a few icons are drawn bigger than the others: keep every icon inside its slot
+      if (icon.displayWidth > 44 * s || icon.displayHeight > 44 * s) icon.setScale(icon.scale * Math.min(44 * s / icon.displayWidth, 44 * s / icon.displayHeight));
       c.add(icon);
-      c.add(text(this, x + 52 * s, y + 4 * s, `${it.name}  ×${st.item(id)}`, 17 * s));
-      c.add(text(this, x + 52 * s, y + 26 * s, it.desc, 13 * s, COLORS.dim).setWordWrapWidth(cw - 170 * s));
-      if (st.item(id) <= 0) return;
       let label = '', fn: (() => void) | null = null;
-      if (it.kind === 'ball') { label = this.adv.selectedBall === id ? 'Đang dùng' : 'Chọn'; fn = () => { this.adv.selectedBall = id as BallId; this.openMenu('bag'); }; }
+      if (it.kind === 'ball') { label = inUse ? 'Đang dùng' : 'Chọn'; fn = inUse ? null : () => { this.adv.selectedBall = id as BallId; this.openMenu('bag'); }; }
       else if (it.kind === 'heal') { label = 'Dùng'; fn = () => { this.adv.useItem(id); this.openMenu('bag'); }; }
       else if (it.kind === 'stone') { label = 'Dùng'; fn = () => { this.closeMenu(); void this.adv.useStone(id); }; }
       else if (it.kind === 'held') { label = 'Trang bị'; fn = () => void this.pickEquipTarget(id); }
       else if (it.kind === 'ev') { label = 'Dùng'; fn = () => void this.pickEvTarget(id); }
       else if (it.kind === 'candy') { label = 'Dùng'; fn = () => void this.pickCandyTarget(id); }
       else if (it.kind === 'gimmick') { label = 'Dùng'; fn = () => void this.useGimmickItem(id); }
-      if (fn) c.add(button(this, x + cw - 62 * s, y + rh / 2, 110 * s, 32 * s, label, fn).container);
+      const tx = x + 56 * s, tw2 = cw - (tx - x) - (label ? btnW + 16 * s : 12 * s);
+      const name = fitWidth(text(this, tx, y + 6 * s, it.name, 18 * s), tw2 - 54 * s);
+      c.add(name);
+      c.add(text(this, tx + name.width + 8 * s, y + 8 * s, `×${st.item(id)}`, 16 * s, '#ffe066'));
+      c.add(text(this, tx, y + 28 * s, it.desc, 14 * s, COLORS.dim).setWordWrapWidth(tw2).setMaxLines(2).setLineSpacing(-2 * s));
+      if (label && fn) c.add(button(this, x + cw - btnW / 2 - 10 * s, y + rh / 2, btnW, 32 * s, label, fn).container);
+      else if (label) c.add(text(this, x + cw - btnW / 2 - 10 * s, y + rh / 2, label, 16 * s, '#ffe066').setOrigin(0.5));
     });
     if (pages > 1) {
-      const cy = r.y + r.h - 26 * s;
-      c.add(button(this, r.x + r.w / 2 - 135 * s, cy, 110 * s, 34 * s, '◀ Trước', () => {
+      const cy = r.y + r.h - pager / 2;
+      c.add(button(this, r.x + r.w / 2 - 150 * s, cy, 110 * s, 34 * s, '◀ Trước', () => {
         this.bagPage = Math.max(0, this.bagPage - 1); this.openMenu('bag');
       }).container);
-      c.add(text(this, r.x + r.w / 2, cy, `Trang ${this.bagPage + 1}/${pages} · Cuộn chuột`, 17 * s).setOrigin(0.5));
-      c.add(button(this, r.x + r.w / 2 + 135 * s, cy, 110 * s, 34 * s, 'Sau ▶', () => {
+      c.add(fitWidth(text(this, r.x + r.w / 2, cy, `Trang ${this.bagPage + 1}/${pages}`, 18 * s).setOrigin(0.5), 170 * s));
+      c.add(button(this, r.x + r.w / 2 + 150 * s, cy, 110 * s, 34 * s, 'Sau ▶', () => {
         this.bagPage = Math.min(pages - 1, this.bagPage + 1); this.openMenu('bag');
       }).container);
     }
-
   }
 
   private buildQuests(c: Phaser.GameObjects.Container, r: Rect): void {
@@ -1790,9 +1891,10 @@ export class AdventureUI extends Phaser.Scene {
     // filter row: all / this map / finished / reputation board
     // V29: main story / side quests apart, and the story page (acts, characters, cutscenes to watch again)
     const filters: [typeof this.questFilter, string][] = [['all', 'Tất cả'], ['main', 'Chính'], ['side', 'Phụ'], ['here', 'Vùng này'], ['done', 'Đã xong'], ['story', 'Cốt truyện'], ['rep', 'Danh tiếng']];
-    const fw = Math.min(150 * s, (r.w - 12 * s) / filters.length);
-    filters.forEach(([id, label], i) => c.add(button(this, r.x + fw / 2 + i * (fw + 4 * s), r.y + 14 * s, fw, 30 * s, label, () => { this.questFilter = id; this.questPage = 0; this.openMenu('quests'); }, this.questFilter === id ? 0x4a5a8a : 0x262c44).container));
-    r = { ...r, y: r.y + 36 * s, h: r.h - 36 * s };
+    const frows = this.portraitMenu ? 2 : 1, fper = Math.ceil(filters.length / frows);
+    const fw = Math.min(150 * s, (r.w - (fper - 1) * 4 * s) / fper);
+    filters.forEach(([id, label], i) => c.add(button(this, r.x + fw / 2 + (i % fper) * (fw + 4 * s), r.y + 14 * s + Math.floor(i / fper) * 36 * s, fw, 30 * s, label, () => { this.questFilter = id; this.questPage = 0; this.openMenu('quests'); }, this.questFilter === id ? 0x4a5a8a : 0x262c44).container));
+    r = { ...r, y: r.y + 36 * s * frows, h: r.h - 36 * s * frows };
     if (this.questFilter === 'rep') { this.buildRepBoard(c, r); return; }
     if (this.questFilter === 'story') { this.buildStory(c, r); return; }
     const here = this.adv.regionDef.id;
@@ -2055,7 +2157,7 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
       const lines = t.getWrappedText(full);
       if (lines.length > n) t.setText(lines.slice(0, n).join('\n').replace(/\s*\S{0,3}$/, '') + '…');
     };
-    for (const max of [2, 1]) {
+    const layout = (max: number) => {
       let y = head.y + head.height + 4 * s;
       for (const row of rows) {
         clampLines(row.hint, row.status, max);
@@ -2063,11 +2165,23 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
         row.hint.setY(y + row.name.height - 2 * s);
         y = row.hint.y + row.hint.height + 5 * s;
       }
-      if (y <= bottom) break;
+      return y;
+    };
+    // room for the "… N more" line under the list
+    const room = bottom - (all.length > LIST_MAX ? 20 * s : 0);
+    let shownFirst = first;
+    if (layout(2) > room) {
+      while (layout(1) > room && rows.length > 1) {
+        const curIdx = rows.findIndex((x) => x.name.text.startsWith('▶'));
+        const drop = curIdx === rows.length - 1 || (curIdx > 0 && curIdx >= rows.length / 2) ? 0 : rows.length - 1;
+        if (drop === 0) shownFirst++;
+        const [gone] = rows.splice(drop, 1);
+        gone.name.destroy(); gone.hint.destroy();
+      }
     }
     const last = rows[rows.length - 1];
-    if (all.length > list.length) {
-      const more = text(this, sx, last.hint.y + last.hint.height + 2 * s, `… ${all.length - list.length} tỉnh khác (${first} trước, ${all.length - first - list.length} sau) — xem Hộ chiếu`, 13 * s, COLORS.dim).setWordWrapWidth(side - 8 * s, true);
+    if (all.length > rows.length) {
+      const more = text(this, sx, last.hint.y + last.hint.height + 2 * s, `… ${all.length - rows.length} ${vn ? 'tỉnh' : 'vùng'} khác (${shownFirst} trước, ${all.length - shownFirst - rows.length} sau)${vn ? ' — xem Hộ chiếu' : ''}`, 13 * s, COLORS.dim).setWordWrapWidth(side - 8 * s, true).setMaxLines(1);
       c.add(more);
       last.hint = more;
     }
@@ -2222,41 +2336,77 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
 
   private buildSettings(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, set = saveStore.data.settings;
-    c.add(text(this, r.x, r.y + 6 * s, 'Chất lượng đồ họa', 22 * s));
-    (['low', 'medium', 'high'] as QualitySetting[]).forEach((q, i) => {
-      c.add(button(this, r.x + 90 * s + i * 170 * s, r.y + 56 * s, 160 * s, 40 * s, { low: 'Thấp', medium: 'Trung bình', high: 'Cao' }[q], () => {
-        set.quality = q;
-        this.adv.renderer_.setQuality(q);
-        void saveStore.save();
-        this.openMenu('settings');
-      }, set.quality === q ? 0x4a6a3a : 0x2c3654).container);
-    });
-    c.add(text(this, r.x, r.y + 84 * s, 'Thấp: tắt mưa/sương, đèn đêm, cây đung đưa, giảm 65% hạt. Áp dụng ngay cho hiệu ứng; cây/đèn áp dụng khi tải lại vùng.', 15 * s, COLORS.dim).setWordWrapWidth(r.w));
-    const mus = button(this, r.x + 238 * s, r.y + 140 * s, 144 * s, 40 * s, `Nhạc: ${music.enabled ? 'BẬT' : 'TẮT'}`, () => { music.setEnabled(!music.enabled); saveStore.data.settings.music = music.enabled; void saveStore.save(); mus.setLabel(`Nhạc: ${music.enabled ? 'BẬT' : 'TẮT'}`); });
-    c.add(mus.container);
-    const snd = button(this, r.x + 82 * s, r.y + 140 * s, 144 * s, 40 * s, `Âm thanh: ${audio.enabled ? 'BẬT' : 'TẮT'}`, () => {
-      audio.enabled = !audio.enabled; set.sfx = audio.enabled; void saveStore.save(); snd.setLabel(`Âm thanh: ${audio.enabled ? 'BẬT' : 'TẮT'}`);
-    });
-    c.add(snd.container);
-    const fps = button(this, r.x + 160 * s, r.y + 190 * s, 300 * s, 40 * s, `Hiện FPS: ${set.showFps ? 'BẬT' : 'TẮT'}`, () => {
-      set.showFps = !set.showFps; void saveStore.save(); fps.setLabel(`Hiện FPS: ${set.showFps ? 'BẬT' : 'TẮT'}`);
-    });
-    c.add(fps.container);
-    c.add(text(this, r.x, r.y + r.h - 60 * s, officialPack.available
-      ? `Sprite chính thức (cá nhân): ${set.officialSprites ? 'BẬT' : 'TẮT'}${officialPack.active !== set.officialSprites ? ' — áp dụng khi tải lại' : ''}`
-      : 'Sprite chính thức: chưa có gói (chạy node scripts/fetch-official-sprites.mjs)', 15 * s, COLORS.dim).setWordWrapWidth(r.w - 340 * s));
+    // sections stacked by their real height: two columns on wide screens, one on portrait phones
+    const two = !this.portraitMenu && r.w > 640 * s;
+    const gapX = 28 * s, colW = two ? (r.w - gapX) / 2 : r.w;
+    const L = { x: r.x, w: colW }, R = two ? { x: r.x + colW + gapX, w: colW } : L;
+    const bh = 38 * s, gap = 8 * s;
+    const section = (col: { x: number; w: number }, y: number, title: string) => {
+      c.add(text(this, col.x, y, title, 19 * s, '#ffe080'));
+      c.add(this.add.rectangle(col.x, y + 26 * s, col.w, Math.max(1, 2 * s), 0x3a4260).setOrigin(0));
+      return y + 36 * s;
+    };
+    /** a row of equal buttons across the column */
+    const row = (col: { x: number; w: number }, y: number, items: { label: string; fn: () => void; color?: number }[]) => {
+      const w = (col.w - gap * (items.length - 1)) / items.length;
+      return items.map((it, i) => {
+        const b = button(this, col.x + w / 2 + i * (w + gap), y + bh / 2, w, bh, it.label, it.fn, it.color);
+        c.add(b.container);
+        return b;
+      });
+    };
+    const onOff = (v: boolean) => (v ? 'BẬT' : 'TẮT');
+
+    let y = section(L, r.y, 'ĐỒ HỌA');
+    row(L, y, (['low', 'medium', 'high'] as QualitySetting[]).map((q) => ({
+      label: { low: 'Thấp', medium: 'Trung bình', high: 'Cao' }[q],
+      fn: () => { set.quality = q; this.adv.renderer_.setQuality(q); void saveStore.save(); this.openMenu('settings'); },
+      color: set.quality === q ? 0x4a6a3a : 0x2c3654,
+    })));
+    y += bh + 6 * s;
+    const note = text(this, L.x, y, 'Thấp: tắt mưa/sương, đèn đêm, cây đung đưa, giảm 65% hạt. Cây và đèn đổi khi tải lại vùng.', 14 * s, COLORS.dim).setWordWrapWidth(L.w);
+    c.add(note);
+    y += note.height + 8 * s;
+    const [fps] = row(L, y, [{ label: `Hiện FPS: ${onOff(set.showFps)}`, fn: () => { set.showFps = !set.showFps; void saveStore.save(); fps.setLabel(`Hiện FPS: ${onOff(set.showFps)}`); } }]);
+    y += bh + 16 * s;
+
+    y = section(L, y, 'ÂM THANH');
+    const [snd, mus] = row(L, y, [
+      { label: `Hiệu ứng: ${onOff(audio.enabled)}`, fn: () => { audio.enabled = !audio.enabled; set.sfx = audio.enabled; void saveStore.save(); snd.setLabel(`Hiệu ứng: ${onOff(audio.enabled)}`); } },
+      { label: `Nhạc: ${onOff(music.enabled)}`, fn: () => { music.setEnabled(!music.enabled); set.music = music.enabled; void saveStore.save(); mus.setLabel(`Nhạc: ${onOff(music.enabled)}`); } },
+    ]);
+    y += bh + 16 * s;
+
+    y = section(L, y, 'SPRITE CHÍNH THỨC');
+    const sp = text(this, L.x, y, officialPack.available
+      ? `Gói cá nhân: ${onOff(set.officialSprites)}${officialPack.active !== set.officialSprites ? ' — áp dụng khi tải lại' : ''}`
+      : 'Chưa có gói (chạy node scripts/fetch-official-sprites.mjs)', 15 * s, COLORS.dim).setWordWrapWidth(L.w);
+    c.add(sp);
+    y += sp.height + 8 * s;
     if (officialPack.available) {
-      c.add(button(this, r.x + r.w - 260 * s, r.y + r.h - 50 * s, 200 * s, 36 * s, set.officialSprites ? 'Tắt sprite chính thức' : 'Bật sprite chính thức', () => {
-        set.officialSprites = !set.officialSprites; set.officialChosen = true; void saveStore.save(); this.openMenu('settings');
-      }).container);
-      c.add(button(this, r.x + r.w - 70 * s, r.y + r.h - 50 * s, 120 * s, 36 * s, 'Tải lại', () => { this.adv.persist(); window.setTimeout(() => location.reload(), 300); }).container);
+      row(L, y, [
+        { label: set.officialSprites ? 'Tắt sprite chính thức' : 'Bật sprite chính thức', fn: () => { set.officialSprites = !set.officialSprites; set.officialChosen = true; void saveStore.save(); this.openMenu('settings'); } },
+        { label: 'Tải lại', fn: () => { this.adv.persist(); window.setTimeout(() => location.reload(), 300); } },
+      ]);
+      y += bh + 16 * s;
     }
-    c.add(button(this, r.x + 160 * s, r.y + 240 * s, 300 * s, 40 * s, 'Lưu game', () => { this.adv.persist(); this.banner('Đã lưu', '#80ff90'); }).container);
-    c.add(button(this, r.x + 160 * s, r.y + 290 * s, 300 * s, 40 * s, 'Lưu & về menu chính', () => { this.closeMenu(); this.adv.exitToMenu(); }, 0x6a2f2f).container);
-    c.add(button(this, r.x + 160 * s, r.y + 340 * s, 300 * s, 40 * s, net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', () => openCoopMenu(this, this.adv), 0x2f5a6a).container);
-    c.add(button(this, r.x + 160 * s, r.y + 388 * s, 300 * s, 36 * s, 'Đi chung / thách đấu PvP', () => void this.onlineMenu(), 0x3a3a5a).container);
-    c.add(text(this, this.portraitMenu ? r.x : r.x + 340 * s, r.y + (this.portraitMenu ? 440 : 130) * s,
-      'ĐIỀU KHIỂN (đầy đủ: phím K / tab Hướng dẫn)\nWASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng (ngắm chuột)\nR đổi loại bóng · H dùng thuốc\nT đổi Pokémon (1–5 chọn) · Shift+1–6 gọi/thu hồi ô đội\n` 1-5 lệnh: Tự do / Tấn công mục tiêu / Bảo vệ /\n   Ngừng tấn công / Giữ vị trí / Quay về HLV\nQ dùng chiêu tốt nhất (ngắm chuột chọn mục tiêu)\nTab đội hình · X Pokédex · I túi · O PC · J nhiệm vụ\nM bản đồ · Esc menu', 16 * s, '#d0d8f0'));
+
+    let y2 = section(R, two ? r.y : y, 'TRÒ CHƠI');
+    const games: { label: string; fn: () => void; color?: number }[][] = [
+      [{ label: 'Lưu game', fn: () => { this.adv.persist(); this.banner('Đã lưu', '#80ff90'); } },
+        { label: 'Lưu & về menu', fn: () => { this.closeMenu(); this.adv.exitToMenu(); }, color: 0x6a2f2f }],
+      [{ label: net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', fn: () => openCoopMenu(this, this.adv), color: 0x2f5a6a }],
+      [{ label: 'Đi chung / thách đấu PvP', fn: () => void this.onlineMenu(), color: 0x3a3a5a }],
+    ];
+    for (const g of games) { row(R, y2, g); y2 += bh + gap; }
+    y2 += 8 * s;
+    y2 = section(R, y2, 'ĐIỀU KHIỂN');
+    row(R, y2, [{ label: 'Bảng phím & cách chơi (K)', fn: () => { this.helpPage = 0; this.openMenu('help'); }, color: 0x3a4a6a }]);
+    y2 += bh + 8 * s;
+    const keys = text(this, R.x, y2, 'WASD/←↑→↓ di chuyển · Shift chạy\nE/Space tương tác · F ném bóng\nT đổi Pokémon · Q chiêu tốt nhất\nTab đội · I túi · X Pokédex · J nhiệm vụ\nM bản đồ · O PC · Esc menu', 15 * s, '#d0d8f0').setWordWrapWidth(R.w).setLineSpacing(2 * s);
+    // phones have no keyboard, and a short screen has no room: the guide button is enough
+    if (this.touch || y2 + keys.height > r.y + r.h) keys.destroy();
+    else c.add(keys);
   }
 }
 
