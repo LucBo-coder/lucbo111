@@ -23,7 +23,8 @@ export const HELP_PAGES: HelpPage[] = [
         { keys: 'G', what: 'Mega Tiến Hóa (đang chiến đấu, có Vòng Mega, Pokémon cầm đá Mega)' },
         { keys: 'Y', what: 'Terastal: Pokémon trên sân thành Hệ Tera của nó trong 60 s (cần Quả Cầu Tera)' },
         { keys: 'B', what: 'Dynamax / Gigantamax: Pokémon trên sân thành khổng lồ 30 s, HP ×2, Chiêu Max (cần Vòng Dynamax)' },
-        { keys: 'C', what: 'Gọi thời tiết: Pokémon trên sân có đặc tính thời tiết (Drizzle, Drought, Sand Stream, Snow Warning…) gọi ngay, chờ 60 s mới gọi lại (cảm ứng: nút Trời)' },
+        { keys: 'C', what: 'Gọi thời tiết: Pokémon trên sân có đặc tính thời tiết (Drizzle, Drought, Sand Stream, Snow Warning…) gọi ngay, chờ 60 s mới gọi lại' },
+        { keys: 'Nút góc phải', what: 'Mega / Tera / Dynamax / Thời tiết: mỗi tính năng một ô vuông có icon — bấm để dùng; đang dùng thì có thanh + số giây còn lại, đang hồi thì tối dần + số giây chờ' },
       ] },
       { group: 'Đội hình', rows: [
         { keys: 'T', what: 'Mở vòng đổi Pokémon — bấm 1–5 để chọn' },

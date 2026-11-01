@@ -72,7 +72,7 @@ test('Pelipper calls rain when it joins a fight: banner, HUD timer, rain on scre
   // nothing to fight yet: no rain, but the call line offers it; key C calls it on command
   expect(await ev<unknown>(page, `window.__adv.world.battleWeather`)).toBeNull();
   await page.waitForTimeout(300);
-  expect(await ev<string>(page, `${ui}.texts.wcall.text`)).toMatch(/\[C\] .*Gọi Mưa \(Pelipper\)/);
+  expect(await ev(page, `${ui}.gimmicks.viewOf('weather')`)).toMatchObject({ state: 'ready', label: 'MƯA', icon: 'wx-rain' });
   await page.keyboard.press('c');
   await page.waitForFunction(() => (window as Win).__adv.world.battleWeather?.kind === 'rain', undefined, { timeout: 5_000 });
   await page.waitForTimeout(600);
@@ -80,7 +80,7 @@ test('Pelipper calls rain when it joins a fight: banner, HUD timer, rain on scre
   expect(await ev<string>(page, `${ui}.texts.clock.text`)).toMatch(/Mưa/);
   expect(await ev<string>(page, `${ui}.texts.clock.text`)).not.toMatch(/Nắng/);
   expect(await ev<string>(page, `${ui}.texts.bweather.text`)).toMatch(/Mưa \(Pelipper\) \d+s/);
-  expect(await ev<string>(page, `${ui}.texts.wcall.text`)).toBe('');
+  expect(await ev(page, `${ui}.gimmicks.viewOf('weather')`)).toMatchObject({ state: 'active', total: 40 });
   await page.screenshot({ path: info.outputPath('call.png') });
   // the call is spent: a fight starting now does not call it again, so clear it to watch the automatic call
   await ev(page, `(() => { const w = window.__adv.world; w.endBattleWeather(); w.allies[0].weatherCalled = false; })()`);

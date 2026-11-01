@@ -1,5 +1,16 @@
 # Changelog
 
+## Chưa phát hành — Nút chiến đấu ở góc phải
+
+- **Mega / Tera / Dynamax / Thời tiết thành nút riêng** ở góc dưới phải, thay cho các dòng chữ "[G] MEGA sẵn sàng", "TERA sạc 40s"…: mỗi tính năng một ô vuông có khung màu và icon (Key Stone, Quả Cầu Tera, Vòng Dynamax; mưa / nắng / cát / tuyết), bấm hoặc chạm để dùng; phím G / Y / B / C ghi ở góc ô (máy tính).
+  - **Sẵn sàng**: viền sáng nhấp nháy, tên dưới icon (MEGA, TERA, MAX / G-MAX, MƯA…).
+  - **Đang dùng**: viền phát sáng, thanh thời gian dưới đáy + số giây còn lại.
+  - **Đang hồi**: ô tối dần từ trên xuống theo thời gian hồi + số giây chờ.
+  - **Chưa dùng được** (không có Pokémon phù hợp): ô mờ; bấm vào sẽ báo lý do.
+  - Ô chỉ hiện khi có vật phẩm chìa khóa (ô Thời tiết: khi có Pokémon gọi được thời tiết trên sân); ẩn khi mở menu / hội thoại.
+- Điện thoại: nút MEGA và nút Trời trong cụm nút chạm được thay bằng các ô này — cột phía trên cụm nút (dọc), hàng bên trái cụm nút (ngang), cỡ bằng nút chạm.
+- e2e `ui_gimmick_bar`: máy tính, điện thoại dọc / ngang — đủ 4 ô trong màn hình, không đè nhau, bấm / chạm ô Thời tiết gọi mưa, trạng thái đang dùng / đang hồi.
+
 ## Chưa phát hành — Pokémon gọi thời tiết; sửa thua boss ở đền huyền thoại
 
 - **Pokémon gọi thời tiết** (đặc tính như game gốc): khi vào trận, Pokémon có đặc tính thời tiết gọi thời tiết trong 40 s (Biển Nguyên Thủy / Đất Khô Cằn của dạng Primal: 90 s). Một thời tiết mỗi lúc, cái mới thay cái cũ; mỗi lần ra sân gọi một lần.

@@ -13,22 +13,25 @@ import { BossHUDController } from '../ui/BossHUDController';
 import cache from '../data/pokeapi/pokeapi-cache.json';
 import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
-import { weatherOfAbility, WEATHER_INFO } from '../core/battleWeather';
+import { WEATHER_CALL_COOLDOWN, weatherDuration, weatherOfAbility, WEATHER_INFO, type BattleWeather } from '../core/battleWeather';
+
+const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT' };
 import { BALL_ORDER, BALLS, BallId } from '../core/capture';
 import { getSkill, POKEMON } from '../core/data';
 import { chunkCols, chunkRows } from '../core/map/mapProvider';
 import { TILE_PX } from '../core/map/tiles';
 import { levelProgress, OwnedPokemon } from '../core/progression';
 import { CANDY_DEFS, candyDef, maxUsefulCandy, previewCandy } from '../core/candy';
-import { evolutionGuide, type EvolutionOption, ITEM_DEFS, MEGA_DURATION, megaFormsOf, missingConditions } from '../core/evolution';
+import { evolutionGuide, type EvolutionOption, ITEM_DEFS, MEGA_COOLDOWN, MEGA_DURATION, megaFormsOf, missingConditions } from '../core/evolution';
 import { skillUnlockLevel, unlockedSkills } from '../core/learnset';
 import { ECOLOGY, RARITY_LABEL, REGIONS as ENC_REGIONS } from '../core/encounters';
 import { rareRows, type RareRow } from '../core/ecologyRules';
-import { DYNAMAX_DURATION, GMAX, gmaxLine, TERA_DURATION, TERA_SHARD_COST } from '../core/gimmicks';
+import { DYNAMAX_COOLDOWN, DYNAMAX_DURATION, GMAX, gmaxLine, TERA_COOLDOWN, TERA_DURATION, TERA_SHARD_COST } from '../core/gimmicks';
+import { GimmickBar, type GimmickId, type GimmickSlotView } from './gimmickBar';
 import { gmaxTexture, hasGmaxArt, loadGmaxArt } from '../render/gmaxArt';
 import { TYPE_VI } from '../core/synergy';
 import type { PokeType } from '../core/types';
-import { ALL_TYPES } from '../render/icons';
+import { ALL_TYPES, weatherIconKey } from '../render/icons';
 import { REGION_DEFS } from '../core/map/regionDefs';
 import { passportPages, ProvincePage, VN_PROVINCES } from '../adventure/passport';
 import { LEGENDS } from '../core/legends';
@@ -48,7 +51,7 @@ import { saveStore } from '../systems/save';
 import { fitScale, itemIconKey, officialPack } from '../render/spriteRegistry';
 import type { QualitySetting } from '../systems/saveSchema';
 import { AdventureScene, COMMANDS } from './AdventureScene';
-import { askText, button, type Button, COLORS, fitText, fitWidth, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
+import { askText, button, COLORS, fitText, fitWidth, fmtTime, panel, RARITY_COLOR, ROLE_LABEL, text, TYPE_COLOR, typeBadge, DPR, uiScale } from './ui';
 import { net } from '../net/session';
 import { ShopOptions, ShopWindow } from './shopUI';
 import { defaultLinkKind } from '../net/transport';
@@ -165,8 +168,8 @@ export class AdventureUI extends Phaser.Scene {
   private storyPage = 0;
   /** the HUD is laid out for a portrait phone */
   private portraitHud = false;
-  /** touch button for the weather call (key C), shown only while a weather Pokémon of yours is out */
-  private weatherBtn: Button | null = null;
+  /** battle-feature buttons: Mega / Tera / Dynamax / weather call (scenes/gimmickBar.ts) */
+  gimmicks!: GimmickBar;
   /** Active-skill bar (focused Pokémon's 4 skills) */
   private skillBar!: SkillBar;
   /** Quick switch wheel (T / "Đổi" / the active Pokémon fainted) */
@@ -270,15 +273,10 @@ export class AdventureUI extends Phaser.Scene {
     T('chance', 0, 0, 18, '#ffe040').setOrigin(0.5);
     T('perf', 10, H - 8, 15, '#a0ffa0').setOrigin(0, 1);
     T('boss', W / 2, H - 58 * s, 22, '#ffb0a0').setOrigin(0.5, 1);
-    T('mega', 0, 0, 18, '#ffb0ff').setOrigin(0.5, 0);
-    T('tera', 0, 0, 16, '#a0f0ff').setOrigin(0.5, 0);
-    T('dyna', 0, 0, 16, '#ff90a8').setOrigin(0.5, 0);
     T('money', 16 * s, H - 78 * s, 18, '#ffe066');
     T('online', W / 2, 84 * s, 16, '#ffd0a0').setOrigin(0.5, 0);
     // weather called by a Pokémon's ability (Drizzle, Drought…): icon, name, seconds left
     T('bweather', W / 2, 62 * s, 17, '#ffffff').setOrigin(0.5, 0);
-    // the player's own weather call (key C): status line under Tera / Dynamax, click / tap to call
-    T('wcall', 0, 0, 16, '#c8e8ff').setOrigin(0.5, 0).setInteractive({ useHandCursor: true }).on('pointerup', () => this.adv.tryCallWeather());
 
     // Minimap (whole-region thumbnail with fog of war)
     const key = this.ensureMapTexture();
@@ -311,16 +309,25 @@ export class AdventureUI extends Phaser.Scene {
         ['Lệnh', cx - 30 * s, cy - 78 * s, () => this.cycleCommand()],
         ['Chạy', cx - 150 * s, cy + 20 * s, () => { this.adv.runHeld = !this.adv.runHeld; this.banner(this.adv.runHeld ? 'Chạy: BẬT' : 'Chạy: TẮT', '#fff'); }],
         ['Map', cx + 10 * s, cy - 150 * s, () => this.toggleMenu('map')],
-        ['MEGA', cx - 110 * s, cy - 80 * s, () => this.adv.tryMega()],
         ['Đổi', cx - 70 * s, cy - 150 * s, () => this.toggleSwitchWheel()],
       ];
       for (const [l, x, y, fn] of big) {
         const b = button(this, x, y, R * 1.7, R * 1.5, l, fn, 0x2f4a6a);
         b.container.setAlpha(0.85);
       }
-      // weather call: only shown while a Pokémon of yours on the field has a weather ability
-      this.weatherBtn = button(this, cx - 150 * s, cy - 150 * s, R * 1.7, R * 1.5, 'Trời', () => this.adv.tryCallWeather(), 0x2f5a7a);
-      this.weatherBtn.container.setAlpha(0.85).setVisible(false);
+    }
+    // battle features (Mega / Tera / Dynamax / weather call): square buttons with icon + timer, bottom-right corner
+    this.gimmicks = new GimmickBar(this, (id) => this.useGimmick(id), this.touch);
+    if (this.touch || W / DPR < 900) {
+      // above the touch cluster when the column fits there (portrait), else a row left of it (landscape phones)
+      const R = 34 * s, size = Math.round(R * 1.6), gap = 6 * s; // as big as the touch buttons
+      const cx = W - 70 * s, cy = H - 80 * s, top = cy - 150 * s - R * 0.75;
+      const colTop = top - 12 * s - 4 * (size + gap);
+      if (colTop > this.miniBox.y + this.miniBox.h + 160 * s) this.gimmicks.build(size, W - 12 * s - size / 2, top - 12 * s - size / 2, 0, -(size + gap));
+      else this.gimmicks.build(size, cx - 179 * s - 12 * s - size / 2, H - 14 * s - size / 2, -(size + gap), 0);
+    } else {
+      const size = Math.round(54 * s);
+      this.gimmicks.build(size, W - 14 * s - size / 2, H - 16 * s - size / 2, 0, -(size + 8 * s));
     }
     // active skills: tap / click a slot = use it now · right-click or long-press = keep it for the player
     this.skillBar = new SkillBar(this, {
@@ -524,46 +531,7 @@ export class AdventureUI extends Phaser.Scene {
       g.fillStyle(0x200830, 0.55).fillRect(W - 12 * s - 360 * s, ey - 4 * s, 364 * s, lines.length * 20 * s + 8 * s);
     } else this.texts.events.setText('');
 
-    // Mega Evolution HUD (button + remaining time)
-    const mx = W - 120 * s, my = H - 200 * s;
-    if (a.megaUnit) {
-      const f = Math.max(0, a.megaT / MEGA_DURATION);
-      g.fillStyle(0x000000, 0.7).fillRect(mx - 80 * s, my - 4 * s, 170 * s, 30 * s);
-      g.fillStyle(Phaser.Display.Color.HSVToRGB((this.time.now * 0.0003) % 1, 0.7, 1).color, 1).fillRect(mx - 78 * s, my + 18 * s, 166 * s * f, 6 * s);
-      this.setMegaText(`MEGA ${a.megaUnit.name} ${Math.ceil(a.megaT)}s`, mx + 5 * s, my);
-    } else {
-      const st = a.megaStatus();
-      const ready = !!st.ally && a.state.item('key-stone') > 0;
-      this.setMegaText(a.state.item('key-stone') > 0 ? (ready ? '[G] MEGA sẵn sàng' : a.megaCd > 0 ? `MEGA hồi ${Math.ceil(a.megaCd)}s` : '') : '', mx + 5 * s, my);
-    }
-    // Terastal / Dynamax HUD (V31): under the Mega line, only once the key item is in the bag
-    const gx = mx + 5 * s;
-    if (a.teraUnit) {
-      g.fillStyle(0x000000, 0.6).fillRect(mx - 80 * s, my + 30 * s, 170 * s, 22 * s);
-      g.fillStyle(0x80e8ff, 1).fillRect(mx - 78 * s, my + 48 * s, 166 * s * Math.max(0, a.teraT / TERA_DURATION), 3 * s);
-      this.texts.tera?.setText(`TERA ${TYPE_VI[a.teraUnit.tera?.type ?? 'normal']} · ${a.teraUnit.name} ${Math.ceil(a.teraT)}s`).setPosition(gx, my + 30 * s);
-    } else this.texts.tera?.setText(a.state.item('tera-orb') > 0 ? (a.teraStatus().ok ? '[Y] TERA sẵn sàng' : a.teraCd > 0 ? `TERA sạc ${Math.ceil(a.teraCd)}s` : '') : '').setPosition(gx, my + 30 * s);
-    if (a.dynaUnit) {
-      g.fillStyle(0x000000, 0.6).fillRect(mx - 80 * s, my + 54 * s, 170 * s, 22 * s);
-      g.fillStyle(0xff3060, 1).fillRect(mx - 78 * s, my + 72 * s, 166 * s * Math.max(0, a.dynaT / DYNAMAX_DURATION), 3 * s);
-      this.texts.dyna?.setText(`${a.dynaUnit.dyna?.gmax ? 'GIGANTAMAX' : 'DYNAMAX'} ${a.dynaUnit.name} ${Math.ceil(a.dynaT)}s`).setPosition(gx, my + 54 * s);
-    } else this.texts.dyna?.setText(a.state.item('dynamax-band') > 0 ? (a.dynaStatus().ok ? `[B] ${a.dynaStatus().gmax ? 'GIGANTAMAX' : 'DYNAMAX'} sẵn sàng` : a.dynaCd > 0 ? `DYNAMAX hồi ${Math.ceil(a.dynaCd)}s` : '') : '').setPosition(gx, my + 54 * s);
-    // weather call (key C)
-    const caller = a.world.playerWeatherCaller();
-    let wcall = '';
-    if (caller) {
-      const kind = weatherOfAbility(a.world.weatherAbility(caller))!;
-      const cd = a.world.weatherCallCd(caller);
-      const info = WEATHER_INFO[kind];
-      wcall = bw?.kind === kind ? '' : cd > 0 ? `${info.icon} ${info.name}: chờ ${Math.ceil(cd)}s` : `[C] ${info.icon} Gọi ${info.name} (${caller.name})`;
-      this.texts.wcall.setColor(info.color);
-      // touch: the button itself shows the wait, dimmed while it can't be used
-      this.weatherBtn?.setLabel(cd > 0 ? `${Math.ceil(cd)}s` : 'Trời');
-      this.weatherBtn?.container.setAlpha(cd > 0 || bw?.kind === kind ? 0.45 : 0.85);
-    }
-    // the status line sits among the touch buttons on phones: there the button carries it instead
-    this.texts.wcall.setText(this.weatherBtn ? '' : wcall).setPosition(gx, my + 78 * s);
-    this.weatherBtn?.container.setVisible(!!caller);
+    this.gimmicks.draw(this.gimmickViews(), !!(this.menu || this.dialogueLayer), this.time.now);
     this.texts.money?.setText(`${a.state.money} ${a.state.unit}`);
     this.skillBar.draw(g, !!(this.menu || this.dialogueLayer));
 
@@ -622,8 +590,35 @@ export class AdventureUI extends Phaser.Scene {
     } else { a.joystick.x = 0; a.joystick.y = 0; }
   }
 
-  private setMegaText(str: string, x: number, y: number): void {
-    this.texts.mega?.setText(str).setPosition(x, y);
+  private useGimmick(id: GimmickId): void {
+    if (this.menu || this.dialogueLayer) return;
+    if (id === 'mega') this.adv.tryMega();
+    else if (id === 'tera') this.adv.tryTera();
+    else if (id === 'dyna') this.adv.tryDynamax();
+    else this.adv.tryCallWeather();
+  }
+
+  /** What each battle-feature button shows now: in use (time left), recharging, ready, or not usable. */
+  private gimmickViews(): Record<GimmickId, GimmickSlotView> {
+    const a = this.adv;
+    const timed = (active: boolean, left: number, total: number, cd: number, cdTotal: number, ok: boolean): Pick<GimmickSlotView, 'state' | 'left' | 'total'> =>
+      active ? { state: 'active', left, total } : cd > 0 ? { state: 'cooldown', left: cd, total: cdTotal } : { state: ok ? 'ready' : 'blocked' };
+    const dyna = a.dynaStatus();
+    const gmax = a.dynaUnit ? !!a.dynaUnit.dyna?.gmax : !!dyna.gmax;
+    const caller = a.world.playerWeatherCaller();
+    const ab = caller ? a.world.weatherAbility(caller) : null;
+    const kind = weatherOfAbility(ab) ?? 'rain';
+    const bw = a.world.battleWeather;
+    return {
+      mega: { visible: a.state.item('key-stone') > 0, icon: itemIconKey(this, 'key-stone'), label: 'MEGA', color: 0xff80ff,
+        ...timed(!!a.megaUnit, a.megaT, MEGA_DURATION, a.megaCd, MEGA_COOLDOWN, !!a.megaStatus().ally) },
+      tera: { visible: a.state.item('tera-orb') > 0, icon: itemIconKey(this, 'tera-orb'), label: 'TERA', color: 0x80e8ff,
+        ...timed(!!a.teraUnit, a.teraT, TERA_DURATION, a.teraCd, TERA_COOLDOWN, a.teraStatus().ok) },
+      dyna: { visible: a.state.item('dynamax-band') > 0, icon: itemIconKey(this, 'dynamax-band'), label: gmax ? 'G-MAX' : 'MAX', color: 0xff3060,
+        ...timed(!!a.dynaUnit, a.dynaT, DYNAMAX_DURATION, a.dynaCd, DYNAMAX_COOLDOWN, dyna.ok) },
+      weather: { visible: !!caller, icon: weatherIconKey(kind), label: WEATHER_SHORT[kind], color: Phaser.Display.Color.HexStringToColor(WEATHER_INFO[kind].color).color,
+        ...timed(bw?.kind === kind, a.world.battleWeatherLeft(), ab ? weatherDuration(ab) : 40, caller ? a.world.weatherCallCd(caller) : 0, WEATHER_CALL_COOLDOWN, true) },
+    };
   }
 
   private drawMinimap(): void {

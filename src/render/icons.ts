@@ -290,6 +290,17 @@ export function ensureSkillIcon(s: SkillDef): void {
   if (iconScene && !iconScene.textures.exists('skill-' + s.id)) drawSkillIcon(iconScene, s);
 }
 
+// Called-weather icons (10×10): the weather button of the battle bar (scenes/gimmickBar.ts)
+const WEATHER_ICON: Record<string, { pal: Record<string, string>; rows: string[] }> = {
+  rain: { pal: { k: '#384858', g: '#c8d4e0', w: '#ffffff', b: '#60a8ff' }, rows: ['...kkk....', '..kgwgkk..', '.kgwggggk.', 'kgggggggk.', '.kkkkkkk..', '..b..b..b.', '.b..b..b..', '..b..b..b.', '.b..b..b..', '..........'] },
+  sun: { pal: { o: '#ff9020', y: '#ffe040', w: '#fffbd0' }, rows: ['....o.....', '.o..o..o..', '..oyyyo...', '..ywwyy...', 'ooywyyyoo.', '..yyyyy...', '..oyyyo...', '.o..o..o..', '....o.....', '..........'] },
+  sand: { pal: { d: '#a07838', s: '#e0c080', l: '#fff0c0' }, rows: ['..........', '.sssss....', 'd.....s...', '..llsss.s.', '.d.....s..', 'sssss...s.', '.....s.d..', '.dssss....', '..........', '..........'] },
+  snow: { pal: { c: '#80d8ff', w: '#ffffff' }, rows: ['....c.....', '.c..w..c..', '..c.w.c...', '...www....', 'cwwwcwwwc.', '...www....', '..c.w.c...', '.c..w..c..', '....c.....', '..........'] },
+};
+
+/** Texture key of a called-weather icon (rain / sun / sand / snow). */
+export const weatherIconKey = (w: string) => 'wx-' + w;
+
 export function buildIcons(scene: Phaser.Scene, skills: Iterable<SkillDef>, items: Iterable<{ id: string; color: string; kind: string; icon?: string; effect?: { pokeType?: string } }>): { skills: number; bespoke: number } {
   for (const t of ALL_TYPES) { drawTypeIcon(scene, t); drawProjectile(scene, t); }
   for (const k of Object.keys(STATUS_ICON) as StatusKind[]) drawStatusIcon(scene, k);
@@ -298,6 +309,7 @@ export function buildIcons(scene: Phaser.Scene, skills: Iterable<SkillDef>, item
   for (const s of skills) { n++; if (BESPOKE[s.id]) bespoke++; }
   for (const it of items) drawItemIcon(scene, it.id, it.color, it.kind, it.effect?.pokeType, it.icon);
   for (const id of Object.keys(ITEM_ART)) drawItemIcon(scene, id, '#ffffff', 'art');
+  for (const [w, art] of Object.entries(WEATHER_ICON)) canvasTex(scene, weatherIconKey(w), 10, 10, (ctx) => drawRows(ctx, art.rows, art.pal));
   return { skills: n, bespoke };
 }
 

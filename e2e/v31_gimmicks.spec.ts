@@ -54,7 +54,7 @@ test('Terastal, Gigantamax and Primal Reversion in the field', async ({ page }) 
   await page.waitForTimeout(500);
   expect(await ev(page, `(() => { const v = ${view}; return !!v.fx && !!v.fx.crown && !!v.fx.sheen && v.fx.sheen.frame.name === v.body.frame.name; })()`)).toBe(true);
   expect(await ev<number>(page, `${view}.body.scaleY`)).toBeCloseTo(scale0, 1);
-  expect(await ev(page, `${ui}.texts.tera.text`)).toContain('TERA');
+  expect(await ev(page, `${ui}.gimmicks.viewOf('tera')`)).toMatchObject({ state: 'active', label: 'TERA' });
   await page.screenshot({ path: test.info().outputPath('tera.png') });
   await ev(page, `window.__adv.endTera(false)`);
 
@@ -68,7 +68,7 @@ test('Terastal, Gigantamax and Primal Reversion in the field', async ({ page }) 
   expect(await ev<number>(page, `${view}.body.scaleY`) / scale0).toBeCloseTo(4.48, 1);
   expect(await ev<number>(page, `${view}.fx.clouds.length`)).toBe(12);
   expect(await ev(page, `${view}.body.anims.isPlaying`)).toBe(true);
-  expect(await ev(page, `${ui}.texts.dyna.text`)).toContain('GIGANTAMAX');
+  expect(await ev(page, `${ui}.gimmicks.viewOf('dyna')`)).toMatchObject({ state: 'active', label: 'G-MAX' });
   await page.screenshot({ path: test.info().outputPath('gigantamax.png') });
   await ev(page, `window.__adv.endDynamax(false)`);
   await page.waitForFunction((v) => Math.abs(eval(v + '.grow') - 1) < 0.02, view, { timeout: 5000 });
