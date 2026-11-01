@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import { POKEMON } from '../core/data';
 import { TILE_PX } from '../core/map/tiles';
+import type { Rng } from '../core/rng';
 import { regionDef } from '../core/map/regionDefs';
 import {
-  pickWormholeLegend, RIFT_CHANCE, RIFT_CHECK, RIFT_COOLDOWN, riftCandidates, ULTRA_SPACE, WORMHOLE_CHANCE, WORMHOLE_CHECK,
-  WORMHOLE_COOLDOWN, WORMHOLE_FLAG, WORMHOLE_OPEN, WORMHOLE_STAY, wormholeKind, wormholeLevel,
+  pickWormholeLegend, RIFT_CHANCE, RIFT_CHECK, RIFT_COOLDOWN, riftCandidates, ULTRA_AWAKE, ULTRA_BEASTS, ULTRA_SPACE, ULTRA_STIR,
+  ultraAwake, ultraStir, ultraWorldOf, ULTRA_WORLDS, type UltraWake, WORMHOLE_CHANCE, WORMHOLE_CHECK, WORMHOLE_COOLDOWN,
+  WORMHOLE_FLAG, WORMHOLE_OPEN, WORMHOLE_STAY, wormholeKind, wormholeLevel,
 } from '../core/ultraWormhole';
 import type { Unit } from '../core/world';
 import type { AdventureScene } from '../scenes/AdventureScene';
@@ -15,14 +17,46 @@ import type { AdventureScene } from '../scenes/AdventureScene';
 //   • inside Ultra Space: small rifts; E at one = the legendary waiting on the other side steps out and fights; beaten
 //     = the legendary capture window (AdventureScene.openLegendCapture). It goes back through if the fight drags on or
 //     the trainer walks away.
+//   • the Ultra Beasts' own sites there: a beast sleeps until the trainer has beaten enough wild Pokémon in its world
+//     (`stir`); then a wormhole opens at its site for a while, and it comes out when the trainer gets close
+//     (AdventureScene.updateWorldBoss asks `siteGate`).
 
 const ID = 'ultra-wormhole';
+type Swirl = { g: Phaser.GameObjects.Graphics; glow: Phaser.GameObjects.Particles.ParticleEmitter | null };
+
+/** A slow white-blue-pink spiral with particles pouring out of its centre. */
+function swirl(s: Phaser.Scene, x: number, y: number, big: number): Swirl {
+  const g = s.add.graphics().setDepth(y + 5);
+  s.tweens.addCounter({ from: 0, to: Math.PI * 2, duration: 2600, repeat: -1, onUpdate: (tw) => {
+    if (!g.active) { tw.stop(); return; }
+    const r0 = tw.getValue() ?? 0;
+    g.clear();
+    for (let k = 0; k < 6; k++) {
+      const c = [0xffffff, 0xa0d8ff, 0xffa0f0][k % 3];
+      g.lineStyle(5 - k * 0.6, c, 0.85 - k * 0.1);
+      g.beginPath();
+      for (let j = 0; j <= 40; j++) {
+        const ang = r0 + k * 1.05 + j * 0.16, rad = (10 + j * 1.6) * big;
+        const px = x + Math.cos(ang) * rad, py = y + Math.sin(ang) * rad * 0.62;
+        if (j === 0) g.moveTo(px, py); else g.lineTo(px, py);
+      }
+      g.strokePath();
+    }
+    g.fillStyle(0x0a0420, 0.9).fillEllipse(x, y, 34 * big, 22 * big);
+  } });
+  const glow = s.textures.exists('px') ? s.add.particles(x, y, 'px', {
+    lifespan: 900, speed: { min: 30, max: 90 }, scale: { start: 3, end: 0 }, alpha: { start: 0.9, end: 0 }, quantity: 2, frequency: 60, tint: [0xffffff, 0xa0d8ff, 0xffa0f0],
+  }).setDepth(y + 6) : null;
+  return { g, glow };
+}
 
 export class UltraWormholeController {
   private t = 45;
   private lastOpen = -1e9;
   /** legend: who steps out of a rift (Ultra Space); null = a wormhole into Ultra Space (open maps) */
-  private hole: { x: number; y: number; until: number; legend: string | null; g: Phaser.GameObjects.Graphics; glow: Phaser.GameObjects.Particles.ParticleEmitter | null } | null = null;
+  private hole: ({ x: number; y: number; until: number; legend: string | null } & Swirl) | null = null;
+  /** wormholes standing open at the sites of woken Ultra Beasts */
+  private siteSwirls = new Map<string, Swirl>();
   private fight: { unit: Unit; leaveAt: number; x: number; y: number } | null = null;
 
   private motes: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
@@ -55,9 +89,63 @@ export class UltraWormholeController {
     return riftCandidates((id) => adv.legends[id] === 'caught', caught);
   }
 
+  private get wake(): UltraWake {
+    return (this.scene.state.adv.ultra ??= { stir: {}, awake: {} });
+  }
+
+  /** A wild Pokémon beaten at (x, y): in Ultra Space it stirs that world; enough of them wake its Ultra Beast. */
+  stir(x: number, y: number, rng: Rng = this.scene.world.rng): string | null {
+    const s = this.scene;
+    if (!this.inUltraSpace) return null;
+    const area = s.map.areaAt(Math.floor(x / TILE_PX), Math.floor(y / TILE_PX));
+    if (!area || !ULTRA_WORLDS.has(area.id)) return null;
+    const caught = (id: string) => s.state.adv.legends[id] === 'caught';
+    const woke = ultraStir(this.wake, area.id, caught, this.now, rng);
+    if (woke) {
+      const site = s.regionDef.legendaries?.find((l) => l.id === woke);
+      s.ui.eventAlert(`Không gian ở ${area.name} rung chuyển dữ dội! Một Ultra Wormhole mở ra ở ${site?.name ?? area.name} — có thứ gì đó đang bước qua… (${Math.round(ULTRA_AWAKE / 60)} phút)`, '#ffa0f0');
+      s.cameras.main.shake(700, 0.01);
+      return woke;
+    }
+    const n = this.wake.stir[area.id] ?? 0;
+    if (n > 0 && n % 4 === 0) s.ui.banner(`Dao động Ultra ở ${area.name}: ${n}/${ULTRA_STIR}`, '#e0b0ff');
+    return null;
+  }
+
+  /** Why a site's legendary does not come out now (null = it may): an Ultra Beast that is still asleep. */
+  siteGate(id: string): { key: string; msg: string } | null {
+    const s = this.scene;
+    if (!this.inUltraSpace || !ULTRA_BEASTS.has(id) || s.state.adv.legends[id] === 'caught') return null;
+    if (ultraAwake(this.wake, id, this.now)) return null;
+    const world = ultraWorldOf(id);
+    const left = ULTRA_STIR - (this.wake.stir[world?.id ?? ''] ?? 0);
+    return { key: `${id}:ultra:${left}`, msg: `Không gian ở đây yên tĩnh lạ thường… Hạ thêm ${left} Pokémon hoang dã ở ${world?.name ?? 'vùng này'} để khuấy động nó.` };
+  }
+
+  /** A woken beast beaten at its site: its wormhole closes; the world has to be stirred again for the next time. */
+  onSiteBeaten(id: string): void {
+    if (this.wake.awake[id] != null) delete this.wake.awake[id];
+  }
+
+  /** The wormholes at the sites of the woken beasts: open while they are awake. */
+  private updateSiteSwirls(): void {
+    const s = this.scene, sites = this.inUltraSpace ? s.regionDef.legendaries ?? [] : [];
+    for (const [id, sw] of this.siteSwirls) {
+      if (!((this.wake.awake[id] ?? -1) > this.now) || s.state.adv.legends[id] === 'caught') {
+        sw.g.destroy(); sw.glow?.destroy(); this.siteSwirls.delete(id);
+      }
+    }
+    for (const l of sites) {
+      if (!ULTRA_BEASTS.has(l.id) || this.siteSwirls.has(l.id) || !((this.wake.awake[l.id] ?? -1) > this.now)) continue;
+      if (s.state.adv.legends[l.id] === 'caught') continue;
+      this.siteSwirls.set(l.id, swirl(s, (l.x + 0.5) * TILE_PX, (l.y + 0.5) * TILE_PX - 30, 1.8));
+    }
+  }
+
   update(dt: number): void {
     const s = this.scene;
     if (s.mapKind !== 'valley') return;
+    this.updateSiteSwirls();
     if (this.hole && this.now >= this.hole.until && !this.fight) this.close('Ultra Wormhole khép lại.');
     if (this.fight) { this.updateFight(); return; }
     if (this.hole) return;
@@ -92,30 +180,8 @@ export class UltraWormholeController {
   }
 
   private show(x: number, y: number, legend: string | null): void {
-    const s = this.scene, big = legend ? 1 : 1.6;
-    const g = s.add.graphics().setDepth(y + 5);
-    // a slow white-blue-pink spiral; the particles pour out of its centre
-    s.tweens.addCounter({ from: 0, to: Math.PI * 2, duration: 2600, repeat: -1, onUpdate: (tw) => {
-      if (!g.active) return;
-      const r0 = tw.getValue() ?? 0;
-      g.clear();
-      for (let k = 0; k < 6; k++) {
-        const c = [0xffffff, 0xa0d8ff, 0xffa0f0][k % 3];
-        g.lineStyle(5 - k * 0.6, c, 0.85 - k * 0.1);
-        g.beginPath();
-        for (let j = 0; j <= 40; j++) {
-          const ang = r0 + k * 1.05 + j * 0.16, rad = (10 + j * 1.6) * big;
-          const px = x + Math.cos(ang) * rad, py = y + Math.sin(ang) * rad * 0.62;
-          if (j === 0) g.moveTo(px, py); else g.lineTo(px, py);
-        }
-        g.strokePath();
-      }
-      g.fillStyle(0x0a0420, 0.9).fillEllipse(x, y, 34 * big, 22 * big);
-    } });
-    const glow = s.textures.exists('px') ? s.add.particles(x, y, 'px', {
-      lifespan: 900, speed: { min: 30, max: 90 }, scale: { start: 3, end: 0 }, alpha: { start: 0.9, end: 0 }, quantity: 2, frequency: 60, tint: [0xffffff, 0xa0d8ff, 0xffa0f0],
-    }).setDepth(y + 6) : null;
-    this.hole = { x, y, until: this.now + WORMHOLE_OPEN, legend, g, glow };
+    const s = this.scene;
+    this.hole = { x, y, until: this.now + WORMHOLE_OPEN, legend, ...swirl(s, x, y, legend ? 1 : 1.6) };
     this.lastOpen = this.now;
     s.interactables.set(ID, { kind: 'wormhole', id: ID, x, y, label: legend ? 'Vết nứt Ultra' : 'Ultra Wormhole', obj: { kind: 'secret', id: ID, x: Math.floor(x / TILE_PX), y: Math.floor(y / TILE_PX) } });
     if (legend) s.ui.eventAlert(`Một vết nứt mở ra gần đây! Phía bên kia có một luồng sức mạnh huyền thoại… (E để tiến lại, ${WORMHOLE_OPEN}s)`, '#ffa0f0');
@@ -213,6 +279,8 @@ export class UltraWormholeController {
   cleanup(): void {
     this.motes?.destroy();
     this.motes = null;
+    for (const sw of this.siteSwirls.values()) { sw.g.destroy(); sw.glow?.destroy(); }
+    this.siteSwirls.clear();
     if (this.fight?.unit.alive && !this.fight.unit.boss?.weakened) this.retreat();
     this.fight = null;
     this.close();

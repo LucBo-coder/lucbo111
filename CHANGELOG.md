@@ -1,14 +1,26 @@
 # Changelog
 
+## Chưa phát hành — Font đóng gói, Không Gian Ultra bổ sung
+
+- **Sửa lỗi nhãn nút bị cắt ("Lệ…", "Ch…", "Đ…"):** font VT323 trước đây tải từ Google Fonts. Khi mạng chậm, offline hoặc bị chặn, chữ được đo bằng font monospace dự phòng rộng hơn nhiều nên nhãn bị cắt cho vừa nút. Giờ font được đóng gói kèm game (`public/assets/fonts/`, giấy phép SIL OFL 1.1 trong `OFL.txt`), được tải trước, và game chờ tải cả phần chữ tiếng Việt trước khi vẽ chữ.
+- **Không Gian Ultra:**
+  - **Ultra Beast không còn đứng sẵn chờ ở chỗ của mình.** Mỗi Ultra Beast ngủ cho tới khi trainer hạ đủ **12 Pokémon hoang dã ở đúng vùng của nó** ("dao động Ultra"; cứ 4 con lại báo tiến độ). Lúc đó không gian rung chuyển, một Ultra Wormhole mở ra ở chỗ của nó trong **4 phút**, và nó bước ra khi trainer tới gần. Tới khi chưa khuấy động: chỉ có lời nhắc còn phải hạ bao nhiêu con. Thắng xong thì phải khuấy động lại từ đầu cho lần sau. Vùng có hai Ultra Beast (Rừng Rậm, Sa Mạc, Hoang Mạc) đánh thức lần lượt từng con.
+  - Bỏ vòng trụ đá quanh chỗ của các Ultra Beast, Necrozma và Cosmog.
+  - Naganadel có chỗ riêng ở Hoang Mạc Ultra (cạnh Poipole). Vết nứt không còn mang tới Ultra Beast nào.
+  - Hai y tá của Đội Trinh Sát Ultra hồi máu cho đội: một ở cổng vào, một ở Siêu Đô Thị.
+  - Sau khi thắng Necrozma, một **Cosmog** xuất hiện ở Siêu Đô Thị và xin đi theo (quà, không phải đánh).
+  - Cây cối đổi màu tím theo nền đất ngoài hành tinh; pha lê vốn đã tím thì giữ nguyên.
+- Test: `v37_ultra_space` thêm test Cosmog / y tá và test đánh thức Ultra Beast; e2e Ultra Wormhole: tới chỗ Nihilego khi chưa khuấy động thì không có gì, hạ 12 con ở Biển Sâu thì Nihilego ra; e2e Ultra Wormhole kiểm tra cây đổi màu; e2e bố cục điện thoại chặn Google Fonts và báo lỗi nếu nhãn ngắn bị cắt "…"; e2e `v31_gimmicks` không còn chập chờn khi máy tải nặng (chờ hoạt ảnh thay vì kiểm tra đúng một khung hình).
+
 ## Chưa phát hành — Ultra Wormhole và Không Gian Ultra
 
 - **Ultra Wormhole** (theo cốt truyện Sun / Moon): sau khi thắng Mega Venusaur, thỉnh thoảng một vết nứt xoáy trắng – xanh – hồng mở ra gần trainer trên bản đồ (kiểm tra mỗi 150 s, 35%, cách nhau ít nhất 5 phút; mở 75 s). Tới gần nhấn **E** để bước vào **Không Gian Ultra**. Game nhớ chỗ trainer đã bước vào; Ultra Wormhole ở cổng Không Gian Ultra đưa trainer về đúng chỗ đó.
 - **Bản đồ mới: Không Gian Ultra** (`data/world/ultra-space.json`, 108×108). Nền đất đổi màu tím ngoài hành tinh (trainer và Pokémon giữ màu gốc), có hạt sáng bay lơ lửng. Chín thế giới, mỗi nơi có Pokémon hoang dã riêng (Lv45–62) và một Ultra Beast ở nơi cố định:
-  - Hoang Mạc Ultra (cổng vào, Poipole) · Siêu Đô Thị Ultra ở giữa · Biển Sâu Ultra (Nihilego) · Rừng Rậm Ultra (Buzzwole, Pheromosa) · Nhà Máy Ultra (Xurkitree) · Phế Tích Ultra (Guzzlord) · Miệng Núi Lửa Ultra (Blacephalon) · Rừng Ultra phủ tuyết (Kartana) · Sa Mạc Ultra (Celesteela, Stakataka).
+  - Hoang Mạc Ultra (cổng vào, Poipole, Naganadel) · Siêu Đô Thị Ultra ở giữa · Biển Sâu Ultra (Nihilego) · Rừng Rậm Ultra (Buzzwole, Pheromosa) · Nhà Máy Ultra (Xurkitree) · Phế Tích Ultra (Guzzlord) · Miệng Núi Lửa Ultra (Blacephalon) · Rừng Ultra phủ tuyết (Kartana) · Sa Mạc Ultra (Celesteela, Stakataka).
   - **Necrozma** ở đỉnh Siêu Đô Thị, chỉ hiện ra sau khi đã hạ Nihilego, Xurkitree và Guzzlord.
   - Mỗi vùng chỉ có danh sách loài riêng theo chủ đề, không theo biome: Beheeyem, Minior, Solrock / Lunatone ở Hoang Mạc; Magnezone, Metagross, Porygon-Z ở Siêu Đô Thị; Starmie, Jellicent, Toxapex ở Biển Sâu… (`regions.json`, trường mới `species`).
   - Có 4 rương, 2 trạm dịch chuyển, một người của Đội Trinh Sát Ultra và một bảng chỉ dẫn.
-- **Vết nứt trong Không Gian Ultra**: mở thường hơn nhiều so với bên ngoài (kiểm tra mỗi 50 s, 50%, cách nhau 2 phút). Tới gần nhấn **E**: một huyền thoại / thần thoại Gen 5–9 bước ra thành boss. Vết nứt không mang tới Ultra Beast có chỗ cố định, Poipole hay Necrozma.
+- **Vết nứt trong Không Gian Ultra**: mở thường hơn nhiều so với bên ngoài (kiểm tra mỗi 50 s, 50%, cách nhau 2 phút). Tới gần nhấn **E**: một huyền thoại / thần thoại Gen 5–9 bước ra thành boss. Vết nứt không mang tới Ultra Beast nào hay Necrozma.
   - Thắng qua mọi phase: +3000 tiền, +3 Ultra Ball, rồi mở cửa sổ thu phục như các huyền thoại khác. Đã thu phục thì không quay lại nữa.
   - Đánh quá 150 s hoặc trainer chạy xa: nó quay về vết nứt, máu và phase được lưu cho lần sau.
 - **Bể huyền thoại mở rộng tới Gen 9: thêm 68 boss** sinh tự động (`legend-bosses.json`, `scripts/build-dex.mjs`):

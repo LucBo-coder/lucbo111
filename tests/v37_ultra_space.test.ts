@@ -4,7 +4,8 @@ import { regionDef } from '../src/core/map/regionDefs';
 import { ValleyMap } from '../src/core/map/valley';
 import { Rng } from '../src/core/rng';
 import {
-  GIANTS_AFTER, riftCandidates, ULTRA_BEASTS, ULTRA_SPACE, ULTRA_SPACE_SITES, wormholeCandidates, wormholeHint,
+  GIANTS_AFTER, riftCandidates, ULTRA_AWAKE, ULTRA_BEASTS, ULTRA_SPACE, ULTRA_SPACE_SITES, ULTRA_STIR, ultraAwake, ultraStir,
+  ULTRA_WORLDS, type UltraWake, wormholeCandidates, wormholeHint,
 } from '../src/core/ultraWormhole';
 
 // Không Gian Ultra (data/world/ultra-space.json): the dimension beyond the Ultra Wormholes — nine worlds, each with its
@@ -45,12 +46,22 @@ describe('Ultra Space', () => {
     }
   });
 
-  it('every Ultra Beast but Naganadel lives at a site of its own; Necrozma waits for three of them', () => {
-    for (const id of ULTRA_BEASTS) if (id !== 'naganadel') expect(ULTRA_SPACE_SITES.has(id), id).toBe(true);
+  it('every Ultra Beast lives at a site of its own, with no stone ring; Necrozma waits for three of them', () => {
+    for (const id of ULTRA_BEASTS) expect(ULTRA_SPACE_SITES.has(id), id).toBe(true);
+    for (const l of def.legendaries!) expect(l.ring, l.id).toBe(false);
     const nec = def.legendaries!.find((l) => l.id === 'necrozma')!;
     expect(nec.requires).toEqual(['boss:nihilego', 'boss:xurkitree', 'boss:guzzlord']);
     expect(wormholeHint('nihilego')).toContain('Không Gian Ultra — Biển Sâu Ultra');
+    expect(wormholeHint('nihilego')).toContain(`hạ ${ULTRA_STIR} Pokémon hoang dã`);
     expect(wormholeHint('zekrom')).toContain('Vết nứt');
+  });
+
+  it('after Necrozma a Cosmog asks to come along; nurses heal the party on the way', () => {
+    const c = def.legendaries!.find((l) => l.id === 'cosmog')!;
+    expect(c.gift).toBe(true);
+    expect(c.requires).toEqual(['boss:necrozma']);
+    const nurses = def.npcs.filter((n) => (n as { role?: string }).role === 'nurse');
+    expect(nurses.length).toBeGreaterThanOrEqual(2);
   });
 
   it('every site, the way home and the chests can be walked to from where the trainer arrives', () => {
@@ -81,8 +92,37 @@ describe('Ultra Space', () => {
     const all = wormholeCandidates(() => false, GIANTS_AFTER), rift = riftCandidates(() => false, GIANTS_AFTER);
     expect(rift.length).toBeGreaterThan(40);
     for (const id of ULTRA_SPACE_SITES.keys()) expect(rift, id).not.toContain(id);
-    expect(rift).toContain('naganadel');
+    for (const id of ULTRA_BEASTS) expect(rift, id).not.toContain(id);
     expect(rift).toContain('zekrom');
-    expect(all.length - rift.length).toBe(ULTRA_SPACE_SITES.size);
+    expect(all.length - rift.length).toBe([...ULTRA_SPACE_SITES.keys()].filter((id) => all.includes(id)).length);
+  });
+
+  it('an Ultra Beast sleeps until its world is stirred: ULTRA_STIR wild Pokémon beaten there wake it for a while', () => {
+    expect(ULTRA_WORLDS.get('ultra-deep-sea')).toEqual(['nihilego']);
+    expect(ULTRA_WORLDS.get('ultra-jungle')).toEqual(['buzzwole', 'pheromosa']);
+    expect(ULTRA_WORLDS.has('ultra-megalopolis')).toBe(false); // Necrozma is not an Ultra Beast
+    const w: UltraWake = { stir: {}, awake: {} }, rng = new Rng(1), none = () => false;
+    expect(ultraAwake(w, 'nihilego', 0)).toBe(false);
+    expect(ultraAwake(w, 'necrozma', 0)).toBe(true);
+    for (let i = 1; i < ULTRA_STIR; i++) expect(ultraStir(w, 'ultra-deep-sea', none, 10, rng)).toBeNull();
+    expect(w.stir['ultra-deep-sea']).toBe(ULTRA_STIR - 1);
+    // beating Pokémon in another world does not count here
+    expect(ultraStir(w, 'ultra-ruin', none, 10, rng)).toBeNull();
+    expect(w.stir['ultra-deep-sea']).toBe(ULTRA_STIR - 1);
+    expect(ultraStir(w, 'ultra-deep-sea', none, 10, rng)).toBe('nihilego');
+    expect(w.stir['ultra-deep-sea']).toBe(0);
+    expect(ultraAwake(w, 'nihilego', 10 + ULTRA_AWAKE - 1)).toBe(true);
+    expect(ultraAwake(w, 'nihilego', 10 + ULTRA_AWAKE)).toBe(false);
+    // while it is awake (or once caught) its world stays still
+    expect(ultraStir(w, 'ultra-deep-sea', none, 20, rng)).toBeNull();
+    expect(w.stir['ultra-deep-sea']).toBe(0);
+    expect(ultraStir(w, 'ultra-deep-sea', (id) => id === 'nihilego', 10 + ULTRA_AWAKE + 1, rng)).toBeNull();
+    // a world of two: one wakes, the other can still be stirred awake
+    let first: string | null = null;
+    for (let i = 0; i < ULTRA_STIR; i++) first = ultraStir(w, 'ultra-jungle', none, 50, rng) ?? first;
+    expect(['buzzwole', 'pheromosa']).toContain(first);
+    let second: string | null = null;
+    for (let i = 0; i < ULTRA_STIR; i++) second = ultraStir(w, 'ultra-jungle', none, 60, rng) ?? second;
+    expect(second).toBe(first === 'buzzwole' ? 'pheromosa' : 'buzzwole');
   });
 });

@@ -59,6 +59,8 @@ export interface AdventureSave {
   rideUid?: string;
   /** Where the trainer stepped into Ultra Space (map + tile): its wormhole leads back there */
   ultraReturn?: { region: string; x: number; y: number };
+  /** Không Gian Ultra: wild Pokémon beaten per world since its Ultra Beast last woke, and when each woken one goes back */
+  ultra?: { stir: Record<string, number>; awake: Record<string, number> };
   /** In-game days passed (the clock wrapped past midnight) */
   day?: number;
   /** Chợ nổi Cái Răng: what was bought on the current market day (limited stock per day) */

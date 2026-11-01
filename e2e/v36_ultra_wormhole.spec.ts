@@ -46,6 +46,27 @@ test('an Ultra Wormhole leads into Ultra Space, its rifts bring legendaries, and
   for (let i = 0; i < 20 && (await ev<boolean>(page, `!!${ui}.dialogueLayer`)); i++) { await ev(page, `window.__adv.interact()`); await page.waitForTimeout(150); }
   await page.waitForTimeout(800);
   await page.screenshot({ path: info.outputPath('ultra-space.png') });
+  // the trees take the alien ground's colours
+  expect(await ev<boolean>(page, `window.__adv.children.list.some((o) => o.texture && o.texture.key.startsWith('ultra:'))`)).toBe(true);
+
+  // an Ultra Beast's site: nothing there until its world is stirred (12 wild Pokémon beaten in Biển Sâu Ultra)
+  const site = `window.__adv.regionDef.legendaries.find((l) => l.id === 'nihilego')`;
+  const goSite = `(() => { const a = window.__adv, l = ${site}; for (const e of a.world.enemies) a.world.removeEnemy(e); a.world.teleport((l.x + 0.5) * 48, (l.y + 3.5) * 48); })()`;
+  await ev(page, goSite);
+  await page.waitForTimeout(1500);
+  expect(await ev(page, `!!(window.__adv.world.boss && window.__adv.world.boss.alive)`)).toBe(false);
+  await page.screenshot({ path: info.outputPath('ultra-site-asleep.png') });
+  const woke = await ev<(string | null)[]>(page, `(() => { const a = window.__adv, l = ${site}, out = [];
+    for (let i = 0; i < 12; i++) out.push(a.wormholes.stir((l.x + 3.5) * 48, (l.y + 3.5) * 48)); return out; })()`);
+  expect(woke.slice(0, 11).every((x) => x === null)).toBe(true);
+  expect(woke[11]).toBe('nihilego');
+  await page.waitForTimeout(800);
+  await page.screenshot({ path: info.outputPath('ultra-site-awake.png') });
+  await ev(page, goSite);
+  await page.waitForFunction(() => (window as Win).__adv.world.boss?.alive && (window as Win).__adv.world.boss.defId === 'nihilego', undefined, { timeout: 8000 });
+  await page.screenshot({ path: info.outputPath('ultra-site-boss.png') });
+  await ev(page, `(() => { const a = window.__adv; for (const e of a.world.enemies) a.world.removeEnemy(e); a.world.teleport((a.regionDef.spawn.x + 0.5) * 48, (a.regionDef.spawn.y + 0.5) * 48); })()`);
+  await page.waitForTimeout(300);
 
   // inside: a rift with a legendary behind it
   await ev(page, `(() => { const a = window.__adv; for (const e of a.world.enemies) a.world.removeEnemy(e); })()`);

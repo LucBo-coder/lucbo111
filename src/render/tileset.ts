@@ -726,3 +726,21 @@ export function buildWorldProps(scene: Phaser.Scene): void {
     }
   });
 }
+
+/**
+ * Không Gian Ultra (V37): a hue-shifted copy of a world-art texture or of one 'ow_tiles' frame, made once and cached,
+ * so trees match the alien ground (whose colours are shifted by a post FX on the chunk layers).
+ */
+export function ultraTexture(scene: Phaser.Scene, key: string, frame?: string | number): string {
+  const out = frame == null ? `ultra:${key}` : `ultra:${key}:${frame}`;
+  if (scene.textures.exists(out)) return out;
+  const f = scene.textures.getFrame(key, frame);
+  if (!f) return key;
+  const cv = scene.textures.createCanvas(out, f.cutWidth, f.cutHeight);
+  if (!cv) return key;
+  const ctx = cv.getContext();
+  ctx.filter = 'hue-rotate(170deg) brightness(0.9)';
+  ctx.drawImage(f.source.image as CanvasImageSource, f.cutX, f.cutY, f.cutWidth, f.cutHeight, 0, 0, f.cutWidth, f.cutHeight);
+  cv.refresh();
+  return out;
+}

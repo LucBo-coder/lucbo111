@@ -8,6 +8,9 @@ import type { Rng } from './rng';
 //   • on the open maps a wormhole opens now and then near the trainer, once the trainer is strong enough (beat Mega
 //     Venusaur); E at it = step through into Không Gian Ultra (data/world/ultra-space.json), a map of nine worlds, each
 //     with its own Ultra Beast, and Necrozma at the heart of the megalopolis. Its own wormhole leads back home.
+//   • the Ultra Beasts there do not just stand at their sites: each world's beast sleeps until the trainer has beaten
+//     ULTRA_STIR wild Pokémon in that world ("dao động Ultra"); then a wormhole opens at its site for ULTRA_AWAKE
+//     seconds and the beast comes out when the trainer gets close
 //   • inside Ultra Space small rifts keep opening: E at one = a Legendary / Mythical from Gen 5–9 steps out and fights;
 //     beaten through its phases = the usual legendary capture window; caught ones never come through again
 //   • the rift pool opens up with progress: the Gen 5–7 legends first, the box-art giants later
@@ -34,9 +37,54 @@ export const RIFT_CHECK = 50;
 export const RIFT_CHANCE = 0.5;
 export const RIFT_COOLDOWN = 120;
 
-type Site = { id: string; name: string };
+type Site = { id: string; name: string; x: number; y: number };
+type Area = { id: string; name: string; rect: number[] };
 /** Ultra Space's own residents (fixed sites on its map): they never come through a rift */
 export const ULTRA_SPACE_SITES: ReadonlyMap<string, string> = new Map((ultraSpace.legendaries as Site[]).map((l) => [l.id, l.name]));
+
+/** wild Pokémon to beat in one world of Ultra Space before its Ultra Beast wakes */
+export const ULTRA_STIR = 12;
+/** seconds the woken beast's wormhole stays open at its site */
+export const ULTRA_AWAKE = 240;
+const AREAS = ultraSpace.areas as Area[];
+const areaOfTile = (x: number, y: number) => AREAS.find((a) => x >= a.rect[0] && x <= a.rect[2] && y >= a.rect[1] && y <= a.rect[3]);
+/** world (area id) → the Ultra Beasts whose sites lie in it */
+export const ULTRA_WORLDS: ReadonlyMap<string, string[]> = (() => {
+  const m = new Map<string, string[]>();
+  for (const l of ultraSpace.legendaries as Site[]) {
+    const a = ULTRA_BEASTS.has(l.id) ? areaOfTile(l.x, l.y) : undefined;
+    if (a) m.set(a.id, [...(m.get(a.id) ?? []), l.id]);
+  }
+  return m;
+})();
+/** the world an Ultra Beast lives in (area id + name) */
+export function ultraWorldOf(id: string): { id: string; name: string } | null {
+  for (const [area, ids] of ULTRA_WORLDS) if (ids.includes(id)) { const a = AREAS.find((x) => x.id === area)!; return { id: a.id, name: a.name }; }
+  return null;
+}
+
+/** Saved progress: wild Pokémon beaten per world since its last wake, and when each woken beast's wormhole closes. */
+export interface UltraWake { stir: Record<string, number>; awake: Record<string, number> }
+
+/**
+ * One wild Pokémon beaten in world `area`: the stir grows; at ULTRA_STIR one of its sleeping beasts (not caught, not
+ * awake yet) wakes until now + ULTRA_AWAKE. Returns the beast that woke. A world with nobody left to wake stays still.
+ */
+export function ultraStir(w: UltraWake, area: string, caught: (id: string) => boolean, now: number, rng: Rng): string | null {
+  const sleeping = (ULTRA_WORLDS.get(area) ?? []).filter((id) => !caught(id) && !((w.awake[id] ?? -1) > now));
+  if (!sleeping.length) return null;
+  w.stir[area] = (w.stir[area] ?? 0) + 1;
+  if (w.stir[area] < ULTRA_STIR) return null;
+  w.stir[area] = 0;
+  const id = sleeping[Math.floor(rng.next() * sleeping.length)];
+  w.awake[id] = now + ULTRA_AWAKE;
+  return id;
+}
+
+/** May this site's legendary come out now? Everyone but the Ultra Beasts: yes; a beast: only while it is awake. */
+export function ultraAwake(w: UltraWake | undefined, id: string, now: number): boolean {
+  return !ULTRA_BEASTS.has(id) || ((w?.awake[id] ?? -1) > now);
+}
 /** the legend goes back through the rift if the fight drags on this long, or the trainer walks away */
 export const WORMHOLE_STAY = 150;
 
@@ -91,6 +139,7 @@ export function wormholeLevel(id: string, worldLevel: number): number {
 /** Pokédex line: how a wormhole legend is met. */
 export function wormholeHint(id: string): string {
   const site = ULTRA_SPACE_SITES.get(id);
+  if (site && ULTRA_BEASTS.has(id)) return `Không Gian Ultra — ${site}: hạ ${ULTRA_STIR} Pokémon hoang dã ở vùng đó để đánh thức`;
   if (site) return `Không Gian Ultra — ${site} (qua Ultra Wormhole)`;
   return wormholeKind(id) === 'giant' ? `Vết nứt trong Không Gian Ultra — sau khi đã thu phục ${GIANTS_AFTER} huyền thoại`
     : 'Vết nứt trong Không Gian Ultra — xuất hiện ngẫu nhiên';

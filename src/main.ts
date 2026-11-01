@@ -20,7 +20,11 @@ function boot(): void {
   console.info(`[boot] scripts ready at ${Math.round(performance.now())} ms`);
   // The pixel font loads while the game downloads its assets; Boot waits for it (briefly) before the first text,
   // so canvas text doesn't render in a fallback font — without holding the whole start-up for it.
-  const fontReady = Promise.race([document.fonts.load('20px "VT323"'), new Promise((r) => setTimeout(r, 2500))])
+  // VT323 ships with the game (index.html), split by script (latin / latin-ext / vietnamese, `unicode-range`): a sample
+  // with Vietnamese letters makes every part load now. Waiting for latin only measured "ệ", "ố", "đ"… in the wider
+  // fallback font, and labels fitted to their buttons were cut short ("Lệnh" → "Lệ…").
+  const sample = 'Aa Lệnh Đổi ắ ổ ữ ợ ự ỹ đ';
+  const fontReady = Promise.race([document.fonts.load('20px "VT323"', sample), new Promise((r) => setTimeout(r, 2500))])
     .catch(() => undefined); // offline: fall back to monospace
   const game = new Phaser.Game({
     type: Phaser.AUTO,

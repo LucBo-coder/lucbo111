@@ -67,7 +67,8 @@ test('Terastal, Gigantamax and Primal Reversion in the field', async ({ page }) 
   await page.waitForFunction((v) => Math.abs(eval(v + '.grow') - 4.48) < 0.02, view, { timeout: 5000 });
   expect(await ev<number>(page, `${view}.body.scaleY`) / scale0).toBeCloseTo(4.48, 1);
   expect(await ev<number>(page, `${view}.fx.clouds.length`)).toBe(12);
-  expect(await ev(page, `${view}.body.anims.isPlaying`)).toBe(true);
+  // still animated (polled: under load a one-shot attack can have just ended, the next cycle starts a frame later)
+  await page.waitForFunction((v) => eval(v + '.body.anims.isPlaying'), view, { timeout: 3000 });
   expect(await ev(page, `${ui}.gimmicks.viewOf('dyna')`)).toMatchObject({ state: 'active', label: 'G-MAX' });
   await page.screenshot({ path: test.info().outputPath('gigantamax.png') });
   await ev(page, `window.__adv.endDynamax(false)`);

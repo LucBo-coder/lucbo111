@@ -38,7 +38,7 @@ import { REGION_DEFS } from '../core/map/regionDefs';
 import { chunkCols, chunkRows, MapObject, MapProvider } from '../core/map/mapProvider';
 import { DUNGEON, EX, SCALE, T, TILE_PX, TOWN } from '../core/map/tiles';
 import { PortalDef, RegionDef, ValleyMap } from '../core/map/valley';
-import { addWorldArt } from '../render/tileset';
+import { addWorldArt, ultraTexture } from '../render/tileset';
 import { regionDef } from '../core/map/regionDefs';
 import { itemIconKey } from '../render/spriteRegistry';
 import { starterTabs } from '../core/starters';
@@ -618,6 +618,8 @@ export class AdventureScene extends Phaser.Scene {
           const bigImg = addWorldArt(this, o);
           if (!bigImg) add(this.add.image(px, py + 22, 'shadow').setScale(2.6, 2.2).setDepth(py + 21.9));
           const img = add(bigImg ?? this.add.image(px, py + 22, 'ow_tiles', o.tile).setOrigin(0.5, 1).setScale(SCALE)).setDepth(py + 22);
+          // Không Gian Ultra: the trees take the alien ground's colours (the crystals are purple already)
+          if (this.regionDef.filter === 'ultra' && this.mapKind === 'valley' && o.tile !== EX.crystal) img.setTexture(ultraTexture(this, img.texture.key, bigImg ? undefined : img.frame.name));
           const swing = bigImg ? 0.6 : 1.6;
           if (q.sway) this.sway.push(this.tweens.add({ targets: img, angle: { from: -swing, to: swing }, duration: 1600 + (o.x * 37 % 900), yoyo: true, repeat: -1, ease: 'Sine.inOut' }));
           this.world.addObstacle({ x: px, y: py + 6, r: o.collideR ?? 15, kind: 'tree', tag });
@@ -1294,9 +1296,11 @@ export class AdventureScene extends Phaser.Scene {
       const exp = expYield(e.defId === 'onix' ? 'onix' : e.defId, e.level ?? 5, trainerOwned || e.tag === 'dungeon');
       const alive = this.world.allies.filter((a) => !a.fainted && a.ownerUid).map((a) => a.ownerUid!);
       this.state.earn((e.level ?? 5) * (trainerOwned ? 6 : 3));
-      if (e.boss && this.bossSites().some((s) => s.id === e.defId)) this.onWorldBossDefeated(e.defId, e.level ?? 30);
+      if (e.boss && this.bossSites().some((s) => s.id === e.defId)) { this.onWorldBossDefeated(e.defId, e.level ?? 30); this.wormholes?.onSiteBeaten(e.defId); }
       else if (e.boss && e.tag === 'roamer') this.legendsMgr?.onRoamerDefeated(e.defId, e.level ?? 40);
       else if (e.boss && e.tag === 'wormhole') this.wormholes?.onDefeated(e.defId, e.level ?? 50);
+      // Không Gian Ultra: beating its wild Pokémon stirs the world until its Ultra Beast wakes
+      else if (!e.boss && e.wild && !e.tag) this.wormholes?.stir(e.x, e.y);
       // the Pokémon that fought gets all the EXP, the healthy ones waiting in their balls a share (field-rules.json)
       const ups: ReturnType<AdventureState['gainExp']> = [];
       const fainted = (uid: string) => (this.state.owned(uid)?.hpFrac ?? 1) <= 0 || !!this.world.allies.find((a) => a.ownerUid === uid)?.fainted;
@@ -2145,6 +2149,12 @@ export class AdventureScene extends Phaser.Scene {
         if (s.hint && !this.sealedHinted.has(s.id)) { this.sealedHinted.add(s.id); this.ui.banner(s.hint, '#c8d8ff'); }
         continue;
       }
+      // Không Gian Ultra: an Ultra Beast sleeps until its world has been stirred (UltraWormholeController.siteGate)
+      const ultra = this.wormholes?.siteGate(s.id);
+      if (ultra) {
+        if (!this.sealedHinted.has(ultra.key)) { this.sealedHinted.add(ultra.key); this.ui.banner(ultra.msg, '#e0b0ff'); }
+        continue;
+      }
       // a caught gift legend never comes back; time / weather / friendship conditions
       if (s.gift && this.state.adv.legends[s.id] === 'caught') continue;
       const miss = s.condition ? legendMissing({ ...s.condition, weather: s.condition.weather as WeatherKind[] | undefined }, this.legendEnv()) : [];
@@ -2226,7 +2236,7 @@ export class AdventureScene extends Phaser.Scene {
     const def = LEGENDS.get(id);
     this.renderer_.vfx.named('evolve', this.world.trainer.x + 80, this.world.trainer.y - 40, 80);
     audio.play('levelup');
-    const r = await this.say(name, [def?.lore ?? '', `${name} nhìn bạn một lúc lâu... rồi tiến lại gần.`], [{ label: `Mời ${name} đồng hành`, value: 'yes' }, { label: 'Để nó tự do', value: 'no' }]);
+    const r = await this.say(name, [def?.lore ?? '', `${name} nhìn bạn một lúc lâu... rồi tiến lại gần.`].filter(Boolean), [{ label: `Mời ${name} đồng hành`, value: 'yes' }, { label: 'Để nó tự do', value: 'no' }]);
     if (r !== 'yes') { this.state.adv.bossDefeatedAt[id] = this.state.adv.playTime; this.ui.banner(`${name} bay đi... (sẽ quay lại sau)`, '#c0c8e0'); return; }
     this.joinLegend(id, level, `${name} đã tin tưởng và gia nhập đội!`);
   }

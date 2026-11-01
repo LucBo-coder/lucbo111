@@ -23,6 +23,8 @@ const BUTTONS = (scene: string) => `(() => {
     const n = b.label.text, r = b.r;
     if (r.x < -1 || r.right > W + 1 || r.y < -1 || r.bottom > H + 1) out.push('off screen: ' + n);
     if (b.label.width > r.width + 1) out.push('label wider than button: ' + n);
+    // a short label cut with "…" (e.g. "Lệ…"): the Vietnamese letters were measured before the font loaded
+    if (n.endsWith('…') && n.length <= 6) out.push('label cut short: ' + n);
   }
   for (let i = 0; i < btns.length; i++) for (let j = i + 1; j < btns.length; j++) {
     const a = btns[i].r, b = btns[j].r;
@@ -35,6 +37,8 @@ const BUTTONS = (scene: string) => `(() => {
 for (const [name, viewport] of [['portrait', { width: 390, height: 844 }], ['landscape', { width: 844, height: 390 }]] as const) {
   test.describe(`phone ${name}`, () => {
     test.use({ viewport, hasTouch: true, isMobile: true });
+    // the pixel font ships with the game: no font server may be needed for the labels to fit (offline / slow network)
+    test.beforeEach(async ({ page }) => { await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort()); });
 
     test('main menu and starter select: buttons on screen, apart, labels fit', async ({ page }) => {
       test.setTimeout(60_000);

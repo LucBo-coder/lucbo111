@@ -281,6 +281,28 @@
   ],
   "npcs": [
     {
+      "id": "ultra-nurse",
+      "name": "Y tá Đội Trinh Sát",
+      "sprite": "girl",
+      "role": "nurse",
+      "x": 51,
+      "y": 95,
+      "lines": [
+        "Đường về xa lắm, để tôi chữa cho đội của bạn."
+      ]
+    },
+    {
+      "id": "ultra-nurse-city",
+      "name": "Y tá Đội Trinh Sát",
+      "sprite": "girl",
+      "role": "nurse",
+      "x": 58,
+      "y": 66,
+      "lines": [
+        "Ánh sáng ở đây yếu lắm… nghỉ một chút rồi hãy đi tiếp."
+      ]
+    },
+    {
       "id": "ultra-recon",
       "name": "Đội Trinh Sát Ultra",
       "sprite": "wizard",
@@ -369,7 +391,8 @@
       "arena": 480,
       "requires": [],
       "gap": 0.81,
-      "hint": "Những thân cây giấy trắng bị cắt ngọt như lưỡi kiếm…"
+      "hint": "Những thân cây giấy trắng bị cắt ngọt như lưỡi kiếm…",
+      "ring": false
     },
     {
       "id": "blacephalon",
@@ -381,7 +404,8 @@
       "arena": 480,
       "requires": [],
       "gap": 1.57,
-      "hint": "Pháo hoa nổ lách tách trên miệng núi lửa."
+      "hint": "Pháo hoa nổ lách tách trên miệng núi lửa.",
+      "ring": false
     },
     {
       "id": "celesteela",
@@ -393,7 +417,8 @@
       "arena": 480,
       "requires": [],
       "gap": 2.16,
-      "hint": "Một vệt khói như tên lửa vạch ngang bầu trời sa mạc."
+      "hint": "Một vệt khói như tên lửa vạch ngang bầu trời sa mạc.",
+      "ring": false
     },
     {
       "id": "stakataka",
@@ -405,7 +430,8 @@
       "arena": 480,
       "requires": [],
       "gap": 2.61,
-      "hint": "Một bức tường đá xếp chồng… vừa nhúc nhích?"
+      "hint": "Một bức tường đá xếp chồng… vừa nhúc nhích?",
+      "ring": false
     },
     {
       "id": "buzzwole",
@@ -417,7 +443,8 @@
       "arena": 480,
       "requires": [],
       "gap": 0.19,
-      "hint": "Thân cây có vết đấm lõm sâu."
+      "hint": "Thân cây có vết đấm lõm sâu.",
+      "ring": false
     },
     {
       "id": "pheromosa",
@@ -429,7 +456,8 @@
       "arena": 480,
       "requires": [],
       "gap": -0.38,
-      "hint": "Thoáng một bóng trắng thanh mảnh lướt qua tán lá."
+      "hint": "Thoáng một bóng trắng thanh mảnh lướt qua tán lá.",
+      "ring": false
     },
     {
       "id": "xurkitree",
@@ -441,7 +469,8 @@
       "arena": 480,
       "requires": [],
       "gap": 3.14,
-      "hint": "Dây điện ở đây tự giật lên như rễ cây."
+      "hint": "Dây điện ở đây tự giật lên như rễ cây.",
+      "ring": false
     },
     {
       "id": "guzzlord",
@@ -453,7 +482,8 @@
       "arena": 480,
       "requires": [],
       "gap": -0.79,
-      "hint": "Cả một khu phế tích bị nuốt chửng…"
+      "hint": "Cả một khu phế tích bị nuốt chửng…",
+      "ring": false
     },
     {
       "id": "nihilego",
@@ -465,7 +495,8 @@
       "arena": 480,
       "requires": [],
       "gap": -2.32,
-      "hint": "Những đốm sáng như sứa trôi lững lờ trên bờ biển."
+      "hint": "Những đốm sáng như sứa trôi lững lờ trên bờ biển.",
+      "ring": false
     },
     {
       "id": "poipole",
@@ -477,7 +508,21 @@
       "arena": 480,
       "requires": [],
       "gap": -1.13,
-      "hint": "Có tiếng \"Poi! Poi!\" vọng lại từ đâu đó."
+      "hint": "Có tiếng \"Poi! Poi!\" vọng lại từ đâu đó.",
+      "ring": false
+    },
+    {
+      "id": "naganadel",
+      "name": "Hoang Mạc Ultra",
+      "x": 68,
+      "y": 82,
+      "level": 55,
+      "respawn": 1800,
+      "arena": 480,
+      "requires": [],
+      "gap": -2.03,
+      "hint": "Một vệt độc tím kéo dài trên nền cát như đuôi sao chổi.",
+      "ring": false
     },
     {
       "id": "necrozma",
@@ -493,7 +538,24 @@
         "boss:guzzlord"
       ],
       "gap": 1.57,
-      "hint": "Ánh sáng của Siêu Đô Thị đã bị nuốt mất. Necrozma chỉ hiện ra khi Nihilego, Xurkitree và Guzzlord đã bị khuất phục."
+      "hint": "Ánh sáng của Siêu Đô Thị đã bị nuốt mất. Necrozma chỉ hiện ra khi Nihilego, Xurkitree và Guzzlord đã bị khuất phục.",
+      "ring": false
+    },
+    {
+      "id": "cosmog",
+      "name": "Ánh Sáng Siêu Đô Thị",
+      "x": 63,
+      "y": 63,
+      "level": 15,
+      "respawn": 600,
+      "arena": 200,
+      "requires": [
+        "boss:necrozma"
+      ],
+      "gap": -2.36,
+      "hint": "Một đốm sáng nhỏ như mây sao run rẩy trong bóng tối của Siêu Đô Thị…",
+      "ring": false,
+      "gift": true
     }
   ],
   "portals": [
