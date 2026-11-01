@@ -1,5 +1,39 @@
 # Changelog
 
+## Chưa phát hành — Mỗi huyền thoại một lối đánh riêng
+
+- **Cơ chế riêng cho từng huyền thoại** (`src/core/bosses/legendMechanics.ts`). Cả 102 huyền thoại, Thần thoại và Ultra Beast (trừ Rayquaza, vốn đã có kịch bản riêng) đều có 2–3 cơ chế chọn theo lore. Không có hai loài nào trùng tổ hợp. Cơ chế thứ nhất dùng từ giai đoạn 1, cơ chế thứ hai mở ở giai đoạn 2, cơ chế thứ ba mở ở giai đoạn 3, nên trận đấu khó dần. Các chiêu chung (tia, loạt bắn, nova, vùng, tuyệt chiêu) vẫn giữ nguyên.
+  - Có 22 cơ chế, chiêu nào cũng báo trước bằng vùng đỏ và tên hiện trên HUD:
+    - **Ảo ảnh**: tạo bản sao giống hệt, không nhãn, không thanh máu; bản thật đổi chỗ với một bản sao.
+    - **Lá chắn tinh thể**: miễn sát thương cho tới khi phá hết tinh thể.
+    - **Hồi phục**: đứng yên vận sức hồi máu; dồn đủ sát thương thì bị cắt ngang. Máu hồi không bao giờ vượt ngưỡng của giai đoạn hiện tại.
+    - **Thế phản đòn**: đòn đánh vào bị giảm một nửa, nửa còn lại dội ngược về người đánh.
+    - **Lao tới**: lao theo đường vạch sẵn, có khi 2–3 lần liền.
+    - **Hố hút**: hút mọi thứ vào giữa rồi nổ.
+    - **Bãi bẫy**: rải bẫy nổ chậm, có loại gây độc hoặc bỏng.
+    - **Tia quét**: tia quét một vòng quanh boss.
+    - **Quỹ đạo**: hai vòng khối quay quanh boss.
+    - **Sóng tràn**: các đợt sóng quét ngang sân, mỗi đợt chừa một khe.
+    - **Sóng xung kích**: các vòng nổ lan dần ra ngoài.
+    - **Lưới sét**: nổ theo ô bàn cờ, hai đợt xen kẽ.
+    - **Mưa thiên thạch**.
+    - **Đánh dấu**: đánh dấu chỗ đứng, nổ lớn sau vài giây.
+    - **Vệt cháy**: lao quanh sân, để lại vệt gây sát thương.
+    - **Ẩn mình**: biến mất, không trúng đòn, rồi hiện ra dưới chân người chơi.
+    - **Nứt đất**: đường nứt toả ra từ boss.
+    - **Tích nộ**: sát thương tăng 15% mỗi tầng; dồn 8% máu trong 4 giây thì mất hết tầng.
+    - **Gọi đồng bọn**: Kyogre gọi Carvanha / Sharpedo, Regigigas gọi bộ ba Regi, Melmetal gọi Meltan.
+    - **Trói chân**: làm chậm hoặc ru ngủ (Darkrai), gây tê liệt (Xurkitree).
+    - **Băng phong**.
+    - **Hút sinh lực**: hồi máu theo sát thương gây ra.
+  - Bản sao, tinh thể và đồng bọn biến mất khi boss kiệt sức hoặc rời đi. Hạ chúng chỉ được 15% EXP.
+  - Pokédex ghi "Cơ chế khi là boss" của từng loài; trang Hướng dẫn → Chiến đấu có giải thích.
+- Test `v38_legend_mechanics`:
+  - Kiểm tra mọi huyền thoại đều có cơ chế, không tổ hợp nào trùng.
+  - Mỗi cơ chế đều kích hoạt được trong một trận mô phỏng, và cơ chế sau chỉ mở ở đúng giai đoạn của nó.
+  - Kiểm tra lá chắn tinh thể, phản đòn, tích nộ, giới hạn hồi máu, bản sao biến mất cùng boss, miễn sát thương khi ẩn mình.
+  - E2E: Mew tách bản sao, Diancie dựng lá chắn tinh thể.
+
 ## Chưa phát hành — Không Gian Ultra thành quần đảo lơ lửng giữa khoảng không
 
 - **Không Gian Ultra làm lại thành các đảo trôi giữa khoảng không đầy sao** (160×160). Mép đảo có vách đá rủ xuống bóng tối; bước ra mép là hết đường (khoảng không là terrain mới `Void`: không đi bộ được, đạn và thú bay thì qua được).

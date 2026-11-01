@@ -78,6 +78,7 @@ export const HELP_PAGES: HelpPage[] = [
       'Lệnh đội: "Bảo vệ HLV" khi bị vây, "Giữ vị trí" để đánh từ xa, "Quay về HLV" để rút lui.',
       'Huấn luyện viên đứng trên đường sẽ thách đấu khi bạn tới gần. Thắng nhận tiền và đồ.',
       'Boss khu vực có nhiều giai đoạn. Thắng boss nhận huy hiệu — huy hiệu mở đường tới vùng / tỉnh tiếp theo.',
+      'Mỗi huyền thoại có 2–3 cơ chế riêng (Ảo ảnh, Lá chắn tinh thể, Thế phản đòn, Ẩn mình, Lưới sét…), mở dần theo giai đoạn. Tên cơ chế hiện khi nó ra chiêu; Pokédex ghi cơ chế của từng loài.',
       'Nếu cả đội gục, bạn hồi phục ở trạm (waypoint) kích hoạt gần nhất.',
     ],
   },

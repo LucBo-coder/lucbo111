@@ -1293,7 +1293,8 @@ export class AdventureScene extends Phaser.Scene {
       const trainerOwned = !!e.tag?.startsWith('trainer:');
       // Friendship: a win against a trainer's Pokémon or a boss counts as a real battle for the active party
       if (trainerOwned || e.boss) for (const a of this.world.allies) if (!a.fainted && a.ownerUid) { const o = this.state.owned(a.ownerUid); if (o) addFriendship(o, 'battle'); }
-      const exp = expYield(e.defId === 'onix' ? 'onix' : e.defId, e.level ?? 5, trainerOwned || e.tag === 'dungeon');
+      // a legendary's copies / crystals / minions (tag boss-add) are worth a fraction: the reward is the legendary itself
+      const exp = Math.round(expYield(e.defId === 'onix' ? 'onix' : e.defId, e.level ?? 5, trainerOwned || e.tag === 'dungeon') * (e.tag === 'boss-add' || e.tag === 'boss-clone' ? 0.15 : 1));
       const alive = this.world.allies.filter((a) => !a.fainted && a.ownerUid).map((a) => a.ownerUid!);
       this.state.earn((e.level ?? 5) * (trainerOwned ? 6 : 3));
       if (e.boss && this.bossSites().some((s) => s.id === e.defId)) { this.onWorldBossDefeated(e.defId, e.level ?? 30); this.wormholes?.onSiteBeaten(e.defId); }

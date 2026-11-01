@@ -1,4 +1,5 @@
 import { abilityEffect, abilityOf } from '../core/abilities';
+import { LEGEND_MECHS, MECH_INFO } from '../core/bosses/legendMechanics';
 import Phaser from 'phaser';
 import { fieldFlag, tideName } from '../core/field';
 import { isMainQuest, questInRegion, repBoard } from '../core/journal';
@@ -1851,7 +1852,7 @@ export class AdventureUI extends Phaser.Scene {
       ? [...guide.prev, ...guide.next].map((e) => '• ' + e.line).join('\n')
       : [...guide.prev.map((e) => '• ' + e.line), `• Tiến hóa thành ${names(guide.next)} — bấm «Cách tiến hóa» để xem điều kiện`].join('\n');
     const megaForms = megaFormsOf(sel.name).map((m) => `${POKEMON.get(m.form)?.name} (${POKEMON.get(m.form)?.types.join('/')})`);
-    const evoText = text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa:${evo ? '\n' + evo : ' không tiến hóa'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${GMAX[sel.name] ? `\nGigantamax: ${GMAX[sel.name].move} · cao ${GMAX[sel.name].height} m (Súp Max hoặc Hang Raid G-Max)` : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s);
+    const evoText = text(this, dx + 16 * s, dy + 280 * s, `Tiến hóa:${evo ? '\n' + evo : ' không tiến hóa'}${megaForms.length ? '\nMega: ' + megaForms.join(', ') : ''}${GMAX[sel.name] ? `\nGigantamax: ${GMAX[sel.name].move} · cao ${GMAX[sel.name].height} m (Súp Max hoặc Hang Raid G-Max)` : ''}${POKEMON.get(sel.name)?.fakemon ? '\nFakemon nguyên bản của IcyEthics (không có trong PokéAPI)' : ''}${LEGEND_MECHS[sel.name] ? '\nCơ chế khi là boss: ' + LEGEND_MECHS[sel.name].map((m) => MECH_INFO[m.id].name).join(' → ') : ''}`, 15 * s, '#d0ffd0').setWordWrapWidth(dw - 32 * s);
     c.add(evoText);
     // rows below follow the evolution block, which grows with branches (Eevee has eight)
     let ny = Math.max(dy + 322 * s, evoText.y + evoText.height + 8 * s);

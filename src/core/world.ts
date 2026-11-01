@@ -24,6 +24,7 @@ import { updateWild, WildState } from './wildAI';
 import { evolutionsOf, ITEM_DEFS, ItemDef } from './evolution';
 import { BossPhaseManager, phaseConfigFor, PhaseSnapshot } from './bossPhases';
 import { RayState, rayAirborne, rayCancel, rayquazaThink } from './bosses/rayquaza';
+import { legendMechCleanup, legendMechOnHit, mechHidden, MechState, runLegendMechanics } from './bosses/legendMechanics';
 import { BallSnapshot, FIELD, restoredCooldown } from './fieldRules';
 import { pickLead } from './trainerAI';
 import { DYNAMAX_DURATION, DYNAMAX_HP_MULT, DYNAMAX_RADIUS_MULT, GMAX, MAX_EFFECT_COOLDOWN, maxMoveMult, maxMoveOf, NO_DYNAMAX, type MaxEffect } from './gimmicks';
@@ -102,6 +103,8 @@ export interface BossState {
   form?: string;
   /** Rayquaza action script */
   ray?: RayState;
+  /** Signature mechanics of a legendary (V38, bosses/legendMechanics) */
+  mech?: MechState;
   /** Capture window open (legendary weakened) */
   weakened?: boolean;
   /** Last named skill wind-up (HUD cast warning): shown until at + windup */
@@ -935,6 +938,7 @@ export class World {
   /** Silently removes an enemy (despawn / successful capture). No death event, no EXP. */
   removeEnemy(u: Unit): void {
     u.alive = false;
+    if (u.boss) legendMechCleanup(this, u);
     if (this.boss === u) this.boss = null;
   }
 
@@ -2123,6 +2127,7 @@ export class World {
           break;
         case 'weakened':
           this.clearBossActions(b);
+          legendMechCleanup(this, b);
           st.weakened = true;
           b.statuses.length = 0;
           this.emit({ t: 'bossWeakened', id: b.id, defId: b.defId, level: b.level, x: b.x, y: b.y, tag: b.tag });
@@ -2270,7 +2275,10 @@ export class World {
     b.x = clamp(b.x, 40, this.width - 40); b.y = clamp(b.y, 40, this.height - 40);
     if (!L.flying && this.terrain && this.terrain.blocksMove(b.x, b.y)) { b.x = b.lastX; b.y = b.lastY; }
     if (Math.abs(dx) > 4) b.facing = Math.sign(dx);
-    this.contact(b, t);
+    // its own mechanics first (V38): while one keeps it busy, the shared patterns wait
+    const busy = runLegendMechanics(this, b, t, dt);
+    if (!mechHidden(b)) this.contact(b, t);
+    if (busy) return;
 
     const fast = st.phase === 1 ? 1 : st.phase === 2 ? 0.8 : 0.65;
     if (L.blink) {
@@ -2952,6 +2960,13 @@ export class World {
       dst.wild.lastAttacker = src;
     }
     if (src && !dot && amount > 0 && src.team !== dst.team) this.weatherOnHit(dst);
+    if (dst.boss?.mech || src?.boss?.mech) {
+      dmg = legendMechOnHit(this, dst, src, dmg, dot);
+      if (dmg <= 0) {
+        if (amount > 0 && this.impactBudget-- > 0) this.emit({ t: 'status', x: dst.x, y: dst.y - dst.radius, kind: 'immune', team: dst.team });
+        return;
+      }
+    }
     if (dst.shield > 0) {
       const absorbed = Math.min(dst.shield, dmg);
       dst.shield -= absorbed;
@@ -3004,6 +3019,7 @@ export class World {
 
   private killEnemy(e: Unit): void {
     e.alive = false;
+    if (e.boss) legendMechCleanup(this, e);
     this.kills++;
     this.emit({ t: 'death', x: e.x, y: e.y, defId: e.defId, elite: e.elite, boss: e.kind === 'boss', id: e.id, level: e.level, wild: !!e.wild, tag: e.tag });
     if (this.mode === 'adventure') {

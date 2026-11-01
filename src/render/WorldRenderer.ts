@@ -337,7 +337,7 @@ export class WorldRenderer {
     v.shadow.setVisible(true);
 
     // Rayquaza high in the sky (Dragon Ascent / Sky Cataclysm): lifted, faded, only the shadow stays on the ground
-    v.body.setAlpha(1 - air * 0.75);
+    v.body.setAlpha(u.boss?.mech?.hidden ? 0.12 : 1 - air * 0.75);
     // PMD sheets already face the right way (8 directions): never mirror them
     if (u.aquatic) {
       // swimming: no ground shadow — a pale ripple around the waterline, the body bobs on the surface
@@ -427,7 +427,7 @@ export class WorldRenderer {
       bar(g, x, y + 5, bw, 2, u.energy / u.maxEnergy, 0x60a0ff);
     } else if (u.kind === 'trainer') {
       bar(g, barX - 20, barY, 40, 4, u.hp / u.maxHp, hpColor(u.hp / u.maxHp));
-    } else if (!isBoss && (u.hp < u.maxHp || u.elite || u.hostile)) {
+    } else if (!isBoss && u.tag !== 'boss-clone' && (u.hp < u.maxHp || u.elite || u.hostile)) {
       const bw = u.elite ? 40 : 30;
       bar(g, barX - bw / 2, barY, bw, 3, u.hp / u.maxHp, u.elite ? 0xffb020 : u.hostile ? 0xff4040 : 0xa0a0a0);
     }
@@ -439,7 +439,7 @@ export class WorldRenderer {
   /** "Rattata Lv5" under opposing Pokémon; sized for the camera zoom so it reads the same on phones and desktops. */
   private nameplate(u: Unit, v: UnitView, x: number, y: number): void {
     const mode = this.hooks.names;
-    const show = !!mode && u.team === 'enemy' && u.kind !== 'boss' && u.kind !== 'trainer' && !u.fainted && u.alive && v.body.visible
+    const show = !!mode && u.team === 'enemy' && u.kind !== 'boss' && u.kind !== 'trainer' && u.tag !== 'boss-clone' && !u.fainted && u.alive && v.body.visible
       && (mode === 'all' || u.elite || u.alpha || u.shiny);
     if (!show) { v.label?.setVisible(false); return; }
     if (!v.label) {
