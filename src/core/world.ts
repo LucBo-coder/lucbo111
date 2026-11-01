@@ -1123,7 +1123,7 @@ export class World {
 
   tryCallWeather(): { ok: boolean; reason?: string; unit?: Unit } {
     const u = this.playerWeatherCaller();
-    const check = canCallWeather(u ? this.weatherSource(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0);
+    const check = canCallWeather(u ? this.weatherSource(u) : null, this.battleWeather?.kind ?? null, u ? this.weatherCallCd(u) : 0, u ? this.crowdOf(u) : 0);
     if (!check.ok || !u) return check;
     this.callWeather(u);
     return { ok: true, unit: u };
@@ -1152,6 +1152,8 @@ export class World {
       if (!src) { u.weatherCalled = true; return; }
       if (!engaged || src.trigger === 'hit') return;
       if (src.trigger === 'anger' && u.hp > u.maxHp / 2) return;
+      if (src.crowd && this.crowdOf(u) < src.crowd) return;
+      if (src.onlyWhen && (!this.battleWeather || !src.onlyWhen.includes(this.battleWeather.kind))) return;
       this.callWeather(u);
     };
     for (const side of this.sides()) for (const a of side.allies) consider(a, !!a.target?.alive);
@@ -1200,6 +1202,15 @@ export class World {
     const want = castformTypes(this.battleWeather?.kind ?? null);
     if (u.tera || u.types.join() === want.join()) return;
     u.types = want;
+  }
+
+  /** How many of this unit's species are in the fight right now, on any side (itself included): a wild pack, or yours among them. */
+  crowdOf(u: Unit): number {
+    const same = (x: Unit) => x.defId === u.defId && x.alive && !x.fainted && !x.captured;
+    let n = 0;
+    for (const side of this.sides()) for (const a of side.allies) if (same(a)) n++;
+    for (const e of this.enemies) if (e.hostile && same(e)) n++;
+    return n;
   }
 
   private findUnit(id: number): Unit | null {

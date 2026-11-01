@@ -17,6 +17,19 @@
   | Suicune | Gió lớn | 60 s | Có |
   | Abomasnow, Vanilluxe | Tuyết | 40 s | Không |
   | Hippowdon | Bão cát, **khi nổi giận** (dưới nửa máu) | 40 s | Không |
+  | Reshiram | Nắng gắt ("hơi nóng từ đuôi làm thay đổi thời tiết", White) | 60 s | Có |
+  | Tapu Koko | Giông bão ("gọi mây giông", Sun) | 60 s | Có |
+  | Manectric | Giông bão ("vào trận là tạo mây giông", Ruby) | 30 s | Không |
+  | Pikachu | Giông bão, **chỉ khi có từ 3 Pikachu trong trận** ("khi nhiều con tụ lại… gây bão sét", Red) | 30 s | Không |
+  | Bronzong | Mưa ("gọi được mây mưa", Pearl) | 40 s | Không |
+  | Bellossom | Nắng gắt, **chỉ khi trời đang Mưa / Tuyết / Giông** ("trời âm u kéo dài thì nhảy múa gọi mặt trời", Emerald) | 30 s | Không |
+  | Flygon, Palossand | Bão cát (Alpha Sapphire, Ultra Moon) | 40 s | Không |
+  | Kingdra | Gió lớn ("tỉnh dậy là gây lốc xoáy", Silver) | 30 s | Không |
+  | Drampa | Gió lớn, **khi nổi giận** ("nổi giận thì gây cuồng phong", Shield) | 30 s | Không |
+  | Frosmoth | Tuyết (Shield) | 40 s | Không |
+  | Vanillite | Tuyết (Black) | 20 s | Không |
+
+  Các loài này lấy từ việc quét Pokédex của cả 1025 loài (PokéAPI). Những câu chỉ nói Pokémon *đoán* thời tiết (Espeon, Treecko, Ribombee) hoặc chỉ *thích* một kiểu thời tiết (Ledyba, Mamoswine…) không được tính. Dragonair "điều khiển thời tiết" nhưng không nói kiểu nào, nên chưa thêm.
 
 - **Làm yên trời** (xóa thời tiết khi vào trận, hoặc bấm C):
   - Rayquaza xóa mọi thời tiết.
@@ -29,6 +42,7 @@
   - Castform đổi hệ theo thời tiết (Nắng → Lửa, Mưa / Giông → Nước, Tuyết → Băng).
   - Cherrim mạnh hơn 50% khi nắng.
   - Gigalith: đòn đặc biệt +30% khi nắng, −40% khi mưa / giông.
+  - Cryogonal yếu đi 30% khi nắng ("trời nóng thì tan thành hơi nước", Shield).
 - Nguồn lore được ưu tiên hơn Ability. Ability chính thức vẫn giữ (Pelipper, Torkoal, Politoed…).
 - Chi tiết Pokémon có thêm dòng "Theo Pokédex: …". Ô thời tiết ở góc phải có icon và nhãn mới (GIÔNG, GIÓ, YÊN).
 - **Sửa theo bản chính thức**:
@@ -40,7 +54,8 @@
   - Kyogre ×3 khi mưa lớn; Groudon ×3 khi nắng nóng; Articuno ×3 khi bão tuyết.
   - Castform ×2 khi có thời tiết.
   - Rayquaza, Landorus và Enamorus không còn bị giảm khi có giông.
-- Test `v33_lore_weather` (12), e2e `v33_lore_weather` (Zapdos: giông, sét, tan khi thu về; Tornadus: gió; Rayquaza: làm yên trời bằng phím C).
+  - Reshiram ×3 khi nắng nóng; Tapu Koko và Manectric ×3 khi có giông; Kingdra ×2 khi có giông; Bronzong ×1,8 khi mưa; Bellossom không còn bị giảm khi nắng nóng.
+- Test `v33_lore_weather` (16), e2e `v33_lore_weather` (Zapdos: giông, sét, tan khi thu về; Tornadus: gió; Rayquaza: làm yên trời bằng phím C).
 
 ## Chưa phát hành — Đội hình chỉ 6 Pokémon, Hệ Tera, nút Tiến hóa
 

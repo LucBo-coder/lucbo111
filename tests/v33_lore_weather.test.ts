@@ -174,6 +174,52 @@ describe('lore weather', () => {
     expect(w.weatherSource(h)?.origin).toBe('lore');
   });
 
+  it('more Pokédex weather: Manectric / Tapu Koko storms, Flygon / Palossand sand, Bronzong rain, Reshiram sun, Kingdra gale, Frosmoth / Vanillite snow', () => {
+    const kinds: [string, string][] = [['manectric', 'thunderstorm'], ['tapu-koko', 'thunderstorm'], ['flygon', 'sand'], ['palossand', 'sand'], ['bronzong', 'rain'],
+      ['reshiram', 'sun'], ['kingdra', 'wind'], ['frosmoth', 'snow'], ['vanillite', 'snow']];
+    for (const [sp, kind] of kinds) {
+      const w = world();
+      fighting(w, sp);
+      w.step(STEP);
+      expect(w.battleWeather?.kind, sp).toBe(kind);
+      expect(loreWeatherText(sp), sp).toMatch(/^Theo Pokédex/);
+    }
+  });
+
+  it('Drampa stirs up a gale only once angered', () => {
+    const w = world();
+    const { u } = fighting(w, 'drampa');
+    w.step(STEP);
+    expect(w.battleWeather).toBeNull();
+    u.hp = u.maxHp * 0.4;
+    w.step(STEP);
+    expect(w.battleWeather?.kind).toBe('wind');
+  });
+
+  it('several Pikachu together cause a lightning storm; one alone does not', () => {
+    const w = world();
+    const { foe } = fighting(w, 'pikachu');
+    w.step(STEP);
+    expect(w.battleWeather).toBeNull();
+    expect(w.tryCallWeather().reason).toMatch(/Cần 3/);
+    // a wild pack of Pikachu joins the fight
+    for (let i = 0; i < 2; i++) w.spawnWild('pikachu', 20, foe.x + 40 * i, foe.y + 60, { hostile: true });
+    w.step(STEP);
+    expect(w.battleWeather?.kind).toBe('thunderstorm');
+  });
+
+  it('Bellossom dances for the sun only when cloudy weather persists', () => {
+    const w = world();
+    fighting(w, 'bellossom');
+    w.step(STEP);
+    expect(w.battleWeather).toBeNull();
+    w.setBattleWeather('rain', 40, null);
+    w.step(STEP);
+    expect(w.battleWeather?.kind).toBe('sun');
+    expect(loreDamageMult('sun', 'cryogonal', 'special')).toBe(0.7);
+    expect(loreWeatherText('cryogonal')).toMatch(/^Theo Pokédex/);
+  });
+
   it('spawns follow the lore: Tornadus, Lugia, Zapdos come with the storms', () => {
     const eco = ecology as unknown as { id: string; weather: Record<string, number | undefined> }[];
     const wx = (id: string) => eco.find((e) => e.id === id)!.weather;

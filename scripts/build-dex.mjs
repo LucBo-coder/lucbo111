@@ -271,6 +271,12 @@ const LORE_ECOLOGY = {
   rayquaza: { thunderstorm: 1 }, // lives above the clouds — no storm penalty
   enamorus: { thunderstorm: 1, blizzard: 0.5, clear: 1.5 }, // ends the bitter winter (Legends: Arceus)
   castform: { rain: 2, heavyRain: 2, heatwave: 2, blizzard: 2 }, // takes the guise of the weather (Sapphire)
+  reshiram: { heatwave: 3 }, // "heat energy … changes the world's weather" (White)
+  'tapu-koko': { thunderstorm: 3 }, // "summons thunderclouds" (Sun)
+  manectric: { thunderstorm: 3 }, // "creates thunderclouds" (Ruby)
+  bronzong: { rain: 1.8 }, // "can summon rain clouds" (Pearl)
+  kingdra: { thunderstorm: 2 }, // "cause tornadoes as it wakes" (Silver)
+  bellossom: { heatwave: 1 }, // dances to summon the sun (Emerald) — no heat penalty
 };
 
 // Every National Dex species #1–#1025 gets: biomes, rarity tier, evolution stage, wild level floor, time, weather

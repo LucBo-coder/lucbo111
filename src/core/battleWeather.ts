@@ -62,6 +62,10 @@ export interface WeatherSource {
   trigger: 'entry' | 'hit' | 'anger';
   /** the weather ends as soon as this Pokémon leaves the fight (fainted, caught, gone) */
   tied?: boolean;
+  /** only acts while one of these weathers is up (Bellossom dances for the sun when cloudy weather persists) */
+  onlyWhen?: BattleWeather[];
+  /** only acts when at least this many of its species are in the fight (several Pikachu → lightning storm) */
+  crowd?: number;
   origin: 'ability' | 'lore';
   /** ability id, or the species for a lore source */
   id: string;
@@ -92,6 +96,18 @@ export const LORE_WEATHER: Record<string, LoreEntry> = {
   abomasnow: { act: 'snow', trigger: 'entry', dex: 'This Pokémon is known to bring blizzards (Shield)' },
   vanilluxe: { act: 'snow', trigger: 'entry', dex: 'It can create snow anywhere (Ultra Sun)' },
   hippowdon: { act: 'sand', trigger: 'anger', dex: 'When roused to violence by its rage, it spews out the quantities of sand it has swallowed and whips up a sandstorm (Shield)' },
+  reshiram: { act: 'sun', trigger: 'entry', tied: true, duration: 60, dex: 'When Reshiram’s tail flares, the heat energy moves the atmosphere and changes the world’s weather (White)' },
+  'tapu-koko': { act: 'thunderstorm', trigger: 'entry', tied: true, duration: 60, dex: 'It summons thunderclouds and stores their lightning inside its body (Sun)' },
+  manectric: { act: 'thunderstorm', trigger: 'entry', duration: 30, dex: 'When it enters a battle, this Pokémon creates thunderclouds (Omega Ruby)' },
+  pikachu: { act: 'thunderstorm', trigger: 'entry', crowd: 3, duration: 30, dex: 'When several of these Pokémon gather, their electricity could build and cause lightning storms (Red)' },
+  bronzong: { act: 'rain', trigger: 'entry', dex: 'It can summon rain clouds. People long ago revered it as the bringer of plentiful harvests (Pearl)' },
+  bellossom: { act: 'sun', trigger: 'entry', onlyWhen: ['rain', 'snow', 'thunderstorm'], duration: 30, dex: 'When cloudy weather persists, it does a dance that is thought to be a ritual for summoning the sun (Emerald)' },
+  flygon: { act: 'sand', trigger: 'entry', dex: 'Flygon whips up a sandstorm by flapping its wings (Alpha Sapphire)' },
+  palossand: { act: 'sand', trigger: 'entry', dex: 'Once it has whipped up a sandstorm to halt its opponents in their tracks, this terrifying Pokémon snatches away their vitality (Ultra Moon)' },
+  kingdra: { act: 'wind', trigger: 'entry', duration: 30, dex: 'It is said to cause tornadoes as it wakes (Silver)' },
+  drampa: { act: 'wind', trigger: 'anger', duration: 30, dex: 'When that happens, it stirs up a gale and flattens everything around (Shield)' },
+  frosmoth: { act: 'snow', trigger: 'entry', dex: 'It will fly around on its icy wings, causing a blizzard to chase offenders away (Shield)' },
+  vanillite: { act: 'snow', trigger: 'entry', duration: 20, dex: 'They create snow crystals and make snow fall in the areas around them (Black)' },
 };
 
 /** [Theo Pokédex] Species that react to the weather (no weather of their own). */
@@ -99,6 +115,7 @@ export const LORE_REACTIVE: Record<string, string> = {
   castform: 'borrows the power of nature to transform itself into the guises of the sun, rain clouds, and snow clouds (Sapphire)',
   cherrim: 'During times of strong sunlight, its bud blooms, its petals open fully, and it becomes very active (HeartGold)',
   gigalith: 'its energy blasts… can only be fired when the sun is out (Shield)',
+  cryogonal: 'When the weather gets hot, these Pokémon turn into water vapor (Shield)',
 };
 
 /** A player's own call (key C / touch button): after a call, that Pokémon waits this long before calling again. */
@@ -127,8 +144,10 @@ export function loreSource(species: string): WeatherSource | null {
 }
 
 /** Whether a Pokémon can act on the weather on command now (reason = what the player is told when it can't). */
-export function canCallWeather(src: WeatherSource | null, current: BattleWeather | null, cdLeft: number): { ok: boolean; reason?: string } {
+export function canCallWeather(src: WeatherSource | null, current: BattleWeather | null, cdLeft: number, crowdNow = 1): { ok: boolean; reason?: string } {
   if (!src) return { ok: false, reason: 'Không có Pokémon nào trên sân gọi được thời tiết' };
+  if (src.crowd && crowdNow < src.crowd) return { ok: false, reason: `Cần ${src.crowd} con cùng loài trong trận mới gọi được ${WEATHER_INFO[src.act as BattleWeather].name}` };
+  if (src.onlyWhen && (!current || !src.onlyWhen.includes(current))) return { ok: false, reason: `Chỉ gọi được khi trời ${src.onlyWhen.map((w) => WEATHER_INFO[w].name).join(' / ')}` };
   if (src.act === 'calm') {
     if (!current || (src.clears && !src.clears.includes(current))) return { ok: false, reason: 'Không có thời tiết nào để làm yên' };
   } else if (current === src.act) return { ok: false, reason: `${WEATHER_INFO[src.act].name} đang có rồi` };
@@ -167,6 +186,7 @@ export function weatherDamageMult(w: BattleWeather | null, moveType: PokeType, c
 export function loreDamageMult(w: BattleWeather | null, attackerSpecies: string, category: Category): number {
   if (attackerSpecies === 'cherrim') return w === 'sun' ? 1.5 : 1;
   if (attackerSpecies === 'gigalith' && category === 'special') return w === 'sun' ? 1.3 : w === 'rain' || w === 'thunderstorm' ? 0.6 : 1;
+  if (attackerSpecies === 'cryogonal') return w === 'sun' ? 0.7 : 1;
   return 1;
 }
 
@@ -196,7 +216,9 @@ export function weatherAbilityText(abilityId: string): string {
 export function loreWeatherText(species: string): string | null {
   const src = loreSource(species);
   if (src) {
-    const when = src.trigger === 'anger' ? 'Khi nổi giận (dưới nửa máu)' : 'Khi vào trận';
+    const when = src.trigger === 'anger' ? 'Khi nổi giận (dưới nửa máu)'
+      : src.crowd ? `Khi có từ ${src.crowd} con cùng loài trong trận`
+        : src.onlyWhen ? `Khi trời ${src.onlyWhen.map((w) => WEATHER_INFO[w].name).join(' / ')}` : 'Khi vào trận';
     if (src.act === 'calm') {
       const what = src.clears ? src.clears.map((w) => WEATHER_INFO[w].name).join(' / ') : 'mọi thời tiết';
       return `Theo Pokédex: ${when.toLowerCase()} làm yên trời — xóa ${what}.`;
@@ -206,5 +228,6 @@ export function loreWeatherText(species: string): string | null {
   if (species === 'castform') return 'Theo Pokédex: hệ đổi theo thời tiết (Nắng → Lửa, Mưa → Nước, Tuyết → Băng).';
   if (species === 'cherrim') return 'Theo Pokédex: nở hoa khi nắng gắt — đòn mạnh hơn 50%.';
   if (species === 'gigalith') return 'Theo Pokédex: đòn đặc biệt +30% khi nắng, −40% khi mưa / giông.';
+  if (species === 'cryogonal') return 'Theo Pokédex: tan thành hơi nước khi trời nóng — đòn yếu đi 30% khi nắng.';
   return null;
 }
