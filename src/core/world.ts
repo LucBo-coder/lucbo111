@@ -1,5 +1,5 @@
 import { RIDE_SPRINT, rideModeFor, rideModesAt, rideSpeed, type RideMode } from './riding';
-import { abilitySource, BattleWeather, canCallWeather, castformTypes, deltaStreamMult, overridesStrong, speciesWeatherLock, strongWeatherBlocks, weatherBallSkill, WEATHER_LOCK_ABILITIES, HIT_CALL_COOLDOWN, LIGHTNING_CHIP, LIGHTNING_CHIP_BOSS, LIGHTNING_TICK, lightningImmune, loreDamageMult, loreSource, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherOfAbility, WEATHER_CALL_COOLDOWN, type WeatherSource } from './battleWeather';
+import { abilitySource, BattleWeather, canCallWeather, castformLook, castformTypes, deltaStreamMult, moveSource, overridesStrong, speciesWeatherLock, strongWeatherBlocks, weatherBallSkill, WEATHER_LOCK_ABILITIES, HIT_CALL_COOLDOWN, LIGHTNING_CHIP, LIGHTNING_CHIP_BOSS, LIGHTNING_TICK, lightningImmune, loreDamageMult, loreSource, SAND_CHIP, SAND_CHIP_BOSS, SAND_TICK, sandImmune, speciesWeatherAbility, weatherDamageMult, weatherOfAbility, WEATHER_CALL_COOLDOWN, type WeatherSource } from './battleWeather';
 import { abilityEffect, rollAbilitySlot } from './abilities';
 import { randomTeraType } from './pokemonTraits';
 import { computeDamage } from './damage';
@@ -225,6 +225,8 @@ export interface Unit {
   choiceLock: string | null;
   /** While Mega Evolved: the species to revert to */
   megaFrom: string | null;
+  /** drawn as this form for now, same species and stats (Castform's weather forms) */
+  look?: string;
   /** While Terastallized (V31): the Tera Type (= its only type now) and the types to go back to */
   tera?: { type: PokeType; from: PokeType[] } | null;
   /** While Dynamaxed (V31): Gigantamax form or not, world time the next Max Move side effect may trigger, end (duel) */
@@ -1086,7 +1088,9 @@ export class World {
    * the ordinary weather ability of its species.
    */
   weatherSource(u: Unit): WeatherSource | null {
-    return loreSource(u.defId) ?? abilitySource(u.passive?.id) ?? (u.kind === 'boss' ? abilitySource(speciesWeatherAbility(u.defId)) : null);
+    return loreSource(u.defId, this.battleWeather?.kind ?? null) ?? abilitySource(u.passive?.id) ?? (u.kind === 'boss' ? abilitySource(speciesWeatherAbility(u.defId))
+      // a weather move it knows (Rain Dance…): a player's Pokémon only, on its trainer's call
+      : u.team === 'ally' && u.kind === 'pokemon' ? moveSource(u.megaFrom ?? u.defId, u.level, this.battleWeather?.kind ?? null) : null);
   }
 
   /** Back-compat: the ability id behind a unit's weather (null for a lore source). */
@@ -1184,7 +1188,7 @@ export class World {
       if (u.weatherCalled || !u.alive || u.fainted || u.captured) return;
       const src = this.weatherSource(u);
       if (!src) { u.weatherCalled = true; return; }
-      if (!engaged || src.trigger === 'hit') return;
+      if (!engaged || src.trigger === 'hit' || src.trigger === 'command') return;
       if (src.trigger === 'anger' && u.hp > u.maxHp / 2) return;
       if (src.crowd && this.crowdOf(u) < src.crowd) return;
       if (src.onlyWhen && (!this.battleWeather || !src.onlyWhen.includes(this.battleWeather.kind))) return;
@@ -1235,6 +1239,8 @@ export class World {
   /** (lore) Castform takes the guise of the weather: its type follows the called weather. */
   private castformForm(u: Unit): void {
     const want = castformTypes(this.activeWeather());
+    // its look follows the weather too: the sun, rain-cloud and snow-cloud guises (Sapphire)
+    u.look = castformLook(want);
     if (u.tera || u.types.join() === want.join()) return;
     u.types = want;
   }

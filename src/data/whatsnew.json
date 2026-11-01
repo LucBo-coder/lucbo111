@@ -1,5 +1,17 @@
 [
   {
+    "id": "v39-forms-weather-moves",
+    "title": "Mega Froslass, Castform đổi hình, Vulpix Alola, chiêu gọi thời tiết",
+    "items": [
+      "Mega Froslass (Băng / Ma): cầm Froslassite (kệ Đá Mega của cửa hàng) rồi Mega Tiến Hóa; vào trận gọi Tuyết nhờ Snow Warning.",
+      "Castform đổi hình theo thời tiết: dạng Mặt Trời khi nắng, Giọt Mưa khi mưa / giông, Mây Tuyết khi có tuyết.",
+      "Alolan Vulpix (Băng) sống ở Núi Tuyết, dùng Đá Băng để tiến hóa thành Alolan Ninetales (Băng / Tiên). Vulpix thường giờ chỉ tiến hóa bằng Đá Lửa.",
+      "Chiêu thời tiết: Pokémon đã học Rain Dance, Sunny Day, Sandstorm hay Hail theo cấp (Wartortle Lv 37, Larvitar Lv 8, Castform Lv 20…) gọi được thời tiết đó bằng phím C. Trang chi tiết Pokémon ghi chiêu và cấp học.",
+      "Dragonair điều khiển thời tiết theo Pokédex: phím C gọi Mưa cho ruộng đồng, đang mưa thì gọi Nắng.",
+      "Đổi đội: ngoài máy PC ở Trung tâm Pokémon, giờ đứng cạnh một trạm dịch chuyển đã kích hoạt cũng mở được PC."
+    ]
+  },
+  {
     "id": "v38-legend-mechanics",
     "title": "Mỗi huyền thoại một lối đánh riêng, mỗi đảo Ultra một màu",
     "items": [

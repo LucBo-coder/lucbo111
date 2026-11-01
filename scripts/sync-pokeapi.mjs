@@ -1,5 +1,6 @@
 // Build-time PokéAPI sync: Fetch → Validate → Normalize → Cache (src/data/pokeapi/pokeapi-cache.json)
 // Run: node scripts/sync-pokeapi.mjs        (only needed when the species/move list changes)
+//      node scripts/sync-pokeapi.mjs --regional   (only (re)adds the regional forms below to the existing cache)
 // Respects PokéAPI fair use: one request at a time, results cached in the repo, never called per frame.
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
 
@@ -23,6 +24,17 @@ const FORMS = [
   'slowbro-mega', 'gengar-mega', 'kangaskhan-mega', 'pinsir-mega', 'gyarados-mega', 'aerodactyl-mega', 'mewtwo-mega-x', 'mewtwo-mega-y',
   'rayquaza-mega', // boss-only form (Rayquaza boss phase 2), not obtainable by the player
 ];
+// Regional forms that are species of their own in the game (caught, levelled, evolved): fetched from /pokemon/{form},
+// the rest (capture rate, growth, happiness…) from the base species. The Alola Pokédex entries (Sun) describe them.
+// `drop`: rules of the base chain that belong to the regional form (PokéAPI lists Vulpix + Ice Stone → Ninetales).
+const REGIONAL = {
+  'vulpix-alola': { base: 'vulpix', displayName: 'Alolan Vulpix', habitat: 'mountain', evolvesFrom: null },
+  'ninetales-alola': { base: 'ninetales', displayName: 'Alolan Ninetales', habitat: 'mountain', evolvesFrom: 'vulpix-alola' },
+};
+const REGIONAL_EVOLUTIONS = [{ from: 'vulpix-alola', to: 'ninetales-alola', item: 'ice-stone' }];
+const REGIONAL_DROP = [{ from: 'vulpix', to: 'ninetales', item: 'ice-stone' }];
+const REGIONAL_LEARNSETS = ['ultra-sun-ultra-moon', 'sun-moon', 'sword-shield', 'scarlet-violet'];
+
 // Local skill id → PokéAPI move name
 const MOVES = {
   scratch: 'scratch', ember: 'ember', flame_burst: 'flame-burst', fire_spin: 'fire-spin',
@@ -89,8 +101,77 @@ function flattenChain(node, out = []) {
   return out;
 }
 
+const evoRule = (from, to, item) => ({
+  from, to, trigger: 'use-item', minLevel: null, item, heldItem: null, minHappiness: null, minAffection: null, timeOfDay: null, knownMove: null,
+  knownMoveType: null, location: null, needsRain: false, gender: null, relativeStats: null, tradeSpecies: null,
+});
+
+async function normMove(apiName) {
+  const m = await getJson(`${API}/move/${apiName}`);
+  const out = {
+    apiName, id: m.id, type: m.type.name, damageClass: m.damage_class.name, power: m.power, accuracy: m.accuracy, pp: m.pp,
+    priority: m.priority, ailment: m.meta?.ailment?.name ?? null, ailmentChance: m.meta?.ailment_chance ?? 0, flinchChance: m.meta?.flinch_chance ?? 0,
+    name: en(m.names, 'name') ?? apiName, target: m.target?.name ?? null, metaCategory: m.meta?.category?.name ?? null,
+    minHits: m.meta?.min_hits ?? null, drain: m.meta?.drain ?? 0, healing: m.meta?.healing ?? 0, critRate: m.meta?.crit_rate ?? 0,
+    statChanges: (m.stat_changes ?? []).map((c) => ({ stat: c.stat.name, change: c.change })),
+    shortEffect: clean(en(m.effect_entries, 'short_effect')).replace(/\$effect_chance/g, String(m.effect_chance ?? '')),
+  };
+  assert(['physical', 'special', 'status'].includes(out.damageClass), `${apiName} class`);
+  return out;
+}
+
+/** Adds the REGIONAL forms to `species` (base species must be there) and any of their moves missing from `moves`. */
+async function addRegional(species, moves) {
+  for (const [name, r] of Object.entries(REGIONAL)) {
+    const base = species[r.base];
+    assert(base, `${name}: base species ${r.base} missing`);
+    const p = await getJson(`${API}/pokemon/${name}`);
+    const s = await getJson(`${API}/pokemon-species/${r.base}`);
+    const group = REGIONAL_LEARNSETS.find((g) => p.moves.some((m) => m.version_group_details.some((v) => v.version_group.name === g && v.move_learn_method.name === 'level-up'))) ?? null;
+    const stat = (n) => p.stats.find((x) => x.stat.name === n)?.base_stat;
+    const flavor = s.flavor_text_entries.find((f) => f.language.name === 'en' && f.version.name === 'sun')?.flavor_text;
+    species[name] = {
+      ...base,
+      id: p.id, name, displayName: r.displayName,
+      types: p.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
+      baseStats: { hp: stat('hp'), atk: stat('attack'), def: stat('defense'), spa: stat('special-attack'), spd: stat('special-defense'), spe: stat('speed') },
+      abilities: p.abilities.map((a) => ({ name: a.ability.name, hidden: a.is_hidden })),
+      heightDm: p.height, weightHg: p.weight, baseExperience: p.base_experience ?? base.baseExperience,
+      habitat: r.habitat, evolvesFrom: r.evolvesFrom, flavorText: clean(flavor ?? base.flavorText),
+      evolutions: REGIONAL_EVOLUTIONS.filter((e) => e.from === name || e.to === name).map((e) => evoRule(e.from, e.to, e.item)),
+      levelUpMoves: p.moves
+        .flatMap((m) => m.version_group_details.filter((v) => v.version_group.name === group && v.move_learn_method.name === 'level-up').map((v) => ({ move: m.move.name, level: v.level_learned_at })))
+        .sort((a, b) => a.level - b.level),
+      learnsetGroup: group, generation: 'generation-vii', color: 'white', formNames: [], regionalOf: r.base,
+    };
+    assert(species[name].levelUpMoves.length > 0, `${name} learnset`);
+    console.log(`✓ regional ${name} #${p.id} [${species[name].types}] ${JSON.stringify(species[name].baseStats)}`);
+    await sleep(120);
+  }
+  for (const d of REGIONAL_DROP) for (const sp of Object.values(species)) {
+    sp.evolutions = (sp.evolutions ?? []).filter((e) => !(e.from === d.from && e.to === d.to && e.item === d.item));
+  }
+  for (const sp of Object.values(species)) {
+    if (!sp.regionalOf) continue;
+    for (const lm of sp.levelUpMoves) {
+      const local = lm.move.replace(/-/g, '_');
+      if (moves[local]) continue;
+      moves[local] = await normMove(lm.move);
+      console.log(`✓ move ${lm.move}`);
+      await sleep(50);
+    }
+  }
+}
+
 async function main() {
   const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
+  if (process.argv.includes('--regional')) {
+    assert(prev, 'no cache to add the regional forms to');
+    await addRegional(prev.species, prev.moves);
+    writeFileSync(OUT, JSON.stringify(prev, null, 1));
+    console.log(`\nWrote ${OUT}: regional forms ${Object.keys(REGIONAL).join(', ')}`);
+    return;
+  }
   // species endpoint names (e.g. "deoxys") — /pokemon?limit lists default *forms* ("deoxys-normal")
   const list = await getJson(`${API}/pokemon-species?limit=${NATIONAL_DEX_MAX}&offset=0`);
   const SPECIES = [...list.results.map((r) => r.name), ...EXTRA_SPECIES];
@@ -149,6 +230,9 @@ async function main() {
     if (Object.keys(species).length % 40 === 0 && prev) writeFileSync(OUT, JSON.stringify({ ...prev, species: { ...prevSpecies, ...species } }, null, 1));
   }
 
+  // regional forms (their moves are fetched below with the rest)
+  await addRegional(species, prev?.moves ?? {});
+
   const forms = {};
   for (const name of FORMS) {
     const p = await getJson(`${API}/pokemon/${name}`);
@@ -174,17 +258,8 @@ async function main() {
   const prevMoves = prev?.moves ?? {};
   for (const [local, apiName] of wanted) {
     if (prevMoves[local]?.target && prevMoves[local]?.flinchChance !== undefined) { moves[local] = prevMoves[local]; continue; } // already cached
-    const m = await getJson(`${API}/move/${apiName}`);
-    moves[local] = {
-      apiName, id: m.id, type: m.type.name, damageClass: m.damage_class.name, power: m.power, accuracy: m.accuracy, pp: m.pp,
-      priority: m.priority, ailment: m.meta?.ailment?.name ?? null, ailmentChance: m.meta?.ailment_chance ?? 0, flinchChance: m.meta?.flinch_chance ?? 0,
-      name: en(m.names, 'name') ?? apiName, target: m.target?.name ?? null, metaCategory: m.meta?.category?.name ?? null,
-      minHits: m.meta?.min_hits ?? null, drain: m.meta?.drain ?? 0, healing: m.meta?.healing ?? 0, critRate: m.meta?.crit_rate ?? 0,
-      statChanges: (m.stat_changes ?? []).map((c) => ({ stat: c.stat.name, change: c.change })),
-      shortEffect: clean(en(m.effect_entries, 'short_effect')).replace(/\$effect_chance/g, String(m.effect_chance ?? '')),
-    };
-    assert(['physical', 'special', 'status'].includes(moves[local].damageClass), `${apiName} class`);
-    console.log(`✓ move ${apiName} ${m.type.name}/${m.damage_class.name} pow=${m.power}`);
+    moves[local] = await normMove(apiName);
+    console.log(`✓ move ${apiName} ${moves[local].type}/${moves[local].damageClass} pow=${moves[local].power}`);
     await sleep(50);
   }
 

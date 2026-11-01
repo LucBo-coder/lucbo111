@@ -1599,6 +1599,57 @@
   }
  },
  {
+  "id": "froslass-mega",
+  "name": "Mega Froslass",
+  "types": [
+   "ice",
+   "ghost"
+  ],
+  "rarity": "legendary",
+  "role": "assassin",
+  "baseStats": {
+   "hp": 70,
+   "atk": 80,
+   "def": 70,
+   "spa": 140,
+   "spd": 100,
+   "spe": 120
+  },
+  "moveSpeed": 236,
+  "attackRange": 58,
+  "critRate": 0.08,
+  "radius": 20,
+  "skills": [
+   "icy_wind",
+   "blizzard",
+   "shadow_ball",
+   "ominous_wind"
+  ],
+  "passive": {
+   "id": "snow-warning",
+   "name": "Snow Warning",
+   "description": "Mô phỏng bão tuyết: Kỹ năng hệ Băng +30%.",
+   "kind": "typeBoost",
+   "type": "ice",
+   "mult": 1.3
+  },
+  "evolution": null,
+  "sprite": "froslass-mega",
+  "animation": {
+   "walk": "walk4",
+   "cast": "glow"
+  },
+  "vfx": {
+   "hit": "ice",
+   "aura": "ice"
+  },
+  "generated": true,
+  "mega": {
+   "base": "froslass",
+   "stone": "froslassite"
+  }
+ },
+ {
   "id": "diancie-mega",
   "name": "Mega Diancie",
   "types": [

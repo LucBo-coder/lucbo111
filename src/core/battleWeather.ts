@@ -98,8 +98,11 @@ export interface WeatherSource {
   /** calm: the weathers it ends (missing = every weather) */
   clears?: BattleWeather[];
   duration: number;
-  /** entry = when it joins a fight · hit = when an attack lands on it · anger = once it falls under half HP */
-  trigger: 'entry' | 'hit' | 'anger';
+  /**
+   * entry = when it joins a fight · hit = when an attack lands on it · anger = once it falls under half HP ·
+   * command = only when its trainer calls it (key C: a weather move it knows, Rain Dance…)
+   */
+  trigger: 'entry' | 'hit' | 'anger' | 'command';
   /** the weather ends as soon as this Pokémon leaves the fight (fainted, caught, gone) */
   tied?: boolean;
   /** a strong weather (Primordial Sea, Desolate Land, Delta Stream) */
@@ -108,8 +111,8 @@ export interface WeatherSource {
   onlyWhen?: BattleWeather[];
   /** only acts when at least this many of its species are in the fight (several Pikachu → lightning storm) */
   crowd?: number;
-  origin: 'ability' | 'lore';
-  /** ability id, or the species for a lore source */
+  origin: 'ability' | 'lore' | 'move';
+  /** ability id, the species for a lore source, the move (PokéAPI name) for a move */
   id: string;
   /** lore: the Pokédex line it comes from (version in brackets) */
   dex?: string;
@@ -179,11 +182,16 @@ export function abilitySource(abilityId: string | null | undefined): WeatherSour
 }
 
 /** The lore source of a species, if its Pokédex says it changes the weather. */
-export function loreSource(species: string): WeatherSource | null {
+export function loreSource(species: string, current: BattleWeather | null = null): WeatherSource | null {
+  // Dragonair "freely controls the weather" (Silver), "venerated by agricultural peoples" (Moon): on its trainer's call it
+  // brings the rain the fields need, or the sun when it is raining already
+  if (species === 'dragonair') return { act: current === 'rain' ? 'sun' : 'rain', trigger: 'command', duration: WEATHER_DURATION, origin: 'lore', id: species, dex: DRAGONAIR_DEX };
   const e = LORE_WEATHER[species];
   if (!e) return null;
   return { ...e, duration: e.duration ?? (e.tied ? LEGEND_WEATHER_DURATION : WEATHER_DURATION), origin: 'lore', id: species };
 }
+
+const DRAGONAIR_DEX = 'Its crystalline orbs appear to give this Pokémon the power to freely control the weather (Silver); venerated by agricultural peoples as an entity able to control the weather (Moon)';
 
 /** Whether a Pokémon can act on the weather on command now (reason = what the player is told when it can't). */
 export function canCallWeather(src: WeatherSource | null, current: BattleWeather | null, cdLeft: number, crowdNow = 1, currentStrong = false): { ok: boolean; reason?: string } {
@@ -201,6 +209,38 @@ export function canCallWeather(src: WeatherSource | null, current: BattleWeather
 /** Only a strong weather replaces a strong weather; Rayquaza's lore calm (it quelled Kyogre and Groudon) ends one too. */
 export function overridesStrong(src: WeatherSource): boolean {
   return !!src.strong || (src.act === 'calm' && !src.clears);
+}
+
+/**
+ * [Chính thức] Weather moves: Rain Dance, Sunny Day, Sandstorm, Hail / Snowscape call their weather (5 turns in the
+ * games, WEATHER_DURATION here). A Pokémon knows one once its level reaches the level its species learns it at
+ * (PokéAPI level-up learnset); its trainer calls it with key C. The game's 4-skill kits stay as they are.
+ */
+export const WEATHER_MOVES: Readonly<Record<string, { act: BattleWeather; name: string }>> = {
+  'rain-dance': { act: 'rain', name: 'Rain Dance' },
+  'sunny-day': { act: 'sun', name: 'Sunny Day' },
+  sandstorm: { act: 'sand', name: 'Sandstorm' },
+  hail: { act: 'snow', name: 'Hail' },
+  snowscape: { act: 'snow', name: 'Snowscape' },
+};
+type LearnRow = { levelUpMoves?: { move: string; level: number }[] };
+
+/** The weather moves a Pokémon of this species knows at this level (first learned first, one per weather). */
+export function weatherMovesOf(species: string, level: number): string[] {
+  const rows = (cache.species as unknown as Record<string, LearnRow>)[species]?.levelUpMoves ?? [];
+  const out: string[] = [];
+  for (const m of [...rows].sort((a, b) => a.level - b.level)) {
+    const wm = WEATHER_MOVES[m.move];
+    if (wm && m.level <= level && !out.some((o) => WEATHER_MOVES[o].act === wm.act)) out.push(m.move);
+  }
+  return out;
+}
+
+/** A weather move as a weather source; with several (Castform), the one whose weather is not up already. */
+export function moveSource(species: string, level: number, current: BattleWeather | null): WeatherSource | null {
+  const moves = weatherMovesOf(species, level);
+  const move = moves.find((m) => WEATHER_MOVES[m].act !== current) ?? moves[0];
+  return move ? { act: WEATHER_MOVES[move].act, trigger: 'command', duration: WEATHER_DURATION, origin: 'move', id: move } : null;
 }
 
 type AbilityEntry = { name: string; hidden: boolean };
@@ -243,6 +283,11 @@ export function castformTypes(w: BattleWeather | null): PokeType[] {
   return w === 'sun' ? ['fire'] : w === 'rain' || w === 'thunderstorm' ? ['water'] : w === 'snow' ? ['ice'] : ['normal'];
 }
 
+/** Castform's form for its current types: castform-sunny / -rainy / -snowy, or its normal look. */
+export function castformLook(types: readonly PokeType[]): string | undefined {
+  return types[0] === 'fire' ? 'castform-sunny' : types[0] === 'water' ? 'castform-rainy' : types[0] === 'ice' ? 'castform-snowy' : undefined;
+}
+
 /** Sandstorm hurts everyone but Rock, Ground and Steel types. */
 export function sandImmune(types: readonly PokeType[]): boolean {
   return types.some((t) => t === 'rock' || t === 'ground' || t === 'steel');
@@ -275,11 +320,26 @@ export function loreWeatherText(species: string): string | null {
     }
     return `Theo Pokédex: ${when.toLowerCase()} gọi ${WEATHER_INFO[src.act].name} (${src.tied ? `tới ${src.duration}s, tan khi nó rời trận` : `${src.duration}s`}).`;
   }
-  if (species === 'castform') return 'Theo Pokédex: hệ đổi theo thời tiết (Nắng → Lửa, Mưa → Nước, Tuyết → Băng).';
+  if (species === 'castform') return 'Theo Pokédex: hệ và hình dạng đổi theo thời tiết (Nắng → Lửa, Mưa → Nước, Tuyết → Băng).';
+  if (species === 'dragonair') return `Theo Pokédex: tự do điều khiển thời tiết — phím C gọi Mưa cho ruộng đồng, đang mưa thì gọi Nắng (${WEATHER_DURATION}s).`;
   if (species === 'cherrim') return 'Theo Pokédex: nở hoa khi nắng gắt — đòn mạnh hơn 50%.';
   if (species === 'gigalith') return 'Theo Pokédex: đòn đặc biệt +30% khi nắng, −40% khi mưa / giông.';
   if (species === 'cryogonal') return 'Theo Pokédex: tan thành hơi nước khi trời nóng — đòn yếu đi 30% khi nắng.';
   return null;
+}
+
+/** Party details: the weather moves the species learns, with the level and whether this one knows it yet. */
+export function weatherMoveText(species: string, level: number): string | null {
+  const rows = (cache.species as unknown as Record<string, LearnRow>)[species]?.levelUpMoves ?? [];
+  const seen = new Set<string>();
+  const parts: string[] = [];
+  for (const m of [...rows].sort((a, b) => a.level - b.level)) {
+    const wm = WEATHER_MOVES[m.move];
+    if (!wm || seen.has(m.move)) continue;
+    seen.add(m.move);
+    parts.push(`${wm.name} (${WEATHER_INFO[wm.act].name}, ${m.level <= level ? 'đã biết' : `Lv ${m.level}`})`);
+  }
+  return parts.length ? `Chiêu thời tiết: ${parts.join(' · ')} — phím C gọi ${WEATHER_DURATION}s.` : null;
 }
 
 /** A boss keeps the weather lock of its species (Rayquaza's Air Lock, Golduck's Cloud Nine). */

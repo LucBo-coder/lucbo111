@@ -4505,24 +4505,6 @@
      "gender": null,
      "relativeStats": null,
      "tradeSpecies": null
-    },
-    {
-     "from": "vulpix",
-     "to": "ninetales",
-     "trigger": "use-item",
-     "minLevel": null,
-     "item": "ice-stone",
-     "heldItem": null,
-     "minHappiness": null,
-     "minAffection": null,
-     "timeOfDay": null,
-     "knownMove": null,
-     "knownMoveType": null,
-     "location": null,
-     "needsRain": false,
-     "gender": null,
-     "relativeStats": null,
-     "tradeSpecies": null
     }
    ],
    "levelUpMoves": [
@@ -4624,24 +4606,6 @@
      "trigger": "use-item",
      "minLevel": null,
      "item": "fire-stone",
-     "heldItem": null,
-     "minHappiness": null,
-     "minAffection": null,
-     "timeOfDay": null,
-     "knownMove": null,
-     "knownMoveType": null,
-     "location": null,
-     "needsRain": false,
-     "gender": null,
-     "relativeStats": null,
-     "tradeSpecies": null
-    },
-    {
-     "from": "vulpix",
-     "to": "ninetales",
-     "trigger": "use-item",
-     "minLevel": null,
-     "item": "ice-stone",
      "heldItem": null,
      "minHappiness": null,
      "minAffection": null,
@@ -139117,6 +139081,253 @@
    "color": "purple",
    "shape": "ball",
    "formNames": []
+  },
+  "vulpix-alola": {
+   "id": 10103,
+   "name": "vulpix-alola",
+   "displayName": "Alolan Vulpix",
+   "genus": "Fox Pokémon",
+   "types": [
+    "ice"
+   ],
+   "baseStats": {
+    "hp": 38,
+    "atk": 41,
+    "def": 40,
+    "spa": 50,
+    "spd": 65,
+    "spe": 65
+   },
+   "abilities": [
+    {
+     "name": "snow-cloak",
+     "hidden": false
+    },
+    {
+     "name": "snow-warning",
+     "hidden": true
+    }
+   ],
+   "heightDm": 6,
+   "weightHg": 99,
+   "baseExperience": 60,
+   "captureRate": 190,
+   "baseHappiness": 70,
+   "growthRate": "medium",
+   "habitat": "mountain",
+   "legendary": false,
+   "mythical": false,
+   "evolvesFrom": null,
+   "flavorText": "Its beautiful fur and tails have made it very popular. As it grows, its tails split to form more tails.",
+   "evolutions": [
+    {
+     "from": "vulpix-alola",
+     "to": "ninetales-alola",
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "ice-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "minAffection": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "knownMoveType": null,
+     "location": null,
+     "needsRain": false,
+     "gender": null,
+     "relativeStats": null,
+     "tradeSpecies": null
+    }
+   ],
+   "levelUpMoves": [
+    {
+     "move": "powder-snow",
+     "level": 1
+    },
+    {
+     "move": "tail-whip",
+     "level": 4
+    },
+    {
+     "move": "roar",
+     "level": 7
+    },
+    {
+     "move": "baby-doll-eyes",
+     "level": 9
+    },
+    {
+     "move": "ice-shard",
+     "level": 10
+    },
+    {
+     "move": "confuse-ray",
+     "level": 12
+    },
+    {
+     "move": "icy-wind",
+     "level": 15
+    },
+    {
+     "move": "payback",
+     "level": 18
+    },
+    {
+     "move": "mist",
+     "level": 20
+    },
+    {
+     "move": "feint-attack",
+     "level": 23
+    },
+    {
+     "move": "hex",
+     "level": 26
+    },
+    {
+     "move": "aurora-beam",
+     "level": 28
+    },
+    {
+     "move": "extrasensory",
+     "level": 31
+    },
+    {
+     "move": "safeguard",
+     "level": 34
+    },
+    {
+     "move": "ice-beam",
+     "level": 36
+    },
+    {
+     "move": "imprison",
+     "level": 39
+    },
+    {
+     "move": "blizzard",
+     "level": 42
+    },
+    {
+     "move": "grudge",
+     "level": 44
+    },
+    {
+     "move": "captivate",
+     "level": 47
+    },
+    {
+     "move": "sheer-cold",
+     "level": 50
+    }
+   ],
+   "learnsetGroup": "ultra-sun-ultra-moon",
+   "generation": "generation-vii",
+   "isBaby": false,
+   "color": "white",
+   "shape": "quadruped",
+   "formNames": [],
+   "regionalOf": "vulpix"
+  },
+  "ninetales-alola": {
+   "id": 10104,
+   "name": "ninetales-alola",
+   "displayName": "Alolan Ninetales",
+   "genus": "Fox Pokémon",
+   "types": [
+    "ice",
+    "fairy"
+   ],
+   "baseStats": {
+    "hp": 73,
+    "atk": 67,
+    "def": 75,
+    "spa": 81,
+    "spd": 100,
+    "spe": 109
+   },
+   "abilities": [
+    {
+     "name": "snow-cloak",
+     "hidden": false
+    },
+    {
+     "name": "snow-warning",
+     "hidden": true
+    }
+   ],
+   "heightDm": 11,
+   "weightHg": 199,
+   "baseExperience": 177,
+   "captureRate": 75,
+   "baseHappiness": 70,
+   "growthRate": "medium",
+   "habitat": "mountain",
+   "legendary": false,
+   "mythical": false,
+   "evolvesFrom": "vulpix-alola",
+   "flavorText": "Legend has it that this mystical Pokémon was formed when nine saints coalesced into one.",
+   "evolutions": [
+    {
+     "from": "vulpix-alola",
+     "to": "ninetales-alola",
+     "trigger": "use-item",
+     "minLevel": null,
+     "item": "ice-stone",
+     "heldItem": null,
+     "minHappiness": null,
+     "minAffection": null,
+     "timeOfDay": null,
+     "knownMove": null,
+     "knownMoveType": null,
+     "location": null,
+     "needsRain": false,
+     "gender": null,
+     "relativeStats": null,
+     "tradeSpecies": null
+    }
+   ],
+   "levelUpMoves": [
+    {
+     "move": "dazzling-gleam",
+     "level": 0
+    },
+    {
+     "move": "ice-beam",
+     "level": 1
+    },
+    {
+     "move": "confuse-ray",
+     "level": 1
+    },
+    {
+     "move": "safeguard",
+     "level": 1
+    },
+    {
+     "move": "imprison",
+     "level": 1
+    },
+    {
+     "move": "nasty-plot",
+     "level": 1
+    },
+    {
+     "move": "ice-shard",
+     "level": 1
+    },
+    {
+     "move": "dazzling-gleam",
+     "level": 1
+    }
+   ],
+   "learnsetGroup": "ultra-sun-ultra-moon",
+   "generation": "generation-vii",
+   "isBaby": false,
+   "color": "white",
+   "shape": "quadruped",
+   "formNames": [],
+   "regionalOf": "ninetales"
   }
  },
  "forms": {
@@ -140359,6 +140570,31 @@
    ],
    "heightDm": 50,
    "weightHg": 9997
+  },
+  "froslass-mega": {
+   "id": 10285,
+   "name": "froslass-mega",
+   "baseSpecies": "froslass",
+   "types": [
+    "ice",
+    "ghost"
+   ],
+   "baseStats": {
+    "hp": 70,
+    "atk": 80,
+    "def": 70,
+    "spa": 140,
+    "spd": 100,
+    "spe": 120
+   },
+   "abilities": [
+    {
+     "name": "snow-warning",
+     "hidden": false
+    }
+   ],
+   "heightDm": 26,
+   "weightHg": 296
   }
  },
  "moves": {

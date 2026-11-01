@@ -9,6 +9,8 @@ import fakemon from '../data/fakemon.json';
 
 export interface SpeciesData {
   id: number;
+  /** a regional form that is a species of its own (Alolan Vulpix): its base species, whose Pokédex number it shares */
+  regionalOf?: string;
   name: string;
   displayName: string;
   genus: string;

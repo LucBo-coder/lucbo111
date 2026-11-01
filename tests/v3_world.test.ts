@@ -10,7 +10,10 @@ import { World, STEP } from '../src/core/world';
 import { makeWildState } from '../src/core/wildAI';
 
 type Sp = { id: number; name: string; generation: string; types: string[]; evolutions: { from: string; to: string }[]; levelUpMoves: { move: string }[]; legendary: boolean; mythical: boolean };
-const SPECIES = Object.values((cache as unknown as { species: Record<string, Sp> }).species);
+// the National Dex; regional forms that are species of their own (Alolan Vulpix…, regionalOf) are counted apart
+const ALL_SPECIES = Object.values((cache as unknown as { species: Record<string, Sp & { regionalOf?: string }> }).species);
+const SPECIES = ALL_SPECIES.filter((s) => !s.regionalOf);
+const REGIONAL = ALL_SPECIES.filter((s) => s.regionalOf);
 const VALID_TYPES = new Set(['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']);
 const region = (id: string) => REGIONS.get(id)!;
 
@@ -23,11 +26,11 @@ describe('National Dex #1–#1025 (Gen 1–9, since 0.11.0)', () => {
     expect(ids[1024]).toBe(1025);
     const gens = new Set(SPECIES.map((s) => s.generation));
     expect([...gens].sort()).toEqual(['generation-i', 'generation-ii', 'generation-iii', 'generation-iv', 'generation-ix', 'generation-v', 'generation-vi', 'generation-vii', 'generation-viii']);
-    expect(ECOLOGY.size).toBe(1025);
+    expect(ECOLOGY.size).toBe(1025 + REGIONAL.length);
   });
   it('every species is playable data with valid types and its own stats (no shared default stats)', () => {
     expect(validateData()).toEqual([]);
-    for (const s of SPECIES) {
+    for (const s of ALL_SPECIES) {
       const p = POKEMON.get(s.name);
       expect(p, s.name).toBeTruthy();
       for (const t of p!.types) expect(VALID_TYPES.has(t), `${s.name}:${t}`).toBe(true);
@@ -53,7 +56,7 @@ describe('BiomeSpawnManager / RegionalLevelManager / RaritySystem (V3 §II–IV)
     for (const e of ECOLOGY.values()) expect(['wild', 'event', 'legendary', 'mythical', 'evolution', 'baby']).toContain(e.method);
     // event-only species need a biome opened by an event or an event list
     for (const e of ECOLOGY.values()) if (e.method === 'event') expect(e.biomes.length, e.id).toBeGreaterThan(0);
-    expect(reachable.size).toBe(1025);
+    expect(reachable.size).toBe(1025 + REGIONAL.length);
   });
   it('spawned species always belong to the biome (or an event-opened biome), never legendary/mythical', () => {
     const rng = new Rng(3);

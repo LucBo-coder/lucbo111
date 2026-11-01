@@ -224,9 +224,9 @@ export class WorldRenderer {
     // a boss in an alternate form (Mega Rayquaza) is drawn as that species
     const key = isBoss ? (segmented ? 'onix_head' : u.boss!.form ?? bdef!.sprite)
       : avatarSheet && this.scene.textures.exists(avatarSheet) ? avatarKey
-      : u.shiny ? shinyKey(u.defId) : u.defId;
+      : u.shiny ? shinyKey(u.look ?? u.defId) : u.look ?? u.defId;
     // PMD animation pack (personal): real 8-direction animations once the species' sheets are loaded
-    const species = isBoss ? u.boss!.form ?? bdef!.sprite : u.defId;
+    const species = isBoss ? u.boss!.form ?? bdef!.sprite : u.look ?? u.defId;
     const pmdOn = !segmented && pmdReady(species, !!u.shiny);
     const profile = visualProfile(species, pmdOn, fieldScale(key));
     // Primal forms stand at their official height ratio to the base species (their PMD sheets are drawn the same size)

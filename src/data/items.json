@@ -1409,6 +1409,16 @@
   "desc": "Glalie cầm đá này có thể Mega Tiến Hóa thành Mega Glalie (cần Vòng Mega)."
  },
  {
+  "id": "froslassite",
+  "name": "Froslassite",
+  "kind": "megaStone",
+  "price": 12000,
+  "color": "#b8e8ff",
+  "megaFor": "froslass",
+  "form": "froslass-mega",
+  "desc": "Froslass cầm đá này có thể Mega Tiến Hóa thành Mega Froslass (cần Vòng Mega)."
+ },
+ {
   "id": "salamencite",
   "name": "Salamencite",
   "kind": "megaStone",

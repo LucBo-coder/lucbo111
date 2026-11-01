@@ -2,13 +2,17 @@ import { describe, expect, it } from 'vitest';
 import { ECOLOGY, eligible, isAquatic, REGIONS } from '../src/core/encounters';
 import { POKEMON, SKILLS } from '../src/core/data';
 import { STEP, World } from '../src/core/world';
+import cache from '../src/data/pokeapi/pokeapi-cache.json';
+
+/** regional forms that are species of their own (Alolan Vulpix…) share their base species' dex number */
+const regional = (id: string) => !!(cache.species as unknown as Record<string, { regionalOf?: string }>)[id]?.regionalOf;
 
 const all = [...ECOLOGY.values()];
 
 describe('National Dex to Gen 9', () => {
   it('every generation 1–9 is present with real data and usable moves', () => {
     const per = new Map<number, number>();
-    for (const e of all) per.set(e.gen, (per.get(e.gen) ?? 0) + 1);
+    for (const e of all) if (!regional(e.id)) per.set(e.gen, (per.get(e.gen) ?? 0) + 1);
     // official counts per generation
     expect(Object.fromEntries([...per].sort((a, b) => a[0] - b[0]))).toEqual({ 1: 151, 2: 100, 3: 135, 4: 107, 5: 156, 6: 72, 7: 88, 8: 96, 9: 120 });
     for (const e of all.filter((x) => x.gen >= 5)) {

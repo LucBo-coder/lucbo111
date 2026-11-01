@@ -1,5 +1,20 @@
 # Changelog
 
+## Chưa phát hành — Mega Froslass, dạng Castform, Vulpix Alola, chiêu thời tiết, Dragonair, đổi đội ở trạm
+
+- **Mega Froslass** (Legends Z-A; PokéAPI #10285): Băng / Ma, HP 70 · Atk 80 · Def 70 · SpA 140 · SpD 100 · Spe 120, Snow Warning (gọi Tuyết). Đá **Froslassite** bán ở kệ Đá Mega của cửa hàng. Art chính thức từ PokéAPI. SpriteCollab chưa có hoạt ảnh Mega Froslass nên trên sân dùng art chính thức, giống các Mega khác thiếu sheet PMD.
+- **Castform đổi hình theo thời tiết** (trước đây chỉ đổi hệ): dạng Mặt Trời / Giọt Mưa / Mây Tuyết, có hoạt ảnh PMD (SpriteCollab 0351/0001–0003) và art chính thức. Trường mới `Unit.look` cho renderer vẽ dạng khác mà không đổi loài, chỉ số.
+- **Alolan Vulpix / Alolan Ninetales** thành loài riêng: bắt được, lên cấp, tiến hóa.
+  - Dữ liệu lấy từ PokéAPI: chỉ số, hệ, Ability (Snow Cloak / Snow Warning ẩn), learnset Ultra Sun / Ultra Moon, câu Pokédex bản Sun. `sync-pokeapi.mjs` có danh sách `REGIONAL` (lần sync sau không làm mất) và cờ `--regional` để chỉ thêm các dạng này.
+  - Alolan Vulpix + Đá Băng → Alolan Ninetales. **Sửa lỗi**: Vulpix thường + Đá Băng từng tiến hóa thành Ninetales lửa (PokéAPI ghép luật của dạng Alola vào chuỗi gốc).
+  - Sống hoang dã ở Núi Tuyết (và vùng đá); Pokédex xếp ngay sau loài gốc, cùng số #037 / #038.
+  - Hoạt ảnh PMD (SpriteCollab 0037/0001, 0038/0001), art chính thức. Script mới `scripts/fetch-pmd-forms.py`.
+- **Chiêu thời tiết** (Rain Dance, Sunny Day, Sandstorm, Hail / Snowscape): Pokémon học chiêu này theo cấp (learnset PokéAPI, 127 loài) và đã đủ cấp thì gọi được thời tiết đó bằng **phím C** trong 40 s, chờ 60 s mới gọi lại. Chỉ HLV ra lệnh, Pokémon không tự gọi; Pokémon hoang dã không dùng. Castform biết cả ba và gọi thời tiết chưa có. Bộ 4 chiêu của mỗi loài giữ nguyên. Chi tiết Pokémon có dòng "Chiêu thời tiết: Rain Dance (Mưa, Lv 33)".
+- **Dragonair điều khiển thời tiết** theo Pokédex ("tự do điều khiển thời tiết", Silver; "được người làm nông tôn thờ", Moon): phím C gọi Mưa, đang mưa thì gọi Nắng. Chỉ khi HLV ra lệnh.
+- **Đổi đội ở trạm dịch chuyển**: PC (và việc đổi đội) dùng được cả khi đứng cạnh một trạm dịch chuyển đã kích hoạt, ngoài Trung tâm Pokémon / trạm nghiên cứu. Vẫn không đổi đội giữa đồng hoang.
+- Ability thời tiết chính thức (Drizzle, Drought…) giữ nguyên cùng thời tiết theo lore.
+- Test `v39_forms_weather_moves` (6). `v3_world` / `v10_gen9` đếm riêng các dạng vùng miền ngoài 1025 loài.
+
 ## Chưa phát hành — Mỗi huyền thoại một lối đánh riêng; mỗi đảo Ultra một màu
 
 - **Cơ chế riêng cho từng huyền thoại** (`src/core/bosses/legendMechanics.ts`). Cả 102 huyền thoại, Thần thoại và Ultra Beast (trừ Rayquaza, vốn đã có kịch bản riêng) đều có 2–3 cơ chế chọn theo lore. Không có hai loài nào trùng tổ hợp. Cơ chế thứ nhất dùng từ giai đoạn 1, cơ chế thứ hai mở ở giai đoạn 2, cơ chế thứ ba mở ở giai đoạn 3, nên trận đấu khó dần. Các chiêu chung (tia, loạt bắn, nova, vùng, tuyệt chiêu) vẫn giữ nguyên.

@@ -16,7 +16,7 @@ import fakemon from '../data/fakemon.json';
 import { ITEMS } from '../adventure/AdventureState';
 import { rideText } from '../core/riding';
 import { isWormholeLegend, wormholeHint } from '../core/ultraWormhole';
-import { loreWeatherText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, weatherName, weatherShort, type BattleWeather } from '../core/battleWeather';
+import { loreWeatherText, weatherMoveText, WEATHER_CALL_COOLDOWN, WEATHER_INFO, weatherName, weatherShort, type BattleWeather } from '../core/battleWeather';
 
 const WEATHER_SHORT: Record<BattleWeather, string> = { rain: 'MƯA', sun: 'NẮNG', sand: 'CÁT', snow: 'TUYẾT', thunderstorm: 'GIÔNG', wind: 'GIÓ' };
 import { BALL_ORDER, BALLS, BallId } from '../core/capture';
@@ -134,6 +134,8 @@ const REGIONS = [
 const LIST_MAX = 8;
 const VN_REGIONS = VN_PROVINCES.map((p) => REGION_DEFS[p.id] ? p : { ...p, need: ['vn:not-in-this-version'], hint: 'chưa có trong phiên bản này' });
 const SPECIES = { ...(cache.species as unknown as Record<string, SpeciesData>), ...(fakemon as unknown as Record<string, SpeciesData>) };
+/** Pokédex number: a regional form shares its base species' number. */
+const dexNo = (sp: SpeciesData): number => (sp.regionalOf ? SPECIES[sp.regionalOf]?.id ?? sp.id : sp.id);
 const MOVES = (cache as unknown as { moves: Record<string, { power: number | null; accuracy: number | null; shortEffect: string }> }).moves;
 
 export class AdventureUI extends Phaser.Scene {
@@ -1263,8 +1265,8 @@ export class AdventureUI extends Phaser.Scene {
     c.add(text(this, r.x, r.y, `PC · ${pc.boxes.length} box × ${pc.boxSize} ô · Đội hình ${st.adv.party.length}/6 · ${st.pcPokemon().length} trong PC`, 17 * s, COLORS.dim));
     if (!this.adv.pcNearby()) {
       c.add(panel(this, r.x, r.y + 34 * s, r.w, 120 * s, 0x6a5a2f, 0x24201a, 1));
-      c.add(text(this, r.x + 20 * s, r.y + 54 * s, 'Máy PC chỉ dùng được tại Trung tâm Pokémon hoặc trạm nghiên cứu của thị trấn.', 20 * s, '#ffe080').setWordWrapWidth(r.w - 40 * s));
-      c.add(text(this, r.x + 20 * s, r.y + 104 * s, 'Đi tới cửa có nhãn “PC” rồi nhấn E / nút tương tác.', 16 * s, '#d0d8f0'));
+      c.add(text(this, r.x + 20 * s, r.y + 54 * s, 'Máy PC chỉ dùng được tại Trung tâm Pokémon, trạm nghiên cứu của thị trấn hoặc một trạm dịch chuyển đã kích hoạt.', 20 * s, '#ffe080').setWordWrapWidth(r.w - 40 * s));
+      c.add(text(this, r.x + 20 * s, r.y + 104 * s, 'Đi tới cửa có nhãn “PC” hoặc đứng cạnh trạm dịch chuyển, rồi mở lại tab này.', 16 * s, '#d0d8f0'));
       return;
     }
 
@@ -1494,7 +1496,7 @@ export class AdventureUI extends Phaser.Scene {
     const evs = ind.evs;
     c.add(text(this, r.x + 300 * s, r.y + 196 * s, `EV ${STAT_KEYS.map((k) => evs?.[k] ?? 0).join('/')}  ·  tổng ${evs ? evTotal(evs) : 0}/${EV_MAX_TOTAL}`, 13 * s, '#ffd8a0'));
     const ride = rideText(p.species, p.level);
-    const lore = [loreWeatherText(p.species), ride].filter(Boolean).join('\n') || null;
+    const lore = [loreWeatherText(p.species), weatherMoveText(p.species, p.level), ride].filter(Boolean).join('\n') || null;
     c.add(text(this, r.x + 300 * s, r.y + 108 * s, `Ability: ${abilityEffect(p.species, p.abilitySlot).name}${abilityOf(p.species, p.abilitySlot).hidden ? ' (ẩn)' : ''}\n${abilityEffect(p.species, p.abilitySlot).description}${lore ? `\n${lore}` : ''}`, (lore ? 13 : 14) * s, '#c8e0ff').setWordWrapWidth(r.w - 314 * s));
     def.skills.forEach((id, i) => {
       const sk = getSkill(id), mv = MOVES[id];
@@ -1786,7 +1788,8 @@ export class AdventureUI extends Phaser.Scene {
 
   private buildDex(c: Phaser.GameObjects.Container, r: Rect): void {
     const s = this.s, sv = this.adv.state.save;
-    const list = Object.values(SPECIES).sort((a, b) => a.id - b.id);
+    // regional forms (Alolan Vulpix) sit right after their base species, under the same number
+    const list = Object.values(SPECIES).sort((a, b) => dexNo(a) - dexNo(b) || a.id - b.id);
     const caught = new Set(sv.pokedex.caught), seen = new Set(sv.pokedex.seen);
     c.add(fitWidth(text(this, r.x, r.y, `Đã thấy ${seen.size} · Đã bắt ${caught.size} / ${list.length} loài`, 17 * s, COLORS.dim), r.w - 200 * s));
     c.add(button(this, r.x + r.w - 95 * s, r.y + 8 * s, 180 * s, 26 * s, this.dexRare ? '◀ Danh sách loài' : '✦ Điều kiện hiếm', () => { this.dexRare = !this.dexRare; this.openMenu('dex'); }).container);
@@ -1811,7 +1814,7 @@ export class AdventureUI extends Phaser.Scene {
       img.setScale(Math.min(2 * s, (chh - 6 * s) / img.height));
       if (!known) img.setTintFill(0x101018);
       c.add(img);
-      c.add(text(this, x + 40 * s, y + 2 * s, `#${String(sp.id).padStart(3, '0')}`, 12 * s, COLORS.dim));
+      c.add(text(this, x + 40 * s, y + 2 * s, `#${String(dexNo(sp)).padStart(3, '0')}`, 12 * s, COLORS.dim));
       c.add(text(this, x + 40 * s, y + 18 * s, known ? sp.displayName : '???', 14 * s, caught.has(sp.name) ? '#ffe080' : '#ffffff'));
       if (caught.has(sp.name)) c.add(this.add.image(x + cw - 18 * s, y + 12 * s, 'icon_pokeball').setScale(1.6 * s));
       const z = this.add.zone(x, y, cw - 6 * s, chh).setOrigin(0).setInteractive({ useHandCursor: true });
@@ -1825,7 +1828,7 @@ export class AdventureUI extends Phaser.Scene {
     const dy = this.portraitMenu ? D.y - 24 * s : r.y; // detail rows are laid out from here
     c.add(panel(this, dx, dy + 24 * s, dw, r.y + r.h - dy - 24 * s, COLORS.panelEdge, 0x1c2134, 1));
     if (!known) { c.add(text(this, dx + 20 * s, dy + 50 * s, '???\nChưa gặp loài này. Khám phá thêm để ghi nhận vào Pokédex.', 20 * s).setWordWrapWidth(dw - 40 * s)); return; }
-    c.add(text(this, dx + 16 * s, dy + 34 * s, `#${String(sel.id).padStart(3, '0')} ${sel.displayName}`, 26 * s));
+    c.add(text(this, dx + 16 * s, dy + 34 * s, `#${String(dexNo(sel)).padStart(3, '0')} ${sel.displayName}`, 26 * s));
     c.add(text(this, dx + 16 * s, dy + 64 * s, sel.genus, 17 * s, COLORS.dim));
     // its Gigantamax form, top right (V32)
     if (GMAX[sel.name] && hasGmaxArt(sel.name)) {

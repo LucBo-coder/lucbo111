@@ -332,7 +332,8 @@ const NOT_AQUATIC = new Set(['seel', 'dewgong', 'spheal', 'sealeo', 'popplio', '
 const isAquatic = (id, sp) => sp.types.includes('water') && !sp.legendary && !sp.mythical && !NOT_AQUATIC.has(id) && (sp.shape === 'fish' || AQUATIC_EXTRA.has(id));
 const ecology = [];
 for (const [id, sp] of Object.entries(SP)) {
-  if (!sp.generation || sp.id > 1025) continue;
+  // National Dex #1–#1025, plus the regional forms that are species of their own (Alolan Vulpix…, sync-pokeapi REGIONAL)
+  if (!sp.generation || (sp.id > 1025 && !sp.regionalOf)) continue;
   const stage = stageOf(id);
   let biomes = [...(PAPI_HABITAT[sp.habitat] ?? [])];
   for (const t of sp.types) {
@@ -368,7 +369,7 @@ for (const [id, sp] of Object.entries(SP)) {
   // lore (Pokédex) beats the type rules: the species shows up in the weather it is said to cause or end
   for (const [k, v] of Object.entries(LORE_ECOLOGY[id] ?? {})) { if (v === 1) delete weather[k]; else weather[k] = v; }
   ecology.push({
-    id, dex: sp.id, gen: genNum(sp.generation), biomes, rarity: TIERS[tier], stage, minLevel: minLevelOf(id, stage),
+    id, dex: sp.regionalOf ? SP[sp.regionalOf].id : sp.id, gen: genNum(sp.generation), biomes, rarity: TIERS[tier], stage, minLevel: minLevelOf(id, stage),
     time: has('ghost') || has('dark') || ['clefairy', 'jigglypuff', 'hoothoot', 'noctowl', 'drowzee', 'murkrow', 'misdreavus', 'kricketot', 'zubat', 'oddish'].includes(id) ? 'night' : 'any',
     weather, method, temperament: sp.types.some((t) => ['fighting', 'poison', 'ghost', 'dragon', 'dark'].includes(t)) ? 'aggressive' : sp.captureRate >= 190 ? 'timid' : 'neutral',
     weight: round(1 + sp.captureRate / 255, 2), legendary: !!sp.legendary, mythical: !!sp.mythical, baby: !!sp.isBaby, ...(isAquatic(id, sp) ? { aquatic: true } : {}), ...(PARADOX.has(id) ? { paradox: true } : {}),

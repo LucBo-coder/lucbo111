@@ -545,11 +545,16 @@ export class AdventureScene extends Phaser.Scene {
     this.world.allies.forEach((a, i) => (a.slotIndex = i));
   }
 
-  /** True when the trainer stands at a Pokémon Center / town-lab PC terminal. */
+  /**
+   * True when the trainer stands at a Pokémon Center / town-lab PC terminal, or at a waypoint already activated (the
+   * Storage System links them): the party is changed at fixed places, not anywhere in the wild.
+   */
   pcNearby(): boolean {
-    if (!this.world?.trainer || !this.pcTerminals.length) return false;
+    if (!this.world?.trainer) return false;
     const t = this.world.trainer;
-    return this.pcTerminals.some((p) => Math.hypot(p.x - t.x, p.y - t.y) < 110);
+    if (this.pcTerminals.some((p) => Math.hypot(p.x - t.x, p.y - t.y) < 110)) return true;
+    return this.mapKind === 'valley' && (this.regionDef.waypoints ?? []).some((w) => this.state.adv.waypoints.includes(w.id)
+      && Math.hypot((w.x + 0.5) * TILE_PX - t.x, (w.y + 0.5) * TILE_PX - t.y) < 120);
   }
 
   /** Applies EXP/Rare Candy through the authoritative state and refreshes the field + evolutions. */

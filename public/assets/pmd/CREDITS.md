@@ -124,6 +124,10 @@ uso **no comercial** y con atribución a sus artistas.
 | YoukaiMinori | <@91001329228464128> | 252, 253 |
 | ◥θ┴θ◤ | DC:<@215638650434617345> | 157, 445, 501, 504, 505, 566, 577, 595, 627, 650, 651, 658, 661, 676, 684, 707, 724, 726, 728, 729, 730, 761, 763, 790, 823, 872, 907, 991 |
 
+Formas añadidas después (`scripts/fetch-pmd-megas.py`, `scripts/fetch-pmd-forms.py`): las formas Mega / Primigenias
+y las formas de Castform (Sol, Lluvia, Nieve, nº 351) y de Alola (Vulpix y Ninetales, nº 37 y 38) vienen de la misma
+fuente y licencia; sus artistas figuran en el archivo `credits.txt` de cada carpeta de forma en SpriteCollab.
+
 ## Datos
 
 Stats base y nombres en español: [PokeAPI](https://pokeapi.co/),
