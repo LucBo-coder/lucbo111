@@ -38,7 +38,8 @@ import { REGION_DEFS } from '../core/map/regionDefs';
 import { chunkCols, chunkRows, MapObject, MapProvider } from '../core/map/mapProvider';
 import { DUNGEON, EX, SCALE, T, TILE_PX, TOWN } from '../core/map/tiles';
 import { PortalDef, RegionDef, ValleyMap } from '../core/map/valley';
-import { addWorldArt, ULTRA_MATRIX, ultraTexture } from '../render/tileset';
+import { addWorldArt, ultraTexture } from '../render/tileset';
+import { gradeColor, ultraMatrix } from '../core/ultraGrade';
 import { regionDef } from '../core/map/regionDefs';
 import { itemIconKey } from '../render/spriteRegistry';
 import { starterTabs } from '../core/starters';
@@ -603,12 +604,32 @@ export class AdventureScene extends Phaser.Scene {
     for (const [idx, rec] of this.chunks.loaded) if (this.gateSig.get(idx) !== this.storySig(rec)) this.chunks.reload(idx);
   }
 
+  /** A bright colour in an island's tone (its grass through the island's grade, pushed to full brightness). */
+  private islandGlow(area: string | null | undefined): number {
+    const c = gradeColor(ultraMatrix(area), 0x6cd860);
+    const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255, k = 255 / Math.max(1, r, g, b);
+    return (Math.round(r * k) << 16) | (Math.round(g * k) << 8) | Math.round(b * k);
+  }
+
+  /** Không Gian Ultra: the island (area id) covering most of a chunk's land (islands lie far apart in the void). */
+  private chunkIsland(rec: ChunkRecord): string | null {
+    const m = this.map as ValleyMap, n = m.chunk, count = new Map<string, number>();
+    for (let y = 0; y < n; y += 2) for (let x = 0; x < n; x += 2) {
+      const id = m.areaAt(rec.cx * n + x, rec.cy * n + y)?.id;
+      if (id) count.set(id, (count.get(id) ?? 0) + 1);
+    }
+    let best: string | null = null, top = 0;
+    for (const [id, c] of count) if (c > top) { best = id; top = c; }
+    return best;
+  }
+
   private onChunkLoad(rec: ChunkRecord): void {
     const tag = 'chunk-' + rec.idx;
     this.gateSig.set(rec.idx, this.storySig(rec));
     const q = QUALITY_PROFILE[saveStore.data.settings.quality];
     // Không Gian Ultra: the ground's colours hue-shifted (WebGL only); trainers and Pokémon keep theirs
-    if (this.mapKind === 'valley' && this.regionDef.filter === 'ultra' && this.game.renderer.type === Phaser.WEBGL) rec.layer.postFX.addColorMatrix().set(ULTRA_MATRIX);
+    // each island its own tone (core/ultraGrade): the chunk takes the tone of the island covering most of it
+    if (this.mapKind === 'valley' && this.regionDef.filter === 'ultra' && this.game.renderer.type === Phaser.WEBGL) rec.layer.postFX.addColorMatrix().set([...ultraMatrix(this.chunkIsland(rec))]);
     for (const o of rec.mapObjects) {
       const px = o.x * TILE_PX, py = o.y * TILE_PX;
       const add = <T extends Phaser.GameObjects.GameObject>(g: T) => { rec.objects.push(g); return g; };
@@ -619,7 +640,7 @@ export class AdventureScene extends Phaser.Scene {
           if (!bigImg) add(this.add.image(px, py + 22, 'shadow').setScale(2.6, 2.2).setDepth(py + 21.9));
           const img = add(bigImg ?? this.add.image(px, py + 22, 'ow_tiles', o.tile).setOrigin(0.5, 1).setScale(SCALE)).setDepth(py + 22);
           // Không Gian Ultra: the trees take the alien ground's colours (the crystals are purple already)
-          if (this.regionDef.filter === 'ultra' && this.mapKind === 'valley' && o.tile !== EX.crystal) img.setTexture(ultraTexture(this, img.texture.key, bigImg ? undefined : img.frame.name));
+          if (this.regionDef.filter === 'ultra' && this.mapKind === 'valley' && o.tile !== EX.crystal) img.setTexture(ultraTexture(this, img.texture.key, bigImg ? undefined : img.frame.name, (this.map as ValleyMap).areaAt(o.x, o.y)?.id));
           const swing = bigImg ? 0.6 : 1.6;
           if (q.sway) this.sway.push(this.tweens.add({ targets: img, angle: { from: -swing, to: swing }, duration: 1600 + (o.x * 37 % 900), yoyo: true, repeat: -1, ease: 'Sine.inOut' }));
           this.world.addObstacle({ x: px, y: py + 6, r: o.collideR ?? 15, kind: 'tree', tag });
@@ -714,7 +735,15 @@ export class AdventureScene extends Phaser.Scene {
           else this.tweens.add({ targets: s, alpha: { from: 1, to: 0.8 }, duration: 700, yoyo: true, repeat: -1 });
           this.world.addObstacle({ x: s.x, y: py + TILE_PX - 10, r: 18, kind: 'prop', tag });
           this.addInteractable(o, s.x, py + TILE_PX + 16, open ? p.name : `${p.name} (đã khóa)`, s);
-          if (open) this.addLight(rec, s.x, py + TILE_PX - 30, 170, true, 0xa080ff);
+          // Không Gian Ultra's gateways glow in the tone of the island they lead to: side by side on the city's rim,
+          // each one reads apart (crater wine-red, desert amber, forest cyan…)
+          const tone = open && p.to === this.map.id && this.regionDef.filter === 'ultra' ? this.islandGlow((this.map as ValleyMap).areaAt(p.toX, p.toY)?.id) : null;
+          if (tone != null) {
+            s.setTint(tone);
+            const glow = add(this.add.ellipse(s.x, py + TILE_PX - 4, 78, 24, tone, 0.5).setDepth(py + TILE_PX - 1));
+            this.tweens.add({ targets: glow, scaleX: { from: 0.85, to: 1.15 }, alpha: { from: 0.55, to: 0.25 }, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+          }
+          if (open) this.addLight(rec, s.x, py + TILE_PX - 30, 170, true, tone ?? 0xa080ff);
           break;
         }
         case 'waypoint': {

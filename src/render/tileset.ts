@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { gradeRgb, ultraGradeId, ultraMatrix } from '../core/ultraGrade';
 import { AA_ART, AA_DIR, type AaKey, worldArtKey, COLS, EX, SCALE, TILE, TILE_PX, TILESET_ROWS, TOWN } from '../core/map/tiles';
 import type { MapObject } from '../core/map/mapProvider';
 import { addOrientalArt } from './orientalArt';
@@ -753,22 +754,13 @@ export function buildWorldProps(scene: Phaser.Scene): void {
 }
 
 /**
- * Không Gian Ultra's colour grade (4×5 colour matrix, rows R G B A): green turns violet, blue water stays blue-violet
- * (a plain hue rotation turned the water orange like lava), white floors go lavender, a little darker overall.
+ * Không Gian Ultra (V37): a colour-graded copy (core/ultraGrade, the island's own tone) of a world-art texture or of
+ * one 'ow_tiles' frame, made once per island and cached, so trees match the alien ground (graded by a post FX on the
+ * chunk layers).
  */
-export const ULTRA_MATRIX = [
-  0.27, 0.63, 0, 0, 0,
-  0.45, 0.18, 0, 0, 0,
-  0, 0.54, 0.9, 0, 0,
-  0, 0, 0, 1, 0,
-];
-
-/**
- * Không Gian Ultra (V37): a colour-graded copy (ULTRA_MATRIX) of a world-art texture or of one 'ow_tiles' frame, made
- * once and cached, so trees match the alien ground (graded by a post FX on the chunk layers).
- */
-export function ultraTexture(scene: Phaser.Scene, key: string, frame?: string | number): string {
-  const out = frame == null ? `ultra:${key}` : `ultra:${key}:${frame}`;
+export function ultraTexture(scene: Phaser.Scene, key: string, frame?: string | number, area?: string | null): string {
+  const g = ultraGradeId(area);
+  const out = (frame == null ? `ultra:${key}` : `ultra:${key}:${frame}`) + (g === 'base' ? '' : ':' + g);
   if (scene.textures.exists(out)) return out;
   const f = scene.textures.getFrame(key, frame);
   if (!f) return key;
@@ -776,12 +768,10 @@ export function ultraTexture(scene: Phaser.Scene, key: string, frame?: string | 
   if (!cv) return key;
   const ctx = cv.getContext();
   ctx.drawImage(f.source.image as CanvasImageSource, f.cutX, f.cutY, f.cutWidth, f.cutHeight, 0, 0, f.cutWidth, f.cutHeight);
-  const img = ctx.getImageData(0, 0, f.cutWidth, f.cutHeight), d = img.data, m = ULTRA_MATRIX;
+  const img = ctx.getImageData(0, 0, f.cutWidth, f.cutHeight), d = img.data, m = ultraMatrix(area);
   for (let i = 0; i < d.length; i += 4) {
-    const r = d[i], g = d[i + 1], b = d[i + 2];
-    d[i] = Math.min(255, m[0] * r + m[1] * g + m[2] * b);
-    d[i + 1] = Math.min(255, m[5] * r + m[6] * g + m[7] * b);
-    d[i + 2] = Math.min(255, m[10] * r + m[11] * g + m[12] * b);
+    const [r, gg, b] = gradeRgb(m, d[i], d[i + 1], d[i + 2]);
+    d[i] = r; d[i + 1] = gg; d[i + 2] = b;
   }
   ctx.putImageData(img, 0, 0);
   cv.refresh();

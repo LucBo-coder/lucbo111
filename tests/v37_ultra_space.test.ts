@@ -3,6 +3,7 @@ import { ECOLOGY, REGIONS, regionOfArea, rollEncounter } from '../src/core/encou
 import { regionDef } from '../src/core/map/regionDefs';
 import { T } from '../src/core/map/tiles';
 import { ValleyMap } from '../src/core/map/valley';
+import { gradeColor, ultraGradeId, ultraMatrix } from '../src/core/ultraGrade';
 import { Rng } from '../src/core/rng';
 import {
   GIANTS_AFTER, riftCandidates, ULTRA_AWAKE, ULTRA_BEASTS, ULTRA_SPACE, ULTRA_SPACE_SITES, ULTRA_STIR, ultraAwake, ultraStir,
@@ -151,5 +152,28 @@ describe('Ultra Space', () => {
     let second: string | null = null;
     for (let i = 0; i < ULTRA_STIR; i++) second = ultraStir(w, 'ultra-jungle', none, 60, rng) ?? second;
     expect(second).toBe(first === 'buzzwole' ? 'pheromosa' : 'buzzwole');
+  });
+
+  it('each island has its own colour tone, on screen and on the minimap; the void stays dark', () => {
+    const m = new ValleyMap(def);
+    const grass = 0x4c9a48;
+    const tones = new Set(def.areas.map((a) => ultraGradeId(a.id)));
+    expect(tones.size).toBe(9);
+    const tinted = new Set(def.areas.map((a) => gradeColor(ultraMatrix(a.id), grass)));
+    expect(tinted.size).toBe(9);
+    // the minimap colours a tile through its island's grade
+    for (const fl of def.floating!.slice(0, 9)) {
+      const a = m.areaAt(fl.cx, fl.cy)!;
+      expect(a, `${fl.cx},${fl.cy}`).toBeTruthy();
+    }
+    expect(m.colorAt(0, 0)).toBe(0x120f26);
+    expect(ultraGradeId(null)).toBe('base');
+    expect(ultraMatrix('elsewhere')).toBe(ultraMatrix(null));
+    // water keeps apart from grass on the islands that have water (Biển Sâu's lake)
+    for (const a of def.areas.filter((x) => x.id === 'ultra-deep-sea' || x.id === 'ultra-megalopolis')) {
+      const g = gradeColor(ultraMatrix(a.id), grass), w = gradeColor(ultraMatrix(a.id), 0x3a78d8);
+      const d = Math.abs((g >> 16) - (w >> 16)) + Math.abs(((g >> 8) & 255) - ((w >> 8) & 255)) + Math.abs((g & 255) - (w & 255));
+      expect(d, a.id).toBeGreaterThan(60);
+    }
   });
 });

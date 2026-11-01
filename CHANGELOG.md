@@ -1,6 +1,6 @@
 # Changelog
 
-## Chưa phát hành — Mỗi huyền thoại một lối đánh riêng
+## Chưa phát hành — Mỗi huyền thoại một lối đánh riêng; mỗi đảo Ultra một màu
 
 - **Cơ chế riêng cho từng huyền thoại** (`src/core/bosses/legendMechanics.ts`). Cả 102 huyền thoại, Thần thoại và Ultra Beast (trừ Rayquaza, vốn đã có kịch bản riêng) đều có 2–3 cơ chế chọn theo lore. Không có hai loài nào trùng tổ hợp. Cơ chế thứ nhất dùng từ giai đoạn 1, cơ chế thứ hai mở ở giai đoạn 2, cơ chế thứ ba mở ở giai đoạn 3, nên trận đấu khó dần. Các chiêu chung (tia, loạt bắn, nova, vùng, tuyệt chiêu) vẫn giữ nguyên.
   - Có 22 cơ chế, chiêu nào cũng báo trước bằng vùng đỏ và tên hiện trên HUD:
@@ -28,6 +28,12 @@
     - **Hút sinh lực**: hồi máu theo sát thương gây ra.
   - Bản sao, tinh thể và đồng bọn biến mất khi boss kiệt sức hoặc rời đi. Hạ chúng chỉ được 15% EXP.
   - Pokédex ghi "Cơ chế khi là boss" của từng loài; trang Hướng dẫn → Chiến đấu có giải thích.
+- **Không Gian Ultra: mỗi đảo một tông màu** (`src/core/ultraGrade.ts`). Màu Ultra gốc (cỏ thành tím, nước giữ xanh tím) được xoay thêm một góc hue riêng cho từng đảo, nên nước, cỏ và đường đi vẫn phân biệt được:
+  - Siêu Đô Thị tím, Miệng Núi Lửa đỏ rượu, Sa Mạc hổ phách, Nhà Máy xanh thép, Biển Sâu chàm, Hoang Mạc hồng, Phế Tích vàng úa, Rừng tuyết xanh lơ, Rừng Rậm xanh lục thẫm.
+  - Nền lấy tông của đảo chiếm phần lớn chunk; cây lấy tông của đảo nơi nó mọc.
+  - Minimap tô đúng tông từng đảo; khoảng không trên minimap là xanh đêm thay cho đen kịt.
+  - Cổng ở Siêu Đô Thị phát sáng (ánh sáng, quầng dưới chân) theo màu của đảo nó dẫn tới.
+  - Test: 9 tông khác nhau, nước vẫn tách khỏi cỏ ở các đảo có nước.
 - Test `v38_legend_mechanics`:
   - Kiểm tra mọi huyền thoại đều có cơ chế, không tổ hợp nào trùng.
   - Mỗi cơ chế đều kích hoạt được trong một trận mô phỏng, và cơ chế sau chỉ mở ở đúng giai đoạn của nó.

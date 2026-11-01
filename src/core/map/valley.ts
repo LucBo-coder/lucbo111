@@ -1,4 +1,5 @@
 import { fbm, hash2 } from './noise';
+import { gradeColor, ultraMatrix } from '../ultraGrade';
 import { nookRing, type Dock, type FieldDef } from '../field';
 import { SHRINES, shrineCells, type ShrineDef } from '../shrines';
 import type { SecretDef } from '../secrets';
@@ -661,6 +662,13 @@ export class ValleyMap implements MapProvider {
   }
 
   colorAt(tx: number, ty: number): number {
+    const c = this.rawColorAt(tx, ty);
+    // Không Gian Ultra: the minimap shows each island in its own tone, as on screen; the void a deep starry blue
+    if (this.def.filter !== 'ultra' || this.terrainAt(tx, ty) === T.Void) return c;
+    return gradeColor(ultraMatrix(this.areaAt(tx, ty)?.id), c);
+  }
+
+  private rawColorAt(tx: number, ty: number): number {
     if (this.solid.has(this.key(tx, ty))) return 0x8a5a40;
     switch (this.terrainAt(tx, ty)) {
       case T.Water: return 0x3a78d8;
@@ -680,7 +688,7 @@ export class ValleyMap implements MapProvider {
       case T.Bog: return 0x5a4a6a;
       case T.Mud: return 0x5a4a32;
       case T.Wall: return 0x3a3448;
-      case T.Void: return 0x07060f;
+      case T.Void: return 0x120f26;
       default: return this.def.theme === 'swamp' ? 0x3e6a3a : 0x4c9a48;
     }
   }

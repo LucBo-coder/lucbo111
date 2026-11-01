@@ -1,5 +1,64 @@
 [
   {
+    "id": "v38-legend-mechanics",
+    "title": "Mỗi huyền thoại một lối đánh riêng, mỗi đảo Ultra một màu",
+    "items": [
+      "102 huyền thoại, Thần thoại và Ultra Beast có 2–3 cơ chế riêng chọn theo lore, không loài nào trùng bộ cơ chế. Cơ chế mới mở dần theo giai đoạn, nên trận đánh khó dần.",
+      "Ảo ảnh: tạo bản sao giống hệt (Mew, Latias, Hoopa…), đánh vỡ bản sao để tìm bản thật.",
+      "Lá chắn tinh thể: không gây được sát thương cho tới khi phá hết tinh thể (Diancie, Necrozma, bộ Regi…).",
+      "Thế phản đòn: đánh vào lúc này thì bị dội ngược một nửa sát thương. Ẩn mình: boss biến mất rồi hiện ra ngay dưới chân bạn.",
+      "Tích nộ: boss mạnh dần theo thời gian, dồn sát thương thật nhanh để chặn đà. Gọi đồng bọn: Kyogre gọi Sharpedo, Regigigas gọi bộ ba Regi.",
+      "Ngoài ra còn Lưới sét, Sóng tràn, Tia quét, Hố hút, Mưa thiên thạch, Đánh dấu, Nứt đất, Hồi phục, Hút sinh lực… Chiêu nào cũng có vùng đỏ báo trước và tên hiện trên màn hình.",
+      "Pokédex ghi cơ chế của từng loài; Hướng dẫn (K) → Chiến đấu có giải thích.",
+      "Không Gian Ultra: mỗi đảo một tông màu riêng (tro đỏ rượu ở Miệng Núi Lửa, cát hổ phách ở Sa Mạc, thép xanh ở Nhà Máy, băng xanh lơ ở Rừng tuyết…). Minimap cũng tô theo đảo.",
+      "Các cổng ở Siêu Đô Thị phát sáng theo màu của đảo chúng dẫn tới, nên nhìn là biết cổng nào đi đâu."
+    ]
+  },
+  {
+    "id": "v37-ultra-space",
+    "title": "Ultra Wormhole, Không Gian Ultra và huyền thoại tới Gen 9",
+    "items": [
+      "Sau khi thắng Mega Venusaur, thỉnh thoảng một Ultra Wormhole mở ra gần bạn. Tới gần nhấn E để bước vào Không Gian Ultra; cổng ở Siêu Đô Thị đưa bạn về đúng chỗ cũ.",
+      "Không Gian Ultra là quần đảo lơ lửng giữa khoảng không đầy sao: Siêu Đô Thị ở giữa và 8 đảo thế giới, đi lại qua cổng. Có thú bay thì bay thẳng qua khoảng không được.",
+      "11 Ultra Beast ngủ ở đảo của mình. Hạ Pokémon hoang dã trên đảo để khuấy động thế giới đó và đánh thức chúng. Hạ Nihilego, Xurkitree, Guzzlord thì Necrozma xuất hiện; sau đó gặp Cosmog.",
+      "Vết nứt trong Không Gian Ultra mang tới 57 huyền thoại / Thần thoại Gen 5–9 (Reshiram, Zekrom, các Tapu, Zacian, Koraidon, Terapagos…).",
+      "Có y tá hồi phục đội trên các đảo; font chữ pixel được đóng gói sẵn trong game, không cần mạng."
+    ]
+  },
+  {
+    "id": "v35-riding",
+    "title": "Cưỡi Pokémon",
+    "items": [
+      "Phím Z (hoặc ô CƯỠI): leo lên Pokémon trong đội. Chạy trên đất (Rapidash, Arcanine…), bơi trên nước (Lapras, Gyarados…), bay qua sông hồ, dung nham (Charizard, Dragonite…).",
+      "Tốc độ theo chỉ số Speed của loài; giữ Shift để nhanh thêm 20%. Shift+Z chọn thú cưỡi khác.",
+      "Tới bờ nước thì game tự đổi sang con bơi; lên bờ thì đổi lại con chạy.",
+      "Không cưỡi được trong hang động hay khi đang giao chiến. Bản đồ Việt Nam cần có ghe mới qua sông được."
+    ]
+  },
+  {
+    "id": "v33-weather",
+    "title": "Thời tiết theo Pokédex, thời tiết mạnh, Pokémon gọi thời tiết",
+    "items": [
+      "Pokémon có đặc tính thời tiết (Pelipper, Torkoal, Tyranitar, Abomasnow…) gọi Mưa / Nắng / Bão cát / Tuyết khi vào trận. Phím C (nút Trời) để gọi chủ động.",
+      "Thời tiết mới theo lore Pokédex: Giông bão (Zapdos, Raikou, Lugia…: sét đánh, hệ Điện mạnh hơn) và Gió lớn (Tornadus, Suicune…: hệ Bay mạnh hơn).",
+      "Rayquaza, Landorus, Moltres làm yên trời. Castform đổi hệ, Cherrim mạnh lên khi nắng.",
+      "Thời tiết mạnh của Primal Kyogre / Groudon và Mega Rayquaza; Air Lock / Cloud Nine làm thời tiết mất tác dụng; Weather Ball đổi hệ theo thời tiết.",
+      "Huyền thoại xuất hiện nhiều hơn khi thời tiết hợp với chúng (Zapdos khi giông, Articuno khi bão tuyết…).",
+      "Sửa lỗi: thua boss ở đền huyền thoại không còn bị kẹt; thua thì lần sau đánh lại từ đầu."
+    ]
+  },
+  {
+    "id": "v32-raids-ui",
+    "title": "Hang Raid, Gigantamax, giao diện gọn hơn",
+    "items": [
+      "Hang Raid 1★–6★ tự xuất hiện trên bản đồ: Tera Raid (sáng xanh), Max Raid (đỏ), G-Max (đỏ tím). Pokémon bắt được giữ Hệ Tera và Ability của boss.",
+      "Mỗi Pokémon có Hệ Tera và Ability riêng. 32 dạng Gigantamax có hình và hoạt ảnh riêng.",
+      "Mega / Tera / Dynamax / Thời tiết thành các nút ô vuông ở góc phải, có thời gian hồi.",
+      "Tab Đội hình chỉ hiện 6 Pokémon đang mang theo; có nút Tiến hóa khi đủ điều kiện. Pokédex ghi mọi điều kiện tiến hóa.",
+      "Túi đồ chia 6 ngăn, Cài đặt chia mục; chữ không còn chồng lên nhau trên điện thoại."
+    ]
+  },
+  {
     "id": "v31-gimmicks",
     "title": "Terastal, Dynamax / Gigantamax và dạng Primal",
     "items": [
