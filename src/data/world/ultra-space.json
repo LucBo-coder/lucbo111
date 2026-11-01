@@ -1,39 +1,161 @@
 {
   "id": "ultra-space",
   "name": "Không Gian Ultra",
-  "width": 108,
-  "height": 108,
+  "width": 160,
+  "height": 160,
   "chunk": 16,
   "theme": "sanctuary",
   "filter": "ultra",
+  "floating": [
+    {
+      "cx": 80,
+      "cy": 80,
+      "rx": 23,
+      "ry": 19
+    },
+    {
+      "cx": 80,
+      "cy": 24,
+      "rx": 15,
+      "ry": 12
+    },
+    {
+      "cx": 120,
+      "cy": 40,
+      "rx": 17,
+      "ry": 13
+    },
+    {
+      "cx": 136,
+      "cy": 80,
+      "rx": 14,
+      "ry": 12
+    },
+    {
+      "cx": 120,
+      "cy": 120,
+      "rx": 16,
+      "ry": 13
+    },
+    {
+      "cx": 80,
+      "cy": 136,
+      "rx": 17,
+      "ry": 12
+    },
+    {
+      "cx": 40,
+      "cy": 120,
+      "rx": 14,
+      "ry": 12
+    },
+    {
+      "cx": 24,
+      "cy": 80,
+      "rx": 14,
+      "ry": 13
+    },
+    {
+      "cx": 40,
+      "cy": 40,
+      "rx": 17,
+      "ry": 13
+    },
+    {
+      "cx": 52,
+      "cy": 18,
+      "rx": 3,
+      "ry": 2.4000000000000004
+    },
+    {
+      "cx": 108,
+      "cy": 16,
+      "rx": 4,
+      "ry": 3.2
+    },
+    {
+      "cx": 146,
+      "cy": 50,
+      "rx": 3,
+      "ry": 2.4000000000000004
+    },
+    {
+      "cx": 150,
+      "cy": 112,
+      "rx": 3,
+      "ry": 2.4000000000000004
+    },
+    {
+      "cx": 104,
+      "cy": 150,
+      "rx": 4,
+      "ry": 3.2
+    },
+    {
+      "cx": 50,
+      "cy": 148,
+      "rx": 3,
+      "ry": 2.4000000000000004
+    },
+    {
+      "cx": 12,
+      "cy": 108,
+      "rx": 3,
+      "ry": 2.4000000000000004
+    },
+    {
+      "cx": 10,
+      "cy": 52,
+      "rx": 4,
+      "ry": 3.2
+    },
+    {
+      "cx": 58,
+      "cy": 58,
+      "rx": 2,
+      "ry": 1.6
+    },
+    {
+      "cx": 104,
+      "cy": 104,
+      "rx": 2,
+      "ry": 1.6
+    },
+    {
+      "cx": 62,
+      "cy": 104,
+      "rx": 2,
+      "ry": 1.6
+    }
+  ],
   "spawn": {
-    "x": 54,
-    "y": 98
+    "x": 80,
+    "y": 87
   },
   "areas": [
     {
-      "id": "ultra-forest",
-      "name": "Rừng Ultra",
+      "id": "ultra-megalopolis",
+      "name": "Siêu Đô Thị Ultra",
       "rect": [
-        0,
-        0,
-        35,
-        35
+        55,
+        59,
+        105,
+        101
       ],
-      "habitat": "snow",
+      "habitat": "ruins",
       "level": [
-        50,
-        58
+        54,
+        62
       ]
     },
     {
       "id": "ultra-crater",
       "name": "Miệng Núi Lửa Ultra",
       "rect": [
-        36,
-        0,
-        71,
-        35
+        63,
+        10,
+        97,
+        38
       ],
       "habitat": "volcano",
       "level": [
@@ -45,10 +167,10 @@
       "id": "ultra-desert",
       "name": "Sa Mạc Ultra",
       "rect": [
-        72,
-        0,
-        107,
-        35
+        101,
+        25,
+        139,
+        55
       ],
       "habitat": "rocky",
       "level": [
@@ -57,43 +179,13 @@
       ]
     },
     {
-      "id": "ultra-jungle",
-      "name": "Rừng Rậm Ultra",
-      "rect": [
-        0,
-        36,
-        35,
-        71
-      ],
-      "habitat": "forest",
-      "level": [
-        48,
-        56
-      ]
-    },
-    {
-      "id": "ultra-megalopolis",
-      "name": "Siêu Đô Thị Ultra",
-      "rect": [
-        36,
-        36,
-        71,
-        71
-      ],
-      "habitat": "ruins",
-      "level": [
-        54,
-        62
-      ]
-    },
-    {
       "id": "ultra-plant",
       "name": "Nhà Máy Ultra",
       "rect": [
-        72,
-        36,
-        107,
-        71
+        120,
+        66,
+        152,
+        94
       ],
       "habitat": "ruins",
       "level": [
@@ -102,28 +194,28 @@
       ]
     },
     {
-      "id": "ultra-ruin",
-      "name": "Phế Tích Ultra",
+      "id": "ultra-deep-sea",
+      "name": "Biển Sâu Ultra",
       "rect": [
-        0,
-        72,
-        35,
-        107
+        102,
+        105,
+        138,
+        135
       ],
-      "habitat": "swamp",
+      "habitat": "coast",
       "level": [
-        52,
-        60
+        48,
+        56
       ]
     },
     {
       "id": "ultra-wilds",
       "name": "Hoang Mạc Ultra",
       "rect": [
-        36,
-        72,
-        71,
-        107
+        61,
+        122,
+        99,
+        150
       ],
       "habitat": "sanctuary",
       "level": [
@@ -132,15 +224,45 @@
       ]
     },
     {
-      "id": "ultra-deep-sea",
-      "name": "Biển Sâu Ultra",
+      "id": "ultra-ruin",
+      "name": "Phế Tích Ultra",
       "rect": [
-        72,
-        72,
-        107,
-        107
+        24,
+        106,
+        56,
+        134
       ],
-      "habitat": "coast",
+      "habitat": "swamp",
+      "level": [
+        52,
+        60
+      ]
+    },
+    {
+      "id": "ultra-forest",
+      "name": "Rừng Ultra",
+      "rect": [
+        8,
+        65,
+        40,
+        95
+      ],
+      "habitat": "snow",
+      "level": [
+        50,
+        58
+      ]
+    },
+    {
+      "id": "ultra-jungle",
+      "name": "Rừng Rậm Ultra",
+      "rect": [
+        21,
+        25,
+        59,
+        55
+      ],
+      "habitat": "forest",
       "level": [
         48,
         56
@@ -149,15 +271,15 @@
   ],
   "paths": [
     {
-      "w": 3,
+      "w": 2,
       "pts": [
         [
-          54,
-          104
+          80,
+          80
         ],
         [
-          54,
-          62
+          80,
+          66
         ]
       ]
     },
@@ -165,12 +287,12 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          80,
+          31
         ],
         [
-          20,
-          22
+          80,
+          23
         ]
       ]
     },
@@ -178,12 +300,12 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          80,
+          80
         ],
         [
-          54,
-          22
+          92,
+          70
         ]
       ]
     },
@@ -191,12 +313,12 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          113,
+          45
         ],
         [
-          84,
-          20
+          113,
+          40
         ]
       ]
     },
@@ -204,12 +326,12 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          113,
+          45
         ],
         [
-          16,
-          54
+          127,
+          38
         ]
       ]
     },
@@ -217,12 +339,12 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          80,
+          80
         ],
         [
-          90,
-          54
+          97,
+          80
         ]
       ]
     },
@@ -230,11 +352,24 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          128,
+          80
         ],
         [
-          18,
+          140,
+          82
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          80
+        ],
+        [
+          92,
           90
         ]
       ]
@@ -243,39 +378,190 @@
       "w": 2,
       "pts": [
         [
-          54,
-          54
+          114,
+          115
+        ],
+        [
+          114,
+          117
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          80
         ],
         [
           80,
-          86
+          94
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          129
+        ],
+        [
+          73,
+          141
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          129
+        ],
+        [
+          87,
+          141
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          80
+        ],
+        [
+          68,
+          90
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          45,
+          115
+        ],
+        [
+          37,
+          124
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          80
+        ],
+        [
+          63,
+          80
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          32,
+          80
+        ],
+        [
+          20,
+          82
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          80,
+          80
+        ],
+        [
+          68,
+          70
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          47,
+          45
+        ],
+        [
+          33,
+          39
+        ]
+      ]
+    },
+    {
+      "w": 2,
+      "pts": [
+        [
+          47,
+          45
+        ],
+        [
+          46,
+          38
+        ]
+      ]
+    },
+    {
+      "w": 3,
+      "pts": [
+        [
+          80,
+          90
+        ],
+        [
+          80,
+          80
         ]
       ]
     }
   ],
   "plaza": [
-    48,
-    48,
-    60,
-    60
+    74,
+    71,
+    86,
+    81
+  ],
+  "paved": [
+    [
+      74,
+      71,
+      86,
+      81
+    ]
   ],
   "lake": {
-    "cx": 94,
-    "cy": 96,
-    "rx": 9,
-    "ry": 7
+    "cx": 125,
+    "cy": 124,
+    "rx": 6,
+    "ry": 4
   },
   "buildings": [],
   "fences": [],
   "props": [],
   "signs": [
     {
-      "x": 57,
-      "y": 99,
+      "x": 83,
+      "y": 88,
       "text": [
         "KHÔNG GIAN ULTRA",
-        "Bên kia Ultra Wormhole: chín thế giới, mỗi nơi một Ultra Beast.",
-        "Hạ Nihilego, Xurkitree và Guzzlord để đánh thức thứ đang ngủ ở Siêu Đô Thị."
+        "Những hòn đảo trôi giữa khoảng không. Mỗi cổng quanh Siêu Đô Thị dẫn tới một thế giới có Ultra Beast riêng.",
+        "Ultra Beast ngủ cho tới khi thế giới của nó bị khuấy động. Hạ Nihilego, Xurkitree và Guzzlord để đánh thức thứ ở đỉnh Siêu Đô Thị."
       ]
     }
   ],
@@ -285,33 +571,34 @@
       "name": "Y tá Đội Trinh Sát",
       "sprite": "girl",
       "role": "nurse",
-      "x": 51,
-      "y": 95,
+      "x": 84,
+      "y": 85,
       "lines": [
         "Đường về xa lắm, để tôi chữa cho đội của bạn."
-      ]
-    },
-    {
-      "id": "ultra-nurse-city",
-      "name": "Y tá Đội Trinh Sát",
-      "sprite": "girl",
-      "role": "nurse",
-      "x": 58,
-      "y": 66,
-      "lines": [
-        "Ánh sáng ở đây yếu lắm… nghỉ một chút rồi hãy đi tiếp."
       ]
     },
     {
       "id": "ultra-recon",
       "name": "Đội Trinh Sát Ultra",
       "sprite": "wizard",
-      "x": 51,
-      "y": 99,
+      "x": 73,
+      "y": 88,
       "lines": [
         "Ánh sáng ở thế giới chúng tôi đã bị nuốt mất… Bạn tới được đây là nhờ Ultra Wormhole.",
-        "Mỗi vùng của Không Gian Ultra có Ultra Beast riêng. Những vết nứt nhỏ ở đây còn kéo cả huyền thoại từ các vùng đất xa xôi tới.",
+        "Đừng bước ra mép đảo: bên dưới chỉ có khoảng không. Muốn sang đảo khác thì đi qua các cổng quanh Siêu Đô Thị — hoặc bay, nếu Pokémon của bạn đủ khỏe.",
+        "Những vết nứt nhỏ ở đây còn kéo cả huyền thoại từ các vùng đất xa xôi tới.",
         "Muốn về thì bước vào Ultra Wormhole ngay sau lưng tôi."
+      ]
+    },
+    {
+      "id": "ultra-nurse-wilds",
+      "name": "Y tá Đội Trinh Sát",
+      "sprite": "girl",
+      "role": "nurse",
+      "x": 83,
+      "y": 131,
+      "lines": [
+        "Ánh sáng ở đây yếu lắm… nghỉ một chút rồi hãy đi tiếp."
       ]
     }
   ],
@@ -326,36 +613,36 @@
   },
   "chests": [
     {
-      "id": "chest-ultra-forest",
-      "x": 8,
-      "y": 30,
+      "id": "chest-ultra-crater",
+      "x": 80,
+      "y": 17,
       "items": {
         "ultraball": 3,
         "exp-candy-l": 1
       }
     },
     {
-      "id": "chest-ultra-crater",
-      "x": 66,
-      "y": 6,
-      "items": {
-        "ultraball": 3,
-        "fire-stone": 1
-      }
-    },
-    {
       "id": "chest-ultra-plant",
-      "x": 100,
-      "y": 64,
+      "x": 144,
+      "y": 80,
       "items": {
         "ultraball": 3,
-        "thunder-stone": 1
+        "exp-candy-l": 1
       }
     },
     {
-      "id": "chest-ultra-ruin",
-      "x": 6,
-      "y": 102,
+      "id": "chest-ultra-wilds",
+      "x": 80,
+      "y": 143,
+      "items": {
+        "ultraball": 3,
+        "exp-candy-l": 1
+      }
+    },
+    {
+      "id": "chest-ultra-forest",
+      "x": 16,
+      "y": 80,
       "items": {
         "ultraball": 3,
         "exp-candy-l": 1
@@ -364,16 +651,10 @@
   ],
   "waypoints": [
     {
-      "id": "wp-ultra-wilds",
-      "name": "Trạm Hoang Mạc Ultra",
-      "x": 56,
-      "y": 96
-    },
-    {
-      "id": "wp-ultra-city",
-      "name": "Trạm Siêu Đô Thị",
-      "x": 54,
-      "y": 64
+      "id": "wp-ultra-arrival",
+      "name": "Bến Đến Siêu Đô Thị",
+      "x": 82,
+      "y": 87
     }
   ],
   "puzzles": [],
@@ -382,177 +663,177 @@
   "spawns": {},
   "legendaries": [
     {
-      "id": "kartana",
-      "name": "Rừng Ultra",
-      "x": 18,
-      "y": 16,
-      "level": 54,
-      "respawn": 1800,
-      "arena": 480,
-      "requires": [],
-      "gap": 0.81,
-      "hint": "Những thân cây giấy trắng bị cắt ngọt như lưỡi kiếm…",
-      "ring": false
-    },
-    {
       "id": "blacephalon",
       "name": "Miệng Núi Lửa Ultra",
-      "x": 54,
-      "y": 14,
+      "x": 80,
+      "y": 21,
       "level": 54,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": 1.57,
+      "gap": 0,
       "hint": "Pháo hoa nổ lách tách trên miệng núi lửa.",
       "ring": false
     },
     {
       "id": "celesteela",
       "name": "Sa Mạc Ultra",
-      "x": 82,
-      "y": 12,
+      "x": 113,
+      "y": 38,
       "level": 54,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": 2.16,
+      "gap": 0,
       "hint": "Một vệt khói như tên lửa vạch ngang bầu trời sa mạc.",
       "ring": false
     },
     {
       "id": "stakataka",
       "name": "Bức Tường Ultra",
-      "x": 98,
-      "y": 28,
+      "x": 127,
+      "y": 36,
       "level": 54,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": 2.61,
+      "gap": 0,
       "hint": "Một bức tường đá xếp chồng… vừa nhúc nhích?",
-      "ring": false
-    },
-    {
-      "id": "buzzwole",
-      "name": "Rừng Rậm Ultra",
-      "x": 12,
-      "y": 46,
-      "level": 52,
-      "respawn": 1800,
-      "arena": 480,
-      "requires": [],
-      "gap": 0.19,
-      "hint": "Thân cây có vết đấm lõm sâu.",
-      "ring": false
-    },
-    {
-      "id": "pheromosa",
-      "name": "Rừng Rậm Ultra",
-      "x": 24,
-      "y": 66,
-      "level": 52,
-      "respawn": 1800,
-      "arena": 480,
-      "requires": [],
-      "gap": -0.38,
-      "hint": "Thoáng một bóng trắng thanh mảnh lướt qua tán lá.",
       "ring": false
     },
     {
       "id": "xurkitree",
       "name": "Nhà Máy Ultra",
-      "x": 90,
-      "y": 54,
+      "x": 140,
+      "y": 80,
       "level": 52,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": 3.14,
+      "gap": 0,
       "hint": "Dây điện ở đây tự giật lên như rễ cây.",
-      "ring": false
-    },
-    {
-      "id": "guzzlord",
-      "name": "Phế Tích Ultra",
-      "x": 18,
-      "y": 90,
-      "level": 54,
-      "respawn": 1800,
-      "arena": 480,
-      "requires": [],
-      "gap": -0.79,
-      "hint": "Cả một khu phế tích bị nuốt chửng…",
       "ring": false
     },
     {
       "id": "nihilego",
       "name": "Biển Sâu Ultra",
-      "x": 80,
-      "y": 82,
+      "x": 114,
+      "y": 115,
       "level": 50,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": -2.32,
+      "gap": 0,
       "hint": "Những đốm sáng như sứa trôi lững lờ trên bờ biển.",
       "ring": false
     },
     {
       "id": "poipole",
       "name": "Hoang Mạc Ultra",
-      "x": 40,
-      "y": 84,
+      "x": 73,
+      "y": 139,
       "level": 35,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": -1.13,
+      "gap": 0,
       "hint": "Có tiếng \"Poi! Poi!\" vọng lại từ đâu đó.",
       "ring": false
     },
     {
       "id": "naganadel",
       "name": "Hoang Mạc Ultra",
-      "x": 68,
-      "y": 82,
+      "x": 87,
+      "y": 139,
       "level": 55,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [],
-      "gap": -2.03,
+      "gap": 0,
       "hint": "Một vệt độc tím kéo dài trên nền cát như đuôi sao chổi.",
+      "ring": false
+    },
+    {
+      "id": "guzzlord",
+      "name": "Phế Tích Ultra",
+      "x": 37,
+      "y": 122,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 420,
+      "requires": [],
+      "gap": 0,
+      "hint": "Cả một khu phế tích bị nuốt chửng…",
+      "ring": false
+    },
+    {
+      "id": "kartana",
+      "name": "Rừng Ultra",
+      "x": 20,
+      "y": 80,
+      "level": 54,
+      "respawn": 1800,
+      "arena": 420,
+      "requires": [],
+      "gap": 0,
+      "hint": "Những thân cây giấy trắng bị cắt ngọt như lưỡi kiếm…",
+      "ring": false
+    },
+    {
+      "id": "buzzwole",
+      "name": "Rừng Rậm Ultra",
+      "x": 33,
+      "y": 37,
+      "level": 52,
+      "respawn": 1800,
+      "arena": 420,
+      "requires": [],
+      "gap": 0,
+      "hint": "Thân cây có vết đấm lõm sâu.",
+      "ring": false
+    },
+    {
+      "id": "pheromosa",
+      "name": "Rừng Rậm Ultra",
+      "x": 46,
+      "y": 36,
+      "level": 52,
+      "respawn": 1800,
+      "arena": 420,
+      "requires": [],
+      "gap": 0,
+      "hint": "Thoáng một bóng trắng thanh mảnh lướt qua tán lá.",
       "ring": false
     },
     {
       "id": "necrozma",
       "name": "Đỉnh Siêu Đô Thị",
-      "x": 54,
-      "y": 54,
+      "x": 80,
+      "y": 76,
       "level": 62,
       "respawn": 1800,
-      "arena": 480,
+      "arena": 420,
       "requires": [
         "boss:nihilego",
         "boss:xurkitree",
         "boss:guzzlord"
       ],
-      "gap": 1.57,
+      "gap": 0,
       "hint": "Ánh sáng của Siêu Đô Thị đã bị nuốt mất. Necrozma chỉ hiện ra khi Nihilego, Xurkitree và Guzzlord đã bị khuất phục.",
       "ring": false
     },
     {
       "id": "cosmog",
       "name": "Ánh Sáng Siêu Đô Thị",
-      "x": 63,
-      "y": 63,
+      "x": 89,
+      "y": 70,
       "level": 15,
       "respawn": 600,
       "arena": 200,
       "requires": [
         "boss:necrozma"
       ],
-      "gap": -2.36,
+      "gap": 0,
       "hint": "Một đốm sáng nhỏ như mây sao run rẩy trong bóng tối của Siêu Đô Thị…",
       "ring": false,
       "gift": true
@@ -562,11 +843,155 @@
     {
       "id": "ultra-home",
       "name": "Ultra Wormhole (về nhà)",
-      "x": 54,
-      "y": 103,
+      "x": 76,
+      "y": 88,
       "to": "starter-valley",
       "toX": 64,
       "toY": 64
+    },
+    {
+      "id": "gate-ultra-crater",
+      "name": "Cổng tới Miệng Núi Lửa Ultra",
+      "x": 80,
+      "y": 66,
+      "to": "ultra-space",
+      "toX": 80,
+      "toY": 29
+    },
+    {
+      "id": "gate-back-ultra-crater",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 80,
+      "y": 31,
+      "to": "ultra-space",
+      "toX": 80,
+      "toY": 68
+    },
+    {
+      "id": "gate-ultra-desert",
+      "name": "Cổng tới Sa Mạc Ultra",
+      "x": 92,
+      "y": 70,
+      "to": "ultra-space",
+      "toX": 114,
+      "toY": 44
+    },
+    {
+      "id": "gate-back-ultra-desert",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 113,
+      "y": 45,
+      "to": "ultra-space",
+      "toX": 91,
+      "toY": 71
+    },
+    {
+      "id": "gate-ultra-plant",
+      "name": "Cổng tới Nhà Máy Ultra",
+      "x": 97,
+      "y": 80,
+      "to": "ultra-space",
+      "toX": 130,
+      "toY": 80
+    },
+    {
+      "id": "gate-back-ultra-plant",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 128,
+      "y": 80,
+      "to": "ultra-space",
+      "toX": 95,
+      "toY": 80
+    },
+    {
+      "id": "gate-ultra-deep-sea",
+      "name": "Cổng tới Biển Sâu Ultra",
+      "x": 92,
+      "y": 90,
+      "to": "ultra-space",
+      "toX": 115,
+      "toY": 116
+    },
+    {
+      "id": "gate-back-ultra-deep-sea",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 114,
+      "y": 115,
+      "to": "ultra-space",
+      "toX": 91,
+      "toY": 89
+    },
+    {
+      "id": "gate-ultra-wilds",
+      "name": "Cổng tới Hoang Mạc Ultra",
+      "x": 80,
+      "y": 94,
+      "to": "ultra-space",
+      "toX": 80,
+      "toY": 131
+    },
+    {
+      "id": "gate-back-ultra-wilds",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 80,
+      "y": 129,
+      "to": "ultra-space",
+      "toX": 80,
+      "toY": 92
+    },
+    {
+      "id": "gate-ultra-ruin",
+      "name": "Cổng tới Phế Tích Ultra",
+      "x": 68,
+      "y": 90,
+      "to": "ultra-space",
+      "toX": 44,
+      "toY": 116
+    },
+    {
+      "id": "gate-back-ultra-ruin",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 45,
+      "y": 115,
+      "to": "ultra-space",
+      "toX": 69,
+      "toY": 89
+    },
+    {
+      "id": "gate-ultra-forest",
+      "name": "Cổng tới Rừng Ultra",
+      "x": 63,
+      "y": 80,
+      "to": "ultra-space",
+      "toX": 30,
+      "toY": 80
+    },
+    {
+      "id": "gate-back-ultra-forest",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 32,
+      "y": 80,
+      "to": "ultra-space",
+      "toX": 65,
+      "toY": 80
+    },
+    {
+      "id": "gate-ultra-jungle",
+      "name": "Cổng tới Rừng Rậm Ultra",
+      "x": 68,
+      "y": 70,
+      "to": "ultra-space",
+      "toX": 46,
+      "toY": 44
+    },
+    {
+      "id": "gate-back-ultra-jungle",
+      "name": "Cổng về Siêu Đô Thị Ultra",
+      "x": 47,
+      "y": 45,
+      "to": "ultra-space",
+      "toX": 69,
+      "toY": 71
     }
   ],
   "field": []

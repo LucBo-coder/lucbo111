@@ -49,6 +49,18 @@ test('an Ultra Wormhole leads into Ultra Space, its rifts bring legendaries, and
   // the trees take the alien ground's colours
   expect(await ev<boolean>(page, `window.__adv.children.list.some((o) => o.texture && o.texture.key.startsWith('ultra:'))`)).toBe(true);
 
+  // floating islands: the gateway on the city island's rim takes the trainer to Biển Sâu Ultra's island, no loading
+  const area = `window.__adv.map.areaAt(Math.floor(window.__adv.world.trainer.x / 48), Math.floor(window.__adv.world.trainer.y / 48))?.id`;
+  expect(await ev(page, area)).toBe('ultra-megalopolis');
+  await ev(page, `(() => { const a = window.__adv, g = a.regionDef.portals.find((p) => p.id === 'gate-ultra-deep-sea'); a.world.teleport((g.x + 0.5) * 48, (g.y + 1.5) * 48); })()`);
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: info.outputPath('ultra-gateway.png') });
+  await ev(page, `(() => { const a = window.__adv, g = a.regionDef.portals.find((p) => p.id === 'gate-ultra-deep-sea'); return a.usePortal(g); })()`);
+  await page.waitForTimeout(800);
+  expect(await ev(page, `window.__adv.map.id`)).toBe('ultra-space');
+  expect(await ev(page, area)).toBe('ultra-deep-sea');
+  await page.screenshot({ path: info.outputPath('ultra-island.png') });
+
   // an Ultra Beast's site: nothing there until its world is stirred (12 wild Pokémon beaten in Biển Sâu Ultra)
   const site = `window.__adv.regionDef.legendaries.find((l) => l.id === 'nihilego')`;
   const goSite = `(() => { const a = window.__adv, l = ${site}; for (const e of a.world.enemies) a.world.removeEnemy(e); a.world.teleport((l.x + 0.5) * 48, (l.y + 3.5) * 48); })()`;

@@ -71,8 +71,11 @@ export const EX = {
   signCenter: { stone: 448, wood: 449 }, signMart: { stone: 450, wood: 451 },
   /** old oriental town squares (V28): red Bát Tràng brick in a basket weave — 2 variants */
   brick: 452,
+  /** Không Gian Ultra (V37): the void between floating islands (3 star patterns) and the rock face under an island's
+   *  edge (top row, then the lower row fading into the void) */
+  voidSky: 456, islandEdge: 459, islandEdge2: 460,
 } as const;
-export const TILESET_ROWS = 38;
+export const TILESET_ROWS = 39;
 
 /**
  * Adventure Awaits by Ishtar Pixels (CC0): cottages and old trees, separate images (outside 'ow_tiles') drawn at the
@@ -102,5 +105,6 @@ export const T = {
   Snow: 30, SnowDeep: 31, Ice: 32, Ash: 33, AshRock: 34, Lava: 35, Sanctum: 36, Bridge: 37,
   /** toxic swamp puddle (walkable, poisons) */ Bog: 38, Mud: 39,
   /** shrine wall / cliff (legendary shrines, solid) */ Wall: 40,
+  /** the void around floating islands (Không Gian Ultra): nobody walks there, flyers cross it, shots fly over it */ Void: 41,
 } as const;
 export type Terrain = (typeof T)[keyof typeof T];

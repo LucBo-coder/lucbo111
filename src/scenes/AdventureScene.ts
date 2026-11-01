@@ -38,7 +38,7 @@ import { REGION_DEFS } from '../core/map/regionDefs';
 import { chunkCols, chunkRows, MapObject, MapProvider } from '../core/map/mapProvider';
 import { DUNGEON, EX, SCALE, T, TILE_PX, TOWN } from '../core/map/tiles';
 import { PortalDef, RegionDef, ValleyMap } from '../core/map/valley';
-import { addWorldArt, ultraTexture } from '../render/tileset';
+import { addWorldArt, ULTRA_MATRIX, ultraTexture } from '../render/tileset';
 import { regionDef } from '../core/map/regionDefs';
 import { itemIconKey } from '../render/spriteRegistry';
 import { starterTabs } from '../core/starters';
@@ -608,7 +608,7 @@ export class AdventureScene extends Phaser.Scene {
     this.gateSig.set(rec.idx, this.storySig(rec));
     const q = QUALITY_PROFILE[saveStore.data.settings.quality];
     // Không Gian Ultra: the ground's colours hue-shifted (WebGL only); trainers and Pokémon keep theirs
-    if (this.mapKind === 'valley' && this.regionDef.filter === 'ultra' && this.game.renderer.type === Phaser.WEBGL) rec.layer.postFX.addColorMatrix().hue(170).brightness(0.9, true);
+    if (this.mapKind === 'valley' && this.regionDef.filter === 'ultra' && this.game.renderer.type === Phaser.WEBGL) rec.layer.postFX.addColorMatrix().set(ULTRA_MATRIX);
     for (const o of rec.mapObjects) {
       const px = o.x * TILE_PX, py = o.y * TILE_PX;
       const add = <T extends Phaser.GameObjects.GameObject>(g: T) => { rec.objects.push(g); return g; };
@@ -2370,6 +2370,19 @@ export class AdventureScene extends Phaser.Scene {
   /** Travel to another region through a portal (story-gated). */
   async usePortal(p: PortalDef): Promise<void> {
     if (p.id === 'ultra-home' && this.wormholes) return this.wormholes.goHome(p);
+    // a gateway within this map (Không Gian Ultra's floating islands): straight through, no loading
+    if (p.to === this.regionDef.id) {
+      const locked = (p.requires ?? []).filter((f) => !this.state.hasFlag(f));
+      if (locked.length) { await this.say(p.name, [p.hint ?? 'Cổng đang bị phong ấn.']); return; }
+      const x = (p.toX + 0.5) * TILE_PX, y = (p.toY + 0.5) * TILE_PX;
+      this.renderer_.vfx.flash(this.world.trainer.x, this.world.trainer.y, 90, 0xffa0f0, 400);
+      this.world.teleport(x, y);
+      this.renderer_.vfx.flash(x, y, 120, 0xffa0f0, 600);
+      this.cameras.main.flash(250, 255, 200, 255);
+      audio.play('dash');
+      this.ui.banner(p.name, '#ffa0f0');
+      return;
+    }
     const locked = (p.requires ?? []).filter((f) => !this.state.hasFlag(f));
     if (locked.length) { await this.say(p.name, [p.hint ?? 'Cổng đang bị phong ấn.']); return; }
     const dest = regionDef(p.to);

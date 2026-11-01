@@ -599,6 +599,31 @@ export function buildTileset(scene: Phaser.Scene, missing: Set<string>): void {
   // cracked wall (Rock Smash) and a Regi core slot
   sprite(EX.crack, ['kkkkkkkkkkkkkkkk', 'kssdsssdkssssdsk', 'ksssskdsssdsssdk', 'kdssks.ksdsssssk', 'kkkkk..kkkkkkkkk', 'ksdsk.k.ssdsssdk', 'kssk.kss.kssdssk', 'kdk.ksssdsk.sssk', 'kkk.kkkkkkk.kkkk', 'ksk.ssdssk.ssdsk', 'kssk.ssk..kssssk', 'kdssk...ksssdssk', 'kkkkkk.kkkkkkkkk', 'ksssdsk.sssdsssk', 'kssssdsksssssdsk', 'kkkkkkkkkkkkkkkk'], STONE_PAL);
   sprite(EX.regiSlot, ['................', '................', '................', '....kkkkkkkk....', '...kllllllllk...', '...klkkkkkklk...', '...klk.oo.klk...', '...klko..okdk...', '...klko..okdk...', '...klk.oo.kdk...', '...klkkkkkkdk...', '...kdddddddddk..', '...kkkkkkkkkkk..', '................', '................', '................'], { ...STONE_PAL, o: '#ffd060' });
+  // Không Gian Ultra: the void between the floating islands — near-black with faint stars (3 patterns) — and the rock
+  // face hanging under an island's edge (greys and white: they keep their colour under the map's hue shift)
+  for (let v = 0; v < 3; v++) {
+    const c = cell(EX.voidSky + v), rnd = seeded(91 + v);
+    fill(EX.voidSky + v, '#06060a');
+    for (let i = 0; i < 5; i++) dot(c, Math.floor(rnd() * 16), Math.floor(rnd() * 16), '#14141c');
+    if (v >= 1) { dot(c, 4 + Math.floor(rnd() * 8), 4 + Math.floor(rnd() * 8), '#9a9aa8'); dot(c, Math.floor(rnd() * 16), Math.floor(rnd() * 16), '#4a4a58'); }
+    if (v === 2) {
+      const x = 5 + Math.floor(rnd() * 6), y = 5 + Math.floor(rnd() * 6);
+      dot(c, x, y, '#ffffff'); dot(c, x - 1, y, '#8a8a98'); dot(c, x + 1, y, '#8a8a98'); dot(c, x, y - 1, '#8a8a98'); dot(c, x, y + 1, '#8a8a98');
+    }
+  }
+  for (const [idx, row] of [[EX.islandEdge, 0], [EX.islandEdge2, 1]] as const) {
+    const c = cell(idx), rnd = seeded(97 + row);
+    for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
+      const depth = (row * TILE + y) / (TILE * 2); // 0 at the island's edge … 1 at the bottom of the face
+      // the face narrows into a jagged point: past the jag it is the void
+      const jag = row === 1 && y > 4 + ((x * 7) % 5) + (x % 3 === 0 ? 4 : 0);
+      if (jag) { dot(c, x, y, '#06060a'); continue; }
+      const r = rnd();
+      const base = depth < 0.15 ? '#8a8a96' : depth < 0.45 ? '#5c5c68' : depth < 0.7 ? '#3e3e48' : '#26262e';
+      dot(c, x, y, r < 0.12 ? '#2a2a32' : r > 0.94 ? '#a8a8b4' : base);
+    }
+    if (row === 0) for (let x = 0; x < TILE; x++) dot(c, x, 0, '#c8c8d4'); // lit rim
+  }
   // IcyEthics cave floors (16 px, see scripts/prepare-icy-tiles.py); if a file is missing, the Kenney floor
   for (const [base, name] of [[EX.icyGray, 'cave_gray'], [EX.icyBlue, 'cave_blue']] as const) {
     for (let i = 0; i < 4; i++) {
@@ -728,8 +753,19 @@ export function buildWorldProps(scene: Phaser.Scene): void {
 }
 
 /**
- * Không Gian Ultra (V37): a hue-shifted copy of a world-art texture or of one 'ow_tiles' frame, made once and cached,
- * so trees match the alien ground (whose colours are shifted by a post FX on the chunk layers).
+ * Không Gian Ultra's colour grade (4×5 colour matrix, rows R G B A): green turns violet, blue water stays blue-violet
+ * (a plain hue rotation turned the water orange like lava), white floors go lavender, a little darker overall.
+ */
+export const ULTRA_MATRIX = [
+  0.27, 0.63, 0, 0, 0,
+  0.45, 0.18, 0, 0, 0,
+  0, 0.54, 0.9, 0, 0,
+  0, 0, 0, 1, 0,
+];
+
+/**
+ * Không Gian Ultra (V37): a colour-graded copy (ULTRA_MATRIX) of a world-art texture or of one 'ow_tiles' frame, made
+ * once and cached, so trees match the alien ground (graded by a post FX on the chunk layers).
  */
 export function ultraTexture(scene: Phaser.Scene, key: string, frame?: string | number): string {
   const out = frame == null ? `ultra:${key}` : `ultra:${key}:${frame}`;
@@ -739,8 +775,15 @@ export function ultraTexture(scene: Phaser.Scene, key: string, frame?: string | 
   const cv = scene.textures.createCanvas(out, f.cutWidth, f.cutHeight);
   if (!cv) return key;
   const ctx = cv.getContext();
-  ctx.filter = 'hue-rotate(170deg) brightness(0.9)';
   ctx.drawImage(f.source.image as CanvasImageSource, f.cutX, f.cutY, f.cutWidth, f.cutHeight, 0, 0, f.cutWidth, f.cutHeight);
+  const img = ctx.getImageData(0, 0, f.cutWidth, f.cutHeight), d = img.data, m = ULTRA_MATRIX;
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i], g = d[i + 1], b = d[i + 2];
+    d[i] = Math.min(255, m[0] * r + m[1] * g + m[2] * b);
+    d[i + 1] = Math.min(255, m[5] * r + m[6] * g + m[7] * b);
+    d[i + 2] = Math.min(255, m[10] * r + m[11] * g + m[12] * b);
+  }
+  ctx.putImageData(img, 0, 0);
   cv.refresh();
   return out;
 }

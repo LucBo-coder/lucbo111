@@ -83,6 +83,11 @@ export interface RegionDef {
   theme?: 'valley' | 'frozen' | 'volcanic' | 'sanctuary' | 'swamp' | 'coast' | 'mekong';
   /** Colour grade of the whole screen: 'ultra' = Không Gian Ultra's alien sky (hue-shifted, motes drifting) */
   filter?: 'ultra';
+  /**
+   * Floating islands (Không Gian Ultra): land only inside these ellipses (ragged edges), the void all around — no
+   * walking there, flyers cross it. Islands are joined by portals within the map (gateways), not by paths.
+   */
+  floating?: { cx: number; cy: number; rx: number; ry: number }[];
   /** Gates to other regions (interact with E); `requires` = story flags */
   portals?: PortalDef[];
   /** Rivers (water, lava in volcanic maps); where a path crosses one it becomes a bridge */
@@ -406,6 +411,13 @@ export class ValleyMap implements MapProvider {
     return false;
   }
 
+  /** Inside one of the floating islands (ragged edge from noise); everything else is the void. */
+  private onIsland(tx: number, ty: number): boolean {
+    if (tx < 2 || ty < 2 || tx >= this.widthTiles - 2 || ty >= this.heightTiles - 2) return false;
+    const n = (fbm(tx, ty, 4, 61) - 0.5) * 0.5;
+    return this.def.floating!.some((I) => ((tx + 0.5 - I.cx) / I.rx) ** 2 + ((ty + 0.5 - I.cy) / I.ry) ** 2 + n < 1);
+  }
+
   private lakeValue(tx: number, ty: number): number {
     const L = this.def.lake;
     const v = ((tx - L.cx) / L.rx) ** 2 + ((ty - L.cy) / L.ry) ** 2 + (fbm(tx, ty, 6, 3) - 0.5) * 0.5;
@@ -438,6 +450,7 @@ export class ValleyMap implements MapProvider {
   private naturalTerrain(tx: number, ty: number): number {
     const W = this.widthTiles, H = this.heightTiles;
     if (this.def.void) return this.onPath(tx, ty) ? T.Path : T[this.def.void];
+    if (this.def.floating && !this.onIsland(tx, ty)) return T.Void;
     if (tx < 2 || ty < 2 || tx >= W - 2 || ty >= H - 2) return T.Deep;
     const theme = this.def.theme ?? 'valley';
     const lake = this.lakeValue(tx, ty);
@@ -521,7 +534,7 @@ export class ValleyMap implements MapProvider {
 
   solidAt(tx: number, ty: number): boolean {
     const t = this.terrainAt(tx, ty);
-    if (t === T.Water || t === T.Lava || t === T.Wall) return true;
+    if (t === T.Water || t === T.Lava || t === T.Wall || t === T.Void) return true;
     if (tx < 2 || ty < 2 || tx >= this.widthTiles - 2 || ty >= this.heightTiles - 2) return true;
     return this.solid.has(this.key(tx, ty));
   }
@@ -536,7 +549,7 @@ export class ValleyMap implements MapProvider {
     const a = this.areaAt(tx, ty);
     if (!a || a.habitat === 'village') return null;
     const t = this.terrainAt(tx, ty);
-    if (t === T.Water || t === T.Lava || t === T.Bridge || t === T.Path || t === T.Plaza) return null;
+    if (t === T.Water || t === T.Lava || t === T.Bridge || t === T.Path || t === T.Plaza || t === T.Void) return null;
     if (t === T.TallGrass && (a.habitat === 'meadow' || a.habitat === 'forest')) return a.habitat + '-grass';
     if (t === T.SnowDeep) return 'snow-grass';
     return a.habitat;
@@ -559,6 +572,13 @@ export class ValleyMap implements MapProvider {
     const t = this.terrainAt(tx, ty);
     // shrine walls: the top of the wall, its face where the ground in front (south) is open
     if (t === T.Wall) return this.terrainAt(tx, ty + 1) === T.Wall ? DUNGEON.wallTop : DUNGEON.wall;
+    // the void: the island's rock face hangs two rows under its edge, then stars
+    if (t === T.Void) {
+      if (this.terrainAt(tx, ty - 1) !== T.Void) return EX.islandEdge;
+      if (this.terrainAt(tx, ty - 2) !== T.Void) return EX.islandEdge2;
+      const h = hash2(tx, ty, 71);
+      return EX.voidSky + (h < 0.08 ? 2 : h < 0.3 ? 1 : 0);
+    }
     // themed regions: the valley's green ground (border, flowers, tufts) takes the region's ground instead
     const theme = this.def.theme ?? 'valley';
     if (theme === 'swamp' && (t === T.Deep || t === T.Grass || t === T.Tuft || t === T.Flowers)) return hash2(tx, ty, 4) < 0.12 ? EX.mud : EX.swampGrass;
@@ -660,6 +680,7 @@ export class ValleyMap implements MapProvider {
       case T.Bog: return 0x5a4a6a;
       case T.Mud: return 0x5a4a32;
       case T.Wall: return 0x3a3448;
+      case T.Void: return 0x07060f;
       default: return this.def.theme === 'swamp' ? 0x3e6a3a : 0x4c9a48;
     }
   }
@@ -690,6 +711,11 @@ export class ValleyMap implements MapProvider {
     return false;
   }
 
+  private nearVoid(tx: number, ty: number): boolean {
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (this.terrainAt(tx + dx, ty + dy) === T.Void) return true;
+    return false;
+  }
+
   objectsInChunk(cx: number, cy: number): MapObject[] {
     const out = [...(this.authored.get(cy * Math.ceil(this.widthTiles / this.chunk) + cx) ?? [])];
     const x0 = cx * this.chunk, y0 = cy * this.chunk;
@@ -698,6 +724,8 @@ export class ValleyMap implements MapProvider {
         const t = this.terrainAt(tx, ty);
         const border = tx < 4 || ty < 4 || tx >= this.widthTiles - 4 || ty >= this.heightTiles - 4;
         const h = hash2(tx, ty, 21);
+        // floating islands: nothing grows in the void, nor right at an island's edge (it stays a clean rim)
+        if (this.def.floating && (t === T.Void || this.nearVoid(tx, ty))) continue;
         if (this.def.void && this.def.decor) { const o = this.decorAt(tx, ty, h); if (o) out.push(o); continue; }
         if (this.stamp.has(this.key(tx, ty)) || this.def.void) continue; // shrine (plane): its own trees / pillars only
         if (border) {

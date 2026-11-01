@@ -4734,34 +4734,36 @@
   ]
  },
  {
-  "id": "ultra-forest",
-  "name": "Rừng Ultra",
+  "id": "ultra-megalopolis",
+  "name": "Siêu Đô Thị Ultra",
   "areas": [
-   "ultra-forest"
+   "ultra-megalopolis"
   ],
-  "biome": "snow",
+  "biome": "ruins",
   "level": [
-   50,
-   58
+   54,
+   62
   ],
   "elite": [
-   60,
-   63
+   64,
+   67
   ],
   "boss": null,
-  "recommended": 53,
+  "recommended": 57,
   "danger": 5,
   "unlock": null,
   "species": [
-   "cryogonal",
-   "vanilluxe",
-   "beartic",
-   "abomasnow",
-   "crabominable",
-   "froslass",
-   "weavile",
-   "glalie",
-   "frosmoth"
+   "magnezone",
+   "klinklang",
+   "porygon-z",
+   "metang",
+   "metagross",
+   "beheeyem",
+   "bronzong",
+   "golurk",
+   "reuniclus",
+   "hatterene",
+   "gothitelle"
   ]
  },
  {
@@ -4827,69 +4829,6 @@
   ]
  },
  {
-  "id": "ultra-jungle",
-  "name": "Rừng Rậm Ultra",
-  "areas": [
-   "ultra-jungle"
-  ],
-  "biome": "forest",
-  "level": [
-   48,
-   56
-  ],
-  "elite": [
-   58,
-   61
-  ],
-  "boss": null,
-  "recommended": 51,
-  "danger": 5,
-  "unlock": null,
-  "species": [
-   "vikavolt",
-   "golisopod",
-   "lurantis",
-   "tsareena",
-   "vespiquen",
-   "yanmega",
-   "decidueye",
-   "drapion"
-  ]
- },
- {
-  "id": "ultra-megalopolis",
-  "name": "Siêu Đô Thị Ultra",
-  "areas": [
-   "ultra-megalopolis"
-  ],
-  "biome": "ruins",
-  "level": [
-   54,
-   62
-  ],
-  "elite": [
-   64,
-   67
-  ],
-  "boss": null,
-  "recommended": 57,
-  "danger": 5,
-  "unlock": null,
-  "species": [
-   "magnezone",
-   "klinklang",
-   "porygon-z",
-   "metang",
-   "metagross",
-   "beheeyem",
-   "bronzong",
-   "golurk",
-   "reuniclus",
-   "hatterene",
-   "gothitelle"
-  ]
- },
- {
   "id": "ultra-plant",
   "name": "Nhà Máy Ultra",
   "areas": [
@@ -4922,35 +4861,33 @@
   ]
  },
  {
-  "id": "ultra-ruin",
-  "name": "Phế Tích Ultra",
+  "id": "ultra-deep-sea",
+  "name": "Biển Sâu Ultra",
   "areas": [
-   "ultra-ruin"
+   "ultra-deep-sea"
   ],
-  "biome": "swamp",
+  "biome": "coast",
   "level": [
-   52,
-   60
+   48,
+   56
   ],
   "elite": [
-   62,
-   65
+   58,
+   61
   ],
   "boss": null,
-  "recommended": 55,
+  "recommended": 51,
   "danger": 5,
   "unlock": null,
   "species": [
-   "muk",
-   "garbodor",
-   "weezing",
-   "dusknoir",
-   "sableye",
-   "banette",
-   "zweilous",
-   "swalot",
-   "skuntank",
-   "chandelure"
+   "starmie",
+   "lanturn",
+   "chinchou",
+   "jellicent",
+   "pyukumuku",
+   "toxapex",
+   "dhelmise",
+   "frillish"
   ]
  },
  {
@@ -4986,12 +4923,75 @@
   ]
  },
  {
-  "id": "ultra-deep-sea",
-  "name": "Biển Sâu Ultra",
+  "id": "ultra-ruin",
+  "name": "Phế Tích Ultra",
   "areas": [
-   "ultra-deep-sea"
+   "ultra-ruin"
   ],
-  "biome": "coast",
+  "biome": "swamp",
+  "level": [
+   52,
+   60
+  ],
+  "elite": [
+   62,
+   65
+  ],
+  "boss": null,
+  "recommended": 55,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "muk",
+   "garbodor",
+   "weezing",
+   "dusknoir",
+   "sableye",
+   "banette",
+   "zweilous",
+   "swalot",
+   "skuntank",
+   "chandelure"
+  ]
+ },
+ {
+  "id": "ultra-forest",
+  "name": "Rừng Ultra",
+  "areas": [
+   "ultra-forest"
+  ],
+  "biome": "snow",
+  "level": [
+   50,
+   58
+  ],
+  "elite": [
+   60,
+   63
+  ],
+  "boss": null,
+  "recommended": 53,
+  "danger": 5,
+  "unlock": null,
+  "species": [
+   "cryogonal",
+   "vanilluxe",
+   "beartic",
+   "abomasnow",
+   "crabominable",
+   "froslass",
+   "weavile",
+   "glalie",
+   "frosmoth"
+  ]
+ },
+ {
+  "id": "ultra-jungle",
+  "name": "Rừng Rậm Ultra",
+  "areas": [
+   "ultra-jungle"
+  ],
+  "biome": "forest",
   "level": [
    48,
    56
@@ -5005,14 +5005,14 @@
   "danger": 5,
   "unlock": null,
   "species": [
-   "starmie",
-   "lanturn",
-   "chinchou",
-   "jellicent",
-   "pyukumuku",
-   "toxapex",
-   "dhelmise",
-   "frillish"
+   "vikavolt",
+   "golisopod",
+   "lurantis",
+   "tsareena",
+   "vespiquen",
+   "yanmega",
+   "decidueye",
+   "drapion"
   ]
  }
 ]

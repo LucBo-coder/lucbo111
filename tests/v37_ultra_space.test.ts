@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ECOLOGY, REGIONS, regionOfArea, rollEncounter } from '../src/core/encounters';
 import { regionDef } from '../src/core/map/regionDefs';
+import { T } from '../src/core/map/tiles';
 import { ValleyMap } from '../src/core/map/valley';
 import { Rng } from '../src/core/rng';
 import {
@@ -17,6 +18,7 @@ describe('Ultra Space', () => {
   it('is a map of nine worlds, each its own wild region with its own species list', () => {
     expect(def.id).toBe(ULTRA_SPACE);
     expect(def.areas).toHaveLength(9);
+    expect(def.floating!.length).toBeGreaterThanOrEqual(9); // the city island, eight worlds, drifting rocks
     for (const a of def.areas) {
       const r = regionOfArea(a.id)!;
       expect(r, a.id).toBeTruthy();
@@ -64,28 +66,53 @@ describe('Ultra Space', () => {
     expect(nurses.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('every site, the way home and the chests can be walked to from where the trainer arrives', () => {
+  it('floating islands in the void: every site, gateway and chest is reached on foot and through the gateways', () => {
     const m = new ValleyMap(def);
     const W = m.widthTiles, seen = new Uint8Array(W * m.heightTiles);
-    const q: number[] = [def.spawn.x + def.spawn.y * W];
+    // the void all around: no walking off an island's edge
+    expect(m.terrainAt(2, 2)).toBe(T.Void);
+    expect(m.solidAt(2, 2)).toBe(true);
+    expect(m.habitatAt(2, 2)).toBeNull();
+    expect(m.shotSolidAt(2, 2)).toBe(false); // shots and flyers cross it
     expect(m.solidAt(def.spawn.x, def.spawn.y)).toBe(false);
-    seen[q[0]] = 1;
-    while (q.length) {
-      const k = q.pop()!, x = k % W, y = (k - x) / W;
-      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-        const nx = x + dx, ny = y + dy, nk = nx + ny * W;
-        if (nx < 0 || ny < 0 || nx >= W || ny >= m.heightTiles || seen[nk] || m.solidAt(nx, ny)) continue;
-        seen[nk] = 1;
-        q.push(nk);
-      }
-    }
+    const q: number[] = [];
+    const visit = (x: number, y: number) => { const k = x + y * W; if (!seen[k] && !m.solidAt(x, y)) { seen[k] = 1; q.push(k); } };
     const near = (x: number, y: number, r: number) => {
       for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (seen[x + dx + (y + dy) * W]) return true;
       return false;
     };
+    visit(def.spawn.x, def.spawn.y);
+    const gates = (def.portals ?? []).filter((p) => p.to === ULTRA_SPACE);
+    expect(gates.length).toBe(16); // a pair per world
+    for (let used = new Set<string>(), changed = true; changed;) {
+      changed = false;
+      while (q.length) {
+        const k = q.pop()!, x = k % W, y = (k - x) / W;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (x + dx >= 0 && y + dy >= 0 && x + dx < W && y + dy < m.heightTiles) visit(x + dx, y + dy);
+      }
+      for (const g of gates) if (!used.has(g.id) && near(g.x, g.y, 1)) {
+        used.add(g.id);
+        expect(m.solidAt(g.toX, g.toY), g.id).toBe(false);
+        visit(g.toX, g.toY);
+        changed = true;
+      }
+    }
     for (const l of def.legendaries!) expect(near(l.x, l.y, 2), l.id).toBe(true);
     for (const p of def.portals ?? []) expect(near(p.x, p.y, 1), p.id).toBe(true);
     for (const c of def.chests) expect(near(c.x, c.y, 1), c.id).toBe(true);
+    for (const n of def.npcs) expect(near(n.x, n.y, 1), n.id).toBe(true);
+    // the islands are apart: from the arrival, without the gateways, the worlds cannot be walked to
+    const alone = new Uint8Array(W * m.heightTiles), q2 = [def.spawn.x + def.spawn.y * W];
+    alone[q2[0]] = 1;
+    while (q2.length) {
+      const k = q2.pop()!, x = k % W, y = (k - x) / W;
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nk = x + dx + (y + dy) * W;
+        if (!alone[nk] && !m.solidAt(x + dx, y + dy)) { alone[nk] = 1; q2.push(nk); }
+      }
+    }
+    const nih = def.legendaries!.find((l) => l.id === 'nihilego')!;
+    expect(alone[nih.x + nih.y * W]).toBe(0);
   });
 
   it('rifts there bring the Gen 5–9 legends, never Ultra Space’s own residents', () => {

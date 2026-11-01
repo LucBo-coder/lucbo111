@@ -1,5 +1,15 @@
 # Changelog
 
+## Chưa phát hành — Không Gian Ultra thành quần đảo lơ lửng giữa khoảng không
+
+- **Không Gian Ultra làm lại thành các đảo trôi giữa khoảng không đầy sao** (160×160). Mép đảo có vách đá rủ xuống bóng tối; bước ra mép là hết đường (khoảng không là terrain mới `Void`: không đi bộ được, đạn và thú bay thì qua được).
+  - **Đảo trung tâm: Siêu Đô Thị Ultra.** Trainer đến ở đây, cạnh Ultra Wormhole về nhà, y tá và Đội Trinh Sát. Necrozma ở quảng trường giữa đảo, Cosmog gần đó.
+  - **Tám đảo vòng ngoài**, mỗi đảo một thế giới với Pokémon hoang dã và Ultra Beast riêng: Miệng Núi Lửa (Blacephalon), Sa Mạc (Celesteela, Stakataka), Nhà Máy (Xurkitree), Biển Sâu (Nihilego, có hồ), Hoang Mạc (Poipole, Naganadel, y tá), Phế Tích (Guzzlord), Rừng tuyết (Kartana), Rừng Rậm (Buzzwole, Pheromosa).
+  - **Cổng (gateway)**: 8 cổng quanh rìa Siêu Đô Thị, mỗi cổng dẫn tới một đảo, và mỗi đảo có cổng về. Đi qua tức thì, không tải lại bản đồ. Có thú bay (Lv30+) thì bay thẳng qua khoảng không cũng được; đang bay trên khoảng không thì không xuống được.
+  - Vài tảng đá nhỏ trôi lạc giữa khoảng không, chỉ thú bay mới tới được.
+  - Màu: bộ lọc mới làm cỏ chuyển tím, cây tím theo; nước giữ màu xanh tím (bộ lọc cũ biến nước thành màu cam như dung nham).
+- Test `v37_ultra_space`: khoảng không chặn đi bộ nhưng không chặn đạn / thú bay; mọi chỗ của huyền thoại, cổng, rương, NPC đều tới được bằng đi bộ cộng cổng; không có cổng thì không đi bộ sang đảo khác được. E2E: đi qua cổng sang đảo Biển Sâu Ultra.
+
 ## Chưa phát hành — Font đóng gói, Không Gian Ultra bổ sung
 
 - **Sửa lỗi nhãn nút bị cắt ("Lệ…", "Ch…", "Đ…"):** font VT323 trước đây tải từ Google Fonts. Khi mạng chậm, offline hoặc bị chặn, chữ được đo bằng font monospace dự phòng rộng hơn nhiều nên nhãn bị cắt cho vừa nút. Giờ font được đóng gói kèm game (`public/assets/fonts/`, giấy phép SIL OFL 1.1 trong `OFL.txt`), được tải trước, và game chờ tải cả phần chữ tiếng Việt trước khi vẽ chữ.
