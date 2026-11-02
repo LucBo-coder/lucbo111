@@ -17,6 +17,8 @@ import './partyPanel.css';
 type Tab = 'room' | 'chat' | 'trade';
 const CAMPAIGN: Record<string, string> = { classic: 'Phiêu lưu', vietnam: 'Việt Nam Odyssey' };
 const CHAT_KEEP = 60;
+/** the last chat lines stay on the map this long after a new message, then fade (the full log is in the Chat tab) */
+const MINI_MS = 8000;
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 const kindOf = (id: string): string | undefined => ITEMS[id]?.kind;
 const monLabel = (p: OwnedPokemon) => `${p.nickname || POKEMON.get(p.species)?.name || p.species} Lv${p.level}${p.shiny ? ' ✦' : ''}`;
@@ -36,12 +38,20 @@ export class PartyPanel {
   private pick = { item: '', qty: '1' };
   /** trade + state + my offer version the trade tab was last fully drawn for */
   private tradeKey = '';
+  /** the last chat lines show until then (performance.now) */
+  private miniUntil = 0;
+  /** layout last applied (overlays follow the HUD: party rows, skill bar, touch buttons) */
+  private layoutKey = '';
+  private pingAt = 0;
 
   constructor(private scene: AdventureScene) {
     this.root = document.createElement('div');
     this.root.className = 'wo-root ol-root pp-root';
     this.root.innerHTML = `
-      <button class="ol-btn ol-btn-teal wo-pill pp-pill" data-pill aria-controls="pp-drawer" title="Chơi chung (tối đa ${PARTY_MAX} người)">👥 Chơi chung</button>
+      <div class="pp-bar" data-bar>
+        <button class="ol-btn ol-btn-teal wo-pill pp-pill" data-pill aria-controls="pp-drawer" title="Chơi chung (tối đa ${PARTY_MAX} người)">👥 Chơi chung</button>
+        <button class="ol-btn pp-chat" data-chat hidden title="Chat (Enter)" aria-label="Chat">💬</button>
+      </div>
       <p class="wo-toast faded" data-toast role="status"></p>
       <div class="wo-mini" data-mini hidden title="Mở chat"></div>
       <aside class="wo-drawer ol-panel" id="pp-drawer" data-drawer hidden aria-label="Chơi chung">
@@ -80,10 +90,27 @@ export class PartyPanel {
     this.root.remove();
   }
 
-  /** Per frame: the button and drawer step aside while a full-screen game menu is open. */
+  /** Per frame: the button and drawer step aside while a full-screen game menu is open; overlays follow the HUD. */
   update(): void {
-    const hide = !!this.scene.ui?.menuOpen;
+    const ui = this.scene.ui;
+    const hide = !!ui?.menuOpen;
     if (this.root.classList.contains('pp-under') !== hide) this.root.classList.toggle('pp-under', hide);
+    const now = performance.now();
+    if (!this.el('[data-mini]').hidden && now > this.miniUntil) this.renderMini();
+    if (party.active && now - this.pingAt > 1000) { this.pingAt = now; this.renderPill(); }
+    if (!ui) return;
+    // canvas pixels → page pixels (the canvas may be scaled / letterboxed)
+    const r = this.scene.game.canvas.getBoundingClientRect(), k = r.height / this.scene.scale.height;
+    const a = ui.anchors;
+    const top = Math.round(r.top + a.leftTop * k), bottom = Math.round(window.innerHeight - (r.top + a.leftBottom * k));
+    const maxW = Math.max(140, Math.round(r.left + a.leftRight * k - 10));
+    const key = `${top}|${bottom}|${maxW}`;
+    if (key === this.layoutKey) return;
+    this.layoutKey = key;
+    this.el('[data-bar]').style.top = `${top}px`;
+    const mini = this.el('[data-mini]');
+    mini.style.bottom = `${bottom + 4}px`;
+    mini.style.maxWidth = `${maxW}px`;
   }
 
   /** Opens the drawer (the Adventure menu's "Chơi chung" button). */
@@ -93,6 +120,11 @@ export class PartyPanel {
 
   private wire(): void {
     this.el('[data-pill]').onclick = () => this.toggle();
+    this.el('[data-chat]').onclick = () => {
+      const d = this.el('[data-drawer]');
+      if (!d.hidden && this.tab === 'chat') { this.toggle(false); return; }
+      this.toggle(true); this.open('chat');
+    };
     this.el('[data-close]').onclick = () => this.toggle(false);
     this.el('[data-mini]').onclick = () => { this.toggle(true); this.open('chat'); };
     for (const b of this.root.querySelectorAll<HTMLButtonElement>('[data-tab]')) b.onclick = () => this.open(b.dataset.tab as Tab);
@@ -137,6 +169,7 @@ export class PartyPanel {
     d.hidden = !show;
     this.el('[data-pill]').setAttribute('aria-expanded', String(show));
     this.el('[data-pill]').hidden = !party.active && !show;
+    this.el('[data-chat]').hidden = !party.active;
     if (show) this.open(this.tab);
     this.renderMini();
   }
@@ -150,7 +183,9 @@ export class PartyPanel {
     if (tab === 'trade') this.renderTrade();
   }
 
-  private toast(text: string): void {
+  /** A short notice: the game's own banner line (stacked with the others, never over them). */
+  private toast(text: string, color = '#a0f0e0'): void {
+    if (this.scene.ui) { this.scene.ui.banner(text, color); return; }
     const t = this.el('[data-toast]');
     t.textContent = text;
     t.classList.remove('faded');
@@ -164,14 +199,33 @@ export class PartyPanel {
     // same-map play follows the room
     if (party.active) this.scene.startShared(); else this.scene.stopShared();
     const pill = this.el('[data-pill]');
-    pill.textContent = party.active ? `👥 ${party.code} · ${party.members.size + 1}/${PARTY_MAX}` : '👥 Chơi chung';
+    this.renderPill();
     pill.dataset.off = party.status === 'closed' ? '1' : '';
     // outside a room the way in is the menu (Cài đặt → Chơi chung); the button shows while in one or with it open
     pill.hidden = !party.active && this.el('[data-drawer]').hidden;
+    this.el('[data-chat]').hidden = !party.active;
     if (this.trade?.busy && this.trade.state !== 'committed' && !party.members.has(this.trade.partner)) {
       this.trade.cancel('Người kia đã rời phòng');
     }
     if (!this.el('[data-drawer]').hidden) this.open(this.tab);
+  }
+
+  /** Room code, players, and my delay to the room server (green / yellow / red). */
+  private renderPill(): void {
+    const pill = this.el('[data-pill]');
+    if (!party.active) { pill.textContent = '👥 Chơi chung'; return; }
+    const ms = party.ping();
+    pill.textContent = `👥 ${party.code} · ${party.members.size + 1}/${PARTY_MAX}`;
+    if (ms != null) {
+      const b = document.createElement('span');
+      b.className = 'pp-ping';
+      b.dataset.q = ms < 120 ? 'good' : ms < 250 ? 'ok' : 'bad';
+      b.textContent = ` · ${ms} ms`;
+      pill.append(b);
+    }
+    const unread = this.unread;
+    const chat = this.el('[data-chat]');
+    chat.textContent = unread ? `💬 ${unread}` : '💬';
   }
 
   private where(map: string, campaign: string): string {
@@ -235,12 +289,14 @@ export class PartyPanel {
     if (chatLog.length > CHAT_KEEP) chatLog.shift();
     const reading = this.tab === 'chat' && !this.el('[data-drawer]').hidden;
     if (!reading && !mine) this.unread++;
+    this.miniUntil = performance.now() + MINI_MS;
     this.renderChat();
     this.renderMini();
+    this.renderPill();
   }
 
   private renderChat(): void {
-    if (this.tab === 'chat' && !this.el('[data-drawer]').hidden) this.unread = 0;
+    if (this.tab === 'chat' && !this.el('[data-drawer]').hidden && this.unread) { this.unread = 0; this.renderPill(); }
     this.el('[data-tab=chat]').textContent = this.unread ? `Chat (${this.unread})` : 'Chat';
     const log = this.el('[data-log]');
     log.textContent = chatLog.join('\n') || 'Chưa có tin nhắn.';
@@ -249,7 +305,8 @@ export class PartyPanel {
 
   private renderMini(): void {
     const mini = this.el('[data-mini]');
-    const show = party.active && this.el('[data-drawer]').hidden && chatLog.length > 0;
+    // new lines show for a few seconds, then the map is clear again (tap 💬 for the whole log)
+    const show = party.active && this.el('[data-drawer]').hidden && chatLog.length > 0 && performance.now() < this.miniUntil;
     mini.hidden = !show;
     if (show) mini.textContent = chatLog.slice(-3).join('\n');
   }

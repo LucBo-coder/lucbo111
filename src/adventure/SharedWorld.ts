@@ -15,9 +15,15 @@ import { party, type PartyMsg } from '../net/party';
 //  - a hit on someone else's unit goes to its owner (`swH`), who applies it; when an enemy falls the owner tells the
 //    player who landed the last hit (`swKo`), and only that player gets the EXP, money and quest credit.
 
-const SEND_MS = 100;
-/** every 10th state carries the static fields (stats, types, names) so a newcomer can build its copies */
-const KEYFRAME = 10;
+/** 15 states a second (the relay sends them at once, URGENT in net/transport.ts) */
+const SEND_MS = 66;
+/** every 20th state carries every static field (stats, types, names) so a newcomer can build its copies; a unit
+ *  whose static fields change (Mega, Tera, form change…) sends them in the very next state */
+const KEYFRAME = 20;
+/** hits for other players' units leave at most this often (one relay frame for all of them) */
+const HIT_MS = 33;
+/** what my game shows of a fight and the others see too (damage numbers, effects, statuses, Max Moves…) */
+const FX_TYPES = new Set<WorldEvent['t']>(['vfx', 'dmg', 'heal', 'status', 'combo', 'maxMove', 'death']);
 /** a member that sent nothing for this long is not drawn any more */
 const STALE_MS = 2500;
 
@@ -25,7 +31,9 @@ type Kind = Unit['kind'];
 /** static part of a unit on the wire */
 interface WireStatic { d: string; nm: string; k: Kind; ty: PokeType[]; st: Stats; r: number; sh?: 1; al?: 1; el?: 1; av?: string; bd?: string; wi?: 1; tm?: string; nc?: 1; ab?: number; tp?: PokeType | null; mg?: string | null }
 /** dynamic part (every state) */
-interface WireUnit { i: number; x: number; y: number; vx: number; vy: number; f: number; h: number; mh: number; l: number; ho?: 1; fa?: 1; ca?: number; ls?: string; ss?: StatusKind[]; bp?: number; bf?: string | null; bw?: 1; lk?: string; cp?: 1; s?: WireStatic; rd?: WireRide }
+interface WireUnit { i: number; x: number; y: number; vx: number; vy: number; f: number; h: number; mh: number; l: number; ho?: 1; fa?: 1; ca?: number; ls?: string; ss?: StatusKind[]; bp?: number; bf?: string | null; bw?: 1; lk?: string; cp?: 1; s?: WireStatic; rd?: WireRide;
+  /** battle features: Tera type, Dynamax (2 = Gigantamax), shield, swimming, just hit */
+  te?: PokeType; dy?: 1 | 2; sd?: number; aq?: 1; hf?: 1 }
 /** the trainer's mount: [species, shiny, swimming, level] */
 type WireRide = [string, 0 | 1, 0 | 1, number];
 interface SwState extends PartyMsg { t: 'sw'; map: string; n: number; me: WireUnit[]; en: WireUnit[]; pr: [number, number, number, number, number, 0 | 1, string][]; zn: [string, number, number, number, number, number, number, string, 0 | 1][]; fx: WorldEvent[] }
@@ -49,6 +57,9 @@ export class SharedWorld {
   private remotes = new Map<string, Remote>();
   private n = 0;
   private lastSend = 0;
+  private lastHits = 0;
+  /** static fields last sent per unit (sent again as soon as they change) */
+  private sentStatic = new Map<number, string>();
   private fx: WorldEvent[] = [];
   /** outgoing hits per owner, flushed once a frame */
   private hits = new Map<string, WireHit[]>();
@@ -112,11 +123,15 @@ export class SharedWorld {
   update(now: number, events: WorldEvent[], delta: number): void {
     if (!party.active) return;
     const mates = this.mates();
-    for (const e of events) if (e.t === 'vfx' && this.fx.length < 30) this.fx.push(e);
+    // my own hits on their units were already shown here and there (echo); every other hit is shown to the others
+    for (const e of events) if (FX_TYPES.has(e.t) && !(e.t === 'dmg' && e.echo) && this.fx.length < 40) this.fx.push(e);
     if (mates.length && now - this.lastSend >= SEND_MS) { this.lastSend = now; this.send(); }
     else if (!mates.length) this.fx.length = 0;
-    for (const [owner, list] of this.hits) if (list.length) party.send({ t: 'swH', h: list }, owner);
-    this.hits.clear();
+    if (this.hits.size && now - this.lastHits >= HIT_MS) {
+      this.lastHits = now;
+      for (const [owner, list] of this.hits) if (list.length) party.send({ t: 'swH', h: list }, owner);
+      this.hits.clear();
+    }
     // drop members who left the map or went quiet
     const here = new Set(mates.map((m) => m.id));
     for (const [id, r] of this.remotes) if (!here.has(id) || r.map !== this.mapKey() || now - r.at > STALE_MS) this.dropRemote(id);
@@ -133,7 +148,12 @@ export class SharedWorld {
     if (u.boss) { o.bp = u.boss.phase; o.bf = u.boss.form ?? null; if (u.boss.weakened) o.bw = 1; }
     if (u.look) o.lk = u.look;
     if (u.captured) o.cp = 1;
-    if (key) {
+    if (u.tera) o.te = u.tera.type;
+    if (u.dyna) o.dy = u.dyna.gmax ? 2 : 1;
+    if (u.shield > 0) o.sd = Math.round(u.shield);
+    if (u.aquatic) o.aq = 1;
+    if (u.hitFlash > 0.05) o.hf = 1;
+    {
       const s: WireStatic = { d: u.defId, nm: u.name, k: u.kind, ty: [...u.types], st: { ...u.stats }, r: u.radius };
       if (u.shiny) s.sh = 1;
       if (u.alpha) s.al = 1;
@@ -145,7 +165,8 @@ export class SharedWorld {
       if (u.abilitySlot != null) s.ab = u.abilitySlot;
       if (u.teraPick) s.tp = u.teraPick;
       if (u.megaFrom) s.mg = u.megaFrom;
-      o.s = s;
+      const sig = JSON.stringify(s);
+      if (key || this.sentStatic.get(u.id) !== sig) { o.s = s; this.sentStatic.set(u.id, sig); }
     }
     return o;
   }
@@ -153,6 +174,7 @@ export class SharedWorld {
   private send(): void {
     const w = this.scene.world;
     const key = this.n++ % KEYFRAME === 0;
+    if (key) this.sentStatic.clear(); // (units gone since are forgotten too)
     const me = [w.trainer, ...w.allies.filter((a) => a.alive)].map((u) => this.wireUnit(u, key));
     if (me[0]?.s) { me[0].s.nm = party.profile.name; me[0].s.av = party.profile.avatar; }
     if (me[0] && w.ride && w.mount) me[0].rd = [w.ride.species, w.mount.shiny ? 1 : 0, w.ride.mode === 'swim' ? 1 : 0, w.mount.level];
@@ -219,6 +241,12 @@ export class SharedWorld {
       u.lastSkill = d.ls ?? '';
       u.look = d.lk;
       u.statuses = (d.ss ?? []).map((kind) => ({ kind, t: 1, magnitude: 0, source: null, tick: 1, age: 1 }));
+      // battle features as drawn (aura, size, shield bubble…); the types / stats come with the static fields
+      u.tera = typeof d.te === 'string' ? { type: d.te, from: u.tera?.from ?? [...u.types] } : null;
+      u.dyna = d.dy ? { gmax: d.dy === 2, nextEffect: Infinity } : null;
+      u.shield = Number(d.sd) || 0;
+      u.aquatic = !!d.aq;
+      if (d.hf) u.hitFlash = Math.max(u.hitFlash, 0.1);
       if (u.boss) { u.boss.phase = (d.bp ?? 1) as 1 | 2 | 3; u.boss.form = d.bf ?? undefined; u.boss.weakened = !!d.bw; }
       // the owner's ball holds it: hidden here too (unless it is my own throw, which keeps it captured locally)
       if (d.cp && !u.captured) u.captured = true;
@@ -251,7 +279,11 @@ export class SharedWorld {
       const z = w.zones[w.zones.length - 1];
       if (z) z.team = ally ? 'ally' : 'enemy';
     }
-    if (Array.isArray(s.fx) && s.fx.length) this.scene.renderer_.handle(s.fx.filter((e) => e && e.t === 'vfx').slice(0, 30));
+    if (Array.isArray(s.fx) && s.fx.length) {
+      // their fight as they see it, minus my own hits (already shown when I landed them)
+      const fx = s.fx.filter((e) => e && FX_TYPES.has(e.t) && !(e.t === 'dmg' && (e.by === party.me || e.echo))).slice(0, 40);
+      if (fx.length) this.scene.renderer_.handle(fx);
+    }
   }
 
   /** A local copy of another player's unit, with their stats (my Pokémon compute their hits on it as usual). */
@@ -310,9 +342,9 @@ export class SharedWorld {
   }
 
   private interpolate(delta: number, now: number): void {
-    const k = 1 - Math.exp(-delta / 70);
+    const k = 1 - Math.exp(-delta / 45); // catch up within ~0.1 s (less visual delay)
     for (const r of this.remotes.values()) for (const [u, g] of r.goal) {
-      const ahead = Math.min(0.15, (now - g.at) / 1000);
+      const ahead = Math.min(0.2, (now - g.at) / 1000);
       const tx = g.x + g.vx * ahead, ty = g.y + g.vy * ahead;
       if (Math.hypot(tx - u.x, ty - u.y) > 300) { u.x = tx; u.y = ty; }
       else { u.x += (tx - u.x) * k; u.y += (ty - u.y) * k; }

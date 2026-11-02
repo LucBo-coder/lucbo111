@@ -218,7 +218,7 @@ const FLUSH_MS = 50;
  * Messages whose delay is felt (co-op snapshots / inputs, duel state, ping) leave at once, taking whatever is queued
  * with them; the rest waits for the batch window. Each of these already has its own fixed rate (≤ 15 / s).
  */
-const URGENT = new Set<string>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'act', 'pos', 'sw']);
+const URGENT = new Set<string>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'act', 'pos', 'sw', 'swH']);
 /** relay-only round trip (me → room server → me), measured every 2 s */
 const ECHO_MS = 2000;
 /** reconnect delays (≈ 40 s in total, inside the room's 60 s grace period) */

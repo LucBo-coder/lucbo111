@@ -20,6 +20,8 @@ interface PartyLink {
   send(m: PartyMsg): void;
   close(): void;
   simulateDrop?(): void;
+  /** round trip to the room server (ms), null before the first measure / on local tabs */
+  ping?(): number | null;
 }
 interface LinkEvents {
   message(from: string, m: PartyMsg): void;
@@ -109,7 +111,7 @@ async function relayLink(code: string, create: boolean, ev: LinkEvents): Promise
   };
   sock.onLost = (reason) => ev.lost(reason);
   await sock.open();
-  return { id, link: { send: (m) => sock.send(m), close: () => sock.close(), simulateDrop: () => sock.simulateDrop() } };
+  return { id, link: { send: (m) => sock.send(m), close: () => sock.close(), simulateDrop: () => sock.simulateDrop(), ping: () => (sock.echo.summary().n ? Math.round(sock.echo.last) : null) } };
 }
 
 // ───────────────────────────── session ─────────────────────────────
@@ -245,6 +247,8 @@ export class PartySession {
 
   /** Test hook: drop the socket as if the network failed (the relay keeps the slot and reconnects). */
   simulateDrop(): void { this.link?.simulateDrop?.(); }
+  /** My round trip to the room server in ms (≈ the delay to the other players), null on local tabs. */
+  ping(): number | null { return this.link?.ping?.() ?? null; }
 
   leave(): void {
     const had = !!this.link;

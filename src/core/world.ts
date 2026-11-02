@@ -306,7 +306,8 @@ export interface Obstacle {
 }
 
 export type WorldEvent =
-  | { t: 'dmg'; x: number; y: number; amount: number; crit: boolean; eff: number; victimTeam: Team }
+  /** `by`: the player (co-op room) whose unit landed it; `echo`: a hit on another player's unit, shown here only */
+  | { t: 'dmg'; x: number; y: number; amount: number; crit: boolean; eff: number; victimTeam: Team; by?: string; echo?: true }
   | { t: 'heal'; x: number; y: number; amount: number; team?: Team }
   | { t: 'vfx'; name: string; x: number; y: number; r?: number; angle?: number; len?: number; type?: PokeType }
   | { t: 'sfx'; name: string }
@@ -3000,7 +3001,7 @@ export class World {
         this.netHit?.({ dst, src, amount: dmg, crit, eff, dot });
         dst.hitFlash = 0.12;
         if (src && src.kind === 'pokemon') src.damageDealt += dmg;
-        this.emit({ t: 'dmg', x: dst.x, y: dst.y - dst.radius, amount: Math.round(dmg), crit, eff, victimTeam: dst.team });
+        this.emit({ t: 'dmg', x: dst.x, y: dst.y - dst.radius, amount: Math.round(dmg), crit, eff, victimTeam: dst.team, echo: true });
       }
       return;
     }
@@ -3055,7 +3056,7 @@ export class World {
     }
     dst.hitFlash = 0.12;
     if (src && src.kind === 'pokemon') src.damageDealt += dmg;
-    this.emit({ t: 'dmg', x: dst.x, y: dst.y - dst.radius, amount: Math.round(amount), crit, eff, victimTeam: dst.team });
+    this.emit({ t: 'dmg', x: dst.x, y: dst.y - dst.radius, amount: Math.round(amount), crit, eff, victimTeam: dst.team, ...(src?.net ? { by: src.net.owner } : {}) });
     if (dst.hp > 0) return;
     dst.hp = 0;
     if (dst.kind === 'trainer') return;

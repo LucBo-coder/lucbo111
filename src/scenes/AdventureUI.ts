@@ -153,6 +153,14 @@ export class AdventureUI extends Phaser.Scene {
   private menu: Phaser.GameObjects.Container | null = null;
   /** A full-screen menu is open (overlays such as Chơi chung step aside). */
   get menuOpen(): boolean { return !!this.menu; }
+  /**
+   * Free room for page overlays (Chơi chung button, last chat lines), in canvas pixels, refreshed every frame:
+   * `leftTop` under the trainer / party rows, `leftBottom` above the bottom-left stack (money, skills on portrait),
+   * `leftRight` where the left column must stop (the centred skill bar, the touch buttons).
+   */
+  readonly anchors = { leftTop: 0, leftBottom: 0, leftRight: 0 };
+  /** portrait phones: where the top-centre alerts / banners start (under both HUD columns, not over them) */
+  private portraitTop = 0;
   /** the open Poké Mart / merchant window */
   shop: ShopWindow | null = null;
   private menuTab: MenuTab | null = null;
@@ -317,6 +325,8 @@ export class AdventureUI extends Phaser.Scene {
         ['Chạy', cx - 150 * s, cy + 20 * s, () => { this.adv.runHeld = !this.adv.runHeld; this.banner(this.adv.runHeld ? 'Chạy: BẬT' : 'Chạy: TẮT', '#fff'); }],
         ['Map', cx + 10 * s, cy - 150 * s, () => this.toggleMenu('map')],
         ['Đổi', cx - 70 * s, cy - 150 * s, () => this.toggleSwitchWheel()],
+        ['Hồi', cx - 112 * s, cy - 72 * s, () => this.adv.quickHeal()],
+        ['Bóng', cx - 190 * s, cy - 62 * s, () => this.adv.cycleBall()],
       ];
       for (const [l, x, y, fn] of big) {
         const b = button(this, x, y, R * 1.7, R * 1.5, l, fn, 0x2f4a6a);
@@ -490,6 +500,12 @@ export class AdventureUI extends Phaser.Scene {
     const swcd = a.summons?.cooldownLeft() ?? 0;
     if (!this.texts.swcd) this.texts.swcd = text(this, 0, 0, '', 13 * s, '#ffd080');
     this.texts.swcd.setText(swcd > 0 && party.length > 1 ? `Đổi Pokémon: chờ ${swcd.toFixed(1)} s` : '').setPosition(12 * s, rowY);
+    {
+      const bar = this.skillBar.bounds, touchUi = this.touch || W / DPR < 900;
+      this.anchors.leftTop = rowY + (swcd > 0 ? 22 : 6) * s;
+      this.anchors.leftBottom = this.portraitHud ? Math.min(H - 84 * s, bar.y - 26 * s) : H - 84 * s;
+      this.anchors.leftRight = this.portraitHud ? (touchUi ? W - 300 * s : W - 16 * s) : bar.x - 16 * s;
+    }
     if (this.wheel?.isOpen) this.wheel.draw(s);
 
     // Clock / weather / area
@@ -539,6 +555,11 @@ export class AdventureUI extends Phaser.Scene {
       this.texts.events.setText(lines.join('\n')).setOrigin(1, 0).setPosition(W - 12 * s, ey);
       g.fillStyle(0x200830, 0.55).fillRect(W - 12 * s - 360 * s, ey - 4 * s, 364 * s, lines.length * 20 * s + 8 * s);
     } else this.texts.events.setText('');
+    if (this.portraitHud) {
+      const right = this.texts.events.text ? this.texts.events.y + this.texts.events.height : qy + (qdef && obj ? 46 : 0) * s;
+      // (the Chơi chung button sits under the party rows: about 44 page pixels)
+      this.portraitTop = Math.max(this.anchors.leftTop + 44 * DPR, right + 8 * s);
+    }
 
     this.gimmicks.draw(this.gimmickViews(), !!(this.menu || this.dialogueLayer), this.time.now);
     this.texts.money?.setText(`${a.state.money} ${a.state.unit}`);
@@ -707,12 +728,24 @@ export class AdventureUI extends Phaser.Scene {
     const { width: W } = this.scale;
     const s = this.s;
     if (this.banners.length >= 3) this.banners.shift()?.destroy();
-    const t = text(this, W / 2, 0, str, 24 * s, color).setOrigin(0.5).setAlpha(0).setDepth(80);
+    const t = text(this, W / 2, 0, str, 24 * s, color).setOrigin(0.5).setAlpha(0).setDepth(80).setWordWrapWidth(Math.min(W - 40 * s, 760 * s)).setAlign('center');
     this.banners.push(t);
-    const top = Math.max(100 * s, this.bossHud?.bottom() ?? 0);
-    this.banners.forEach((b, i) => b.setY(top + i * 30 * s));
+    this.stackTop();
     this.tweens.add({ targets: t, alpha: 1, duration: 150 });
-    this.tweens.add({ targets: t, alpha: 0, delay: 2600, duration: 400, onComplete: () => { this.banners = this.banners.filter((b) => b !== t); t.destroy(); } });
+    this.tweens.add({ targets: t, alpha: 0, delay: 2600, duration: 400, onComplete: () => { this.banners = this.banners.filter((b) => b !== t); t.destroy(); this.stackTop(); } });
+  }
+
+  /** Top-centre stack: event alerts first, the banners right under them (nothing covers anything). */
+  private stackTop(): void {
+    const s = this.s;
+    let y = Math.max(this.portraitHud ? this.portraitTop : 72 * s, this.bossHud?.bottom() ?? 0);
+    for (const a of this.alerts) {
+      const h = (a.getData('h') as number) ?? 0;
+      a.setY(y + h / 2);
+      y += h + 6 * s;
+    }
+    y = Math.max(y + 4 * s, 88 * s, this.bossHud?.bottom() ?? 0);
+    for (const b of this.banners) { b.setY(y + b.height / 2); y += b.height + 4 * s; }
   }
 
   private alerts: Phaser.GameObjects.Container[] = [];
@@ -728,12 +761,11 @@ export class AdventureUI extends Phaser.Scene {
     const bg = this.add.graphics();
     bg.fillStyle(0x140a24, 0.88).fillRect(-w / 2, -h / 2, w, h);
     bg.lineStyle(2, Phaser.Display.Color.HexStringToColor(color).color, 1).strokeRect(-w / 2 + 1, -h / 2 + 1, w - 2, h - 2);
-    const c = this.add.container(W / 2, 0, [bg, t]).setDepth(85).setAlpha(0);
+    const c = this.add.container(W / 2, 0, [bg, t]).setDepth(85).setAlpha(0).setData('h', h);
     this.alerts.push(c);
-    const top = Math.max(72 * s, this.bossHud?.bottom() ?? 0);
-    this.alerts.forEach((a, i) => a.setY(top + h / 2 + i * (h + 6 * s)));
+    this.stackTop();
     this.tweens.add({ targets: c, alpha: 1, duration: 180 });
-    this.tweens.add({ targets: c, alpha: 0, delay: 3800, duration: 400, onComplete: () => { this.alerts = this.alerts.filter((x) => x !== c); c.destroy(); } });
+    this.tweens.add({ targets: c, alpha: 0, delay: 3800, duration: 400, onComplete: () => { this.alerts = this.alerts.filter((x) => x !== c); c.destroy(); this.stackTop(); } });
     audio.play('shield');
   }
 

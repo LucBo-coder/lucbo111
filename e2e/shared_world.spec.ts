@@ -100,6 +100,19 @@ ${await ev(b, 'window.__party.status + " " + window.__party.error')}`); });
   await ev(a, `window.__adv.world.stopRide(true)`);
   await b.waitForFunction(() => (window as Win).__adv.world.puppetMounts.size === 0);
 
+  // battle features show on the other side: A's Pokémon terastallizes, then Dynamaxes (types, aura, size)
+  await ev(a, `(() => { const w = window.__adv.world; w.terastallize(w.allies[0], 'fire'); })()`);
+  await b.waitForFunction(() => (window as Win).__adv.world.puppets.some((u: any) => u.kind === 'pokemon' && u.tera?.type === 'fire' && u.types.join() === 'fire'));
+  await ev(a, `(() => { const w = window.__adv.world; w.endTera(w.allies[0]); w.dynamax(w.allies[0], false); })()`);
+  await b.waitForFunction(() => (window as Win).__adv.world.puppets.some((u: any) => u.kind === 'pokemon' && u.dyna && !u.tera));
+  await b.screenshot({ path: info.outputPath('party-dynamax.png') });
+  await ev(a, `(() => { const w = window.__adv.world; w.endDynamax(w.allies[0]); })()`);
+  await b.waitForFunction(() => !(window as Win).__adv.world.puppets.some((u: any) => u.dyna));
+  // a hit landed in A's game shows its damage number on B too
+  await ev(b, `(() => { const r = window.__adv.renderer_; window.__dmgSeen = 0; const h = r.handle.bind(r); r.handle = (evs) => { window.__dmgSeen += evs.filter(e => e.t === 'dmg' && e.amount === 4321).length; h(evs); }; })()`);
+  await ev(a, `(() => { const w = window.__adv.world; const u = w.allies[0]; u.hp = u.maxHp = 100000; w.applyDamage(u, 4321, null); })()`);
+  await b.waitForFunction(() => (window as Win).__dmgSeen > 0);
+
   // world events, time of day and weather come from the map host (A): B shows A's event and A's sky
   await ev(b, `(() => { const s = window.__adv; s.state.adv.clock = 100; s.weather.kind = 'fog'; })()`);
   const evUid = await ev<number>(a, `(() => { const s = window.__adv; s.state.adv.clock = 700; s.weather.kind = 'rain'; const r = s.worldEvents.unlockedRegions()[0].id; return s.worldEvents.force('weather', r).uid; })()`);
@@ -119,6 +132,10 @@ ${await ev(b, 'window.__party.status + " " + window.__party.error')}`); });
   await a.locator('[name=body]').fill('Xin chào!');
   await a.locator('[data-chat-form] button').click();
   await b.waitForFunction(() => document.querySelector('[data-log]')?.textContent?.includes('An: Xin chào!') && document.querySelector('[data-tab=chat]')?.textContent?.startsWith('Chat ('));
+  // on B's map: the line shows with an unread count on 💬, then the map clears by itself
+  await expect(b.locator('[data-mini]')).toContainText('An: Xin chào!');
+  await expect(b.locator('[data-chat]')).toContainText(/💬 \d/);
+  await expect(b.locator('[data-mini]')).toBeHidden({ timeout: 12000 });
 
   // trade: A gives Eevee + 2 Poké Balls, B gives 1 Potion
   await ev(a, `window.__adv.state.save.inventory.pokeball = 5`);
