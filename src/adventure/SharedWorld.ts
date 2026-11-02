@@ -26,6 +26,8 @@ const HIT_MS = 33;
 const FX_TYPES = new Set<WorldEvent['t']>(['vfx', 'dmg', 'heal', 'status', 'combo', 'maxMove', 'death']);
 /** a member that sent nothing for this long is not drawn any more */
 const STALE_MS = 2500;
+/** players closer than this share one set of wild Pokémon (the earlier member's); farther apart, each spawns their own */
+const SHARE_SPAWN_R = 1600;
 
 type Kind = Unit['kind'];
 /** static part of a unit on the wire */
@@ -101,21 +103,51 @@ export class SharedWorld {
   /** Another player is on my map right now. */
   hasMates(): boolean { return party.active && this.mates().length > 0; }
 
-  /** Wild Pokémon of this map are spawned by the member here who joined the room first. */
-  spawnsHere(): boolean {
-    if (!party.active) return true;
-    return this.mates().every((m) => party.me < m.id);
+  /** Where another player's trainer is on my map (null: not seen yet). */
+  trainerPos(id: string): { x: number; y: number } | null {
+    for (const u of this.remotes.get(id)?.units.values() ?? []) if (u.kind === 'trainer') return { x: u.x, y: u.y };
+    return null;
   }
 
-  /** The member who runs this map's world events, time and weather (the one who also spawns its wild Pokémon). */
+  /** The other players' trainers on this map (wild Pokémon near them are kept, SpawnManager). */
+  mateAnchors(): { x: number; y: number }[] {
+    return this.hasMates() ? this.mates().map((m) => this.trainerPos(m.id)).filter((p): p is { x: number; y: number } => !!p) : [];
+  }
+
+  /**
+   * Wild Pokémon around me: spawned by me unless a player who joined the room before me stands near me (then theirs
+   * are mine to fight too). Players far apart on a big map each get their own around them.
+   */
+  spawnsHere(): boolean {
+    if (!party.active) return true;
+    const t = this.scene.world.trainer;
+    return this.mates().every((m) => {
+      if (party.me < m.id) return true;
+      const p = this.trainerPos(m.id);
+      return !!p && Math.hypot(p.x - t.x, p.y - t.y) > SHARE_SPAWN_R;
+    });
+  }
+
+  /** The member who runs this map's world events, raid dens, wormholes, roamers, time and weather. */
   mapHost(): string {
     return this.mates().reduce((best, m) => (m.id < best ? m.id : best), party.me);
   }
+
+  /** Someone else runs this map's events (WorldEventController, RaidDenController…): I show theirs. */
+  isGuest(): boolean { return this.hasMates() && this.mapHost() !== party.me; }
 
   /** World events / sky of my map for the others here (WorldEventController). */
   sendEvents(m: PartyMsg, to?: string): void {
     if (!this.hasMates()) return;
     party.send({ ...m, map: this.mapKey() }, to);
+  }
+
+  /** An alert of mine that everyone on this map should see too (a roamer appears, a raid is won…). */
+  note(text: string, color: string): void { this.sendEvents({ t: 'swEvNote', text, color }); }
+
+  /** A copy of another player's boss / legendary of this id is on my map (never summon a second one). */
+  hasRemoteBoss(defId?: string): boolean {
+    return this.scene.world.enemies.some((e) => e.net && e.alive && (e.kind === 'boss' || !!e.boss) && (!defId || e.defId === defId));
   }
 
   // ───────────────────────────── per frame ─────────────────────────────
@@ -196,7 +228,7 @@ export class SharedWorld {
     if (m.t === 'swH' && Array.isArray(m.h)) { for (const h of m.h as WireHit[]) this.applyHit(h, from); return; }
     if (m.t === 'swKo') { this.receiveKo(m, from); return; }
     if (m.t === 'swClaim' || m.t === 'swCaught' || m.t === 'swFree') { this.capture(m, from); return; }
-    if (m.t === 'swEv' || m.t === 'swEvEnd' || m.t === 'swEvNote' || m.t === 'swEvUse') {
+    if (m.t === 'swEv' || m.t === 'swEvEnd' || m.t === 'swEvNote' || m.t === 'swEvUse' || m.t === 'swRaid') {
       const mate = party.members.get(from);
       if (!this.shareable() || m.map !== this.mapKey() || !mate || mate.campaign !== this.scene.state.adv.campaign) return;
       this.scene.worldEvents?.receiveNet(m, from);
@@ -459,8 +491,9 @@ export class SharedWorld {
     if (!e || !e.wild || e.noCapture) return;
     if (m.t === 'swClaim') { if (!e.captured) w.beginCapture(e); return; }
     if (m.t === 'swCaught') {
-      // an outbreak / distortion counts it like one of my own catches
+      // an outbreak / distortion / raid counts it like one of my own catches
       this.scene.worldEvents?.onResolved(e.id, e.defId, e.x, e.y, false);
+      this.scene.raidDens?.onResolved(e.id, false);
       w.removeEnemy(e);
       this.scene.ui?.banner(`${party.nameOf(from)} đã thu phục ${e.name}!`, '#ffe080');
       return;

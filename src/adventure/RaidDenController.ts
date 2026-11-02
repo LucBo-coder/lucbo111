@@ -15,10 +15,14 @@ import type { Unit } from '../core/world';
 import { audio } from '../systems/audio';
 import type { AdventureScene } from '../scenes/AdventureScene';
 import { ITEMS } from './AdventureState';
+import type { PartyMsg } from '../net/party';
 
 // Raid dens on the overworld (V32, rules in core/raidDens.ts). Dens appear by themselves around the player, each
 // with a light column seen from far away and a star rating; E on a den shows the boss and starts the raid.
 // Everything a den creates (beam, label, interactable, boss) goes away with it, and with the scene.
+// Chơi chung: on a shared map only the map host's game makes dens (SharedWorld.mapHost); the others draw copies of
+// them (`mirrors`, sent with the host's world events), start a raid at one through the host, see its timer and
+// shields, and get the same rewards when it is won.
 
 export interface RaidDen {
   id: number;
@@ -41,6 +45,9 @@ export interface RaidDen {
   label: Phaser.GameObjects.Text;
 }
 
+/** a copy of the map host's den, with what the HUD shows of its raid */
+type MirrorDen = RaidDen & { bossName?: string; bossHp?: number; bossShield?: boolean };
+
 export interface RaidMarker { x: number; y: number; stars: number; kind: RaidKind; active: boolean; label: string }
 
 const BEAM: Record<RaidKind, number[]> = { tera: [0x88eeff, 0xffffff], dynamax: [0xff2050, 0xff90a0], gmax: [0xff1040, 0xb040ff] };
@@ -49,6 +56,8 @@ export class RaidDenController {
   private dens: RaidDen[] = [];
   private nextId = 1;
   private spawnT: number;
+  /** Chơi chung: the map host's dens (their id → copy) */
+  private mirrors = new Map<number, MirrorDen>();
 
   constructor(private scene: AdventureScene) {
     this.spawnT = 20 + Math.random() * 30; // the first den shows up soon after arriving
@@ -60,11 +69,23 @@ export class RaidDenController {
 
   /** The den being fought right now, if any (one raid at a time). */
   get active(): RaidDen | null { return this.dens.find((d) => d.state !== 'idle') ?? null; }
+  /** someone else runs this map's dens */
+  private get guest(): boolean { return !!this.scene.shared?.isGuest(); }
 
   list(): readonly RaidDen[] { return this.dens; }
 
   update(dt: number): void {
     if (this.scene.mapKind !== 'valley') return;
+    if (this.guest) {
+      // my own dens make way for the host's (a raid I am already fighting goes on)
+      for (const d of [...this.dens]) {
+        if (d.state === 'idle') { this.remove(d); continue; }
+        this.draw(d);
+        this.tickRaid(d, dt);
+      }
+      for (const d of this.mirrors.values()) this.draw(d);
+      return;
+    }
     this.spawnT -= dt;
     if (this.spawnT <= 0) {
       this.spawnT = DEN_SPAWN_EVERY[0] + Math.random() * (DEN_SPAWN_EVERY[1] - DEN_SPAWN_EVERY[0]);
@@ -129,6 +150,7 @@ export class RaidDenController {
 
   /** E on a den: show what waits inside, start the raid if the player wants. */
   async use(id: number): Promise<void> {
+    if (id < 0) return this.useMirror(-id); // a copy of the map host's den
     const d = this.dens.find((x) => x.id === id);
     if (!d || d.state !== 'idle') return;
     if (this.active) { this.scene.ui.banner('Đang có một trận Raid khác — hãy kết thúc nó trước.', '#ff9080'); return; }
@@ -160,7 +182,15 @@ export class RaidDenController {
     this.scene.removeEventObject(this.objId(d));
     this.scene.cameras.main.shake(400, 0.008);
     audio.play('boss');
-    this.scene.ui.eventAlert(`${RAID_KIND_VI[d.kind]} ${starsText(d.stars)}: ${u.name} xuất hiện! Hạ nó trong ${tier.time}s.`, '#ff9080');
+    const msg = `${RAID_KIND_VI[d.kind]} ${starsText(d.stars)}: ${u.name} xuất hiện! Hạ nó trong ${tier.time}s.`;
+    this.scene.ui.eventAlert(msg, '#ff9080');
+    this.scene.shared?.note(msg, '#ff9080');
+  }
+
+  /** Host: a player of my map asked to open this den. */
+  startFor(id: number, _from: string): void {
+    const d = this.dens.find((x) => x.id === id);
+    if (d && d.state === 'idle' && !this.active) this.start(d);
   }
 
   private tickRaid(d: RaidDen, dt: number): void {
@@ -170,7 +200,9 @@ export class RaidDenController {
     if (d.state === 'fight') {
       if (this.world.state !== 'playing') return this.fail(d, 'Đội của bạn đã gục — Pokémon Raid quay về hang.');
       if (d.left <= 0) return this.fail(d, `Hết giờ! ${u.name} biến mất vào hang.`);
-      if (Math.hypot(t.x - d.x, t.y - d.y) > RAID_LEASH) return this.fail(d, 'Bạn đã rời Hang Raid — trận Raid bị hủy.');
+      // (Chơi chung: the raid goes on while any player of the map stays at the den)
+      const here = [t, ...(this.scene.shared?.mateAnchors() ?? [])];
+      if (!here.some((p) => Math.hypot(p.x - d.x, p.y - d.y) <= RAID_LEASH)) return this.fail(d, 'Bạn đã rời Hang Raid — trận Raid bị hủy.');
       // barrier shields at the tier's HP thresholds
       const th = tier.shields[d.shieldIdx];
       if (th != null && u.hp / u.maxHp < th) {
@@ -218,6 +250,7 @@ export class RaidDenController {
     ];
     d.boss = null;
     this.remove(d);
+    if (!this.guest) this.scene.shared?.sendEvents({ t: 'swRaid', id: d.id, ok: true });
     this.scene.ui.questComplete(`${RAID_KIND_VI[d.kind]} ${starsText(d.stars)}: chiến thắng!`, lines);
     audio.play('victory');
     this.scene.persist();
@@ -226,23 +259,121 @@ export class RaidDenController {
   private fail(d: RaidDen, msg: string): void {
     this.remove(d);
     this.scene.ui.eventAlert(msg, '#ff9080');
+    if (!this.guest) this.scene.shared?.sendEvents({ t: 'swRaid', id: d.id, ok: false, msg });
+  }
+
+  // ───────────────────────────── Chơi chung: the map host's dens ─────────────────────────────
+
+  /** Host: my dens for the others on this map. */
+  snapshot(): Record<string, unknown>[] {
+    return this.dens.map((d) => ({
+      id: d.id, x: Math.round(d.x), y: Math.round(d.y), stars: d.stars, kind: d.kind, species: d.species, level: d.level, teraType: d.teraType,
+      region: d.region, state: d.state, left: Math.round(d.left), shieldIdx: d.shieldIdx,
+      ...(d.boss ? { bn: d.boss.name, bh: Math.round((d.boss.hp / d.boss.maxHp) * 100) / 100, bs: d.boss.shield > 0 ? 1 : 0 } : {}),
+    }));
+  }
+
+  /** Guest: the host's dens as they are now ([] = none, or the host is gone). */
+  applyMirror(list: Record<string, unknown>[]): void {
+    if (!list.length && !this.mirrors.size) return;
+    const seen = new Set<number>();
+    for (const r of list.slice(0, 6)) {
+      const id = Number(r.id), stars = r.stars as RaidStars, kind = r.kind as RaidKind;
+      if (!Number.isFinite(id) || !Number.isFinite(r.x) || !Number.isFinite(r.y) || !BEAM[kind] || !RAID_TIERS[stars] || typeof r.species !== 'string' || !ECOLOGY.has(r.species)) continue;
+      seen.add(id);
+      let d = this.mirrors.get(id);
+      const state = r.state === 'fight' || r.state === 'catch' ? r.state : 'idle';
+      if (!d) {
+        const x = r.x as number, y = r.y as number;
+        d = {
+          id, x, y, stars, kind, species: r.species, level: Number(r.level) || 1, teraType: (r.teraType as PokeType | null) ?? null,
+          region: String(r.region ?? ''), born: this.now, state: 'idle', boss: null, left: 0, shieldIdx: 0,
+          gfx: this.scene.add.graphics(), label: this.scene.add.text(x, y - 70, '', { fontSize: '15px', color: '#ffe080', stroke: '#1a1020', strokeThickness: 4 }).setOrigin(0.5),
+        };
+        this.mirrors.set(id, d);
+        if (state === 'idle') {
+          const base = this.scene.add.image(x, y, 'raidDenBase').setDepth(y - 2);
+          this.scene.addEventObject(this.mirrorObj(d), x, y, `Hang Raid ${stars}★`, { raidDen: -id }, base);
+          this.scene.ui.eventAlert(`Một Hang Raid ${starsText(stars).replace(/☆/g, '')} phát sáng ở ${this.regionName(d)} — đi theo cột sáng (dấu ◆ trên bản đồ)!`, '#ffd080');
+        }
+      }
+      if (d.state === 'idle' && state !== 'idle') this.scene.removeEventObject(this.mirrorObj(d));
+      d.state = state;
+      d.left = Number(r.left) || 0;
+      d.shieldIdx = Number(r.shieldIdx) || 0;
+      d.bossName = typeof r.bn === 'string' ? r.bn : undefined;
+      d.bossHp = Number(r.bh) || 0;
+      d.bossShield = !!r.bs;
+    }
+    for (const d of [...this.mirrors.values()]) if (!seen.has(d.id)) this.dropMirror(d);
+  }
+
+  private mirrorObj(d: RaidDen): string { return 'raidden-m' + d.id; }
+
+  private dropMirror(d: MirrorDen): void {
+    this.scene.removeEventObject(this.mirrorObj(d));
+    d.gfx.destroy(); d.label.destroy();
+    this.mirrors.delete(d.id);
+  }
+
+  /** Guest: the host's raid at a den ended — won: my own rewards too; lost: why. */
+  mirrorOutcome(m: PartyMsg): void {
+    const d = this.mirrors.get(Number(m.id));
+    if (!d) return;
+    this.dropMirror(d);
+    if (!m.ok) { this.scene.ui.eventAlert(typeof m.msg === 'string' ? m.msg.slice(0, 200) : 'Trận Raid đã kết thúc.', '#ff9080'); return; }
+    const st = this.scene.state;
+    const loot = raidDenRewards(d.stars, d.kind, this.world.rng.next());
+    st.addItems(loot.items); st.earn(loot.money);
+    st.addWorldExp(60 + d.stars * 40);
+    this.scene.ui.questComplete(`${RAID_KIND_VI[d.kind]} ${starsText(d.stars)}: chiến thắng!`, [
+      ...Object.entries(loot.items).map(([id, n]) => `+${n} ${ITEMS[id]?.name ?? id}`), `+${loot.money} ${st.unit}`,
+    ]);
+    audio.play('victory');
+    this.scene.persist();
+  }
+
+  /** E on a copy of the host's den: same preview, then the host's game starts the raid. */
+  private async useMirror(id: number): Promise<void> {
+    const d = this.mirrors.get(id), shared = this.scene.shared;
+    if (!d || d.state !== 'idle' || !shared) return;
+    if ([...this.mirrors.values()].some((x) => x.state !== 'idle')) { this.scene.ui.banner('Đang có một trận Raid khác — hãy kết thúc nó trước.', '#ff9080'); return; }
+    const tier = RAID_TIERS[d.stars];
+    const name = this.scene.speciesName(d.species) + (d.kind === 'gmax' ? ' Gigantamax' : d.kind === 'dynamax' ? ' Dynamax' : '');
+    const r = await this.scene.say(`${RAID_KIND_VI[d.kind]} ${starsText(d.stars)}`, [
+      `${name} Lv${d.level}${d.teraType ? ` · Hệ Tera ${TYPE_VI[d.teraType]}` : ''}\nThời gian ${tier.time}s · ${tier.shields.length ? `${tier.shields.length} lớp khiên` : 'không khiên'} · Khuyến nghị Lv${Math.max(5, d.level + tier.recommended)}+\nCả nhóm cùng đánh; thắng thì ai trên bản đồ cũng nhận thưởng.`,
+    ], [{ label: 'Bắt đầu Raid', value: 'go' }, { label: 'Để sau', value: 'no' }]);
+    if (r !== 'go' || !this.mirrors.has(id)) return;
+    shared.sendEvents({ t: 'swEvUse', uid: id, a: 'den' }, shared.mapHost());
+    this.scene.ui.banner('Đang mở Hang Raid…', '#ffd080');
   }
 
   // ───────────────────────────── views ─────────────────────────────
 
   markers(): RaidMarker[] {
-    return this.dens.map((d) => ({ x: d.x, y: d.y, stars: d.stars, kind: d.kind, active: d.state !== 'idle', label: `${d.stars}★${d.kind === 'gmax' ? ' G-Max' : d.kind === 'tera' ? ' Tera' : ' Max'}` }));
+    return [...this.dens, ...this.mirrors.values()].map((d) => ({ x: d.x, y: d.y, stars: d.stars, kind: d.kind, active: d.state !== 'idle', label: `${d.stars}★${d.kind === 'gmax' ? ' G-Max' : d.kind === 'tera' ? ' Tera' : ' Max'}` }));
   }
 
   /** HUD line of the raid in progress. */
   hudLine(): string | null {
     const d = this.active;
-    if (!d?.boss) return null;
+    if (!d?.boss) return this.mirrorLine();
     const tier = RAID_TIERS[d.stars];
     const mm = Math.max(0, Math.ceil(d.left));
     const time = `${Math.floor(mm / 60)}:${String(mm % 60).padStart(2, '0')}`;
     if (d.state === 'catch') return `⚔ RAID ${starsText(d.stars)} · ${d.boss.name} kiệt sức — ném bóng! ${time}`;
     return `⚔ RAID ${starsText(d.stars)} · ${d.boss.name} ${Math.ceil((d.boss.hp / d.boss.maxHp) * 100)}% · ${time}${tier.shields.length ? ` · khiên ${d.shieldIdx}/${tier.shields.length}` : ''}${d.boss.shield > 0 ? ' (đang có khiên)' : ''}`;
+  }
+
+  /** the host's raid in progress, as sent */
+  private mirrorLine(): string | null {
+    const d = [...this.mirrors.values()].find((x) => x.state !== 'idle');
+    if (!d?.bossName) return null;
+    const tier = RAID_TIERS[d.stars];
+    const mm = Math.max(0, Math.ceil(d.left));
+    const time = `${Math.floor(mm / 60)}:${String(mm % 60).padStart(2, '0')}`;
+    if (d.state === 'catch') return `⚔ RAID ${starsText(d.stars)} · ${d.bossName} kiệt sức — ném bóng! ${time}`;
+    return `⚔ RAID ${starsText(d.stars)} · ${d.bossName} ${Math.ceil((d.bossHp ?? 0) * 100)}% · ${time}${tier.shields.length ? ` · khiên ${d.shieldIdx}/${tier.shields.length}` : ''}${d.bossShield ? ' (đang có khiên)' : ''}`;
   }
 
   private draw(d: RaidDen): void {
@@ -283,6 +414,7 @@ export class RaidDenController {
 
   cleanup(): void {
     for (const d of [...this.dens]) this.remove(d);
+    for (const d of [...this.mirrors.values()]) this.dropMirror(d);
   }
 
   /** Region of a den, for the map (unused regions never get dens). */

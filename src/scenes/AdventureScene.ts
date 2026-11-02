@@ -408,6 +408,7 @@ export class AdventureScene extends Phaser.Scene {
         rareMult: () => rareMult(this.regionDef.id, (f) => this.state.hasFlag(f)),
         events: () => this.worldEvents?.spawnInfo() ?? {},
         loaded: (tx, ty) => this.chunks.isLoadedTile(tx, ty),
+        anchors: () => this.shared?.mateAnchors() ?? [],
         onScreen: (x, y) => { const v = this.cameras.main.worldView; return x > v.x - 60 && x < v.right + 60 && y > v.y - 60 && y < v.bottom + 60; },
         onSpawn: (u) => {
           if (!this.state.save.pokedex.seen.includes(u.defId)) this.state.save.pokedex.seen.push(u.defId);
@@ -2207,7 +2208,8 @@ export class AdventureScene extends Phaser.Scene {
     const b = this.worldBoss;
     if (b) {
       const site = this.bossSites().find((s) => s.id === b.defId)!;
-      const d = Math.hypot(t.x - (site.x + 0.5) * TILE_PX, t.y - (site.y + 0.5) * TILE_PX);
+      // (Chơi chung: the fight stays while any player of the map is at the site)
+      const d = Math.min(...[t, ...(this.shared?.mateAnchors() ?? [])].map((p) => Math.hypot(p.x - (site.x + 0.5) * TILE_PX, p.y - (site.y + 0.5) * TILE_PX)));
       if (!b.alive) { this.worldBoss = null; return; }
       if (d > 1400) { // reset when the player walks away (a capture window closes too)
         this.abandonWorldBoss();
@@ -2216,6 +2218,8 @@ export class AdventureScene extends Phaser.Scene {
     }
     if (this.world.boss?.alive || this.modal) return;
     for (const s of this.bossSites()) {
+      // another player already called this one out: it is theirs, fought together (never a second copy)
+      if (this.shared?.hasRemoteBoss(s.id)) continue;
       const cx = (s.x + 0.5) * TILE_PX, cy = (s.y + 0.5) * TILE_PX;
       if (Math.hypot(t.x - cx, t.y - cy) > s.arena || !this.chunks.isLoadedTile(s.x, s.y)) continue;
       if (!s.requires.every((f) => this.state.hasFlag(f))) {

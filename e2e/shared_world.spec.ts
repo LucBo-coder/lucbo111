@@ -125,6 +125,26 @@ ${await ev(b, 'window.__party.status + " " + window.__party.error')}`); });
   await ev(a, `(() => { const e = window.__adv.worldEvents.director.active.find(x => x.uid === ${evUid}); e.end = 0; })()`);
   await b.waitForFunction((u) => !(window as Win).__adv.worldEvents.views().some((v: any) => v.uid === u), evUid);
 
+  // raid dens come from the map host too: B sees A's den, starts it through A, sees the raid, and learns how it ended
+  await ev(b, `void window.__adv.raidDens.spawnDen({ stars: 1, kind: 'tera', species: 'rattata', x: 1500, y: 1000 })`);
+  const denId = await ev<number>(a, `window.__adv.raidDens.spawnDen({ stars: 1, kind: 'tera', species: 'rattata', x: 1500, y: 1000 }).id`);
+  await b.waitForFunction(() => (window as Win).__adv.raidDens.markers().length === 1 && (window as Win).__adv.raidDens.list().length === 0);
+  await ev(b, `(() => { const s = window.__adv.shared; s.sendEvents({ t: 'swEvUse', uid: ${denId}, a: 'den' }, s.mapHost()); })()`);
+  await a.waitForFunction(() => (window as Win).__adv.raidDens.active?.state === 'fight');
+  await b.waitForFunction(() => /RAID/.test((window as Win).__adv.raidDens.hudLine() ?? ''));
+  await ev(a, `void (() => { const r = window.__adv.raidDens; r.fail(r.active, 'Hết giờ (thử)'); })()`);
+  await b.waitForFunction(() => (window as Win).__adv.raidDens.markers().length === 0 && !(window as Win).__adv.raidDens.hudLine());
+  // A's wormhole opens on B's map as well
+  expect(await ev(a, `window.__adv.wormholes.openNear()`)).toBe(true);
+  await b.waitForFunction(() => (window as Win).__adv.interactables.has('ultra-wormhole'));
+  await ev(a, `void window.__adv.wormholes.close()`);
+  await b.waitForFunction(() => !(window as Win).__adv.interactables.has('ultra-wormhole'));
+  // far apart on the same map, B gets wild Pokémon of its own around it; back near A, A's are shared again
+  await ev(b, `window.__adv.world.trainer.x += 2600`);
+  await b.waitForFunction(() => (window as Win).__adv.shared.spawnsHere());
+  await ev(b, `window.__adv.world.trainer.x -= 2600`);
+  await b.waitForFunction(() => !(window as Win).__adv.shared.spawnsHere());
+
   // chat
   await a.bringToFront();
   await a.locator('[data-pill]').click();

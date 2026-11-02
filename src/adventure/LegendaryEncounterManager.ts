@@ -45,7 +45,9 @@ export class LegendaryEncounterManager {
     this.t -= dt;
     if (this.t > 0) return;
     this.t = ROAM_CHECK;
-    if (this.scene.world.boss?.alive || this.scene.modal) return;
+    // Chơi chung: the map host's game rolls the roamers (one at a time on the map, seen by everyone there)
+    const shared = this.scene.shared;
+    if (this.scene.world.boss?.alive || this.scene.modal || shared?.isGuest() || shared?.hasRemoteBoss()) return;
     const t = this.scene.world.trainer;
     const here = regionOfArea(this.scene.map.areaAt(Math.floor(t.x / TILE_PX), Math.floor(t.y / TILE_PX))?.id);
     if (!here) return;
@@ -73,6 +75,7 @@ export class LegendaryEncounterManager {
       this.roamer = { unit: u, id: l.id, leaveAt: this.now + ROAM_STAY };
       this.lastSeen.set(l.id, this.now);
       this.scene.ui.eventAlert(`Huyền thoại lang thang: ${u.name} xuất hiện! Nó sẽ bỏ chạy sau ${ROAM_STAY}s.`, '#ffe080');
+      this.scene.shared?.note(`Huyền thoại lang thang: ${u.name} xuất hiện trên bản đồ! Nó sẽ bỏ chạy sau ${ROAM_STAY}s.`, '#ffe080');
       this.scene.cameras.main.shake(500, 0.01);
       return u;
     }

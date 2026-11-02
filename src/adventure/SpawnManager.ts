@@ -24,6 +24,8 @@ export interface EventSpawnInfo {
 }
 
 export interface SpawnOptions {
+  /** other players' trainers on this map (Chơi chung): wild Pokémon near them stay */
+  anchors?: () => { x: number; y: number }[];
   /** Current objectives of active quests, read afresh on each tick. */
   objectives?: () => ObjectiveDef[];
   maxActive?: number;
@@ -89,7 +91,10 @@ export class SpawnManager {
     const tr = this.world.trainer;
     const wild = this.wildUnits();
 
+    const anchors = this.o.anchors?.() ?? [];
     for (const e of wild) {
+      // (Chơi chung: a Pokémon near another player stays for them, even far from me)
+      if (anchors.some((p) => Math.hypot(e.x - p.x, e.y - p.y) < DESPAWN_DIST * 0.8)) continue;
       const d = Math.hypot(e.x - tr.x, e.y - tr.y);
       const tx = Math.floor(e.x / TILE_PX), ty = Math.floor(e.y / TILE_PX);
       if ((!e.hostile && d > DESPAWN_DIST) || (e.wild!.fled && d > 700) || !this.o.loaded(tx, ty)) this.world.removeEnemy(e);

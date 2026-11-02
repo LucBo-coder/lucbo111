@@ -20,6 +20,8 @@ import type { AdventureScene } from '../scenes/AdventureScene';
 //   • the Ultra Beasts' own sites there: a beast sleeps until the trainer has beaten enough wild Pokémon in its world
 //     (`stir`); then a wormhole opens at its site for a while, and it comes out when the trainer gets close
 //     (AdventureScene.updateWorldBoss asks `siteGate`).
+//   • Chơi chung: on a shared map only the map host's game opens wormholes / rifts; the others draw its open one
+//     (`mirror`) — through a wormhole each player goes on their own, a rift's legendary is called out by the host.
 
 const ID = 'ultra-wormhole';
 type Swirl = { g: Phaser.GameObjects.Graphics; glow: Phaser.GameObjects.Particles.ParticleEmitter | null };
@@ -58,6 +60,8 @@ export class UltraWormholeController {
   /** wormholes standing open at the sites of woken Ultra Beasts */
   private siteSwirls = new Map<string, Swirl>();
   private fight: { unit: Unit; leaveAt: number; x: number; y: number } | null = null;
+  /** Chơi chung: the map host's open wormhole / rift, drawn here */
+  private mirror: ({ x: number; y: number; legend: string | null } & Swirl) | null = null;
 
   private motes: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
 
@@ -146,6 +150,12 @@ export class UltraWormholeController {
     const s = this.scene;
     if (s.mapKind !== 'valley') return;
     this.updateSiteSwirls();
+    if (s.shared?.isGuest()) {
+      // the host opens this map's wormholes (a fight of mine already going on carries on)
+      if (this.fight) this.updateFight();
+      else if (this.hole) this.close();
+      return;
+    }
     if (this.hole && this.now >= this.hole.until && !this.fight) this.close('Ultra Wormhole khép lại.');
     if (this.fight) { this.updateFight(); return; }
     if (this.hole) return;
@@ -153,7 +163,7 @@ export class UltraWormholeController {
     if (this.t > 0) return;
     const inside = this.inUltraSpace;
     this.t = inside ? RIFT_CHECK : WORMHOLE_CHECK;
-    if (!s.state.hasFlag(WORMHOLE_FLAG) || s.modal || s.inCombat() || s.world.boss?.alive) return;
+    if (!s.state.hasFlag(WORMHOLE_FLAG) || s.modal || s.inCombat() || s.world.boss?.alive || s.shared?.hasRemoteBoss()) return;
     if (this.now - this.lastOpen < (inside ? RIFT_COOLDOWN : WORMHOLE_COOLDOWN)) return;
     if (!s.world.rng.chance(inside ? RIFT_CHANCE : WORMHOLE_CHANCE)) return;
     this.openNear();
@@ -191,12 +201,27 @@ export class UltraWormholeController {
 
   /** E at the rift: the legendary steps out (Ultra Space), or into Ultra Space (open maps). */
   async interact(): Promise<void> {
-    const s = this.scene, h = this.hole;
+    const s = this.scene;
+    if (!this.hole && this.mirror) { await this.useMirror(this.mirror); return; }
+    const h = this.hole;
     if (!h || this.fight) return;
-    if (!h.legend) { await this.enter(); return; }
-    if (s.world.boss?.alive) { s.ui.banner('Một trận chiến khác đang diễn ra.', '#ffb0a0'); return; }
+    if (!h.legend) { await this.enter(h); return; }
+    if (s.world.boss?.alive || s.shared?.hasRemoteBoss()) { s.ui.banner('Một trận chiến khác đang diễn ra.', '#ffb0a0'); return; }
     if (s.rides?.riding) s.rides.dismount(true);
-    const legend = h.legend;
+    this.callOut(h);
+  }
+
+  /** Host: a player of my map stepped up to my open rift. */
+  async openRiftFor(_from: string): Promise<void> {
+    const h = this.hole, s = this.scene;
+    if (!h?.legend || this.fight || s.world.boss?.alive || s.shared?.hasRemoteBoss()) return;
+    this.callOut(h);
+  }
+
+  /** The legendary behind the rift steps out and fights. */
+  private callOut(h: NonNullable<UltraWormholeController['hole']>): void {
+    const s = this.scene;
+    const legend = h.legend!;
     const level = wormholeLevel(legend, s.state.worldLevel);
     const u = s.world.spawnBoss(legend, level, false, { x: h.x, y: h.y });
     u.tag = 'wormhole';
@@ -207,19 +232,61 @@ export class UltraWormholeController {
     s.renderer_.vfx.flash(h.x, h.y, 140, 0xffa0f0, 700);
     const beast = wormholeKind(legend) === 'ultra-beast';
     s.ui.eventAlert(`${u.name} bước ra từ vết nứt!${beast ? ' (Ultra Beast)' : ''}`, '#ffa0f0');
+    s.shared?.note(`${u.name} bước ra từ vết nứt!${beast ? ' (Ultra Beast)' : ''}`, '#ffa0f0');
     s.cameras.main.shake(600, 0.012);
   }
 
+  // ───────────────────────────── Chơi chung: the map host's wormhole ─────────────────────────────
+
+  /** Host: my open wormhole / rift for the others on this map (none while its legendary is out). */
+  snapshot(): Record<string, unknown> | null {
+    const h = this.hole;
+    return h && !this.fight ? { x: Math.round(h.x), y: Math.round(h.y), legend: h.legend } : null;
+  }
+
+  /** Guest: the host's open wormhole as it is now (null: closed, or the host is gone). */
+  applyMirror(r: Record<string, unknown> | null): void {
+    const ok = !!r && Number.isFinite(r.x) && Number.isFinite(r.y) && (r.legend === null || (typeof r.legend === 'string' && POKEMON.has(r.legend)));
+    const m = this.mirror;
+    if (!ok) { if (m) this.dropMirror(); return; }
+    const x = r!.x as number, y = r!.y as number, legend = (r!.legend as string | null) ?? null;
+    if (m && Math.hypot(m.x - x, m.y - y) < 4 && m.legend === legend) return;
+    if (m) this.dropMirror();
+    const s = this.scene;
+    this.mirror = { x, y, legend, ...swirl(s, x, y, legend ? 1 : 1.6) };
+    s.interactables.set(ID, { kind: 'wormhole', id: ID, x, y, label: legend ? 'Vết nứt Ultra' : 'Ultra Wormhole', obj: { kind: 'secret', id: ID, x: Math.floor(x / TILE_PX), y: Math.floor(y / TILE_PX) } });
+    s.ui.eventAlert(legend ? 'Một vết nứt Ultra mở ra trên bản đồ! Phía bên kia có một luồng sức mạnh huyền thoại… (E để tiến lại)'
+      : 'Một Ultra Wormhole mở ra trên bản đồ! Nó dẫn tới Không Gian Ultra… (E để bước vào)', '#ffa0f0');
+  }
+
+  private dropMirror(): void {
+    const m = this.mirror;
+    if (!m) return;
+    m.g.destroy(); m.glow?.destroy();
+    if (!this.hole) this.scene.interactables.delete(ID);
+    this.mirror = null;
+  }
+
+  /** E at the host's wormhole: through it on my own; at its rift: the host calls the legendary out. */
+  private async useMirror(m: NonNullable<UltraWormholeController['mirror']>): Promise<void> {
+    const s = this.scene, shared = s.shared;
+    if (!m.legend) { await this.enter(m); return; }
+    if (!shared) return;
+    shared.sendEvents({ t: 'swEvUse', uid: 0, a: 'rift' }, shared.mapHost());
+    s.ui.banner('Vết nứt đang mở rộng…', '#ffa0f0');
+  }
+
   /** Through the wormhole into Ultra Space; the spot it opened at is where its way home leads. */
-  private async enter(): Promise<void> {
-    const s = this.scene, h = this.hole!;
+  private async enter(h: { x: number; y: number }): Promise<void> {
+    const s = this.scene;
     const r = await s.say('Ultra Wormhole', ['Không gian bên kia vặn xoắn đầy ánh sáng. Pokémon hoang dã ở đó rất mạnh (Lv45–62).'],
       [{ label: 'Bước vào Không Gian Ultra', value: 'go' }, { label: 'Ở lại', value: 'no' }]);
-    if (r !== 'go' || this.hole !== h) return;
+    if (r !== 'go' || (this.hole !== h && this.mirror !== h)) return;
     if (s.rides?.riding) s.rides.dismount(true);
     s.state.adv.ultraReturn = { region: s.regionDef.id, x: Math.floor(s.world.trainer.x / TILE_PX), y: Math.floor(s.world.trainer.y / TILE_PX) };
     const sp = regionDef(ULTRA_SPACE).spawn;
-    this.close();
+    // (the host's wormhole stays open for the others)
+    if (this.hole === h) this.close();
     s.travelTo(ULTRA_SPACE, sp.x, sp.y);
   }
 
@@ -239,7 +306,8 @@ export class UltraWormholeController {
     const f = this.fight!, s = this.scene, t = s.world.trainer;
     if (!f.unit.alive) { this.fight = null; this.close(); return; }
     if (f.unit.boss?.weakened) return; // capture window: AdventureScene runs it
-    const far = Math.hypot(f.unit.x - t.x, f.unit.y - t.y) > 1400;
+    // (Chơi chung: it stays while any player of the map is near)
+    const far = [t, ...(s.shared?.mateAnchors() ?? [])].every((p) => Math.hypot(f.unit.x - p.x, f.unit.y - p.y) > 1400);
     if (this.now >= f.leaveAt || far) this.retreat();
   }
 
@@ -281,6 +349,7 @@ export class UltraWormholeController {
     this.motes = null;
     for (const sw of this.siteSwirls.values()) { sw.g.destroy(); sw.glow?.destroy(); }
     this.siteSwirls.clear();
+    this.dropMirror();
     if (this.fight?.unit.alive && !this.fight.unit.boss?.weakened) this.retreat();
     this.fight = null;
     this.close();

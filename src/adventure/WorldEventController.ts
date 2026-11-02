@@ -98,6 +98,7 @@ export class WorldEventController {
     const shared = this.scene.shared;
     if (shared?.hasMates() && shared.mapHost() !== party.me) { this.guestUpdate(dt); return; }
     if (this.mirrors.size) this.clearMirrors();
+    if (this.mirrorAt) { this.mirrorAt = 0; this.scene.raidDens?.applyMirror([]); this.scene.wormholes?.applyMirror(null); }
     const started = this.director.update({ now: this.now, regions: this.unlockedRegions(), current: this.currentRegion()?.id ?? null, inDungeon: false });
     for (const ev of started) this.begin(ev);
     // expiry goes through end() so every event's cleanup runs (weather restore, units, chests)
@@ -485,14 +486,19 @@ export class WorldEventController {
   private broadcast(): void {
     const sc = this.scene;
     const evs = this.director.active.map((ev) => ({ uid: ev.uid, type: ev.type, region: ev.region, left: Math.max(0, ev.end - this.now), progress: ev.progress, goal: ev.goal, data: ev.data }));
-    sc.shared?.sendEvents({ t: 'swEv', evs, clock: sc.state.adv.clock, wk: sc.weather.kind, ce: sc.env?.cycle.event ?? null });
+    sc.shared?.sendEvents({ t: 'swEv', evs, clock: sc.state.adv.clock, wk: sc.weather.kind, ce: sc.env?.cycle.event ?? null,
+      dens: sc.raidDens?.snapshot() ?? [], hole: sc.wormholes?.snapshot() ?? null });
   }
 
   /** Guest: no events of my own while someone else runs this map's; the host's are drawn and ticked here. */
   private guestUpdate(dt: number): void {
     if (this.director.active.length) this.retireOwn();
     // the host went quiet (left, lost the link): their events go with them
-    if (this.mirrors.size && performance.now() - this.mirrorAt > 4000) this.clearMirrors();
+    if (performance.now() - this.mirrorAt > 4000) {
+      if (this.mirrors.size) this.clearMirrors();
+      this.scene.raidDens?.applyMirror([]);
+      this.scene.wormholes?.applyMirror(null);
+    }
     for (const ev of [...this.mirrors.values()]) {
       if (this.now > ev.end + 5) { this.dropMirror(ev, false); continue; }
       if (ev.type === 'raid') this.denGlow(ev, dt);
@@ -521,16 +527,20 @@ export class WorldEventController {
     const shared = this.scene.shared;
     if (!shared) return;
     if (m.t === 'swEvUse') {
-      // a guest used my chest / star shard
+      // a guest used my chest / star shard / raid den / rift
       if (shared.mapHost() !== party.me) return;
       const uid = Number(m.uid);
       if (m.a === 'treasure') this.openTreasure(uid);
       else if (m.a === 'shard') this.useObject(uid, 'shard', Number(m.i));
+      else if (m.a === 'den') this.scene.raidDens?.startFor(uid, from);
+      else if (m.a === 'rift') void this.scene.wormholes?.openRiftFor(from);
       return;
     }
+    // alerts of anyone on my map (a roamer of theirs, their raid…)
+    if (m.t === 'swEvNote' && typeof m.text === 'string') { this.scene.ui.eventAlert(m.text.slice(0, 300), typeof m.color === 'string' ? m.color : '#ffe060'); return; }
     if (from !== shared.mapHost()) return; // only the map host's events count
     if (m.t === 'swEv') { this.applyHost(m); return; }
-    if (m.t === 'swEvNote' && typeof m.text === 'string') { this.scene.ui.eventAlert(m.text.slice(0, 300), typeof m.color === 'string' ? m.color : '#ffe060'); return; }
+    if (m.t === 'swRaid') { this.scene.raidDens?.mirrorOutcome(m); return; }
     if (m.t === 'swEvEnd') {
       const ev = this.mirrors.get(Number(m.uid));
       if (ev) this.dropMirror(ev, !!m.completed);
@@ -540,6 +550,8 @@ export class WorldEventController {
   private applyHost(m: PartyMsg): void {
     this.mirrorAt = performance.now();
     this.applySky(m);
+    this.scene.raidDens?.applyMirror(Array.isArray(m.dens) ? m.dens as Record<string, unknown>[] : []);
+    this.scene.wormholes?.applyMirror((m.hole ?? null) as Record<string, unknown> | null);
     if (!Array.isArray(m.evs)) return;
     const seen = new Set<number>();
     for (const raw of (m.evs as Record<string, unknown>[]).slice(0, 8)) {
