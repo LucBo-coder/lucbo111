@@ -1,5 +1,14 @@
 # Changelog
 
+## Chưa phát hành — Cherrim nở hoa, Flower Gift, font đến muộn, ESLint
+
+- **Cherrim dạng Nắng**: khi trời nắng, Cherrim đổi sang dạng nở hoa (`Unit.look = 'cherrim-sunshine'`), có hoạt ảnh PMD (SpriteCollab 0421/0001) và art chính thức (front / shiny / icon). Hết nắng thì trở lại dạng thường.
+- **Flower Gift** [chính thức]: khi nắng, đòn vật lý của đồng đội cùng phe với Cherrim ×1,5 (bản thân Cherrim đã có tăng 50% theo lore), cả phe chịu đòn đặc biệt ÷1,5. Áp dụng cho phe HLV lẫn phe hoang dã. Mô tả Ability ghi đúng tác dụng.
+- **Sửa lỗi font đến muộn**: nếu font pixel tải xong sau mốc 2,5 s, game phát lại sự kiện resize để các scene UI dựng lại và đo nhãn theo font thật. Trước đây nhãn đo bằng font dự phòng nên bị lệch, tràn khung. E2E mới trong `v22_mobile_layout` (font trễ 4,5 s).
+- **ESLint**: `npm run lint` (flat config `eslint.config.js`: recommended JS + typescript-eslint; global Node cho scripts / server / test; e2e được dùng `any`). Dọn hai hàm thừa trong `build-dex.mjs`, một escape thừa, một regex khoảng trắng.
+- **Test chập chờn** `server_v7`: các `expect.poll` chờ tới 10 s (scrypt chậm khi chạy song song); test khôi phục bằng mã có timeout 30 s.
+- Test `v39_forms_weather_moves` thêm 2 test cho Cherrim / Flower Gift (8).
+
 ## Chưa phát hành — Mega Froslass, dạng Castform, Vulpix Alola, chiêu thời tiết, Dragonair, đổi đội ở trạm
 
 - **Mega Froslass** (Legends Z-A; PokéAPI #10285): Băng / Ma, HP 70 · Atk 80 · Def 70 · SpA 140 · SpD 100 · Spe 120, Snow Warning (gọi Tuyết). Đá **Froslassite** bán ở kệ Đá Mega của cửa hàng. Art chính thức từ PokéAPI. SpriteCollab chưa có hoạt ảnh Mega Froslass nên trên sân dùng art chính thức, giống các Mega khác thiếu sheet PMD.

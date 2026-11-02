@@ -46,7 +46,7 @@ describe('real-time combat engine', () => {
     const w = arena();
     const u = w.addPokemon('charmander', { level: 30 });
     foe(w, 'bulbasaur', 30, 100);
-    let casts = 0, last = '';
+    const casts = 0, last = '';
     for (let i = 0; i < 60 * 6; i++) {
       w.step(STEP);
       if (u.castSlot >= 0 && u.lastSkill !== last + i) { /* counted below */ }

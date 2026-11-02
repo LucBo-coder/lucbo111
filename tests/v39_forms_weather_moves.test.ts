@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { castformLook, loreWeatherText, moveSource, weatherMovesOf, weatherMoveText } from '../src/core/battleWeather';
-import { POKEMON } from '../src/core/data';
+import { getSkill, POKEMON } from '../src/core/data';
 import { canMega, ITEM_DEFS, itemEvolution } from '../src/core/evolution';
 import { STEP, World } from '../src/core/world';
 import ecology from '../src/data/dex/ecology.json';
@@ -94,5 +94,43 @@ describe('Dragonair controls the weather (lore)', () => {
     d.weatherCallAt = -1e9; // skip the cooldown
     expect(w.tryCallWeather().ok).toBe(true);
     expect(w.battleWeather?.kind).toBe('sun');
+  });
+});
+
+describe('Cherrim and Flower Gift', () => {
+  it('Cherrim blooms in the sun (Sunshine form) and Flower Gift is described as what it does', () => {
+    expect(POKEMON.get('cherrim')!.passive).toMatchObject({ id: 'flower-gift', kind: 'weather' });
+    const w = world();
+    const c = w.addPokemon('cherrim', { level: 30 });
+    w.step(STEP);
+    expect(c.look).toBeUndefined();
+    w.setBattleWeather('sun', 30, null);
+    w.step(STEP);
+    expect(c.look).toBe('cherrim-sunshine');
+  });
+
+  it("in the sun, Cherrim's side hits harder physically and takes special hits more lightly", () => {
+    /** damage of one fixed hit (no crit, no miss, middle roll) of `category` from a Machamp ally on a wild Snorlax */
+    const dmg = (sun: boolean, cherrim: 'none' | 'ally' | 'foe', category: 'physical' | 'special') => {
+      const w = world(3);
+      (w.rng as unknown as { next: () => number }).next = () => 0.5;
+      (w.rng as unknown as { chance: () => boolean }).chance = () => false;
+      const a = w.addPokemon('machamp', { level: 50 });
+      a.critRate = 0;
+      a.passive = null;
+      if (cherrim === 'ally') w.addPokemon('cherrim', { level: 50 }).passive = POKEMON.get('cherrim')!.passive;
+      const foe = w.spawnWild('snorlax', 50, a.x + 40, a.y, { hostile: true });
+      foe.maxHp = foe.hp = 1e7;
+      foe.passive = null;
+      if (cherrim === 'foe') { const c = w.spawnWild('cherrim', 50, a.x + 400, a.y, { hostile: true }); c.passive = POKEMON.get('cherrim')!.passive; }
+      if (sun) w.setBattleWeather('sun', 60, null);
+      const def = { ...getSkill('tackle'), type: 'fighting' as const, category, power: 80, accuracy: undefined };
+      (w as unknown as { hit: (a: unknown, b: unknown, c: unknown, d: number) => void }).hit(a, foe, { def, cd: 0, level: 1, powerBonus: 0 }, 1);
+      return 1e7 - foe.hp;
+    };
+    expect(dmg(true, 'ally', 'physical') / dmg(true, 'none', 'physical')).toBeCloseTo(1.5, 1);
+    expect(dmg(false, 'ally', 'physical') / dmg(false, 'none', 'physical')).toBeCloseTo(1, 2);
+    expect(dmg(true, 'ally', 'special') / dmg(true, 'none', 'special')).toBeCloseTo(1, 2);
+    expect(dmg(true, 'foe', 'special') / dmg(true, 'none', 'special')).toBeCloseTo(1 / 1.5, 1);
   });
 });

@@ -79,7 +79,6 @@ function convertMove(id, m) {
 }
 
 const generatedSkills = {};
-const skillDef = (id) => handSkills.find((s) => s.id === id) ?? generatedSkills[id];
 for (const [id, m] of Object.entries(MV)) {
   if (skillIds.has(id)) continue;
   const conv = convertMove(id, { ...m, apiName: m.apiName });
@@ -424,7 +423,6 @@ const SPECIAL_STYLE = { dialga: 'timestop', palkia: 'rift', arceus: 'judgment' }
 const HP_TUNE = { lugia: 60, latias: 70, uxie: 70, mesprit: 70, cresselia: 50 };
 const POWER_TUNE = { cresselia: 0.4 };
 const allSkills = Object.values(allMoveDefs());
-const ofType = (t, kinds) => allSkills.filter((s) => s.type === t && kinds.includes(s.kind) && s.power > 0).sort((a, b) => b.power - a.power);
 const legendBosses = [];
 for (const [id, lv] of Object.entries(LEGEND_LEVEL)) {
   if (handBosses.has(id) || !SP[id]) continue;

@@ -51,6 +51,7 @@ const WEATHER_CONTROL: Record<string, string> = {
   'delta-stream': 'Khi vào trận gọi Gió mạnh (tới 90s, tan khi nó rời trận): hệ Bay +50%, hệ Bay không còn điểm yếu; thời tiết thường không thay được.',
   'primordial-sea': 'Khi vào trận gọi Mưa lớn (tới 90s, tan khi nó rời trận): hệ Nước +50%, chiêu hệ Lửa thất bại; thời tiết thường không thay được.',
   'desolate-land': 'Khi vào trận gọi Nắng cực gắt (tới 90s, tan khi nó rời trận): hệ Lửa +50%, chiêu hệ Nước thất bại; thời tiết thường không thay được.',
+  'flower-gift': 'Khi trời nắng: đòn vật lý của đồng đội cùng phe mạnh hơn 50%, cả phe chịu đòn đặc biệt nhẹ hơn (÷1,5); Cherrim nở hoa.',
 };
 for (const p of POKEMON.values()) {
   const d = p.passive && WEATHER_CONTROL[p.passive.id];

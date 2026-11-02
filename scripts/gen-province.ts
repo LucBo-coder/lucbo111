@@ -43,7 +43,7 @@ async function gen(id: string): Promise<void> {
   const imp = `${camel(id)}Json`;
   if (!rd.includes(`/vietnam/${id}.json'`)) {
     rd = rd.replace(/(import \w+ from '\.\.\/\.\.\/data\/vietnam\/[\w-]+\.json';\n)(?!import \w+ from '\.\.\/\.\.\/data\/vietnam)/, `$1import ${imp} from '../../data/vietnam/${id}.json';\n`);
-    rd = rd.replace(/(  '[\w-]+': \w+Json as unknown as RegionDef,\n)(\};)/, `$1  '${id}': ${imp} as unknown as RegionDef,\n$2`);
+    rd = rd.replace(/( {2}'[\w-]+': \w+Json as unknown as RegionDef,\n)(\};)/, `$1  '${id}': ${imp} as unknown as RegionDef,\n$2`);
     write('src/core/map/regionDefs.ts', rd);
   }
   // conservation sites first (the eco quest points at the first one); provinces already placed keep theirs

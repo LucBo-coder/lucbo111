@@ -1185,6 +1185,8 @@ export class World {
     // (lore) a Pokémon that is "roused to rage" calls it once it falls under half HP; Sand Spit waits for a hit
     const consider = (u: Unit, engaged: boolean) => {
       if (u.defId === 'castform') this.castformForm(u);
+      // Cherrim opens its petals in strong sunlight (its Sunshine form)
+      else if (u.defId === 'cherrim') u.look = this.activeWeather() === 'sun' ? 'cherrim-sunshine' : undefined;
       if (u.weatherCalled || !u.alive || u.fainted || u.captured) return;
       const src = this.weatherSource(u);
       if (!src) { u.weatherCalled = true; return; }
@@ -1237,6 +1239,14 @@ export class World {
   }
 
   /** (lore) Castform takes the guise of the weather: its type follows the called weather. */
+  /** A Cherrim with Flower Gift is in the fight on this team (any trainer's side of it, or the wild). */
+  private flowerGift(team: Team): boolean {
+    const has = (u: Unit) => u.team === team && u.passive?.id === 'flower-gift' && u.alive && !u.fainted && !u.captured;
+    for (const side of this.sides()) for (const a of side.allies) if (has(a)) return true;
+    for (const e of this.enemies) if (has(e)) return true;
+    return false;
+  }
+
   private castformForm(u: Unit): void {
     const want = castformTypes(this.activeWeather());
     // its look follows the weather too: the sun, rain-cloud and snow-cloud guises (Sapphire)
@@ -2877,6 +2887,12 @@ export class World {
       if (wm) modifier *= wm;
       modifier *= weatherDamageMult(aw, s.type, s.category, dst.types);
       modifier *= loreDamageMult(aw, src.defId, s.category);
+      // Flower Gift [chính thức]: in the sun Cherrim's side hits harder physically (Cherrim's own bloom is its lore
+      // boost above) and takes special hits more lightly
+      if (aw === 'sun') {
+        if (s.category === 'physical' && src.defId !== 'cherrim' && this.flowerGift(src.team)) modifier *= 1.5;
+        if (s.category === 'special' && this.flowerGift(dst.team)) modifier /= 1.5;
+      }
       modifier *= deltaStreamMult(aw, this.activeStrong(), s.type, dst.types);
       const mf = this.maxFields[s.type];
       if (mf && this.time < mf.until) modifier *= mf.mult;

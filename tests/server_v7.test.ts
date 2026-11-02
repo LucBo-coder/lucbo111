@@ -10,6 +10,8 @@ import { regionDef } from '../src/core/map/regionDefs';
 import { login, recover, resume } from '../server/auth';
 
 let server: GameServer | undefined;
+/** scrypt (password, recovery code) is slow on purpose; with other test files running in parallel it can take seconds */
+const SLOW = { timeout: 10_000, interval: 10 };
 const sockets: WebSocket[] = [];
 afterEach(async () => {
   for (const ws of sockets.splice(0)) ws.terminate();
@@ -33,7 +35,7 @@ async function client(username: string) {
     send: (msg: ClientMsg) => ws.send(JSON.stringify(msg)),
     next: async <T extends ServerMsg['t']>(t: T, where: (m: Extract<ServerMsg, { t: T }>) => boolean = () => true): Promise<Extract<ServerMsg, { t: T }>> => {
       let i = -1;
-      await expect.poll(() => { i = inbox.findIndex((m) => m.t === t && where(m as Extract<ServerMsg, { t: T }>)); return i; }, { timeout: 3000, interval: 10 }).toBeGreaterThanOrEqual(0);
+      await expect.poll(() => { i = inbox.findIndex((m) => m.t === t && where(m as Extract<ServerMsg, { t: T }>)); return i; }, SLOW).toBeGreaterThanOrEqual(0);
       return inbox.splice(i, 1)[0] as Extract<ServerMsg, { t: T }>;
     },
     none: async (t: ServerMsg['t'], ms = 200) => { await new Promise((r) => setTimeout(r, ms)); return !inbox.some((m) => m.t === t); },
@@ -129,7 +131,7 @@ describe('V7 Alpha EXP + party bonus', () => {
     server!.db.run("UPDATE alpha_spawns SET hp = 1 WHERE status = 'active'");
     await wait(950); // per-player attack cooldown (900 ms)
     a.send({ t: 'alpha.attack', actionId: 'xp_kill' });
-    await expect.poll(() => a.inbox.some((m) => m.t === 'alphaDefeated' && !!m.save)).toBe(true);
+    await expect.poll(() => a.inbox.some((m) => m.t === 'alphaDefeated' && !!m.save), SLOW).toBe(true);
     const done = a.inbox.find((m) => m.t === 'alphaDefeated' && !!m.save) as Extract<ServerMsg, { t: 'alphaDefeated' }>;
     const by = new Map(done.rewards.map((r) => [r.accountId, r]));
     const ra = by.get(a.welcome.account.id)!, rb = by.get(b.welcome.account.id)!, rc = by.get(c.welcome.account.id)!;
@@ -331,7 +333,7 @@ describe('V7 PC terminal, accounts and portals', () => {
     expect((await a.next('actionResult')).result!.used).toBe(1);
   });
 
-  it('recovery code resets the password once, revokes sessions and rotates the code', async () => {
+  it('recovery code resets the password once, revokes sessions and rotates the code', { timeout: 30_000 }, async () => {
     boot();
     const a = await client('rc_a');
     const code = a.welcome.recoveryCode!;
@@ -340,12 +342,12 @@ describe('V7 PC terminal, accounts and portals', () => {
     const oldToken = a.welcome.token;
     const bad = await rawSocket();
     bad.send({ t: 'recover', username: 'rc_a', code: 'AAAA-BBBB-CCCC-DDDD', newPassword: 'newpass1' });
-    await expect.poll(() => bad.inbox.some((m) => m.t === 'error')).toBe(true);
+    await expect.poll(() => bad.inbox.some((m) => m.t === 'error'), SLOW).toBe(true);
     expect((bad.inbox.find((m) => m.t === 'error') as { code: string }).code).toBe('BAD_RECOVERY');
     const good = await rawSocket();
     // case and separators do not matter when typing the code
     good.send({ t: 'recover', username: 'rc_a', code: code.toLowerCase().replace(/-/g, ' '), newPassword: 'newpass1' });
-    await expect.poll(() => good.inbox.some((m) => m.t === 'welcome')).toBe(true);
+    await expect.poll(() => good.inbox.some((m) => m.t === 'welcome'), SLOW).toBe(true);
     const w = good.inbox.find((m) => m.t === 'welcome') as Extract<ServerMsg, { t: 'welcome' }>;
     expect(w.recoveryCode).toBeTruthy();
     expect(w.recoveryCode).not.toBe(code);

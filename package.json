@@ -9,6 +9,7 @@
     "preview": "vite preview --port 4173",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint": "eslint .",
     "e2e": "playwright test",
     "server": "tsx server/index.ts",
     "server:dev": "tsx watch server/index.ts",
@@ -22,11 +23,15 @@
     "ws": "^8.22.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.48.2",
     "@types/node": "^26.6.5",
     "@types/ws": "^8.18.2",
+    "eslint": "^9.39.5",
+    "globals": "^14.0.0",
     "tsx": "^4.23.15",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.72.1",
     "vite": "^5.4.10",
     "vitest": "^2.1.4"
   }

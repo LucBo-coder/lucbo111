@@ -24,7 +24,9 @@ function boot(): void {
   // with Vietnamese letters makes every part load now. Waiting for latin only measured "ệ", "ố", "đ"… in the wider
   // fallback font, and labels fitted to their buttons were cut short ("Lệnh" → "Lệ…").
   const sample = 'Aa Lệnh Đổi ắ ổ ữ ợ ự ỹ đ';
-  const fontReady = Promise.race([document.fonts.load('20px "VT323"', sample), new Promise((r) => setTimeout(r, 2500))])
+  let fontLoaded = false, fontLate = false;
+  const fontLoad = document.fonts.load('20px "VT323"', sample).then(() => { fontLoaded = true; });
+  const fontReady = Promise.race([fontLoad, new Promise<void>((r) => setTimeout(() => { fontLate = !fontLoaded; r(); }, 2500))])
     .catch(() => undefined); // offline: fall back to monospace
   const game = new Phaser.Game({
     type: Phaser.AUTO,
@@ -41,6 +43,13 @@ function boot(): void {
     scene: [BootScene, MenuScene, GameScene, UIScene, ResultScene, AdventureScene, AdventureUI, LobbyScene, DuelScene, DuelUI, CoopGuestScene, CoopGuestUI, ServerScene, OnlineHubScene],
   });
   game.registry.set('fontReady', fontReady);
+  // a slow connection: the font came after Boot stopped waiting — every UI scene lays itself out again (they rebuild on
+  // resize), so labels fitted while the fallback font was showing are measured again ("Lệ…" back to "Lệnh")
+  void fontLoad.then(() => {
+    if (!fontLate) return;
+    console.info('[boot] pixel font arrived late: re-laying out the UI');
+    game.scale.emit(Phaser.Scale.Events.RESIZE, game.scale.gameSize, game.scale.baseSize, game.scale.displaySize);
+  }).catch(() => undefined);
   installCrashGuard(game as unknown as Parameters<typeof installCrashGuard>[0]);
   (window as unknown as { __phaser: Phaser.Game }).__phaser = game;
   if (DPR > 1) {

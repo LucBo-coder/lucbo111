@@ -550,7 +550,7 @@ export class AdventureUI extends Phaser.Scene {
       ? `◓ ${BALLS[ball].name} ×${a.state.item(ball)}  ·  thuốc ×${heal}`
       : `[F] ${BALLS[ball].name} ×${a.state.item(ball)}   [R] đổi   [H] thuốc ×${heal}`, leftW).setPosition(16 * s, H - 30 * s);
     const cmd = COMMANDS.find((cc) => cc.id === w.command)!;
-    fitText(this.texts.cmd, `Lệnh đội: ${cmd.label}${w.commandTarget ? ' → ' + w.commandTarget.name : ''}${this.touch ? '' : '   (\` 1-5)'}`, leftW).setPosition(16 * s, H - 54 * s);
+    fitText(this.texts.cmd, `Lệnh đội: ${cmd.label}${w.commandTarget ? ' → ' + w.commandTarget.name : ''}${this.touch ? '' : '   (` 1-5)'}`, leftW).setPosition(16 * s, H - 54 * s);
 
     // Online session (shared open world)
     this.texts.online.setText(net.status === 'hosting' ? `ONLINE · Phòng ${net.code} — chờ bạn vào` : net.connected ? `${coopSession.active ? 'CO-OP' : 'ONLINE'} · Đang chơi cùng ${net.peerName} · ${net.rtt} ms${coopSession.active || a.presence?.visible() ? '' : ' · ở vùng khác'}` : '');

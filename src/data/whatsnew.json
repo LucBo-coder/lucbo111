@@ -1,5 +1,14 @@
 [
   {
+    "id": "v40-cherrim-bloom",
+    "title": "Cherrim nở hoa, Flower Gift, chữ không còn lệch",
+    "items": [
+      "Cherrim nở hoa khi trời nắng: đổi sang dạng Nắng (hoạt ảnh và art riêng), hết nắng thì khép lại.",
+      "Flower Gift làm đúng như tên: khi nắng, đòn vật lý của đồng đội cùng phe với Cherrim mạnh hơn 50%, cả phe chịu đòn đặc biệt nhẹ hơn.",
+      "Sửa lỗi: trên mạng chậm, font pixel tải xong muộn từng làm nhãn và nút bị lệch, tràn khung. Giờ giao diện tự sắp xếp lại khi font về."
+    ]
+  },
+  {
     "id": "v39-forms-weather-moves",
     "title": "Mega Froslass, Castform đổi hình, Vulpix Alola, chiêu gọi thời tiết",
     "items": [

@@ -53,6 +53,20 @@ for (const [name, viewport] of [['portrait', { width: 390, height: 844 }], ['lan
       expect((await ev<{ out: string[] }>(page, BUTTONS('Menu'))).out).toEqual([]);
     });
 
+    test('a pixel font that arrives late (slow network): the UI lays itself out again, no label stays cut', async ({ page }) => {
+      test.setTimeout(60_000);
+      const logs: string[] = [];
+      page.on('console', (m) => logs.push(m.text()));
+      // the font files come 4.5 s late: after Boot stopped waiting for them (2.5 s)
+      await page.route(/assets\/fonts\/.*\.woff2/, async (r) => { await new Promise((res) => setTimeout(res, 4500)); await r.continue(); });
+      await page.goto('/?debug');
+      await page.waitForFunction(() => (window as Win).__phaser?.scene.isActive('Menu'));
+      await expect.poll(() => logs.some((l) => l.includes('pixel font arrived late')), { timeout: 15_000 }).toBe(true);
+      await page.waitForTimeout(800);
+      expect(await ev<boolean>(page, `document.fonts.check('20px "VT323"', 'Lệnh')`)).toBe(true);
+      expect((await ev<{ out: string[] }>(page, BUTTONS('Menu'))).out).toEqual([]);
+    });
+
     test('adventure HUD texts stay in their boxes; the map tab list does not overlap', async ({ page }) => {
       test.setTimeout(90_000);
       await page.goto('/?debug');

@@ -322,7 +322,7 @@ export function loreWeatherText(species: string): string | null {
   }
   if (species === 'castform') return 'Theo Pokédex: hệ và hình dạng đổi theo thời tiết (Nắng → Lửa, Mưa → Nước, Tuyết → Băng).';
   if (species === 'dragonair') return `Theo Pokédex: tự do điều khiển thời tiết — phím C gọi Mưa cho ruộng đồng, đang mưa thì gọi Nắng (${WEATHER_DURATION}s).`;
-  if (species === 'cherrim') return 'Theo Pokédex: nở hoa khi nắng gắt — đòn mạnh hơn 50%.';
+  if (species === 'cherrim') return 'Theo Pokédex: nở hoa khi nắng gắt (đổi sang dạng Nắng) — đòn mạnh hơn 50%.';
   if (species === 'gigalith') return 'Theo Pokédex: đòn đặc biệt +30% khi nắng, −40% khi mưa / giông.';
   if (species === 'cryogonal') return 'Theo Pokédex: tan thành hơi nước khi trời nóng — đòn yếu đi 30% khi nắng.';
   return null;

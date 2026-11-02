@@ -23,6 +23,7 @@ FORMS = {
     'castform-sunny': (351, '0001'),
     'castform-rainy': (351, '0002'),
     'castform-snowy': (351, '0003'),
+    'cherrim-sunshine': (421, '0001'),
     'vulpix-alola': (37, '0001'),
     'ninetales-alola': (38, '0001'),
 }
