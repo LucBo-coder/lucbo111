@@ -9,6 +9,8 @@
 - **Bảng Chơi chung** (`src/adventure/PartyPanel.ts`): tạo / vào phòng, danh sách người chơi và nơi họ đang ở, chat (Enter, có đếm tin chưa đọc), trao đổi. Nút phòng chỉ hiện khi đang ở trong phòng và ẩn sau menu game; bấm vào bảng không lọt xuống bản đồ nhỏ.
 - Có người khác cùng bản đồ thì mở menu / hội thoại không dừng thế giới. Hầm ngục vẫn riêng từng người. Về menu chính là rời phòng.
 - **Máy chủ**: `PartyDO` mới trong `pokemon-server` (`/party/<MÃ>`, migration v2). Cần `npx wrangler deploy` trước khi chơi qua Internet.
+- **Thấy thú cưỡi của nhau**: HLV đang cưỡi gửi kèm thú cưỡi (`rd`: loài, shiny, đang bơi, cấp). Game bên kia vẽ nó dưới HLV đó (`World.puppetMounts`), HLV ngồi trên lưng như của mình. Thú cưỡi chỉ để vẽ, quái không nhắm vào.
+- **Sự kiện thế giới giống nhau**: người giữ bản đồ (người sinh quái hoang) chạy sự kiện, giờ trong ngày, thời tiết, bão tuyết / núi lửa và gửi mỗi giây (`swEv`). Người khác tắt sự kiện riêng và hiện y hệt: dấu trên bản đồ, cảnh báo, rương, thương nhân, mảnh sao, pha lê Tera, HLV phục kích. Mở rương, nhặt mảnh sao thì gửi về người giữ bản đồ; thương nhân thì mỗi người một quầy riêng. Sự kiện hoàn thành thì mọi người trên bản đồ đều nhận thưởng hoàn thành. Bắt Pokémon của bùng phát / vùng méo của người khác cũng tính tiến độ.
 - Test `v41_shared_world` (16), e2e `shared_world.spec.ts` (2, chạy cả qua relay với `E2E_NET`). Bỏ e2e `coop.spec.ts` (nút co-op cũ của Phiêu lưu không còn).
 
 ## Chưa phát hành — Cherrim nở hoa, Flower Gift, font đến muộn, ESLint

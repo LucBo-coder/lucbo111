@@ -1,4 +1,4 @@
-import { bogPoisonChance, ENV, EnvCycle, heatDamage, stepCycle, terrainSlow } from '../core/environment';
+import { bogPoisonChance, ENV, EnvCycle, type EnvEvent, heatDamage, stepCycle, terrainSlow } from '../core/environment';
 import { T, TILE_PX } from '../core/map/tiles';
 import type { Unit } from '../core/world';
 import type { AdventureScene } from '../scenes/AdventureScene';
@@ -36,12 +36,23 @@ export class EnvironmentController {
     return false;
   }
 
+  private alert(started: EnvEvent | null): void {
+    if (started === 'blizzard') this.scene.ui?.eventAlert('BÃO TUYẾT! Cả đội bị chậm — đứng gần Pokémon hệ Lửa để sưởi ấm. Hệ Băng không bị ảnh hưởng.', '#c8e8ff');
+    if (started === 'eruption') this.scene.ui?.eventAlert('NÚI LỬA PHUN TRÀO! Tàn lửa rơi quanh bạn — tránh các vòng đỏ.', '#ff9060');
+  }
+
+  /** Chơi chung: the map host's blizzard / eruption becomes mine (my own cycle waits while we share the map). */
+  adopt(event: EnvEvent | null): void {
+    const before = this.cycle.event;
+    this.cycle.event = event;
+    this.cycle.t = Math.max(this.cycle.t, 30);
+    if (event && event !== before) this.alert(event);
+  }
+
   update(dt: number): void {
     const w = this.scene.world;
     const theme = this.theme;
-    const started = stepCycle(this.cycle, theme, dt, () => w.rng.next());
-    if (started === 'blizzard') this.scene.ui?.eventAlert('BÃO TUYẾT! Cả đội bị chậm — đứng gần Pokémon hệ Lửa để sưởi ấm. Hệ Băng không bị ảnh hưởng.', '#c8e8ff');
-    if (started === 'eruption') this.scene.ui?.eventAlert('NÚI LỬA PHUN TRÀO! Tàn lửa rơi quanh bạn — tránh các vòng đỏ.', '#ff9060');
+    this.alert(stepCycle(this.cycle, theme, dt, () => w.rng.next()));
 
     this.tick -= dt;
     if (this.tick <= 0) {

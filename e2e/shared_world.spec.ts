@@ -93,6 +93,25 @@ ${await ev(b, 'window.__party.status + " " + window.__party.error')}`); });
   await ev(a, `(() => { const w = window.__adv.world; const p = w.puppets.find(u => u.kind === 'trainer'); w.applyDamage(p, 77, null); })()`);
   await b.waitForFunction((hp) => (window as Win).__adv.world.trainer.hp <= hp - 70, hpB);
 
+  // A rides: B draws the mount under A's trainer; A climbs off → gone on B
+  expect(await ev(a, `window.__adv.world.startRide('arcanine', { level: 50, shiny: true })`)).toBe(true);
+  await b.waitForFunction(() => [...(window as Win).__adv.world.puppetMounts.values()].some((m: any) => m.defId === 'arcanine' && m.shiny));
+  await b.screenshot({ path: info.outputPath('party-mount.png') });
+  await ev(a, `window.__adv.world.stopRide(true)`);
+  await b.waitForFunction(() => (window as Win).__adv.world.puppetMounts.size === 0);
+
+  // world events, time of day and weather come from the map host (A): B shows A's event and A's sky
+  await ev(b, `(() => { const s = window.__adv; s.state.adv.clock = 100; s.weather.kind = 'fog'; })()`);
+  const evUid = await ev<number>(a, `(() => { const s = window.__adv; s.state.adv.clock = 700; s.weather.kind = 'rain'; const r = s.worldEvents.unlockedRegions()[0].id; return s.worldEvents.force('weather', r).uid; })()`);
+  await b.waitForFunction((u) => (window as Win).__adv.worldEvents.views().some((v: any) => v.uid === u && v.type === 'weather'), evUid);
+  expect(Math.abs(await ev<number>(b, 'window.__adv.state.adv.clock') - 700)).toBeLessThan(20);
+  expect(await ev(b, 'window.__adv.weather.kind')).toBe('rain');
+  expect(await ev(b, 'window.__adv.worldEvents.weatherOverride()')).toBe(await ev(a, 'window.__adv.worldEvents.weatherOverride()'));
+  expect(await ev(b, 'window.__adv.worldEvents.director.active.length')).toBe(0);
+  // it runs out on A → over on B too
+  await ev(a, `(() => { const e = window.__adv.worldEvents.director.active.find(x => x.uid === ${evUid}); e.end = 0; })()`);
+  await b.waitForFunction((u) => !(window as Win).__adv.worldEvents.views().some((v: any) => v.uid === u), evUid);
+
   // chat
   await a.bringToFront();
   await a.locator('[data-pill]').click();

@@ -419,6 +419,8 @@ export class World {
   enemies: Unit[] = [];
   /** Shared world: trainers + Pokémon of the other players on this map (mirrored, never stepped; enemies may hit them) */
   puppets: Unit[] = [];
+  /** Shared world: the mount under another player's trainer (puppet → drawn-only mount, never targeted) */
+  puppetMounts = new Map<Unit, Unit>();
   /** Shared world: receives hits on units with `net` set (enemies and puppets of other players) */
   netHit: ((h: NetHit) => void) | null = null;
   projectiles: Projectile[] = [];

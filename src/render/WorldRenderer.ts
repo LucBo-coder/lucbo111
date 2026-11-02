@@ -167,7 +167,12 @@ export class WorldRenderer {
     if (w.rival) { this.syncUnit(w.rival.trainer); for (const a of w.rival.allies) this.syncUnit(a); }
     if (w.companion) { this.syncUnit(w.companion.trainer); for (const a of w.companion.allies) this.syncUnit(a); }
     // shared world: the other players on this map (their trainer + Pokémon on the field)
-    for (const p of w.puppets) if (p.alive && !p.fainted && onScreen(p.x, p.y)) this.syncUnit(p);
+    for (const p of w.puppets) {
+      if (!p.alive || p.fainted || !onScreen(p.x, p.y)) continue;
+      const m = w.puppetMounts.get(p);
+      if (m) this.syncUnit(m); // riding: their mount first, the trainer is seated on it
+      this.syncUnit(p);
+    }
     for (const e of w.enemies) {
       const show = !e.captured && (e.kind === 'boss' || onScreen(e.x, e.y)) && (this.hooks.visible?.(e) ?? true);
       if (show) this.syncUnit(e);
@@ -348,7 +353,7 @@ export class WorldRenderer {
       v.body.setY(pose.y + Math.sin(now * 0.004 + u.id) * 2);
     }
     // riding (core/riding.ts): the trainer sits on the mount's back, drawn just in front of it, no shadow of its own
-    const mount = u === this.world.trainer ? this.world.mount : null;
+    const mount = u === this.world.trainer ? this.world.mount : u.net ? this.world.puppetMounts.get(u) ?? null : null;
     const mv = mount ? this.views.get(mount.id) : null;
     if (mv) {
       // seated: the trainer's legs disappear behind the mount's body

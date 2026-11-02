@@ -25,7 +25,9 @@ type Kind = Unit['kind'];
 /** static part of a unit on the wire */
 interface WireStatic { d: string; nm: string; k: Kind; ty: PokeType[]; st: Stats; r: number; sh?: 1; al?: 1; el?: 1; av?: string; bd?: string; wi?: 1; tm?: string; nc?: 1; ab?: number; tp?: PokeType | null; mg?: string | null }
 /** dynamic part (every state) */
-interface WireUnit { i: number; x: number; y: number; vx: number; vy: number; f: number; h: number; mh: number; l: number; ho?: 1; fa?: 1; ca?: number; ls?: string; ss?: StatusKind[]; bp?: number; bf?: string | null; bw?: 1; lk?: string; cp?: 1; s?: WireStatic }
+interface WireUnit { i: number; x: number; y: number; vx: number; vy: number; f: number; h: number; mh: number; l: number; ho?: 1; fa?: 1; ca?: number; ls?: string; ss?: StatusKind[]; bp?: number; bf?: string | null; bw?: 1; lk?: string; cp?: 1; s?: WireStatic; rd?: WireRide }
+/** the trainer's mount: [species, shiny, swimming, level] */
+type WireRide = [string, 0 | 1, 0 | 1, number];
 interface SwState extends PartyMsg { t: 'sw'; map: string; n: number; me: WireUnit[]; en: WireUnit[]; pr: [number, number, number, number, number, 0 | 1, string][]; zn: [string, number, number, number, number, number, number, string, 0 | 1][]; fx: WorldEvent[] }
 /** hits for the owner: [enemy/puppet id, amount, crit, eff, dot, attacker id, status] */
 type WireHit = [number, number, 0 | 1, number, 0 | 1, number, StatusApply | 0];
@@ -94,6 +96,17 @@ export class SharedWorld {
     return this.mates().every((m) => party.me < m.id);
   }
 
+  /** The member who runs this map's world events, time and weather (the one who also spawns its wild Pokémon). */
+  mapHost(): string {
+    return this.mates().reduce((best, m) => (m.id < best ? m.id : best), party.me);
+  }
+
+  /** World events / sky of my map for the others here (WorldEventController). */
+  sendEvents(m: PartyMsg, to?: string): void {
+    if (!this.hasMates()) return;
+    party.send({ ...m, map: this.mapKey() }, to);
+  }
+
   // ───────────────────────────── per frame ─────────────────────────────
 
   update(now: number, events: WorldEvent[], delta: number): void {
@@ -142,6 +155,7 @@ export class SharedWorld {
     const key = this.n++ % KEYFRAME === 0;
     const me = [w.trainer, ...w.allies.filter((a) => a.alive)].map((u) => this.wireUnit(u, key));
     if (me[0]?.s) { me[0].s.nm = party.profile.name; me[0].s.av = party.profile.avatar; }
+    if (me[0] && w.ride && w.mount) me[0].rd = [w.ride.species, w.mount.shiny ? 1 : 0, w.ride.mode === 'swim' ? 1 : 0, w.mount.level];
     // my enemies: what my game simulates (copies of other players' enemies are theirs to send)
     const en = w.enemies.filter((e) => e.alive && !e.net && e.tag !== 'story-ally' && e.tag !== 'mount').map((u) => this.wireUnit(u, key));
     const pr: SwState['pr'] = [];
@@ -159,7 +173,12 @@ export class SharedWorld {
     if (m.t === 'sw') { this.applyState(m as SwState, from); return; }
     if (m.t === 'swH' && Array.isArray(m.h)) { for (const h of m.h as WireHit[]) this.applyHit(h, from); return; }
     if (m.t === 'swKo') { this.receiveKo(m, from); return; }
-    if (m.t === 'swClaim' || m.t === 'swCaught' || m.t === 'swFree') this.capture(m, from);
+    if (m.t === 'swClaim' || m.t === 'swCaught' || m.t === 'swFree') { this.capture(m, from); return; }
+    if (m.t === 'swEv' || m.t === 'swEvEnd' || m.t === 'swEvNote' || m.t === 'swEvUse') {
+      const mate = party.members.get(from);
+      if (!this.shareable() || m.map !== this.mapKey() || !mate || mate.campaign !== this.scene.state.adv.campaign) return;
+      this.scene.worldEvents?.receiveNet(m, from);
+    }
   }
 
   private remote(from: string, map: string): Remote {
@@ -204,6 +223,7 @@ export class SharedWorld {
       // the owner's ball holds it: hidden here too (unless it is my own throw, which keeps it captured locally)
       if (d.cp && !u.captured) u.captured = true;
       else if (!d.cp && u.captured && !this.myThrow(u)) u.captured = false;
+      if (!enemy && u.kind === 'trainer') this.setMount(u, d.rd);
     };
     for (const d of s.me) upsert(d, false);
     for (const d of s.en) upsert(d, true);
@@ -270,6 +290,25 @@ export class SharedWorld {
     if (!st.wi) u.wild = null;
   }
 
+  /** Their trainer rides (or stops riding) a Pokémon: a drawn-only mount under the puppet. */
+  private setMount(u: Unit, rd: WireRide | undefined): void {
+    const w = this.scene.world;
+    const def = Array.isArray(rd) && typeof rd[0] === 'string' ? POKEMON.get(rd[0]) : undefined;
+    let m = w.puppetMounts.get(u);
+    if (!rd || !def) { if (m) w.puppetMounts.delete(u); return; }
+    if (!m || m.defId !== def.id) {
+      m = w.visualUnit({ team: 'ally', kind: 'pokemon', defId: def.id, name: def.name, types: [...def.types], base: def.baseStats, level: Math.max(1, Math.min(100, Number(rd[3]) || 1)), radius: def.radius, x: u.x, y: u.y, tag: 'mount', hostile: false });
+      w.puppetMounts.set(u, m);
+    }
+    m.shiny = !!rd[1];
+    m.aquatic = !!rd[2];
+    this.followMount(u, m);
+  }
+
+  private followMount(u: Unit, m: Unit): void {
+    m.x = m.lastX = u.x; m.y = m.lastY = u.y - 0.5; m.vx = u.vx; m.vy = u.vy; m.facing = u.facing;
+  }
+
   private interpolate(delta: number, now: number): void {
     const k = 1 - Math.exp(-delta / 70);
     for (const r of this.remotes.values()) for (const [u, g] of r.goal) {
@@ -280,12 +319,14 @@ export class SharedWorld {
       u.lastX = u.x; u.lastY = u.y;
       if (Math.abs(u.vx) > 3) u.facing = Math.sign(u.vx);
     }
+    for (const [u, m] of this.scene.world.puppetMounts) this.followMount(u, m);
   }
 
   private release(u: Unit): void {
     const w = this.scene.world;
     u.alive = false;
     w.puppets = w.puppets.filter((p) => p !== u);
+    w.puppetMounts.delete(u);
     for (const a of [...w.allies, ...w.enemies]) {
       if (a.target === u) a.target = null;
       if (a.castTarget === u) a.castTarget = null;
@@ -386,6 +427,8 @@ export class SharedWorld {
     if (!e || !e.wild || e.noCapture) return;
     if (m.t === 'swClaim') { if (!e.captured) w.beginCapture(e); return; }
     if (m.t === 'swCaught') {
+      // an outbreak / distortion counts it like one of my own catches
+      this.scene.worldEvents?.onResolved(e.id, e.defId, e.x, e.y, false);
       w.removeEnemy(e);
       this.scene.ui?.banner(`${party.nameOf(from)} đã thu phục ${e.name}!`, '#ffe080');
       return;
