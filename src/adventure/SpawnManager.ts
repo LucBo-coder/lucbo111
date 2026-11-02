@@ -68,7 +68,8 @@ export class SpawnManager {
   }
 
   wildUnits(): Unit[] {
-    return this.world.enemies.filter((e) => e.alive && e.wild && !e.tag);
+    // copies of another player's wild Pokémon (co-op room) are theirs to despawn / count
+    return this.world.enemies.filter((e) => e.alive && e.wild && !e.tag && !e.net);
   }
 
   pickSpecies(table: SpawnEntry[]): SpawnEntry | null {

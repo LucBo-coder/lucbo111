@@ -236,7 +236,17 @@ export interface Unit {
   gmaxFactor?: boolean;
   /** Raid den boss (V32): capture-rate multiplier once it is worn down (core/raidDens RAID_TIERS.catchMult) */
   raidCatch?: number;
+  /**
+   * Shared world (co-op room): this unit belongs to another player (`owner` = their member id, `rid` = its id in their
+   * world). Their game simulates it; here it only mirrors what they send — no AI, and hits on it go to `World.netHit`.
+   */
+  net?: { owner: string; rid: number } | null;
+  /** Shared world: member id of the player whose hit landed last ('' = this player). Set on enemies by applyDamage. */
+  lastHitBy?: string;
 }
+
+/** Shared world: a hit (or status) that landed on a unit simulated by another player — their game applies it. */
+export interface NetHit { dst: Unit; src: Unit | null; amount: number; crit: boolean; eff: number; dot: boolean; status?: StatusApply }
 
 export interface Projectile {
   active: boolean;
@@ -300,7 +310,7 @@ export type WorldEvent =
   | { t: 'heal'; x: number; y: number; amount: number; team?: Team }
   | { t: 'vfx'; name: string; x: number; y: number; r?: number; angle?: number; len?: number; type?: PokeType }
   | { t: 'sfx'; name: string }
-  | { t: 'death'; x: number; y: number; defId: string; elite: boolean; boss: boolean; id?: number; level?: number; wild?: boolean; tag?: string | null }
+  | { t: 'death'; x: number; y: number; defId: string; elite: boolean; boss: boolean; id?: number; level?: number; wild?: boolean; tag?: string | null; by?: string }
   | { t: 'faint'; id: number; name: string }
   | { t: 'revive'; id: number; name: string }
   | { t: 'levelup'; level: number }
@@ -407,6 +417,10 @@ export class World {
   companion: Side | null = null;
   duel: DuelState | null = null;
   enemies: Unit[] = [];
+  /** Shared world: trainers + Pokémon of the other players on this map (mirrored, never stepped; enemies may hit them) */
+  puppets: Unit[] = [];
+  /** Shared world: receives hits on units with `net` set (enemies and puppets of other players) */
+  netHit: ((h: NetHit) => void) | null = null;
   projectiles: Projectile[] = [];
   zones: Zone[] = [];
   gems: Gem[] = [];
@@ -1843,7 +1857,8 @@ export class World {
   }
 
   friendlyUnits(): Unit[] {
-    return this.companion ? [this.trainer, ...this.allies, this.companion.trainer, ...this.companion.allies] : [this.trainer, ...this.allies];
+    const own = this.companion ? [this.trainer, ...this.allies, this.companion.trainer, ...this.companion.allies] : [this.trainer, ...this.allies];
+    return this.puppets.length ? own.concat(this.puppets.filter((p) => p.alive)) : own;
   }
 
   private allyMove(u: Unit, side: Side, dt: number): void {
@@ -1992,7 +2007,8 @@ export class World {
   // ───────────────────────────── enemies ─────────────────────────────
 
   private updateEnemy(e: Unit, dt: number): void {
-    if (e.captured) return;
+    if (e.captured || e.net) return; // another player's game moves and thinks for it
+
     this.tickTimers(e, dt);
     if (e.kind === 'boss') {
       this.bossPhaseCheck(e, dt);
@@ -2069,7 +2085,7 @@ export class World {
     const en = this.enemies;
     for (let ei = 0; ei < en.length; ei++) {
       const e = en[ei];
-      if (!e.alive || e.kind === 'boss' || e.captured) continue;
+      if (!e.alive || e.kind === 'boss' || e.captured || e.net) continue;
       this.scratch.length = 0;
       const near = this.grid.query(e.x, e.y, e.radius * 2.2, this.scratch);
       let n = 0;
@@ -2785,6 +2801,7 @@ export class World {
         this.emit({ t: 'vfx', name: 'puff', x: p.x, y: p.y });
         continue;
       }
+      if (!p.slot || !p.owner) continue; // drawn only: another player's shot (their game resolves it)
       const victims = this.opponentsNear(p.team, p.x, p.y, p.r + 40);
       for (const v of victims) {
         if (p.hit.has(v.id) || v.captured) continue;
@@ -2975,6 +2992,17 @@ export class World {
     let dmg = amount;
     // one Pokemon per trainer: a boss no longer spreads its hits over a whole party on the field
     if (src?.kind === 'boss' && dst.kind === 'pokemon' && dst.team === 'ally' && this.adventureCombat) dmg *= FIELD.bossDamageScale;
+    if (dst.net) {
+      // another player's unit: their game applies the hit (shield, phases, KO, rewards); here only the feedback
+      if (dmg > 0) {
+        this.netHit?.({ dst, src, amount: dmg, crit, eff, dot });
+        dst.hitFlash = 0.12;
+        if (src && src.kind === 'pokemon') src.damageDealt += dmg;
+        this.emit({ t: 'dmg', x: dst.x, y: dst.y - dst.radius, amount: Math.round(dmg), crit, eff, victimTeam: dst.team });
+      }
+      return;
+    }
+    if (dst.team === 'enemy' && src) dst.lastHitBy = src.net?.owner ?? '';
     // Real-time sleep: a direct hit wakes the target once the short grace period has passed
     if (!dot && amount > 0) { const sl = this.getStatus(dst, 'sleep'); if (sl && sl.age >= SLEEP_WAKE_GRACE) this.cureStatus(dst, 'sleep', 'wake'); }
     if (dst.wild && src && src.team !== dst.team) {
@@ -3043,7 +3071,7 @@ export class World {
     e.alive = false;
     if (e.boss) legendMechCleanup(this, e);
     this.kills++;
-    this.emit({ t: 'death', x: e.x, y: e.y, defId: e.defId, elite: e.elite, boss: e.kind === 'boss', id: e.id, level: e.level, wild: !!e.wild, tag: e.tag });
+    this.emit({ t: 'death', x: e.x, y: e.y, defId: e.defId, elite: e.elite, boss: e.kind === 'boss', id: e.id, level: e.level, wild: !!e.wild, tag: e.tag, by: e.lastHitBy ?? '' });
     if (this.mode === 'adventure') {
       // Adventure rewards (EXP, quests, loot) are handled by the scene from the death event
       if (this.boss === e) this.boss = null;
@@ -3072,6 +3100,7 @@ export class World {
   }
 
   heal(u: Unit, amount: number): void {
+    if (u.net) return; // another player's unit: its HP comes from their game
     const before = u.hp;
     u.hp = Math.min(u.maxHp, Math.round(u.hp + amount));
     const healed = Math.round(u.hp - before);
@@ -3087,6 +3116,7 @@ export class World {
    */
   applyStatus(u: Unit, a: StatusApply, src: Unit | null): void {
     if (!u.alive || u.fainted || u.kind === 'trainer' && (a.kind === 'sleep' || a.kind === 'freeze' || a.kind === 'confusion')) return;
+    if (u.net) { this.netHit?.({ dst: u, src, amount: 0, crit: false, eff: 1, dot: false, status: a }); return; }
     const hostile = !!src && src.team !== u.team;
     if (u.passive?.kind === 'statusImmune' && hostile && u.passive.immune?.includes(a.kind)) return;
     if (TYPE_STATUS_IMMUNITY[a.kind]?.some((t) => u.types.includes(t))) {
@@ -3183,7 +3213,8 @@ export class World {
         if (s.t <= 0) u.statuses.splice(i, 1);
       }
     };
-    for (const e of this.enemies) if (e.alive) tickUnit(e);
+    // another player's enemy: its statuses tick in their game (the copy here only shows them)
+    for (const e of this.enemies) if (e.alive && !e.net) tickUnit(e);
     for (const side of this.sides()) {
       for (const a of side.allies) if (!a.fainted) tickUnit(a);
       tickUnit(side.trainer);

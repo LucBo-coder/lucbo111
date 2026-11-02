@@ -204,7 +204,12 @@ async function peerJoin(code: string, timeoutMs: number): Promise<Link> {
 
 // ───────────────────────────── Cloudflare relay (WebSocket) ─────────────────────────────
 
-interface RelayFrame { r?: 'ready' | 'peer' | 'gone' | 'error'; token?: string; on?: boolean; reason?: string; code?: string; message?: string; m?: NetMsg[]; pp?: number }
+export interface RelayFrame {
+  r?: 'ready' | 'peer' | 'gone' | 'error' | 'join' | 'away' | 'back' | 'left';
+  token?: string; on?: boolean; reason?: string; code?: string; message?: string; m?: NetMsg[]; pp?: number;
+  /** party rooms (up to 4): my member id / the member a notice is about, the sender of `m`, who is in the room */
+  id?: string; f?: string; members?: { id: string; on: boolean }[];
+}
 type RelayError = Error & { code?: string };
 
 /** Outgoing messages are batched per window: one WebSocket frame instead of one per message (Free-plan budget). */
@@ -213,21 +218,21 @@ const FLUSH_MS = 50;
  * Messages whose delay is felt (co-op snapshots / inputs, duel state, ping) leave at once, taking whatever is queued
  * with them; the rest waits for the batch window. Each of these already has its own fixed rate (≤ 15 / s).
  */
-const URGENT = new Set<NetMsg['t']>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'act', 'pos']);
+const URGENT = new Set<string>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'act', 'pos', 'sw']);
 /** relay-only round trip (me → room server → me), measured every 2 s */
 const ECHO_MS = 2000;
 /** reconnect delays (≈ 40 s in total, inside the room's 60 s grace period) */
 const RETRY_MS = [500, 1000, 2000, 4000, 8000, 8000, 8000, 8000];
 const MAX_QUEUE = 400;
 /** Superseded by the next one of their kind: dropped first when the outgoing queue overflows during a drop */
-const EPHEMERAL = new Set<NetMsg['t']>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'pos']);
+const EPHEMERAL = new Set<string>(['ping', 'pong', 'coopSnap', 'coopInput', 'snap', 'input', 'pos', 'sw']);
 
 /**
  * Keeps an outgoing queue within `max` while the socket is down. Oldest ephemeral messages (snapshots, inputs, pings,
  * positions) go first, so one-off messages (loot, joins, chat, lobby) survive a long drop; only a queue made of
  * one-off messages loses its oldest.
  */
-export function trimQueue(queue: NetMsg[], max = MAX_QUEUE): void {
+export function trimQueue(queue: { t: string }[], max = MAX_QUEUE): void {
   let excess = queue.length - max;
   if (excess <= 0) return;
   for (let i = 0; i < queue.length && excess > 0;) {
@@ -238,10 +243,10 @@ export function trimQueue(queue: NetMsg[], max = MAX_QUEUE): void {
 const OPEN_TIMEOUT_MS = 10_000;
 
 /** One room socket: same slot after a drop (reconnect token), queued + batched sends. */
-class RelaySocket {
+export class RelaySocket<M extends { t: string } = NetMsg> {
   private ws: WebSocket | null = null;
   private token = '';
-  private queue: NetMsg[] = [];
+  private queue: M[] = [];
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private retries = 0;
   private done = false;
@@ -249,15 +254,21 @@ class RelaySocket {
   readonly echo = new LatencySeries(60);
   onFrame: (f: RelayFrame) => void = () => {};
   onLost: (reason: string) => void = () => {};
+  /** every `ready` (the first open and each reconnect) */
+  onReady: (f: RelayFrame) => void = () => {};
+  private url: (token: string) => string;
 
-  constructor(private base: string, readonly code: string, readonly role: 'host' | 'guest') {}
+  /** `role`: a two-player room (/room/<code>); or the room URL for a given reconnect token ('' = first open) */
+  constructor(base: string, readonly code: string, role: 'host' | 'guest' | ((token: string) => string)) {
+    this.url = typeof role === 'function' ? role : (t) => `${base}/room/${code}?role=${role}${t ? `&token=${t}` : ''}`;
+  }
 
   /** Opens the socket; resolves on `ready`, rejects with the room's error (`code` set) or a network error. */
   open(): Promise<void> {
     return new Promise((resolve, reject) => {
       let ws: WebSocket;
       try {
-        ws = new WebSocket(`${this.base}/room/${this.code}?role=${this.role}${this.token ? `&token=${this.token}` : ''}`);
+        ws = new WebSocket(this.url(this.token));
       } catch {
         reject(new Error('Địa chỉ máy chủ online không hợp lệ'));
         return;
@@ -274,6 +285,7 @@ class RelaySocket {
           clearTimeout(timer);
           this.token = f.token ?? this.token;
           this.retries = 0;
+          this.onReady(f);
           resolve();
           this.flush();
           this.echoTimer ??= setInterval(() => { if (this.ws?.readyState === WebSocket.OPEN) this.ws.send(`{"p":${performance.now()}}`); }, ECHO_MS);
@@ -317,7 +329,7 @@ class RelaySocket {
     this.echoTimer = null;
   }
 
-  send(m: NetMsg): void {
+  send(m: M): void {
     if (this.done) return;
     this.queue.push(m);
     trimQueue(this.queue);

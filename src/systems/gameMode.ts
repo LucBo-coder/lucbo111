@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { coopSession } from '../net/coop';
 import { net } from '../net/session';
 import { worldSession } from '../net/worldSession';
+import { party } from '../net/party';
 import { saveStore } from './save';
 
 // GameModeManager: the single place that starts/stops mode scenes so Survivor and Adventure
@@ -35,6 +36,8 @@ class GameModeManager {
 
   toMenu(scene: Phaser.Scene): void {
     if (coopSession.active) { coopSession.active = false; net.leave(); }
+    // leaving the campaign leaves the co-op room (Chơi chung), like leaving a shared world
+    if (party.status !== 'idle') party.leave();
     this.stopAll(scene);
     this.current = null;
     if (worldSession.active) {

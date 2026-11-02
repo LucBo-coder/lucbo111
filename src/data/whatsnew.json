@@ -1,5 +1,16 @@
 [
   {
+    "id": "v41-choi-chung",
+    "title": "Chơi chung tối đa 4 người, ai cũng tự do",
+    "items": [
+      "Chơi chung (Phiêu lưu và Việt Nam Odyssey): Cài đặt → Chơi chung để tạo phòng hoặc vào bằng mã. Tối đa 4 người, không ai là chủ phòng, người tạo rời đi thì phòng vẫn còn.",
+      "Mỗi người chơi bằng ô lưu của mình: tự đi bản đồ nào cũng được, tự làm nhiệm vụ, nói chuyện NPC, bắt Pokémon.",
+      "Cùng một bản đồ thì thấy nhau và đánh chung quái hoang, boss. Ai ra đòn cuối thì người đó nhận EXP, tiền và tính nhiệm vụ. Ai cũng ném bóng bắt được Pokémon hoang dã của bản đồ.",
+      "Có chat cả phòng (Enter) và trao đổi vật phẩm / Pokémon: hai bên cùng nhấn Đồng ý thì mới đổi. Hầm ngục vẫn là của riêng từng người.",
+      "Khi có người khác cùng bản đồ, mở menu không còn làm dừng thế giới, giống game online."
+    ]
+  },
+  {
     "id": "v40-cherrim-bloom",
     "title": "Cherrim nở hoa, Flower Gift, chữ không còn lệch",
     "items": [

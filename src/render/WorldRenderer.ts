@@ -166,6 +166,8 @@ export class WorldRenderer {
     // PvP duel: the other player's trainer and Pokémon on the field (the bench is not drawn)
     if (w.rival) { this.syncUnit(w.rival.trainer); for (const a of w.rival.allies) this.syncUnit(a); }
     if (w.companion) { this.syncUnit(w.companion.trainer); for (const a of w.companion.allies) this.syncUnit(a); }
+    // shared world: the other players on this map (their trainer + Pokémon on the field)
+    for (const p of w.puppets) if (p.alive && !p.fainted && onScreen(p.x, p.y)) this.syncUnit(p);
     for (const e of w.enemies) {
       const show = !e.captured && (e.kind === 'boss' || onScreen(e.x, e.y)) && (this.hooks.visible?.(e) ?? true);
       if (show) this.syncUnit(e);
@@ -439,7 +441,9 @@ export class WorldRenderer {
   /** "Rattata Lv5" under opposing Pokémon; sized for the camera zoom so it reads the same on phones and desktops. */
   private nameplate(u: Unit, v: UnitView, x: number, y: number): void {
     const mode = this.hooks.names;
-    const show = !!mode && u.team === 'enemy' && u.kind !== 'boss' && u.kind !== 'trainer' && u.tag !== 'boss-clone' && !u.fainted && u.alive && v.body.visible
+    // shared world: another player's trainer carries their name
+    const player = !!u.net && u.kind === 'trainer';
+    const show = player ? v.body.visible : !!mode && u.team === 'enemy' && u.kind !== 'boss' && u.kind !== 'trainer' && u.tag !== 'boss-clone' && !u.fainted && u.alive && v.body.visible
       && (mode === 'all' || u.elite || u.alpha || u.shiny);
     if (!show) { v.label?.setVisible(false); return; }
     if (!v.label) {
@@ -447,10 +451,10 @@ export class WorldRenderer {
       v.label = this.scene.add.text(0, 0, '', { fontFamily: FONT, fontSize: `${Math.round((13 * DPR) / zoom)}px`, color: '#ffffff', stroke: '#000000', strokeThickness: Math.max(3, Math.round((4 * DPR) / zoom)), resolution: Math.max(1, zoom) })
         .setOrigin(0.5, 0);
     }
-    const str = `${u.alpha ? 'α ' : u.elite ? '★ ' : ''}${u.name} Lv${u.level}${u.shiny ? ' ✦' : ''}`;
+    const str = player ? u.name : `${u.alpha ? 'α ' : u.elite ? '★ ' : ''}${u.name} Lv${u.level}${u.shiny ? ' ✦' : ''}`;
     if (v.labelStr !== str) {
       v.labelStr = str;
-      v.label.setText(str).setColor(u.alpha ? '#ff90ff' : u.elite ? '#ffd060' : u.shiny ? '#fff0a0' : u.hostile ? '#ffb0a0' : '#f0f4ff');
+      v.label.setText(str).setColor(player ? '#ffe080' : u.alpha ? '#ff90ff' : u.elite ? '#ffd060' : u.shiny ? '#fff0a0' : u.hostile ? '#ffb0a0' : '#f0f4ff');
     }
     v.label.setVisible(true).setPosition(Math.round(x), Math.round(y)).setDepth(9001);
   }

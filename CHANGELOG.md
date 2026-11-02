@@ -1,5 +1,16 @@
 # Changelog
 
+## Chưa phát hành — Chơi chung tối đa 4 người (Phiêu lưu, Việt Nam Odyssey)
+
+- **Co-op kiểu thế giới chung** thay cho co-op chủ phòng/khách trong Phiêu lưu và Việt Nam Odyssey (Survivor và Thế giới online giữ nguyên). Mỗi người chạy game và ô lưu của mình, đi đâu cũng được; phòng (`src/net/party.ts`) chỉ chuyển tin giữa tối đa 4 người, không ai là chủ.
+- **Cùng bản đồ** (`src/adventure/SharedWorld.ts`): mỗi game gửi HLV, Pokémon trên sân và quái mình mô phỏng 10 lần/giây. Người khác vẽ chúng (`World.puppets`, `Unit.net`), Pokémon của họ đánh được quái đó; đòn trúng gửi về game chủ quái (`World.netHit`). Quái hoang của bản đồ do người vào phòng sớm nhất đang ở đó sinh ra; quái kịch bản (HLV, boss, sự kiện) thuộc người kích hoạt.
+- **Thưởng cho đòn cuối**: `Unit.lastHitBy` / `death.by`. Chủ quái giữ tiến trình (cốt truyện, sự kiện, boss); EXP, tiền, EV, nhiệm vụ đánh bại thuộc người ra đòn cuối (`swKo`). Bắt Pokémon hoang dã của người khác: bóng giữ nó ở cả hai game, bắt được thì nó biến mất bên kia.
+- **Trao đổi** vật phẩm / Pokémon (`src/core/trade.ts`, `src/net/tradeSession.ts`): mỗi bên một đề nghị có số phiên bản; cả hai Đồng ý cùng một cặp, gửi commit, rồi mỗi game chỉ áp phần của mình. Đổi đề nghị sau khi bên kia đồng ý thì không bên nào đổi. Không đổi được vật phẩm quan trọng, Pokémon đang khóa / đang cưỡi, hay Pokémon cuối cùng trong đội.
+- **Bảng Chơi chung** (`src/adventure/PartyPanel.ts`): tạo / vào phòng, danh sách người chơi và nơi họ đang ở, chat (Enter, có đếm tin chưa đọc), trao đổi. Nút phòng chỉ hiện khi đang ở trong phòng và ẩn sau menu game; bấm vào bảng không lọt xuống bản đồ nhỏ.
+- Có người khác cùng bản đồ thì mở menu / hội thoại không dừng thế giới. Hầm ngục vẫn riêng từng người. Về menu chính là rời phòng.
+- **Máy chủ**: `PartyDO` mới trong `pokemon-server` (`/party/<MÃ>`, migration v2). Cần `npx wrangler deploy` trước khi chơi qua Internet.
+- Test `v41_shared_world` (16), e2e `shared_world.spec.ts` (2, chạy cả qua relay với `E2E_NET`). Bỏ e2e `coop.spec.ts` (nút co-op cũ của Phiêu lưu không còn).
+
 ## Chưa phát hành — Cherrim nở hoa, Flower Gift, font đến muộn, ESLint
 
 - **Cherrim dạng Nắng**: khi trời nắng, Cherrim đổi sang dạng nở hoa (`Unit.look = 'cherrim-sunshine'`), có hoạt ảnh PMD (SpriteCollab 0421/0001) và art chính thức (front / shiny / icon). Hết nắng thì trở lại dạng thường.

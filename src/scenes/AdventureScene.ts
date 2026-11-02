@@ -6,6 +6,9 @@ import { passportPages, stampVisit } from '../adventure/passport';
 import { OnlinePresence } from '../adventure/OnlinePresence';
 import { onEmergencySave } from '../systems/crashGuard';
 import { WorldOnline } from '../adventure/WorldOnline';
+import { SharedWorld } from '../adventure/SharedWorld';
+import { PartyPanel } from '../adventure/PartyPanel';
+import { party } from '../net/party';
 import { worldSession } from '../net/worldSession';
 import { net } from '../net/session';
 import { skillFailText } from '../net/skillWire';
@@ -443,7 +446,23 @@ export class AdventureScene extends Phaser.Scene {
     else if (net.connected) this.startPresence();
     // Thế giới online: this campaign is an account's, other players share the map
     if (worldSession.active) this.online = new WorldOnline(this);
+    // Chơi chung (co-op room, up to 4): the panel outside Thế giới online; same-map play while in a room
+    else { this.partyPanel = new PartyPanel(this); this.startShared(); }
   }
+
+  /** Co-op room (Chơi chung): the other players on this map, shared fights (see SharedWorld). */
+  shared: SharedWorld | null = null;
+  partyPanel: PartyPanel | null = null;
+  private sharedStarting = false;
+  startShared(): void {
+    // (the constructor announces the map, which notifies the panel, which calls this again)
+    if (this.shared || this.sharedStarting || !party.active || worldSession.active) return;
+    this.sharedStarting = true;
+    try { this.shared = new SharedWorld(this); } finally { this.sharedStarting = false; }
+  }
+  stopShared(): void { this.shared?.destroy(); this.shared = null; }
+  /** The Pokémon my ball is holding right now (shaking), if any. */
+  captureTarget(): Unit | null { return this.captureFx?.target ?? null; }
 
   /** Thế giới online (signed-in account): other players, chat, friends, party. */
   online: WorldOnline | null = null;
@@ -477,6 +496,8 @@ export class AdventureScene extends Phaser.Scene {
   private shutdown(): void {
     this.offEmergency?.(); this.offEmergency = null;
     this.online?.destroy(); this.online = null;
+    this.stopShared();
+    this.partyPanel?.destroy(); this.partyPanel = null;
     this.coopHost?.destroy(); this.coopHost = null;
     this.presence?.destroy();
     this.presence = null;
@@ -503,7 +524,7 @@ export class AdventureScene extends Phaser.Scene {
   }
 
   private onBlur(): void {
-    if (coopSession.active) return;
+    if (coopSession.active || party.active) return; // the others keep playing: no pause menu
     if (!this.modal) this.ui?.openMenu('settings');
   }
 
@@ -1199,7 +1220,9 @@ export class AdventureScene extends Phaser.Scene {
     w.run = k.SHIFT.isDown || this.runHeld;
 
     let simMs = 0;
-    if (!this.modal) {
+    // a menu or dialogue pauses the world — except with other players on this map: like any online game it goes on
+    // (my trainer stands still; their fights against the Pokémon my game runs keep going)
+    if (!this.modal || this.shared?.hasMates()) {
       this.acc += dt;
       const s0 = performance.now();
       let n = 0;
@@ -1210,7 +1233,8 @@ export class AdventureScene extends Phaser.Scene {
         this.legendsMgr?.update(STEP);
         this.wormholes?.update(STEP);
         this.env?.update(STEP);
-        this.spawns?.update(STEP);
+        // wild Pokémon of a shared map come from one player (the others fight the same ones)
+        if (!this.shared || this.shared.spawnsHere()) this.spawns?.update(STEP);
         this.dungeon?.update(STEP);
         this.acc -= STEP;
         n++;
@@ -1223,6 +1247,11 @@ export class AdventureScene extends Phaser.Scene {
     this.syncReserved();
     this.coopHost?.update(performance.now(), this.modal, events);
     this.handleGameplayEvents(events);
+    if (this.shared) {
+      this.shared.update(performance.now(), events, delta);
+      // another player's Pokémon I knocked out: the rewards are mine
+      for (const ko of this.shared.kos.splice(0)) this.handleRewards(ko);
+    }
     this.renderer_.handle(events);
     this.renderer_.render(delta);
     this.chunks.update(this.cameras.main.worldView);
@@ -1233,6 +1262,7 @@ export class AdventureScene extends Phaser.Scene {
     this.updateExploration();
     this.presence?.update(performance.now());
     this.online?.update(performance.now());
+    this.partyPanel?.update();
     this.updateWalkers(dt);
     this.updateFishing(dt);
     this.updateErrands(dt);
@@ -1318,43 +1348,51 @@ export class AdventureScene extends Phaser.Scene {
     }
   }
 
-  /** An enemy is beaten (died, or a legendary boss went WEAKENED): EXP, friendship, rewards, quests. */
+  /**
+   * An enemy is beaten (died, or a legendary boss went WEAKENED). The fight's progress (events, dens, bosses, story)
+   * belongs to this game; the rewards go to whoever landed the last hit (another player of the room: sent to them).
+   */
   private handleDown(e: Extract<WorldEvent, { t: 'death' }>): void {
     if (e.tag === 'story-device') this.story?.onDown(e);
-    {
-      this.worldEvents?.onResolved(e.id!, e.defId, e.x, e.y, false);
-      this.raidDens?.onResolved(e.id!, false);
-      const trainerOwned = !!e.tag?.startsWith('trainer:');
-      // Friendship: a win against a trainer's Pokémon or a boss counts as a real battle for the active party
-      if (trainerOwned || e.boss) for (const a of this.world.allies) if (!a.fainted && a.ownerUid) { const o = this.state.owned(a.ownerUid); if (o) addFriendship(o, 'battle'); }
-      // a legendary's copies / crystals / minions (tag boss-add) are worth a fraction: the reward is the legendary itself
-      const exp = Math.round(expYield(e.defId === 'onix' ? 'onix' : e.defId, e.level ?? 5, trainerOwned || e.tag === 'dungeon') * (e.tag === 'boss-add' || e.tag === 'boss-clone' ? 0.15 : 1));
-      const alive = this.world.allies.filter((a) => !a.fainted && a.ownerUid).map((a) => a.ownerUid!);
-      this.state.earn((e.level ?? 5) * (trainerOwned ? 6 : 3));
-      if (e.boss && this.bossSites().some((s) => s.id === e.defId)) { this.onWorldBossDefeated(e.defId, e.level ?? 30); this.wormholes?.onSiteBeaten(e.defId); }
-      else if (e.boss && e.tag === 'roamer') this.legendsMgr?.onRoamerDefeated(e.defId, e.level ?? 40);
-      else if (e.boss && e.tag === 'wormhole') this.wormholes?.onDefeated(e.defId, e.level ?? 50);
-      // Không Gian Ultra: beating its wild Pokémon stirs the world until its Ultra Beast wakes
-      else if (!e.boss && e.wild && !e.tag) this.wormholes?.stir(e.x, e.y);
-      // the Pokémon that fought gets all the EXP, the healthy ones waiting in their balls a share (field-rules.json)
-      const ups: ReturnType<AdventureState['gainExp']> = [];
-      const fainted = (uid: string) => (this.state.owned(uid)?.hpFrac ?? 1) <= 0 || !!this.world.allies.find((a) => a.ownerUid === uid)?.fainted;
-      for (const [uid, v] of expShares(this.state.adv.party.map((uid) => ({ uid, fainted: fainted(uid) })), alive, exp)) ups.push(...this.state.gainExp([uid], v));
-      for (const up of ups) {
-        this.evoQueue.add(up.uid);
-        const ally = this.world.allies.find((a) => a.ownerUid === up.uid);
-        if (ally) {
-          this.world.setAllyLevel(ally, up.level);
-          ally.hp = Math.min(ally.maxHp, ally.hp + ally.maxHp * 0.2);
-          this.renderer_.vfx.ring(ally.x, ally.y, 70, 0xffe060, 500);
-          this.ui?.banner(`${ally.name} lên Lv${up.level}!`, '#ffe060');
-          audio.play('levelup');
-        }
+    this.worldEvents?.onResolved(e.id!, e.defId, e.x, e.y, false);
+    this.raidDens?.onResolved(e.id!, false);
+    if (e.boss && this.bossSites().some((s) => s.id === e.defId)) { this.onWorldBossDefeated(e.defId, e.level ?? 30); this.wormholes?.onSiteBeaten(e.defId); }
+    else if (e.boss && e.tag === 'roamer') this.legendsMgr?.onRoamerDefeated(e.defId, e.level ?? 40);
+    else if (e.boss && e.tag === 'wormhole') this.wormholes?.onDefeated(e.defId, e.level ?? 50);
+    // Không Gian Ultra: beating its wild Pokémon stirs the world until its Ultra Beast wakes
+    else if (!e.boss && e.wild && !e.tag) this.wormholes?.stir(e.x, e.y);
+    const by = e.by ?? this.world.enemies.find((u) => u.id === e.id)?.lastHitBy;
+    if (this.shared?.creditElsewhere(e, by)) return;
+    this.handleRewards(e);
+  }
+
+  /** EXP, friendship, money, EVs and quest credit for a Pokémon this player beat (last hit). */
+  handleRewards(e: Extract<WorldEvent, { t: 'death' }>): void {
+    const trainerOwned = !!e.tag?.startsWith('trainer:');
+    // Friendship: a win against a trainer's Pokémon or a boss counts as a real battle for the active party
+    if (trainerOwned || e.boss) for (const a of this.world.allies) if (!a.fainted && a.ownerUid) { const o = this.state.owned(a.ownerUid); if (o) addFriendship(o, 'battle'); }
+    // a legendary's copies / crystals / minions (tag boss-add) are worth a fraction: the reward is the legendary itself
+    const exp = Math.round(expYield(e.defId === 'onix' ? 'onix' : e.defId, e.level ?? 5, trainerOwned || e.tag === 'dungeon') * (e.tag === 'boss-add' || e.tag === 'boss-clone' ? 0.15 : 1));
+    const alive = this.world.allies.filter((a) => !a.fainted && a.ownerUid).map((a) => a.ownerUid!);
+    this.state.earn((e.level ?? 5) * (trainerOwned ? 6 : 3));
+    // the Pokémon that fought gets all the EXP, the healthy ones waiting in their balls a share (field-rules.json)
+    const ups: ReturnType<AdventureState['gainExp']> = [];
+    const fainted = (uid: string) => (this.state.owned(uid)?.hpFrac ?? 1) <= 0 || !!this.world.allies.find((a) => a.ownerUid === uid)?.fainted;
+    for (const [uid, v] of expShares(this.state.adv.party.map((uid) => ({ uid, fainted: fainted(uid) })), alive, exp)) ups.push(...this.state.gainExp([uid], v));
+    for (const up of ups) {
+      this.evoQueue.add(up.uid);
+      const ally = this.world.allies.find((a) => a.ownerUid === up.uid);
+      if (ally) {
+        this.world.setAllyLevel(ally, up.level);
+        ally.hp = Math.min(ally.maxHp, ally.hp + ally.maxHp * 0.2);
+        this.renderer_.vfx.ring(ally.x, ally.y, 70, 0xffe060, 500);
+        this.ui?.banner(`${ally.name} lên Lv${up.level}!`, '#ffe060');
+        audio.play('levelup');
       }
-      for (const uid of this.state.gainEvs(alive, e.defId)) this.refreshIndividual(uid);
-      this.questEvent({ type: 'defeat', target: e.defId });
-      if (e.boss) this.questEvent({ type: 'boss', target: e.defId });
     }
+    for (const uid of this.state.gainEvs(alive, e.defId)) this.refreshIndividual(uid);
+    this.questEvent({ type: 'defeat', target: e.defId });
+    if (e.boss) this.questEvent({ type: 'boss', target: e.defId });
   }
 
   // ───────────────────────────── legendary capture window ─────────────────────────────
@@ -3279,6 +3317,7 @@ export class AdventureScene extends Phaser.Scene {
     fx.target = hit;
     fx.phase = 'shaking';
     this.world.beginCapture(hit);
+    this.shared?.claim(hit); // another player's wild Pokémon: their game holds it still too
     this.renderer_.vfx.flash(hit.x, hit.y, 40, 0xff4040, 250);
     audio.play('shield');
     fx.ball.setPosition(hit.x, hit.y + 6).setAngle(0);
@@ -3320,6 +3359,7 @@ export class AdventureScene extends Phaser.Scene {
       this.tweens.add({ targets: fx.ball, alpha: 0, duration: 600, delay: 400, onComplete: () => fx.ball.destroy() });
       this.questEvent({ type: 'capture', target: u.defId });
       this.coopHost?.grant({ pokemon: { species: u.defId, level: u.level, shiny: u.shiny, ball: fx.ballId, teraType: p.teraType, abilitySlot: p.abilitySlot }, note: 'Bắt Pokémon' });
+      if (u.net) this.shared?.caught(u);
       this.persist();
     } else {
       this.world.endCapture(u, false);
@@ -3327,6 +3367,7 @@ export class AdventureScene extends Phaser.Scene {
       fx.ball.destroy();
       const flee = this.world.rng.chance(fleeChance(u.wild!.temperament, u.hp / u.maxHp));
       if (flee) { u.wild!.mode = 'flee'; u.wild!.t = 5; u.hostile = false; u.wild!.threat = this.world.trainer; }
+      if (u.net) this.shared?.freed(u, flee);
       this.ui.banner(`${u.name} đã thoát khỏi bóng!${flee ? ' Nó bỏ chạy!' : ''}`, '#ff9080');
       audio.play('hurt');
     }

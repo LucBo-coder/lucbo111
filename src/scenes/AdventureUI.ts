@@ -7,6 +7,7 @@ import { chapterStates } from '../core/story';
 import { CONSERVATION, ecoHealth, ECO_TIERS, ecoTier } from '../core/conservation';
 import { regionRep, repTier, nextTierIn, REP_REGIONS, REP_TIERS } from '../core/reputation';
 import { openCoopMenu } from './coopMenu';
+import { party, PARTY_MAX } from '../net/party';
 import { HELP_PAGES } from './helpGuide';
 import { coopSession } from '../net/coop';
 import { music } from '../systems/music';
@@ -150,6 +151,8 @@ export class AdventureUI extends Phaser.Scene {
   private banners: Phaser.GameObjects.Text[] = [];
   private dialogueLayer: Phaser.GameObjects.Container | null = null;
   private menu: Phaser.GameObjects.Container | null = null;
+  /** A full-screen menu is open (overlays such as Chơi chung step aside). */
+  get menuOpen(): boolean { return !!this.menu; }
   /** the open Poké Mart / merchant window */
   shop: ShopWindow | null = null;
   private menuTab: MenuTab | null = null;
@@ -2480,7 +2483,10 @@ Thời gian chơi: ${fmtTime(st.adv.playTime)}`, 16 * s, '#d0d8f0').setWordWrapW
     const games: { label: string; fn: () => void; color?: number }[][] = [
       [{ label: 'Lưu game', fn: () => { this.adv.persist(); this.banner('Đã lưu', '#80ff90'); } },
         { label: 'Lưu & về menu', fn: () => { this.closeMenu(); this.adv.exitToMenu(); }, color: 0x6a2f2f }],
-      [{ label: net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', fn: () => openCoopMenu(this, this.adv), color: 0x2f5a6a }],
+      // Chơi chung (room of up to 4, everyone free); Thế giới online keeps its own players
+      [this.adv.partyPanel
+        ? { label: party.active ? `Chơi chung · phòng ${party.code}` : `Chơi chung (tối đa ${PARTY_MAX} người)`, fn: () => { this.closeMenu(); this.adv.partyPanel?.show(); }, color: 0x2f5a6a }
+        : { label: net.connected ? `Co-op / phòng ${net.code}` : net.status === 'hosting' ? `Phòng ${net.code}` : 'Co-op: cùng đánh quái', fn: () => openCoopMenu(this, this.adv), color: 0x2f5a6a }],
       [{ label: 'Đi chung / thách đấu PvP', fn: () => void this.onlineMenu(), color: 0x3a3a5a }],
     ];
     for (const g of games) { row(R, y2, g); y2 += bh + gap; }
